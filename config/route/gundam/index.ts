@@ -37,11 +37,6 @@ export default [
         name: '意图管理',
       },
       {
-        path: '/gundamPages/wordLibrary',
-        component: './gundam-pages/word-library',
-        name: '词库管理',
-      },
-      {
         path: '/gundamPages/wordSlotLibrary',
         component: './gundam-pages/word-slot-library',
         name: '词槽管理',

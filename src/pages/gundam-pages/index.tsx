@@ -26,7 +26,7 @@ const MachinePagesHome: React.FC = (props: any) => {
   return (
     <ProLayout
       title="机器人详情"
-      navTheme="dark"
+      navTheme="light"
       layout="side"
       location={{
         pathname,

@@ -18,11 +18,6 @@ export default [
   },
   {
     icon: <CrownOutlined />,
-    path: '/gundamPages/wordLibrary',
-    name: '词库管理',
-  },
-  {
-    icon: <CrownOutlined />,
     path: '/gundamPages/wordSlotLibrary',
     name: '词槽管理',
   },
