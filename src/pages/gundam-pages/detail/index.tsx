@@ -5,7 +5,7 @@ import {} from 'antd';
 
 // 机器人列表
 const DetailPages: React.FC = (props: any) => {
-  return <div>机器人详情detail页面-</div>;
+  return <div>机器人配置页面-</div>;
 };
 
 export default DetailPages;

@@ -24,12 +24,42 @@ export default [
       {
         path: '/gundamPages/home',
         component: './gundam-pages/home',
-        name: '机器人详情首页',
+        name: '首页',
       },
       {
         path: '/gundamPages/detail',
         component: './gundam-pages/detail',
-        name: '机器人详情信息',
+        name: '机器人配置',
+      },
+      {
+        path: '/gundamPages/wish',
+        component: './gundam-pages/wish',
+        name: '意图管理',
+      },
+      {
+        path: '/gundamPages/wordLibrary',
+        component: './gundam-pages/word-library',
+        name: '词库管理',
+      },
+      {
+        path: '/gundamPages/wordSlotLibrary',
+        component: './gundam-pages/word-slot-library',
+        name: '词槽管理',
+      },
+      {
+        path: '/gundamPages/spokenLabel',
+        component: './gundam-pages/spoken-label',
+        name: '话术标签管理',
+      },
+      {
+        path: '/gundamPages/mainDraw',
+        component: './gundam-pages/main-draw',
+        name: '主流程管理',
+      },
+      {
+        path: '/gundamPages/businessDraw',
+        component: './gundam-pages/business-draw',
+        name: '业务流程管理',
       },
       { redirect: '/gundamPages/home' },
       { component: './404' },

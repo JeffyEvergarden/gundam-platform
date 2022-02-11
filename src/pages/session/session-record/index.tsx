@@ -11,11 +11,6 @@ const MachineManagement: React.FC = (props: any) => {
 
   const { tableList, getTableList, tableLoading } = useTableModel();
 
-  const { info, setInfo } = useModel('gundam', (model: any) => ({
-    info: model.info,
-    setInfo: model.setInfo,
-  }));
-
   // 分页相关 ---
   const [current, setCurrent] = useState<number>(1);
 
@@ -23,10 +18,8 @@ const MachineManagement: React.FC = (props: any) => {
     setCurrent(val);
   };
 
-  const goToNewSystem = (row: any) => {
-    // console.log(row);
-    setInfo(row);
-    history.push(`/gundamPages/home?id=${row.id}`);
+  const goToNewSystem = () => {
+    history.push('/gundamPages');
   };
 
   const columns: any[] = [
@@ -62,7 +55,7 @@ const MachineManagement: React.FC = (props: any) => {
             <Button
               type="link"
               onClick={() => {
-                goToNewSystem(row);
+                goToNewSystem();
               }}
               style={{ marginRight: '6px' }}
             >
@@ -78,7 +71,6 @@ const MachineManagement: React.FC = (props: any) => {
   ];
 
   useEffect(() => {
-    console.log(info);
     getTableList();
   }, []);
 

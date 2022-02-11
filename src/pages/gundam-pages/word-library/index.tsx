@@ -4,8 +4,8 @@ import { Table, Button } from 'antd';
 import {} from 'antd';
 
 // 机器人列表
-const DetailHome: React.FC = (props: any) => {
-  return <div>首页</div>;
+const DetailPages: React.FC = (props: any) => {
+  return <div>词库管理</div>;
 };
 
-export default DetailHome;
+export default DetailPages;

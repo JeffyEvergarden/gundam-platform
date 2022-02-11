@@ -13,7 +13,15 @@ import routes from './routes';
 const MachinePagesHome: React.FC = (props: any) => {
   const [pathname, setPathname] = useState('/gundamPages');
 
-  useEffect(() => {}, [history]);
+  const { info, setInfo } = useModel('gundam', (model: any) => ({
+    info: model.info,
+    setInfo: model.setInfo,
+  }));
+
+  useEffect(() => {
+    console.log('机器人子系统获取：');
+    console.log(info);
+  }, []);
 
   return (
     <ProLayout

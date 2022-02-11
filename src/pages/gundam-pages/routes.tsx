@@ -2,13 +2,38 @@ import { CrownOutlined, LeftOutlined, UserOutlined, SmileOutlined } from '@ant-d
 
 export default [
   {
-    icon: <LeftOutlined />,
-    path: '/gundamPages/home',
-    name: '机器人详情首页',
+    icon: <CrownOutlined />,
+    path: '/gundamPages/mainDraw',
+    name: '主流程管理',
   },
   {
     icon: <CrownOutlined />,
     path: '/gundamPages/detail',
-    name: '机器人详情信息',
+    name: '机器人配置',
+  },
+  {
+    icon: <CrownOutlined />,
+    path: '/gundamPages/wish',
+    name: '意图管理',
+  },
+  {
+    icon: <CrownOutlined />,
+    path: '/gundamPages/wordLibrary',
+    name: '词库管理',
+  },
+  {
+    icon: <CrownOutlined />,
+    path: '/gundamPages/wordSlotLibrary',
+    name: '词槽管理',
+  },
+  {
+    icon: <CrownOutlined />,
+    path: '/gundamPages/spokenLabel',
+    name: '话术标签管理',
+  },
+  {
+    icon: <CrownOutlined />,
+    path: '/gundamPages/businessDraw',
+    name: '业务流程管理',
   },
 ];
