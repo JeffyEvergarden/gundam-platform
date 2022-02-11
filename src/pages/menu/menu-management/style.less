@@ -1,0 +1,116 @@
+.menu-home_bg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  min-height: 60vh;
+  overflow: auto;
+  font-family: PingFang SC, sans-serif, Microsoft YaHei, SimHei;
+
+  // 树形组件样式修改
+  :global {
+    .ant-tree-node-content-wrapper {
+      display: flex;
+    }
+
+    .ant-tree-title {
+      flex: 1 1 auto;
+    }
+
+    .ant-tree-treenode {
+      padding: 10px 4px !important;
+      color: rgba(0, 0, 0, 0.85);
+      font-size: 14px;
+      line-height: 22px;
+      text-align: left;
+    }
+
+    .ant-tree-node-selected {
+      color: #333 !important;
+      background: #e6f7ff !important;
+    }
+
+    .ant-tree-treenode-selected {
+      &::before {
+        background: #e6f7ff !important;
+      }
+
+      color: #333 !important;
+      background: #e6f7ff !important;
+    }
+  }
+}
+
+.button-bg {
+  display: flex;
+  flex-shrink: 0;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 10px 0;
+}
+
+// 布局样式修改
+.menu-box {
+  display: flex;
+  width: 100%;
+  min-height: 800px;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 8px 40px rgba(0, 71, 138, 0.12);
+}
+
+.menu-left {
+  width: 280px;
+  padding: 16px 0;
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.menu-right {
+  flex: 1 1 auto;
+  padding: 24px;
+
+  .content-title {
+    margin-bottom: 24px;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 22px;
+    text-align: left;
+  }
+
+  .content-operator {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .table-box {
+    flex: 1 1 auto;
+  }
+}
+
+// 按钮样式
+
+.button_add {
+  width: 260px;
+  height: 32px;
+  margin: 0 8px 8px;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+  line-height: 32px;
+  text-align: center;
+  background: transparent;
+  border: 1px dashed rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+
+  &:active {
+    color: #333;
+  }
+}
+
+.icon {
+  width: 80px;
+  max-width: 80px;
+  max-height: 80px;
+}
