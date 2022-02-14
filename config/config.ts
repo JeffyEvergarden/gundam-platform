@@ -26,9 +26,9 @@ export default defineConfig({
     siderWidth: 208,
     ...defaultSettings,
   },
-  publicPath: '/bdp/',
+  publicPath: '/gundam/',
   outputPath: 'dist/',
-  base: '/bdp',
+  base: '/gundam',
   dynamicImport: {
     loading: '@ant-design/pro-layout/es/PageLoading',
   },

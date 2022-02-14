@@ -4,70 +4,105 @@ const successCode = '000000';
 
 const getList = (req: any, res: any) => {
   res.json({
-    code: successCode,
+    resultCode: successCode,
     data: [
       {
-        id: 'fake13',
-        name: 'fuck3',
-        url: 'https://www.baidu.com',
-        showType: 'leader',
-        index: 10,
-        icon: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.zhimg.com%2F50%2Fv2-6ff5d5ccc24154bc38823529d353d474_hd.jpg&refer=http%3A%2F%2Fpic1.zhimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640501958&t=c76186c40a5a100e12e94f92bf77bd62',
+        id: 0,
+        robotName: '冰果0',
+        robotDesc:
+          '电视动画《冰菓》改编自日本推理小说家米泽穗信原作的《古典部系列》小说，以该系列的第1部《冰菓》为标题。2011年11月29日，在京都动画官方网站内，宣布了《冰菓》TV动画化的决',
+        businessCode: 1,
+        robotType: 0, // 0：文本   1：语音
+        status: 0, // 0：启用 1：停用
+        onlineTime: '2022-01-12',
+        creator: '折木奉太郎',
+        createTime: '2022-01-15 20:00:00',
       },
       {
-        id: 'fake2',
-        name: 'fuck2',
-        url: 'https://www.baidu.com',
-        showType: 1,
-        index: 10,
-        icon: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.zhimg.com%2F50%2Fv2-6ff5d5ccc24154bc38823529d353d474_hd.jpg&refer=http%3A%2F%2Fpic1.zhimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640501958&t=c76186c40a5a100e12e94f92bf77bd62',
+        id: 1,
+        robotName: '冰果1',
+        robotDesc:
+          '电视动画《冰菓》改编自日本推理小说家米泽穗信原作的《古典部系列》小说，以该系列的第1部《冰菓》为标题。2011年11月29日，在京都动画官方网站内，宣布了《冰菓》TV动画化的决',
+        businessCode: 1,
+        robotType: 0, // 0：文本   1：语音
+        status: 0, // 0：启用 1：停用
+        onlineTime: '2022-01-12',
+        creator: '折木奉太郎',
+        createTime: '2022-01-15 20:00:00',
       },
       {
-        id: 'fake',
-        name: 'fuck1',
-        url: 'https://www.baidu.com',
-        showType: 1,
-        index: 10,
-        icon: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.zhimg.com%2F50%2Fv2-6ff5d5ccc24154bc38823529d353d474_hd.jpg&refer=http%3A%2F%2Fpic1.zhimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640501958&t=c76186c40a5a100e12e94f92bf77bd62',
+        id: 2,
+        robotName: '冰果2',
+        robotDesc:
+          '电视动画《冰菓》改编自日本推理小说家米泽穗信原作的《古典部系列》小说，以该系列的第1部《冰菓》为标题。2011年11月29日，在京都动画官方网站内，宣布了《冰菓》TV动画化的决',
+        businessCode: 1,
+        robotType: 0, // 0：文本   1：语音
+        status: 0, // 0：启用 1：停用
+        onlineTime: '2022-01-12',
+        creator: '折木奉太郎',
+        createTime: '2022-01-15 20:00:00',
       },
       {
-        id: 'fake',
-        name: 'fuck4',
-        url: 'https://www.baidu.com',
-        showType: 'leader',
-        index: 10,
-        icon: '',
+        id: 3,
+        robotName: '冰果3',
+        robotDesc:
+          '电视动画《冰菓》改编自日本推理小说家米泽穗信原作的《古典部系列》小说，以该系列的第1部《冰菓》为标题。2011年11月29日，在京都动画官方网站内，宣布了《冰菓》TV动画化的决',
+        businessCode: 1,
+        robotType: 0, // 0：文本   1：语音
+        status: 0, // 0：启用 1：停用
+        onlineTime: '2022-01-12',
+        creator: '折木奉太郎',
+        createTime: '2022-01-15 20:00:00',
       },
       {
-        id: 'fake',
-        name: 'fuck5',
-        url: 'https://www.baidu.com',
-        showType: 'leader',
-        index: 10,
-        icon: 'https://10.192.171.243:8099/unifyportal/menuFile/get?id=1464173559804456961',
+        id: 4,
+        robotName: '冰果4',
+        robotDesc:
+          '电视动画《冰菓》改编自日本推理小说家米泽穗信原作的《古典部系列》小说，以该系列的第1部《冰菓》为标题。2011年11月29日，在京都动画官方网站内，宣布了《冰菓》TV动画化的决',
+        businessCode: 1,
+        robotType: 0, // 0：文本   1：语音
+        status: 0, // 0：启用 1：停用
+        onlineTime: '2022-01-12',
+        creator: '折木奉太郎',
+        createTime: '2022-01-15 20:00:00',
       },
       {
-        id: 'fake',
-        name: 'fuck6',
-        url: 'https://www.baidu.com',
-        showType: 'leader',
-        index: 10,
-        icon: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.zhimg.com%2F50%2Fv2-6ff5d5ccc24154bc38823529d353d474_hd.jpg&refer=http%3A%2F%2Fpic1.zhimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640501958&t=c76186c40a5a100e12e94f92bf77bd62',
+        id: 5,
+        robotName: '冰果5',
+        robotDesc:
+          '电视动画《冰菓》改编自日本推理小说家米泽穗信原作的《古典部系列》小说，以该系列的第1部《冰菓》为标题。2011年11月29日，在京都动画官方网站内，宣布了《冰菓》TV动画化的决',
+        businessCode: 1,
+        robotType: 0, // 0：文本   1：语音
+        status: 0, // 0：启用 1：停用
+        onlineTime: '2022-01-12',
+        creator: '折木奉太郎',
+        createTime: '2022-01-15 20:00:00',
       },
       {
-        id: 'fake',
-        name: 'fuck7',
-        url: 'https://www.baidu.com',
-        showType: 'leader',
-        index: 10,
-        icon: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.zhimg.com%2F50%2Fv2-6ff5d5ccc24154bc38823529d353d474_hd.jpg&refer=http%3A%2F%2Fpic1.zhimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640501958&t=c76186c40a5a100e12e94f92bf77bd62',
+        id: 6,
+        robotName: '冰果6',
+        robotDesc:
+          '电视动画《冰菓》改编自日本推理小说家米泽穗信原作的《古典部系列》小说，以该系列的第1部《冰菓》为标题。2011年11月29日，在京都动画官方网站内，宣布了《冰菓》TV动画化的决',
+        businessCode: 1,
+        robotType: 0, // 0：文本   1：语音
+        status: 0, // 0：启用 1：停用
+        onlineTime: '2022-01-12',
+        creator: '折木奉太郎',
+        createTime: '2022-01-15 20:00:00',
       },
     ],
+  });
+};
+
+const changeMachineStatus = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
   });
 };
 
 // 菜单管理相关
 export default {
   // 机器人管理相关
-  'GET /machine/list': getList, // 获取所有模块
+  'GET /machine/list': getList, // 获取机器人管理列表
+  'POST /machine/changeStatus': changeMachineStatus, // 修改业务状态
 };

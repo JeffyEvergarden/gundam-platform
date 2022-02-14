@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { message } from 'antd';
 
-import { getMachineList } from './api';
+import { getMachineList, changeMachineStatus, deleteMachine } from './api';
 
 export const successCode = '000000';
 
@@ -28,6 +28,7 @@ export const useTableModel = () => {
     });
     // console.log('tableList', data);
     setTableList(data || []);
+    return { data };
   };
 
   return {
@@ -37,5 +38,32 @@ export const useTableModel = () => {
     opLoading,
     setOpLoading,
     getTableList, // 获取表格数据
+  };
+};
+
+// 机器人管理相关操作接口
+export const useOpModel = () => {
+  // -----
+  const changeStatus = async (data: any) => {
+    let res: any = await changeMachineStatus(data);
+    if (res.resultCode === successCode) {
+      return true;
+    } else {
+      return res?.resultDesc || '未知系统异常';
+    }
+  };
+  // -----
+  const _deleteMachine = async (data: any) => {
+    let res: any = await deleteMachine(data);
+    if (res.resultCode === successCode) {
+      return true;
+    } else {
+      return res?.resultDesc || '未知系统异常';
+    }
+  };
+
+  return {
+    changeStatus, // 修改状态接口
+    deleteMachine: _deleteMachine, // 删除机器人接口
   };
 };
