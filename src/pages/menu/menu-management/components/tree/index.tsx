@@ -274,7 +274,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
         blockNode
         draggable
         onDrop={onDrop}
-      ></DirectoryTree>
+       />
     </div>
   );
 };

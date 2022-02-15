@@ -3,7 +3,7 @@ import { request } from '@/services/request';
 const baseUrl: string = '/bdp/unifyportal';
 
 /** 获取所有菜单列表 **/
-export async function getMenuList(params?: { [key: string]: any }) {
+export async function getMenuList(params?: Record<string, any>) {
   return request(`${baseUrl}/menu/getBackstageTreeList`, {
     method: 'GET',
     params,
@@ -11,14 +11,14 @@ export async function getMenuList(params?: { [key: string]: any }) {
 }
 
 // 获取当前子菜单
-export async function getCurrentMenu(params?: { [key: string]: any }) {
+export async function getCurrentMenu(params?: Record<string, any>) {
   return request(`${baseUrl}/menu/getListByParentId`, {
     method: 'GET',
     params,
   });
 }
 // 修改链接
-export async function updateLink(data?: { [key: string]: any }) {
+export async function updateLink(data?: Record<string, any>) {
   return request(`${baseUrl}/menu/updateSubmodule`, {
     method: 'POST',
     data,
@@ -26,7 +26,7 @@ export async function updateLink(data?: { [key: string]: any }) {
 }
 
 // 删除链接
-export async function deleteLink(data?: { [key: string]: any }) {
+export async function deleteLink(data?: Record<string, any>) {
   return request(`${baseUrl}/menu/deleteMenu`, {
     method: 'POST',
     data,
@@ -34,7 +34,7 @@ export async function deleteLink(data?: { [key: string]: any }) {
 }
 
 // 新增链接
-export async function addNewLink(data?: { [key: string]: any }) {
+export async function addNewLink(data?: Record<string, any>) {
   return request(`${baseUrl}/menu/addSubmodule`, {
     method: 'POST',
     data,
@@ -42,7 +42,7 @@ export async function addNewLink(data?: { [key: string]: any }) {
 }
 
 // 修改模块
-export async function updateModule(data?: { [key: string]: any }) {
+export async function updateModule(data?: Record<string, any>) {
   return request(`${baseUrl}/menu/updateModule`, {
     method: 'POST',
     data,
@@ -50,7 +50,7 @@ export async function updateModule(data?: { [key: string]: any }) {
 }
 
 // 删除模块
-export async function deleteModule(data?: { [key: string]: any }) {
+export async function deleteModule(data?: Record<string, any>) {
   return request(`${baseUrl}/menu/deleteMenu`, {
     method: 'POST',
     data,
@@ -58,7 +58,7 @@ export async function deleteModule(data?: { [key: string]: any }) {
 }
 
 // 新增模块
-export async function addNewModule(data?: { [key: string]: any }) {
+export async function addNewModule(data?: Record<string, any>) {
   return request(`${baseUrl}/menu/addModule`, {
     method: 'POST',
     data,
@@ -66,7 +66,7 @@ export async function addNewModule(data?: { [key: string]: any }) {
 }
 
 // 修改节点父节点
-export async function updateNodeParent(data?: { [key: string]: any }) {
+export async function updateNodeParent(data?: Record<string, any>) {
   return request(`${baseUrl}/menu/updateModuleTree`, {
     method: 'POST',
     data,
@@ -74,7 +74,7 @@ export async function updateNodeParent(data?: { [key: string]: any }) {
 }
 
 // 获取通用配置信息
-export async function getMenuForm(params?: { [key: string]: any }) {
+export async function getMenuForm(params?: Record<string, any>) {
   return request(`${baseUrl}/oldHome/getOldHome`, {
     method: 'GET',
     params,
@@ -82,7 +82,7 @@ export async function getMenuForm(params?: { [key: string]: any }) {
 }
 
 // 修改通用配置
-export async function updateMenuForm(data?: { [key: string]: any }) {
+export async function updateMenuForm(data?: Record<string, any>) {
   return request(`${baseUrl}/oldHome/addOldHome`, {
     method: 'POST',
     data,
