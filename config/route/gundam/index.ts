@@ -1,16 +1,16 @@
 export default [
   {
-    path: '/gundam',
+    path: '/robot',
     layout: true,
     component: '../layout',
     name: '机器人管理',
     routes: [
       {
-        path: '/gundam/home/list',
+        path: '/robot/home/list',
         component: './gundam/management',
         name: '机器人列表',
       },
-      { redirect: '/gundam/home/list' },
+      { redirect: '/robot/home/list' },
       { component: './404' },
     ],
   },
@@ -35,11 +35,6 @@ export default [
         path: '/gundamPages/wish',
         component: './gundam-pages/wish',
         name: '意图管理',
-      },
-      {
-        path: '/gundamPages/wordLibrary',
-        component: './gundam-pages/word-library',
-        name: '词库管理',
       },
       {
         path: '/gundamPages/wordSlotLibrary',

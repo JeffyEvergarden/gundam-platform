@@ -1,3 +1,4 @@
 export default {
-  basePath: '/bdp',
+  basePath: '/gundamplatform',
+  successCode: '000000',
 };
