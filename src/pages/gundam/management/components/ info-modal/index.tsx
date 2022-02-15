@@ -5,6 +5,7 @@ import Condition from '@/components/Condition';
 
 const { Item: FormItem } = Form;
 const { Option } = Select;
+const { TextArea } = Input;
 
 const linkTypeList: any = [
   {
@@ -67,13 +68,15 @@ const InfoModal: React.FC<any> = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     open: (row: any) => {
-      if (!row?.key && !row?.id) {
+      console.log(row);
+      if (!row?.robotName) {
         setOpenType('new');
         setOriginInfo(row);
         form.resetFields();
       } else {
         console.log(row);
-        form.resetFields();
+        // form.resetFields();
+        form.setFieldsValue(row);
         setOpenType('edit');
         setOriginInfo(row);
       }
@@ -87,7 +90,7 @@ const InfoModal: React.FC<any> = (props: any) => {
 
   return (
     <Modal
-      width={700}
+      width={650}
       title={(openType === 'new' ? '添加新' : '编辑') + '机器人'}
       visible={visible}
       onCancel={() => setVisible(false)}
@@ -99,12 +102,15 @@ const InfoModal: React.FC<any> = (props: any) => {
         <Form form={form} style={{ width: '360px' }}>
           {/* 机器人名称 */}
           <FormItem
-            rules={[{ required: true, message: '请填写机器人名称' }]}
+            rules={[
+              { required: true, message: '请填写机器人名称' },
+              { pattern: /^[A-Za-z0-9_\u4e00-\u9fa5]+/, message: '请输入汉字、字母、下划线、数字' },
+            ]}
             name="robotName"
             label="机器人名称"
             style={{ width: '360px' }}
           >
-            <Input placeholder="请填写机器人名称" {...extra} />
+            <Input placeholder="请填写机器人名称" {...extra} maxLength={150} />
           </FormItem>
 
           <FormItem
@@ -113,7 +119,7 @@ const InfoModal: React.FC<any> = (props: any) => {
             label="机器人描述"
             style={{ width: '360px' }}
           >
-            <Input placeholder="请填写机器人描述" {...extra} />
+            <TextArea rows={4} placeholder="请填写机器人描述" {...extra} maxLength={200} />
           </FormItem>
 
           {/* 链接路径 */}

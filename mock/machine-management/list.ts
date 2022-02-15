@@ -100,9 +100,18 @@ const changeMachineStatus = (req: any, res: any) => {
   });
 };
 
+const addNewMachine = (req: any, res: any) => {
+  console.log(req.query);
+  res.json({
+    resultCode: successCode,
+  });
+};
+
 // 菜单管理相关
 export default {
   // 机器人管理相关
   'GET /machine/list': getList, // 获取机器人管理列表
   'POST /machine/changeStatus': changeMachineStatus, // 修改业务状态
+  'POST /machine/add': addNewMachine,
+  'POST /machine/edit': addNewMachine,
 };

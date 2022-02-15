@@ -25,3 +25,19 @@ export async function deleteMachine(params?: { [key: string]: any }) {
     params,
   });
 }
+
+/** 添加新的机器人 **/
+export async function addNewMachine(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/machine/add`, {
+    method: 'POST',
+    data,
+  });
+}
+
+/** 编辑机器人 **/
+export async function editMachine(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/machine/edit`, {
+    method: 'POST',
+    data,
+  });
+}
