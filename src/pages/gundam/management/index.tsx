@@ -67,6 +67,11 @@ const MachineManagement: React.FC = (props: any) => {
   };
 
   const deleteRow = async (row: any) => {
+    if (row?.status == 0) {
+      message.warning('请先停用该机器人');
+      return;
+    }
+
     let params: any = {
       id: row.id,
     };
@@ -305,7 +310,6 @@ const MachineManagement: React.FC = (props: any) => {
             icon={<PlusOutlined />}
             type="primary"
             onClick={() => {
-              console.log;
               modalRef.current?.open?.();
             }}
           >
