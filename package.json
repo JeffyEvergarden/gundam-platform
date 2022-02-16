@@ -1,8 +1,8 @@
 {
-  "name": "entry-platform",
+  "name": "gundam-platform",
   "version": "1.0.0",
   "private": true,
-  "description": "中邮消费金融-统一门户",
+  "description": "中邮消费金融-外呼机器人平台",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
     "build": "cross-env REACT_APP_ENV=production umi build",
@@ -56,6 +56,7 @@
     "animate.css": "^4.1.1",
     "antd": "^4.14.0",
     "bizcharts": "^4.1.14",
+    "gg-editor": "^2.0.4",
     "classnames": "^2.2.6",
     "lodash": "^4.17.11",
     "moment": "^2.25.3",

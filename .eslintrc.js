@@ -29,5 +29,6 @@ module.exports = {
     'prefer-object-spread': 'off',
     'no-restricted-globals': 'off',
     'prefer-destructuring': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
   },
 };
