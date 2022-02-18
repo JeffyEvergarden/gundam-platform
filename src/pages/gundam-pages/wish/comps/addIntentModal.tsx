@@ -16,9 +16,8 @@ export default (props: any) => {
   const [form] = Form.useForm();
   useEffect(() => {
     if (visible) {
-      form.setFieldsValue({ ...modalData });
-      // title == '编辑' && form.setFieldsValue({ ...modalData });
-      // title == '新增' && form.resetFields();
+      title == '编辑' && form.setFieldsValue({ ...modalData });
+      title == '新增' && form.resetFields();
     }
   }, [visible]);
 
