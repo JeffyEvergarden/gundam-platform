@@ -73,6 +73,11 @@ const MachineManagement: React.FC = (props: any) => {
   };
 
   const deleteRow = async (row: any) => {
+    if (row?.status == 0) {
+      message.warning('请先停用该机器人');
+      return;
+    }
+
     let params: any = {
       id: row.id,
     };
