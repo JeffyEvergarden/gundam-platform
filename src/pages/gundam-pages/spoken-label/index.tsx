@@ -1,16 +1,61 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useModel } from 'umi';
-import { Table, Button, Popconfirm } from 'antd';
+import { Table, Button, Popconfirm, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import style from './style.less';
 import { PlusOutlined } from '@ant-design/icons';
 import Condition from '@/components/Condition';
 import InfoModal from './components/info-modal';
+import { useOpModel, useLabelModel } from './model';
 
-// 机器人列表
+// 话术标签列表
 const DetailPages: React.FC = (props: any) => {
+  const { labelList, getLabelTableList, labelLoading } = useLabelModel();
+  const { opLoading, deleteLabel, addNewLabel, editLabel } = useOpModel();
   const labelTableRef = useRef<any>({});
   const labelModalRef = useRef<any>({});
+
+  const confirmInfo = async (info: any) => {
+    let res: any = null;
+    if (info._openType === 'new') {
+      let params: any = {
+        ...info?.form,
+      };
+      res = await addNewLabel(params);
+      if (res.resultCode === '000000') {
+        labelModalRef.current?.close?.();
+        labelTableRef.current.reload();
+      } else {
+        message.error(res?.resultDesc || '未知系统异常');
+      }
+    } else if (info._openType === 'edit') {
+      let params: any = {
+        id: info?._originInfo?.id,
+        ...info?.form,
+      };
+      res = await editLabel(params);
+      if (res === true) {
+        labelModalRef.current?.close?.();
+        labelTableRef.current.reload();
+      } else {
+        message.error(res);
+      }
+    }
+  };
+
+  const deleteRow = async (row: any) => {
+    let params: any = {
+      id: row.id,
+    };
+    let res: any = await deleteLabel(params);
+    if (res) {
+      console.log('删除接口');
+      // message.success('删除成功');
+      labelTableRef.current.reload();
+    } else {
+      message.error(res);
+    }
+  };
 
   const columns: any[] = [
     {
@@ -25,7 +70,7 @@ const DetailPages: React.FC = (props: any) => {
     },
     {
       title: '标签描述',
-      dataIndex: 'robotDesc',
+      dataIndex: 'labelDesc',
       search: false,
       width: 200,
       ellipsis: true,
@@ -58,7 +103,7 @@ const DetailPages: React.FC = (props: any) => {
               <Button
                 type="link"
                 onClick={() => {
-                  // modalRef.current?.open?.(row);
+                  labelModalRef.current?.open?.(row);
                 }}
               >
                 编辑
@@ -69,7 +114,7 @@ const DetailPages: React.FC = (props: any) => {
                 okText="确定"
                 cancelText="取消"
                 onConfirm={() => {
-                  // deleteRow(row);
+                  deleteRow(row);
                 }}
               >
                 <Button type="link" danger>
@@ -91,8 +136,8 @@ const DetailPages: React.FC = (props: any) => {
         scroll={{ x: columns.length * 200 }}
         request={async (params = {}, sort, filter) => {
           // console.log(sort, filter);
-          // return getTableList(params);
-          return {};
+          return getLabelTableList(params);
+          // return {};
         }}
         editable={{
           type: 'multiple',
@@ -138,7 +183,8 @@ const DetailPages: React.FC = (props: any) => {
 
       <InfoModal
         cref={labelModalRef}
-        //  confirm={confirmInfo} loading={opLoading}
+        confirm={confirmInfo}
+        // loading={opLoading}
       />
     </div>
   );

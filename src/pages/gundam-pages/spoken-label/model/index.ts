@@ -11,7 +11,7 @@ export const useLabelModel = () => {
   const [labelLoading, setLabelLoading] = useState<boolean>(false);
   const [opLoading, setOpLoading] = useState<boolean>(false);
 
-  const getLabelList = async (params?: any) => {
+  const getLabelTableList = async (params?: any) => {
     setLabelLoading(true);
     let res: any = await getLabelList(params);
     setLabelLoading(false);
@@ -37,7 +37,7 @@ export const useLabelModel = () => {
     labelLoading,
     opLoading,
     setOpLoading,
-    getLabelList, // 获取表格数据
+    getLabelTableList, // 获取表格数据
   };
 };
 
