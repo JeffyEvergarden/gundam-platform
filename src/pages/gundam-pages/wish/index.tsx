@@ -34,47 +34,7 @@ const DetailPages: React.FC = (props: any) => {
 
   const [rulesSamleVisible, handleRulesSampleVisible] = useState<boolean>(false);
 
-  const operation: any = [
-    {
-      dataIndex: 'trainData',
-      title: '训练数据',
-      search: false,
-      render: (text: any, record: any) => {
-        return (
-          <Space>
-            <a onClick={() => ruleTemplate(record)}>规则模版</a>
-            <a onClick={() => samples(record)}>样板</a>
-          </Space>
-        );
-      },
-    },
-    {
-      dataIndex: 'operation',
-      title: '操作',
-      search: false,
-      render: (text: any, record: any) => {
-        return (
-          <Space>
-            <a onClick={() => operIntent(record, 'edit')}>编辑</a>
-            <Popconfirm
-              title="确认删除此意图吗?"
-              okText="是"
-              cancelText="否"
-              onCancel={() => {}}
-              onConfirm={() => deleteIntent(record)}
-            >
-              <a>删除</a>
-            </Popconfirm>
-          </Space>
-        );
-      },
-    },
-  ];
-
-  useEffect(() => {}, []);
-
   const getTables: any = async (p?: any) => {
-    console.log(p);
     const [pageData] = p;
     let data: any = [];
     try {
@@ -134,6 +94,43 @@ const DetailPages: React.FC = (props: any) => {
     handleRulesSampleVisible(false);
   };
 
+  const operation: any = [
+    {
+      dataIndex: 'trainData',
+      title: '训练数据',
+      search: false,
+      render: (text: any, record: any) => {
+        return (
+          <Space>
+            <a onClick={() => ruleTemplate(record)}>规则模版</a>
+            <a onClick={() => samples(record)}>样板</a>
+          </Space>
+        );
+      },
+    },
+    {
+      dataIndex: 'operation',
+      title: '操作',
+      search: false,
+      render: (text: any, record: any) => {
+        return (
+          <Space>
+            <a onClick={() => operIntent(record, 'edit')}>编辑</a>
+            <Popconfirm
+              title="确认删除此意图吗?"
+              okText="是"
+              cancelText="否"
+              onCancel={() => {}}
+              onConfirm={() => deleteIntent(record)}
+            >
+              <a>删除</a>
+            </Popconfirm>
+          </Space>
+        );
+      },
+    },
+  ];
+
   return (
     <React.Fragment>
       <ProTable<TableListItem>
@@ -143,7 +140,7 @@ const DetailPages: React.FC = (props: any) => {
         columns={[...tableList, ...operation]}
         actionRef={actionRef}
         toolBarRender={() => [
-          <Button type="primary" onClick={() => operIntent({}, 'add')}>
+          <Button key="0" type="primary" onClick={() => operIntent({}, 'add')}>
             新增
           </Button>,
         ]}

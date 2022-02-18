@@ -18,6 +18,19 @@ export default (props: any) => {
     setTextMessage(data.target.value);
   };
 
+  const robotResponse = (data: any) => {
+    setTextMessage('');
+    new Promise((resolve: any, reject: any) => {
+      let newData = [...data];
+      newData.push({
+        type: 'robot',
+        message: 'I am a robot',
+      });
+      setDialogList(newData);
+      resolve();
+    });
+  };
+
   // 发送按钮
   const sendMessage = () => {
     if (textMessage?.length == 0 || textMessage.trim().length == 0) {
@@ -31,19 +44,6 @@ export default (props: any) => {
     });
     setDialogList(data);
     robotResponse(data);
-  };
-
-  const robotResponse = (data: any) => {
-    setTextMessage('');
-    new Promise((resolve: any, reject: any) => {
-      let newData = [...data];
-      newData.push({
-        type: 'robot',
-        message: 'I am a robot',
-      });
-      setDialogList(newData);
-      resolve();
-    });
   };
 
   return (
