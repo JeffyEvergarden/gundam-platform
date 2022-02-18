@@ -7,9 +7,9 @@ import ProTable from '@ant-design/pro-table';
 import { PlusOutlined } from '@ant-design/icons';
 import style from './style.less';
 import Condition from '@/components/Condition';
-import InfoModal from './components/ info-modal';
+import InfoModal from './components/info-modal';
 import config from '@/config';
-import { BUSSINESS_CODE, listToMap } from './model/const.ts';
+import { BUSSINESS_CODE, listToMap } from './model/const';
 
 enum MACHINE_STATUS {
   RUNNING = 0,
