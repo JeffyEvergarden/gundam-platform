@@ -1,7 +1,7 @@
 import { Command } from 'gg-editor';
 import React from 'react';
-import IconFont from '../../common/IconFont';
 import styles from './index.less';
+import eventbus from '../../utils/eventbus';
 
 const upperFirst = (str: string) =>
   str.toLowerCase().replace(/( |^)[a-z]/g, (l: string) => l.toUpperCase());
@@ -16,8 +16,12 @@ const MenuItem: React.FC<MenuItemProps> = (props) => {
 
   return (
     <Command name={command}>
-      <div className={styles.item}>
-        <IconFont type={`icon-${icon || command}`} />
+      <div
+        className={styles.item}
+        onClick={() => {
+          eventbus.$emit('command', command); // 监听事件
+        }}
+      >
         <span>{text || upperFirst(command)}</span>
       </div>
     </Command>

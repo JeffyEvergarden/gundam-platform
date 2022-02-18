@@ -9,6 +9,7 @@ import style from './style.less';
 import Condition from '@/components/Condition';
 import InfoModal from './components/ info-modal';
 import config from '@/config';
+import { BUSSINESS_CODE, listToMap } from './model/const.ts';
 
 enum MACHINE_STATUS {
   RUNNING = 0,
@@ -61,9 +62,14 @@ const MachineManagement: React.FC = (props: any) => {
 
   // 下钻系统
   const goToNewSystem = (row: any) => {
-    // console.log(row);
+    console.log(row);
+    if (!row.id) {
+      message.warning('获取不到机器人信息');
+      return null;
+    }
     setInfo(row);
     history.push(`/gundamPages/home?id=${row.id}`);
+    localStorage.setItem('robot_id', row.id);
   };
 
   const deleteRow = async (row: any) => {
@@ -138,8 +144,7 @@ const MachineManagement: React.FC = (props: any) => {
       valueType: 'select',
       initialValue: undefined,
       valueEnum: {
-        1: { text: '风险' },
-        2: { text: '催收' },
+        ...listToMap(BUSSINESS_CODE),
       },
       width: 120,
     },
@@ -305,7 +310,6 @@ const MachineManagement: React.FC = (props: any) => {
             icon={<PlusOutlined />}
             type="primary"
             onClick={() => {
-              console.log;
               modalRef.current?.open?.();
             }}
           >

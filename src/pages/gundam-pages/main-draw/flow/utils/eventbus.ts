@@ -21,7 +21,7 @@ class EventBus {
         cb(...args);
       });
     } else {
-      console.log(`当前事件名：${str}暂无事件存储`);
+      // console.log(`当前事件名：${str}暂无事件存储`);
     }
   }
   $off(str: string, cb: (...args: any[]) => void) {

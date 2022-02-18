@@ -9,9 +9,10 @@ import { PlusSquareOutlined, EditOutlined, MinusCircleOutlined } from '@ant-desi
 import Condition from '../../common/Condition';
 import style from './index.less';
 import eventbus from '../../utils/eventbus';
+
 const defaultPos: any = {
-  w: 100,
-  h: 40,
+  w: 140,
+  h: 45,
 };
 
 const testList = [
@@ -31,6 +32,8 @@ const NodeList = (props: any) => {
   const [nameVal, setNameVal] = useState<string>('');
 
   const [nodeList, setNodeList] = useState<any[]>(defaultValue || []);
+
+  const [originList, setOriginList] = useState<any[]>(defaultValue || []);
 
   const changeNameVal = (e: any) => {
     let val = e.target.value;
@@ -61,16 +64,6 @@ const NodeList = (props: any) => {
     eventbus.$emit('updateNode', val.id, val);
   };
 
-  // 获取所有节点
-  const getAllNode = () => {
-    const rep = propsAPI.save();
-    const nodes = rep.nodes || []; // 节点
-    // index：序号   id：标识  type：类型
-    const edges = rep.edges || []; // 线
-    //  index 、 id 、 source 、 target
-    return [nodes, edges];
-  };
-
   // 设置节点新位置
   const getNewNodePostion = () => {
     const nodes = nodeList;
@@ -94,6 +87,7 @@ const NodeList = (props: any) => {
     // console.log(nodes);
     setNameVal('');
     setNodeList(list);
+    setOriginList(list);
   };
 
   // 点击节点， 选中节点
@@ -113,12 +107,11 @@ const NodeList = (props: any) => {
     const val = nameVal.trim();
     setNameVal(val);
     if (!val || (val && val.length == 0)) {
-      const [nodes] = getAllNode();
-      setNodeList(nodes);
+      setNodeList([...originList]);
       return;
     }
     // 有值时
-    const newList = nodeList.filter((item: any) => {
+    const newList = originList.filter((item: any) => {
       if (!item.label) {
         return true;
       }

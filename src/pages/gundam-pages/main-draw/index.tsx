@@ -2,115 +2,108 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Col, Row, Tabs } from 'antd';
 
 import FlowPage from './flow';
-import { PageContainer } from '@ant-design/pro-layout';
+import { useModel } from 'umi';
 import EditorOuterPannel from './flow/components/EditorOuterPanel';
+import DrawerForm from './drawer';
 import style from './style.less';
+import { useNodeOpsModel } from './model';
+
 const { TabPane } = Tabs;
 
-const PageView = (props: any) => {
-  // 页面 tab
-  const [currentPage, setCurrentPage] = useState<any>('paint');
-  const [pages, setPages] = useState<any[]>([]);
+const MainDraw = (props: any) => {
+  // 初始化
+  const fake = useRef<any>(null);
 
-  const [map, setMap] = useState<any>({});
+  const drawerRef = useRef<any>(null);
 
-  // 更改pageTab
-  const onChange = (val: any) => {
-    console.log('tabChange:');
-    console.log(val);
-    setCurrentPage(val);
-  };
-  const onEdit = (val: any) => {
-    console.log('tabEdit:', val);
-    setPages(pages.filter((item: any) => item.key !== val));
-  };
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
 
-  // 流程图相关
+  const { addNode, deleteNode, updateNode, getMachineMainDraw } = useNodeOpsModel();
+
+  // 流程图相关 -----------------------
   // -- start-----
-  const insertNode = (node: any) => {
+  const insertNode = async (node: any) => {
     console.log('外层监测到插入Node');
     console.log(node);
-    let newPane = {
-      key: node.id,
-      title: node.label,
-      content: node.label,
-      closable: true,
+    // color: #1890FF 普通节点、 #fffbe6 业务节点
+    let params: any = {
+      ...node,
+      id: node.id, // 前端id
+      label: node.label,
     };
-    setPages([...pages, newPane]);
-  };
-
-  const removeNode = (node: any) => {
-    console.log('外层监测到删除Node');
-    console.log(node);
-    // 删除 Tab
-    const newPages = pages.filter((item: any) => {
-      return item.key !== node.key;
-    });
-    if (newPages.length !== pages.length) {
-      setPages(newPages);
+    let res = await addNode(params);
+    if (res === false) {
+      (fake.current as any).deleteNode(node);
     }
   };
+
+  const removeNode = async (node: any) => {
+    console.log('外层监测到删除Node');
+    console.log(node);
+    let params: any = {
+      id: node.id, // 前端id
+    };
+    let res = await deleteNode(params);
+    if (res === false) {
+      // 删除失败 - 返回上一步
+      (fake.current as any).executeCommand?.('undo');
+    }
+  };
+
   const clickItem = (node: any) => {
     console.log('点击左边菜单节点事件');
     console.log(node);
-    let key = pages.findIndex((item: any) => {
-      return item.key === node.id;
-    });
-    if (key > -1) {
-      // 已存在tab了
-      return;
-    }
-    let newPane = {
-      key: node.id,
-      title: node.label,
-      content: node.label,
-      closable: true,
-    };
-    setPages([...pages, newPane]);
   };
 
   const save = (obj: any) => {
     console.log('保存提交', obj);
   };
-  // 初始化
-  const fake = useRef<any>(null);
-  // 初始化测试
-  useEffect(() => {
-    (fake.current as any).init({
-      nodes: [
-        {
-          id: '03c9203b',
-          color: '#78f3f3',
-          label: 'fake',
-          shape: 'flow-rect',
-          size: '80*30',
-          taskId: 'fake',
-          x: 100,
-          y: 100,
-        },
-      ],
+
+  // 初始情况默认去加载当前机器人信息
+
+  const getMachineInfo = async () => {
+    let data: any = await getMachineMainDraw({ id: info.id });
+    let { nodes = [] } = data || {};
+    (fake.current as any)?.init?.({
+      nodes: nodes,
     });
+  };
+
+  const openSetting = async (info: any) => {
+    console.log('设置信息:');
+    console.log(info);
+    (drawerRef.current as any).open(info);
+  };
+
+  // 初始化设置
+  useEffect(() => {
+    getMachineInfo();
   }, []);
   // -- end-----
 
   return (
     <div className={style['main-draw']}>
       <div className={style['container']}>
-        <div className={style['container_left']}>
+        {/* <div className={style['container_left']}>
           <EditorOuterPannel clickItem={clickItem} />
-        </div>
+        </div> */}
         <div className={style['container_right']}>
           <FlowPage
             insertNode={insertNode}
             removeNode={removeNode}
+            openSetting={openSetting}
             save={save}
             clickItem={clickItem}
             cref={fake}
           />
         </div>
       </div>
+
+      <DrawerForm cref={drawerRef} />
     </div>
   );
 };
 
-export default PageView;
+export default MainDraw;

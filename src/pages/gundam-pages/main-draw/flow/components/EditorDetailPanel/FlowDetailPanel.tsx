@@ -4,13 +4,13 @@ import { Card } from 'antd';
 import DetailForm from './DetailForm';
 import styles from './index.less';
 
-const FlowDetailPanel = () => (
+const FlowDetailPanel = (props: any) => (
   <DetailPanel className={styles.detailPanel}>
     <NodePanel>
-      <DetailForm type="node" />
+      <DetailForm type="node" {...props} />
     </NodePanel>
     <EdgePanel>
-      <DetailForm type="edge" />
+      <DetailForm type="edge" {...props} />
     </EdgePanel>
   </DetailPanel>
 );

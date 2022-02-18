@@ -2,6 +2,7 @@ import React, { useState, useEffect, useImperativeHandle } from 'react';
 import { Modal, Form, Button, InputNumber, Radio, Select, Input, Upload, message } from 'antd';
 import style from './style.less';
 import Condition from '@/components/Condition';
+import { BUSSINESS_CODE } from '../../model/const';
 
 const { Item: FormItem } = Form;
 const { Option } = Select;
@@ -122,31 +123,47 @@ const InfoModal: React.FC<any> = (props: any) => {
             <TextArea rows={4} placeholder="请填写机器人描述" {...extra} maxLength={200} />
           </FormItem>
 
-          {/* 链接路径 */}
-          <FormItem
-            rules={[{ required: true, message: '请选择业务类型' }]}
-            name="businessCode"
-            label="业务类型"
-            style={{ width: '360px' }}
-          >
-            <Radio.Group>
-              <Radio value={0}>呼入</Radio>
-              <Radio value={1}>呼出</Radio>
-            </Radio.Group>
-          </FormItem>
+          <Condition r-if={openType === 'new'}>
+            {/* 业务编码 */}
+            <FormItem
+              rules={[{ required: true, message: '请选择业务类型' }]}
+              name="businessCode"
+              label="业务类型"
+              style={{ width: '360px' }}
+            >
+              <Radio.Group>
+                {BUSSINESS_CODE.map((item: any) => {
+                  return <Radio value={item.name}>{item.label}</Radio>;
+                })}
+              </Radio.Group>
+            </FormItem>
 
-          {/* 链接路径 */}
-          <FormItem
-            rules={[{ required: true, message: '请选择机器人类型' }]}
-            name="robotType"
-            label="机器人类型"
-            style={{ width: '360px' }}
-          >
-            <Radio.Group>
-              <Radio value={0}>文本</Radio>
-              <Radio value={1}>语音</Radio>
-            </Radio.Group>
-          </FormItem>
+            {/* 语音类型 */}
+            <FormItem
+              rules={[{ required: true, message: '请选择语音类型' }]}
+              name="soundType"
+              label="语音类型"
+              style={{ width: '360px' }}
+            >
+              <Radio.Group>
+                <Radio value={0}>呼入</Radio>
+                <Radio value={1}>呼出</Radio>
+              </Radio.Group>
+            </FormItem>
+
+            {/* 机器人类型 */}
+            <FormItem
+              rules={[{ required: true, message: '请选择机器人类型' }]}
+              name="robotType"
+              label="机器人类型"
+              style={{ width: '360px' }}
+            >
+              <Radio.Group>
+                <Radio value={0}>文本</Radio>
+                <Radio value={1}>语音</Radio>
+              </Radio.Group>
+            </FormItem>
+          </Condition>
         </Form>
       </div>
     </Modal>

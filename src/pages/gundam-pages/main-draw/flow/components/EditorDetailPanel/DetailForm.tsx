@@ -1,6 +1,8 @@
 import React from 'react';
-import { Card, Input, Select, Form } from 'antd';
+import { Card, Input, Select, Form, Button } from 'antd';
 import { withPropsAPI } from 'gg-editor';
+import { SettingOutlined } from '@ant-design/icons';
+import style from './index.less';
 
 const upperFirst = (str: string) =>
   str.toLowerCase().replace(/( |^)[a-z]/g, (l: string) => l.toUpperCase());
@@ -30,6 +32,7 @@ const formatStr = (str: string) => {
 type DetailFormProps = {
   type: string;
   propsAPI?: any;
+  openSetting?: any;
 };
 
 class DetailForm extends React.Component<DetailFormProps> {
@@ -74,6 +77,11 @@ class DetailForm extends React.Component<DetailFormProps> {
     );
   };
 
+  _openSetting = () => {
+    const { openSetting } = this.props;
+    openSetting?.(this.item.getModel());
+  };
+
   renderEdgeDetail = () => {
     const { label = '', shape = 'flow-smooth' } = this.item.getModel();
 
@@ -82,6 +90,7 @@ class DetailForm extends React.Component<DetailFormProps> {
         <Item label="线的名称" name="label" {...inlineFormItemLayout}>
           <Input onBlur={this.handleInputBlur('label')} />
         </Item>
+
         <Item label="连线形状" name="shape" {...inlineFormItemLayout}>
           <Select onChange={(value) => this.handleFieldChange({ shape: value })}>
             <Option value="flow-smooth">顺滑</Option>
@@ -103,6 +112,11 @@ class DetailForm extends React.Component<DetailFormProps> {
       <Card type="inner" size="small" title={formatStr(type)} bordered={false}>
         {type === 'node' && this.renderNodeDetail()}
         {type === 'edge' && this.renderEdgeDetail()}
+        <div className={style['button-box']}>
+          <Button type="link" icon={<SettingOutlined />} onClick={this._openSetting}>
+            开启详细配置
+          </Button>
+        </div>
       </Card>
     );
   }

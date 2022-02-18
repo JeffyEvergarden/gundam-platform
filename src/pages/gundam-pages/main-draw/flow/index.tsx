@@ -20,10 +20,11 @@ interface PageViewProps {
   insertNode?: (node: any) => void;
   removeNode?: (node: any) => void;
   clickItem?: (node: any) => void;
+  openSetting?: (node: any) => void;
 }
 
 const EditorView = (props: PageViewProps) => {
-  const { insertNode, removeNode, save, clickItem, cref } = props;
+  const { insertNode, removeNode, save, clickItem, cref, openSetting } = props;
 
   const editorRef = useRef<any>(null);
 
@@ -42,8 +43,14 @@ const EditorView = (props: PageViewProps) => {
     init: (initData: any) => {
       // 初始化
       const propsAPI = getPropsAPI();
+      console.log(propsAPI);
       propsAPI?.read(initData);
       refreshOtherPane();
+    },
+    deleteNode,
+    executeCommand: (...args: any[]) => {
+      const propsAPI = getPropsAPI();
+      propsAPI?.executeCommand(...args);
     },
   }));
 
@@ -89,6 +96,7 @@ const EditorView = (props: PageViewProps) => {
       }
     }
   };
+
   // 插入线
   // 这跟线没有其他源指向它
   const _insertLine = (event: any) => {
@@ -209,10 +217,34 @@ const EditorView = (props: PageViewProps) => {
     }
   };
 
+  // 开启设置
+  const _openSetting = () => {
+    const propsAPI: any = getPropsAPI();
+    const info: any = propsAPI.getSelected()[0]?.getModel();
+    openSetting?.(info);
+  };
+
   // 汇总绑定到 组件上
   const editorEvent = {
+    // 插入前
+    onBeforeChange: (event: any) => {
+      // console.log('before', event);
+      if (event.action === 'add') {
+        const [nodes] = getAllNode();
+        if (
+          nodes.find((item: any) => {
+            // 存在同样的隐藏_id
+            return item._id === event.model._id;
+          })
+        ) {
+          event.model._type = 'copy';
+        }
+      }
+      return false;
+    },
     // 监视插入
     onAfterChange: (event: any) => {
+      console.log('after');
       console.log(event); // action: "add" //item：节点 //affectedItemIds 影响id
       if (event.action === 'add') {
         // console.log('插入后');
@@ -257,6 +289,9 @@ const EditorView = (props: PageViewProps) => {
     });
     refreshOtherPane();
   };
+  const watchCommand = (msg: any) => {
+    console.log('watch:' + msg);
+  };
 
   useEffect(() => {
     eventbus.$on('addNode', addNode); // 监听添加节点
@@ -272,28 +307,34 @@ const EditorView = (props: PageViewProps) => {
   return (
     <GGEditor className={styles.editor} ref={editorRef}>
       {/* 上层按钮   相关了解 commend 组件 */}
-      <Row className={styles.editorHd}>
-        <Col span={24}>
-          <div>
-            <FlowToolbar save={saveFn} />
+      <Row style={{ height: '100%' }}>
+        <Col span={4}>
+          <FlowItemPanel />
+        </Col>
+
+        <Col span={20}>
+          <div className={styles['editor-box']}>
+            <div className={styles.editorHd}>
+              <FlowToolbar save={saveFn} />
+            </div>
+
+            {/* 编辑部分   左菜单  中间编辑 */}
+            <Row className={styles.editorBd}>
+              <Col span={18} className={styles.editorContent}>
+                <Flow className={styles.flow} {...editorEvent} />
+              </Col>
+
+              <Col span={6} className={styles.editorSidebar}>
+                <FlowDetailPanel openSetting={openSetting} />
+                <EditorMinimap />
+              </Col>
+            </Row>
           </div>
         </Col>
       </Row>
 
-      {/* 编辑部分   左菜单  中间编辑 */}
-      <Row className={styles.editorBd}>
-        <Col span={18} className={styles.editorContent}>
-          <Flow className={styles.flow} {...editorEvent} />
-        </Col>
-
-        <Col span={6} className={styles.editorSidebar}>
-          <FlowDetailPanel />
-          <EditorMinimap />
-        </Col>
-      </Row>
-
       {/* 在元素下右键浮动按钮 */}
-      <FlowContextMenu />
+      <FlowContextMenu onClick={_openSetting} />
     </GGEditor>
   );
 };

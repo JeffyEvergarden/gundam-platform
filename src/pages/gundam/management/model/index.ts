@@ -50,6 +50,19 @@ export const useTableModel = () => {
 // 机器人管理相关操作接口
 export const useOpModel = () => {
   const [loading, setLoading] = useState<boolean>(false);
+
+  // 获取机器人id
+  const getInfo = async (params: any) => {
+    let res = await getMachineList(params);
+    if (res.resultCode === successCode) {
+      let [info] = res?.data || [];
+      return info;
+    } else {
+      message.warning('获取不到机器人信息');
+      return null;
+    }
+  };
+
   // -----
   const changeStatus = async (data: any) => {
     setLoading(true);
@@ -103,5 +116,6 @@ export const useOpModel = () => {
     addNewMachine: _addNewMachine, // 添加机器人
     editMachine: _editMachine, // 编辑机器人
     opLoading: loading,
+    getInfo,
   };
 };

@@ -15,7 +15,7 @@ const FlowToolbar = (props: any) => {
         <ToolbarButton command="undo" text={'上一步'} />
         {/* 下一步 */}
 
-        <ToolbarButton command="redo" text={'下一步'} />
+        {/* <ToolbarButton command="redo" text={'下一步'} /> */}
         {/*
           <Divider type="vertical" />
           <ToolbarButton command="delete" />
