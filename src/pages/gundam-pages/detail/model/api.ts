@@ -9,3 +9,11 @@ export async function getConfig(params?: { [key: string]: any }) {
     params,
   });
 }
+
+/** 编辑机器人配置信息 **/
+export async function editConfig(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/config/configUpdate`, {
+    method: 'POST',
+    params,
+  });
+}

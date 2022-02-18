@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useModel } from 'umi';
 import { Table, Button } from 'antd';
 import { Form, Row, Col, Space, Input, Select, Divider, InputNumber, Popconfirm } from 'antd';
 import style from './style.less';
@@ -24,7 +23,7 @@ const col = {
 // 机器人列表
 const DetailPages: React.FC = (props: any) => {
   const [form] = Form.useForm();
-  const { configMsg, configLoading, getRobotConfig } = useConfigModel();
+  const { configMsg, configLoading, getRobotConfig, editRobotConfig } = useConfigModel();
 
   const [robotType, setRobotType] = useState<any>();
 
@@ -51,14 +50,19 @@ const DetailPages: React.FC = (props: any) => {
     console.log(form.getFieldsValue());
   };
 
-  const submit = () => {
+  const submit = async () => {
     console.log(form.getFieldsValue());
+    let reqData = form.getFieldsValue();
+    await editRobotConfig(reqData).then((res) => {
+      if (res.resultCode == '000000') {
+        getConfig();
+      }
+    });
   };
 
   useEffect(() => {
     let formData = form.getFieldsValue();
     getConfig();
-
     if (!formData.childrenList?.length) {
       addConfig();
     }

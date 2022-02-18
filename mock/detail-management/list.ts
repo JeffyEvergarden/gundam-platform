@@ -1,8 +1,13 @@
 import { Request, Response } from 'express';
 
 const successCode = '000000';
+const editConfig = (req: any, res: any) => {
+  console.log(req.query);
+  res.json({
+    resultCode: successCode,
+  });
+};
 
-//话术标签列表
 const getConfig = (req: any, res: any) => {
   console.log(req.query);
   res.json({
@@ -21,33 +26,32 @@ const getConfig = (req: any, res: any) => {
           id: 'xxxxx',
           configType: 0,
           configKey: '111',
-          configName: 'gagaluansha',
-          configValue: 'weisuofayu',
-          configDesc: 'rangwoduxiangjingyan',
+          configName: '用户名',
+          configValue: 'userName',
+          configDesc: 'var1',
         },
         {
           id: 'xxxxx',
           configType: 0,
           configKey: '222',
-          configName: 'faqijinggong',
-          configValue: 'kaishicetui',
-          configDesc: 'qingqiujihe',
+          configName: '用户名2',
+          configValue: 'userName2',
+          configDesc: 'var2',
         },
         {
           id: 'xxxxx',
           configType: 0,
           configKey: '333',
-          configName: 'jingongzhuzai',
-          configValue: 'jingongbaojun',
-          configDesc: 'difangshuijing',
+          configName: '用户名3',
+          configValue: 'userName3',
+          configDesc: 'var3',
         },
       ],
     },
   });
 };
 
-// 菜单管理相关
 export default {
-  // 话术标签管理相关
-  'POST /robot/config/configInfo': getConfig, //话术标签删除
+  'POST /robot/config/configInfo': getConfig, //
+  'POST /robot/config/configUpdate': editConfig, //
 };
