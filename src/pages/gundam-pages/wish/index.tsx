@@ -70,8 +70,11 @@ const DetailPages: React.FC = (props: any) => {
 
   // 操作意图 新增、编辑
   const operIntent = (data: any, type: string) => {
-    type == 'add' && handleIntentOperTitle('新增');
-    type == 'edit' && handleIntentOperTitle('编辑');
+    if (type == 'add') {
+      handleIntentOperTitle('新增');
+    } else if (type == 'edit') {
+      handleIntentOperTitle('编辑');
+    }
     handleIntentOperData({ ...data });
     handleIntentOperVisible(true);
   };
