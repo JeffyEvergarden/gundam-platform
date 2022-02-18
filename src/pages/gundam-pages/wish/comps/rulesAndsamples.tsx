@@ -48,43 +48,6 @@ export default (props: any) => {
   const [addCharacterModalTitle, handleAddCharacterModalTitle] = useState<string>('');
   const [addCharacterData, handleAddCharacterData] = useState<any>({});
 
-  const ruleOperateColumn = [
-    {
-      dataIndex: 'operation',
-      title: '',
-      render: (text: any, record: any) => {
-        return (
-          <div onClick={() => addRuleSample(record, 'edit')}>
-            <EditOutlined />
-          </div>
-        );
-      },
-    },
-  ];
-
-  const wordOperateColumn = [
-    {
-      dataIndex: 'operation',
-      title: '',
-      render: (text: any, record: any) => {
-        return (
-          <Space>
-            <a onClick={() => operateCharacter(record, 'edit')}>编辑描述</a>
-            <Popconfirm
-              title="确认删除该条特征词吗？"
-              okText="是"
-              cancelText="否"
-              onCancel={() => {}}
-              onConfirm={() => operateCharacter(record, 'delete')}
-            >
-              <a>删除</a>
-            </Popconfirm>
-          </Space>
-        );
-      },
-    },
-  ];
-
   // 模版内容选择框
   const selectFunc = (value: any) => {
     setSelectValue(value);
@@ -228,6 +191,43 @@ export default (props: any) => {
     handleAddCharacterModalVisible(false);
   };
 
+  const ruleOperateColumn = [
+    {
+      dataIndex: 'operation',
+      title: '',
+      render: (text: any, record: any) => {
+        return (
+          <div onClick={() => addRuleSample(record, 'edit')}>
+            <EditOutlined />
+          </div>
+        );
+      },
+    },
+  ];
+
+  const wordOperateColumn = [
+    {
+      dataIndex: 'operation',
+      title: '',
+      render: (text: any, record: any) => {
+        return (
+          <Space>
+            <a onClick={() => operateCharacter(record, 'edit')}>编辑描述</a>
+            <Popconfirm
+              title="确认删除该条特征词吗？"
+              okText="是"
+              cancelText="否"
+              onCancel={() => {}}
+              onConfirm={() => operateCharacter(record, 'delete')}
+            >
+              <a>删除</a>
+            </Popconfirm>
+          </Space>
+        );
+      },
+    },
+  ];
+
   return (
     <React.Fragment>
       <Drawer title={title} width={'100%'} placement="right" onClose={onClose} visible={visible}>
@@ -267,7 +267,12 @@ export default (props: any) => {
           headerTitle={<Button onClick={() => operateCharacter({}, 'add')}>新建特征词</Button>}
           rowKey="id"
           toolBarRender={() => [
-            <Search placeholder="搜索特征词" onSearch={searchFeatureWord} style={{ width: 200 }} />,
+            <Search
+              key="0"
+              placeholder="搜索特征词"
+              onSearch={searchFeatureWord}
+              style={{ width: 200 }}
+            />,
           ]}
           request={async (...params) => {
             return getInitWordTables(params);
@@ -292,7 +297,7 @@ export default (props: any) => {
 
       <UploadModal
         visible={uploadModalVisible}
-        uploadUrl={'www.baidu..com'}
+        uploadUrl={'www.baidu.com'}
         onSubmit={uploadSuccess}
         onCancel={uploadCancel}
       />

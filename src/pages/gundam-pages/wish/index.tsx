@@ -34,6 +34,69 @@ const DetailPages: React.FC = (props: any) => {
 
   const [rulesSamleVisible, handleRulesSampleVisible] = useState<boolean>(false);
 
+  const getTables: any = async (p?: any) => {
+    const [pageData] = p;
+    let data: any = [];
+    try {
+      handleLoading(true);
+      // const res = await
+      return {
+        data: fakeData,
+        pageSize: pageData.pageSize || 10,
+        current: pageData.current || 1,
+        total: 1,
+      };
+    } catch {
+      return {
+        data: data,
+        pageSize: 10,
+        current: 1,
+        total: 1,
+      };
+    } finally {
+      handleLoading(false);
+    }
+  };
+
+  // 规则模版
+  const ruleTemplate = (data: any) => {
+    handleRulesSampleVisible(true);
+  };
+
+  // 样板
+  const samples = (data: any) => {
+    handleRulesSampleVisible(true);
+  };
+
+  // 操作意图 新增、编辑
+  const operIntent = (data: any, type: string) => {
+    if (type == 'add') {
+      handleIntentOperTitle('新增');
+    } else if (type == 'edit') {
+      handleIntentOperTitle('编辑');
+    }
+    handleIntentOperData({ ...data });
+    handleIntentOperVisible(true);
+  };
+
+  // 删除意图
+  const deleteIntent = (data: any) => {};
+
+  // 意图弹出框确认按钮
+  const operIntentSubmit = () => {
+    handleIntentOperVisible(false);
+  };
+
+  // 意图弹出框取消按钮
+  const operIntentFail = () => {
+    handleIntentOperVisible(false);
+  };
+
+  // 规则模版抽屉框关闭按钮
+  const rulesSampleDrawerClose = () => {
+    handleRulesSampleVisible(false);
+  };
+
   const operation: any = [
     {
       dataIndex: 'trainData',
@@ -71,69 +134,6 @@ const DetailPages: React.FC = (props: any) => {
     },
   ];
 
-  useEffect(() => {}, []);
-
-  const getTables: any = async (p?: any) => {
-    console.log(p);
-    const [pageData] = p;
-    let data: any = [];
-    try {
-      handleLoading(true);
-      // const res = await
-      return {
-        data: fakeData,
-        pageSize: pageData.pageSize || 10,
-        current: pageData.current || 1,
-        total: 1,
-      };
-    } catch {
-      return {
-        data: data,
-        pageSize: 10,
-        current: 1,
-        total: 1,
-      };
-    } finally {
-      handleLoading(false);
-    }
-  };
-
-  // 规则模版
-  const ruleTemplate = (data: any) => {
-    handleRulesSampleVisible(true);
-  };
-
-  // 样板
-  const samples = (data: any) => {
-    handleRulesSampleVisible(true);
-  };
-
-  // 操作意图 新增、编辑
-  const operIntent = (data: any, type: string) => {
-    type == 'add' && handleIntentOperTitle('新增');
-    type == 'edit' && handleIntentOperTitle('编辑');
-    handleIntentOperData({ ...data });
-    handleIntentOperVisible(true);
-  };
-
-  // 删除意图
-  const deleteIntent = (data: any) => {};
-
-  // 意图弹出框确认按钮
-  const operIntentSubmit = () => {
-    handleIntentOperVisible(false);
-  };
-
-  // 意图弹出框取消按钮
-  const operIntentFail = () => {
-    handleIntentOperVisible(false);
-  };
-
-  // 规则模版抽屉框关闭按钮
-  const rulesSampleDrawerClose = () => {
-    handleRulesSampleVisible(false);
-  };
-
   return (
     <React.Fragment>
       <ProTable<TableListItem>
@@ -143,7 +143,7 @@ const DetailPages: React.FC = (props: any) => {
         columns={[...tableList, ...operation]}
         actionRef={actionRef}
         toolBarRender={() => [
-          <Button type="primary" onClick={() => operIntent({}, 'add')}>
+          <Button key="0" type="primary" onClick={() => operIntent({}, 'add')}>
             新增
           </Button>,
         ]}
