@@ -7,7 +7,7 @@ import RightContent from '@/components/RightContent';
 import Page403 from '@/pages/403';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import { queryAuthInfo } from './services/api';
-import { RequestConfig } from 'umi';
+import type { RequestConfig } from 'umi';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import routers from '../config/routes';
 
@@ -156,7 +156,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
       : [],
     menuHeaderRender: undefined,
     // 自定义 403 页面
-    unAccessible: <Page403></Page403>,
+    unAccessible: <Page403 />,
     ...initialState?.settings,
   };
 };

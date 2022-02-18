@@ -164,7 +164,7 @@ const LinkModal: React.FC<any> = (props: any) => {
               style={{ width: '180px' }}
             >
               {!url && <div className={style['upload-box']}>上传图标 +</div>}
-              {url && <img src={url} className={style['upload-box']} alt="上传图片"></img>}
+              {url && <img src={url} className={style['upload-box']} alt="上传图片" />}
             </Upload.Dragger>
           </div>
 

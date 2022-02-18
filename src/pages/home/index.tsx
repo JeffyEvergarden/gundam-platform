@@ -12,7 +12,7 @@ const Home: React.FC = (props: any) => {
 
   // 这个权限是用户类型的
   const init = async () => {
-    console.log('init:', initialState);
+    // console.log('init:', initialState);
     let userAuth: any = '';
     if (initialState?.userAuth?.userType) {
       // 已经获取了权限
