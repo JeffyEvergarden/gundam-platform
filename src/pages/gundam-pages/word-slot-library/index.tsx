@@ -5,7 +5,6 @@ import type { ActionType } from '@ant-design/pro-table';
 import { Button, Space, Popconfirm } from 'antd';
 import { wordSlotTableList, soltTableFakeData } from './comps/config';
 import OperateSlotModal from './comps/operateSlotModal';
-import RobotChatModal from './robotManage';
 
 // 机器人列表
 const DetailPages: React.FC = (props: any) => {
@@ -73,24 +72,12 @@ const DetailPages: React.FC = (props: any) => {
     },
   };
 
-  const [robotChatModalVisible, handleRobotChatModalVisible] = useState<boolean>(false);
-
-  const jumpToRobotChat = () => {
-    handleRobotChatModalVisible(true);
-  };
-
-  const closeRobotModal = () => {
-    handleRobotChatModalVisible(false);
-  };
-
   return (
     <React.Fragment>
-      <RobotChatModal visible={robotChatModalVisible} closeModal={closeRobotModal} />
-      {/* <ProTable
+      <ProTable
         headerTitle={
           <Space>
             <Button onClick={() => operate({}, 'add')}>新增词槽</Button>
-            <Button onClick={jumpToRobotChat}>机器人模拟</Button>
           </Space>
         }
         rowKey={(record) => Math.random()}
@@ -100,7 +87,7 @@ const DetailPages: React.FC = (props: any) => {
         request={async (...params) => {
           return getInitTable(params);
         }}
-      /> */}
+      />
 
       <OperateSlotModal
         visible={operModalVisible}
