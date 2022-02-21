@@ -1,0 +1,25 @@
+.zy-row {
+  display: flex;
+  width: 100%;
+
+  :global {
+    .ant-tag {
+      height: 22px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+  }
+
+  .left {
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    max-width: 400px;
+    padding-right: 10px;
+    line-height: 32px;
+  }
+
+  .right {
+    flex-shrink: 0;
+  }
+}

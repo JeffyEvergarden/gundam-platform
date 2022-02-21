@@ -7,6 +7,9 @@ import ProTable from '@ant-design/pro-table';
 import { PlusOutlined } from '@ant-design/icons';
 import style from './style.less';
 import Condition from '@/components/Condition';
+import InfoModal from './components/info-modal';
+import config from '@/config';
+import { BUSSINESS_CODE, listToMap } from './model/const';
 
 enum MACHINE_STATUS {
   RUNNING = 0,
@@ -19,7 +22,7 @@ const MachineManagement: React.FC = (props: any) => {
 
   const { tableList, getTableList, tableLoading } = useTableModel();
 
-  const { changeStatus, deleteMachine } = useOpModel();
+  const { opLoading, changeStatus, deleteMachine, addNewMachine, editMachine } = useOpModel();
 
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -29,6 +32,8 @@ const MachineManagement: React.FC = (props: any) => {
   const { updatePage } = useUpdateModel();
 
   const tableRef = useRef<any>({});
+
+  const modalRef = useRef<any>({});
 
   // 分页相关 ---
   // const [current, setCurrent] = useState<number>(1);
@@ -41,7 +46,7 @@ const MachineManagement: React.FC = (props: any) => {
   const _changeStatus = async (row: any) => {
     let params: any = {
       id: row.id,
-      status: row.status,
+      status: row.status == 0 ? 1 : 0,
     };
     let res: any = await changeStatus(params);
     // console.log(res);
@@ -57,12 +62,22 @@ const MachineManagement: React.FC = (props: any) => {
 
   // 下钻系统
   const goToNewSystem = (row: any) => {
-    // console.log(row);
+    console.log(row);
+    if (!row.id) {
+      message.warning('获取不到机器人信息');
+      return null;
+    }
     setInfo(row);
     history.push(`/gundamPages/home?id=${row.id}`);
+    localStorage.setItem('robot_id', row.id);
   };
 
   const deleteRow = async (row: any) => {
+    if (row?.status == 0) {
+      message.warning('请先停用该机器人');
+      return;
+    }
+
     let params: any = {
       id: row.id,
     };
@@ -73,6 +88,36 @@ const MachineManagement: React.FC = (props: any) => {
       tableRef.current.reload();
     } else {
       message.error(res);
+    }
+  };
+
+  const confirmInfo = async (info: any) => {
+    let res: any = null;
+    if (info._openType === 'new') {
+      let params: any = {
+        ...info?.form,
+      };
+      res = await addNewMachine(params);
+      console.log(res);
+
+      if (res.resultCode === config.successCode) {
+        modalRef.current?.close?.();
+        goToNewSystem({ ...res.datas });
+      } else {
+        message.error(res?.resultDesc || '未知系统异常');
+      }
+    } else if (info._openType === 'edit') {
+      let params: any = {
+        id: info?._originInfo?.id,
+        ...info?.form,
+      };
+      res = await editMachine(params);
+      if (res === true) {
+        modalRef.current?.close?.();
+        tableRef.current.reload();
+      } else {
+        message.error(res);
+      }
     }
   };
 
@@ -106,8 +151,7 @@ const MachineManagement: React.FC = (props: any) => {
       valueType: 'select',
       initialValue: undefined,
       valueEnum: {
-        1: { text: '风险' },
-        2: { text: '催收' },
+        ...listToMap(BUSSINESS_CODE),
       },
       width: 120,
     },
@@ -149,7 +193,7 @@ const MachineManagement: React.FC = (props: any) => {
     },
     {
       title: '创建时间',
-      dataIndex: 'onlineTime',
+      dataIndex: 'createTime',
       search: false,
       width: 200,
     },
@@ -190,7 +234,7 @@ const MachineManagement: React.FC = (props: any) => {
               <Button
                 type="link"
                 onClick={() => {
-                  goToNewSystem(row);
+                  modalRef.current?.open?.(row);
                 }}
               >
                 编辑
@@ -268,7 +312,14 @@ const MachineManagement: React.FC = (props: any) => {
         dateFormatter="string"
         headerTitle="机器人列表"
         toolBarRender={() => [
-          <Button key="button" icon={<PlusOutlined />} type="primary">
+          <Button
+            key="button"
+            icon={<PlusOutlined />}
+            type="primary"
+            onClick={() => {
+              modalRef.current?.open?.();
+            }}
+          >
             新建
           </Button>,
         ]}
@@ -281,6 +332,8 @@ const MachineManagement: React.FC = (props: any) => {
         rowKey="index"
         loading={tableLoading}
       /> */}
+
+      <InfoModal cref={modalRef} confirm={confirmInfo} loading={opLoading} />
     </div>
   );
 };

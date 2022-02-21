@@ -102,12 +102,12 @@ export async function getInitialState(): Promise<{
     fetchAuthInfo, // 抓取用户权限
     routersFilter,
     currentUser: {
-      userName: userAuth?.userSummary?.userName,
+      userName: currentUser?.userName,
       department: orz,
       ...currentUser,
     }, // 用户信息  部门信息
     userAuth: { userType: isWhite ? 'leader' : 'user' }, // 权限信息   userType 用户类型
-    isLogin: userAuth?.userSummary ? true : false,
+    isLogin: currentUser?.userName ? true : false,
     hadDone: currentUser?.userName ? true : false,
     settings: {},
   };

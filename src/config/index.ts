@@ -1,4 +1,4 @@
 export default {
-  basePath: '/gundamplatform',
-  successCode: '000000',
+  basePath: '/aichat',
+  successCode: 100,
 };

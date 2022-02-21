@@ -1,0 +1,34 @@
+@import '~antd/es/style/themes/default.less';
+
+.node-box {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 16px 0 8px;
+  .node-header {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-top: 1px solid #e6f7ff;
+  }
+
+  .node-content {
+    width: 100%;
+  }
+
+  .node-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px solid #f3f3f3;
+    .node-item_label {
+      flex: 1;
+      margin-right: 8px;
+    }
+    .node-item_input {
+      width: 100%;
+    }
+  }
+}
