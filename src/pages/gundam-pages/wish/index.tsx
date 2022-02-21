@@ -34,6 +34,11 @@ const DetailPages: React.FC = (props: any) => {
   const [intentOperTitle, handleIntentOperTitle] = useState<string>(''); // 控制意图操作弹出层标题
   const [intentOperData, handleIntentOperData] = useState<any>({}); // 控制意图操作弹出层数据
 
+  const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+    setInfo: model.setInfo,
+  }));
+
   const [rulesSamleVisible, handleRulesSampleVisible] = useState<boolean>(false);
   const { getIntentTableList, tableLoading, deleteIntentItem } = useTableModel();
   const getTables: any = async (p?: any) => {
@@ -79,7 +84,7 @@ const DetailPages: React.FC = (props: any) => {
 
   // 删除意图
   const deleteIntent = async (data: any) => {
-    const res: any = await deleteIntentItem(data);
+    const res: any = await deleteIntentItem({ robotId: info.id, id: data.id });
     message.info(res?.resultDesc);
   };
 
@@ -154,7 +159,11 @@ const DetailPages: React.FC = (props: any) => {
         }}
         request={async (...params) => {
           // return getTables(params);
-          return getIntentTableList(params);
+          return getIntentTableList({
+            robotId: info.id,
+            page: params[0].current,
+            pageSize: params[0].pageSize,
+          });
         }}
       />
 
@@ -164,6 +173,7 @@ const DetailPages: React.FC = (props: any) => {
         modalData={intentOperData}
         submit={operIntentSubmit}
         cancel={operIntentFail}
+        robotId={info.id}
       />
 
       <RulesSampleModal

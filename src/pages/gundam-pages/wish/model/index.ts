@@ -3,7 +3,7 @@ import { message } from 'antd';
 
 import { getIntentList, addNewIntent, editIntent, deleteIntent } from './api';
 
-export const successCode = '000000';
+export const successCode = 100;
 
 // 菜单管理的表格数据
 export const useTableModel = () => {
@@ -14,15 +14,15 @@ export const useTableModel = () => {
     setTableLoading(true);
     let res: any = await getIntentList(params);
     setTableLoading(false);
-    let { data = [] } = res;
-    if (!Array.isArray(data)) {
-      data = [];
+    let { datas = [], totalPage } = res;
+    if (!Array.isArray(datas)) {
+      datas = [];
     }
     return {
-      data: data,
-      total: res.totalSize || 1,
-      pageSize: res.pageSize || 10,
-      current: res.pageSize || 1,
+      data: datas,
+      total: totalPage,
+      // pageSize: res.pageSize || 10,
+      // current: res.pageSize || 1,
     };
   };
 

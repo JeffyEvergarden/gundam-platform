@@ -13,7 +13,7 @@ const tailLayout = {
 };
 
 export default (props: any) => {
-  const { visible, title, modalData, submit, cancel } = props;
+  const { visible, title, modalData, submit, cancel, robotId } = props;
   const [form] = Form.useForm();
   const { addIntentItem, editIntentItem, tableLoading } = useTableModel();
   useEffect(() => {
@@ -34,9 +34,9 @@ export default (props: any) => {
     const values = await form.validateFields();
     let res;
     if (title == 'edit') {
-      res = editIntentItem(values);
+      res = editIntentItem({ robotId, ...values, id: modalData.id });
     } else if (title == 'add') {
-      res = addIntentItem(values);
+      res = addIntentItem({ robotId, ...values });
     }
     console.log('value', values);
     submit();
