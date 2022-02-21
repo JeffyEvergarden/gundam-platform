@@ -1,6 +1,6 @@
 import { useState, useImperativeHandle } from 'react';
 import { Drawer, Form, Input, Select, Button, Checkbox, Space, InputNumber } from 'antd';
-import { PlusCircleOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import LabelSelect from './components/label-select';
 import GlobalVarButton from './components/global-var-button';
 import styles from './style.less';
@@ -24,6 +24,13 @@ const DrawerForm = (props: any) => {
 
   const list3: any = LABEL_LIST; // 标签列表
 
+  const [testVal, setTestVal] = useState<any>('');
+
+  const onChange = (val: any) => {
+    console.log(val);
+    setTestVal(val);
+  };
+
   const onClose = () => {
     setVisible(false);
   };
@@ -34,24 +41,6 @@ const DrawerForm = (props: any) => {
     },
     close: onClose,
   }));
-
-  // 修改允许的业务节点
-  const onChangeRelationSelect = (val: any) => {
-    let _select: any = form.getFieldValue('ban_business') || [];
-    _select = _select.filter((item: any) => !val.includes(item));
-    form.setFieldsValue({
-      ban_business: _select,
-    });
-  };
-
-  // 修改禁止的业务节点
-  const onChangeRelationBanSelect = (val: any) => {
-    let _select: any = form.getFieldValue('allow_business') || [];
-    _select = _select.filter((item: any) => !val.includes(item));
-    form.setFieldsValue({
-      allow_business: _select,
-    });
-  };
 
   const saveNode = () => {
     console.log(form.getFieldsValue());
@@ -94,9 +83,9 @@ const DrawerForm = (props: any) => {
             <TextArea rows={4} placeholder="请输入流程描述" maxLength={200} />
           </FormItem>
         </div>
-        <FormItem name="rules" label="添加规则">
+        {/* <FormItem name="rules" label="添加规则">
           ---------
-        </FormItem>
+        </FormItem> */}
 
         <div className={styles['title']}>对话回应</div>
 
@@ -139,9 +128,11 @@ const DrawerForm = (props: any) => {
         {/* 静默处理 */}
 
         <FormList name="list_1">
-          {(fields, { add }) => {
+          {(fields, { add, remove }) => {
+            console.log(fields);
             const addNew = () => {
               let length = fields.length;
+              console.log(length);
               add({ response_speak: '', global_var: [], label_var: [] }, length);
             };
 
@@ -155,7 +146,11 @@ const DrawerForm = (props: any) => {
                 </div>
 
                 {fields.map((field: any, index: number) => (
-                  <div key={index} className={styles['list-box']} style={{ marginLeft: '30px' }}>
+                  <div
+                    key={field.key}
+                    className={styles['list-box']}
+                    style={{ marginLeft: '30px' }}
+                  >
                     <div className={styles['num']}>{index + 1}.</div>
                     <div>
                       <Form.Item
@@ -163,19 +158,11 @@ const DrawerForm = (props: any) => {
                         fieldKey={[field.fieldKey, 'response_speak']}
                         label="响应话术"
                       >
-                        <Input
+                        <GlobalVarButton
                           placeholder="请输入响应话术"
                           style={{ width: '400px' }}
                           autoComplete="off"
                         />
-                      </Form.Item>
-
-                      <Form.Item
-                        name={[field.name, 'global_var']}
-                        fieldKey={[field.fieldKey, 'global_var']}
-                        label="选择变量"
-                      >
-                        <LabelSelect color="blue"></LabelSelect>
                       </Form.Item>
 
                       <Form.Item
@@ -186,6 +173,14 @@ const DrawerForm = (props: any) => {
                         <LabelSelect color="orange"></LabelSelect>
                       </Form.Item>
                     </div>
+
+                    <Button
+                      icon={<MinusCircleOutlined />}
+                      type="link"
+                      onClick={() => {
+                        remove(index);
+                      }}
+                    />
                   </div>
                 ))}
               </div>
@@ -194,7 +189,12 @@ const DrawerForm = (props: any) => {
         </FormList>
 
         <Space style={{ paddingLeft: '50px', paddingTop: '10px' }}>
-          <FormItem name="exit_flag_1" label="结束挂机" style={{ width: '200px' }}>
+          <FormItem
+            name="exit_flag_1"
+            label="结束挂机"
+            valuePropName="checked"
+            style={{ width: '200px' }}
+          >
             <Checkbox>是否结束挂机</Checkbox>
           </FormItem>
 
@@ -214,7 +214,7 @@ const DrawerForm = (props: any) => {
         {/* 拒绝处理 */}
 
         <FormList name="list_2">
-          {(fields, { add }) => {
+          {(fields, { add, remove }) => {
             const addNew = () => {
               let length = fields.length;
               add({ response_speak: '', global_var: [], label_var: [] }, length);
@@ -230,38 +230,43 @@ const DrawerForm = (props: any) => {
                 </div>
 
                 {fields.map((field: any, index: number) => (
-                  <div key={index} className={styles['list-box']} style={{ marginLeft: '30px' }}>
+                  <div
+                    key={field.key}
+                    className={styles['list-box']}
+                    style={{ marginLeft: '30px' }}
+                  >
                     <div className={styles['num']}>{index + 1}.</div>
                     <div>
                       <Space>
-                        <Form.Item
+                        <FormItem
                           name={[field.name, 'response_speak']}
                           fieldKey={[field.fieldKey, 'response_speak']}
                           label="响应话术"
                         >
-                          <Input
+                          <GlobalVarButton
                             placeholder="请输入响应话术"
                             style={{ width: '400px' }}
                             autoComplete="off"
                           />
-                        </Form.Item>
+                        </FormItem>
                       </Space>
-                      <Form.Item
-                        name={[field.name, 'global_var']}
-                        fieldKey={[field.fieldKey, 'global_var']}
-                        label="选择变量"
-                      >
-                        <LabelSelect color="blue"></LabelSelect>
-                      </Form.Item>
 
-                      <Form.Item
+                      <FormItem
                         name={[field.name, 'label_var']}
                         fieldKey={[field.fieldKey, 'label_var']}
                         label="选择标签"
                       >
                         <LabelSelect color="orange"></LabelSelect>
-                      </Form.Item>
+                      </FormItem>
                     </div>
+
+                    <Button
+                      icon={<MinusCircleOutlined />}
+                      type="link"
+                      onClick={() => {
+                        remove(index);
+                      }}
+                    />
                   </div>
                 ))}
               </div>
@@ -270,7 +275,12 @@ const DrawerForm = (props: any) => {
         </FormList>
 
         <Space style={{ paddingLeft: '50px', paddingTop: '10px' }}>
-          <FormItem name="exit_flag_2" label="结束挂机" style={{ width: '200px' }}>
+          <FormItem
+            name="exit_flag_2"
+            label="结束挂机"
+            valuePropName="checked"
+            style={{ width: '200px' }}
+          >
             <Checkbox>是否结束挂机</Checkbox>
           </FormItem>
 
@@ -305,11 +315,16 @@ const DrawerForm = (props: any) => {
             </FormItem>
 
             <FormItem name="repeat_time" label="重复次数" style={{ width: '400px' }}>
-              <InputNumber min={1} defaultValue={1} />
+              <InputNumber min={1} />
             </FormItem>
 
             <Space>
-              <FormItem name="exit_flag_3" label="结束挂机" style={{ width: '220px' }}>
+              <FormItem
+                name="exit_flag_3"
+                label="结束挂机"
+                valuePropName="checked"
+                style={{ width: '220px' }}
+              >
                 <Checkbox>是否结束挂机</Checkbox>
               </FormItem>
 
@@ -326,16 +341,18 @@ const DrawerForm = (props: any) => {
               </FormItem>
             </Space>
 
-            <Form.Item name={['unclear_response_speak']} label="过渡话术">
-              <Input placeholder="请输入过渡话术" style={{ width: '400px' }} autoComplete="off" />
-            </Form.Item>
+            <FormItem name="unclear_response_speak" label="过渡话术">
+              <GlobalVarButton
+                placeholder="请输入过渡话术"
+                style={{ width: '400px' }}
+                autoComplete="off"
+              />
+            </FormItem>
 
-            <Form.Item name={'unclear_label_var'} label="选择标签">
+            <FormItem name="unclear_label_var" label="选择标签">
               <LabelSelect color="orange"></LabelSelect>
-            </Form.Item>
+            </FormItem>
           </div>
-
-          <GlobalVarButton />
         </div>
       </Form>
     </Drawer>
