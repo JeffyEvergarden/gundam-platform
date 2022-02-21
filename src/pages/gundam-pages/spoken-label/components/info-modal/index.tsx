@@ -5,6 +5,7 @@ import Condition from '@/components/Condition';
 
 const { Item: FormItem } = Form;
 const { Option } = Select;
+const { TextArea } = Input;
 
 const linkTypeList: any = [
   {
@@ -50,6 +51,8 @@ const InfoModal: React.FC<any> = (props: any) => {
 
   const [originInfo, setOriginInfo] = useState<any>({});
 
+  const [showRobotType, setShowRobotType] = useState<number>();
+
   const submit = async () => {
     const values = await form.validateFields();
     console.log(values);
@@ -67,13 +70,15 @@ const InfoModal: React.FC<any> = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     open: (row: any) => {
-      if (!row?.key && !row?.id) {
+      console.log(row);
+      if (!row?.actionLabel) {
         setOpenType('new');
         setOriginInfo(row);
         form.resetFields();
       } else {
         console.log(row);
-        form.resetFields();
+        // form.resetFields();
+        form.setFieldsValue(row);
         setOpenType('edit');
         setOriginInfo(row);
       }
@@ -85,10 +90,16 @@ const InfoModal: React.FC<any> = (props: any) => {
     submit,
   }));
 
+  const changeSoundType = () => {
+    let val = form.getFieldValue('soundType');
+    setShowRobotType(val);
+    console.log(val);
+  };
+
   return (
     <Modal
-      width={700}
-      title={(openType === 'new' ? '添加新' : '编辑') + '机器人'}
+      width={650}
+      title={(openType === 'new' ? '添加新' : '编辑') + '话术标签'}
       visible={visible}
       onCancel={() => setVisible(false)}
       okText={openType === 'new' ? '添加' : '确定'}
@@ -97,49 +108,24 @@ const InfoModal: React.FC<any> = (props: any) => {
     >
       <div className={style['modal_bg']} style={{ paddingLeft: '110px' }}>
         <Form form={form} style={{ width: '360px' }}>
-          {/* 机器人名称 */}
+          {/* 标签名称 */}
           <FormItem
-            rules={[{ required: true, message: '请填写机器人名称' }]}
-            name="robotName"
-            label="机器人名称"
+            rules={[
+              { required: true, message: '请填写标签名称' },
+              {
+                pattern: /^[A-Za-z0-9_\-\u4e00-\u9fa5]+$/g,
+                message: '请输入汉字、字母、下划线、数字、横杠',
+              },
+            ]}
+            name="actionLabel"
+            label="标签名称"
             style={{ width: '360px' }}
           >
-            <Input placeholder="请填写机器人名称" {...extra} />
+            <Input placeholder="请填写标签名称" {...extra} maxLength={150} />
           </FormItem>
 
-          <FormItem
-            rules={[{ required: true, message: '请填写机器人描述' }]}
-            name="robotDesc"
-            label="机器人描述"
-            style={{ width: '360px' }}
-          >
-            <Input placeholder="请填写机器人描述" {...extra} />
-          </FormItem>
-
-          {/* 链接路径 */}
-          <FormItem
-            rules={[{ required: true, message: '请选择业务类型' }]}
-            name="businessCode"
-            label="业务类型"
-            style={{ width: '360px' }}
-          >
-            <Radio.Group>
-              <Radio value={0}>呼入</Radio>
-              <Radio value={1}>呼出</Radio>
-            </Radio.Group>
-          </FormItem>
-
-          {/* 链接路径 */}
-          <FormItem
-            rules={[{ required: true, message: '请选择机器人类型' }]}
-            name="robotType"
-            label="机器人类型"
-            style={{ width: '360px' }}
-          >
-            <Radio.Group>
-              <Radio value={0}>文本</Radio>
-              <Radio value={1}>语音</Radio>
-            </Radio.Group>
+          <FormItem name="labelDesc" label="标签描述" style={{ width: '360px' }}>
+            <TextArea rows={4} placeholder="请填写标签描述" {...extra} maxLength={200} />
           </FormItem>
         </Form>
       </div>

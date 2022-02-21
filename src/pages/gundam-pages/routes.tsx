@@ -31,4 +31,9 @@ export default [
     path: '/gundamPages/businessDraw',
     name: '业务流程管理',
   },
+  {
+    icon: <CrownOutlined />,
+    path: '/gundamPages/aiSimulation',
+    name: '机器人模拟',
+  },
 ];

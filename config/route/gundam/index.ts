@@ -56,6 +56,11 @@ export default [
         component: './gundam-pages/business-draw',
         name: '业务流程管理',
       },
+      {
+        path: '/gundamPages/aiSimulation',
+        component: './gundam-pages/ai-simulation',
+        name: '机器人模拟',
+      },
       { redirect: '/gundamPages/home' },
       { component: './404' },
     ],

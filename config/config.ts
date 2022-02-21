@@ -26,9 +26,9 @@ export default defineConfig({
     siderWidth: 208,
     ...defaultSettings,
   },
-  publicPath: '/gundam/',
+  publicPath: '/aichat/',
   outputPath: 'dist/',
-  base: '/gundam',
+  base: '/aichat',
   dynamicImport: {
     loading: '@ant-design/pro-layout/es/PageLoading',
   },

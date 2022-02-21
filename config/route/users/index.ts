@@ -17,4 +17,19 @@ export default [
       },
     ],
   },
+  {
+    path: '/menu',
+    layout: true,
+    component: './menu',
+    name: '菜单管理',
+    routes: [
+      {
+        path: '/menu/home',
+        component: './menu/menu-management',
+        name: '菜单配置',
+      },
+      { redirect: '/menu/home' },
+      { component: './404' },
+    ],
+  },
 ];
