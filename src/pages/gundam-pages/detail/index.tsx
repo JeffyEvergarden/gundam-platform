@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useModel, history } from 'umi';
 import { Table, Button } from 'antd';
 import { Form, Row, Col, Space, Input, Select, Divider, InputNumber, Popconfirm } from 'antd';
 import style from './style.less';
@@ -25,42 +26,42 @@ const DetailPages: React.FC = (props: any) => {
   const [form] = Form.useForm();
   const { configMsg, configLoading, getRobotConfig, editRobotConfig } = useConfigModel();
 
-  const [robotType, setRobotType] = useState<any>();
+  const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+    setInfo: model.setInfo,
+  }));
 
   const getConfig = async () => {
-    let data = await getRobotConfig();
-    console.log(data);
-    setRobotType(data?.robotType);
+    let data = await getRobotConfig(info.id);
     form.setFieldsValue({ ...data });
   };
 
   const addConfig = () => {
-    console.log(form.getFieldsValue());
     const tempChildrenList = form.getFieldValue('childrenList') || [];
     tempChildrenList.push({
       configValue: undefined,
       configName: undefined,
       configDesc: undefined,
     });
-    console.log(tempChildrenList);
 
     form.setFieldsValue({
       childrenList: [...tempChildrenList],
     });
-    console.log(form.getFieldsValue());
   };
 
   const submit = async () => {
     console.log(form.getFieldsValue());
     let reqData = form.getFieldsValue();
     await editRobotConfig(reqData).then((res) => {
-      if (res.resultCode == '000000') {
+      if (res.resultCode == '100') {
         getConfig();
       }
     });
   };
 
   useEffect(() => {
+    console.log(info);
+
     let formData = form.getFieldsValue();
     getConfig();
     if (!formData.childrenList?.length) {
@@ -89,23 +90,23 @@ const DetailPages: React.FC = (props: any) => {
           </Col>
         </Row>
         <Divider type="horizontal" />
-        <Condition r-if={robotType == 1}>
+        <Condition r-if={info.robotType == 1}>
           <FormItem name="threshold" label="阈值" {...layout}>
-            <InputNumber style={{ width: 200 }} defaultValue="0" min="0" max="1" step="0.01" />
+            <InputNumber style={{ width: 200 }} min="0" max="1" step="0.01" />
           </FormItem>
           <FormItem name="thresholdGap" label="得分差值" {...layout}>
-            <InputNumber style={{ width: 200 }} defaultValue="0" min="0" max="1" step="0.01" />
+            <InputNumber style={{ width: 200 }} min="0" max="1" step="0.01" />
           </FormItem>
           <FormItem name="clearToDeal" label="澄清话术" {...layout}>
             <Input></Input>
           </FormItem>
         </Condition>
-        <Condition r-if={robotType == 0}>
+        <Condition r-if={info.robotType == 0}>
           <FormItem name="maxThreshold" label="最大阈值" {...layout}>
-            <InputNumber style={{ width: 200 }} defaultValue="0" min="0" max="1" step="0.01" />
+            <InputNumber style={{ width: 200 }} min="0" max="1" step="0.01" />
           </FormItem>
           <FormItem name="minThreshold" label="最小阈值" {...layout}>
-            <InputNumber style={{ width: 200 }} defaultValue="0" min="0" max="1" step="0.01" />
+            <InputNumber style={{ width: 200 }} min="0" max="1" step="0.01" />
           </FormItem>
           <FormItem name="clearToDeal" label="澄清话术" {...layout}>
             <Input></Input>

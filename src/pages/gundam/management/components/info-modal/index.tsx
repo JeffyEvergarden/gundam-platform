@@ -95,6 +95,9 @@ const InfoModal: React.FC<any> = (props: any) => {
 
   const changeSoundType = () => {
     let val = form.getFieldValue('soundType');
+    if (val == 1) {
+      form.setFieldsValue({ robotType: 1 });
+    }
     setShowRobotType(val);
     console.log(val);
   };
@@ -140,8 +143,12 @@ const InfoModal: React.FC<any> = (props: any) => {
               style={{ width: '360px' }}
             >
               <Radio.Group>
-                {BUSSINESS_CODE.map((item: any) => {
-                  return <Radio value={item.name}>{item.label}</Radio>;
+                {BUSSINESS_CODE.map((item: any, index: any) => {
+                  return (
+                    <Radio value={item.name} key={index}>
+                      {item.label}
+                    </Radio>
+                  );
                 })}
               </Radio.Group>
             </FormItem>
@@ -153,7 +160,7 @@ const InfoModal: React.FC<any> = (props: any) => {
               label="语音类型"
               style={{ width: '360px' }}
             >
-              <Radio.Group>
+              <Radio.Group onChange={changeSoundType}>
                 <Radio value={0}>呼入</Radio>
                 <Radio value={1}>呼出</Radio>
               </Radio.Group>
@@ -167,7 +174,9 @@ const InfoModal: React.FC<any> = (props: any) => {
               style={{ width: '360px' }}
             >
               <Radio.Group>
-                <Radio value={0}>文本</Radio>
+                <Radio value={0} disabled={!!showRobotType}>
+                  文本
+                </Radio>
                 <Radio value={1}>语音</Radio>
               </Radio.Group>
             </FormItem>

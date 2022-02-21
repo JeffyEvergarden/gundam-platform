@@ -1,7 +1,8 @@
 import { request } from '@/services/request';
 import config from '@/config';
 
-const baseUrl: string = config.basePath;
+// const baseUrl: string = config.basePath;
+const baseUrl: string = '';
 
 /** 获取所有机器人列表 **/
 export async function getMachineList(params?: { [key: string]: any }) {
@@ -12,18 +13,18 @@ export async function getMachineList(params?: { [key: string]: any }) {
 }
 
 /** 修改状态 **/
-export async function changeMachineStatus(params?: { [key: string]: any }) {
+export async function changeMachineStatus(data?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/robot/robotStatus`, {
     method: 'POST',
-    params,
+    data,
   });
 }
 
 /** 删除机器 **/
-export async function deleteMachine(params?: { [key: string]: any }) {
+export async function deleteMachine(data?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/robot/robotDelete`, {
     method: 'POST',
-    params,
+    data,
   });
 }
 

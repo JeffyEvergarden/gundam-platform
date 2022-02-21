@@ -46,7 +46,7 @@ const MachineManagement: React.FC = (props: any) => {
   const _changeStatus = async (row: any) => {
     let params: any = {
       id: row.id,
-      status: row.status,
+      status: row.status == 0 ? 1 : 0,
     };
     let res: any = await changeStatus(params);
     // console.log(res);
@@ -98,9 +98,11 @@ const MachineManagement: React.FC = (props: any) => {
         ...info?.form,
       };
       res = await addNewMachine(params);
+      console.log(res);
+
       if (res.resultCode === config.successCode) {
         modalRef.current?.close?.();
-        goToNewSystem({ ...res.data });
+        goToNewSystem({ ...res.datas });
       } else {
         message.error(res?.resultDesc || '未知系统异常');
       }
@@ -191,7 +193,7 @@ const MachineManagement: React.FC = (props: any) => {
     },
     {
       title: '创建时间',
-      dataIndex: 'onlineTime',
+      dataIndex: 'createTime',
       search: false,
       width: 200,
     },

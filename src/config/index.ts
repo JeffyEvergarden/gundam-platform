@@ -1,4 +1,4 @@
 export default {
   basePath: '/aichat',
-  successCode: '000000',
+  successCode: 100,
 };

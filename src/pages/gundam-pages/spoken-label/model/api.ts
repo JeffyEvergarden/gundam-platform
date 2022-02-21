@@ -11,10 +11,10 @@ export async function getLabelList(params?: { [key: string]: any }) {
 }
 
 /** 删除话术标签 **/
-export async function deleteLabel(params?: { [key: string]: any }) {
+export async function deleteLabel(data?: { [key: string]: any }) {
   return request(`${baseUrl}/actionLabel/actionLabelDelete`, {
     method: 'POST',
-    params,
+    data,
   });
 }
 

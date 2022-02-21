@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useModel } from 'umi';
+import { useModel, history, useLocation } from 'umi';
 import { Table, Button, Popconfirm, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import style from './style.less';
@@ -15,23 +15,29 @@ const DetailPages: React.FC = (props: any) => {
   const labelTableRef = useRef<any>({});
   const labelModalRef = useRef<any>({});
 
-  const confirmInfo = async (info: any) => {
+  const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+    setInfo: model.setInfo,
+  }));
+
+  const confirmInfo = async (formData: any) => {
     let res: any = null;
-    if (info._openType === 'new') {
+    if (formData._openType === 'new') {
       let params: any = {
-        ...info?.form,
+        robotId: info.id,
+        ...formData?.form,
       };
       res = await addNewLabel(params);
-      if (res.resultCode === '000000') {
+      if (res.resultCode === '100') {
         labelModalRef.current?.close?.();
         labelTableRef.current.reload();
       } else {
         message.error(res?.resultDesc || '未知系统异常');
       }
-    } else if (info._openType === 'edit') {
+    } else if (formData._openType === 'edit') {
       let params: any = {
-        id: info?._originInfo?.id,
-        ...info?.form,
+        id: formData?._originInfo?.id,
+        ...formData?.form,
       };
       res = await editLabel(params);
       if (res === true) {
@@ -45,6 +51,7 @@ const DetailPages: React.FC = (props: any) => {
 
   const deleteRow = async (row: any) => {
     let params: any = {
+      robotId: info.id,
       id: row.id,
     };
     let res: any = await deleteLabel(params);
