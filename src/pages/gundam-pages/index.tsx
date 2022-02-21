@@ -65,6 +65,7 @@ const MachinePagesHome: React.FC = (props: any) => {
         </a>
       )}
       disableContentMargin={false}
+      menuProps={info}
     >
       {props.children}
     </ProLayout>

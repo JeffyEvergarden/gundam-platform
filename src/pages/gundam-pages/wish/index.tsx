@@ -4,10 +4,12 @@ import { useModel } from 'umi';
 import IntentOperModal from './comps/addIntentModal';
 import RulesSampleModal from './comps/rulesAndSamples';
 
+import { useTableModel } from './model';
+
 import ProTable from '@ant-design/pro-table';
 import type { ActionType } from '@ant-design/pro-table';
 
-import { Button, Space, Popconfirm } from 'antd';
+import { Button, Space, Popconfirm, message } from 'antd';
 import { tableList, fakeData } from './comps/config';
 
 export type TableListItem = {
@@ -33,7 +35,7 @@ const DetailPages: React.FC = (props: any) => {
   const [intentOperData, handleIntentOperData] = useState<any>({}); // 控制意图操作弹出层数据
 
   const [rulesSamleVisible, handleRulesSampleVisible] = useState<boolean>(false);
-
+  const { getIntentTableList, tableLoading, deleteIntentItem } = useTableModel();
   const getTables: any = async (p?: any) => {
     const [pageData] = p;
     let data: any = [];
@@ -76,7 +78,10 @@ const DetailPages: React.FC = (props: any) => {
   };
 
   // 删除意图
-  const deleteIntent = (data: any) => {};
+  const deleteIntent = async (data: any) => {
+    const res: any = await deleteIntentItem(data);
+    message.info(res?.resultDesc);
+  };
 
   // 意图弹出框确认按钮
   const operIntentSubmit = () => {
@@ -148,7 +153,8 @@ const DetailPages: React.FC = (props: any) => {
           labelWidth: 'auto',
         }}
         request={async (...params) => {
-          return getTables(params);
+          // return getTables(params);
+          return getIntentTableList(params);
         }}
       />
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Form, Row, Col, Input, Button, Select, Radio, Space, message } from 'antd';
 import { operateFormList } from './config';
+import { useTableModel } from '../model';
 const { Option } = Select;
 
 const layout = {
@@ -14,6 +15,7 @@ const tailLayout = {
 export default (props: any) => {
   const { visible, title, modalData, submit, cancel } = props;
   const [form] = Form.useForm();
+  const { addIntentItem, editIntentItem, tableLoading } = useTableModel();
   useEffect(() => {
     if (visible) {
       if (title == 'edit') {
@@ -30,6 +32,12 @@ export default (props: any) => {
 
   const operSubmit = async () => {
     const values = await form.validateFields();
+    let res;
+    if (title == 'edit') {
+      res = editIntentItem(values);
+    } else if (title == 'add') {
+      res = addIntentItem(values);
+    }
     console.log('value', values);
     submit();
   };
@@ -47,13 +55,13 @@ export default (props: any) => {
             return (
               <React.Fragment key={item.name}>
                 {item.type == 'input' && (
-                  <Form.Item name={item.name} label={item.label} rules={item.rules}>
+                  <Form.Item name={item.name} label={item.label}>
                     <Input />
                   </Form.Item>
                 )}
 
                 {item.type == 'radio' && (
-                  <Form.Item name={item.name} label={item.label} rules={item.rules}>
+                  <Form.Item name={item.name} label={item.label}>
                     <Radio.Group disabled={title == 'edit'}>
                       <Radio value="0">是</Radio>
                       <Radio value="1">否</Radio>
