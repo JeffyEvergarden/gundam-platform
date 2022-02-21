@@ -9,6 +9,13 @@ export default [
   },
   ...routes,
   {
+    path: '/demo',
+    layout: false,
+    name: 'demo事例',
+    component: './demo',
+    noAuth: true,
+  },
+  {
     path: '/login',
     layout: false,
     hideInMenu: true,

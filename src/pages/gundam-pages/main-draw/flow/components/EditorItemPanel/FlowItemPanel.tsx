@@ -24,7 +24,7 @@ const FlowItemPanel = (props: PanelProps) => {
         }}
         src={''}
       >
-        <div className={styles['blue-node']}>主流程节点</div>
+        <div className={styles['blue-node']}>普通节点</div>
       </Item>
 
       <Item
