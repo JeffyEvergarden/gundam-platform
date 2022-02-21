@@ -80,6 +80,7 @@ const MainDraw = (props: any) => {
   // 初始化设置
   useEffect(() => {
     getMachineInfo();
+    (drawerRef.current as any).open();
   }, []);
   // -- end-----
 
