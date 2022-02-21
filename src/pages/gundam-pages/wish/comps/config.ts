@@ -50,9 +50,11 @@ export const tableList: any = [
     title: '是否头部意图',
     search: true,
     valueType: 'select',
+    // width: 120,
     valueEnum: {
       '0': { text: '是', status: '0' },
       '1': { text: '否', status: '1' },
+      '2': { text: '全部', status: '2' },
     },
   },
   {
@@ -96,6 +98,17 @@ export const fakeData = [
     status: '0',
     creator: 'yyb',
     createTime: '2022-02-14',
+  },
+  {
+    intentName: '意图2',
+    id: '002',
+    inquiryText: '澄清2',
+    headIntent: '1',
+    flowName: '业务流程2',
+    intentDesc: '意图描述2',
+    status: '1',
+    creator: 'yyb',
+    createTime: '2022-02-18',
   },
 ];
 
@@ -148,8 +161,23 @@ export const sampleRulesFakeDatas = [
     ruleClips: [
       {
         matched: '0',
-        content: '[111]',
+        content: '[词槽1]',
         number: 2,
+      },
+    ],
+  },
+  {
+    id: '001',
+    intentName: '2',
+    intentDesc: '2',
+    content: '2',
+    sequence: '2',
+    match: '2',
+    ruleClips: [
+      {
+        matched: '1',
+        content: '[特征词1]',
+        number: 1,
       },
     ],
   },

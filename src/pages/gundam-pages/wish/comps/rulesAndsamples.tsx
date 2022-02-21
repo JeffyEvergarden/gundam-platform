@@ -9,7 +9,7 @@ import {
   DownloadOutlined, // 下载图标
   EditOutlined,
 } from '@ant-design/icons';
-import { Drawer, Button, Space, Select, Input, message, Popconfirm } from 'antd';
+import { Drawer, Button, Space, Select, Input, message, Popconfirm, Modal } from 'antd';
 
 import {
   sampleRulesColumns,
@@ -17,7 +17,7 @@ import {
   featureWordColumns,
   featureWordTableFakeData,
 } from './config';
-import RuleSampleModal from './rulesModal';
+import RuleSampleDetailModal from './rulesDetailModal';
 import UploadModal from './uploadModal';
 import AddCharactertic from './addCharacter';
 
@@ -27,6 +27,8 @@ export default (props: any) => {
   const { title, visible, onCancel } = props;
   const [loading, handleLoading] = useState<boolean>(false);
   const [selectValue, setSelectValue] = useState<string>('1');
+  const [editRuleColConfig, setShowEditRuleColConfig] = useState<any>({}); // 编辑可展开行
+
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [selectedRows, setSelectedRows] = useState<any>();
   const rowSelection = {
@@ -48,6 +50,9 @@ export default (props: any) => {
   const [addCharacterModalTitle, handleAddCharacterModalTitle] = useState<string>('');
   const [addCharacterData, handleAddCharacterData] = useState<any>({});
 
+  const [expandedRowKeys, setExpandedRowKeys] = useState<string>(''); // 保存展开行的key值
+  const [clickExpandedNum, setClickExpandedNum] = useState<number>(0); // 保存展开行 被点击 的次数
+
   // 模版内容选择框
   const selectFunc = (value: any) => {
     setSelectValue(value);
@@ -66,8 +71,8 @@ export default (props: any) => {
       style={{
         display: 'flex',
         backgroundColor: '#eaeaea',
-        width: '100%',
         alignItems: 'center',
+        margin: '8px 24px 0',
         padding: '5px 16px',
       }}
     >
@@ -75,14 +80,15 @@ export default (props: any) => {
         <CaretUpOutlined />
         <span>上移</span>
       </Space>
-      <Space>
+      <Space style={{ margin: '0 8px' }}>
         <CaretDownOutlined />
         <span>下移</span>
       </Space>
-      <Space>
+      <Space style={{ margin: '0 8px' }}>
         <DeleteOutlined />
         <span>删除模版</span>
       </Space>
+
       <div style={{ width: 390 }}>
         <Input.Group compact>
           <Select value={selectValue} style={{ width: 130 }} size="middle" onChange={selectFunc}>
@@ -94,13 +100,26 @@ export default (props: any) => {
     </div>
   );
 
-  // 添加规则模版
-  const addRuleSample = (data: any, type: string) => {
-    handleRuleModalVisible(true);
+  // 操作规则模版的数据
+  const operateRulesData = (data: any, type: string, index?: number) => {
     handleRuleModalData(data);
     handleRuleModalTitle(type);
+    if (type == 'edit') {
+      let index = clickExpandedNum;
+      index++;
+      setClickExpandedNum(index);
+      if (index % 2) {
+        setExpandedRowKeys(data.id);
+      } else {
+        setExpandedRowKeys('');
+      }
+    } else if (type == 'add') {
+      handleRuleModalVisible(true);
+      setShowEditRuleColConfig({});
+    }
   };
 
+  // 初始化 规则模版 table 数据
   const getInitRuleTables = async (p?: any) => {
     const [pageData] = p;
     let data: any = [];
@@ -195,11 +214,15 @@ export default (props: any) => {
     {
       dataIndex: 'operation',
       title: '',
-      render: (text: any, record: any) => {
+      render: (text: any, record: any, index: number) => {
         return (
-          <div onClick={() => addRuleSample(record, 'edit')}>
-            <EditOutlined />
-          </div>
+          <Space>
+            <div onClick={() => operateRulesData(record, 'edit', index)}>
+              <EditOutlined />
+            </div>
+            <a>置顶</a>
+            <a>删除</a>
+          </Space>
         );
       },
     },
@@ -231,10 +254,10 @@ export default (props: any) => {
   return (
     <React.Fragment>
       <Drawer title={title} width={'100%'} placement="right" onClose={onClose} visible={visible}>
-        <div style={{ padding: '0 24px', display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ padding: '5px 24px', display: 'flex', justifyContent: 'space-between' }}>
           <Space>
             <PlusCircleOutlined />
-            <span onClick={() => addRuleSample({}, 'add')}>添加规则模版</span>
+            <span onClick={() => operateRulesData({}, 'add')}>添加规则模版</span>
           </Space>
           <Space>
             <div>
@@ -247,9 +270,8 @@ export default (props: any) => {
             </div>
           </Space>
         </div>
-
+        {headNode}
         <ProTable
-          headerTitle={headNode}
           rowKey="id"
           request={async (...params) => {
             return getInitRuleTables(params);
@@ -261,6 +283,19 @@ export default (props: any) => {
           rowSelection={rowSelection}
           tableAlertRender={false}
           tableAlertOptionRender={false}
+          expandable={{
+            expandedRowRender: (record) => (
+              <RuleSampleDetailModal
+                title={'edit'}
+                modalData={ruleModalData}
+                onSubmit={ruleModalSubmit}
+                onCancel={ruleModalCancel}
+              />
+            ),
+            showExpandColumn: false,
+            expandedRowKeys: [expandedRowKeys], // 控制展开的行
+            rowExpandable: (record) => true,
+          }}
         />
 
         <ProTable
@@ -287,13 +322,27 @@ export default (props: any) => {
         />
       </Drawer>
 
-      <RuleSampleModal
+      <Modal
+        visible={ruleModalVisible}
+        title={'新增'}
+        footer={false}
+        width={1000}
+        onCancel={ruleModalCancel}
+      >
+        <RuleSampleDetailModal
+          modalData={ruleModalData}
+          onSubmit={ruleModalSubmit}
+          onCancel={ruleModalCancel}
+        />
+      </Modal>
+
+      {/* <RuleSampleDetailModal
         visible={ruleModalVisible}
         title={ruleModalTitle}
         modalData={ruleModalData}
         onSubmit={ruleModalSubmit}
         onCancel={ruleModalCancel}
-      />
+      /> */}
 
       <UploadModal
         visible={uploadModalVisible}

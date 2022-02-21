@@ -16,9 +16,9 @@ export default (props: any) => {
   const [form] = Form.useForm();
   useEffect(() => {
     if (visible) {
-      if (title == '编辑') {
+      if (title == 'edit') {
         form.setFieldsValue({ ...modalData });
-      } else if (title == '新增') {
+      } else if (title == 'add') {
         form.resetFields();
       }
     }
@@ -36,7 +36,12 @@ export default (props: any) => {
 
   return (
     <React.Fragment>
-      <Modal title={title} visible={visible} footer={null} onCancel={operCancel}>
+      <Modal
+        title={title == 'add' ? '新增' : '编辑'}
+        visible={visible}
+        footer={null}
+        onCancel={operCancel}
+      >
         <Form form={form} {...layout}>
           {operateFormList.map((item: any) => {
             return (
@@ -49,9 +54,10 @@ export default (props: any) => {
 
                 {item.type == 'radio' && (
                   <Form.Item name={item.name} label={item.label} rules={item.rules}>
-                    <Select>
-                      <Option value="0">1</Option>
-                    </Select>
+                    <Radio.Group disabled={title == 'edit'}>
+                      <Radio value="0">是</Radio>
+                      <Radio value="1">否</Radio>
+                    </Radio.Group>
                   </Form.Item>
                 )}
               </React.Fragment>

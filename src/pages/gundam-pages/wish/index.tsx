@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useModel } from 'umi';
 
 import IntentOperModal from './comps/addIntentModal';
-import RulesSampleModal from './comps/rulesAndsamples';
+import RulesSampleModal from './comps/rulesAndSamples';
 
 import ProTable from '@ant-design/pro-table';
 import type { ActionType } from '@ant-design/pro-table';
@@ -70,11 +70,7 @@ const DetailPages: React.FC = (props: any) => {
 
   // 操作意图 新增、编辑
   const operIntent = (data: any, type: string) => {
-    if (type == 'add') {
-      handleIntentOperTitle('新增');
-    } else if (type == 'edit') {
-      handleIntentOperTitle('编辑');
-    }
+    handleIntentOperTitle(type);
     handleIntentOperData({ ...data });
     handleIntentOperVisible(true);
   };
@@ -147,6 +143,10 @@ const DetailPages: React.FC = (props: any) => {
             新增
           </Button>,
         ]}
+        search={{
+          defaultCollapsed: false,
+          labelWidth: 'auto',
+        }}
         request={async (...params) => {
           return getTables(params);
         }}
