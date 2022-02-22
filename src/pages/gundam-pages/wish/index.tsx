@@ -37,13 +37,19 @@ const DetailPages: React.FC = (props: any) => {
   const [rulesSamleVisible, handleRulesSampleVisible] = useState<boolean>(false);
   const { getIntentTableList, tableLoading, deleteIntentItem } = useTableModel();
   const getTables: any = async (p?: any) => {
-    const [pageData] = p;
+    const [pageData, formData] = p;
     let data: any = [];
     try {
       handleLoading(true);
-      // const res = await
+      let params = {
+        pageSize: pageData.pageSize,
+        page: pageData.current,
+        intentName: formData.intentName,
+        headIntent: formData.headIntent,
+      };
+      const res = await getIntentTableList(params);
       return {
-        data: fakeData,
+        data: res?.data || [],
         pageSize: pageData.pageSize || 10,
         current: pageData.current || 1,
         total: 1,
@@ -153,8 +159,8 @@ const DetailPages: React.FC = (props: any) => {
           labelWidth: 'auto',
         }}
         request={async (...params) => {
-          // return getTables(params);
-          return getIntentTableList(params);
+          return getTables(params);
+          // return getIntentTableList(params);
         }}
       />
 
