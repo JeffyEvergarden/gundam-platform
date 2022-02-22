@@ -77,8 +77,8 @@ const deleteWordSlot = (req: any, res: any) => {
 // 词槽管理相关
 export default {
   // 机器人管理相关
-  'GET /robot/slot/slotList': getWordSlotList, // 获取词槽管理列表
-  'POST /robot/slot/slotAdd': getWordSlotList, // 新增词槽
-  'POST /robot/slot/slotUpdate': editWordSlot, // 编辑词槽
-  'POST /robot/slot/slotDelete': deleteWordSlot, // 删除词槽
+  'GET /aichat/robot/slot/slotList': getWordSlotList, // 获取词槽管理列表
+  'POST /aichat/robot/slot/slotAdd': getWordSlotList, // 新增词槽
+  'POST /aichat/robot/slot/slotUpdate': editWordSlot, // 编辑词槽
+  'POST /aichat/robot/slot/slotDelete': deleteWordSlot, // 删除词槽
 };

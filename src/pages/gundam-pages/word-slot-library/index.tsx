@@ -21,14 +21,15 @@ const DetailPages: React.FC = (props: any) => {
   const { getWordSlotTable, deleteWordSlot } = useTableModel();
 
   const getInitTable = async (p?: any) => {
-    let newData = new Date().toLocaleString();
-    let occurTime = newData.replace(/\//g, '-');
+    let newDay = new Date().toLocaleDateString();
+    let occurDay = newDay.replace(/\//g, '-');
+    let newTime = new Date().toLocaleTimeString();
     const [pageData] = p;
     let data: any = [];
     try {
       let params = {
         robotId: info.id,
-        occurTime,
+        occurTime: occurDay + ' ' + newTime,
         page: pageData?.current,
         ...pageData,
       };

@@ -43,7 +43,6 @@ const DetailPages: React.FC = (props: any) => {
   const getTables: any = async (p?: any) => {
     const [pageData] = p;
     let data: any = [];
-
     try {
       handleLoading(true);
       let params = {
@@ -55,7 +54,8 @@ const DetailPages: React.FC = (props: any) => {
       const res: any = await getIntentTableList(params);
       console.log(params, res);
       return {
-        data: res?.data || [],
+        data: res?.datas || [],
+        // data: [],
         pageSize: pageData.pageSize || 10,
         current: pageData.current || 1,
         total: res?.totalSize || 1,
@@ -92,7 +92,7 @@ const DetailPages: React.FC = (props: any) => {
   // 删除意图
   const deleteIntent = async (data: any) => {
     const res: any = await deleteIntentItem({ robotId: info.id, id: data.id });
-    message.info(res?.resultDesc);
+    message.info(res?.resultDesc || '正在处理');
     refreshTable();
   };
 
@@ -180,17 +180,16 @@ const DetailPages: React.FC = (props: any) => {
       <IntentOperModal
         visible={intentOperVisible}
         title={intentOperTitle}
-        modalData={intentOperData}
+        modalData={{ ...intentOperData, robotId: info.id }}
         submit={operIntentSubmit}
         cancel={operIntentFail}
-        robotId={info.id}
       />
 
-      <RulesSampleModal
+      {/* <RulesSampleModal
         title="规则模版列表"
         visible={rulesSamleVisible}
         onCancel={rulesSampleDrawerClose}
-      />
+      /> */}
     </React.Fragment>
   );
 };
