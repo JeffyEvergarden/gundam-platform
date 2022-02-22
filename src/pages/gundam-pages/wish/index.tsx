@@ -10,7 +10,7 @@ import ProTable from '@ant-design/pro-table';
 import type { ActionType } from '@ant-design/pro-table';
 
 import { Button, Space, Popconfirm, message } from 'antd';
-import { tableList, fakeData } from './comps/config';
+import { tableList } from './comps/config';
 
 export type TableListItem = {
   id: string;
@@ -27,32 +27,38 @@ export type TableListItem = {
 
 // 机器人列表
 const DetailPages: React.FC = (props: any) => {
-  // const [form] = Form.useForm();
   const actionRef = useRef<ActionType>();
   const [loading, handleLoading] = useState<boolean>(false);
   const [intentOperVisible, handleIntentOperVisible] = useState<boolean>(false); // 控制意图操作弹出层是否可见
   const [intentOperTitle, handleIntentOperTitle] = useState<string>(''); // 控制意图操作弹出层标题
   const [intentOperData, handleIntentOperData] = useState<any>({}); // 控制意图操作弹出层数据
 
+  const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+    setInfo: model.setInfo,
+  }));
+
   const [rulesSamleVisible, handleRulesSampleVisible] = useState<boolean>(false);
-  const { getIntentTableList, tableLoading, deleteIntentItem } = useTableModel();
+  const { getIntentTableList, deleteIntentItem } = useTableModel();
   const getTables: any = async (p?: any) => {
-    const [pageData, formData] = p;
+    const [pageData] = p;
     let data: any = [];
+
     try {
       handleLoading(true);
       let params = {
-        pageSize: pageData.pageSize,
         page: pageData.current,
-        intentName: formData.intentName,
-        headIntent: formData.headIntent,
+        robotId: info.id,
+        ...pageData,
       };
-      const res = await getIntentTableList(params);
+      delete params?.current;
+      const res: any = await getIntentTableList(params);
+      console.log(params, res);
       return {
         data: res?.data || [],
         pageSize: pageData.pageSize || 10,
         current: pageData.current || 1,
-        total: 1,
+        total: res?.totalSize || 1,
       };
     } catch {
       return {
@@ -85,18 +91,21 @@ const DetailPages: React.FC = (props: any) => {
 
   // 删除意图
   const deleteIntent = async (data: any) => {
-    const res: any = await deleteIntentItem(data);
+    const res: any = await deleteIntentItem({ robotId: info.id, id: data.id });
     message.info(res?.resultDesc);
+    refreshTable();
   };
 
   // 意图弹出框确认按钮
   const operIntentSubmit = () => {
     handleIntentOperVisible(false);
+    refreshTable();
   };
 
   // 意图弹出框取消按钮
   const operIntentFail = () => {
     handleIntentOperVisible(false);
+    refreshTable();
   };
 
   // 规则模版抽屉框关闭按钮
@@ -141,6 +150,11 @@ const DetailPages: React.FC = (props: any) => {
     },
   ];
 
+  const refreshTable = () => {
+    // @ts-ignore
+    actionRef?.current?.reloadAndRest();
+  };
+
   return (
     <React.Fragment>
       <ProTable<TableListItem>
@@ -160,7 +174,6 @@ const DetailPages: React.FC = (props: any) => {
         }}
         request={async (...params) => {
           return getTables(params);
-          // return getIntentTableList(params);
         }}
       />
 
@@ -170,6 +183,7 @@ const DetailPages: React.FC = (props: any) => {
         modalData={intentOperData}
         submit={operIntentSubmit}
         cancel={operIntentFail}
+        robotId={info.id}
       />
 
       <RulesSampleModal

@@ -87,31 +87,6 @@ export const tableList: any = [
   },
 ];
 
-export const fakeData = [
-  {
-    intentName: '意图1',
-    id: '001',
-    inquiryText: '澄清1',
-    headIntent: '0',
-    flowName: '业务流程1',
-    intentDesc: '意图描述1',
-    status: '0',
-    creator: 'yyb',
-    createTime: '2022-02-14',
-  },
-  {
-    intentName: '意图2',
-    id: '002',
-    inquiryText: '澄清2',
-    headIntent: '1',
-    flowName: '业务流程2',
-    intentDesc: '意图描述2',
-    status: '1',
-    creator: 'yyb',
-    createTime: '2022-02-18',
-  },
-];
-
 export const sampleRulesColumns = [
   {
     dataIndex: 'intentName',

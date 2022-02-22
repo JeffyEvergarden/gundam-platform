@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Form, Input, Select, Space, Button } from 'antd';
-import { operateSlotFormList } from './config';
+import { Modal, Form, Input, Select, Space, Button, message } from 'antd';
+import { operateSlotFormList, slotSourceFormList } from './config';
+import { useTableModel } from '../model';
+
 const { Option } = Select;
 const layout = {
   labelCol: { span: 6 },
@@ -10,39 +12,19 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 12 },
 };
 
-const slotSourceData = [
-  {
-    value: '0',
-    name: '来自实体',
-  },
-  {
-    value: '1',
-    name: '来自意图',
-  },
-  {
-    value: '2',
-    name: '来自接口',
-  },
-  {
-    value: '3',
-    name: '来自用户文本',
-  },
-];
-
 export default (props: any) => {
   const { visible, title, modalData, onSubmit, onCancel } = props;
   const [diffSourceData, setDiffSourceData] = useState<string>('');
   const [fieldSelectData, setFieldSelectData] = useState<any>({
-    slotSource: slotSourceData,
+    slotSource: slotSourceFormList,
   });
-
   const [form] = Form.useForm();
+  const { addWordSlot, editWordSlot } = useTableModel();
   useEffect(() => {
     if (visible) {
       if (title == 'edit') {
-        console.log('modalData', modalData, fieldSelectData);
+        // form.resetFields();
         setDiffSourceData(modalData?.slotSource || '');
-        let newData = { ...modalData };
         form.setFieldsValue({
           ...modalData,
         });
@@ -58,13 +40,21 @@ export default (props: any) => {
   };
 
   const cancel = () => {
-    onCancel();
     form.resetFields();
+    onCancel();
   };
 
-  const submit = () => {
+  const submit = async () => {
+    const values = form.validateFields();
+    let res: any;
+    let params = form.getFieldsValue();
+    if (title == 'edit') {
+      res = await editWordSlot({ ...params, robotId: modalData.robotId, id: modalData.id });
+    } else if (title == 'add') {
+      res = await addWordSlot({ ...params, robotId: modalData.robotId });
+    }
+    message.info(res?.resultCode);
     onSubmit();
-    form.resetFields();
   };
 
   return (
@@ -97,6 +87,19 @@ export default (props: any) => {
                     </Select>
                   </Form.Item>
                 )}
+                {item.type == 'multiSelect' && (
+                  <Form.Item name={item.name} label={item.label} rules={item.rules}>
+                    <Select placeholder={item.placeholder} mode={'multiple'}>
+                      {fieldSelectData[item.name]?.map((itex: any) => {
+                        return (
+                          <Option key={itex.value} value={itex.value}>
+                            {itex.name}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  </Form.Item>
+                )}
                 {item.name == 'slotSource' && (
                   <React.Fragment>
                     <Form.Item name={item.name} label={item.label} rules={item.rules}>
@@ -112,7 +115,7 @@ export default (props: any) => {
                     </Form.Item>
                     {diffSourceData == '0' && (
                       <Form.Item name={'entity'} label={'引用词库实体'}>
-                        <Select placeholder={item.placeholder}>
+                        <Select placeholder={item.placeholder} mode={'multiple'}>
                           {fieldSelectData['entity']?.map((itex: any) => {
                             return (
                               <Option key={itex.value} value={itex.value}>
@@ -126,7 +129,7 @@ export default (props: any) => {
                     {diffSourceData == '1' && (
                       <React.Fragment>
                         <Form.Item name={'intentName'} label={'意图名称'}>
-                          <Select placeholder={item.placeholder}>
+                          <Select placeholder={item.placeholder} mode={'multiple'}>
                             {fieldSelectData['intentName']?.map((itex: any) => {
                               return (
                                 <Option key={itex.value} value={itex.value}>

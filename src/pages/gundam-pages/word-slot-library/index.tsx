@@ -2,32 +2,48 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useModel } from 'umi';
 import ProTable from '@ant-design/pro-table';
 import type { ActionType } from '@ant-design/pro-table';
-import { Button, Space, Popconfirm } from 'antd';
-import { wordSlotTableList, soltTableFakeData } from './comps/config';
+import { Button, Space, Popconfirm, message } from 'antd';
+import { wordSlotTableList } from './comps/config';
 import OperateSlotModal from './comps/operateSlotModal';
+import { useTableModel } from './model';
 
 // 机器人列表
 const DetailPages: React.FC = (props: any) => {
+  const actionRef = useRef<ActionType>();
   const [operModalVisible, handleOperModalVisible] = useState<boolean>(false);
   const [operModalData, handleOperModalData] = useState<any>({});
   const [operModalTitle, handleOperModalTitle] = useState<string>('');
 
-  useEffect(() => {}, []);
+  const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+    setInfo: model.setInfo,
+  }));
+  const { getWordSlotTable, deleteWordSlot } = useTableModel();
 
   const getInitTable = async (p?: any) => {
+    let newData = new Date().toLocaleString();
+    let occurTime = newData.replace(/\//g, '-');
     const [pageData] = p;
-    let data = [];
+    let data: any = [];
     try {
-      // const res =
+      let params = {
+        robotId: info.id,
+        occurTime,
+        page: pageData?.current,
+        ...pageData,
+      };
+      delete params?.current;
+      const res = await getWordSlotTable(params);
+      console.log(params, res);
       return {
-        data: soltTableFakeData,
+        data: res?.data || data,
         total: 10,
         current: pageData.current || 1,
         pageSize: pageData.pageSize,
       };
     } catch {
       return {
-        data: [],
+        data: data,
         total: 10,
         current: pageData.current || 1,
         pageSize: pageData.pageSize,
@@ -37,10 +53,12 @@ const DetailPages: React.FC = (props: any) => {
 
   const operateSlotSuccess = () => {
     handleOperModalVisible(false);
+    refreshTable();
   };
 
   const operateSlotCancel = () => {
     handleOperModalVisible(false);
+    refreshTable();
   };
 
   const operate = (data: any, type: string) => {
@@ -49,7 +67,11 @@ const DetailPages: React.FC = (props: any) => {
     handleOperModalTitle(type);
   };
 
-  const deleteSlot = (data: any) => {};
+  const deleteSlot = async (data: any) => {
+    const res: any = await deleteWordSlot({ robot: info.id, id: data.id });
+    message.info(res?.resultDesc);
+    refreshTable();
+  };
 
   const operationList = {
     dataIndex: 'operation',
@@ -72,6 +94,11 @@ const DetailPages: React.FC = (props: any) => {
     },
   };
 
+  const refreshTable = () => {
+    // @ts-ignore
+    actionRef?.current?.reloadAndRest();
+  };
+
   return (
     <React.Fragment>
       <ProTable
@@ -80,6 +107,7 @@ const DetailPages: React.FC = (props: any) => {
             <Button onClick={() => operate({}, 'add')}>新增词槽</Button>
           </Space>
         }
+        actionRef={actionRef}
         rowKey={(record) => Math.random()}
         columns={[...wordSlotTableList, operationList]}
         options={false}
@@ -92,7 +120,7 @@ const DetailPages: React.FC = (props: any) => {
       <OperateSlotModal
         visible={operModalVisible}
         title={operModalTitle}
-        modalData={operModalData}
+        modalData={{ ...operModalData, robotId: info.id }}
         onSubmit={operateSlotSuccess}
         onCancel={operateSlotCancel}
       />

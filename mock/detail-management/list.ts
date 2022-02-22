@@ -12,7 +12,7 @@ const getConfig = (req: any, res: any) => {
   console.log(req.query);
   res.json({
     resultCode: successCode,
-    data: {
+    datas: {
       silencecToDeal: '还在吗？',
       refuseToDeal: '没明白您的意思，能换个说法吗？',
       robotType: 0,
