@@ -28,7 +28,7 @@ const getLabelList = (req: any, res: any) => {
   console.log(req.query);
   res.json({
     resultCode: successCode,
-    data: [
+    datas: [
       {
         actionLabel: '话术标签1',
         id: 'hsbq1',

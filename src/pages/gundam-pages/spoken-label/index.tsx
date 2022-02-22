@@ -107,14 +107,14 @@ const DetailPages: React.FC = (props: any) => {
         return (
           <div>
             <div style={{ display: 'flex' }}>
-              <Button
+              {/* <Button
                 type="link"
                 onClick={() => {
                   labelModalRef.current?.open?.(row);
                 }}
               >
                 编辑
-              </Button>
+              </Button> */}
 
               <Popconfirm
                 title="删除将不可恢复，确认删除？"
