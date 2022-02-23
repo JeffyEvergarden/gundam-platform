@@ -1,5 +1,5 @@
 import { Col, Row, message } from 'antd';
-// import GGEditor, { Flow, Item } from 'gg-editor';
+import GGEditor, { Flow, Item } from 'gg-editor';
 
 import EditorMinimap from './components/EditorMinimap';
 import { FlowContextMenu } from './components/EditorContextMenu';
@@ -12,7 +12,7 @@ import { judgeLineByNode } from './utils/util';
 import eventbus from './utils/eventbus';
 import { useImperativeHandle } from 'react';
 
-// GGEditor.setTrackable(false);
+GGEditor.setTrackable(false);
 
 interface PageViewProps {
   cref?: any;
@@ -305,38 +305,37 @@ const EditorView = (props: PageViewProps) => {
   }, []);
 
   return (
-    <div>123</div>
-    // <GGEditor className={styles.editor} ref={editorRef}>
-    //   {/* 上层按钮   相关了解 commend 组件 */}
-    //   <Row style={{ height: '100%' }}>
-    //     <Col span={4}>
-    //       <FlowItemPanel />
-    //     </Col>
+    <GGEditor className={styles.editor} ref={editorRef}>
+      {/* 上层按钮   相关了解 commend 组件 */}
+      <Row style={{ height: '100%' }}>
+        <Col span={4}>
+          <FlowItemPanel />
+        </Col>
 
-    //     <Col span={20}>
-    //       <div className={styles['editor-box']}>
-    //         <div className={styles.editorHd}>
-    //           <FlowToolbar save={saveFn} />
-    //         </div>
+        <Col span={20}>
+          <div className={styles['editor-box']}>
+            <div className={styles.editorHd}>
+              <FlowToolbar save={saveFn} />
+            </div>
 
-    //         {/* 编辑部分   左菜单  中间编辑 */}
-    //         <Row className={styles.editorBd}>
-    //           <Col span={18} className={styles.editorContent}>
-    //             <Flow className={styles.flow} {...editorEvent} />
-    //           </Col>
+            {/* 编辑部分   左菜单  中间编辑 */}
+            <Row className={styles.editorBd}>
+              <Col span={18} className={styles.editorContent}>
+                <Flow className={styles.flow} {...editorEvent} />
+              </Col>
 
-    //           <Col span={6} className={styles.editorSidebar}>
-    //             <FlowDetailPanel openSetting={openSetting} />
-    //             <EditorMinimap />
-    //           </Col>
-    //         </Row>
-    //       </div>
-    //     </Col>
-    //   </Row>
+              <Col span={6} className={styles.editorSidebar}>
+                <FlowDetailPanel openSetting={openSetting} />
+                <EditorMinimap />
+              </Col>
+            </Row>
+          </div>
+        </Col>
+      </Row>
 
-    //   {/* 在元素下右键浮动按钮 */}
-    //   <FlowContextMenu onClick={_openSetting} />
-    // </GGEditor>
+      {/* 在元素下右键浮动按钮 */}
+      <FlowContextMenu onClick={_openSetting} />
+    </GGEditor>
   );
 };
 
