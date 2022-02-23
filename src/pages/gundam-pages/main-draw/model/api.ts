@@ -26,9 +26,16 @@ export async function updateNode(data?: { [key: string]: any }) {
     data,
   });
 }
-
+/** 获取机器人默认配置 **/
 export async function getMachineMainDraw(data?: { [key: string]: any }) {
   return request(`${baseUrl}/maindraw/config`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function getWishList(data?: { [key: string]: any }) {
+  return request('/robot/intent/intentList', {
     method: 'POST',
     data,
   });
