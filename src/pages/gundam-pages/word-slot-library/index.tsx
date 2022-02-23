@@ -14,9 +14,8 @@ const DetailPages: React.FC = (props: any) => {
   const [operModalData, handleOperModalData] = useState<any>({});
   const [operModalTitle, handleOperModalTitle] = useState<string>('');
 
-  const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
+  const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
-    setInfo: model.setInfo,
   }));
   const { getWordSlotTable, deleteWordSlot } = useTableModel();
 
