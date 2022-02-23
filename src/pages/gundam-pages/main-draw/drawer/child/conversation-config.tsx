@@ -10,6 +10,7 @@ import {
 import LabelSelect from '../components/label-select';
 import GlobalVarButton from '../components/global-var-button';
 import Condition from '@/components/Condition';
+import RuleSelect from '../components/rule-var-button';
 import styles from '../style.less';
 import { ACTION_LIST } from '../const';
 
@@ -18,7 +19,7 @@ const { TextArea } = Input;
 const { Option } = Select;
 
 const ConversationConfig = (props: any) => {
-  const { form } = props;
+  const { form, wishList, wordSlotList } = props;
 
   return (
     <div>
@@ -26,7 +27,7 @@ const ConversationConfig = (props: any) => {
         {(fields, { add, remove }) => {
           const addNew = () => {
             let length = fields.length;
-            console.log(length);
+            // console.log(length);
             add(
               {
                 reply_type: 'text',
@@ -163,7 +164,7 @@ const ConversationConfig = (props: any) => {
                       </FormItem>
 
                       <FormItem name={[field.name, 'rules_config']} label="规则配置">
-                        <LabelSelect color="orange"></LabelSelect>
+                        <RuleSelect wishList={wishList} wordSlotList={wordSlotList}></RuleSelect>
                       </FormItem>
                     </div>
                   </div>

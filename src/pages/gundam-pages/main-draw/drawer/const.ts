@@ -109,6 +109,32 @@ export const RUlE_LIST: any[] = [
     name: '系统时间',
     label: '系统时间',
     type: 'date',
+    list: [
+      {
+        name: '==',
+        label: '等于',
+      },
+      {
+        name: '!=',
+        label: '不等于',
+      },
+      {
+        name: '<',
+        label: '小于',
+      },
+      {
+        name: '<=',
+        label: '小于等于',
+      },
+      {
+        name: '>',
+        label: '大于',
+      },
+      {
+        name: '<=',
+        label: '大于等于',
+      },
+    ],
   },
   {
     name: '变量',

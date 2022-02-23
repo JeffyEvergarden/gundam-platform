@@ -4,9 +4,12 @@ import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import styles from './style.less';
 import { BUSINESS_NODE_LIST, LABEL_LIST } from './test';
 import { ACTION_LIST } from './const';
+import { useModel } from 'umi';
 import ConversationConfig from './child/conversation-config';
 import HighConfig from './child/high-config';
 import RuleModal from './components/rule-modal';
+import { useSelectModel } from '../model';
+import { useEffect } from 'react';
 
 const { Item: FormItem, List: FormList } = Form;
 const { TextArea } = Input;
@@ -24,6 +27,16 @@ const DrawerForm = (props: any) => {
   const list2: any = BUSINESS_NODE_LIST; // 业务流程节点
 
   const list3: any = LABEL_LIST; // 标签列表
+
+  const list4: any[] = []; // 词槽列表
+
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
+
+  // 意图列表、词槽列表
+  const { wishList, wordSlotList, getWishList, getWordSlotList } = useSelectModel();
+
   // -----------------------
   const [testVal, setTestVal] = useState<any>('');
 
@@ -33,12 +46,10 @@ const DrawerForm = (props: any) => {
   };
 
   const fake = useRef<any>(null);
-  const [form2] = Form.useForm();
   // 打开弹窗
   const openModal = () => {
     fake.current.open();
   };
-
   // ------------------------
 
   const onClose = () => {
@@ -55,6 +66,11 @@ const DrawerForm = (props: any) => {
   const saveNode = () => {
     console.log(form.getFieldsValue());
   };
+
+  useEffect(() => {
+    getWishList(info.id);
+    getWordSlotList(info.id);
+  }, []);
 
   // 尾部 footer 代码
   const footer = (
@@ -97,14 +113,18 @@ const DrawerForm = (props: any) => {
           ---------
         </FormItem> */}
 
-        <ConversationConfig form={form}></ConversationConfig>
+        <ConversationConfig
+          form={form}
+          wishList={wishList}
+          wordSlotList={wordSlotList}
+        ></ConversationConfig>
 
         <HighConfig form={form} wishList={list1} bussinessList={list2}></HighConfig>
       </Form>
 
       <Button onClick={openModal}>添加规则</Button>
 
-      <RuleModal cref={fake} wishList={list1} />
+      {/* <RuleModal cref={fake} wishList={wishList || []} wordSlotList={wordSlotList || []} /> */}
     </Drawer>
   );
 };

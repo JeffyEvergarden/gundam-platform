@@ -1,5 +1,16 @@
 import { useState, useMemo } from 'react';
-import { Drawer, Form, Input, Select, Button, Checkbox, Space, InputNumber, Radio } from 'antd';
+import {
+  Drawer,
+  Form,
+  Input,
+  Select,
+  Button,
+  Checkbox,
+  Space,
+  InputNumber,
+  Radio,
+  DatePicker,
+} from 'antd';
 import {
   PlusCircleOutlined,
   MinusCircleOutlined,
@@ -19,9 +30,9 @@ const { TextArea } = Input;
 const { Option } = Select;
 
 const RuleConfig = (props: any) => {
-  const { wishList, form } = props;
+  const { wishList, wordSlotList, form } = props;
 
-  const [num, setNum] = useState<any>(0);
+  // const [num, setNum] = useState<any>(0);
 
   // 监听数组变化
   const onValuesChange = (obj: any, curObj: any) => {
@@ -37,16 +48,22 @@ const RuleConfig = (props: any) => {
       return null;
     }
     let keys: any[] = Object.keys(item);
-    console.log(keys);
+    if (keys.length > 1) {
+      console.log('删除'); // 变动参数多代表是删除
+      return;
+    }
+    // console.log('-----------');
+    // console.log(obj, curObj, keys);
+    const formObj: any = form.getFieldsValue();
+    const rule_list: any[] = formObj?.rule_list;
     // 如果是rule_type 变动
     if (keys.includes('rule_type')) {
-      console.log(curObj);
       curObj[index].rule_var = undefined;
       curObj[index].compare = undefined; // todo
       curObj[index].value = undefined; // todo
     } else if (keys.includes('compare')) {
       if (['fill', 'unfill'].includes(curObj[index].compare)) {
-        console.log(curObj[index]);
+        // console.log(curObj[index]);
         curObj[index].value = undefined;
       } else if (
         Array.isArray(curObj[index].value) && // 该值是数组
@@ -61,7 +78,12 @@ const RuleConfig = (props: any) => {
         curObj[index].value = [curObj[index]?.value?.[1]];
       }
     }
-    setNum(num + 1); // 刷新
+    // 直接更改curObj[index] 无效
+    rule_list[index] = curObj[index];
+    form.setFieldsValue({
+      rule_list: [...curObj],
+    });
+    // setNum(num + 1); // 刷新
   };
 
   const { globalVarList } = useModel('gundam' as any, (model: any) => ({
@@ -85,14 +107,20 @@ const RuleConfig = (props: any) => {
             const addNew = () => {
               // console.log(fields);
               let length = fields.length;
-              console.log(length);
-              add({}, length);
+              add(
+                {
+                  rule_type: undefined,
+                  rule_var: undefined,
+                  compare: undefined,
+                  value: undefined,
+                },
+                length,
+              );
             };
 
             return (
-              <div style={{ paddingLeft: '20px' }}>
-                <div className={styles['title']}>
-                  触发规则
+              <div>
+                <div>
                   <Button
                     type="link"
                     icon={<AppstoreAddOutlined />}
@@ -134,9 +162,10 @@ const RuleConfig = (props: any) => {
                           <FormItem
                             name={[field.name, 'rule_type']}
                             fieldKey={[field.fieldKey, 'rule_type']}
+                            rules={[{ required: true, message: '请选择规则类型' }]}
                             style={{ width: '180px' }}
                           >
-                            <Select placeholder="请选择规则类型" size="small">
+                            <Select placeholder="请选择规则类型" size="small" showSearch>
                               {RUlE_LIST.map((item: any, index: number) => {
                                 return (
                                   <Option key={index} value={item.name} opt={item}>
@@ -147,30 +176,54 @@ const RuleConfig = (props: any) => {
                             </Select>
                           </FormItem>
 
-                          <FormItem
-                            name={[field.name, 'rule_var']}
-                            fieldKey={[field.fieldKey, 'rule_var']}
-                            style={{ width: '180px' }}
-                          >
-                            {/* 全局变量的情况 */}
-                            <Select placeholder="请选择变量/词槽名称" size="small">
-                              {tableList.map((item: any, index: number) => {
-                                return (
-                                  <Option key={index} value={item.name} opt={item}>
-                                    {item.label}
-                                  </Option>
-                                );
-                              })}
-                            </Select>
-                          </FormItem>
+                          <Condition r-if={rule_type === '变量'}>
+                            <FormItem
+                              name={[field.name, 'rule_var']}
+                              fieldKey={[field.fieldKey, 'rule_var']}
+                              style={{ width: '180px' }}
+                              rules={[{ required: true, message: '请选择变量名称' }]}
+                            >
+                              {/* 全局变量的情况 */}
+                              <Select placeholder="请选择变量名称" size="small" showSearch>
+                                {tableList.map((item: any, index: number) => {
+                                  return (
+                                    <Option key={index} value={item.name} opt={item}>
+                                      {item.label}
+                                    </Option>
+                                  );
+                                })}
+                              </Select>
+                            </FormItem>
+                          </Condition>
+
+                          <Condition r-if={rule_type !== '变量'}>
+                            <FormItem
+                              name={[field.name, 'rule_var']}
+                              fieldKey={[field.fieldKey, 'rule_var']}
+                              style={{ width: '180px' }}
+                              rules={[{ required: true, message: '请选择词槽名称' }]}
+                            >
+                              {/* 全局变量的情况 */}
+                              <Select placeholder="请选择词槽名称" size="small" showSearch>
+                                {wordSlotList.map((item: any, index: number) => {
+                                  return (
+                                    <Option key={index} value={item.name} opt={item}>
+                                      {item.label}
+                                    </Option>
+                                  );
+                                })}
+                              </Select>
+                            </FormItem>
+                          </Condition>
 
                           <FormItem
                             name={[field.name, 'compare']}
                             fieldKey={[field.fieldKey, 'compare']}
                             style={{ width: '140px' }}
+                            rules={[{ required: true, message: '请选择比较关系' }]}
                           >
                             {/* 全局变量的情况 */}
-                            <Select placeholder="请选择比较关系" size="small">
+                            <Select placeholder="请选择比较关系" size="small" showSearch>
                               {compareList.map((item: any, index: number) => {
                                 return (
                                   <Option key={index} value={item.name} opt={item}>
@@ -188,8 +241,9 @@ const RuleConfig = (props: any) => {
                                 name={[field.name, 'value']}
                                 fieldKey={[field.fieldKey, 'value']}
                                 style={{ width: '120px' }}
+                                rules={[{ required: true, message: '请选择' }]}
                               >
-                                <Select placeholder="请选择用户意图" size="small">
+                                <Select placeholder="请选择用户意图" size="small" showSearch>
                                   {wishList.map((item: any, index: number) => {
                                     return (
                                       <Option key={index} value={item.name} opt={item}>
@@ -205,8 +259,14 @@ const RuleConfig = (props: any) => {
                                 name={[field.name, 'value']}
                                 fieldKey={[field.fieldKey, 'value']}
                                 style={{ width: '120px' }}
+                                rules={[{ required: true, message: '请选择' }]}
                               >
-                                <Select placeholder="请选择用户意图" size="small" mode={'multiple'}>
+                                <Select
+                                  placeholder="请选择用户意图"
+                                  size="small"
+                                  mode={'multiple'}
+                                  showSearch
+                                >
                                   {wishList.map((item: any, index: number) => {
                                     return (
                                       <Option key={index} value={item.name} opt={item}>
@@ -226,6 +286,7 @@ const RuleConfig = (props: any) => {
                                 name={[field.name, 'value']}
                                 fieldKey={[field.fieldKey, 'value']}
                                 style={{ width: '120px' }}
+                                rules={[{ required: true, message: '请选择' }]}
                               >
                                 <Input
                                   placeholder="请输入"
@@ -243,6 +304,7 @@ const RuleConfig = (props: any) => {
                               name={[field.name, 'value']}
                               fieldKey={[field.fieldKey, 'value']}
                               style={{ width: '120px' }}
+                              rules={[{ required: true, message: '请输入' }]}
                             >
                               <Input
                                 placeholder="请输入"
@@ -258,16 +320,25 @@ const RuleConfig = (props: any) => {
                               name={[field.name, 'value']}
                               fieldKey={[field.fieldKey, 'value']}
                               style={{ width: '120px' }}
+                              rules={[{ required: true, message: '请输入' }]}
                             >
-                              <Select placeholder="请选择变量" size="small">
-                                {tableList.map((item: any, index: number) => {
-                                  return (
-                                    <Option key={index} value={item.name} opt={item}>
-                                      {item.label}
-                                    </Option>
-                                  );
-                                })}
-                              </Select>
+                              <Input
+                                placeholder="请输入"
+                                maxLength={150}
+                                autoComplete="off"
+                                size="small"
+                              />
+                            </FormItem>
+                          </Condition>
+
+                          <Condition r-if={['系统时间'].includes(rule_type)}>
+                            <FormItem
+                              name={[field.name, 'value']}
+                              fieldKey={[field.fieldKey, 'value']}
+                              style={{ width: '120px' }}
+                              rules={[{ required: true, message: '请选择' }]}
+                            >
+                              <DatePicker placeholder="请选择系统时间" size="small" />
                             </FormItem>
                           </Condition>
                         </Space>

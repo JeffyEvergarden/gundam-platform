@@ -57,8 +57,8 @@ const getLabelList = (req: any, res: any) => {
 // 菜单管理相关
 export default {
   // 话术标签管理相关
-  'GET /robot/actionLabel/actionLabelList': getLabelList, //话术标签列表
-  'POST /robot/actionLabel/actionLabelAdd': addNewLabel, //话术标签新增
-  'POST /robot/actionLabel/actionLabelUpdate': editLabel, //话术标签编辑
-  'POST /robot/actionLabel/actionLabelDelete': deleteLabel, //话术标签删除
+  'GET /aichat/robot/actionLabel/actionLabelList': getLabelList, //话术标签列表
+  'POST /aichat/robot/actionLabel/actionLabelAdd': addNewLabel, //话术标签新增
+  'POST /aichat/robot/actionLabel/actionLabelUpdate': editLabel, //话术标签编辑
+  'POST /aichat/robot/actionLabel/actionLabelDelete': deleteLabel, //话术标签删除
 };
