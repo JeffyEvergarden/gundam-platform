@@ -7,7 +7,11 @@ export const operateFormList = [
     rules: [
       { required: true, message: '请输入意图名称' },
       //   { trigger: 'blur' },
-      { pattern: '/[^a-zA-Z0-9\u4E00-\u9FA5_-]/' },
+      // { pattern: '/[^a-zA-Z0-9\u4E00-\u9FA5_-]/' },
+      {
+        pattern: /^[A-Za-z0-9_\-\u4e00-\u9fa5]+$/g,
+        message: '请输入汉字、字母、下划线、数字、横杠',
+      },
       { max: 150, min: 1 },
     ],
   },

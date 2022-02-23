@@ -55,13 +55,13 @@ export default (props: any) => {
             return (
               <React.Fragment key={item.name}>
                 {item.type == 'input' && (
-                  <Form.Item name={item.name} label={item.label}>
+                  <Form.Item name={item.name} label={item.label} rules={item.rules}>
                     <Input />
                   </Form.Item>
                 )}
 
                 {item.type == 'radio' && (
-                  <Form.Item name={item.name} label={item.label}>
+                  <Form.Item name={item.name} label={item.label} rules={item.rules}>
                     <Radio.Group disabled={title == 'edit'}>
                       <Radio value="0">是</Radio>
                       <Radio value="1">否</Radio>
