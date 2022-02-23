@@ -4,7 +4,7 @@ import { useModel } from 'umi';
 import ProTable from '@ant-design/pro-table';
 import type { ActionType } from '@ant-design/pro-table';
 import { businessTableColumnsList } from './config';
-import { Button, Space } from 'antd';
+import { Button, message, Space } from 'antd';
 import { useTableModel } from './model';
 import OperateFlowModal from './comps/operateFlowModal';
 import { InfoCircleFilled } from '_@ant-design_icons@4.7.0@@ant-design/icons';
@@ -67,7 +67,7 @@ const DetailPages: React.FC = (props: any) => {
       <Space>
         <a onClick={() => operateBusiness(record, 'edit')}>编辑</a>
         <a>配置</a>
-        <a>删除</a>
+        <a onClick={() => deleteFlowFunc(record)}>删除</a>
       </Space>
     ),
   };
@@ -75,6 +75,15 @@ const DetailPages: React.FC = (props: any) => {
   // 新增、编辑 弹窗框 传递的方法
   const operateFunc = (type: string) => {
     handleOperFlowVisible(false);
+  };
+
+  const deleteFlowFunc = async (data: any) => {
+    let params = {
+      occurTime: '',
+      id: data.id,
+    };
+    const res: any = await deleteFlowData(params);
+    message.info(res?.resultDesc);
   };
 
   return (
