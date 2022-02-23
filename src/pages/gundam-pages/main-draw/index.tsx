@@ -16,8 +16,9 @@ const MainDraw = (props: any) => {
 
   const drawerRef = useRef<any>(null);
 
-  const { info } = useModel('gundam' as any, (model: any) => ({
+  const { info, getLabelList } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
+    getLabelList: model.getLabelList,
   }));
 
   const { addNode, deleteNode, updateNode, getMachineMainDraw } = useNodeOpsModel();
@@ -79,7 +80,9 @@ const MainDraw = (props: any) => {
 
   // 初始化设置
   useEffect(() => {
-    getMachineInfo();
+    getMachineInfo(); // 获取机器人主流程信息
+    getLabelList(); // 获取话术标签
+    getWishList(); // 获取意图列表
     (drawerRef.current as any).open();
   }, []);
   // -- end-----

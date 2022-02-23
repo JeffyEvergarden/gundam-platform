@@ -1,18 +1,17 @@
 import { useState } from 'react';
 import { message } from 'antd';
 
-import { getIntentList, addNewIntent, editIntent, deleteIntent } from './api';
+import { getWordSlotTableList, addWordSlotItem, editWordSlotItem, deleteWordSlotItem } from './api';
 
 export const successCode = 100;
 
 // 菜单管理的表格数据
 export const useTableModel = () => {
-  const [tableList, setTableList] = useState<any[]>([]);
   const [tableLoading, setTableLoading] = useState<boolean>(false);
 
-  const getIntentTableList = async (params?: any) => {
+  const getWordSlotTable = async (params?: any) => {
     setTableLoading(true);
-    let res: any = await getIntentList(params);
+    let res: any = await getWordSlotTableList(params);
     setTableLoading(false);
     let { datas = [] } = res;
     if (!Array.isArray(datas)) {
@@ -21,9 +20,9 @@ export const useTableModel = () => {
     return res;
   };
 
-  const addIntentItem = async (params?: any) => {
+  const addWordSlot = async (params?: any) => {
     setTableLoading(true);
-    let res: any = await addNewIntent(params);
+    let res: any = await addWordSlotItem(params);
     setTableLoading(false);
     let { data = [] } = res;
     if (!Array.isArray(data)) {
@@ -37,9 +36,9 @@ export const useTableModel = () => {
     };
   };
 
-  const editIntentItem = async (params?: any) => {
+  const editWordSlot = async (params?: any) => {
     setTableLoading(true);
-    let res: any = await editIntent(params);
+    let res: any = await editWordSlotItem(params);
     setTableLoading(false);
     let { data = [] } = res;
     if (!Array.isArray(data)) {
@@ -53,9 +52,9 @@ export const useTableModel = () => {
     };
   };
 
-  const deleteIntentItem = async (params?: any) => {
+  const deleteWordSlot = async (params?: any) => {
     setTableLoading(true);
-    let res: any = await deleteIntent(params);
+    let res: any = await deleteWordSlotItem(params);
     setTableLoading(false);
     let { data = [] } = res;
     if (!Array.isArray(data)) {
@@ -70,10 +69,10 @@ export const useTableModel = () => {
   };
 
   return {
-    getIntentTableList,
-    addIntentItem,
-    editIntentItem,
-    deleteIntentItem,
+    getWordSlotTable,
+    addWordSlot,
+    editWordSlot,
+    deleteWordSlot,
     tableLoading,
   };
 };

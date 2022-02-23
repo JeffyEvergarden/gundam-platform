@@ -13,9 +13,9 @@ const tailLayout = {
 };
 
 export default (props: any) => {
-  const { visible, title, modalData, submit, cancel, robotId } = props;
+  const { visible, title, modalData, submit, cancel } = props;
   const [form] = Form.useForm();
-  const { addIntentItem, editIntentItem, tableLoading } = useTableModel();
+  const { addIntentItem, editIntentItem } = useTableModel();
   useEffect(() => {
     if (visible) {
       if (title == 'edit') {
@@ -32,13 +32,13 @@ export default (props: any) => {
 
   const operSubmit = async () => {
     const values = await form.validateFields();
-    let res;
+    let res: any;
     if (title == 'edit') {
-      res = editIntentItem({ robotId, ...values, id: modalData.id });
+      res = editIntentItem({ ...values, id: modalData.id, robotId: modalData.robotId });
     } else if (title == 'add') {
-      res = addIntentItem({ robotId, ...values });
+      res = addIntentItem({ robotId: modalData.robotId, ...values });
     }
-    console.log('value', values);
+    message.info(res?.resultDesc || '正在处理');
     submit();
   };
 
@@ -55,13 +55,13 @@ export default (props: any) => {
             return (
               <React.Fragment key={item.name}>
                 {item.type == 'input' && (
-                  <Form.Item name={item.name} label={item.label}>
+                  <Form.Item name={item.name} label={item.label} rules={item.rules}>
                     <Input />
                   </Form.Item>
                 )}
 
                 {item.type == 'radio' && (
-                  <Form.Item name={item.name} label={item.label}>
+                  <Form.Item name={item.name} label={item.label} rules={item.rules}>
                     <Radio.Group disabled={title == 'edit'}>
                       <Radio value="0">是</Radio>
                       <Radio value="1">否</Radio>

@@ -59,8 +59,8 @@ const deleteIntentItem = (req: any, res: any) => {
 // 意图管理相关
 export default {
   // 机器人管理相关
-  'GET /robot/intent/intentList': getIntentList, // 获取意图管理列表
-  'POST /robot/intent/intentAdd': addNewIntent, // 新增意图
-  'POST /robot/intent/intentUpdate': editIntent, // 编辑意图
-  'POST /robot/intent/intentDelete': deleteIntentItem, // 删除意图
+  'GET /aichat/robot/intent/intentList': getIntentList, // 获取意图管理列表
+  'POST /aichat/robot/intent/intentAdd': addNewIntent, // 新增意图
+  'POST /aichat/robot/intent/intentUpdate': editIntent, // 编辑意图
+  'POST /aichat/robot/intent/intentDelete': deleteIntentItem, // 删除意图
 };

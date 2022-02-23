@@ -1,6 +1,8 @@
 import { request } from '@/services/request';
 
-const baseUrl: string = '';
+import config from '@/config';
+
+const baseUrl: string = config.basePath;
 
 /** 获取所有意图列表 **/
 export async function getIntentList(params?: { [key: string]: any }) {
