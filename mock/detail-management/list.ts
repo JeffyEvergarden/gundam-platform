@@ -52,6 +52,6 @@ const getConfig = (req: any, res: any) => {
 };
 
 export default {
-  'POST /robot/config/configInfo': getConfig, //
-  'POST /robot/config/configUpdate': editConfig, //
+  'POST /aichat/robot/config/configInfo': getConfig, //
+  'POST /aichat/robot/config/configUpdate': editConfig, //
 };
