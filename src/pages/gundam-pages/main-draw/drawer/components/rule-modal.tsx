@@ -6,7 +6,7 @@ import { useModel } from 'umi';
 import RulesConfig from '../child/rules-config';
 
 const RuleModal: React.FC<any> = (props: any) => {
-  const { cref, onConfirm, wishList } = props;
+  const { cref, confirm, wishList, wordSlotList } = props;
 
   const [form] = Form.useForm();
 
@@ -21,11 +21,14 @@ const RuleModal: React.FC<any> = (props: any) => {
     },
   }));
 
-  const submit = () => {
-    console.log(form.getFieldsValue());
-    console.log(form.validateFields());
-    onConfirm?.();
-    setVisible(false);
+  const submit = async () => {
+    try {
+      let values: any = await form.validateFields();
+      confirm?.(values?.rule_list || []);
+      setVisible(false);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -38,7 +41,7 @@ const RuleModal: React.FC<any> = (props: any) => {
       onOk={submit}
     >
       <div className={style['form-box']}>
-        <RulesConfig form={form} wishList={wishList} />
+        <RulesConfig form={form} wishList={wishList} wordSlotList={wordSlotList} />
       </div>
     </Modal>
   );

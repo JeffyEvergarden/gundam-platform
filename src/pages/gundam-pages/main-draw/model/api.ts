@@ -34,9 +34,16 @@ export async function getMachineMainDraw(data?: { [key: string]: any }) {
   });
 }
 
-export async function getWishList(data?: { [key: string]: any }) {
-  return request('/robot/intent/intentList', {
-    method: 'POST',
-    data,
+export async function getIntentList(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/intent/intentList`, {
+    method: 'GET',
+    params,
+  });
+}
+
+export async function getWordSlotTableList(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/slot/slotList`, {
+    method: 'GET',
+    params,
   });
 }
