@@ -1,5 +1,16 @@
 import { useState, useMemo } from 'react';
-import { Drawer, Form, Input, Select, Button, Checkbox, Space, InputNumber, Radio } from 'antd';
+import {
+  Drawer,
+  Form,
+  Input,
+  Select,
+  Button,
+  Checkbox,
+  Space,
+  InputNumber,
+  Radio,
+  DatePicker,
+} from 'antd';
 import {
   PlusCircleOutlined,
   MinusCircleOutlined,
@@ -37,7 +48,8 @@ const RuleConfig = (props: any) => {
       return null;
     }
     let keys: any[] = Object.keys(item);
-    console.log(keys);
+    // const formObj: any = form.getFieldsValue();
+    // const rule_list: any[] = formObj?.rule_list;
     // 如果是rule_type 变动
     if (keys.includes('rule_type')) {
       console.log(curObj);
@@ -61,7 +73,12 @@ const RuleConfig = (props: any) => {
         curObj[index].value = [curObj[index]?.value?.[1]];
       }
     }
-    setNum(num + 1); // 刷新
+    // 直接更改curObj[index] 无效
+    // rule_list[index] = curObj[index];
+    form.setFieldsValue({
+      rule_list: [...curObj],
+    });
+    // setNum(num + 1); // 刷新
   };
 
   const { globalVarList } = useModel('gundam' as any, (model: any) => ({
@@ -134,6 +151,7 @@ const RuleConfig = (props: any) => {
                           <FormItem
                             name={[field.name, 'rule_type']}
                             fieldKey={[field.fieldKey, 'rule_type']}
+                            rules={[{ required: true, message: '请选择规则类型' }]}
                             style={{ width: '180px' }}
                           >
                             <Select placeholder="请选择规则类型" size="small">
@@ -151,6 +169,7 @@ const RuleConfig = (props: any) => {
                             name={[field.name, 'rule_var']}
                             fieldKey={[field.fieldKey, 'rule_var']}
                             style={{ width: '180px' }}
+                            rules={[{ required: true, message: '请选择变量/词槽名称' }]}
                           >
                             {/* 全局变量的情况 */}
                             <Select placeholder="请选择变量/词槽名称" size="small">
@@ -168,6 +187,7 @@ const RuleConfig = (props: any) => {
                             name={[field.name, 'compare']}
                             fieldKey={[field.fieldKey, 'compare']}
                             style={{ width: '140px' }}
+                            rules={[{ required: true, message: '请选择比较关系' }]}
                           >
                             {/* 全局变量的情况 */}
                             <Select placeholder="请选择比较关系" size="small">
@@ -188,6 +208,7 @@ const RuleConfig = (props: any) => {
                                 name={[field.name, 'value']}
                                 fieldKey={[field.fieldKey, 'value']}
                                 style={{ width: '120px' }}
+                                rules={[{ required: true, message: '请选择' }]}
                               >
                                 <Select placeholder="请选择用户意图" size="small">
                                   {wishList.map((item: any, index: number) => {
@@ -205,6 +226,7 @@ const RuleConfig = (props: any) => {
                                 name={[field.name, 'value']}
                                 fieldKey={[field.fieldKey, 'value']}
                                 style={{ width: '120px' }}
+                                rules={[{ required: true, message: '请选择' }]}
                               >
                                 <Select placeholder="请选择用户意图" size="small" mode={'multiple'}>
                                   {wishList.map((item: any, index: number) => {
@@ -226,6 +248,7 @@ const RuleConfig = (props: any) => {
                                 name={[field.name, 'value']}
                                 fieldKey={[field.fieldKey, 'value']}
                                 style={{ width: '120px' }}
+                                rules={[{ required: true, message: '请选择' }]}
                               >
                                 <Input
                                   placeholder="请输入"
@@ -243,6 +266,7 @@ const RuleConfig = (props: any) => {
                               name={[field.name, 'value']}
                               fieldKey={[field.fieldKey, 'value']}
                               style={{ width: '120px' }}
+                              rules={[{ required: true, message: '请输入' }]}
                             >
                               <Input
                                 placeholder="请输入"
@@ -258,16 +282,25 @@ const RuleConfig = (props: any) => {
                               name={[field.name, 'value']}
                               fieldKey={[field.fieldKey, 'value']}
                               style={{ width: '120px' }}
+                              rules={[{ required: true, message: '请输入' }]}
                             >
-                              <Select placeholder="请选择变量" size="small">
-                                {tableList.map((item: any, index: number) => {
-                                  return (
-                                    <Option key={index} value={item.name} opt={item}>
-                                      {item.label}
-                                    </Option>
-                                  );
-                                })}
-                              </Select>
+                              <Input
+                                placeholder="请输入"
+                                maxLength={150}
+                                autoComplete="off"
+                                size="small"
+                              />
+                            </FormItem>
+                          </Condition>
+
+                          <Condition r-if={['系统时间'].includes(rule_type)}>
+                            <FormItem
+                              name={[field.name, 'value']}
+                              fieldKey={[field.fieldKey, 'value']}
+                              style={{ width: '120px' }}
+                              rules={[{ required: true, message: '请选择' }]}
+                            >
+                              <DatePicker placeholder="请选择系统时间" size="small" />
                             </FormItem>
                           </Condition>
                         </Space>

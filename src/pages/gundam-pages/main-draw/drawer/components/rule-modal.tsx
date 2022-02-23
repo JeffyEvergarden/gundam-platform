@@ -23,6 +23,7 @@ const RuleModal: React.FC<any> = (props: any) => {
 
   const submit = () => {
     console.log(form.getFieldsValue());
+    console.log(form.validateFields());
     onConfirm?.();
     setVisible(false);
   };
