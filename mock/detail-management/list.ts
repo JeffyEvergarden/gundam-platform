@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-const successCode = '000000';
+const successCode = '100';
 const editConfig = (req: any, res: any) => {
   console.log(req.query);
   res.json({
@@ -12,7 +12,7 @@ const getConfig = (req: any, res: any) => {
   console.log(req.query);
   res.json({
     resultCode: successCode,
-    data: {
+    datas: {
       silencecToDeal: '还在吗？',
       refuseToDeal: '没明白您的意思，能换个说法吗？',
       robotType: 0,
@@ -52,6 +52,6 @@ const getConfig = (req: any, res: any) => {
 };
 
 export default {
-  'POST /robot/config/configInfo': getConfig, //
-  'POST /robot/config/configUpdate': editConfig, //
+  'POST /aichat/robot/config/configInfo': getConfig, //
+  'POST /aichat/robot/config/configUpdate': editConfig, //
 };

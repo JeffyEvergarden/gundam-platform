@@ -8,7 +8,7 @@ const baseUrl = config.basePath;
 const getList = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
-    data: [
+    datas: [
       {
         id: 100,
         robotName: '冰果0',
@@ -113,6 +113,10 @@ const addNewMachine = (req: any, res: any) => {
 // 菜单管理相关
 export default {
   // 机器人管理相关
+  'GET /robot/robot/robotList': getList, // 获取机器人管理列表
+  'POST /robot/robot/robotStatus': changeMachineStatus, // 修改业务状态
+  'POST /robot/robot/robotAdd': addNewMachine,
+  'POST /robot/robot/robotUpdate': addNewMachine,
   'GET /aichat/robot/robot/robotList': getList, // 获取机器人管理列表
   'POST /aichat/robot/robot/robotStatus': changeMachineStatus, // 修改业务状态
   'POST /aichat/robot/robot/robotAdd': addNewMachine,

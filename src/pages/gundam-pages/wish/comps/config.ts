@@ -7,7 +7,11 @@ export const operateFormList = [
     rules: [
       { required: true, message: '请输入意图名称' },
       //   { trigger: 'blur' },
-      { pattern: '/[^a-zA-Z0-9\u4E00-\u9FA5_-]/' },
+      // { pattern: '/[^a-zA-Z0-9\u4E00-\u9FA5_-]/' },
+      {
+        pattern: /^[A-Za-z0-9_\-\u4e00-\u9fa5]+$/g,
+        message: '请输入汉字、字母、下划线、数字、横杠',
+      },
       { max: 150, min: 1 },
     ],
   },
@@ -84,31 +88,6 @@ export const tableList: any = [
     dataIndex: 'createTime',
     title: '创建时间',
     search: false,
-  },
-];
-
-export const fakeData = [
-  {
-    intentName: '意图1',
-    id: '001',
-    inquiryText: '澄清1',
-    headIntent: '0',
-    flowName: '业务流程1',
-    intentDesc: '意图描述1',
-    status: '0',
-    creator: 'yyb',
-    createTime: '2022-02-14',
-  },
-  {
-    intentName: '意图2',
-    id: '002',
-    inquiryText: '澄清2',
-    headIntent: '1',
-    flowName: '业务流程2',
-    intentDesc: '意图描述2',
-    status: '1',
-    creator: 'yyb',
-    createTime: '2022-02-18',
   },
 ];
 

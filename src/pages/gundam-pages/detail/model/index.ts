@@ -3,7 +3,7 @@ import { message } from 'antd';
 
 import { getConfig, editConfig } from './api';
 
-export const successCode = '000000';
+export const successCode = '100';
 
 // 机器人配置
 export const useConfigModel = () => {

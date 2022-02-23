@@ -3,7 +3,7 @@ import { message } from 'antd';
 
 import { getLabelList, deleteLabel, addNewLabel, editLabel } from './api';
 
-export const successCode = '000000';
+export const successCode = '100';
 
 // 菜单管理的表格数据
 export const useLabelModel = () => {
@@ -15,11 +15,11 @@ export const useLabelModel = () => {
     setLabelLoading(true);
     let res: any = await getLabelList(params);
     setLabelLoading(false);
-    let { data = [] } = res;
-    if (!Array.isArray(data)) {
-      data = [];
+    let { datas = [], totalPage } = res;
+    if (!Array.isArray(datas)) {
+      datas = [];
     }
-    data = data.map((item: any, index: number) => {
+    datas = datas.map((item: any, index: number) => {
       return {
         ...item,
         title: item.name,
@@ -27,8 +27,8 @@ export const useLabelModel = () => {
       };
     });
     // console.log('labelList', data);
-    setLabelList(data || []);
-    return { data };
+    setLabelList(datas || []);
+    return { data: datas, total: totalPage };
   };
 
   return {
@@ -50,10 +50,10 @@ export const useOpModel = () => {
     let res: any = await deleteLabel(data);
     setLoading(false);
     if (res.resultCode === successCode) {
-      message.success(res?.resultDesc || '删除标签成功');
+      // message.success(res?.resultDesc || '删除标签成功');
       return true;
     } else {
-      return res?.resultDesc || '未知系统异常';
+      // return res?.resultDesc || '未知系统异常';
     }
   };
 

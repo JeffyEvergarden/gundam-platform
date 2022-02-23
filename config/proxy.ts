@@ -8,8 +8,8 @@
  */
 export default {
   dev: {
-    '/unifyportal': {
-      target: 'http://11.113.0.77:18180',
+    '/robot/': {
+      target: 'http://10.192.174.85:9085',
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },

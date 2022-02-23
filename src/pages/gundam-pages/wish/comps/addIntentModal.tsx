@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Form, Row, Col, Input, Button, Select, Radio, Space, message } from 'antd';
 import { operateFormList } from './config';
+import { useTableModel } from '../model';
 const { Option } = Select;
 
 const layout = {
@@ -14,6 +15,7 @@ const tailLayout = {
 export default (props: any) => {
   const { visible, title, modalData, submit, cancel } = props;
   const [form] = Form.useForm();
+  const { addIntentItem, editIntentItem } = useTableModel();
   useEffect(() => {
     if (visible) {
       if (title == 'edit') {
@@ -30,7 +32,13 @@ export default (props: any) => {
 
   const operSubmit = async () => {
     const values = await form.validateFields();
-    console.log('value', values);
+    let res: any;
+    if (title == 'edit') {
+      res = editIntentItem({ ...values, id: modalData.id, robotId: modalData.robotId });
+    } else if (title == 'add') {
+      res = addIntentItem({ robotId: modalData.robotId, ...values });
+    }
+    message.info(res?.resultDesc || '正在处理');
     submit();
   };
 
