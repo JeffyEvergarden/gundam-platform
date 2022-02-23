@@ -51,3 +51,10 @@ export const useNodeOpsModel = () => {
     getMachineMainDraw: _getMachineMainDraw,
   };
 };
+
+const useWishModel = () => {
+  const [wishList, setWishList] = useState<any[]>();
+
+  // 获取意图列表
+  const getWishList = () => {};
+};

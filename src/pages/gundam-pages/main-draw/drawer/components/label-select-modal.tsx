@@ -1,15 +1,18 @@
 import { useState, useImperativeHandle, useEffect, useMemo } from 'react';
-import { Modal, Button, Table } from 'antd';
+import { Modal, Button, Table, Tooltip } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import style from './style.less';
 import { useModel } from 'umi';
-import GlobalVarButton from './global-var-button';
 
-const GlobalVarModal: React.FC<any> = (props: any) => {
-  const { cref, onConfirm } = props;
+const LabelSelectModal: React.FC<any> = (props: any) => {
+  const { cref, confirm, list } = props;
+
+  const { labelList } = useModel('gundam' as any, (model: any) => ({
+    labelList: model.labelList,
+  }));
 
   const [visible, setVisible] = useState<boolean>(false);
-
+  // 页码
   const [current, setCurrent] = useState<number>(1);
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>(null);
@@ -20,18 +23,14 @@ const GlobalVarModal: React.FC<any> = (props: any) => {
     setCurrent(val);
   };
 
-  const { globalVarList } = useModel('gundam' as any, (model: any) => ({
-    globalVarList: model.globalVarList || [],
-  }));
-
   const tableList: any[] = useMemo(() => {
-    return globalVarList.map((item: any, index: number) => {
+    return labelList.map((item: any, index: number) => {
       return {
         ...item,
         index: index,
       };
     });
-  }, [globalVarList]);
+  }, [labelList]);
 
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
@@ -47,25 +46,34 @@ const GlobalVarModal: React.FC<any> = (props: any) => {
 
   const columns: any[] = [
     {
-      title: '变量值',
-      dataIndex: 'name',
+      title: '标签名称',
+      dataIndex: 'actionLabel',
       width: 200,
     },
     {
-      title: '变量名称',
-      dataIndex: 'label',
-      width: 200,
+      title: '标签描述',
+      dataIndex: 'labelDesc',
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (val: any) => (
+        <Tooltip placement="topLeft" title={val}>
+          {val}
+        </Tooltip>
+      ),
     },
     {
-      title: '变量描述',
-      dataIndex: 'desc',
+      title: '创建者',
+      dataIndex: 'creator',
+      width: 180,
     },
   ];
 
   useImperativeHandle(cref, () => ({
     open: (val: any[]) => {
+      console.log(labelList);
       setCurrent(1);
-      setSelectedRowKeys(val || null);
+      setSelectedRowKeys(val || []);
       setVisible(true);
     },
     close: () => {
@@ -74,15 +82,18 @@ const GlobalVarModal: React.FC<any> = (props: any) => {
   }));
 
   const submit = () => {
-    onConfirm?.(selectRow);
-    console.log(selectRow);
+    let list: any = tableList.filter((item: any) => {
+      return selectedRowKeys.includes(item.id);
+    });
+    console.log(list);
+    confirm?.(list);
     setVisible(false);
   };
 
   return (
     <Modal
       width={700}
-      title={'选择变量'}
+      title={'选择标签'}
       visible={visible}
       onCancel={() => setVisible(false)}
       okText={'确定'}
@@ -91,7 +102,7 @@ const GlobalVarModal: React.FC<any> = (props: any) => {
       <div className={style['table-box']}>
         <Table
           rowSelection={{
-            type: 'radio',
+            type: 'checkbox',
             ...rowSelection,
             selectedRowKeys,
           }}
@@ -99,7 +110,7 @@ const GlobalVarModal: React.FC<any> = (props: any) => {
           pagination={{ current, onChange }}
           dataSource={tableList}
           columns={columns}
-          rowKey="index"
+          rowKey="id"
           // loading={tableLoading}
         />
       </div>
@@ -107,4 +118,4 @@ const GlobalVarModal: React.FC<any> = (props: any) => {
   );
 };
 
-export default GlobalVarModal;
+export default LabelSelectModal;
