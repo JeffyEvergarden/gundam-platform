@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Form, Card, Input, Radio, Select, Space, Button } from 'antd';
+import { Row, Col, Form, Card, Input, Radio, Select, Button, message } from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
 import { robotChatFormList } from './config';
 import RobotChatText from './chatText';
+import { useChatModel } from './model';
+import { useModel } from 'umi';
 
 const { Option } = Select;
 
@@ -25,7 +27,11 @@ export default (props: any) => {
     ],
   });
   const [robotChatData, setRobotChatData] = useState<any>({});
-  const [robotShowFlag, setRobotShowFlag] = useState<boolean>(false);
+  const [robotShowFlag, setRobotShowFlag] = useState<boolean>(false); // 是否展示 对话文本框
+  const { getRobotChatData } = useChatModel();
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
 
   useEffect(() => {
     form.setFieldsValue({
@@ -46,11 +52,26 @@ export default (props: any) => {
   }, []);
 
   const showChatText = async () => {
+    console.log('info', info);
     const values = await form.validateFields();
     const data = form.getFieldsValue();
     let newData = { ...data };
-    setRobotChatData(newData);
-    setRobotShowFlag(true);
+    let params = {
+      requestId: '',
+      occurTime: '',
+      systemCode: '',
+      data: { ...newData },
+      customerId: '',
+      validity: '',
+      robotId: info.id,
+      businessCode: info.businessCode,
+    };
+    const res: any = await getRobotChatData(params);
+    message.info(res?.resultDesc || '正在处理');
+    if (res?.resultCode == 100) {
+      setRobotChatData(res);
+      setRobotShowFlag(true);
+    }
   };
 
   return (

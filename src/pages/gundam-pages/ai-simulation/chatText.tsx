@@ -2,12 +2,19 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Input, Button, Tag, Image, Row, Col, message } from 'antd';
 import styles from './style.less';
 import { QqOutlined } from '@ant-design/icons';
+import { useChatModel } from './model';
 const { TextArea } = Input;
 
 export default (props: any) => {
   const { visible, modalData } = props;
   const [dialogList, setDialogList] = useState<any>([]); // 对话内容
-  const [textMessage, setTextMessage] = useState<string>(''); // 输入的信息
+  const [textMessage, setTextMessage] = useState<string>(''); // 输入的信息，发送成功之后立马清空
+  const { getDialogData } = useChatModel();
+  useEffect(() => {
+    if (visible) {
+      // console.log('chatData', modalData);
+    }
+  }, [visible]);
 
   // 保存输入的文字内容
   const saveInputValue = (data: any) => {
@@ -18,8 +25,18 @@ export default (props: any) => {
     setTextMessage(data.target.value);
   };
 
-  const robotResponse = (data: any) => {
-    setTextMessage('');
+  const robotResponse = async (data: any) => {
+    let params = {
+      requestId: modalData.requestId,
+      occurTime: '',
+      systemCode: '',
+      sessionId: modalData.sessionId,
+      message: textMessage,
+      event: '',
+      actionType: 'text',
+    };
+    const res: any = await getDialogData(params);
+
     new Promise((resolve: any, reject: any) => {
       let newData = [...data];
       newData.push({
@@ -29,6 +46,7 @@ export default (props: any) => {
       setDialogList(newData);
       resolve();
     });
+    setTextMessage('');
   };
 
   // 发送按钮

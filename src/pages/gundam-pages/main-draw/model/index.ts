@@ -1,7 +1,14 @@
 import { useState } from 'react';
 import { message } from 'antd';
 import config from '@/config';
-import { addNode, deleteNode, updateNode, getMachineMainDraw } from './api';
+import {
+  addNode,
+  deleteNode,
+  updateNode,
+  getMachineMainDraw,
+  getIntentList,
+  getWordSlotTableList,
+} from './api';
 
 export const useNodeOpsModel = () => {
   let _addNode = async (data: any) => {
@@ -52,9 +59,54 @@ export const useNodeOpsModel = () => {
   };
 };
 
-const useWishModel = () => {
-  const [wishList, setWishList] = useState<any[]>();
+export const useSelectModel = () => {
+  const [wishList, setWishList] = useState<any[]>([]);
+
+  const [wordSlotList, setWordSlotList] = useState<any[]>([]);
 
   // 获取意图列表
-  const getWishList = () => {};
+  const _getWishList = async (id?: any) => {
+    let res: any = await getIntentList({
+      robotId: id,
+      page: 1,
+      pageSize: 1000,
+    });
+    let data: any[] =
+      res?.data?.map?.((item: any, index: number) => {
+        return {
+          ...item,
+          index,
+          name: item.id,
+          intentName: item.intentName,
+        };
+      }) || [];
+    console.log(data);
+    setWishList(data);
+  };
+
+  const _getWordSlotList = async (id?: any) => {
+    let res: any = await getWordSlotTableList({
+      robotId: id,
+      page: 1,
+      pageSize: 1000,
+    });
+    let data: any[] =
+      res?.data?.map?.((item: any, index: number) => {
+        return {
+          ...item,
+          index,
+          name: item.id,
+          intentName: item.slotName,
+        };
+      }) || [];
+    console.log(data);
+    setWordSlotList(data);
+  };
+
+  return {
+    wishList,
+    wordSlotList,
+    getWishList: _getWishList,
+    getWordSlotList: _getWordSlotList,
+  };
 };

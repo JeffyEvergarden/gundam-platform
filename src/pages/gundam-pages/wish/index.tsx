@@ -33,9 +33,8 @@ const DetailPages: React.FC = (props: any) => {
   const [intentOperTitle, handleIntentOperTitle] = useState<string>(''); // 控制意图操作弹出层标题
   const [intentOperData, handleIntentOperData] = useState<any>({}); // 控制意图操作弹出层数据
 
-  const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
+  const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
-    setInfo: model.setInfo,
   }));
 
   const [rulesSamleVisible, handleRulesSampleVisible] = useState<boolean>(false);
@@ -163,6 +162,7 @@ const DetailPages: React.FC = (props: any) => {
         rowKey={(record) => record?.id}
         columns={[...tableList, ...operation]}
         actionRef={actionRef}
+        style={{ backgroundColor: 'white' }}
         toolBarRender={() => [
           <Button key="0" type="primary" onClick={() => operIntent({}, 'add')}>
             新增
