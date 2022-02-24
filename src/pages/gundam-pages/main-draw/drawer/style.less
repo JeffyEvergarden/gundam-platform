@@ -1,6 +1,4 @@
 .antd-form {
-  padding-left: 20px;
-
   :global {
     .ant-form-item-label > label {
       min-width: 100px;
@@ -31,6 +29,7 @@
 .list-box {
   display: flex;
   padding-top: 16px;
+  padding-left: 20px;
   border-bottom: 1px solid #f3f3f3;
 }
 
@@ -38,11 +37,57 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 10px;
+  padding: 10px 0;
 }
 
 .num {
   flex-shrink: 0;
   width: 20px;
   line-height: 32px;
+}
+
+.left {
+  margin-right: 16px;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.btn {
+  width: 30px;
+}
+
+.slot-box {
+  display: flex;
+  padding-top: 16px;
+  padding-left: 5px;
+  border-bottom: 1px solid #f3f3f3;
+}
+
+.scrollbar(@width, @color: #f5f5f5) {
+  ::-webkit-scrollbar {
+    width: @width;
+    background: transparent;
+    visibility: hidden;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    width: @width;
+    background: @color;
+    border-radius: @width / 2;
+    visibility: hidden;
+  }
+
+  :hover {
+    ::-webkit-scrollbar {
+      visibility: visible;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      visibility: visible;
+    }
+  }
+}
+
+.table-box {
+  // .scrollbar(2px)
 }
