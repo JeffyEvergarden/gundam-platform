@@ -4,17 +4,17 @@ import config from '@/config';
 const baseUrl: string = config.basePath;
 
 /** 获取机器人配置信息 **/
-export async function getConfig(params?: { [key: string]: any }) {
+export async function getConfig(data?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/config/configInfo`, {
     method: 'POST',
-    params,
+    data,
   });
 }
 
 /** 编辑机器人配置信息 **/
-export async function editConfig(params?: { [key: string]: any }) {
+export async function editConfig(data?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/config/configUpdate`, {
     method: 'POST',
-    params,
+    data,
   });
 }

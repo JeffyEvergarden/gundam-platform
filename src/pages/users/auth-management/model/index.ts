@@ -3,7 +3,7 @@ import { message } from 'antd';
 
 import { getMachineList } from './api';
 
-export const successCode = '100';
+export const successCode = 100;
 
 // 菜单管理的表格数据
 export const useTableModel = () => {
