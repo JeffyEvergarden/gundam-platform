@@ -1,14 +1,23 @@
 import { useState } from 'react';
 import { message } from 'antd';
 
-import { getIntentList, addNewIntent, editIntent, deleteIntent } from './api';
+import { getIntentList, getIntentInfoData, addNewIntent, editIntent, deleteIntent } from './api';
 
 export const successCode = 100;
 
 // 菜单管理的表格数据
-export const useTableModel = () => {
+export const useIntentModel = () => {
   const getIntentTableList = async (params?: any) => {
     let res: any = await getIntentList(params);
+    let { datas = [] } = res;
+    if (!Array.isArray(datas)) {
+      datas = [];
+    }
+    return res;
+  };
+
+  const getIntentInfoList = async (params?: any) => {
+    let res: any = await getIntentInfoData(params);
     let { datas = [] } = res;
     if (!Array.isArray(datas)) {
       datas = [];
@@ -36,5 +45,6 @@ export const useTableModel = () => {
     addIntentItem,
     editIntentItem,
     deleteIntentItem,
+    getIntentInfoList,
   };
 };

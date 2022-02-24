@@ -12,6 +12,13 @@ export async function getIntentList(params?: { [key: string]: any }) {
   });
 }
 
+export async function getIntentInfoData(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/intent/intentInfo`, {
+    method: 'GET',
+    params,
+  });
+}
+
 /** 新增意图 **/
 export async function addNewIntent(params?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/intent/intentAdd`, {

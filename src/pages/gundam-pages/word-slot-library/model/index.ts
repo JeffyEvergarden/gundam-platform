@@ -6,7 +6,7 @@ import { getWordSlotTableList, addWordSlotItem, editWordSlotItem, deleteWordSlot
 export const successCode = 100;
 
 // 菜单管理的表格数据
-export const useTableModel = () => {
+export const useKeyWordModel = () => {
   const [tableLoading, setTableLoading] = useState<boolean>(false);
 
   const getWordSlotTable = async (params?: any) => {

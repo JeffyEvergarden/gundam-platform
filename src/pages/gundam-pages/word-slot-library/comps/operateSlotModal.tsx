@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Form, Input, Select, Space, Button, message } from 'antd';
 import { operateSlotFormList, slotSourceFormList } from './config';
-import { useTableModel } from '../model';
+import { useKeyWordModel } from '../model';
+import { useIntentModel } from '../../wish/model';
 
 const { Option } = Select;
 const layout = {
@@ -14,28 +15,42 @@ const tailLayout = {
 
 export default (props: any) => {
   const { visible, title, modalData, onSubmit, onCancel } = props;
-  const [diffSourceData, setDiffSourceData] = useState<string>('');
+  const [diffSourceData, setDiffSourceData] = useState<string>(''); // 控制 不同意图来源 显示 不同 的框
   const [fieldSelectData, setFieldSelectData] = useState<any>({
     slotSource: slotSourceFormList,
   });
   const [form] = Form.useForm();
-  const { addWordSlot, editWordSlot } = useTableModel();
-  useEffect(() => {
-    if (visible) {
-      if (title == 'edit') {
-        // form.resetFields();
-        setDiffSourceData(modalData?.slotSource || '');
-        form.setFieldsValue({
-          ...modalData,
-        });
-      }
-    }
-  }, [visible]);
+  const { addWordSlot, editWordSlot } = useKeyWordModel();
+  const { getIntentInfoList } = useIntentModel();
 
   const fieldValueChange = (changedValues: any, allValues: any) => {
-    console.log('fieldValueChange', changedValues, allValues);
     if (changedValues?.slotSource) {
       setDiffSourceData(changedValues?.slotSource);
+    } else if (changedValues?.allowIntents) {
+      let obj = { ...fieldSelectData };
+      if (changedValues?.allowIntents.includes('ALL')) {
+        form.setFieldsValue({
+          allowIntents: ['ALL'],
+          nonIntents: [],
+        });
+        obj.nonIntents = [];
+        obj.allowIntents = [{ value: 'ALL', name: '所有' }, ...obj.normalIntents];
+        setFieldSelectData(obj);
+      } else {
+        let newArr = changedValues?.allowIntents?.length == 0 ? obj.normalIntents : obj?.nonIntents;
+        let arr: any = newArr?.filter((item: any) => {
+          return !changedValues?.allowIntents.includes(item.value);
+        });
+        obj.nonIntents = [...arr];
+        setFieldSelectData(obj);
+      }
+    } else if (changedValues?.nonIntents) {
+      let obj = { ...fieldSelectData };
+      let arr: any = (obj?.allowIntents).filter((item: any) => {
+        return !changedValues?.nonIntents.includes(item.value);
+      });
+      obj.allowIntents = [...arr];
+      setFieldSelectData(obj);
     }
   };
 
@@ -45,7 +60,7 @@ export default (props: any) => {
   };
 
   const submit = async () => {
-    const values = form.validateFields();
+    const values = await form.validateFields();
     let res: any;
     let params = form.getFieldsValue();
     if (title == 'edit') {
@@ -56,6 +71,37 @@ export default (props: any) => {
     message.info(res?.resultDesc);
     onSubmit();
   };
+
+  const getIntentSelList = async () => {
+    const res: any = await getIntentInfoList();
+    let data: any =
+      res?.datas &&
+      res?.datas?.map((item: any) => {
+        return {
+          value: item.id,
+          name: item.intentName,
+        };
+      });
+    let arr: any = { ...fieldSelectData };
+
+    arr.allowIntents = [{ value: 'ALL', name: '所有' }, ...data];
+    arr.nonIntents = data;
+    arr.normalIntents = data;
+    setFieldSelectData(arr);
+  };
+
+  useEffect(() => {
+    if (visible) {
+      getIntentSelList();
+      if (title == 'edit') {
+        // form.resetFields();
+        setDiffSourceData(modalData?.slotSource || '');
+        form.setFieldsValue({
+          ...modalData,
+        });
+      }
+    }
+  }, [visible]);
 
   return (
     <React.Fragment>
@@ -90,7 +136,7 @@ export default (props: any) => {
                 {item.type == 'multiSelect' && (
                   <Form.Item name={item.name} label={item.label} rules={item.rules}>
                     <Select placeholder={item.placeholder} mode={'multiple'}>
-                      {fieldSelectData[item.name]?.map((itex: any) => {
+                      {fieldSelectData[item?.name]?.map((itex: any) => {
                         return (
                           <Option key={itex.value} value={itex.value}>
                             {itex.name}
