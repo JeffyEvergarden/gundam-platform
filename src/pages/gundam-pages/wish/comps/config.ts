@@ -43,33 +43,36 @@ export const tableList: any = [
     dataIndex: 'intentName',
     title: '意图名称',
     search: true,
+    ellipsis: true,
   },
   {
     dataIndex: 'inquiryText',
     title: '澄清名称',
     search: false,
+    ellipsis: true,
   },
   {
     dataIndex: 'headIntent',
     title: '是否头部意图',
     search: true,
     valueType: 'select',
-    // width: 120,
     valueEnum: {
-      '0': { text: '是', status: '0' },
-      '1': { text: '否', status: '1' },
-      '2': { text: '全部', status: '2' },
+      0: { text: '是', status: 0 },
+      1: { text: '否', status: 1 },
+      2: { text: '全部', status: 2 },
     },
   },
   {
     dataIndex: 'flowName',
     title: '业务流程',
     search: false,
+    ellipsis: true,
   },
   {
     dataIndex: 'intentDesc',
     title: '描述',
     search: false,
+    ellipsis: true,
   },
   //   {
   //     dataIndex: 'status',
@@ -83,11 +86,13 @@ export const tableList: any = [
     dataIndex: 'creator',
     title: '创建者',
     search: false,
+    ellipsis: true,
   },
   {
     dataIndex: 'createTime',
     title: '创建时间',
     search: false,
+    ellipsis: true,
   },
 ];
 

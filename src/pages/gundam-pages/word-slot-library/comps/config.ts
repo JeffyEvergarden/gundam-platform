@@ -11,15 +11,15 @@ export const wordSlotTableList = [
     dataIndex: 'slotSource',
     title: '词槽来源',
     valueEnum: {
-      '0': { text: '来自实体', status: '0' },
-      '1': { text: '来自意图', status: '1' },
-      '2': { text: '用户文本', status: '2' },
-      '3': { text: '规则模版', status: '3' },
-      '4': { text: '正则', status: '4' },
-      '5': { text: '函数返回值', status: '5' },
-      '6': { text: '全局变量', status: '6' },
-      '7': { text: '接口', status: '7' },
-      '8': { text: '业务参数', status: '8' },
+      0: { text: '来自实体', status: 0 },
+      1: { text: '来自意图', status: 1 },
+      2: { text: '用户文本', status: 2 },
+      3: { text: '规则模版', status: 3 },
+      4: { text: '正则', status: 4 },
+      5: { text: '函数返回值', status: 5 },
+      6: { text: '全局变量', status: 6 },
+      7: { text: '接口', status: 7 },
+      8: { text: '业务参数', status: 8 },
     },
   },
   {
@@ -80,39 +80,39 @@ export const operateSlotFormList = [
 
 export const slotSourceFormList = [
   {
-    value: '0',
+    value: 0,
     name: '来自实体',
   },
   {
-    value: '1',
+    value: 1,
     name: '来自意图',
   },
   {
-    value: '2',
+    value: 2,
     name: '用户文本',
   },
   {
-    value: '3',
+    value: 3,
     name: '规则模版',
   },
   {
-    value: '4',
+    value: 4,
     name: '正则',
   },
   {
-    value: '5',
+    value: 5,
     name: '函数返回值',
   },
   {
-    value: '6',
+    value: 6,
     name: '全局变量',
   },
   {
-    value: '7',
+    value: 7,
     name: '接口',
   },
   {
-    value: '8',
+    value: 8,
     name: '业务参数',
   },
 ];

@@ -53,7 +53,7 @@ export default (props: any) => {
     } else if (title == 'add') {
       res = await addWordSlot({ ...params, robotId: modalData.robotId });
     }
-    message.info(res?.resultCode);
+    message.info(res?.resultDesc);
     onSubmit();
   };
 

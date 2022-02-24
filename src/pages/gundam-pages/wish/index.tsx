@@ -45,16 +45,14 @@ const DetailPages: React.FC = (props: any) => {
     try {
       handleLoading(true);
       let params = {
-        page: pageData.current,
+        // page: pageData.current,
         robotId: info.id,
         ...pageData,
       };
-      delete params?.current;
+      // delete params?.current;
       const res: any = await getIntentTableList(params);
-      console.log(params, res);
       return {
         data: res?.datas || [],
-        // data: [],
         pageSize: pageData.pageSize || 10,
         current: pageData.current || 1,
         total: res?.totalSize || 1,

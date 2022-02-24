@@ -34,9 +34,9 @@ export default (props: any) => {
     const values = await form.validateFields();
     let res: any;
     if (title == 'edit') {
-      res = editIntentItem({ ...values, id: modalData.id, robotId: modalData.robotId });
+      res = await editIntentItem({ ...values, id: modalData.id, robotId: modalData.robotId });
     } else if (title == 'add') {
-      res = addIntentItem({ robotId: modalData.robotId, ...values });
+      res = await addIntentItem({ robotId: modalData.robotId, ...values });
     }
     message.info(res?.resultDesc || '正在处理');
     submit();
@@ -63,8 +63,8 @@ export default (props: any) => {
                 {item.type == 'radio' && (
                   <Form.Item name={item.name} label={item.label} rules={item.rules}>
                     <Radio.Group disabled={title == 'edit'}>
-                      <Radio value="0">是</Radio>
-                      <Radio value="1">否</Radio>
+                      <Radio value={0}>是</Radio>
+                      <Radio value={1}>否</Radio>
                     </Radio.Group>
                   </Form.Item>
                 )}

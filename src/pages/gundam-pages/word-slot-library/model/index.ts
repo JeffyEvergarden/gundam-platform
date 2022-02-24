@@ -23,49 +23,19 @@ export const useTableModel = () => {
   const addWordSlot = async (params?: any) => {
     setTableLoading(true);
     let res: any = await addWordSlotItem(params);
-    setTableLoading(false);
-    let { data = [] } = res;
-    if (!Array.isArray(data)) {
-      data = [];
-    }
-    return {
-      data: data,
-      total: res.totalSize || 1,
-      pageSize: res.pageSize || 10,
-      current: res.pageSize || 1,
-    };
+    return res;
   };
 
   const editWordSlot = async (params?: any) => {
     setTableLoading(true);
     let res: any = await editWordSlotItem(params);
-    setTableLoading(false);
-    let { data = [] } = res;
-    if (!Array.isArray(data)) {
-      data = [];
-    }
-    return {
-      data: data,
-      total: res.totalSize || 1,
-      pageSize: res.pageSize || 10,
-      current: res.pageSize || 1,
-    };
+    return res;
   };
 
   const deleteWordSlot = async (params?: any) => {
     setTableLoading(true);
     let res: any = await deleteWordSlotItem(params);
-    setTableLoading(false);
-    let { data = [] } = res;
-    if (!Array.isArray(data)) {
-      data = [];
-    }
-    return {
-      data: data,
-      total: res.totalSize || 1,
-      pageSize: res.pageSize || 10,
-      current: res.pageSize || 1,
-    };
+    return res;
   };
 
   return {
