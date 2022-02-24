@@ -14,7 +14,7 @@ import {
 } from './api';
 import { message } from 'antd';
 
-export const successCode = '100';
+export const successCode = 100;
 
 // 菜单管理界面
 // ------

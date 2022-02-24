@@ -32,7 +32,7 @@ const DetailPages: React.FC = (props: any) => {
   }));
 
   const getConfig = async () => {
-    let data = await getRobotConfig(info.id);
+    let data = await getRobotConfig({ robotId: info.id });
     form.setFieldsValue({ ...data });
   };
 
@@ -53,7 +53,7 @@ const DetailPages: React.FC = (props: any) => {
     console.log(form.getFieldsValue());
     let reqData = form.getFieldsValue();
     await editRobotConfig(reqData).then((res) => {
-      if (res.resultCode == '100') {
+      if (res.resultCode == 100) {
         getConfig();
       }
     });

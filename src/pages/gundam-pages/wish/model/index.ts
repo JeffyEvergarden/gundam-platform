@@ -7,7 +7,6 @@ export const successCode = 100;
 
 // 菜单管理的表格数据
 export const useTableModel = () => {
-  const [tableList, setTableList] = useState<any[]>([]);
   const [tableLoading, setTableLoading] = useState<boolean>(false);
 
   const getIntentTableList = async (params?: any) => {

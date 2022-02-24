@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 
-const successCode = '0000';
+const successCode = 100;
 
 const getIntentList = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
-    data: [
+    datas: [
       {
         intentName: '意图0011',
         id: '001',
