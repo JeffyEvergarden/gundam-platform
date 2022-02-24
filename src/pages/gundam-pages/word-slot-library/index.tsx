@@ -22,7 +22,7 @@ const DetailPages: React.FC = (props: any) => {
   const getInitTable = async (p?: any) => {
     let newDay = new Date().toLocaleDateString();
     let occurDay = newDay.replace(/\//g, '-');
-    let newTime = new Date().toLocaleTimeString();
+    let newTime = new Date().toLocaleTimeString('en-GB');
     const [pageData] = p;
     let data: any = [];
     try {
