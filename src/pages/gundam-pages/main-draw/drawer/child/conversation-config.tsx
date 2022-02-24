@@ -45,7 +45,7 @@ const ConversationConfig = (props: any) => {
           };
 
           return (
-            <div style={{ paddingLeft: '20px' }}>
+            <div>
               <div className={styles['title']}>
                 对话回应
                 <Button

@@ -91,8 +91,8 @@ export async function getInitialState(): Promise<{
     };
   }
   // 抓取权限信息结果
-  let res2: any = fetchAuthInfo();
-  let [currentUser, userAuth] = await Promise.all([res1, res2]);
+  // let res2: any = fetchAuthInfo();
+  let [currentUser, userAuth] = await Promise.all([res1]);
 
   // 部门
   const orz = userAuth?.userSummary?.organizations?.[0]?.name || '';

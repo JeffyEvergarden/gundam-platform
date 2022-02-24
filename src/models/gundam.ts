@@ -62,7 +62,7 @@ export default function useGundamModel() {
       return null;
     }
     let res: any = await queryLabelList({ robotId: info.id });
-    let data: any[] = res.data || [];
+    let data: any[] = res.datas || [];
     setLabelList(data);
   };
 
