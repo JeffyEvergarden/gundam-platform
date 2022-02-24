@@ -121,4 +121,5 @@ export default {
   'POST /aichat/robot/robot/robotStatus': changeMachineStatus, // 修改业务状态
   'POST /aichat/robot/robot/robotAdd': addNewMachine,
   'POST /aichat/robot/robot/robotUpdate': addNewMachine,
+  'POST /aichat/robot/robot/robotDelete': addNewMachine,
 };

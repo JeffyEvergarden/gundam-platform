@@ -7,7 +7,8 @@ import { ACTION_LIST } from './const';
 import { useModel } from 'umi';
 import ConversationConfig from './child/conversation-config';
 import HighConfig from './child/high-config';
-import RuleModal from './components/rule-modal';
+import WordSlotTable from './components/word-slot-table';
+
 import { useSelectModel } from '../model';
 import { useEffect } from 'react';
 
@@ -84,7 +85,7 @@ const DrawerForm = (props: any) => {
   return (
     <Drawer
       title="节点配置"
-      width={820}
+      width={850}
       onClose={onClose}
       visible={visible}
       bodyStyle={{ paddingBottom: 80 }}
@@ -109,9 +110,8 @@ const DrawerForm = (props: any) => {
             <TextArea rows={4} placeholder="请输入流程描述" maxLength={200} />
           </FormItem>
         </div>
-        {/* <FormItem name="rules" label="添加规则">
-          ---------
-        </FormItem> */}
+
+        <WordSlotTable list={wordSlotList} />
 
         <ConversationConfig
           form={form}
@@ -121,10 +121,6 @@ const DrawerForm = (props: any) => {
 
         <HighConfig form={form} wishList={list1} bussinessList={list2}></HighConfig>
       </Form>
-
-      <Button onClick={openModal}>添加规则</Button>
-
-      {/* <RuleModal cref={fake} wishList={wishList || []} wordSlotList={wordSlotList || []} /> */}
     </Drawer>
   );
 };

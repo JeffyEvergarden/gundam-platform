@@ -24,8 +24,9 @@ const RuleModal: React.FC<any> = (props: any) => {
   const submit = async () => {
     try {
       let values: any = await form.validateFields();
-      confirm?.(values?.rule_list || []);
-      setVisible(false);
+      console.log(values);
+      confirm?.(values?.list || []);
+      // setVisible(false);
     } catch (e) {
       console.log(e);
     }

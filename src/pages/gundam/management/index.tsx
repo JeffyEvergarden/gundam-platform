@@ -87,7 +87,7 @@ const MachineManagement: React.FC = (props: any) => {
       message.success('删除成功');
       tableRef.current.reload();
     } else {
-      message.error(res);
+      // message.error(res);
     }
   };
 
@@ -104,7 +104,7 @@ const MachineManagement: React.FC = (props: any) => {
         modalRef.current?.close?.();
         goToNewSystem({ ...res.datas });
       } else {
-        message.error(res?.resultDesc || '未知系统异常');
+        // message.error(res?.resultDesc || '未知系统异常');
       }
     } else if (info._openType === 'edit') {
       let params: any = {
@@ -310,7 +310,7 @@ const MachineManagement: React.FC = (props: any) => {
           pageSize: 10,
         }}
         dateFormatter="string"
-        headerTitle="机器人列表"
+        headerTitle=""
         toolBarRender={() => [
           <Button
             key="button"
