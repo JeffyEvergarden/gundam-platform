@@ -45,11 +45,9 @@ const DetailPages: React.FC = (props: any) => {
     try {
       handleLoading(true);
       let params = {
-        // page: pageData.current,
         robotId: info.id,
         ...pageData,
       };
-      // delete params?.current;
       const res: any = await getIntentTableList(params);
       return {
         data: res?.datas || [],
