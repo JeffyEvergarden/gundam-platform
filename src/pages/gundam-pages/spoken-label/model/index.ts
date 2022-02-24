@@ -3,7 +3,7 @@ import { message } from 'antd';
 
 import { getLabelList, deleteLabel, addNewLabel, editLabel } from './api';
 
-export const successCode = '100';
+export const successCode = 100;
 
 // 菜单管理的表格数据
 export const useLabelModel = () => {

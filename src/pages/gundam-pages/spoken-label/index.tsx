@@ -28,7 +28,7 @@ const DetailPages: React.FC = (props: any) => {
         ...formData?.form,
       };
       res = await addNewLabel(params);
-      if (res.resultCode === '100') {
+      if (res.resultCode === 100) {
         labelModalRef.current?.close?.();
         labelTableRef.current.reload();
       } else {
@@ -143,7 +143,7 @@ const DetailPages: React.FC = (props: any) => {
         scroll={{ x: columns.length * 200 }}
         request={async (params = {}, sort, filter) => {
           // console.log(sort, filter);
-          return getLabelTableList(params);
+          return getLabelTableList({ robotId: info.id, ...params });
           // return {};
         }}
         editable={{

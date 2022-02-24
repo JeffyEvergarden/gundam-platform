@@ -3,7 +3,7 @@ import { message } from 'antd';
 
 import { getConfig, editConfig } from './api';
 
-export const successCode = '100';
+export const successCode = 100;
 
 // 机器人配置
 export const useConfigModel = () => {
@@ -14,8 +14,8 @@ export const useConfigModel = () => {
     setConfigLoading(true);
     let res: any = await getConfig(params);
     setConfigLoading(false);
-    setConfigMsg(res?.data);
-    return res?.data;
+    setConfigMsg(res?.datas);
+    return res?.datas;
   };
 
   const editRobotConfig = async (params?: any) => {
