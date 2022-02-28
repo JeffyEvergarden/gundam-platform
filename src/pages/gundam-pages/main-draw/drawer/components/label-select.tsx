@@ -19,11 +19,7 @@ const LabelSelect: React.FC<any> = (props: any) => {
 
   const openModal = () => {
     let vals: any = value || [];
-    (modelRef.current as any).open(
-      vals.map((item: any) => {
-        return item.id;
-      }),
-    );
+    (modelRef.current as any).open(vals);
   };
 
   const deleteCurrentTag = (index: number) => {
@@ -51,7 +47,7 @@ const LabelSelect: React.FC<any> = (props: any) => {
                   deleteCurrentTag(index);
                 }}
               >
-                {item.actionLabel}
+                {item}
               </Tag>
             );
           })}

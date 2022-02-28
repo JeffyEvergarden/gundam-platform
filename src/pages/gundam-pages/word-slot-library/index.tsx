@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useModel } from 'umi';
 import ProTable from '@ant-design/pro-table';
 import type { ActionType } from '@ant-design/pro-table';
-import { Button, Space, Popconfirm, message } from 'antd';
+import { Button, Space, Popconfirm, message, Table } from 'antd';
 import { wordSlotTableList } from './comps/config';
 import OperateSlotModal from './comps/operateSlotModal';
-import { useTableModel } from './model';
+import { useKeyWordModel } from './model';
 
 // 机器人列表
 const DetailPages: React.FC = (props: any) => {
@@ -17,7 +17,7 @@ const DetailPages: React.FC = (props: any) => {
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
-  const { getWordSlotTable, deleteWordSlot } = useTableModel();
+  const { getWordSlotTable, deleteWordSlot } = useKeyWordModel();
 
   const getInitTable = async (p?: any) => {
     let newDay = new Date().toLocaleDateString();

@@ -11,21 +11,23 @@ const { Option } = Select;
 const WordSlotTable: React.FC<any> = (props: any) => {
   const { value, onChange, list } = props;
 
-  const [num, setNum] = useState<number>(1);
-
   const modalRef = useRef<any>(null);
 
+  const [selectIndex, setSelectIndex] = useState<any>(-1);
+
   const confirm = (val: any) => {
-    onChange(val);
+    let list: any[] = Array.isArray(value) ? value : [];
+    list = [...list, val];
+    onChange?.(list);
   };
 
-  const openEditModal = () => {
-    let vals: any = value || [];
-    (modalRef.current as any).open(
-      vals.map((item: any) => {
-        return item.id;
-      }),
-    );
+  const openEditModal = (item?: any, index: number = -1) => {
+    if (index > 0) {
+      setSelectIndex(index);
+    } else {
+      setSelectIndex(-1);
+    }
+    (modalRef.current as any).open(item);
   };
 
   const computeValue = useMemo(() => {
@@ -41,16 +43,45 @@ const WordSlotTable: React.FC<any> = (props: any) => {
     }
   }, [value]);
 
+  const upPos = (index: number) => {
+    if (index < 1) {
+      return;
+    }
+    let list = Array.isArray(value) ? value : [];
+    let tmp = list[index];
+    list[index] = list[index - 1];
+    list[index - 1] = tmp;
+    onChange?.([...list]);
+  };
+
+  const downPos = (index: number) => {
+    if (index > computeValue.length - 2) {
+      return;
+    }
+    let list = Array.isArray(value) ? value : [];
+    let tmp = list[index];
+    list[index] = list[index + 1];
+    list[index + 1] = tmp;
+    onChange?.([...list]);
+  };
+
+  // 删除
+  const remove = (index: number) => {
+    let list = Array.isArray(value) ? value : [];
+    list.splice(index, 1);
+    onChange?.([...list]);
+  };
+
   const columns: any[] = [
     {
       title: '词槽名称',
-      dataIndex: 'name',
+      dataIndex: 'slotName',
       fixed: 'left',
       width: 100,
     },
     {
       title: '词槽描述',
-      dataIndex: 'label',
+      dataIndex: 'slotDesc',
       width: 120,
       ellipsis: {
         showTitle: false,
@@ -63,25 +94,48 @@ const WordSlotTable: React.FC<any> = (props: any) => {
     },
     {
       title: '词槽必填',
-      dataIndex: 'desc',
+      dataIndex: 'required',
       width: 80,
+      render: (val: any) => {
+        return val == '1' ? '是' : '否';
+      },
     },
     {
       title: '澄清话术',
-      dataIndex: 'desc',
+      dataIndex: 'clearText',
       width: 120,
       ellipsis: {
         showTitle: false,
       },
-      render: (val: any) => (
-        <Tooltip placement="topLeft" title={val}>
-          {val}
-        </Tooltip>
-      ),
+      render: (val: any) => {
+        let str: any = Array.isArray(val)
+          ? val.map((item: any) => {
+              return (
+                <span>
+                  {item.actionText}
+                  <br />
+                </span>
+              );
+            })
+          : '';
+        let firstStr: any = Array.isArray(val)
+          ? val
+              .map((item: any) => {
+                return item.actionText;
+              })
+              .join('、')
+          : '';
+
+        return (
+          <Tooltip placement="topLeft" title={str}>
+            {firstStr}
+          </Tooltip>
+        );
+      },
     },
     {
       title: '结束话术',
-      dataIndex: 'desc',
+      dataIndex: 'endText',
       width: 120,
       ellipsis: {
         showTitle: false,
@@ -99,17 +153,54 @@ const WordSlotTable: React.FC<any> = (props: any) => {
     },
     {
       title: '操作',
-      dataIndex: 'index',
+      dataIndex: 'op',
       fixed: 'right',
-      width: 80,
+      width: 150,
       render: (val: any, row: any, index: number) => {
         return (
           <div>
-            <Button type="link" size="small">
-              上移
+            {index > 0 && (
+              <Button
+                type="link"
+                size="small"
+                onClick={() => {
+                  upPos(index);
+                }}
+              >
+                上移
+              </Button>
+            )}
+            {index < computeValue.length - 1 && (
+              <Button
+                type="link"
+                size="small"
+                onClick={() => {
+                  downPos(index);
+                }}
+              >
+                下移
+              </Button>
+            )}
+
+            <Button
+              type="text"
+              size="small"
+              onClick={() => {
+                openEditModal(row, index);
+              }}
+            >
+              编辑
             </Button>
-            <Button type="link" size="small">
-              下移
+
+            <Button
+              type="link"
+              size="small"
+              danger
+              onClick={() => {
+                remove(index);
+              }}
+            >
+              删除
             </Button>
           </div>
         );

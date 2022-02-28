@@ -4,7 +4,7 @@ import { useModel } from 'umi';
 import IntentOperModal from './comps/addIntentModal';
 import RulesSampleModal from './comps/rulesAndSamples';
 
-import { useTableModel } from './model';
+import { useIntentModel } from './model';
 
 import ProTable from '@ant-design/pro-table';
 import type { ActionType } from '@ant-design/pro-table';
@@ -38,7 +38,7 @@ const DetailPages: React.FC = (props: any) => {
   }));
 
   const [rulesSamleVisible, handleRulesSampleVisible] = useState<boolean>(false);
-  const { getIntentTableList, deleteIntentItem } = useTableModel();
+  const { getIntentTableList, deleteIntentItem } = useIntentModel();
   const getTables: any = async (p?: any) => {
     const [pageData] = p;
     let data: any = [];
@@ -53,7 +53,7 @@ const DetailPages: React.FC = (props: any) => {
         data: res?.datas || [],
         pageSize: pageData.pageSize || 10,
         current: pageData.current || 1,
-        total: res?.totalSize || 1,
+        total: res?.totalSize || res?.datas?.length || pageData.pageSize,
       };
     } catch {
       return {

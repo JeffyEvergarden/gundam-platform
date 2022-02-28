@@ -7,6 +7,7 @@ import {
   deleteMachine,
   addNewMachine,
   editMachine,
+  getMachineInfo,
 } from './api';
 
 export const successCode = 100;
@@ -53,10 +54,10 @@ export const useOpModel = () => {
 
   // 获取机器人id
   const getInfo = async (params: any) => {
-    let res = await getMachineList(params);
+    let res = await getMachineInfo(params);
     if (res.resultCode === successCode) {
-      let [info] = res?.datas || [];
-      return info;
+      let data: any = res?.data || [];
+      return data;
     } else {
       message.warning('获取不到机器人信息');
       return null;

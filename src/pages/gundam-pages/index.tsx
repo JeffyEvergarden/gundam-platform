@@ -1,17 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useModel, history, useLocation } from 'umi';
-import { useTableModel } from './model';
-import { Table, Button, message } from 'antd';
+import { message } from 'antd';
 import { LoginOutlined } from '@ant-design/icons';
 
-import ProLayout, { PageContainer, ProBreadcrumb } from '@ant-design/pro-layout';
+import ProLayout from '@ant-design/pro-layout';
 
 import RightContent from '@/components/RightContent';
 import routes from './routes';
 import style from './style.less';
 import { useOpModel } from '../gundam/management/model';
-import logo from '@/asset/image/logo.png';
-import session from 'config/route/session';
 
 // 机器人列表
 const MachinePagesHome: React.FC = (props: any) => {
@@ -19,9 +16,10 @@ const MachinePagesHome: React.FC = (props: any) => {
 
   const location: any = useLocation();
 
-  const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
+  const { info, setInfo, setGlobalVarList } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     setInfo: model.setInfo,
+    setGlobalVarList: model.setGlobalVarList,
   }));
 
   const { getInfo } = useOpModel();
@@ -30,8 +28,17 @@ const MachinePagesHome: React.FC = (props: any) => {
     // 获取用户信息
     let _info = await getInfo(params);
     console.log(_info);
-    if (_info && _info.id) {
-      setInfo(_info);
+    if (_info) {
+      setInfo(_info.robotInfo || {});
+      let list: any[] =
+        _info.globalVarList?.map((item: any) => {
+          return {
+            name: item.configKey,
+            label: item.configName,
+            desc: item.configDesc,
+          };
+        }) || [];
+      setGlobalVarList(list);
     } else {
       message.warning('获取不到机器人信息');
       history.replace('/robot/home');
@@ -89,7 +96,7 @@ const MachinePagesHome: React.FC = (props: any) => {
       )}
       disableContentMargin={false}
     >
-      {info.id && props.children}
+      {info?.id && props.children}
     </ProLayout>
   );
 };

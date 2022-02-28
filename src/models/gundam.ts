@@ -1,59 +1,17 @@
 import { useState } from 'react';
-import { queryLabelList } from '@/services/api';
+import { queryLabelList, getFlowList } from '@/services/api';
+import config from '@/config';
 
 export default function useGundamModel() {
   const [info, setInfo] = useState<any>({});
 
   // 机器人的全局变量
-  const [globalVarList, setGlobalVarList] = useState<any>([
-    {
-      name: 'user_name',
-      label: '用户名',
-    },
-    {
-      name: 'user_type',
-      label: '用户类型',
-    },
-    {
-      name: 'user_age',
-      label: '用户年龄',
-    },
-    {
-      name: 'user_type1',
-      label: '用户类型',
-    },
-    {
-      name: 'user_age2',
-      label: '用户年龄',
-    },
-    {
-      name: 'user_type3',
-      label: '用户类型',
-    },
-    {
-      name: 'user_age4',
-      label: '用户年龄',
-    },
-    {
-      name: 'user_type5',
-      label: '用户类型',
-    },
-    {
-      name: 'user_age6',
-      label: '用户年龄',
-    },
-    {
-      name: 'user_type7',
-      label: '用户类型',
-    },
-    {
-      name: 'user_age8',
-      label: '用户年龄',
-    },
-  ]);
+  const [globalVarList, setGlobalVarList] = useState<any>([]);
 
-  // 机器人的话术标签
+  // 业务流程id
+  const [businessFlowId, setBusinessFlowId] = useState<any>('');
 
+  // 机器人的话术标签列表
   const [labelList, setLabelList] = useState<any>([]);
 
   const getLabelList = async () => {
@@ -66,6 +24,27 @@ export default function useGundamModel() {
     setLabelList(data);
   };
 
+  const [flowList, setFlowList] = useState<any[]>([]); // 业务流程列表
+
+  // 获取业务流程列表
+  const _getFlowList = async () => {
+    let res: any = await getFlowList({
+      robotId: info.id,
+      page: 1,
+      pageSize: 1000,
+    });
+    let data: any[] =
+      res?.datas?.map?.((item: any, index: number) => {
+        return {
+          ...item,
+          index,
+          name: item.id,
+          label: item.flowName,
+        };
+      }) || [];
+    setFlowList(data);
+  };
+
   return {
     info,
     setInfo,
@@ -73,5 +52,9 @@ export default function useGundamModel() {
     setGlobalVarList,
     labelList,
     getLabelList,
+    flowList,
+    getFlowList: _getFlowList,
+    businessFlowId,
+    setBusinessFlowId,
   };
 }
