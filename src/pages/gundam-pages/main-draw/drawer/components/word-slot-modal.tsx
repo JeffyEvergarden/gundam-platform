@@ -25,6 +25,12 @@ const WordSlotModal: React.FC<any> = (props: any) => {
         form.setFieldsValue({
           clear_list: [{}],
         });
+      } else {
+        // console.log(obj);
+        form.resetFields();
+        form.setFieldsValue({
+          ...obj,
+        });
       }
       setVisible(true);
     },
@@ -33,9 +39,29 @@ const WordSlotModal: React.FC<any> = (props: any) => {
     },
   }));
 
-  const submit = () => {
-    confirm?.();
-    setVisible(false);
+  const submit = async () => {
+    try {
+      const formValue: any = await form.validateFields();
+      const slotId = formValue['slotId'];
+      const curItem = list.find((item: any) => {
+        return item.id === slotId;
+      });
+      const newFormValue: any = {
+        ...formValue,
+        slotName: curItem?.slotName,
+        slotDesc: curItem?.slotDesc,
+      };
+      confirm?.(newFormValue);
+      setVisible(false);
+    } catch (e) {}
+  };
+
+  const onChange = (val: any, opt: any) => {
+    // console.log(opt?.opt);
+    // form.setFieldsValue({
+    //   slotName: opt?.opt?.slotName,
+    //   slotDesc: opt?.opt.slotDesc,
+    // });
   };
 
   return (
@@ -51,11 +77,11 @@ const WordSlotModal: React.FC<any> = (props: any) => {
         <Form form={form}>
           <FormItem
             rules={[{ required: true, message: '请选择词槽' }]}
-            name="name"
+            name="slotId"
             label="词槽名称"
             style={{ width: '400px' }}
           >
-            <Select placeholder="请选择词槽名称">
+            <Select placeholder="请选择词槽名称" onChange={onChange}>
               {list.map((item: any, index: number) => {
                 return (
                   <Option key={index} value={item.name} opt={item}>
@@ -66,8 +92,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
             </Select>
           </FormItem>
           <FormItem
-            rules={[{ required: true, message: '请选择词槽是否必填' }]}
-            name="flag"
+            name="required"
             label="词槽是否必填"
             valuePropName="checked"
             style={{ width: '400px' }}
@@ -75,7 +100,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
             <Checkbox>必填</Checkbox>
           </FormItem>
 
-          <FormList name="clear_list">
+          <FormList name="clearText">
             {(fields, { add, remove }) => {
               const addNew = () => {
                 let length = fields.length;
@@ -110,8 +135,8 @@ const WordSlotModal: React.FC<any> = (props: any) => {
                       <div>
                         <Space>
                           <FormItem
-                            name={[field.name, 'speak']}
-                            fieldKey={[field.fieldKey, 'speak']}
+                            name={[field.name, 'actionText']}
+                            fieldKey={[field.fieldKey, 'actionText']}
                             label="澄清话术"
                           >
                             <GlobalVarButton
@@ -123,8 +148,8 @@ const WordSlotModal: React.FC<any> = (props: any) => {
                         </Space>
 
                         <FormItem
-                          name={[field.name, 'label_var']}
-                          fieldKey={[field.fieldKey, 'label_var']}
+                          name={[field.name, 'textLabels']}
+                          fieldKey={[field.fieldKey, 'textLabels']}
                           label="选择标签"
                         >
                           <LabelSelect color="orange"></LabelSelect>
@@ -137,7 +162,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
             }}
           </FormList>
 
-          <FormItem name="exit_speak" label="结束话术">
+          <FormItem name="endText" label="结束话术">
             <GlobalVarButton
               placeholder="请输入结束话术"
               style={{ width: '400px' }}
@@ -145,7 +170,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
             />
           </FormItem>
 
-          <FormItem name="exit_label_var" label="选择标签">
+          <FormItem name="textLabels" label="选择标签">
             <LabelSelect color="orange"></LabelSelect>
           </FormItem>
         </Form>

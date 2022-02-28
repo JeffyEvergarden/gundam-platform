@@ -3,7 +3,7 @@ import GGEditor, { Flow, Item } from 'gg-editor';
 
 import EditorMinimap from './components/EditorMinimap';
 import { FlowContextMenu } from './components/EditorContextMenu';
-import { FlowDetailPanel } from './components/EditorDetailPanel';
+import { FlowDetailPanel } from '../EditorDetailPanel'; //
 import { FlowItemPanel } from './components/EditorItemPanel';
 import { FlowToolbar } from './components/EditorToolbar';
 import styles from './index.less';
@@ -16,15 +16,17 @@ GGEditor.setTrackable(false);
 
 interface PageViewProps {
   cref?: any;
+  type?: any;
   save?: (node: any) => void;
   insertNode?: (node: any) => void;
   removeNode?: (node: any) => void;
   clickItem?: (node: any) => void;
   openSetting?: (node: any) => void;
+  openEdgeSetting?: (node: any) => void;
 }
 
 const EditorView = (props: PageViewProps) => {
-  const { insertNode, removeNode, save, clickItem, cref, openSetting } = props;
+  const { type = 'main', insertNode, removeNode, save, cref, openSetting, openEdgeSetting } = props;
 
   const editorRef = useRef<any>(null);
 
@@ -42,12 +44,13 @@ const EditorView = (props: PageViewProps) => {
   useImperativeHandle(cref, () => ({
     init: (initData: any) => {
       // 初始化
+      console.log('初始化画布数据', initData);
       const propsAPI = getPropsAPI();
-      console.log(propsAPI);
-      propsAPI?.read(initData);
+      propsAPI?.read?.(initData || {});
       refreshOtherPane();
     },
     deleteNode,
+    updateNode,
     executeCommand: (...args: any[]) => {
       const propsAPI = getPropsAPI();
       propsAPI?.executeCommand(...args);
@@ -231,21 +234,21 @@ const EditorView = (props: PageViewProps) => {
       // console.log('before', event);
       if (event.action === 'add') {
         const [nodes] = getAllNode();
-        if (
-          nodes.find((item: any) => {
-            // 存在同样的隐藏_id
-            return item._id === event.model._id;
-          })
-        ) {
+        let node: any = nodes.find((item: any) => {
+          // 存在同样的隐藏_id
+          return item._id === event.model._id;
+        });
+        if (node) {
           event.model._type = 'copy';
+          event.model.copy_id = node._id;
         }
       }
       return false;
     },
     // 监视插入
     onAfterChange: (event: any) => {
-      console.log('after');
-      console.log(event); // action: "add" //item：节点 //affectedItemIds 影响id
+      // console.log('after');
+      // console.log(event); // action: "add" //item：节点 //affectedItemIds 影响id
       if (event.action === 'add') {
         // console.log('插入后');
         _insert(event);
@@ -282,11 +285,7 @@ const EditorView = (props: PageViewProps) => {
 
   const updateNode = (id: any, model: any) => {
     const propsAPI = getPropsAPI();
-    propsAPI.update(id, {
-      label: model.taskName,
-      taskId: model.taskId,
-      extra: model,
-    });
+    propsAPI.update(id, model);
     refreshOtherPane();
   };
   const watchCommand = (msg: any) => {
@@ -309,7 +308,7 @@ const EditorView = (props: PageViewProps) => {
       {/* 上层按钮   相关了解 commend 组件 */}
       <Row style={{ height: '100%' }}>
         <Col span={4}>
-          <FlowItemPanel />
+          <FlowItemPanel type={type} />
         </Col>
 
         <Col span={20}>
@@ -325,7 +324,11 @@ const EditorView = (props: PageViewProps) => {
               </Col>
 
               <Col span={6} className={styles.editorSidebar}>
-                <FlowDetailPanel openSetting={openSetting} />
+                <FlowDetailPanel
+                  type={type}
+                  openSetting={openSetting}
+                  openEdgeSetting={openEdgeSetting}
+                />
                 <EditorMinimap />
               </Col>
             </Row>

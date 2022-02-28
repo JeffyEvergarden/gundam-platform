@@ -11,6 +11,14 @@ export async function getMachineList(params?: { [key: string]: any }) {
   });
 }
 
+/** 获取单个机器人列表 **/
+export async function getMachineInfo(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/robot/robotConfig`, {
+    method: 'POST',
+    data,
+  });
+}
+
 /** 修改状态 **/
 export async function changeMachineStatus(data?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/robot/robotStatus`, {

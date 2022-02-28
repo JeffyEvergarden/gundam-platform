@@ -13,8 +13,10 @@ const RuleModal: React.FC<any> = (props: any) => {
   const [visible, setVisible] = useState<boolean>(false);
 
   useImperativeHandle(cref, () => ({
-    open: (val: any[]) => {
+    open: (info: any) => {
       setVisible(true);
+      form.resetFields();
+      form.setFieldsValue(info);
     },
     close: () => {
       setVisible(false);
@@ -25,7 +27,11 @@ const RuleModal: React.FC<any> = (props: any) => {
     try {
       let values: any = await form.validateFields();
       console.log(values);
-      confirm?.(values?.list || []);
+      confirm?.(
+        values?.list?.map((item: any) => {
+          return item?.ruleList || [];
+        }) || [],
+      );
       // setVisible(false);
     } catch (e) {
       console.log(e);
