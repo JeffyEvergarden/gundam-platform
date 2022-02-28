@@ -39,7 +39,9 @@ export default (props: any) => {
       res = await addIntentItem({ robotId: modalData.robotId, ...values });
     }
     message.info(res?.resultDesc || '正在处理');
-    submit();
+    if (res?.code == 100) {
+      submit();
+    }
   };
 
   return (

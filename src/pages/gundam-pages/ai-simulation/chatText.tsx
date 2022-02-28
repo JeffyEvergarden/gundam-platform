@@ -9,23 +9,19 @@ export default (props: any) => {
   const { visible, modalData } = props;
   const [dialogList, setDialogList] = useState<any>([]); // 对话内容
   const [textMessage, setTextMessage] = useState<string>(''); // 输入的信息，发送成功之后立马清空
+  const [number, setNumber] = useState<number>(0); // 存储 发送按钮 点击的次数，监听变化
   const { getDialogData } = useChatModel();
-  useEffect(() => {
-    if (visible) {
-      // console.log('chatData', modalData);
-    }
-  }, [visible]);
 
   // 保存输入的文字内容
   const saveInputValue = (data: any) => {
-    console.log('saveValue', data.target.value);
+    setTextMessage(data.target.value);
   };
 
   const inputChange = (data: any) => {
     setTextMessage(data.target.value);
   };
 
-  const robotResponse = async (data: any) => {
+  const robotResponse = async (data?: any) => {
     let params = {
       requestId: modalData.requestId,
       occurTime: '',
@@ -37,16 +33,16 @@ export default (props: any) => {
     };
     const res: any = await getDialogData(params);
 
-    new Promise((resolve: any, reject: any) => {
-      let newData = [...data];
-      newData.push({
-        type: 'robot',
-        message: 'I am a robot',
-      });
-      setDialogList(newData);
-      resolve();
+    let newData = [...dialogList];
+    newData.push({
+      type: 'robot',
+      message: 'I am a robot',
     });
-    setTextMessage('');
+    console.log('res', res, newData, dialogList);
+    setTimeout(() => {
+      setDialogList(newData);
+      setTextMessage('');
+    }, 1000);
   };
 
   // 发送按钮
@@ -55,14 +51,20 @@ export default (props: any) => {
       message.info('不能发送空白字符');
       return;
     }
+    let a = number;
+    a++;
+    setNumber(a);
     let data = [...dialogList];
     data.push({
       type: 'customer',
       message: textMessage,
     });
     setDialogList(data);
-    robotResponse(data);
   };
+
+  useEffect(() => {
+    robotResponse();
+  }, [number]);
 
   return (
     <React.Fragment>

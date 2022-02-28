@@ -8,11 +8,11 @@
  */
 export default {
   dev: {
-    '/aichat/': {
-      target: 'http://10.192.174.85:9085',
-      changeOrigin: true,
-      pathRewrite: { '^': '' },
-    },
+    // '/aichat/': {
+    //   target: 'http://10.192.174.85:9085',
+    //   changeOrigin: true,
+    //   pathRewrite: { '^': '' },
+    // },
     '/robot/': {
       target: 'http://11.113.1.50:9086',
       changeOrigin: true,

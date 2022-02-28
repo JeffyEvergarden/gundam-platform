@@ -34,20 +34,21 @@ export default (props: any) => {
           nonIntents: [],
         });
         obj.nonIntents = [];
-        obj.allowIntents = [{ value: 'ALL', name: '所有' }, ...obj.normalIntents];
+        obj.allowIntents = [{ value: 'ALL', name: '所有', id: 'ALL' }, ...obj.normalIntents];
         setFieldSelectData(obj);
       } else {
-        let newArr = changedValues?.allowIntents?.length == 0 ? obj.normalIntents : obj?.nonIntents;
+        let newArr =
+          changedValues?.allowIntents?.length == 0 ? obj?.normalIntents : obj?.nonIntents;
         let arr: any = newArr?.filter((item: any) => {
-          return !changedValues?.allowIntents.includes(item.value);
+          return !changedValues?.allowIntents?.includes(item?.value || item?.id);
         });
         obj.nonIntents = [...arr];
         setFieldSelectData(obj);
       }
     } else if (changedValues?.nonIntents) {
       let obj = { ...fieldSelectData };
-      let arr: any = (obj?.allowIntents).filter((item: any) => {
-        return !changedValues?.nonIntents.includes(item.value);
+      let arr: any = obj?.allowIntents?.filter((item: any) => {
+        return !changedValues?.nonIntents?.includes(item?.value || item?.id);
       });
       obj.allowIntents = [...arr];
       setFieldSelectData(obj);
@@ -63,13 +64,27 @@ export default (props: any) => {
     const values = await form.validateFields();
     let res: any;
     let params = form.getFieldsValue();
+
+    let newValue = form.getFieldValue('intentValue');
+    let newName = form.getFieldValue('intentName');
+    // 拼接 意图 值
+    let newObj = {
+      [newValue]: newName,
+    };
     if (title == 'edit') {
-      res = await editWordSlot({ ...params, robotId: modalData.robotId, id: modalData.id });
+      res = await editWordSlot({
+        ...params,
+        robotId: modalData.robotId,
+        id: modalData.id,
+        slotInfos: newObj,
+      });
     } else if (title == 'add') {
-      res = await addWordSlot({ ...params, robotId: modalData.robotId });
+      res = await addWordSlot({ ...params, robotId: modalData.robotId, slotInfos: newObj });
     }
-    message.info(res?.resultDesc);
-    onSubmit();
+    message.info(res?.resultDesc || '正在处理');
+    if (res?.code == 100) {
+      onSubmit();
+    }
   };
 
   const getIntentSelList = async () => {
@@ -80,13 +95,15 @@ export default (props: any) => {
         return {
           value: item.id,
           name: item.intentName,
+          id: item.id,
         };
       });
     let arr: any = { ...fieldSelectData };
 
-    arr.allowIntents = [{ value: 'ALL', name: '所有' }, ...data];
+    arr.allowIntents = [{ value: 'ALL', name: '所有', id: 'ALL' }, ...data];
     arr.nonIntents = data;
     arr.normalIntents = data;
+    arr.intentName = data;
     setFieldSelectData(arr);
   };
 
@@ -138,8 +155,8 @@ export default (props: any) => {
                     <Select placeholder={item.placeholder} mode={'multiple'}>
                       {fieldSelectData[item?.name]?.map((itex: any) => {
                         return (
-                          <Option key={itex.value} value={itex.value}>
-                            {itex.name}
+                          <Option key={itex.value || item.id} value={itex?.value}>
+                            {itex?.name || itex?.intentName || itex}
                           </Option>
                         );
                       })}
@@ -186,15 +203,7 @@ export default (props: any) => {
                           </Select>
                         </Form.Item>
                         <Form.Item name={'intentValue'} label={'值'}>
-                          <Select placeholder={item.placeholder}>
-                            {fieldSelectData['intentName']?.map((itex: any) => {
-                              return (
-                                <Option key={itex.value} value={itex.value}>
-                                  {itex.name}
-                                </Option>
-                              );
-                            })}
-                          </Select>
+                          <Input />
                         </Form.Item>
                       </React.Fragment>
                     )}

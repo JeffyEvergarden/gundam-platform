@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useModel } from 'umi';
 import ProTable from '@ant-design/pro-table';
 import type { ActionType } from '@ant-design/pro-table';
-import { Button, Space, Popconfirm, message } from 'antd';
+import { Button, Space, Popconfirm, message, Table } from 'antd';
 import { wordSlotTableList } from './comps/config';
 import OperateSlotModal from './comps/operateSlotModal';
 import { useKeyWordModel } from './model';
