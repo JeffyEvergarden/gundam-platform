@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, Input, Select, Form, Button } from 'antd';
 import { withPropsAPI } from 'gg-editor';
 import { SettingOutlined } from '@ant-design/icons';
@@ -7,6 +7,7 @@ import { useModel } from 'umi';
 import { useEffect } from 'react';
 import { useNodeOpsModel } from '../model';
 import { processType } from '../model/const';
+import eventbus from '../flow/utils/eventbus';
 
 const upperFirst = (str: string) =>
   str.toLowerCase().replace(/( |^)[a-z]/g, (l: string) => l.toUpperCase());
@@ -34,6 +35,8 @@ const NodeForm: React.FC<DetailFormProps> = (props: DetailFormProps) => {
 
   const [form] = Form.useForm();
 
+  const [num, setNum] = useState<any>(0);
+
   const item = propsAPI.getSelected()[0];
 
   const { info, businessFlowId } = useModel('gundam' as any, (model: any) => ({
@@ -54,6 +57,11 @@ const NodeForm: React.FC<DetailFormProps> = (props: DetailFormProps) => {
   const _openSetting = () => {
     const model: any = item?.getModel();
     openSetting?.(model);
+  };
+
+  const refresh = () => {
+    console.log('更新');
+    setNum(num + 1);
   };
 
   // 保存修改节点
@@ -90,11 +98,19 @@ const NodeForm: React.FC<DetailFormProps> = (props: DetailFormProps) => {
   // const getNodeConfig = async (node: any) => {};
 
   useEffect(() => {
+    eventbus.$on('refresh', refresh); // 监听添加节点
+    return () => {
+      eventbus.$off('refresh', refresh);
+    };
+  }, []);
+
+  useEffect(() => {
     const model: any = item?.getModel();
+    console.log('item:', model);
     form.setFieldsValue({
       label: model?.label || '',
     });
-  }, [item]);
+  }, [item, num]);
 
   return (
     <Card type="inner" size="small" title={formatStr(type)} bordered={false}>

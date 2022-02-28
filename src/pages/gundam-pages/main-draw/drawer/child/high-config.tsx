@@ -93,10 +93,8 @@ const HighConfig = (props: any) => {
 
         <FormList name="silenceText">
           {(fields, { add, remove }) => {
-            console.log(fields);
             const addNew = () => {
               let length = fields.length;
-              console.log(length);
               add({ actionText: '', textLabels: [] }, length);
             };
 

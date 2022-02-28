@@ -150,6 +150,17 @@ const getInfo = (req: any, res: any) => {
   });
 };
 
+const getLineConfig = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    data: {
+      name: '七龙珠',
+      level: 10,
+      nodeDesc: '七龙珠',
+    },
+  });
+};
+
 // 菜单管理相关
 export default {
   // 主流程管理相关
@@ -162,6 +173,7 @@ export default {
   'POST /aichat/robot/node/nodeInfo': getNodesConfig, // 获取节点信息
   'POST /aichat/robot/node/nodeSave': nodeOps, // 保存节点配置
   'POST /aichat/robot/mainDraw/lineSave': nodeOps, // 保存线配置
+  'POST /aichat/robot/mainDraw/lineRuleInfo': getLineConfig, // 获取线配置
 };
 
 // 接口1、获取机器人信息 传robotid

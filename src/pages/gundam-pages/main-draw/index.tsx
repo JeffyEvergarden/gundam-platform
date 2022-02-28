@@ -7,6 +7,7 @@ import EdgeDrawerForm from './EdgeDrawer';
 import style from './style.less';
 import { useNodeOpsModel } from './model';
 import { processType } from './model/const';
+import eventbus from './flow/utils/eventbus';
 
 const MainDraw = (props: any) => {
   const { type = 'main' } = props;
@@ -39,8 +40,8 @@ const MainDraw = (props: any) => {
   // -- start-----
   // 插入节点
   const insertNode = async (node: any) => {
-    console.log('外层监测到插入Node');
-    console.log(node);
+    // console.log('外层监测到插入Node');
+    // console.log(node);
     // color: #1890FF 普通节点、 #fffbe6 业务节点
     let params: any = {
       ...preParams,
@@ -132,6 +133,7 @@ const MainDraw = (props: any) => {
       (fake.current as any).updateNode(info.id, {
         label: name || info.label,
       });
+      eventbus.$emit('refresh');
     };
 
     (drawerRef.current as any).open(config, callBack);
@@ -161,6 +163,7 @@ const MainDraw = (props: any) => {
       (fake.current as any).updateNode(info.id, {
         label: name || info.label,
       });
+      eventbus.$emit('refresh');
     };
     (edgeDrawerRef.current as any).open(config, callBack);
   };
