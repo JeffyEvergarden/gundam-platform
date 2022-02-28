@@ -13,6 +13,11 @@ export default {
     //   changeOrigin: true,
     //   pathRewrite: { '^': '' },
     // },
+    // '/robot/': {
+    //   target: 'http://11.113.1.50:9086',
+    //   changeOrigin: true,
+    //   pathRewrite: { '^': '' },
+    // },
   },
   test: {
     '/api/': {

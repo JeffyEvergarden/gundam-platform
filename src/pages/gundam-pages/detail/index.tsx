@@ -37,7 +37,7 @@ const DetailPages: React.FC = (props: any) => {
   };
 
   const addConfig = () => {
-    const tempChildrenList = form.getFieldValue('childrenList') || [];
+    const tempChildrenList = form.getFieldValue('configKey') || [];
     tempChildrenList.push({
       configValue: undefined,
       configName: undefined,
@@ -45,14 +45,16 @@ const DetailPages: React.FC = (props: any) => {
     });
 
     form.setFieldsValue({
-      childrenList: [...tempChildrenList],
+      configKey: [...tempChildrenList],
     });
   };
 
   const submit = async () => {
     console.log(form.getFieldsValue());
     let reqData = form.getFieldsValue();
-    await editRobotConfig(reqData).then((res) => {
+    console.log(reqData);
+
+    await editRobotConfig({ robotId: info.id, ...reqData }).then((res) => {
       if (res.resultCode == 100) {
         getConfig();
       }
@@ -64,7 +66,7 @@ const DetailPages: React.FC = (props: any) => {
 
     let formData = form.getFieldsValue();
     getConfig();
-    if (!formData.childrenList?.length) {
+    if (!formData.configKey?.length) {
       addConfig();
     }
   }, []);
@@ -130,7 +132,7 @@ const DetailPages: React.FC = (props: any) => {
         </Button>
 
         <FormItem label={' '} {...col} colon={false}>
-          <Form.List name="childrenList">
+          <Form.List name="configKey">
             {(fields, { add, remove }) => (
               <>
                 {fields.map((field, index) => (

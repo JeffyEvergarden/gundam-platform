@@ -21,11 +21,11 @@ const getConfig = (req: any, res: any) => {
       maxThreshold: 0.93,
       minThreshold: 0.13,
       clearToDeal: 'ssxxzyzybaba',
-      childrenList: [
+      configKey: [
         {
           id: 'xxxxx',
           configType: 0,
-          configKey: '111',
+
           configName: '用户名',
           configValue: 'userName',
           configDesc: 'var1',
@@ -33,7 +33,7 @@ const getConfig = (req: any, res: any) => {
         {
           id: 'xxxxx',
           configType: 0,
-          configKey: '222',
+
           configName: '用户名2',
           configValue: 'userName2',
           configDesc: 'var2',
@@ -41,7 +41,7 @@ const getConfig = (req: any, res: any) => {
         {
           id: 'xxxxx',
           configType: 0,
-          configKey: '333',
+
           configName: '用户名3',
           configValue: 'userName3',
           configDesc: 'var3',
