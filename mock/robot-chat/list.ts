@@ -24,6 +24,6 @@ const getTextDialogData = (req: any, res: any) => {
 
 // 机器人模拟对话
 export default {
-  'POST /aichat/robot/intent/intentList': getChatInitData, // 对话初始化接口
-  'POST /aichat/robot/intent/intentAdd': getTextDialogData, // 文本接口
+  'POST /aichat/robot/intent/intentList1': getChatInitData, // 对话初始化接口
+  'POST /aichat/robot/intent/intentAdd1': getTextDialogData, // 文本接口
 };

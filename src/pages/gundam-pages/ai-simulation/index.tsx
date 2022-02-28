@@ -66,6 +66,7 @@ export default (props: any) => {
       robotId: info.id,
       businessCode: info.businessCode,
     };
+    setRobotShowFlag(true);
     const res: any = await getRobotChatData(params);
     message.info(res?.resultDesc || '正在处理');
     if (res?.resultCode == 100) {

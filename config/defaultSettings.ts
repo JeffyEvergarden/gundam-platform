@@ -14,7 +14,7 @@ const Settings: LayoutSettings & {
   colorWeak: false,
   title: '',
   pwa: false,
-  logo: '/logo.png',
+  logo: '/aichat/logo.png',
   iconfontUrl: '',
 };
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Form, Row, Col, Input, Button, Select, Radio, Space, message } from 'antd';
 import { operateFormList } from './config';
-import { useTableModel } from '../model';
+import { useIntentModel } from '../model';
 const { Option } = Select;
 
 const layout = {
@@ -15,7 +15,7 @@ const tailLayout = {
 export default (props: any) => {
   const { visible, title, modalData, submit, cancel } = props;
   const [form] = Form.useForm();
-  const { addIntentItem, editIntentItem } = useTableModel();
+  const { addIntentItem, editIntentItem } = useIntentModel();
   useEffect(() => {
     if (visible) {
       if (title == 'edit') {
@@ -34,12 +34,14 @@ export default (props: any) => {
     const values = await form.validateFields();
     let res: any;
     if (title == 'edit') {
-      res = editIntentItem({ ...values, id: modalData.id, robotId: modalData.robotId });
+      res = await editIntentItem({ ...values, id: modalData.id, robotId: modalData.robotId });
     } else if (title == 'add') {
-      res = addIntentItem({ robotId: modalData.robotId, ...values });
+      res = await addIntentItem({ robotId: modalData.robotId, ...values });
     }
     message.info(res?.resultDesc || '正在处理');
-    submit();
+    if (res?.code == 100) {
+      submit();
+    }
   };
 
   return (
@@ -63,8 +65,8 @@ export default (props: any) => {
                 {item.type == 'radio' && (
                   <Form.Item name={item.name} label={item.label} rules={item.rules}>
                     <Radio.Group disabled={title == 'edit'}>
-                      <Radio value="0">是</Radio>
-                      <Radio value="1">否</Radio>
+                      <Radio value={0}>是</Radio>
+                      <Radio value={1}>否</Radio>
                     </Radio.Group>
                   </Form.Item>
                 )}

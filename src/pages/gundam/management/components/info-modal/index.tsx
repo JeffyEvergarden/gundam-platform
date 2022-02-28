@@ -142,15 +142,15 @@ const InfoModal: React.FC<any> = (props: any) => {
               label="业务类型"
               style={{ width: '360px' }}
             >
-              <Radio.Group>
+              <Select placeholder={'请选择业务类型'}>
                 {BUSSINESS_CODE.map((item: any, index: any) => {
                   return (
-                    <Radio value={item.name} key={index}>
+                    <Select.Option value={item.name} key={index}>
                       {item.label}
-                    </Radio>
+                    </Select.Option>
                   );
                 })}
-              </Radio.Group>
+              </Select>
             </FormItem>
 
             {/* 语音类型 */}

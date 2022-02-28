@@ -22,7 +22,7 @@ export const useTableModel = () => {
     setTableLoading(true);
     let res: any = await getMachineList(params);
     setTableLoading(false);
-    let { datas = [], totalPage } = res;
+    let { datas = [], totalPage, totalSize } = res;
     if (!Array.isArray(datas)) {
       datas = [];
     }
@@ -35,7 +35,7 @@ export const useTableModel = () => {
     });
     // console.log('tableList', datas);
     setTableList(datas || []);
-    return { data: datas, total: totalPage };
+    return { data: datas, total: totalSize };
   };
 
   return {
@@ -72,7 +72,7 @@ export const useOpModel = () => {
     if (res.resultCode === successCode) {
       return true;
     } else {
-      // return res?.resultDesc || '未知系统异常';
+      message.error(res?.resultDesc || '未知系统异常');
     }
   };
   // -----
@@ -83,7 +83,7 @@ export const useOpModel = () => {
     if (res.resultCode === successCode) {
       return true;
     } else {
-      // return res?.resultDesc || '未知系统异常';
+      message.error(res?.resultDesc || '未知系统异常');
     }
   };
 
@@ -95,7 +95,7 @@ export const useOpModel = () => {
       message.success('创建机器人成功');
       return res;
     } else {
-      return res;
+      message.error(res?.resultDesc || '未知系统异常');
     }
   };
 
@@ -107,7 +107,7 @@ export const useOpModel = () => {
       message.success('修改机器人信息成功');
       return true;
     } else {
-      return res?.resultDesc || '未知系统异常';
+      message.error(res?.resultDesc || '未知系统异常');
     }
   };
 

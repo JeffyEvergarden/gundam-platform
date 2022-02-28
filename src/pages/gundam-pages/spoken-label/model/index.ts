@@ -15,7 +15,7 @@ export const useLabelModel = () => {
     setLabelLoading(true);
     let res: any = await getLabelList(params);
     setLabelLoading(false);
-    let { datas = [], totalPage } = res;
+    let { datas = [], totalPage, totalSize } = res;
     if (!Array.isArray(datas)) {
       datas = [];
     }
@@ -28,7 +28,7 @@ export const useLabelModel = () => {
     });
     // console.log('labelList', data);
     setLabelList(datas || []);
-    return { data: datas, total: totalPage };
+    return { data: datas, total: totalSize };
   };
 
   return {
@@ -50,10 +50,10 @@ export const useOpModel = () => {
     let res: any = await deleteLabel(data);
     setLoading(false);
     if (res.resultCode === successCode) {
-      // message.success(res?.resultDesc || '删除标签成功');
+      message.success(res?.resultDesc || '删除标签成功');
       return true;
     } else {
-      // return res?.resultDesc || '未知系统异常';
+      message.error(res?.resultDesc || '未知错误');
     }
   };
 
