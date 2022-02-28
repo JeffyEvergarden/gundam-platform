@@ -56,7 +56,7 @@ export const useOpModel = () => {
   const getInfo = async (params: any) => {
     let res = await getMachineInfo(params);
     if (res.resultCode === successCode) {
-      let data: any = res?.data || [];
+      let data: any = res?.datas || {};
       return data;
     } else {
       message.warning('获取不到机器人信息');

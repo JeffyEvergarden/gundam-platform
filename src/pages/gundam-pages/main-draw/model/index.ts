@@ -72,7 +72,7 @@ export const useNodeOpsModel = () => {
   const _getNodesConfig = async (data: any) => {
     let res: any = await getNodesConfig(data);
     if (res.resultCode === config.successCode) {
-      let config: any = res.data || {};
+      let config: any = res.datas || {};
       return config;
     } else {
       message.warning('获取节点信息失败');
@@ -94,7 +94,7 @@ export const useNodeOpsModel = () => {
   const _getLineConfig = async (data: any) => {
     let res: any = await getLineConfig(data);
     if (res.resultCode === config.successCode) {
-      let config: any = res.data || {};
+      let config: any = res.datas || {};
       return config;
     } else {
       message.warning('获取节点信息失败');
@@ -149,7 +149,7 @@ export const useNodeOpsModel = () => {
   const _getMachineMainDraw = async (data: any) => {
     let res: any = await getMachineMainDraw(data);
     if (res.resultCode === config.successCode) {
-      let data: any = res?.data || {};
+      let data: any = res?.datas || {};
       return parser(data);
     } else {
       message.error('获取不到画布信息');
@@ -224,7 +224,7 @@ export const useSelectModel = () => {
   const _getWishList = async (id?: any) => {
     let res: any = await getIntentList({
       robotId: id,
-      page: 1,
+      current: 1,
       pageSize: 1000,
     });
     let data: any[] =
@@ -242,7 +242,7 @@ export const useSelectModel = () => {
   const _getWordSlotList = async (id?: any) => {
     let res: any = await getWordSlotTableList({
       robotId: id,
-      page: 1,
+      current: 1,
       pageSize: 1000,
     });
     let data: any[] = res?.data || res?.datas || [];
@@ -263,7 +263,7 @@ export const useSelectModel = () => {
   const _getFlowList = async (id?: any) => {
     let res: any = await getFlowList({
       robotId: id,
-      page: 1,
+      current: 1,
       pageSize: 1000,
     });
     let data: any[] =

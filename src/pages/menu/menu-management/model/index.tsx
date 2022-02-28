@@ -153,7 +153,7 @@ export const useTableModel = () => {
     setOpLoading(false);
     if (res?.code === successCode) {
       message.success('添加成功');
-      return res?.data || {};
+      return res?.datas || {};
     } else {
       message.error(res?.msg || '发生未知系统异常');
       return {};
@@ -224,7 +224,7 @@ export const useFormModel = () => {
   const getFormInfo = async () => {
     let result: any = await getMenuForm().then((res: any) => {
       if (res?.data) {
-        let data = res?.data;
+        let data = res?.datas;
         return {
           flag: data?.isDisplay || undefined,
           url: data?.oldUrl || undefined,

@@ -62,7 +62,7 @@ const MainDraw = (props: any) => {
       (fake.current as any).deleteNode(node);
     } else {
       (fake.current as any).updateNode(node.id, {
-        _id: res.data?.id, //得到后端id
+        _id: res.datas?.id, //得到后端id
       });
     }
   };

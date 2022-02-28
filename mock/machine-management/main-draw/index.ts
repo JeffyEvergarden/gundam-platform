@@ -8,7 +8,7 @@ const nodeOps = (req: any, res: any) => {
   console.log(req.query);
   res.json({
     resultCode: successCode,
-    data: {
+    datas: {
       id: Math.random().toFixed(4),
     },
   });
@@ -17,7 +17,7 @@ const nodeOps = (req: any, res: any) => {
 const getConfig = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
-    data: {
+    datas: {
       nodes: [
         {
           frontId: '01', // 前端节点id
@@ -65,7 +65,7 @@ const getNodesConfig = (req: any, res: any) => {
   console.log('-------getNodesConfig');
   res.json({
     resultCode: successCode,
-    data: {
+    datas: {
       name: '名侦探柯南',
       nodeDesc: '高中生侦探',
       business: 'front_mock_id_1',
@@ -124,7 +124,7 @@ const getNodesConfig = (req: any, res: any) => {
 const getInfo = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
-    data: {
+    datas: {
       robotInfo: {
         id: '100',
         flowId: '100',
@@ -153,7 +153,7 @@ const getInfo = (req: any, res: any) => {
 const getLineConfig = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
-    data: {
+    datas: {
       name: '七龙珠',
       level: 10,
       nodeDesc: '七龙珠',
