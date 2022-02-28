@@ -1,5 +1,5 @@
 import { useState, useImperativeHandle, useRef } from 'react';
-import { Drawer, Form, Input, Select, Button } from 'antd';
+import { Drawer, Form, Input, Select, Button, message } from 'antd';
 import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import styles from './style.less';
 import { useModel } from 'umi';
@@ -62,7 +62,10 @@ const DrawerForm = (props: any) => {
 
   const saveNode = async () => {
     // console.log(form.getFieldsValue());
-    let res: any = await form.validateFields().catch(() => false);
+    let res: any = await form.validateFields().catch(() => {
+      message.warning('存在未填写完全的配置');
+      return false;
+    });
     if (res === false) {
       return;
     } else {
@@ -158,66 +161,13 @@ const DrawerForm = (props: any) => {
 
         {/* 开始节点 */}
         <Condition r-if={nodetype === 'start'}>
-          <FormList name="list">
-            {(fields, { add, remove }) => {
-              console.log(fields);
-              const addNew = () => {
-                let length = fields.length;
-                console.log(length);
-                add({ actionText: '', textLabels: [] }, length);
-              };
+          <ConversationConfig
+            form={form}
+            wishList={wishList}
+            wordSlotList={wordSlotList}
+          ></ConversationConfig>
 
-              return (
-                <div style={{ paddingLeft: '20px' }}>
-                  <div className={styles['zy-row']}>
-                    <div className={styles['title_sec']} style={{ marginRight: '20px' }}>
-                      响应话术:
-                    </div>
-                    <Button type="link" icon={<PlusCircleOutlined />} onClick={addNew}></Button>
-                  </div>
-
-                  {fields.map((field: any, index: number) => (
-                    <div
-                      key={field.key}
-                      className={styles['list-box']}
-                      style={{ marginLeft: '30px' }}
-                    >
-                      <div className={styles['num']}>{index + 1}.</div>
-                      <div>
-                        <Form.Item
-                          name={[field.name, 'actionText']}
-                          fieldKey={[field.fieldKey, 'actionText']}
-                          label="响应话术"
-                        >
-                          <GlobalVarButton
-                            placeholder="请输入响应话术"
-                            style={{ width: '400px' }}
-                            autoComplete="off"
-                          />
-                        </Form.Item>
-
-                        <Form.Item
-                          name={[field.name, 'textLabels']}
-                          fieldKey={[field.fieldKey, 'textLabels']}
-                          label="选择标签"
-                        >
-                          <LabelSelect color="orange"></LabelSelect>
-                        </Form.Item>
-                      </div>
-
-                      <Button
-                        icon={<MinusCircleOutlined />}
-                        type="link"
-                        onClick={() => {
-                          remove(index);
-                        }}
-                      />
-                    </div>
-                  ))}
-                </div>
-              );
-            }}
-          </FormList>
+          <HighConfig form={form} wishList={wishList} bussinessList={flowList}></HighConfig>
         </Condition>
       </Form>
     </Drawer>

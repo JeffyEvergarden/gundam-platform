@@ -44,7 +44,7 @@ const RuleConfig = (props: any) => {
     curObj = curObj['list'][curIndex]['ruleList'];
 
     let keys: any[] = Object.keys(item);
-    console.log(keys);
+    // console.log(keys);
     if (keys.length > 1) {
       console.log('删除/新增'); // 变动参数多代表是删除/新增
       // setNum(num + 1);

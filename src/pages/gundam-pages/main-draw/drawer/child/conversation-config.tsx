@@ -77,7 +77,7 @@ const ConversationConfig = (props: any) => {
 
                       <FormList name={[field.name, 'nodeText']}>
                         {(fields, { add, remove }) => {
-                          console.log(fields);
+                          // console.log(fields);
                           const addNew = () => {
                             let length = fields.length;
                             add({ actionText: '', textLabels: [] }, length);

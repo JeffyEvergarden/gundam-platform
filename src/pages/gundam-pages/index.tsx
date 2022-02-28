@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useModel, history, useLocation } from 'umi';
-import { message } from 'antd';
+import { message, Button, Space } from 'antd';
 import { LoginOutlined } from '@ant-design/icons';
 
-import ProLayout from '@ant-design/pro-layout';
+import ProLayout, { PageContainer } from '@ant-design/pro-layout';
 
 import RightContent from '@/components/RightContent';
 import routes from './routes';
@@ -96,7 +96,23 @@ const MachinePagesHome: React.FC = (props: any) => {
       )}
       disableContentMargin={false}
     >
-      {info?.id && props.children}
+      {info?.id && (
+        <PageContainer
+          header={{
+            title: '',
+            ghost: true,
+            extra: (
+              <Space>
+                <Button type="primary">发布生产</Button>
+
+                <Button type="default">发布测试</Button>
+              </Space>
+            ),
+          }}
+        >
+          {props.children}
+        </PageContainer>
+      )}
     </ProLayout>
   );
 };
