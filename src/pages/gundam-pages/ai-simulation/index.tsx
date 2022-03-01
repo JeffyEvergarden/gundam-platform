@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Form, Card, Input, Radio, Select, Button, message } from 'antd';
-import { CommentOutlined } from '@ant-design/icons';
 import { robotChatFormList } from './config';
 import RobotChatText from './chatText';
 import { useChatModel } from './model';
 import { useModel } from 'umi';
+import styles from './style.less';
 
 const { Option } = Select;
 
@@ -12,11 +12,9 @@ const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 12 },
 };
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 },
-};
 
 export default (props: any) => {
+  const { chatVisible = false, robotInfo } = props;
   const [form] = Form.useForm();
   const [formSelectArr, setFormSelectArr] = useState<any>({
     fakeArray: [
@@ -26,30 +24,11 @@ export default (props: any) => {
       },
     ],
   });
-  const [robotChatData, setRobotChatData] = useState<any>({});
-  const [robotShowFlag, setRobotShowFlag] = useState<boolean>(false); // 是否展示 对话文本框
+  const [robotChatData, setRobotChatData] = useState<any>({}); // 保存机器人聊天数据
   const { getRobotChatData } = useChatModel();
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
-
-  useEffect(() => {
-    form.setFieldsValue({
-      customerName: '孙悟空',
-      sex: '0',
-      telephone: '0',
-      callLine: '南天门',
-      voice: '凄惨',
-      judicialState: '通缉',
-      judicialChannel: '天庭',
-      overdueDays: '500',
-      overdueNumber: '999',
-      genderName: '秃驴',
-      customerType: '佛门',
-      settledAmount: '0',
-      overdueMoney: '999',
-    });
-  }, []);
 
   const showChatText = async () => {
     console.log('info', info);
@@ -66,20 +45,35 @@ export default (props: any) => {
       robotId: info.id,
       businessCode: info.businessCode,
     };
-    setRobotShowFlag(true);
     const res: any = await getRobotChatData(params);
     message.info(res?.resultDesc || '正在处理');
     if (res?.resultCode == 100) {
       setRobotChatData(res);
-      setRobotShowFlag(true);
     }
   };
+
+  useEffect(() => {
+    setRobotChatData({});
+    let arr = ['createTime', 'onlineTime', 'id', 'robotType', 'status'];
+    let newObj = Object.keys(robotInfo)?.filter((item: any) => {
+      return !arr.includes(item);
+    });
+    let newData = newObj?.map((item: any) => {
+      return {
+        name: item,
+        label: item,
+      };
+    });
+    console.log('robotInfo', robotInfo, newObj);
+    setRobotChatData(newData);
+  }, [chatVisible]);
 
   return (
     <React.Fragment>
       <Row gutter={24}>
-        <Col span={12}>
-          <Card>
+        <Col span={10}>
+          <div className={styles['box-title']}>变量配置</div>
+          <div className={styles['variable-box']}>
             <Form form={form} {...layout}>
               {robotChatFormList?.map((item: any) => {
                 return (
@@ -113,16 +107,11 @@ export default (props: any) => {
                   </React.Fragment>
                 );
               })}
-              <Form.Item {...tailLayout}>
-                <Button icon={<CommentOutlined />} onClick={showChatText}>
-                  文本
-                </Button>
-              </Form.Item>
             </Form>
-          </Card>
+          </div>
         </Col>
-        <Col span={12}>
-          <RobotChatText visible={robotShowFlag} modalData={robotChatData} />
+        <Col span={14}>
+          <RobotChatText modalData={robotChatData} />
         </Col>
       </Row>
     </React.Fragment>
