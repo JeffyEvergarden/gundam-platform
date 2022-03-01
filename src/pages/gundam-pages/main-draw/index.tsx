@@ -71,6 +71,9 @@ const MainDraw = (props: any) => {
   const removeNode = async (node: any) => {
     console.log('外层监测到删除Node');
     console.log(node);
+    if (!node._id) {
+      return;
+    }
     let params: any = {
       ...preParams,
       id: node._id, // 后端id
@@ -92,7 +95,7 @@ const MainDraw = (props: any) => {
     console.log('保存提交', obj);
     // 可能需要进一步作校验
     saveDraw({
-      obj,
+      ...obj,
       ...preParams,
     });
   };
@@ -159,9 +162,10 @@ const MainDraw = (props: any) => {
       frontId: info.id,
     };
 
-    const callBack = (name: string) => {
+    const callBack = (name: string, id: any) => {
       (fake.current as any).updateNode(info.id, {
         label: name || info.label,
+        _id: id,
       });
       eventbus.$emit('refresh');
     };
@@ -195,7 +199,7 @@ const MainDraw = (props: any) => {
 
       <DrawerForm cref={drawerRef} />
 
-      <EdgeDrawerForm cref={edgeDrawerRef} />
+      <EdgeDrawerForm cref={edgeDrawerRef} type={type} />
     </div>
   );
 };

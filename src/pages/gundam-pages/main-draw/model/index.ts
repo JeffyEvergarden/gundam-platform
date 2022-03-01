@@ -106,7 +106,7 @@ export const useNodeOpsModel = () => {
     let res: any = await saveLine(data);
     if (res.resultCode === config.successCode) {
       message.success('保存成功');
-      return true;
+      return res;
     } else {
       message.warning(res.resultDesc || '保存失败');
       return false;
@@ -159,7 +159,7 @@ export const useNodeOpsModel = () => {
 
   // 加工画布参数
   const process = (obj: any) => {
-    let { nodes = [], edges = [] }: any = obj;
+    let { nodes = [], edges = [], ...preParams }: any = obj;
     nodes = nodes.map((item: any) => {
       return {
         nodeType: processType(item._nodetype), // 节点类型
@@ -184,6 +184,7 @@ export const useNodeOpsModel = () => {
     return {
       nodes: nodes,
       edges: edges,
+      ...preParams,
     };
   };
 
