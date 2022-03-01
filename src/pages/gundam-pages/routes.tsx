@@ -1,4 +1,4 @@
-import { CrownOutlined, LeftOutlined, UserOutlined, SmileOutlined } from '@ant-design/icons';
+import { CrownOutlined } from '@ant-design/icons';
 
 export default [
   {
@@ -29,11 +29,19 @@ export default [
   {
     icon: <CrownOutlined />,
     path: '/gundamPages/businessDraw',
+    exact: true,
+    _info: { fuck: true },
     name: '业务流程管理',
   },
   {
     icon: <CrownOutlined />,
     path: '/gundamPages/aiSimulation',
     name: '机器人模拟',
+  },
+  {
+    icon: <CrownOutlined />,
+    hideInMenu: true,
+    path: '/gundamPages/businessDraw/detail',
+    name: '业务流程管理-详情配置',
   },
 ];

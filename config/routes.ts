@@ -11,6 +11,7 @@ export default [
   {
     path: '/demo',
     layout: false,
+    hideInMenu: true,
     name: 'demo事例',
     component: './demo',
     noAuth: true,

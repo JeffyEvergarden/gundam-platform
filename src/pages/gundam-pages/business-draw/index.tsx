@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useModel } from 'umi';
+import { useModel, history } from 'umi';
 
 import ProTable from '@ant-design/pro-table';
 import type { ActionType } from '@ant-design/pro-table';
@@ -7,7 +7,7 @@ import { businessTableColumnsList } from './config';
 import { Button, message, Space } from 'antd';
 import { useTableModel } from './model';
 import OperateFlowModal from './comps/operateFlowModal';
-import { InfoCircleFilled } from '_@ant-design_icons@4.7.0@@ant-design/icons';
+import { InfoCircleFilled } from '@ant-design/icons';
 
 // 机器人列表
 const DetailPages: React.FC = (props: any) => {
@@ -19,9 +19,12 @@ const DetailPages: React.FC = (props: any) => {
   const [operFlowData, handleOperFlowData] = useState<any>({}); //
 
   const { getFlowTableList, deleteFlowData } = useTableModel(); // 接口 mock
-  const { info } = useModel('gundam' as any, (model: any) => ({
+
+  const { info, setBusinessFlowId } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
+    setBusinessFlowId: model.setBusinessFlowId,
   }));
+
   const getTables = async (p?: any) => {
     const [pageData] = p;
     let data: any = [];
@@ -59,6 +62,12 @@ const DetailPages: React.FC = (props: any) => {
     handleOperFlowData(data);
   };
 
+  const goToConfig = (record: any) => {
+    localStorage.setItem('businessFlowId', record?.id || record?.flowId || '');
+    setBusinessFlowId(record?.id || record?.flowId || '');
+    history.push('/gundamPages/businessDraw/detail');
+  };
+
   const operateColumn = {
     title: '操作',
     dataIndex: 'operate',
@@ -66,7 +75,13 @@ const DetailPages: React.FC = (props: any) => {
     render: (text: any, record: any) => (
       <Space>
         <a onClick={() => operateBusiness(record, 'edit')}>编辑</a>
-        <a>配置</a>
+        <a
+          onClick={() => {
+            goToConfig(record);
+          }}
+        >
+          配置
+        </a>
         <a onClick={() => deleteFlowFunc(record)}>删除</a>
       </Space>
     ),

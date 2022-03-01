@@ -3,7 +3,12 @@ import { useModel, history, useLocation } from 'umi';
 import { message, Button, Space } from 'antd';
 import { LoginOutlined } from '@ant-design/icons';
 
-import ProLayout, { PageContainer } from '@ant-design/pro-layout';
+import ProLayout, {
+  PageContainer,
+  RouteContext,
+  RouteContextType,
+  ProBreadcrumb,
+} from '@ant-design/pro-layout';
 
 import RightContent from '@/components/RightContent';
 import routes from './routes';
@@ -12,9 +17,13 @@ import { useOpModel } from '../gundam/management/model';
 
 // 机器人列表
 const MachinePagesHome: React.FC = (props: any) => {
-  const [pathname, setPathname] = useState('/gundamPages');
-
   const location: any = useLocation();
+
+  const [pathname, setPathname] = useState(location.pathname);
+
+  useEffect(() => {
+    setPathname(location.pathname);
+  }, [location]);
 
   const { info, setInfo, setGlobalVarList } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -81,6 +90,7 @@ const MachinePagesHome: React.FC = (props: any) => {
       location={{
         pathname,
       }}
+      className={style['sp-layout']}
       route={{ routes }}
       menuHeaderRender={() => <MenuHeader />}
       rightContentRender={() => <RightContent />}
@@ -88,7 +98,7 @@ const MachinePagesHome: React.FC = (props: any) => {
         <a
           onClick={() => {
             history.push(item.path);
-            setPathname(item.path || '/gundamPages/home');
+            setPathname(item.path || '/gundamPages/mainDraw');
           }}
         >
           {dom}
@@ -96,23 +106,31 @@ const MachinePagesHome: React.FC = (props: any) => {
       )}
       disableContentMargin={false}
     >
-      {info?.id && (
-        <PageContainer
-          header={{
-            title: '',
-            ghost: true,
-            extra: (
-              <Space>
-                <Button type="primary">发布生产</Button>
+      <RouteContext.Consumer>
+        {(route: RouteContextType) => {
+          // console.log('router:', route);
+          // const title: any = route?.pageTitleInfo?.title || route?.title;
+          return (
+            info?.id && (
+              <PageContainer
+                header={{
+                  title: <ProBreadcrumb />,
+                  ghost: true,
+                  extra: (
+                    <Space>
+                      <Button type="primary">发布生产</Button>
 
-                <Button type="default">发布测试</Button>
-              </Space>
-            ),
-          }}
-        >
-          {props.children}
-        </PageContainer>
-      )}
+                      <Button type="default">发布测试</Button>
+                    </Space>
+                  ),
+                }}
+              >
+                {props.children}
+              </PageContainer>
+            )
+          );
+        }}
+      </RouteContext.Consumer>
     </ProLayout>
   );
 };
