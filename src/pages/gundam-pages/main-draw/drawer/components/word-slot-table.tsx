@@ -17,7 +17,11 @@ const WordSlotTable: React.FC<any> = (props: any) => {
 
   const confirm = (val: any) => {
     let list: any[] = Array.isArray(value) ? value : [];
-    list = [...list, val];
+    if (selectIndex > 0) {
+      list[selectIndex] = val;
+    } else {
+      list = [...list, val];
+    }
     onChange?.(list);
   };
 
@@ -109,9 +113,9 @@ const WordSlotTable: React.FC<any> = (props: any) => {
       },
       render: (val: any) => {
         let str: any = Array.isArray(val)
-          ? val.map((item: any) => {
+          ? val.map((item: any, index: number) => {
               return (
-                <span>
+                <span key={index}>
                   {item.actionText}
                   <br />
                 </span>

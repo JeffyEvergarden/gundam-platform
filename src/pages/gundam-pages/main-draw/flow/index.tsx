@@ -192,9 +192,14 @@ const EditorView = (props: PageViewProps) => {
     // nodes 必须每个节点都有关系
     const map = {};
     const nodeMap = {};
+    let startNode: any = null;
     nodes.forEach((item: any) => {
       map[item.id] = 0;
       nodeMap[item.id] = item;
+      if (item._nodetype === 'start') {
+        console.log('存在开始节点');
+        startNode = item;
+      }
     });
     let keys = Object.keys(map);
     lines.forEach((item: any) => {
@@ -205,6 +210,17 @@ const EditorView = (props: PageViewProps) => {
         map[item.target]++;
       }
     });
+    if (startNode) {
+      // 如果存在startNode, 不允许有节点的target是它
+      let line: any = lines.find((item: any) => {
+        return item.target === startNode.id;
+      });
+      if (line) {
+        // 存在这条线违法
+        message.warning(`开始节点不允许作为其他节点的尾节点`);
+        return;
+      }
+    }
     let illegalNode: any[] = []; // 违法Node
     keys.forEach((item: any) => {
       if (map[item] === 0) {

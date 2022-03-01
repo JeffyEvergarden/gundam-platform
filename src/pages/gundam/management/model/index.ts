@@ -120,3 +120,14 @@ export const useOpModel = () => {
     getInfo,
   };
 };
+
+export const usePublishModel = () => {
+  const publishProduction = async () => {};
+
+  const publicTest = async () => {};
+
+  return {
+    publishProduction,
+    publicTest,
+  };
+};
