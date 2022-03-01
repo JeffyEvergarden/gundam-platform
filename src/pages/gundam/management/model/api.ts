@@ -50,3 +50,11 @@ export async function editMachine(data?: { [key: string]: any }) {
     data,
   });
 }
+
+// 发布机器人
+export async function publishRobot(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/robot/issue`, {
+    method: 'POST',
+    data,
+  });
+}
