@@ -203,6 +203,8 @@ const EditorView = (props: PageViewProps) => {
     });
     let keys = Object.keys(map);
     lines.forEach((item: any) => {
+      item._source = nodeMap[item.source]?._id;
+      item._target = nodeMap[item.target]?._id;
       if (keys.indexOf(item.source) > -1) {
         map[item.source]++;
       }
