@@ -16,10 +16,10 @@ const RuleSelect: React.FC<any> = (props: any) => {
   };
 
   const openModal = () => {
-    let vals: any = value || [];
+    let vals: any = Array.isArray(value) ? value : [];
     (modelRef.current as any).open({
       list: vals.map((item: any) => ({
-        ruleList: item,
+        ruleList: Array.isArray(item) ? item : [],
       })),
     });
   };
