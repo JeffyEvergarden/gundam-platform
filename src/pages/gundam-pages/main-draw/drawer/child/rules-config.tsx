@@ -1,38 +1,16 @@
 import { useState, useMemo } from 'react';
-import {
-  Drawer,
-  Form,
-  Input,
-  Select,
-  Button,
-  Checkbox,
-  Space,
-  InputNumber,
-  Radio,
-  DatePicker,
-} from 'antd';
-import {
-  PlusCircleOutlined,
-  MinusCircleOutlined,
-  SettingOutlined,
-  CaretUpOutlined,
-  AppstoreAddOutlined,
-} from '@ant-design/icons';
-import LabelSelect from '../components/label-select';
-import GlobalVarButton from '../components/global-var-button';
+import { Form, Input, Select, Button, Space, DatePicker } from 'antd';
+import { MinusCircleOutlined, AppstoreAddOutlined } from '@ant-design/icons';
 import Condition from '@/components/Condition';
 import { useModel } from 'umi';
 import styles from '../style.less';
 import { ACTION_LIST, RUlE_LIST } from '../const';
 
 const { Item: FormItem, List: FormList } = Form;
-const { TextArea } = Input;
 const { Option } = Select;
 
 const RuleConfig = (props: any) => {
   const { wishList, wordSlotList, form } = props;
-
-  const [num, setNum] = useState<any>(0);
 
   // 监听数组变化
   const onValuesChange = (obj: any, curObj: any) => {
@@ -47,12 +25,12 @@ const RuleConfig = (props: any) => {
       return item;
     });
     if (!item) {
-      return null;
+      return;
     }
     if (curIndex < 0) {
-      return null;
+      return;
     }
-    item = item['rule_list'].find((item: any, i: number) => {
+    item = item['ruleList'].find((item: any, i: number) => {
       if (item) {
         index = i;
       }
@@ -60,13 +38,13 @@ const RuleConfig = (props: any) => {
     });
     // ----------------
     if (index < 0) {
-      return null;
+      return;
     }
     // 找出变动对象
-    curObj = curObj['list'][curIndex]['rule_list'];
+    curObj = curObj['list'][curIndex]['ruleList'];
 
     let keys: any[] = Object.keys(item);
-    console.log(keys);
+    // console.log(keys);
     if (keys.length > 1) {
       console.log('删除/新增'); // 变动参数多代表是删除/新增
       // setNum(num + 1);
@@ -76,36 +54,37 @@ const RuleConfig = (props: any) => {
     // console.log(obj, curObj, keys);
     const formObj: any = form.getFieldsValue();
     const list: any = formObj['list'];
-    const rule_list: any[] = list[curIndex]?.rule_list;
+    const ruleList: any[] = list[curIndex]?.ruleList;
     // 如果是rule_type 变动
-    if (keys.includes('rule_type')) {
-      curObj[index].rule_var = undefined;
-      curObj[index].compare = undefined; // todo
-      curObj[index].value = undefined; // todo
-    } else if (keys.includes('compare')) {
-      if (['fill', 'unfill'].includes(curObj[index].compare)) {
+    if (keys.includes('ruleType')) {
+      curObj[index].ruleKey = undefined;
+      curObj[index].condition = undefined; // todo
+      curObj[index].ruleValue = undefined; // todo
+    } else if (keys.includes('condition')) {
+      if (['fill', 'unfill'].includes(curObj[index].condition)) {
         // console.log(curObj[index]);
-        curObj[index].value = undefined;
+        curObj[index].ruleValue = undefined;
       } else if (
-        Array.isArray(curObj[index].value) && // 该值是数组
-        !['include', 'uninclude'].includes(curObj[index].compare) //选的比较符号不是多选模式
+        Array.isArray(curObj[index].ruleValue) && // 该值是数组
+        !['include', 'uninclude'].includes(curObj[index].condition) //选的比较符号不是多选模式
       ) {
-        curObj[index].value = curObj[index]?.value?.[1] || undefined;
+        curObj[index].ruleValue = curObj[index]?.ruleValue?.[1] || undefined;
       } else if (
-        curObj[index].value && // 选了值
-        !Array.isArray(curObj[index].value) && // 并且非数组
-        ['include', 'uninclude'].includes(curObj[index].compare) // 选择了多选模式
+        curObj[index].ruleValue && // 选了值
+        !Array.isArray(curObj[index].ruleValue) && // 并且非数组
+        ['include', 'uninclude'].includes(curObj[index].condition) // 选择了多选模式
       ) {
-        curObj[index].value = [curObj[index]?.value?.[1]];
+        curObj[index].ruleValue = [curObj[index]?.ruleValue?.[1]];
       }
     }
     // 直接更改curObj[index] 无效
-    rule_list[index] = curObj[index];
-    list[curIndex].rule_list = [...curObj];
+    ruleList[index] = curObj[index];
+    list[curIndex].ruleList = [...curObj];
     form.setFieldsValue({
       list: [...list],
     });
     // setNum(num + 1); // 刷新
+    return;
   };
 
   const { globalVarList } = useModel('gundam' as any, (model: any) => ({
@@ -131,11 +110,11 @@ const RuleConfig = (props: any) => {
               let length = outFields.length;
               _add(
                 {
-                  rule_list: [
+                  ruleList: [
                     {
-                      rule_type: undefined,
-                      rule_var: undefined,
-                      compare: undefined,
+                      ruleType: undefined,
+                      ruleKey: undefined,
+                      condition: undefined,
                       value: undefined,
                     },
                   ],
@@ -159,17 +138,17 @@ const RuleConfig = (props: any) => {
                 {outFields.map((outFields: any, i: number) => {
                   return (
                     <div key={outFields.key}>
-                      <FormList name={[outFields.name, 'rule_list']}>
+                      <FormList name={[outFields.name, 'ruleList']}>
                         {(fields, { add, remove }) => {
                           const addNew = () => {
                             // console.log(fields);
                             let length = fields.length;
                             add(
                               {
-                                rule_type: undefined,
-                                rule_var: undefined,
-                                compare: undefined,
-                                value: undefined,
+                                ruleType: undefined,
+                                ruleKey: undefined,
+                                condition: undefined,
+                                ruleValue: undefined,
                               },
                               length,
                             );
@@ -203,36 +182,38 @@ const RuleConfig = (props: any) => {
                               <div>
                                 {fields.map((field: any, index: number) => {
                                   const curItem =
-                                    form.getFieldValue('list')?.[i]?.['rule_list']?.[index];
-                                  const rule_type: any = curItem?.rule_type || ''; // 规则类型
+                                    form.getFieldValue('list')?.[i]?.['ruleList']?.[index];
+                                  const ruleType: any = curItem?.ruleType || ''; // 规则类型
 
-                                  const compareVal: any = curItem?.compare || '';
+                                  const compareVal: any = curItem?.condition || '';
 
                                   const compareList: any[] =
                                     RUlE_LIST.find((item: any) => {
-                                      return rule_type === item.name;
+                                      return ruleType === item.name;
                                     })?.list || []; // 比较关系下拉列表
                                   // console.log('重新渲染');
-                                  // console.log(rule_type, compareList);
+                                  // console.log(ruleType, compareList);
 
                                   return (
                                     <div key={field.key} className={styles['list-box']}>
                                       <div style={{ width: '30px', flexShrink: 0 }}>
-                                        <Button
-                                          icon={<MinusCircleOutlined />}
-                                          type="link"
-                                          danger
-                                          onClick={() => {
-                                            remove(index);
-                                          }}
-                                        />
+                                        <Condition r-if={index > 0}>
+                                          <Button
+                                            icon={<MinusCircleOutlined />}
+                                            type="link"
+                                            danger
+                                            onClick={() => {
+                                              remove(index);
+                                            }}
+                                          />
+                                        </Condition>
                                       </div>
                                       <div className={styles['num']}>{index + 1}.</div>
                                       {/* 规则罗列 */}
                                       <Space>
                                         <FormItem
-                                          name={[field.name, 'rule_type']}
-                                          fieldKey={[field.fieldKey, 'rule_type']}
+                                          name={[field.name, 'ruleType']}
+                                          fieldKey={[field.fieldKey, 'ruleType']}
                                           rules={[{ required: true, message: '请选择规则类型' }]}
                                           style={{ width: '180px' }}
                                         >
@@ -251,10 +232,10 @@ const RuleConfig = (props: any) => {
                                           </Select>
                                         </FormItem>
 
-                                        <Condition r-if={rule_type === '变量'}>
+                                        <Condition r-if={ruleType === '变量'}>
                                           <FormItem
-                                            name={[field.name, 'rule_var']}
-                                            fieldKey={[field.fieldKey, 'rule_var']}
+                                            name={[field.name, 'ruleKey']}
+                                            fieldKey={[field.fieldKey, 'ruleKey']}
                                             style={{ width: '180px' }}
                                             rules={[{ required: true, message: '请选择变量名称' }]}
                                           >
@@ -275,10 +256,10 @@ const RuleConfig = (props: any) => {
                                           </FormItem>
                                         </Condition>
 
-                                        <Condition r-if={rule_type !== '变量'}>
+                                        <Condition r-if={ruleType !== '变量'}>
                                           <FormItem
-                                            name={[field.name, 'rule_var']}
-                                            fieldKey={[field.fieldKey, 'rule_var']}
+                                            name={[field.name, 'ruleKey']}
+                                            fieldKey={[field.fieldKey, 'ruleKey']}
                                             style={{ width: '180px' }}
                                             rules={[{ required: true, message: '请选择词槽名称' }]}
                                           >
@@ -300,8 +281,8 @@ const RuleConfig = (props: any) => {
                                         </Condition>
 
                                         <FormItem
-                                          name={[field.name, 'compare']}
-                                          fieldKey={[field.fieldKey, 'compare']}
+                                          name={[field.name, 'condition']}
+                                          fieldKey={[field.fieldKey, 'condition']}
                                           style={{ width: '140px' }}
                                           rules={[{ required: true, message: '请选择比较关系' }]}
                                         >
@@ -322,13 +303,13 @@ const RuleConfig = (props: any) => {
                                         </FormItem>
 
                                         {/* 意图的情况 */}
-                                        <Condition r-if={['用户意图'].includes(rule_type)}>
+                                        <Condition r-if={['用户意图'].includes(ruleType)}>
                                           <Condition
                                             r-if={['==', '!=', undefined].includes(compareVal)}
                                           >
                                             <FormItem
-                                              name={[field.name, 'value']}
-                                              fieldKey={[field.fieldKey, 'value']}
+                                              name={[field.name, 'ruleValue']}
+                                              fieldKey={[field.fieldKey, 'ruleValue']}
                                               style={{ width: '120px' }}
                                               rules={[{ required: true, message: '请选择' }]}
                                             >
@@ -355,8 +336,8 @@ const RuleConfig = (props: any) => {
                                             r-if={['include', 'uninclude'].includes(compareVal)}
                                           >
                                             <FormItem
-                                              name={[field.name, 'value']}
-                                              fieldKey={[field.fieldKey, 'value']}
+                                              name={[field.name, 'ruleValue']}
+                                              fieldKey={[field.fieldKey, 'ruleValue']}
                                               style={{ width: '120px' }}
                                               rules={[{ required: true, message: '请选择' }]}
                                             >
@@ -383,13 +364,13 @@ const RuleConfig = (props: any) => {
                                         </Condition>
 
                                         {/* 槽值填充状态 */}
-                                        <Condition r-if={['槽值填充状态'].includes(rule_type)}>
+                                        <Condition r-if={['槽值填充状态'].includes(ruleType)}>
                                           <Condition
                                             r-if={!['fill', 'unfill'].includes(compareVal)}
                                           >
                                             <FormItem
-                                              name={[field.name, 'value']}
-                                              fieldKey={[field.fieldKey, 'value']}
+                                              name={[field.name, 'ruleValue']}
+                                              fieldKey={[field.fieldKey, 'ruleValue']}
                                               style={{ width: '120px' }}
                                               rules={[{ required: true, message: '请选择' }]}
                                             >
@@ -404,10 +385,10 @@ const RuleConfig = (props: any) => {
                                         </Condition>
 
                                         {/* 槽值填充状态 */}
-                                        <Condition r-if={['当前用户输入文本'].includes(rule_type)}>
+                                        <Condition r-if={['当前用户输入文本'].includes(ruleType)}>
                                           <FormItem
-                                            name={[field.name, 'value']}
-                                            fieldKey={[field.fieldKey, 'value']}
+                                            name={[field.name, 'ruleValue']}
+                                            fieldKey={[field.fieldKey, 'ruleValue']}
                                             style={{ width: '120px' }}
                                             rules={[{ required: true, message: '请输入' }]}
                                           >
@@ -420,10 +401,10 @@ const RuleConfig = (props: any) => {
                                           </FormItem>
                                         </Condition>
 
-                                        <Condition r-if={['变量'].includes(rule_type)}>
+                                        <Condition r-if={['变量'].includes(ruleType)}>
                                           <FormItem
-                                            name={[field.name, 'value']}
-                                            fieldKey={[field.fieldKey, 'value']}
+                                            name={[field.name, 'ruleValue']}
+                                            fieldKey={[field.fieldKey, 'ruleValue']}
                                             style={{ width: '120px' }}
                                             rules={[{ required: true, message: '请输入' }]}
                                           >
@@ -436,10 +417,10 @@ const RuleConfig = (props: any) => {
                                           </FormItem>
                                         </Condition>
 
-                                        <Condition r-if={['系统时间'].includes(rule_type)}>
+                                        <Condition r-if={['系统时间'].includes(ruleType)}>
                                           <FormItem
-                                            name={[field.name, 'value']}
-                                            fieldKey={[field.fieldKey, 'value']}
+                                            name={[field.name, 'ruleValue']}
+                                            fieldKey={[field.fieldKey, 'ruleValue']}
                                             style={{ width: '120px' }}
                                             rules={[{ required: true, message: '请选择' }]}
                                           >

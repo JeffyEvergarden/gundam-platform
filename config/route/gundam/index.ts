@@ -23,7 +23,7 @@ export default [
     routes: [
       {
         path: '/gundamPages/home',
-        component: './gundam-pages/home',
+        redirect: '/gundamPages/mainDraw',
         name: '首页',
       },
       {
@@ -53,15 +53,28 @@ export default [
       },
       {
         path: '/gundamPages/businessDraw',
-        component: './gundam-pages/business-draw',
+        component: './gundam-pages/business-draw/layout',
         name: '业务流程管理',
+        routes: [
+          {
+            path: '/gundamPages/businessDraw/list',
+            component: './gundam-pages/business-draw',
+            name: '业务流程管理',
+          },
+          {
+            path: '/gundamPages/businessDraw/detail',
+            component: './gundam-pages/business-draw/pages/draw-page',
+            name: '业务流程管理-详情配置',
+          },
+          { redirect: '/gundamPages/businessDraw/list' },
+        ],
       },
       {
         path: '/gundamPages/aiSimulation',
         component: './gundam-pages/ai-simulation',
         name: '机器人模拟',
       },
-      { redirect: '/gundamPages/home' },
+      { redirect: '/gundamPages/mainDraw' },
       { component: './404' },
     ],
   },

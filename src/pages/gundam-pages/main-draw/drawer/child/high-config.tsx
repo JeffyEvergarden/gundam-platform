@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Drawer, Form, Input, Select, Button, Checkbox, Space, InputNumber } from 'antd';
+import { Form, Select, Button, Checkbox, Space, InputNumber } from 'antd';
 import {
   PlusCircleOutlined,
   MinusCircleOutlined,
@@ -13,7 +13,6 @@ import styles from '../style.less';
 import { ACTION_LIST } from '../const';
 
 const { Item: FormItem, List: FormList } = Form;
-const { TextArea } = Input;
 const { Option } = Select;
 
 const HighConfig = (props: any) => {
@@ -23,19 +22,19 @@ const HighConfig = (props: any) => {
 
   // 修改允许的业务节点
   const onChangeRelationSelect = (val: any) => {
-    let _select: any = form.getFieldValue('ban_business') || [];
+    let _select: any = form.getFieldValue('nonFlows') || [];
     _select = _select.filter((item: any) => !val.includes(item));
     form?.setFieldsValue({
-      ban_business: _select,
+      nonFlows: _select,
     });
   };
 
   // 修改禁止的业务节点
   const onChangeRelationBanSelect = (val: any) => {
-    let _select: any = form.getFieldValue('allow_business') || [];
+    let _select: any = form.getFieldValue('allowFlows') || [];
     _select = _select.filter((item: any) => !val.includes(item));
     form?.setFieldsValue({
-      allow_business: _select,
+      allowFlows: _select,
     });
   };
   return (
@@ -55,9 +54,9 @@ const HighConfig = (props: any) => {
         </div>
       </div>
 
-      <Condition r-if={flag}>
+      <Condition r-show={flag}>
         <div className={styles['antd-form']}>
-          <FormItem name="allow_business" label="允许跳转至业务流程" style={{ width: '400px' }}>
+          <FormItem name="allowFlows" label="允许跳转至业务流程" style={{ width: '400px' }}>
             <Select
               placeholder="请选择允许跳转至业务流程"
               mode="multiple"
@@ -73,7 +72,7 @@ const HighConfig = (props: any) => {
             </Select>
           </FormItem>
 
-          <FormItem name="ban_business" label="禁止跳转至业务流程" style={{ width: '400px' }}>
+          <FormItem name="nonFlows" label="禁止跳转至业务流程" style={{ width: '400px' }}>
             <Select
               placeholder="请选择禁止跳转至业务流程"
               mode="multiple"
@@ -92,13 +91,11 @@ const HighConfig = (props: any) => {
 
         {/* 静默处理 */}
 
-        <FormList name="list_1">
+        <FormList name="silenceText">
           {(fields, { add, remove }) => {
-            console.log(fields);
             const addNew = () => {
               let length = fields.length;
-              console.log(length);
-              add({ response_speak: '', global_var: [], label_var: [] }, length);
+              add({ actionText: '', textLabels: [] }, length);
             };
 
             return (
@@ -119,8 +116,8 @@ const HighConfig = (props: any) => {
                     <div className={styles['num']}>{index + 1}.</div>
                     <div>
                       <Form.Item
-                        name={[field.name, 'response_speak']}
-                        fieldKey={[field.fieldKey, 'response_speak']}
+                        name={[field.name, 'actionText']}
+                        fieldKey={[field.fieldKey, 'actionText']}
                         label="响应话术"
                       >
                         <GlobalVarButton
@@ -131,8 +128,8 @@ const HighConfig = (props: any) => {
                       </Form.Item>
 
                       <Form.Item
-                        name={[field.name, 'label_var']}
-                        fieldKey={[field.fieldKey, 'label_var']}
+                        name={[field.name, 'textLabels']}
+                        fieldKey={[field.fieldKey, 'textLabels']}
                         label="选择标签"
                       >
                         <LabelSelect color="orange"></LabelSelect>
@@ -155,7 +152,7 @@ const HighConfig = (props: any) => {
 
         <Space style={{ paddingLeft: '50px', paddingTop: '10px' }}>
           <FormItem
-            name="exit_flag_1"
+            name="silenceHungup"
             label="结束挂机"
             valuePropName="checked"
             style={{ width: '200px' }}
@@ -163,7 +160,7 @@ const HighConfig = (props: any) => {
             <Checkbox>是否结束挂机</Checkbox>
           </FormItem>
 
-          <FormItem name="action_1" label="动作" style={{ width: '200px' }}>
+          <FormItem name="silenceTransfer" label="动作" style={{ width: '200px' }}>
             <Select placeholder="请选择动作" size="small">
               {ACTION_LIST.map((item: any, index: number) => {
                 return (
@@ -178,11 +175,11 @@ const HighConfig = (props: any) => {
 
         {/* 拒绝处理 */}
 
-        <FormList name="list_2">
+        <FormList name="discernText">
           {(fields, { add, remove }) => {
             const addNew = () => {
               let length = fields.length;
-              add({ response_speak: '', global_var: [], label_var: [] }, length);
+              add({ actionText: '', textLabels: [] }, length);
             };
 
             return (
@@ -204,8 +201,8 @@ const HighConfig = (props: any) => {
                     <div>
                       <Space>
                         <FormItem
-                          name={[field.name, 'response_speak']}
-                          fieldKey={[field.fieldKey, 'response_speak']}
+                          name={[field.name, 'actionText']}
+                          fieldKey={[field.fieldKey, 'actionText']}
                           label="响应话术"
                         >
                           <GlobalVarButton
@@ -217,8 +214,8 @@ const HighConfig = (props: any) => {
                       </Space>
 
                       <FormItem
-                        name={[field.name, 'label_var']}
-                        fieldKey={[field.fieldKey, 'label_var']}
+                        name={[field.name, 'textLabels']}
+                        fieldKey={[field.fieldKey, 'textLabels']}
                         label="选择标签"
                       >
                         <LabelSelect color="orange"></LabelSelect>
@@ -241,7 +238,7 @@ const HighConfig = (props: any) => {
 
         <Space style={{ paddingLeft: '50px', paddingTop: '10px' }}>
           <FormItem
-            name="exit_flag_2"
+            name="discernHungup"
             label="结束挂机"
             valuePropName="checked"
             style={{ width: '200px' }}
@@ -249,7 +246,7 @@ const HighConfig = (props: any) => {
             <Checkbox>是否结束挂机</Checkbox>
           </FormItem>
 
-          <FormItem name="action_2" label="动作" style={{ width: '200px' }}>
+          <FormItem name="discernTransfer" label="动作" style={{ width: '200px' }}>
             <Select placeholder="请选择动作" size="small">
               {ACTION_LIST.map((item: any, index: number) => {
                 return (
@@ -267,7 +264,7 @@ const HighConfig = (props: any) => {
             客户未听清处理:
           </div>
           <div style={{ marginLeft: '30px' }}>
-            <FormItem name="unclear_wish" label="未听清意图名称" style={{ width: '400px' }}>
+            <FormItem name="repeatIntent" label="未听清意图名称" style={{ width: '400px' }}>
               <Select placeholder="请选择未听清意图名称" mode="multiple">
                 {wishList.map((item: any, index: number) => {
                   return (
@@ -279,13 +276,13 @@ const HighConfig = (props: any) => {
               </Select>
             </FormItem>
 
-            <FormItem name="repeat_time" label="重复次数" style={{ width: '400px' }}>
+            <FormItem name="repeatSize" label="重复次数" style={{ width: '400px' }}>
               <InputNumber min={1} />
             </FormItem>
 
             <Space>
               <FormItem
-                name="exit_flag_3"
+                name="repeatHungup"
                 label="结束挂机"
                 valuePropName="checked"
                 style={{ width: '220px' }}
@@ -293,7 +290,7 @@ const HighConfig = (props: any) => {
                 <Checkbox>是否结束挂机</Checkbox>
               </FormItem>
 
-              <FormItem name="action_3" label="动作" style={{ width: '200px' }}>
+              <FormItem name="repeatTransfer" label="动作" style={{ width: '200px' }}>
                 <Select placeholder="请选择动作" size="small">
                   {ACTION_LIST.map((item: any, index: number) => {
                     return (
@@ -306,7 +303,7 @@ const HighConfig = (props: any) => {
               </FormItem>
             </Space>
 
-            <FormItem name="unclear_response_speak" label="过渡话术">
+            <FormItem name="repeatTransferText" label="过渡话术">
               <GlobalVarButton
                 placeholder="请输入过渡话术"
                 style={{ width: '400px' }}
@@ -314,7 +311,7 @@ const HighConfig = (props: any) => {
               />
             </FormItem>
 
-            <FormItem name="unclear_label_var" label="选择标签">
+            <FormItem name="textLabels" label="选择标签">
               <LabelSelect color="orange"></LabelSelect>
             </FormItem>
           </div>

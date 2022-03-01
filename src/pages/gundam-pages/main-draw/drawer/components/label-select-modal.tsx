@@ -71,7 +71,6 @@ const LabelSelectModal: React.FC<any> = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     open: (val: any[]) => {
-      console.log(labelList);
       setCurrent(1);
       setSelectedRowKeys(val || []);
       setVisible(true);
@@ -82,10 +81,11 @@ const LabelSelectModal: React.FC<any> = (props: any) => {
   }));
 
   const submit = () => {
-    let list: any = tableList.filter((item: any) => {
-      return selectedRowKeys.includes(item.id);
-    });
-    console.log(list);
+    let list: any = tableList
+      .filter((item: any) => {
+        return selectedRowKeys.includes(item.actionLabel);
+      })
+      .map((item: any) => item.actionLabel);
     confirm?.(list);
     setVisible(false);
   };
@@ -110,7 +110,7 @@ const LabelSelectModal: React.FC<any> = (props: any) => {
           pagination={{ current, onChange }}
           dataSource={tableList}
           columns={columns}
-          rowKey="id"
+          rowKey="actionLabel"
           // loading={tableLoading}
         />
       </div>

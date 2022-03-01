@@ -16,12 +16,12 @@ const RuleSelect: React.FC<any> = (props: any) => {
   };
 
   const openModal = () => {
-    let vals: any = value || [];
-    (modelRef.current as any).open(
-      vals.map((item: any) => {
-        return item.id;
-      }),
-    );
+    let vals: any = Array.isArray(value) ? value : [];
+    (modelRef.current as any).open({
+      list: vals.map((item: any) => ({
+        ruleList: Array.isArray(item) ? item : [],
+      })),
+    });
   };
 
   return (

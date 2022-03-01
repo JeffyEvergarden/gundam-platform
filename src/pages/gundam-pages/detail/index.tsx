@@ -32,12 +32,33 @@ const DetailPages: React.FC = (props: any) => {
   }));
 
   const getConfig = async () => {
-    let data = await getRobotConfig({ robotId: info.id });
-    form.setFieldsValue({ ...data });
+    let formData: any = { varConfig: [] };
+    let data: any = await getRobotConfig({ robotId: info.id });
+
+    if (data?.length) {
+      data?.forEach((item: any) => {
+        if (item?.configType == 0) {
+          formData[item.configName] = item.configValue;
+        }
+        if (item?.configType == 1) {
+          formData.varConfig.push(item);
+        }
+      });
+    }
+    console.log('formData', formData);
+    if (!formData.varConfig?.length) {
+      formData.varConfig.push({
+        configValue: undefined,
+        configName: undefined,
+        configDesc: undefined,
+      });
+    }
+
+    form.setFieldsValue({ ...formData });
   };
 
   const addConfig = () => {
-    const tempChildrenList = form.getFieldValue('childrenList') || [];
+    const tempChildrenList = form.getFieldValue('varConfig') || [];
     tempChildrenList.push({
       configValue: undefined,
       configName: undefined,
@@ -45,14 +66,16 @@ const DetailPages: React.FC = (props: any) => {
     });
 
     form.setFieldsValue({
-      childrenList: [...tempChildrenList],
+      varConfig: [...tempChildrenList],
     });
   };
 
   const submit = async () => {
     console.log(form.getFieldsValue());
     let reqData = form.getFieldsValue();
-    await editRobotConfig(reqData).then((res) => {
+    console.log(reqData);
+
+    await editRobotConfig({ robotId: info.id, ...reqData }).then((res) => {
       if (res.resultCode == 100) {
         getConfig();
       }
@@ -64,7 +87,7 @@ const DetailPages: React.FC = (props: any) => {
 
     let formData = form.getFieldsValue();
     getConfig();
-    if (!formData.childrenList?.length) {
+    if (!formData.varConfig?.length) {
       addConfig();
     }
   }, []);
@@ -78,7 +101,7 @@ const DetailPages: React.FC = (props: any) => {
         </Row>
         <Divider type="horizontal" />
 
-        <FormItem name="silencecToDeal" label="静默处理响应话术" {...layout}>
+        <FormItem name="silenceToDeal" label="静默处理响应话术" {...layout}>
           <Input></Input>
         </FormItem>
         <FormItem name="refuseToDeal" label="拒识处理响应话术" {...layout}>
@@ -130,7 +153,7 @@ const DetailPages: React.FC = (props: any) => {
         </Button>
 
         <FormItem label={' '} {...col} colon={false}>
-          <Form.List name="childrenList">
+          <Form.List name="varConfig">
             {(fields, { add, remove }) => (
               <>
                 {fields.map((field, index) => (
@@ -139,9 +162,9 @@ const DetailPages: React.FC = (props: any) => {
                       <FormItem
                         // {...col}
                         label={'变量值'}
-                        name={[field.name, 'configValue']}
-                        key={field.fieldKey + 'configValue'}
-                        fieldKey={[field.fieldKey, 'configValue']}
+                        name={[field.name, 'configKey']}
+                        key={field.fieldKey + 'configKey'}
+                        fieldKey={[field.fieldKey, 'configKey']}
                       >
                         <Input />
                       </FormItem>

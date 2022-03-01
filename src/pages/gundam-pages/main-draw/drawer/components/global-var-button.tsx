@@ -13,7 +13,12 @@ const GlobalVarButton: React.FC<any> = (props: any) => {
   const modalRef = useRef<any>(null);
 
   const openModal = () => {
-    (modalRef.current as any).open();
+    let vals: any = Array.isArray(value) ? value : [];
+    (modalRef.current as any).open({
+      list: vals.map((item: any) => ({
+        ruleList: Array.isArray(item) ? item : [],
+      })),
+    });
   };
 
   const changeVal = (e: any) => {
