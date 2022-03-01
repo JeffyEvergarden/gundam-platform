@@ -4,6 +4,7 @@ export const BUSSINESS_CODE = [
   { name: '风险', label: '风险' },
   { name: '催收', label: '催收' },
   { name: '审批', label: '审批' },
+  { name: '渠道', label: '渠道' },
 ];
 
 export const listToMap = (list: any[]) => {
