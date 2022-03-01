@@ -12,7 +12,7 @@ const { TextArea } = Input;
 import config from '@/config';
 
 const EdgeDrawerForm = (props: any) => {
-  const { cref, confirm } = props;
+  const { cref, confirm, type } = props;
 
   const [form] = Form.useForm();
 
@@ -20,9 +20,16 @@ const EdgeDrawerForm = (props: any) => {
 
   const recordInfo = useRef<any>({});
 
-  const { info } = useModel('gundam' as any, (model: any) => ({
+  const { info, businessFlowId } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
+    businessFlowId: model.businessFlowId,
   }));
+
+  // 前置参数
+  const preParams: any = {
+    robotId: info.id, // 机器人id,
+    flowId: type === 'main' ? info.flowId : businessFlowId, //流程id
+  };
 
   useImperativeHandle(cref, () => ({
     open: (info: any, callback: any) => {
@@ -43,9 +50,9 @@ const EdgeDrawerForm = (props: any) => {
     if (res === false) {
       return;
     } else {
-      let result: any = await _saveLine(res);
-      if (result === true) {
-        recordInfo.current?.callback?.(res?.name); // 成功回调修改名称
+      let result: any = await _saveLine({ ...preParams, ...res });
+      if (result !== false) {
+        recordInfo.current?.callback?.(res?.name, result?.datas?.id); // 成功回调修改名称
         onClose();
       }
     }
