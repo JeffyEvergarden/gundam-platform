@@ -8,8 +8,8 @@ const getWordSlotList = (req: any, res: any) => {
     data: [
       {
         id: '011',
-        slotName: '123',
-        slotDesc: '1',
+        slotName: '前端mock词槽1',
+        slotDesc: '描述1',
         slotSource: '0',
         flowName: '1',
         entity: '0',
@@ -18,8 +18,8 @@ const getWordSlotList = (req: any, res: any) => {
       },
       {
         id: '012',
-        slotName: '110',
-        slotDesc: '1',
+        slotName: '前端mock词槽2',
+        slotDesc: '描述2',
         slotSource: '3',
         flowName: '1',
         entity: '0',
@@ -28,8 +28,8 @@ const getWordSlotList = (req: any, res: any) => {
       },
       {
         id: '013',
-        slotName: '120',
-        slotDesc: '描述',
+        slotName: '前端mock词槽3',
+        slotDesc: '描述3',
         slotSource: '1',
         flowName: '1',
         entity: '0',
@@ -38,8 +38,8 @@ const getWordSlotList = (req: any, res: any) => {
       },
       {
         id: '014',
-        slotName: '999',
-        slotDesc: '描述',
+        slotName: '前端mock词槽4',
+        slotDesc: '描述4',
         slotSource: '2',
         flowName: '1',
         entity: '0',

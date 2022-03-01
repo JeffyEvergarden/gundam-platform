@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useModel, history, useLocation } from 'umi';
-import { useTableModel } from './model';
-import { Table, Button, message } from 'antd';
+import { Table, Button, message, Modal } from 'antd';
 import { LoginOutlined } from '@ant-design/icons';
+import hoverRobot from '@/asset/image/hoverRobot.png';
 
 import ProLayout, { PageContainer, ProBreadcrumb } from '@ant-design/pro-layout';
 
@@ -12,12 +12,14 @@ import style from './style.less';
 import { useOpModel } from '../gundam/management/model';
 import logo from '@/asset/image/logo.png';
 import session from 'config/route/session';
+import RobotChatBox from './ai-simulation';
 
 // 机器人列表
 const MachinePagesHome: React.FC = (props: any) => {
   const [pathname, setPathname] = useState('/gundamPages');
 
   const location: any = useLocation();
+  const [chatVisible, handleChatVisible] = useState<boolean>(false);
 
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -66,6 +68,11 @@ const MachinePagesHome: React.FC = (props: any) => {
     </div>
   );
 
+  // 机器人聊天
+  const robotChatComp = () => {
+    handleChatVisible(true);
+  };
+
   return (
     <ProLayout
       title="机器人详情"
@@ -89,7 +96,38 @@ const MachinePagesHome: React.FC = (props: any) => {
       )}
       disableContentMargin={false}
     >
-      {info.id && props.children}
+      <div>
+        {info.id && props.children}
+        <div
+          style={{
+            position: 'fixed',
+            display: 'flex',
+            zIndex: 999,
+            justifyContent: 'center',
+            alignItems: 'center',
+            right: '60px',
+            bottom: '60px',
+            height: '60px',
+            width: '60px',
+            backgroundColor: 'white',
+            borderRadius: '50%',
+            boxShadow: '4px 4px 12px rgba(24, 144, 255, 0.2)',
+          }}
+          onClick={robotChatComp}
+        >
+          <img alt="robot" src={hoverRobot} style={{ width: 40, height: 40 }} />
+        </div>
+      </div>
+      <Modal
+        visible={chatVisible}
+        title={info.robotName}
+        footer={null}
+        width={1000}
+        // maskClosable
+        onCancel={() => handleChatVisible(false)}
+      >
+        <RobotChatBox robotInfo={info} chatVisible={chatVisible} />
+      </Modal>
     </ProLayout>
   );
 };
