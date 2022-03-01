@@ -55,14 +55,11 @@ const MachinePagesHome: React.FC = (props: any) => {
   };
 
   useEffect(() => {
-    console.log('机器人子系统获取：');
-    console.log(info);
+    // console.log('机器人子系统获取：');
+    // console.log(info);
     let robotId = info.id || location?.query?.id || localStorage.getItem('robot_id') || '';
     console.log(robotId);
-    // 如果没有获取到机器人信息
-    if (!info.robotName && !info.id) {
-      _getInfo({ id: robotId });
-    }
+    _getInfo({ id: robotId });
   }, []);
 
   const goBack = () => {
