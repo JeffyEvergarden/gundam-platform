@@ -50,6 +50,8 @@ const DrawerForm = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     open: (info: any, callback: any) => {
+      console.log(info);
+
       recordInfo.current.info = info;
       recordInfo.current.callback = callback;
       setNodetype(info._nodetype || 'normal');
@@ -74,6 +76,7 @@ const DrawerForm = (props: any) => {
         nodeName: res.name,
         ...preParams,
         id: recordInfo.current.info?._id,
+        nodeType: recordInfo.current.info?.nodeType,
       });
       if (result === true) {
         recordInfo.current?.callback?.(res?.name); // 成功回调修改名称

@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Input, Button, Tag, Image, Row, Col, message } from 'antd';
+import { Input, Button, message, Space, Radio } from 'antd';
 import styles from './style.less';
-import { QqOutlined } from '@ant-design/icons';
 import { useChatModel } from './model';
+import robotPhoto from '@/asset/image/headMan.png';
+import customerPhoto from '@/asset/image/headWoman.png';
 const { TextArea } = Input;
 
 export default (props: any) => {
-  const { visible, modalData } = props;
+  const { modalData } = props;
   const [dialogList, setDialogList] = useState<any>([]); // 对话内容
   const [textMessage, setTextMessage] = useState<string>(''); // 输入的信息，发送成功之后立马清空
   const [number, setNumber] = useState<number>(0); // 存储 发送按钮 点击的次数，监听变化
+  const [environment, setEnvironment] = useState<string>('test'); // 设置环境值： 生产、测试 默认为测试
   const { getDialogData } = useChatModel();
 
   // 保存输入的文字内容
@@ -21,6 +23,7 @@ export default (props: any) => {
     setTextMessage(data.target.value);
   };
 
+  // 机器人回复内容
   const robotResponse = async (data?: any) => {
     let params = {
       requestId: modalData.requestId,
@@ -38,7 +41,6 @@ export default (props: any) => {
       type: 'robot',
       message: 'I am a robot',
     });
-    console.log('res', res, newData, dialogList);
     setTimeout(() => {
       setDialogList(newData);
       setTextMessage('');
@@ -62,34 +64,62 @@ export default (props: any) => {
     setDialogList(data);
   };
 
+  const resetDialog = () => {};
+
+  const clearDialog = () => {
+    setDialogList([]);
+  };
+
+  // 环境值 判断是生产环境还是测试环境
+  const radioChange = (e: any) => {
+    setEnvironment(e?.target?.value);
+  };
+
   useEffect(() => {
     robotResponse();
   }, [number]);
 
   return (
-    <React.Fragment>
-      {visible && (
-        <React.Fragment>
+    <div>
+      <div className={styles['chat-topTitle']}>
+        <span className={styles['box-title']}>对话测试</span>
+        <Space>
+          <Button size={'small'} onClick={clearDialog}>
+            清空内容
+          </Button>
+          <Button type="primary" size={'small'} onClick={resetDialog}>
+            重置对话
+          </Button>
+        </Space>
+      </div>
+      <div className={styles['chat-environment']}>
+        <Radio.Group onChange={radioChange} value={environment}>
+          <Radio value={'prod'}>生产</Radio>
+          <Radio value={'test'}>测试</Radio>
+        </Radio.Group>
+      </div>
+
+      {true && (
+        <div className={styles['chat-box']}>
           <div className={styles['chat-dialog']}>
             {dialogList?.map((item: any, index: number) => {
               return (
                 <React.Fragment key={index}>
                   {item.type == 'customer' && (
                     <div className={styles['customer-part']}>
-                      {/* <Image width={30} height={30} src="@/asset/image/headWoman.png" /> */}
-                      <QqOutlined className={styles['head-customer']} />
-                      <span className={styles['words']}>{item.message}</span>
+                      <img className={styles['head-customer']} alt="customer" src={customerPhoto} />
+                      <div>
+                        <div className={styles['words']}>{item.message}</div>
+                        <div className={styles['words-type']}>肯定意图</div>
+                      </div>
                     </div>
                   )}
                   {item.type == 'robot' && (
                     <div className={styles['robot-part']}>
-                      <QqOutlined className={styles['head-robot']} />
-                      <span className={styles['words']}>{item?.message}</span>
-
-                      {/* <Image
-                        className={styles['head-customer']}
-                        src="@/asset/image/headMan.png"
-                      /> */}
+                      <img className={styles['head-robot']} alt="robot" src={robotPhoto} />
+                      <div>
+                        <div className={styles['words']}>{item?.message}</div>
+                      </div>
                     </div>
                   )}
                 </React.Fragment>
@@ -100,15 +130,20 @@ export default (props: any) => {
             <TextArea
               value={textMessage}
               className={styles['text-area']}
-              onPressEnter={saveInputValue}
+              autoSize={{ minRows: 6, maxRows: 6 }}
+              onPressEnter={inputChange}
+              // handleKeyDown={()=>{}}
               onChange={inputChange}
+              placeholder={'请输入文本，按回车键发送'}
+              // showCount
             />
-            <Button className={styles['send-btn']} onClick={sendMessage}>
+
+            <div className={styles['send-btn']} onClick={sendMessage}>
               发送
-            </Button>
+            </div>
           </div>
-        </React.Fragment>
+        </div>
       )}
-    </React.Fragment>
+    </div>
   );
 };

@@ -55,6 +55,10 @@ const EditorView = (props: PageViewProps) => {
       const propsAPI = getPropsAPI();
       propsAPI?.executeCommand(...args);
     },
+    find: (id: string) => {
+      const propsAPI = getPropsAPI();
+      return propsAPI?.find(id)?.getModel() || null;
+    },
   }));
 
   // 刷新
@@ -203,6 +207,8 @@ const EditorView = (props: PageViewProps) => {
     });
     let keys = Object.keys(map);
     lines.forEach((item: any) => {
+      item._source = nodeMap[item.source]?._id;
+      item._target = nodeMap[item.target]?._id;
       if (keys.indexOf(item.source) > -1) {
         map[item.source]++;
       }

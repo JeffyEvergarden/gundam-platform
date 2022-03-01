@@ -50,7 +50,13 @@ const EdgeDrawerForm = (props: any) => {
     if (res === false) {
       return;
     } else {
-      let result: any = await _saveLine({ ...preParams, ...res });
+      let result: any = await _saveLine({
+        ...preParams,
+        ...res,
+        id: recordInfo.current.info?.id,
+        source: recordInfo.current.info?.source,
+        target: recordInfo.current.info?.target,
+      });
       if (result !== false) {
         recordInfo.current?.callback?.(res?.name, result?.datas?.id); // 成功回调修改名称
         onClose();

@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useModel, history, useLocation } from 'umi';
-import { message, Button, Space } from 'antd';
+import { message, Button, Space, Modal } from 'antd';
 import { LoginOutlined } from '@ant-design/icons';
+import hoverRobot from '@/asset/image/hoverRobot.png';
+import RobotChatBox from './ai-simulation';
 
 import ProLayout, {
   PageContainer,
@@ -18,6 +20,7 @@ import { useOpModel } from '../gundam/management/model';
 // 机器人列表
 const MachinePagesHome: React.FC = (props: any) => {
   const location: any = useLocation();
+  const [chatVisible, handleChatVisible] = useState<boolean>(false);
 
   const [pathname, setPathname] = useState(location.pathname);
 
@@ -82,6 +85,11 @@ const MachinePagesHome: React.FC = (props: any) => {
     </div>
   );
 
+  // 机器人聊天
+  const robotChatComp = () => {
+    handleChatVisible(true);
+  };
+
   return (
     <ProLayout
       title="机器人详情"
@@ -106,6 +114,37 @@ const MachinePagesHome: React.FC = (props: any) => {
       )}
       disableContentMargin={false}
     >
+      <div>
+        <div
+          style={{
+            position: 'fixed',
+            display: 'flex',
+            zIndex: 999,
+            justifyContent: 'center',
+            alignItems: 'center',
+            right: '60px',
+            bottom: '60px',
+            height: '60px',
+            width: '60px',
+            backgroundColor: 'white',
+            borderRadius: '50%',
+            boxShadow: '4px 4px 12px rgba(24, 144, 255, 0.2)',
+          }}
+          onClick={robotChatComp}
+        >
+          <img alt="robot" src={hoverRobot} style={{ width: 40, height: 40 }} />
+        </div>
+      </div>
+      <Modal
+        visible={chatVisible}
+        title={info.robotName}
+        footer={null}
+        width={1000}
+        // maskClosable
+        onCancel={() => handleChatVisible(false)}
+      >
+        <RobotChatBox robotInfo={info} chatVisible={chatVisible} />
+      </Modal>
       <RouteContext.Consumer>
         {(route: RouteContextType) => {
           // console.log('router:', route);
