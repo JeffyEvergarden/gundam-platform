@@ -70,15 +70,18 @@ const MachinePagesHome: React.FC = (props: any) => {
   };
 
   const MenuHeader = (props: any) => (
-    <div
-      className={style['menu-header']}
-      onClick={() => {
-        goBack();
-      }}
-    >
-      {/* <img className={style['menu-logo']} src={logo} alt="logo"></img> */}
-      <LoginOutlined style={{ marginRight: '16px' }} />
-      <div className={style['menu-title']}> 返回</div>
+    <div style={{ width: '100%' }}>
+      <div
+        className={style['menu-header']}
+        onClick={() => {
+          goBack();
+        }}
+      >
+        <LoginOutlined style={{ marginRight: '12px' }} />
+        <div className={style['menu-title']}> 返回</div>
+      </div>
+
+      <div className={style['menu-desc']}>{info.robotName}</div>
     </div>
   );
 
