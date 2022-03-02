@@ -75,7 +75,8 @@ const NodeForm: React.FC<DetailFormProps> = (props: DetailFormProps) => {
       ...preParams,
       id: model._id || undefined, // 后端id,
       nodeType: processType(model._nodetype),
-      nodeName: model.label, // 节点名称
+      nodeName: valueObj.label, // 节点名称
+      name: valueObj.label,
       x: model.x, // 节点位置 横坐标
       y: model.y, // 节点位置 纵坐标
     };
