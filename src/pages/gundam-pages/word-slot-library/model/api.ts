@@ -17,6 +17,7 @@ export async function addWordSlotItem(params?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/slot/slotAdd`, {
     method: 'POST',
     data: params,
+    // body: JSON.stringify(params),
   });
 }
 
@@ -25,6 +26,7 @@ export async function editWordSlotItem(params?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/slot/slotUpdate`, {
     method: 'POST',
     data: params,
+    // body: JSON.stringify(params),
   });
 }
 

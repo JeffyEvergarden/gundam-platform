@@ -12,6 +12,8 @@ export default (props: any) => {
   const [textMessage, setTextMessage] = useState<string>(''); // 输入的信息，发送成功之后立马清空
   const [number, setNumber] = useState<number>(0); // 存储 发送按钮 点击的次数，监听变化
   const [environment, setEnvironment] = useState<string>('test'); // 设置环境值： 生产、测试 默认为测试
+  const [eventType, setEventType] = useState<string>(''); //机器人事件响应类型
+
   const { getDialogData } = useChatModel();
 
   // 保存输入的文字内容
@@ -20,7 +22,8 @@ export default (props: any) => {
   };
 
   const onKeyDown = (e: any) => {
-    if (e?.keyCode == '13' || e?.which == '13') {
+    // console.log('keyDown', e?.keyCode, e?.which);
+    if ((e?.keyCode == '13' || e?.which == '13') && !e?.shiftKey) {
       sendMessage();
       // 禁止换行
       e.cancelBubble = true;
@@ -32,13 +35,16 @@ export default (props: any) => {
   // 机器人回复内容
   const robotResponse = async (data?: any) => {
     console.log('textMessage', textMessage);
+    let newDay = new Date().toLocaleDateString();
+    let occurDay = newDay.replace(/\//g, '-');
+    let newTime = new Date().toLocaleTimeString('en-GB');
     let params = {
       requestId: modalData.requestId,
-      occurTime: '',
+      occurTime: occurDay + ' ' + newTime,
       systemCode: '',
       sessionId: modalData.sessionId,
       message: textMessage,
-      event: '',
+      event: eventType,
       actionType: 'text',
     };
     const res: any = await getDialogData(params);

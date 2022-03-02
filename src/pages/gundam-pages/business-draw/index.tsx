@@ -26,10 +26,14 @@ const DetailPages: React.FC = (props: any) => {
   }));
 
   const getTables = async (p?: any) => {
+    let newDay = new Date().toLocaleDateString();
+    let occurDay = newDay.replace(/\//g, '-');
+    let newTime = new Date().toLocaleTimeString('en-GB');
     const [pageData] = p;
     let data: any = [];
     let params = {
-      occurTime: '',
+      occurTime: occurDay + ' ' + newTime,
+      robotId: info?.id,
       page: pageData.current,
       ...pageData,
     };
@@ -90,6 +94,13 @@ const DetailPages: React.FC = (props: any) => {
   // 新增、编辑 弹窗框 传递的方法
   const operateFunc = (type: string) => {
     handleOperFlowVisible(false);
+    refreshTable();
+    message.info('refresh');
+  };
+
+  const refreshTable = () => {
+    // @ts-ignore
+    actionRef?.current?.reloadAndRest();
   };
 
   const deleteFlowFunc = async (data: any) => {

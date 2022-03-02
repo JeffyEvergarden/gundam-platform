@@ -57,6 +57,7 @@ export default (props: any) => {
     setRobotFormList(robotInfo);
     console.log('robotInfo', robotInfo);
     // setRobotChatData(newData);
+    showChatText();
   }, [chatVisible]);
 
   return (

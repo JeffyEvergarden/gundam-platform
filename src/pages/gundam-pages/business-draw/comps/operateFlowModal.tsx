@@ -37,11 +37,13 @@ export default (props: any) => {
     if (title == 'edit') {
       res = await editFlowData({ ...params, id: modalData.id });
     } else {
-      res = await addFlowData(params);
+      res = await addFlowData({ ...params, flowType: 1 });
     }
-    message.info(res?.resultDesc || '正在处理');
-    operateFunc('submit');
-    form.resetFields();
+    if (res?.resultCode == 100) {
+      message.info(res?.resultDesc || '正在处理');
+      operateFunc('submit');
+      form.resetFields();
+    }
   };
 
   return (
@@ -76,7 +78,7 @@ export default (props: any) => {
 
           <Form.Item>
             <Space>
-              <Button onClick={close}>取消</Button>
+              <Button onClick={closeModal}>取消</Button>
               <Button type="primary" onClick={submit}>
                 确认
               </Button>

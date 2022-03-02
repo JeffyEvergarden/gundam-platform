@@ -21,7 +21,7 @@ export default (props: any) => {
   });
   const [form] = Form.useForm();
   const { addWordSlot, editWordSlot } = useKeyWordModel();
-  const { getIntentInfoList } = useIntentModel();
+  const { getIntentInfoList, getIntentTableList } = useIntentModel();
 
   const fieldValueChange = (changedValues: any, allValues: any) => {
     if (changedValues?.slotSource) {
@@ -34,7 +34,10 @@ export default (props: any) => {
           nonIntents: [],
         });
         obj.nonIntents = [];
-        obj.allowIntents = [{ value: 'ALL', name: '所有', id: 'ALL' }, ...obj.normalIntents];
+        obj.allowIntents = [
+          { value: 'ALL', name: '所有', id: 'ALL', intentName: '所有' },
+          ...obj.normalIntents,
+        ];
         setFieldSelectData(obj);
       } else {
         let newArr =
@@ -64,9 +67,10 @@ export default (props: any) => {
     const values = await form.validateFields();
     let res: any;
     let params = form.getFieldsValue();
-
+    console.log('params', params);
     let newValue = form.getFieldValue('intentValue');
     let newName = form.getFieldValue('intentName');
+
     // 拼接 意图 值
     let newObj = {
       [newValue]: newName,
@@ -81,29 +85,34 @@ export default (props: any) => {
     } else if (title == 'add') {
       res = await addWordSlot({ ...params, robotId: modalData.robotId, slotInfos: newObj });
     }
-    message.info(res?.resultDesc || '正在处理');
-    if (res?.code == 100) {
+    console.log('res', res);
+    if (res?.resultCode == 100) {
       onSubmit();
     }
+    message.info(res?.resultDesc || '正在处理');
   };
 
   const getIntentSelList = async () => {
     const res: any = await getIntentInfoList({
-      id: modalData?.robotId,
+      robotId: modalData?.robotId,
+      headIntent: 0,
     });
+    console.log(res?.datas);
+    // const res: any = await getIntentTableList();
     let arr: any = { ...fieldSelectData };
     if (res?.datas) {
       let data: any =
         res?.datas &&
         res?.datas?.map((item: any) => {
           return {
-            value: item.id,
-            name: item.intentName,
-            id: item.id,
+            ...item,
+            // value: item.intentName,
+            // name: item.intentName,
+            // id: item.intentName,
           };
         });
-
-      arr.allowIntents = [{ value: 'ALL', name: '所有', id: 'ALL' }, ...data];
+      // arr.allowIntents = [...data];
+      arr.allowIntents = [{ value: 'ALL', name: '所有', id: 'ALL', intentName: '所有' }, ...data];
       arr.nonIntents = [...data];
       arr.normalIntents = [...data];
       arr.intentName = [...data];
@@ -152,8 +161,11 @@ export default (props: any) => {
                     <Select placeholder={item.placeholder}>
                       {fieldSelectData[item.name]?.map((itex: any) => {
                         return (
-                          <Option key={itex.value} value={itex.value}>
-                            {itex.name}
+                          <Option
+                            key={itex?.value || itex?.intentName}
+                            value={itex?.value || itex?.intentName}
+                          >
+                            {itex?.name || itex?.intentName}
                           </Option>
                         );
                       })}
@@ -165,8 +177,8 @@ export default (props: any) => {
                     <Select placeholder={item.placeholder} mode={'multiple'}>
                       {fieldSelectData[item?.name]?.map((itex: any) => {
                         return (
-                          <Option key={itex?.value || itex?.id} value={itex?.value}>
-                            {itex?.name}
+                          <Option key={itex?.id} value={itex?.id}>
+                            {itex?.intentName}
                           </Option>
                         );
                       })}
@@ -205,15 +217,18 @@ export default (props: any) => {
                           <Select placeholder={item.placeholder} mode={'multiple'}>
                             {fieldSelectData['intentName']?.map((itex: any) => {
                               return (
-                                <Option key={itex.value} value={itex.value}>
-                                  {itex.name}
+                                <Option
+                                  key={itex?.value || itex?.intentName}
+                                  value={itex?.value || itex?.intentName}
+                                >
+                                  {itex?.name || itex?.intentName}
                                 </Option>
                               );
                             })}
                           </Select>
                         </Form.Item>
                         <Form.Item name={'intentValue'} label={'值'}>
-                          <Input />
+                          <Input placeholder={'请输入值'} />
                         </Form.Item>
                       </React.Fragment>
                     )}

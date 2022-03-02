@@ -36,15 +36,15 @@ const DetailPages: React.FC = (props: any) => {
       const res = await getWordSlotTable(params);
       console.log(params, res);
       return {
-        data: res?.datas || data,
-        total: 10,
+        data: res?.datas || [],
+        total: res?.totalSize || res?.datas?.length,
         current: pageData.current || 1,
         pageSize: pageData.pageSize,
       };
     } catch {
       return {
         data: data,
-        total: 10,
+        total: data?.length || 0,
         current: pageData.current || 1,
         pageSize: pageData.pageSize,
       };
