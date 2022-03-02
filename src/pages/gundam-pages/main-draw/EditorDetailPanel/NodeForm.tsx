@@ -79,6 +79,7 @@ const NodeForm: React.FC<DetailFormProps> = (props: DetailFormProps) => {
       x: model.x, // 节点位置 横坐标
       y: model.y, // 节点位置 纵坐标
     };
+    console.log(type);
     if (type === 'node') {
       // 节点做名称更新
       let res: any = await updateNode(params);
