@@ -172,7 +172,7 @@ export const useNodeOpsModel = () => {
     nodes = nodes.map((item: any) => {
       return {
         nodeType: processType(item._nodetype), // 节点类型
-        front_id: item.id, // 前端id
+        frontId: item.id, // 前端id
         id: item._id, // 后端id
         x: item.x,
         y: item.y,
@@ -180,7 +180,7 @@ export const useNodeOpsModel = () => {
     });
     edges = edges.map((item: any) => {
       return {
-        front_id: item.id, // 前端id
+        frontId: item.id, // 前端id
         id: item._id, // 后端id (如果有的话)
         frontSource: item.source, // 前端的头id
         frontTarget: item.target, // 前端的尾id
