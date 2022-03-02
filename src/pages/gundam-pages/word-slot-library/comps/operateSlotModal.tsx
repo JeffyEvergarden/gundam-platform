@@ -88,30 +88,40 @@ export default (props: any) => {
   };
 
   const getIntentSelList = async () => {
-    const res: any = await getIntentInfoList();
-    let data: any =
-      res?.datas &&
-      res?.datas?.map((item: any) => {
-        return {
-          value: item.id,
-          name: item.intentName,
-          id: item.id,
-        };
-      });
+    const res: any = await getIntentInfoList({
+      id: modalData?.robotId,
+    });
     let arr: any = { ...fieldSelectData };
+    if (res?.datas) {
+      let data: any =
+        res?.datas &&
+        res?.datas?.map((item: any) => {
+          return {
+            value: item.id,
+            name: item.intentName,
+            id: item.id,
+          };
+        });
 
-    arr.allowIntents = [{ value: 'ALL', name: '所有', id: 'ALL' }, ...data];
-    arr.nonIntents = data;
-    arr.normalIntents = data;
-    arr.intentName = data;
-    setFieldSelectData(arr);
+      arr.allowIntents = [{ value: 'ALL', name: '所有', id: 'ALL' }, ...data];
+      arr.nonIntents = [...data];
+      arr.normalIntents = [...data];
+      arr.intentName = [...data];
+      setFieldSelectData(arr);
+    } else {
+      arr.allowIntents = [];
+      arr.nonIntents = [];
+      arr.normalIntents = [];
+      arr.intentName = [];
+      setFieldSelectData(arr);
+    }
   };
 
   useEffect(() => {
     if (visible) {
       getIntentSelList();
       if (title == 'edit') {
-        // form.resetFields();
+        form.resetFields();
         setDiffSourceData(modalData?.slotSource || '');
         form.setFieldsValue({
           ...modalData,
@@ -155,8 +165,8 @@ export default (props: any) => {
                     <Select placeholder={item.placeholder} mode={'multiple'}>
                       {fieldSelectData[item?.name]?.map((itex: any) => {
                         return (
-                          <Option key={itex.value || item.id} value={itex?.value}>
-                            {itex?.name || itex?.intentName || itex}
+                          <Option key={itex?.value || itex?.id} value={itex?.value}>
+                            {itex?.name}
                           </Option>
                         );
                       })}

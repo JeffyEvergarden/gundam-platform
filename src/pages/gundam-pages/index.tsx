@@ -28,11 +28,15 @@ const MachinePagesHome: React.FC = (props: any) => {
     setPathname(location.pathname);
   }, [location]);
 
-  const { info, setInfo, setGlobalVarList } = useModel('gundam' as any, (model: any) => ({
-    info: model.info,
-    setInfo: model.setInfo,
-    setGlobalVarList: model.setGlobalVarList,
-  }));
+  const { info, setInfo, globalVarList, setGlobalVarList } = useModel(
+    'gundam' as any,
+    (model: any) => ({
+      info: model.info,
+      setInfo: model.setInfo,
+      globalVarList: model.globalVarList,
+      setGlobalVarList: model.setGlobalVarList,
+    }),
+  );
 
   const { getInfo } = useOpModel();
 
@@ -114,38 +118,6 @@ const MachinePagesHome: React.FC = (props: any) => {
       )}
       disableContentMargin={false}
     >
-      <div>
-        {info.id && props.children}
-        <div
-          style={{
-            position: 'fixed',
-            display: 'flex',
-            zIndex: 999,
-            justifyContent: 'center',
-            alignItems: 'center',
-            right: '60px',
-            bottom: '60px',
-            height: '60px',
-            width: '60px',
-            backgroundColor: 'white',
-            borderRadius: '50%',
-            boxShadow: '4px 4px 12px rgba(24, 144, 255, 0.2)',
-          }}
-          onClick={robotChatComp}
-        >
-          <img alt="robot" src={hoverRobot} style={{ width: 40, height: 40 }} />
-        </div>
-      </div>
-      <Modal
-        visible={chatVisible}
-        title={info.robotName}
-        footer={null}
-        width={1000}
-        // maskClosable
-        onCancel={() => handleChatVisible(false)}
-      >
-        <RobotChatBox robotInfo={info} chatVisible={chatVisible} />
-      </Modal>
       <RouteContext.Consumer>
         {(route: RouteContextType) => {
           // console.log('router:', route);
@@ -166,6 +138,18 @@ const MachinePagesHome: React.FC = (props: any) => {
                 }}
               >
                 {props.children}
+                <div className={style['hover-style']} onClick={robotChatComp}>
+                  <img alt="robot" src={hoverRobot} style={{ width: 44, height: 44 }} />
+                </div>
+                <Modal
+                  visible={chatVisible}
+                  title={info.robotName}
+                  footer={null}
+                  width={1000}
+                  onCancel={() => handleChatVisible(false)}
+                >
+                  <RobotChatBox robotInfo={globalVarList} chatVisible={chatVisible} />
+                </Modal>
               </PageContainer>
             )
           );

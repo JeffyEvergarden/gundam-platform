@@ -123,7 +123,7 @@ const getIntentInfoData = (req: any, res: any) => {
 export default {
   // 机器人管理相关
   'GET /aichat/robot/intent/intentList': getIntentList, // 获取意图管理列表
-  'GET /aichat/robot/intent/intentInfo': getIntentInfoData, // 获取意图管理列表
+  'POST /aichat/robot/intent/intentInfo': getIntentInfoData, // 获取意图管理列表
   'POST /aichat/robot/intent/intentAdd': addNewIntent, // 新增意图
   'POST /aichat/robot/intent/intentUpdate': editIntent, // 编辑意图
   'POST /aichat/robot/intent/intentDelete': deleteIntentItem, // 删除意图

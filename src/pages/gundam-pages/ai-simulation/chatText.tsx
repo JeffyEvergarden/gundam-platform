@@ -15,16 +15,23 @@ export default (props: any) => {
   const { getDialogData } = useChatModel();
 
   // 保存输入的文字内容
-  const saveInputValue = (data: any) => {
-    setTextMessage(data.target.value);
+  const inputChange = (e: any) => {
+    setTextMessage(e.target.value);
   };
 
-  const inputChange = (data: any) => {
-    setTextMessage(data.target.value);
+  const onKeyDown = (e: any) => {
+    if (e?.keyCode == '13' || e?.which == '13') {
+      sendMessage();
+      // 禁止换行
+      e.cancelBubble = true;
+      e.preventDefault();
+      e.stopPropagation();
+    }
   };
 
   // 机器人回复内容
   const robotResponse = async (data?: any) => {
+    console.log('textMessage', textMessage);
     let params = {
       requestId: modalData.requestId,
       occurTime: '',
@@ -133,6 +140,7 @@ export default (props: any) => {
               autoSize={{ minRows: 6, maxRows: 6 }}
               onPressEnter={inputChange}
               // handleKeyDown={()=>{}}
+              onKeyDown={onKeyDown}
               onChange={inputChange}
               placeholder={'请输入文本，按回车键发送'}
               // showCount

@@ -12,10 +12,10 @@ export async function getIntentList(params?: { [key: string]: any }) {
   });
 }
 
-export async function getIntentInfoData(params?: { [key: string]: any }) {
+export async function getIntentInfoData(data?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/intent/intentInfo`, {
-    method: 'GET',
-    params,
+    method: 'POST',
+    data,
   });
 }
 

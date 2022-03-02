@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Form, Card, Input, Radio, Select, Button, message } from 'antd';
-import { robotChatFormList } from './config';
 import RobotChatText from './chatText';
 import { useChatModel } from './model';
 import { useModel } from 'umi';
@@ -24,7 +23,8 @@ export default (props: any) => {
       },
     ],
   });
-  const [robotChatData, setRobotChatData] = useState<any>({}); // 保存机器人聊天数据
+  const [robotChatData, setRobotChatData] = useState<any>({}); // 保存机器人form表单数据
+  const [robotFormList, setRobotFormList] = useState<any>([]);
   const { getRobotChatData } = useChatModel();
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -54,18 +54,9 @@ export default (props: any) => {
 
   useEffect(() => {
     setRobotChatData({});
-    let arr = ['createTime', 'onlineTime', 'id', 'robotType', 'status'];
-    let newObj = Object.keys(robotInfo)?.filter((item: any) => {
-      return !arr.includes(item);
-    });
-    let newData = newObj?.map((item: any) => {
-      return {
-        name: item,
-        label: item,
-      };
-    });
-    console.log('robotInfo', robotInfo, newObj);
-    setRobotChatData(newData);
+    setRobotFormList(robotInfo);
+    console.log('robotInfo', robotInfo);
+    // setRobotChatData(newData);
   }, [chatVisible]);
 
   return (
@@ -75,35 +66,12 @@ export default (props: any) => {
           <div className={styles['box-title']}>变量配置</div>
           <div className={styles['variable-box']}>
             <Form form={form} {...layout}>
-              {robotChatFormList?.map((item: any) => {
+              {robotFormList?.map((item: any) => {
                 return (
                   <React.Fragment key={item.name}>
-                    {item.type == 'input' && (
-                      <Form.Item name={item.name} label={item.label} rules={item.rules}>
-                        <Input placeholder={item.placeholder} />
-                      </Form.Item>
-                    )}
-                    {item.type == 'radio' && (
-                      <Form.Item name={item.name} label={item.label} rules={item.rules}>
-                        <Radio.Group>
-                          <Radio value="1">男</Radio>
-                          <Radio value="0">女</Radio>
-                        </Radio.Group>
-                      </Form.Item>
-                    )}
-                    {item.type == 'select' && (
-                      <Form.Item name={item.name} label={item.label} rules={item.rules}>
-                        <Select>
-                          {formSelectArr['fakeArray']?.map((item: any) => {
-                            return (
-                              <Option key={item.value} value={item.value}>
-                                {item.value}
-                              </Option>
-                            );
-                          })}
-                        </Select>
-                      </Form.Item>
-                    )}
+                    <Form.Item name={item.name} label={item.label}>
+                      <Input placeholder={item.placeholder} />
+                    </Form.Item>
                   </React.Fragment>
                 );
               })}
