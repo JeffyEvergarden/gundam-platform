@@ -32,7 +32,7 @@ const RuleModal: React.FC<any> = (props: any) => {
           return item?.ruleList || [];
         }) || [],
       );
-      // setVisible(false);
+      setVisible(false);
     } catch (e) {
       console.log(e);
     }
