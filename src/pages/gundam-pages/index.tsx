@@ -15,7 +15,8 @@ import ProLayout, {
 import RightContent from '@/components/RightContent';
 import routes from './routes';
 import style from './style.less';
-import { useOpModel } from '../gundam/management/model';
+import { useOpModel, usePublishModel } from '../gundam/management/model';
+import Condition from '@/components/Condition';
 
 // 机器人列表
 const MachinePagesHome: React.FC = (props: any) => {
@@ -94,6 +95,29 @@ const MachinePagesHome: React.FC = (props: any) => {
     handleChatVisible(true);
   };
 
+  const timeFun = useRef<any>({});
+
+  const {
+    loading,
+    testLoading,
+    publishProduction,
+    publishTest,
+    productionTime,
+    testTime,
+    getTime,
+  } = usePublishModel();
+
+  useEffect(() => {
+    // 开启定时刷新生产时间
+    getTime();
+    const fn: any = setInterval(() => {
+      getTime();
+    }, 30 * 1000);
+    return () => {
+      clearInterval(fn);
+    };
+  }, []);
+
   return (
     <ProLayout
       title="机器人详情"
@@ -130,9 +154,39 @@ const MachinePagesHome: React.FC = (props: any) => {
                   ghost: true,
                   extra: (
                     <Space>
-                      <Button type="primary">发布生产</Button>
+                      <div className={style['time-box']}>
+                        <Condition r-if={productionTime}>
+                          <span className={style['time-module']} style={{ marginRight: '16px' }}>
+                            <span className={style['label']}>生产发布时间:</span>
+                            <span>{productionTime}</span>
+                          </span>
+                        </Condition>
+                        <Condition r-if={testTime}>
+                          <span className={style['time-module']}>
+                            <span className={style['label']}>测试发布时间:</span>
+                            <span>{testTime}</span>
+                          </span>
+                        </Condition>
+                      </div>
+                      <Button
+                        type="primary"
+                        loading={loading}
+                        onClick={() => {
+                          publishProduction();
+                        }}
+                      >
+                        发布生产
+                      </Button>
 
-                      <Button type="default">发布测试</Button>
+                      <Button
+                        type="default"
+                        loading={testLoading}
+                        onClick={() => {
+                          publishTest();
+                        }}
+                      >
+                        发布测试
+                      </Button>
                     </Space>
                   ),
                 }}
