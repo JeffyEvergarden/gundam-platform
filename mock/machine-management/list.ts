@@ -110,6 +110,12 @@ const addNewMachine = (req: any, res: any) => {
   });
 };
 
+const publishRobot = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+  });
+};
+
 // 菜单管理相关
 export default {
   // 机器人管理相关
@@ -122,4 +128,5 @@ export default {
   'POST /aichat/robot/robot/robotAdd': addNewMachine,
   'POST /aichat/robot/robot/robotUpdate': addNewMachine,
   'POST /aichat/robot/robot/robotDelete': addNewMachine,
+  'POST /aichat/robot/robot/robotRelease': publishRobot,
 };
