@@ -140,7 +140,7 @@ export const useNodeOpsModel = () => {
         return {
           id: item.frontId,
           _id: item.id,
-          label: item.label || item.nodeName || '',
+          label: item.label || item.nodeName || item.name || '',
           source: item.frontSource, // 后端的头id
           target: item.frontTarget, // 后端的尾id
           sourceAnchor: item.sourceAnchor, // 前锥点
@@ -173,6 +173,7 @@ export const useNodeOpsModel = () => {
       return {
         nodeType: processType(item._nodetype), // 节点类型
         frontId: item.id, // 前端id
+        nodeName: item.label,
         id: item._id, // 后端id
         x: item.x,
         y: item.y,
@@ -182,6 +183,8 @@ export const useNodeOpsModel = () => {
       return {
         frontId: item.id, // 前端id
         id: item._id, // 后端id (如果有的话)
+        nodeName: item.label,
+        name: item.label,
         frontSource: item.source, // 前端的头id
         frontTarget: item.target, // 前端的尾id
         sourceAnchor: item.sourceAnchor, // 前锥点
