@@ -173,7 +173,7 @@ const MainDraw = (props: any) => {
       });
       eventbus.$emit('refresh');
     };
-    (edgeDrawerRef.current as any).open(config, callBack);
+    (edgeDrawerRef.current as any)?.open(config, callBack);
   };
 
   // 初始化设置
