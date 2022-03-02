@@ -7,10 +7,10 @@ import styles from './index.less';
 const FlowDetailPanel = (props: any) => (
   <DetailPanel className={styles.detailPanel}>
     <NodePanel>
-      <NodeForm type="node" {...props} />
+      <NodeForm {...props} type="node" />
     </NodePanel>
     <EdgePanel>
-      <NodeForm type="edge" openSetting={props.openEdgeSetting} />
+      <NodeForm openSetting={props.openEdgeSetting} type="edge" />
     </EdgePanel>
   </DetailPanel>
 );

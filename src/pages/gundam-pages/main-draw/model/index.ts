@@ -123,7 +123,7 @@ export const useNodeOpsModel = () => {
         map[item.frontId] = true;
       }
       return {
-        id: item.frontId,
+        id: String(item.frontId),
         _id: item.id,
         label: item.label || item.nodeName || '',
         x: item.x,
@@ -138,7 +138,7 @@ export const useNodeOpsModel = () => {
       })
       .map((item: any, index: number) => {
         return {
-          id: item.frontId,
+          id: String(item.frontId),
           _id: item.id,
           label: item.label || item.nodeName || item.name || '',
           source: item.frontSource, // 后端的头id
@@ -240,8 +240,10 @@ export const useSelectModel = () => {
       current: 1,
       pageSize: 1000,
     });
-    let data: any[] =
-      res?.datas?.map?.((item: any, index: number) => {
+    let data: any[] = res?.data || res?.datas;
+    data = Array.isArray(data) ? data : [];
+    data =
+      data.map?.((item: any, index: number) => {
         return {
           ...item,
           index,
@@ -258,7 +260,8 @@ export const useSelectModel = () => {
       current: 1,
       pageSize: 1000,
     });
-    let data: any[] = res?.data || res?.datas || [];
+    let data: any[] = res?.data || res?.datas;
+    data = Array.isArray(data) ? data : [];
     data =
       data.map?.((item: any, index: number) => {
         return {

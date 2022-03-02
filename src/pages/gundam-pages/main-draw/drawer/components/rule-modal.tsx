@@ -32,7 +32,7 @@ const RuleModal: React.FC<any> = (props: any) => {
           return item?.ruleList || [];
         }) || [],
       );
-      // setVisible(false);
+      setVisible(false);
     } catch (e) {
       console.log(e);
     }
@@ -48,7 +48,7 @@ const RuleModal: React.FC<any> = (props: any) => {
       onOk={submit}
     >
       <div className={style['form-box']}>
-        <RulesConfig form={form} wishList={wishList} wordSlotList={wordSlotList} />
+        <RulesConfig form={form} wishList={wishList} wordSlotList={wordSlotList || []} />
       </div>
     </Modal>
   );

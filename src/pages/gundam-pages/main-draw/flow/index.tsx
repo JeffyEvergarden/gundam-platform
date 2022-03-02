@@ -189,7 +189,7 @@ const EditorView = (props: PageViewProps) => {
       message.warning('并未新建任务节点');
       return;
     }
-    if (nodes.length > 0 && lines.length === 0) {
+    if (nodes.length > 1 && lines.length === 0) {
       message.warning('任务节点之间并未存在关系');
       return;
     }
@@ -212,7 +212,7 @@ const EditorView = (props: PageViewProps) => {
       if (keys.indexOf(item.source) > -1) {
         map[item.source]++;
       }
-      if (keys.indexOf(item.source) > -1) {
+      if (keys.indexOf(item.target) > -1) {
         map[item.target]++;
       }
     });

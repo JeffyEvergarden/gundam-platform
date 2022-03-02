@@ -5,7 +5,7 @@ import { useModel } from 'umi';
 import DrawerForm from './drawer';
 import EdgeDrawerForm from './EdgeDrawer';
 import style from './style.less';
-import { useNodeOpsModel } from './model';
+import { useNodeOpsModel, useSelectModel } from './model';
 import { processType } from './model/const';
 import eventbus from './flow/utils/eventbus';
 
@@ -35,6 +35,9 @@ const MainDraw = (props: any) => {
 
   const { addNode, deleteNode, getMachineMainDraw, saveDraw, getNodesConfig, getLineConfig } =
     useNodeOpsModel();
+
+  // 意图列表、词槽列表
+  const { wishList, wordSlotList, getWishList, getWordSlotList } = useSelectModel();
 
   // 流程图相关 -----------------------
   // -- start-----
@@ -173,7 +176,7 @@ const MainDraw = (props: any) => {
       });
       eventbus.$emit('refresh');
     };
-    (edgeDrawerRef.current as any).open(config, callBack);
+    (edgeDrawerRef.current as any)?.open(config, callBack);
   };
 
   // 初始化设置
@@ -181,6 +184,8 @@ const MainDraw = (props: any) => {
     getMachineInfo(); // 获取机器人主流程信息
     getLabelList(); // 获取话术标签
     getFlowList(); // 获取业务流程列表
+    getWishList(info.id);
+    getWordSlotList(info.id);
   }, []);
   // -- end-----
 
@@ -201,9 +206,14 @@ const MainDraw = (props: any) => {
         </div>
       </div>
 
-      <DrawerForm cref={drawerRef} />
+      <DrawerForm cref={drawerRef} wishList={wishList} wordSlotList={wordSlotList} />
 
-      <EdgeDrawerForm cref={edgeDrawerRef} type={type} />
+      <EdgeDrawerForm
+        cref={edgeDrawerRef}
+        type={type}
+        wishList={wishList}
+        wordSlotList={wordSlotList}
+      />
     </div>
   );
 };
