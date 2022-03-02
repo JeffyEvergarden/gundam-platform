@@ -29,6 +29,7 @@ const getDefaultNode = (type: string) => {
 
 export const useNodeOpsModel = () => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [infoLoading, setInfoLoading] = useState<boolean>(false);
 
   const _addNode = async (data: any) => {
     setLoading(true);
@@ -70,7 +71,9 @@ export const useNodeOpsModel = () => {
 
   // 获取节点信息
   const _getNodesConfig = async (data: any) => {
+    setInfoLoading(true);
     let res: any = await getNodesConfig(data);
+    setInfoLoading(false);
     if (res.resultCode === config.successCode) {
       let config: any = res.datas || {};
       return config;
@@ -214,6 +217,7 @@ export const useNodeOpsModel = () => {
 
   return {
     loading,
+    infoLoading,
     addNode: _addNode, // 添加节点
     updateNode: _updateNode, // 修改节点
     deleteNode: _deleteNode, // 删除节点

@@ -33,8 +33,15 @@ const MainDraw = (props: any) => {
     flowId: type === 'main' ? info.flowId : businessFlowId, //流程id
   };
 
-  const { addNode, deleteNode, getMachineMainDraw, saveDraw, getNodesConfig, getLineConfig } =
-    useNodeOpsModel();
+  const {
+    infoLoading,
+    addNode,
+    deleteNode,
+    getMachineMainDraw,
+    saveDraw,
+    getNodesConfig,
+    getLineConfig,
+  } = useNodeOpsModel();
 
   // 意图列表、词槽列表
   const { wishList, wordSlotList, getWishList, getWordSlotList } = useSelectModel();
@@ -117,6 +124,9 @@ const MainDraw = (props: any) => {
 
   // 打开节点弹窗
   const openSetting = async (info: any) => {
+    if (infoLoading) {
+      return;
+    }
     console.log('打开节点设置信息:');
     if (!info) {
       return;
