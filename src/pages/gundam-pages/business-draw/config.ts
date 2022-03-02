@@ -2,6 +2,7 @@ export const businessTableColumnsList: any = [
   {
     dataIndex: 'flowName',
     title: '业务流程名称',
+    fixed: 'left',
   },
   {
     dataIndex: 'flowDesc',
@@ -43,7 +44,7 @@ export const operateFlowFormList = [
   {
     name: 'headIntent',
     label: '触发意图',
-    type: 'input',
+    type: 'select',
     placeholder: '',
     rules: [{ required: false }],
   },

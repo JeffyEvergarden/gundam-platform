@@ -31,9 +31,13 @@ export default (props: any) => {
       if (changedValues?.allowIntents.includes('ALL')) {
         form.setFieldsValue({
           allowIntents: ['ALL'],
-          nonIntents: [],
+          nonIntents: ['NULL'],
         });
-        obj.nonIntents = [];
+        // obj.nonIntents = [];
+        obj.nonIntents = [
+          { value: 'NULL', name: '空', id: 'NULL', intentName: '空' },
+          ...obj.normalIntents,
+        ];
         obj.allowIntents = [
           { value: 'ALL', name: '所有', id: 'ALL', intentName: '所有' },
           ...obj.normalIntents,
@@ -49,12 +53,29 @@ export default (props: any) => {
         setFieldSelectData(obj);
       }
     } else if (changedValues?.nonIntents) {
-      let obj = { ...fieldSelectData };
-      let arr: any = obj?.allowIntents?.filter((item: any) => {
-        return !changedValues?.nonIntents?.includes(item?.value || item?.id);
-      });
-      obj.allowIntents = [...arr];
-      setFieldSelectData(obj);
+      let obk: any = { ...fieldSelectData };
+      if (changedValues?.nonIntents.includes('NULL')) {
+        form.setFieldsValue({
+          allowIntents: ['ALL'],
+          nonIntents: ['NULL'],
+        });
+        obk.nonIntents = [
+          { value: 'NULL', name: '空', id: 'NULL', intentName: '空' },
+          ...obk.normalIntents,
+        ];
+        obk.allowIntents = [
+          { value: 'ALL', name: '所有', id: 'ALL', intentName: '所有' },
+          ...obk.normalIntents,
+        ];
+        setFieldSelectData(obk);
+      } else {
+        let obj = { ...fieldSelectData };
+        let arr: any = obj?.allowIntents?.filter((item: any) => {
+          return !changedValues?.nonIntents?.includes(item?.value || item?.id);
+        });
+        obj.allowIntents = [...arr];
+        setFieldSelectData(obj);
+      }
     }
   };
 
@@ -70,26 +91,38 @@ export default (props: any) => {
     console.log('params', params);
     let newValue = form.getFieldValue('intentValue');
     let newName = form.getFieldValue('intentName');
-
+    let newAllIntentValue = form.getFieldValue('allowIntents');
+    let newNonIntentValue = form.getFieldValue('nonIntents');
     // 拼接 意图 值
     let newObj = {
       [newValue]: newName,
     };
+    console.log('111', newAllIntentValue, newNonIntentValue);
     if (title == 'edit') {
       res = await editWordSlot({
         ...params,
         robotId: modalData.robotId,
         id: modalData.id,
         slotInfos: newObj,
+        allowIntents: newAllIntentValue?.length > 0 ? newAllIntentValue : [],
+        nonIntents: newNonIntentValue?.length > 0 ? newNonIntentValue : [],
       });
     } else if (title == 'add') {
-      res = await addWordSlot({ ...params, robotId: modalData.robotId, slotInfos: newObj });
+      res = await addWordSlot({
+        ...params,
+        robotId: modalData.robotId,
+        slotInfos: newObj,
+        allowIntents: newAllIntentValue?.length > 0 ? newAllIntentValue : [],
+        nonIntents: newNonIntentValue?.length > 0 ? newNonIntentValue : [],
+      });
     }
     console.log('res', res);
-    if (res?.resultCode == 100) {
+    if (res?.resultCode == '100') {
+      message.success(res?.resultDesc);
       onSubmit();
+    } else {
+      message.error(res?.resultDesc || '失败');
     }
-    message.info(res?.resultDesc || '正在处理');
   };
 
   const getIntentSelList = async () => {
@@ -113,13 +146,13 @@ export default (props: any) => {
         });
       // arr.allowIntents = [...data];
       arr.allowIntents = [{ value: 'ALL', name: '所有', id: 'ALL', intentName: '所有' }, ...data];
-      arr.nonIntents = [...data];
+      arr.nonIntents = [{ value: 'NULL', name: '空', id: 'NULL', intentName: '空' }, ...data];
       arr.normalIntents = [...data];
       arr.intentName = [...data];
       setFieldSelectData(arr);
     } else {
-      arr.allowIntents = [];
-      arr.nonIntents = [];
+      arr.allowIntents = [{ value: 'ALL', name: '所有', id: 'ALL', intentName: '所有' }];
+      arr.nonIntents = [{ value: 'NULL', name: '空', id: 'NULL', intentName: '空' }];
       arr.normalIntents = [];
       arr.intentName = [];
       setFieldSelectData(arr);
@@ -128,12 +161,17 @@ export default (props: any) => {
 
   useEffect(() => {
     if (visible) {
+      form.resetFields();
       getIntentSelList();
       if (title == 'edit') {
-        form.resetFields();
         setDiffSourceData(modalData?.slotSource || '');
         form.setFieldsValue({
           ...modalData,
+        });
+      } else {
+        form.setFieldsValue({
+          nonIntents: ['NULL'],
+          allowIntents: ['ALL'],
         });
       }
     }

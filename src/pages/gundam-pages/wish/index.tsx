@@ -87,8 +87,12 @@ const DetailPages: React.FC = (props: any) => {
   // 删除意图
   const deleteIntent = async (data: any) => {
     const res: any = await deleteIntentItem({ robotId: info.id, id: data.id });
-    message.info(res?.resultDesc || '正在处理');
-    refreshTable();
+    if (res?.resultCode == '100') {
+      message.success(res?.resultDesc);
+      refreshTable();
+    } else {
+      message.error(res?.resultDesc || '正在处理');
+    }
   };
 
   // 意图弹出框确认按钮
@@ -113,6 +117,7 @@ const DetailPages: React.FC = (props: any) => {
       dataIndex: 'trainData',
       title: '训练数据',
       search: false,
+      fixed: 'right',
       render: (text: any, record: any) => {
         return (
           <Space>
@@ -156,6 +161,7 @@ const DetailPages: React.FC = (props: any) => {
         loading={loading}
         headerTitle={'意图列表'}
         rowKey={(record) => record?.id}
+        scroll={{ x: tableList.length * 200 }}
         columns={[...tableList, ...operation]}
         actionRef={actionRef}
         style={{ backgroundColor: 'white' }}

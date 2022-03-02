@@ -32,7 +32,7 @@ const DetailPages: React.FC = (props: any) => {
     const [pageData] = p;
     let data: any = [];
     let params = {
-      occurTime: occurDay + ' ' + newTime,
+      // occurTime: occurDay + ' ' + newTime,
       robotId: info?.id,
       page: pageData.current,
       ...pageData,
@@ -76,6 +76,7 @@ const DetailPages: React.FC = (props: any) => {
     title: '操作',
     dataIndex: 'operate',
     search: false,
+    fixed: 'right',
     render: (text: any, record: any) => (
       <Space>
         <a onClick={() => operateBusiness(record, 'edit')}>编辑</a>
@@ -90,26 +91,31 @@ const DetailPages: React.FC = (props: any) => {
       </Space>
     ),
   };
-
-  // 新增、编辑 弹窗框 传递的方法
-  const operateFunc = (type: string) => {
-    handleOperFlowVisible(false);
-    refreshTable();
-    message.info('refresh');
-  };
-
+  // 刷新列表
   const refreshTable = () => {
     // @ts-ignore
     actionRef?.current?.reloadAndRest();
   };
 
+  // 新增、编辑 弹窗框 传递的方法
+  const operateFunc = () => {
+    handleOperFlowVisible(false);
+    refreshTable();
+  };
+
   const deleteFlowFunc = async (data: any) => {
+    let newDay = new Date().toLocaleDateString();
+    let occurDay = newDay.replace(/\//g, '-');
+    let newTime = new Date().toLocaleTimeString('en-GB');
     let params = {
-      occurTime: '',
+      occurTime: occurDay + ' ' + newTime,
       id: data.id,
     };
     const res: any = await deleteFlowData(params);
-    message.info(res?.resultDesc);
+    message.info(res?.resultDesc || '正在处理');
+    if (res?.resultCode == '100') {
+      refreshTable();
+    }
   };
 
   return (
@@ -120,6 +126,7 @@ const DetailPages: React.FC = (props: any) => {
         rowKey={(record) => record?.id}
         columns={[...businessTableColumnsList, operateColumn]}
         actionRef={actionRef}
+        scroll={{ x: businessTableColumnsList.length * 200 }}
         style={{ backgroundColor: 'white' }}
         toolBarRender={() => [
           <Button key="0" type="primary" onClick={() => operateBusiness({}, 'add')}>

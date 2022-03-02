@@ -41,7 +41,7 @@ export default (props: any) => {
     let params = {
       requestId: modalData.requestId,
       occurTime: occurDay + ' ' + newTime,
-      systemCode: '',
+      systemCode: modalData.systemCode,
       sessionId: modalData.sessionId,
       message: textMessage,
       event: eventType,

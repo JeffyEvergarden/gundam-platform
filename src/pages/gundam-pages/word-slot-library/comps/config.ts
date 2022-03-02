@@ -1,7 +1,8 @@
-export const wordSlotTableList = [
+export const wordSlotTableList: any = [
   {
     dataIndex: 'slotName',
     title: '词槽名称',
+    fixed: 'left',
   },
   {
     dataIndex: 'slotDesc',

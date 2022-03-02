@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Form, Input, Select, Space, Button, message } from 'antd';
 import { operateFlowFormList } from '../config';
 import { useTableModel } from '../model';
+import { useIntentModel } from '../../wish/model';
+
 const { Option } = Select;
 const selectOptList = [
   {
@@ -14,15 +16,19 @@ export default (props: any) => {
   const { visible, title, modalData, operateFunc } = props;
   const [form] = Form.useForm();
   const { editFlowData, addFlowData } = useTableModel();
+  const { getIntentInfoList, getIntentTableList } = useIntentModel();
+
+  const [triggerIntentList, setTriggerIntentList] = useState<any>([]);
   useEffect(() => {
     if (visible) {
+      getIntentSelList();
       if (title == 'edit') {
         form.setFieldsValue({ ...modalData });
       }
     }
   }, [visible]);
   const closeModal = () => {
-    operateFunc('close');
+    operateFunc();
     form.resetFields();
   };
 
@@ -39,10 +45,25 @@ export default (props: any) => {
     } else {
       res = await addFlowData({ ...params, flowType: 1 });
     }
-    if (res?.resultCode == 100) {
+    if (res?.resultCode == '100') {
       message.info(res?.resultDesc || '正在处理');
-      operateFunc('submit');
+      operateFunc();
       form.resetFields();
+    }
+  };
+
+  //  获取触发意图
+  const getIntentSelList = async () => {
+    const res: any = await getIntentInfoList({
+      robotId: modalData?.robotId,
+      headIntent: 0,
+    });
+    console.log(res?.datas);
+    if (res?.datas) {
+      let newData = [...res?.datas];
+      setTriggerIntentList(newData);
+    } else {
+      setTriggerIntentList([]);
     }
   };
 
@@ -66,8 +87,12 @@ export default (props: any) => {
                 {item.type == 'select' && (
                   <Form.Item name={item.name} label={item.label} rules={item.rules}>
                     <Select>
-                      {selectOptList?.map((item: any) => {
-                        return <Option value={item.value}>{item.name}</Option>;
+                      {triggerIntentList?.map((itex: any) => {
+                        return (
+                          <Option key={itex.id || itex.intentName} value={itex.intentName}>
+                            {itex.intentName}
+                          </Option>
+                        );
                       })}
                     </Select>
                   </Form.Item>
