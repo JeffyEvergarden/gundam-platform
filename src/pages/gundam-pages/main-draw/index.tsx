@@ -130,6 +130,7 @@ const MainDraw = (props: any) => {
       ...config,
       id: info._id,
       frontId: info.id,
+      name: config.nodeName || config.name,
       nodeType: processType(info._nodetype),
     };
 
@@ -160,6 +161,7 @@ const MainDraw = (props: any) => {
       ...config,
       id: info._id,
       frontId: info.id,
+      name: config.nodeName || config.name,
       source: (fake.current as any)?.find(info.source)?._id,
       target: (fake.current as any)?.find(info.target)?._id,
     };
