@@ -123,7 +123,7 @@ export const useNodeOpsModel = () => {
         map[item.frontId] = true;
       }
       return {
-        id: item.frontId,
+        id: String(item.frontId),
         _id: item.id,
         label: item.label || item.nodeName || '',
         x: item.x,
@@ -138,7 +138,7 @@ export const useNodeOpsModel = () => {
       })
       .map((item: any, index: number) => {
         return {
-          id: item.frontId,
+          id: String(item.frontId),
           _id: item.id,
           label: item.label || item.nodeName || item.name || '',
           source: item.frontSource, // 后端的头id
