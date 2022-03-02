@@ -130,6 +130,8 @@ const MainDraw = (props: any) => {
       ...config,
       id: info._id,
       frontId: info.id,
+      name: config.nodeName || config.name,
+      nodeType: processType(info._nodetype),
     };
 
     const callBack = (name: string) => {
@@ -144,22 +146,24 @@ const MainDraw = (props: any) => {
 
   // 打开线配置
   const openEdgeSetting = async (info: any) => {
-    console.log('打开线的设置信息:');
+    console.log('打开线的设置信息:', info);
     if (!info) {
       return;
     }
     let config: any = null;
-    // console.log(info); // 获取节点id
+    console.log((fake.current as any).find(info.source)); // 获取节点id
     config = await getLineConfig({
       ...preParams,
       id: info._id,
-      nodeType: info._nodetype,
     });
     config = {
       ...info,
       ...config,
       id: info._id,
       frontId: info.id,
+      name: config.nodeName || config.name,
+      source: (fake.current as any)?.find(info.source)?._id,
+      target: (fake.current as any)?.find(info.target)?._id,
     };
 
     const callBack = (name: string, id: any) => {
