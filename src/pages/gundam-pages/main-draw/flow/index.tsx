@@ -212,7 +212,7 @@ const EditorView = (props: PageViewProps) => {
       if (keys.indexOf(item.source) > -1) {
         map[item.source]++;
       }
-      if (keys.indexOf(item.source) > -1) {
+      if (keys.indexOf(item.target) > -1) {
         map[item.target]++;
       }
     });
