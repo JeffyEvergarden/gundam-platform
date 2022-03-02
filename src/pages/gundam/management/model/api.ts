@@ -53,7 +53,7 @@ export async function editMachine(data?: { [key: string]: any }) {
 
 // 发布机器人
 export async function publishRobot(data?: { [key: string]: any }) {
-  return request(`${baseUrl}/robot/robot/issue`, {
+  return request(`${baseUrl}/robot/robot/robotRelease`, {
     method: 'POST',
     data,
   });

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { message } from 'antd';
-
+import moment from 'moment';
 import {
   getMachineList,
   changeMachineStatus,
@@ -8,6 +8,7 @@ import {
   addNewMachine,
   editMachine,
   getMachineInfo,
+  publishRobot,
 } from './api';
 
 export const successCode = 100;
@@ -122,12 +123,56 @@ export const useOpModel = () => {
 };
 
 export const usePublishModel = () => {
-  const publishProduction = async () => {};
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const publicTest = async () => {};
+  const [testLoading, setTestLoading] = useState<boolean>(false);
+
+  const [productionTime, setProductionTime] = useState<any>('');
+
+  const [testTime, setTestTime] = useState<any>('');
+
+  const publishProduction = async () => {
+    setLoading(true);
+    let res: any = await publishRobot({
+      occurTime: moment().format('YYYY-MM-DD HH:mm'),
+      id: '',
+    });
+    setLoading(false);
+    if (res.resultCode === successCode) {
+      message.success('发布生产成功');
+      setProductionTime(moment().format('YYYY-MM-DD HH:mm'));
+    } else {
+      message.warning(res.resultDesc || '发布生产失败');
+    }
+  };
+
+  const publishTest = async () => {
+    setTestLoading(true);
+    let res: any = await publishRobot({
+      occurTime: moment().format('YYYY-MM-DD HH:mm'),
+      id: '',
+    });
+    setTestLoading(false);
+    if (res.resultCode === successCode) {
+      message.success('发布测试成功');
+      setTestTime(moment().format('YYYY-MM-DD HH:mm'));
+    } else {
+      message.warning(res.resultDesc || '发布测试失败');
+    }
+  };
+
+  const getTime = () => {
+    setProductionTime(moment().format('YYYY-MM-DD HH:mm'));
+    setTestTime(moment().format('YYYY-MM-DD HH:mm'));
+  };
 
   return {
     publishProduction,
-    publicTest,
+    publishTest,
+    loading,
+    testLoading,
+    productionTime,
+    testTime,
+    getTime,
   };
 };

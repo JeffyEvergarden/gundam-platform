@@ -12,7 +12,7 @@ import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import routers from '../config/routes';
 
 const isDev = process.env.NODE_ENV === 'development';
-const loginPath = '/user/login';
+const loginPath = '/login';
 
 const routersFilter: any[] = [];
 
@@ -74,7 +74,7 @@ export async function getInitialState(): Promise<{
   console.log(`history.location.pathname: ${history.location.pathname}`);
 
   // 用户信息结果
-  let res1: any = fetchUserInfo();
+  //let res1: any = fetchUserInfo();
   // 判断该页面是否需要进行抓取用户信息
   if (routersFilter.indexOf(history.location.pathname) > -1) {
     console.log('初始页面为不需权限页面, 不尝试抓去用户信息');
@@ -92,8 +92,8 @@ export async function getInitialState(): Promise<{
   }
   // 抓取权限信息结果
   // let res2: any = fetchAuthInfo();
-  let [currentUser, userAuth] = await Promise.all([res1]);
-
+  // let [currentUser, userAuth] = await Promise.all([res1]);
+  let [currentUser, userAuth]: any[] = [{ userName: 'hello world' }, { isWhite: true }];
   // 部门
   const orz = userAuth?.userSummary?.organizations?.[0]?.name || '';
   const isWhite = userAuth?.isWhite;

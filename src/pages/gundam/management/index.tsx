@@ -162,8 +162,8 @@ const MachineManagement: React.FC = (props: any) => {
         placeholder: '请选择机器人类型',
       },
       valueEnum: {
-        0: { text: '语音' },
-        1: { text: '文本' },
+        0: { text: '文本' },
+        1: { text: '语音' },
       },
       width: 120,
     },

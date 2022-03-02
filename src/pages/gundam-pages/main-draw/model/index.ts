@@ -248,6 +248,7 @@ export const useSelectModel = () => {
           ...item,
           index,
           name: item.id,
+          label: item.intentName,
           intentName: item.intentName,
         };
       }) || [];

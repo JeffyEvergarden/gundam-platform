@@ -206,7 +206,7 @@ const MainDraw = (props: any) => {
         </div>
       </div>
 
-      <DrawerForm cref={drawerRef} wishList={wishList} wordSlotList={wordSlotList} />
+      <DrawerForm cref={drawerRef} type={type} wishList={wishList} wordSlotList={wordSlotList} />
 
       <EdgeDrawerForm
         cref={edgeDrawerRef}
