@@ -69,13 +69,18 @@ const DetailPages: React.FC = (props: any) => {
 
   const deleteSlot = async (data: any) => {
     const res: any = await deleteWordSlot({ robot: info.id, id: data.id });
-    message.info(res?.resultDesc);
-    refreshTable();
+    if (res?.resultCode == '100') {
+      message.success(res?.resultDesc);
+      refreshTable();
+    } else {
+      message.error(res?.resultDesc || '失败');
+    }
   };
 
   const operationList = {
     dataIndex: 'operation',
     title: '操作',
+    fixed: 'right',
     render: (text: any, record: any) => {
       return (
         <Space>
@@ -108,6 +113,7 @@ const DetailPages: React.FC = (props: any) => {
           </Space>
         }
         actionRef={actionRef}
+        scroll={{ x: wordSlotTableList.length * 200 }}
         rowKey={(record) => Math.random()}
         columns={[...wordSlotTableList, operationList]}
         options={false}

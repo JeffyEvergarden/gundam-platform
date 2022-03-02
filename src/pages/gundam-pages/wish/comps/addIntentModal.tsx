@@ -38,9 +38,12 @@ export default (props: any) => {
     } else if (title == 'add') {
       res = await addIntentItem({ robotId: modalData.robotId, ...values });
     }
-    message.info(res?.resultDesc || '正在处理');
-    if (res?.resultCode == 100) {
+
+    if (res?.resultCode == '100') {
+      message.success(res?.resultDesc);
       submit();
+    } else {
+      message.error(res?.resultDesc || '正在处理');
     }
   };
 

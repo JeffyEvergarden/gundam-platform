@@ -44,6 +44,7 @@ export const tableList: any = [
     title: '意图名称',
     search: true,
     ellipsis: true,
+    fixed: 'left',
   },
   {
     dataIndex: 'inquiryText',

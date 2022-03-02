@@ -32,19 +32,24 @@ export default (props: any) => {
 
   const showChatText = async () => {
     console.log('info', info);
+    let newDay = new Date().toLocaleDateString();
+    let occurDay = newDay.replace(/\//g, '-');
+    let newTime = new Date().toLocaleTimeString('en-GB');
+
     const values = await form.validateFields();
     const data = form.getFieldsValue();
     let newData = { ...data };
     let params = {
-      requestId: '',
-      occurTime: '',
-      systemCode: '',
+      requestId: '1234',
+      occurTime: occurDay + ' ' + newTime,
+      systemCode: '5678',
       data: { ...newData },
-      customerId: '',
-      validity: '',
+      customerId: '9012',
+      // validity: '',
       robotId: info.id,
       businessCode: info.businessCode,
     };
+    console.log('params', params);
     const res: any = await getRobotChatData(params);
     message.info(res?.resultDesc || '正在处理');
     if (res?.resultCode == 100) {
@@ -52,12 +57,12 @@ export default (props: any) => {
     }
   };
 
+  const fieldValueChange = () => {};
+
   useEffect(() => {
     setRobotChatData({});
-    setRobotFormList(robotInfo);
+    setRobotFormList(robotInfo); // 表单信息
     console.log('robotInfo', robotInfo);
-    // setRobotChatData(newData);
-    showChatText();
   }, [chatVisible]);
 
   return (
@@ -66,7 +71,7 @@ export default (props: any) => {
         <Col span={10}>
           <div className={styles['box-title']}>变量配置</div>
           <div className={styles['variable-box']}>
-            <Form form={form} {...layout}>
+            <Form form={form} {...layout} onFieldsChange={fieldValueChange}>
               {robotFormList?.map((item: any) => {
                 return (
                   <React.Fragment key={item.name}>
@@ -76,6 +81,9 @@ export default (props: any) => {
                   </React.Fragment>
                 );
               })}
+              <Form.Item>
+                <Button onClick={showChatText}>开始对话</Button>
+              </Form.Item>
             </Form>
           </div>
         </Col>
