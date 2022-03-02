@@ -116,8 +116,12 @@ export const useNodeOpsModel = () => {
   // 解析画布参数
   const parser = (data: any) => {
     let { nodes = [], edges = [] }: any = data;
+    const map: any = {};
     nodes = nodes.map((item: any, index: number) => {
       const type = parserType(item.nodeType);
+      if (item.frontId) {
+        map[item.frontId] = true;
+      }
       return {
         id: item.frontId,
         _id: item.id,
@@ -128,18 +132,23 @@ export const useNodeOpsModel = () => {
         ...getDefaultNode(type),
       };
     });
-    edges = edges.map((item: any, index: number) => {
-      return {
-        _id: item.id,
-        label: item.label || item.nodeName || '',
-        source: item.frontSource, // 后端的头id
-        target: item.frontTarget, // 后端的尾id
-        sourceAnchor: item.sourceAnchor, // 前锥点
-        targetAnchor: item.targetAnchor, // 尾锥点
-        _source: item.source, // 后端的头id
-        _target: item.target, // 后端的尾id
-      };
-    });
+    edges = edges
+      .filter((item: any, index: number) => {
+        return map[item.frontSource] && map[item.frontTarget];
+      })
+      .map((item: any, index: number) => {
+        return {
+          id: item.frontId,
+          _id: item.id,
+          label: item.label || item.nodeName || '',
+          source: item.frontSource, // 后端的头id
+          target: item.frontTarget, // 后端的尾id
+          sourceAnchor: item.sourceAnchor, // 前锥点
+          targetAnchor: item.targetAnchor, // 尾锥点
+          _source: item.source, // 后端的头id
+          _target: item.target, // 后端的尾id
+        };
+      });
     return {
       nodes,
       edges,
