@@ -76,7 +76,7 @@ const DetailPages: React.FC = (props: any) => {
       width: 180,
     },
     {
-      title: '标签描述',
+      title: '描述',
       dataIndex: 'labelDesc',
       search: false,
       width: 200,

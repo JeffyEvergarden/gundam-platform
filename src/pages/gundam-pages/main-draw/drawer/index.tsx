@@ -120,7 +120,7 @@ const DrawerForm = (props: any) => {
             label="节点描述"
             style={{ width: '400px' }}
           >
-            <TextArea rows={4} placeholder="请输入流程描述" maxLength={200} />
+            <TextArea rows={4} placeholder="请输入节点描述" maxLength={200} />
           </FormItem>
         </div>
 
@@ -143,7 +143,7 @@ const DrawerForm = (props: any) => {
         {/* 业务节点 */}
         <Condition r-if={nodetype === 'business'}>
           <div className={styles['antd-form']}>
-            <FormItem label="业务流程" name="business" style={{ width: '400px' }}>
+            <FormItem label="业务流程" name="nodeFlowId" style={{ width: '400px' }}>
               <Select placeholder="请选择业务流程">
                 {flowList.map((item: any, index: number) => {
                   return (
