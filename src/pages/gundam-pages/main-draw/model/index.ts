@@ -240,8 +240,10 @@ export const useSelectModel = () => {
       current: 1,
       pageSize: 1000,
     });
-    let data: any[] =
-      res?.datas?.map?.((item: any, index: number) => {
+    let data: any[] = res?.data || res?.datas;
+    data = Array.isArray(data) ? data : [];
+    data =
+      data.map?.((item: any, index: number) => {
         return {
           ...item,
           index,
@@ -258,7 +260,8 @@ export const useSelectModel = () => {
       current: 1,
       pageSize: 1000,
     });
-    let data: any[] = res?.data || res?.datas || [];
+    let data: any[] = res?.data || res?.datas;
+    data = Array.isArray(data) ? data : [];
     data =
       data.map?.((item: any, index: number) => {
         return {

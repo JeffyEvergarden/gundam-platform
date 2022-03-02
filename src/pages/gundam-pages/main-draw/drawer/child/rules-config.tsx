@@ -245,7 +245,7 @@ const RuleConfig = (props: any) => {
                                               size="small"
                                               showSearch
                                             >
-                                              {tableList.map((item: any, index: number) => {
+                                              {tableList?.map((item: any, index: number) => {
                                                 return (
                                                   <Option key={index} value={item.name} opt={item}>
                                                     {item.label}
@@ -269,7 +269,7 @@ const RuleConfig = (props: any) => {
                                               size="small"
                                               showSearch
                                             >
-                                              {wordSlotList.map((item: any, index: number) => {
+                                              {wordSlotList?.map((item: any, index: number) => {
                                                 return (
                                                   <Option key={index} value={item.name} opt={item}>
                                                     {item.label}
@@ -292,7 +292,7 @@ const RuleConfig = (props: any) => {
                                             size="small"
                                             showSearch
                                           >
-                                            {compareList.map((item: any, index: number) => {
+                                            {compareList?.map((item: any, index: number) => {
                                               return (
                                                 <Option key={index} value={item.name} opt={item}>
                                                   {item.label}
@@ -318,7 +318,7 @@ const RuleConfig = (props: any) => {
                                                 size="small"
                                                 showSearch
                                               >
-                                                {wishList.map((item: any, index: number) => {
+                                                {wishList?.map((item: any, index: number) => {
                                                   return (
                                                     <Option
                                                       key={index}
@@ -347,7 +347,7 @@ const RuleConfig = (props: any) => {
                                                 mode={'multiple'}
                                                 showSearch
                                               >
-                                                {wishList.map((item: any, index: number) => {
+                                                {wishList?.map((item: any, index: number) => {
                                                   return (
                                                     <Option
                                                       key={index}

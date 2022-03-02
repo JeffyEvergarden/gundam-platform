@@ -20,7 +20,7 @@ const { TextArea } = Input;
 const { Option } = Select;
 
 const DrawerForm = (props: any) => {
-  const { cref } = props;
+  const { cref, type, wishList, wordSlotList } = props;
 
   const [form] = Form.useForm();
 
@@ -28,19 +28,17 @@ const DrawerForm = (props: any) => {
 
   const [nodetype, setNodetype] = useState<string>('');
 
-  const { info, flowList } = useModel('gundam' as any, (model: any) => ({
+  const { info, flowList, businessFlowId } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     flowList: model.flowList, // 业务流程列表
+    businessFlowId: model.businessFlowId,
   }));
   // 前置参数
   const preParams: any = {
     robotId: info.id, // 机器人id,
-    flowId: info.flowId, //流程id
+    flowId: type === 'main' ? info.flowId : businessFlowId, //流程id
   };
   const recordInfo = useRef<any>({});
-
-  // 意图列表、词槽列表
-  const { wishList, wordSlotList, getWishList, getWordSlotList } = useSelectModel();
 
   const { saveNode: _saveNode } = useNodeOpsModel();
 
@@ -85,10 +83,7 @@ const DrawerForm = (props: any) => {
     }
   };
 
-  useEffect(() => {
-    getWishList(info.id);
-    getWordSlotList(info.id);
-  }, []);
+  useEffect(() => {}, []);
 
   // 尾部 footer 代码
   const footer = (

@@ -12,7 +12,7 @@ const { TextArea } = Input;
 import config from '@/config';
 
 const EdgeDrawerForm = (props: any) => {
-  const { cref, confirm, type } = props;
+  const { cref, confirm, type, wishList, wordSlotList } = props;
 
   const [form] = Form.useForm();
 
@@ -123,7 +123,7 @@ const EdgeDrawerForm = (props: any) => {
           </FormItem>
 
           <FormItem name="rules" label="规则配置" style={{ width: '400px' }}>
-            <RuleVarButton />
+            <RuleVarButton wishList={wishList} wordSlotList={wordSlotList} />
           </FormItem>
         </div>
       </Form>
