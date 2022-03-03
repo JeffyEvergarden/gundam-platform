@@ -118,6 +118,19 @@ const EditorView = (props: PageViewProps) => {
       return item.id !== target.id;
     });
 
+    let max = 1;
+    arr.forEach((item: any) => {
+      if (item.level >= max) {
+        max = item.level + 1;
+      }
+    });
+
+    updateNode(target.id, {
+      label: `${1}.连线`,
+      _name: '连线',
+      level: 1,
+    });
+
     // 规则有以下
     // 1、线必须有前后节点
     // 2、节点不能与自己相连
