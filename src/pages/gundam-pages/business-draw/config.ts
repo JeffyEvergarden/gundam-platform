@@ -46,6 +46,6 @@ export const operateFlowFormList = [
     label: '触发意图',
     type: 'select',
     placeholder: '',
-    rules: [{ required: false }],
+    rules: [{ required: true }],
   },
 ];

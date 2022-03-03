@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Form, Input, Select, Space, Button, message } from 'antd';
 import { operateFlowFormList } from '../config';
 import { useTableModel } from '../model';
+import style from './style.less';
 import { useIntentModel } from '../../wish/model';
 
 const { Option } = Select;
@@ -33,7 +34,10 @@ export default (props: any) => {
   };
 
   const submit = async () => {
-    const values = form.validateFields();
+    const values = await form.validateFields();
+    if (!values) {
+      return;
+    }
     const data = form.getFieldsValue();
     let params = {
       ...data,
@@ -70,46 +74,59 @@ export default (props: any) => {
   return (
     <React.Fragment>
       <Modal
+        width={650}
         visible={visible}
         title={title == 'edit' ? '编辑' : '新增'}
-        footer={null}
         onCancel={closeModal}
+        onOk={submit}
       >
-        <Form form={form}>
-          {operateFlowFormList?.map((item: any) => {
-            return (
-              <React.Fragment key={item.name}>
-                {item.type == 'input' && (
-                  <Form.Item name={item.name} label={item.label} rules={item.rules}>
-                    <Input />
-                  </Form.Item>
-                )}
-                {item.type == 'select' && (
-                  <Form.Item name={item.name} label={item.label} rules={item.rules}>
-                    <Select>
-                      {triggerIntentList?.map((itex: any) => {
-                        return (
-                          <Option key={itex.id || itex.intentName} value={itex.intentName}>
-                            {itex.intentName}
-                          </Option>
-                        );
-                      })}
-                    </Select>
-                  </Form.Item>
-                )}
-              </React.Fragment>
-            );
-          })}
+        <div className={style['modal_bg']} style={{ paddingLeft: '110px' }}>
+          <Form form={form} style={{ width: '360px' }}>
+            {operateFlowFormList?.map((item: any) => {
+              return (
+                <React.Fragment key={item.name}>
+                  {item.type == 'input' && (
+                    <Form.Item
+                      name={item.name}
+                      label={item.label}
+                      rules={item.rules}
+                      style={{ width: '360px' }}
+                    >
+                      <Input max={150} />
+                    </Form.Item>
+                  )}
+                  {item.type == 'select' && (
+                    <Form.Item
+                      name={item.name}
+                      label={item.label}
+                      rules={item.rules}
+                      style={{ width: '360px' }}
+                    >
+                      <Select>
+                        {triggerIntentList?.map((itex: any) => {
+                          return (
+                            <Option key={itex.id || itex.intentName} value={itex.intentName}>
+                              {itex.intentName}
+                            </Option>
+                          );
+                        })}
+                      </Select>
+                    </Form.Item>
+                  )}
+                </React.Fragment>
+              );
+            })}
 
-          <Form.Item>
-            <Space>
-              <Button onClick={closeModal}>取消</Button>
-              <Button type="primary" onClick={submit}>
-                确认
-              </Button>
-            </Space>
-          </Form.Item>
-        </Form>
+            {/* <Form.Item>
+              <Space>
+                <Button onClick={closeModal}>取消</Button>
+                <Button type="primary" onClick={submit}>
+                  确认
+                </Button>
+              </Space>
+            </Form.Item> */}
+          </Form>
+        </div>
       </Modal>
     </React.Fragment>
   );
