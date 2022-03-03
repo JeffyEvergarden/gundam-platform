@@ -4,7 +4,7 @@ import config from '@/config';
 
 const baseUrl: string = config.basePath;
 
-/** 获取所有意图列表 **/
+/** 获取所有词槽列表 **/
 export async function getWordSlotTableList(params?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/slot/slotList`, {
     method: 'GET',
@@ -12,7 +12,15 @@ export async function getWordSlotTableList(params?: { [key: string]: any }) {
   });
 }
 
-/** 新增意图 **/
+/** 获取某个词槽 **/
+export async function getWordSlotItemDetail(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/slot/slotInfo`, {
+    method: 'POST',
+    data: params,
+  });
+}
+
+/** 新增词槽 **/
 export async function addWordSlotItem(params?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/slot/slotAdd`, {
     method: 'POST',
@@ -21,7 +29,7 @@ export async function addWordSlotItem(params?: { [key: string]: any }) {
   });
 }
 
-/** 编辑意图 **/
+/** 编辑词槽 **/
 export async function editWordSlotItem(params?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/slot/slotUpdate`, {
     method: 'POST',
@@ -30,7 +38,7 @@ export async function editWordSlotItem(params?: { [key: string]: any }) {
   });
 }
 
-/** 删除意图 **/
+/** 删除词槽 **/
 export async function deleteWordSlotItem(params?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/slot/slotDelete`, {
     method: 'POST',

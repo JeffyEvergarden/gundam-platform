@@ -4,7 +4,7 @@ import { useModel, history } from 'umi';
 import ProTable from '@ant-design/pro-table';
 import type { ActionType } from '@ant-design/pro-table';
 import { businessTableColumnsList } from './config';
-import { Button, message, Space } from 'antd';
+import { Button, message, Space, Popconfirm } from 'antd';
 import { useTableModel } from './model';
 import OperateFlowModal from './comps/operateFlowModal';
 import { InfoCircleFilled } from '@ant-design/icons';
@@ -79,7 +79,13 @@ const DetailPages: React.FC = (props: any) => {
     fixed: 'right',
     render: (text: any, record: any) => (
       <Space>
-        <a onClick={() => operateBusiness(record, 'edit')}>编辑</a>
+        <a
+          onClick={() => {
+            operateBusiness(record, 'edit');
+          }}
+        >
+          编辑
+        </a>
         <a
           onClick={() => {
             goToConfig(record);
@@ -87,7 +93,16 @@ const DetailPages: React.FC = (props: any) => {
         >
           配置
         </a>
-        <a onClick={() => deleteFlowFunc(record)}>删除</a>
+        <Popconfirm
+          title="删除将不可恢复，确认删除？"
+          okText="确定"
+          cancelText="取消"
+          onConfirm={() => {
+            deleteFlowFunc(record);
+          }}
+        >
+          <a style={{ color: 'red' }}>删除</a>
+        </Popconfirm>
       </Space>
     ),
   };
