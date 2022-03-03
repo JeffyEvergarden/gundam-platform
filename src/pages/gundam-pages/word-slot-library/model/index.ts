@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import { message } from 'antd';
 
-import { getWordSlotTableList, addWordSlotItem, editWordSlotItem, deleteWordSlotItem } from './api';
+import {
+  getWordSlotTableList,
+  getWordSlotItemDetail,
+  addWordSlotItem,
+  editWordSlotItem,
+  deleteWordSlotItem,
+} from './api';
 
 export const successCode = 100;
 
@@ -20,8 +26,12 @@ export const useKeyWordModel = () => {
     return res;
   };
 
+  const getWordSlotDetail = async (params?: any) => {
+    let res: any = await getWordSlotItemDetail(params);
+    return res;
+  };
+
   const addWordSlot = async (params?: any) => {
-    setTableLoading(true);
     let res: any = await addWordSlotItem(params);
     return res;
   };
@@ -40,6 +50,7 @@ export const useKeyWordModel = () => {
 
   return {
     getWordSlotTable,
+    getWordSlotDetail,
     addWordSlot,
     editWordSlot,
     deleteWordSlot,
