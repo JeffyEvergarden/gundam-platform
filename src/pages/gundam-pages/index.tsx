@@ -115,15 +115,19 @@ const MachinePagesHome: React.FC = (props: any) => {
   } = usePublishModel();
 
   useEffect(() => {
+    if (!info.id) {
+      return;
+    }
     // 开启定时刷新生产时间
     getTime(info.id);
     const fn: any = setInterval(() => {
       getTime(info.id);
     }, 30 * 1000);
+
     return () => {
       clearInterval(fn);
     };
-  }, []);
+  }, [info]);
 
   return (
     <ProLayout

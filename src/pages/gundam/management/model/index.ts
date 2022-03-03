@@ -148,9 +148,9 @@ export const usePublishModel = () => {
     setLoading(false);
     if (res.resultCode === successCode) {
       message.success('发布生产成功');
-      setProductionTime(res.datas?.publishTime || moment().format('YYYY-MM-DD HH:mm'));
-      setStatus(res.datas?.status);
-      setResult(res.datas?.desc);
+      setProductionTime(res.datas?.publishTime || '-');
+      setStatus(res.datas?.status || false);
+      setResult(res.datas?.desc || '未知错误');
     } else {
       message.warning(res.resultDesc || '发布生产失败');
     }
@@ -164,9 +164,9 @@ export const usePublishModel = () => {
     setTestLoading(false);
     if (res.resultCode === successCode) {
       message.success('发布测试成功');
-      setTestTime(res.datas?.publishTime || moment().format('YYYY-MM-DD HH:mm'));
-      setTestStatus(res.datas?.status);
-      setTestResult(res.datas?.desc);
+      setTestTime(res.datas?.publishTime || '-');
+      setTestStatus(res.datas?.status || false);
+      setTestResult(res.datas?.desc || '未知错误');
     } else {
       message.warning(res.resultDesc || '发布测试失败');
     }
@@ -178,12 +178,12 @@ export const usePublishModel = () => {
     });
     console.log(res);
 
-    setProductionTime(res.datas?.prodTime || moment().format('YYYY-MM-DD HH:mm'));
-    setStatus(res.datas?.prodStatus);
-    setResult(res.datas?.prodDesc);
-    setTestTime(res.datas?.testTime || moment().format('YYYY-MM-DD HH:mm'));
-    setTestStatus(res.datas?.testStatus);
-    setTestResult(res.datas?.testDesc);
+    setProductionTime(res.datas?.prodTime || '-');
+    setStatus(res.datas?.prodStatus || false);
+    setResult(res.datas?.prodDesc || '未知错误');
+    setTestTime(res.datas?.testTime || '-');
+    setTestStatus(res.datas?.testStatus || false);
+    setTestResult(res.datas?.testDesc || '未知错误');
   };
 
   return {

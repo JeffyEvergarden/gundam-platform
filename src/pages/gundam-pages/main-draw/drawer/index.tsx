@@ -121,12 +121,12 @@ const DrawerForm = (props: any) => {
             <Input placeholder="请输入节点名称" maxLength={150} autoComplete="off" />
           </FormItem>
           <FormItem
-            rules={[{ required: true, message: '请输入节点描述' }]}
+            // rules={[{ required: true, message: '请输入节点描述' }]}
             name="nodeDesc"
             label="节点描述"
             style={{ width: '400px' }}
           >
-            <TextArea rows={4} placeholder="请输入节点描述" maxLength={200} />
+            <TextArea rows={4} placeholder="请输入节点描述" maxLength={150} />
           </FormItem>
         </div>
 
