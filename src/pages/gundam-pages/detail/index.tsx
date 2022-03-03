@@ -102,10 +102,10 @@ const DetailPages: React.FC = (props: any) => {
         <Divider type="horizontal" />
 
         <FormItem name="silenceToDeal" label="静默处理响应话术" {...layout}>
-          <Input></Input>
+          <Input max={200} placeholder={'请输入静默处理响应话术'}></Input>
         </FormItem>
         <FormItem name="refuseToDeal" label="拒识处理响应话术" {...layout}>
-          <Input></Input>
+          <Input max={200} placeholder={'请输入拒识处理响应话术'}></Input>
         </FormItem>
         <Row>
           <Col>
@@ -121,7 +121,7 @@ const DetailPages: React.FC = (props: any) => {
             <InputNumber style={{ width: 200 }} min="0" max="1" step="0.01" />
           </FormItem>
           <FormItem name="clearToDeal" label="澄清话术" {...layout}>
-            <Input></Input>
+            <Input max={200} placeholder={'请输入澄清话术'}></Input>
           </FormItem>
         </Condition>
         <Condition r-if={info.robotType == 0}>
@@ -132,7 +132,7 @@ const DetailPages: React.FC = (props: any) => {
             <InputNumber style={{ width: 200 }} min="0" max="1" step="0.01" />
           </FormItem>
           <FormItem name="clearToDeal" label="澄清话术" {...layout}>
-            <Input></Input>
+            <Input max={200} placeholder={'请输入澄清话术'}></Input>
           </FormItem>
         </Condition>
         <Row>
@@ -186,7 +186,7 @@ const DetailPages: React.FC = (props: any) => {
                       >
                         <Input />
                       </FormItem>
-
+                      {/* <Condition r-if={index != 0}> */}
                       <Popconfirm
                         title="确定要删除该变量吗?"
                         okText="确定"
@@ -197,6 +197,7 @@ const DetailPages: React.FC = (props: any) => {
                       >
                         <MinusCircleFilled />
                       </Popconfirm>
+                      {/* </Condition> */}
                     </Space>
                   </div>
                 ))}

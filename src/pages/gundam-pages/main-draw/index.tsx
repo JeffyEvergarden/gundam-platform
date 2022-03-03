@@ -180,14 +180,14 @@ const MainDraw = (props: any) => {
       ...config,
       id: info._id,
       frontId: info.id,
-      name: config.nodeName || config.name,
+      name: config.nodeName || config.name || info._name || info.label,
       source: (fake.current as any)?.find(info.source)?._id,
       target: (fake.current as any)?.find(info.target)?._id,
     };
 
-    const callBack = (name: string, id: any) => {
+    const callBack = (obj: any, id: any) => {
       (fake.current as any).updateNode(info.id, {
-        label: name || info.label,
+        ...obj,
         _id: id,
       });
       eventbus.$emit('refresh');

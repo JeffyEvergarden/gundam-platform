@@ -62,13 +62,11 @@ const MachineManagement: React.FC = (props: any) => {
 
   // 下钻系统
   const goToNewSystem = (row: any) => {
-    console.log(row);
     if (!row.id) {
       message.warning('获取不到机器人信息');
       return null;
     }
-    setInfo(row);
-    history.push(`/gundamPages/home?id=${row.id}`);
+    history.push(`/gundamPages/mainDraw?id=${row.id}`);
     localStorage.setItem('robot_id', row.id);
   };
 

@@ -14,7 +14,7 @@ const getList = (req: any, res: any) => {
         robotName: '冰果0',
         robotDesc:
           '电视动画《冰菓》改编自日本推理小说家米泽穗信原作的《古典部系列》小说，以该系列的第1部《冰菓》为标题。2011年11月29日，在京都动画官方网站内，宣布了《冰菓》TV动画化的决',
-        businessCode: 1,
+        businessCode: '营销',
         robotType: 0, // 0：文本   1：语音
         status: 0, // 0：启用 1：停用
         onlineTime: '2022-01-12',
@@ -26,7 +26,7 @@ const getList = (req: any, res: any) => {
         robotName: '冰果1',
         robotDesc:
           '电视动画《冰菓》改编自日本推理小说家米泽穗信原作的《古典部系列》小说，以该系列的第1部《冰菓》为标题。2011年11月29日，在京都动画官方网站内，宣布了《冰菓》TV动画化的决',
-        businessCode: 1,
+        businessCode: '客服',
         robotType: 0, // 0：文本   1：语音
         status: 0, // 0：启用 1：停用
         onlineTime: '2022-01-12',
@@ -38,7 +38,7 @@ const getList = (req: any, res: any) => {
         robotName: '冰果2',
         robotDesc:
           '电视动画《冰菓》改编自日本推理小说家米泽穗信原作的《古典部系列》小说，以该系列的第1部《冰菓》为标题。2011年11月29日，在京都动画官方网站内，宣布了《冰菓》TV动画化的决',
-        businessCode: 1,
+        businessCode: '风险',
         robotType: 0, // 0：文本   1：语音
         status: 0, // 0：启用 1：停用
         onlineTime: '2022-01-12',
@@ -50,7 +50,7 @@ const getList = (req: any, res: any) => {
         robotName: '冰果3',
         robotDesc:
           '电视动画《冰菓》改编自日本推理小说家米泽穗信原作的《古典部系列》小说，以该系列的第1部《冰菓》为标题。2011年11月29日，在京都动画官方网站内，宣布了《冰菓》TV动画化的决',
-        businessCode: 1,
+        businessCode: '催收',
         robotType: 0, // 0：文本   1：语音
         status: 0, // 0：启用 1：停用
         onlineTime: '2022-01-12',
@@ -62,7 +62,7 @@ const getList = (req: any, res: any) => {
         robotName: '冰果4',
         robotDesc:
           '电视动画《冰菓》改编自日本推理小说家米泽穗信原作的《古典部系列》小说，以该系列的第1部《冰菓》为标题。2011年11月29日，在京都动画官方网站内，宣布了《冰菓》TV动画化的决',
-        businessCode: 1,
+        businessCode: '审批',
         robotType: 0, // 0：文本   1：语音
         status: 0, // 0：启用 1：停用
         onlineTime: '2022-01-12',
@@ -74,7 +74,7 @@ const getList = (req: any, res: any) => {
         robotName: '冰果5',
         robotDesc:
           '电视动画《冰菓》改编自日本推理小说家米泽穗信原作的《古典部系列》小说，以该系列的第1部《冰菓》为标题。2011年11月29日，在京都动画官方网站内，宣布了《冰菓》TV动画化的决',
-        businessCode: 1,
+        businessCode: '渠道',
         robotType: 0, // 0：文本   1：语音
         status: 0, // 0：启用 1：停用
         onlineTime: '2022-01-12',
@@ -86,7 +86,7 @@ const getList = (req: any, res: any) => {
         robotName: '冰果6',
         robotDesc:
           '电视动画《冰菓》改编自日本推理小说家米泽穗信原作的《古典部系列》小说，以该系列的第1部《冰菓》为标题。2011年11月29日，在京都动画官方网站内，宣布了《冰菓》TV动画化的决',
-        businessCode: 1,
+        businessCode: '渠道',
         robotType: 0, // 0：文本   1：语音
         status: 0, // 0：启用 1：停用
         onlineTime: '2022-01-12',

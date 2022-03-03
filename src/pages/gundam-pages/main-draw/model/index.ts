@@ -122,6 +122,9 @@ export const useNodeOpsModel = () => {
     const map: any = {};
     nodes = nodes.map((item: any, index: number) => {
       const type = parserType(item.nodeType);
+      if (map[item.frontId]) {
+        return null;
+      }
       if (item.frontId) {
         map[item.frontId] = true;
       }
@@ -135,15 +138,22 @@ export const useNodeOpsModel = () => {
         ...getDefaultNode(type),
       };
     });
+    nodes = nodes.filter((item: any) => {
+      return item;
+    });
     edges = edges
       .filter((item: any, index: number) => {
         return map[item.frontSource] && map[item.frontTarget];
       })
       .map((item: any, index: number) => {
+        let label = item.label || item.nodeName || item.name || '';
+        let level = item.level || 1;
         return {
           id: String(item.frontId),
           _id: item.id,
-          label: item.label || item.nodeName || item.name || '',
+          label: `${level ? level + '.' : ''}${label}`,
+          _name: label,
+          level: item.level,
           source: item.frontSource, // 后端的头id
           target: item.frontTarget, // 后端的尾id
           sourceAnchor: item.sourceAnchor, // 前锥点
@@ -186,8 +196,9 @@ export const useNodeOpsModel = () => {
       return {
         frontId: item.id, // 前端id
         id: item._id, // 后端id (如果有的话)
-        nodeName: item.label,
-        name: item.label,
+        nodeName: item._name || item.label || '',
+        name: item._name || item.label || '',
+        level: item.level || 1,
         frontSource: item.source, // 前端的头id
         frontTarget: item.target, // 前端的尾id
         sourceAnchor: item.sourceAnchor, // 前锥点

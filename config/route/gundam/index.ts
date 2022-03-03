@@ -1,16 +1,16 @@
 export default [
   {
-    path: '/robot',
+    path: '/gundam',
     layout: true,
     component: '../layout',
     name: '机器人管理',
     routes: [
       {
-        path: '/robot/home/list',
+        path: '/gundam/home/list',
         component: './gundam/management',
         name: '机器人列表',
       },
-      { redirect: '/robot/home/list' },
+      { redirect: '/gundam/home/list' },
       { component: './404' },
     ],
   },

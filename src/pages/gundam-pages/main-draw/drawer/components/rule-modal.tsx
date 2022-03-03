@@ -6,7 +6,7 @@ import { useModel } from 'umi';
 import RulesConfig from '../child/rules-config';
 
 const RuleModal: React.FC<any> = (props: any) => {
-  const { cref, confirm, wishList, wordSlotList } = props;
+  const { cref, confirm, wishList, wordSlotList, type = 'node' } = props;
 
   const [form] = Form.useForm();
 
@@ -48,7 +48,12 @@ const RuleModal: React.FC<any> = (props: any) => {
       onOk={submit}
     >
       <div className={style['form-box']}>
-        <RulesConfig form={form} wishList={wishList} wordSlotList={wordSlotList || []} />
+        <RulesConfig
+          form={form}
+          type={type}
+          wishList={wishList}
+          wordSlotList={wordSlotList || []}
+        />
       </div>
     </Modal>
   );

@@ -36,9 +36,10 @@ const EdgeDrawerForm = (props: any) => {
       recordInfo.current.info = info;
       recordInfo.current.callback = callback;
       form.resetFields();
+      console.log(info);
       form.setFieldsValue({
-        level: 1,
         ...info,
+        level: info.level || 1,
       });
       setVisible(true);
     },
@@ -60,8 +61,16 @@ const EdgeDrawerForm = (props: any) => {
         source: recordInfo.current.info?.source,
         target: recordInfo.current.info?.target,
       });
+      let label = `${res.level}.${res?.name}`;
       if (result !== false) {
-        recordInfo.current?.callback?.(res?.name, result?.datas?.id); // 成功回调修改名称
+        recordInfo.current?.callback?.(
+          {
+            label,
+            _name: res?.name,
+            level: res.level || 1,
+          },
+          result?.datas?.id,
+        ); // 成功回调修改名称
         onClose();
       }
     }
@@ -101,12 +110,7 @@ const EdgeDrawerForm = (props: any) => {
             <Input placeholder="请输入流程名称" maxLength={150} autoComplete="off" />
           </FormItem>
 
-          <FormItem
-            rules={[{ required: true, message: '请输入连线描述' }]}
-            name="nodeDesc"
-            label="连线描述"
-            style={{ width: '400px' }}
-          >
+          <FormItem name="nodeDesc" label="连线描述" style={{ width: '400px' }}>
             <TextArea rows={4} placeholder="请输入流程描述" maxLength={200} />
           </FormItem>
 
@@ -121,12 +125,12 @@ const EdgeDrawerForm = (props: any) => {
               precision={0}
               min={0}
               max={999}
-              style={{ width: '120px' }}
+              style={{ width: '140px' }}
             />
           </FormItem>
 
           <FormItem name="rules" label="规则配置" style={{ width: '400px' }}>
-            <RuleVarButton wishList={wishList} wordSlotList={wordSlotList} />
+            <RuleVarButton type="edge" wishList={wishList} wordSlotList={wordSlotList} />
           </FormItem>
         </div>
       </Form>
