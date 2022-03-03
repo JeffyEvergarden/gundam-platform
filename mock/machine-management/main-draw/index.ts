@@ -68,7 +68,7 @@ const getNodesConfig = (req: any, res: any) => {
     datas: {
       name: '名侦探柯南',
       nodeDesc: '高中生侦探',
-      business: 'front_mock_id_1',
+      nodeFlowId: 'front_mock_id_1',
       nodeSlots: [
         // 词槽列表
         {
