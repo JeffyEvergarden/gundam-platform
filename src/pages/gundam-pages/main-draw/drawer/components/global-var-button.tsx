@@ -12,6 +12,8 @@ const GlobalVarButton: React.FC<any> = (props: any) => {
 
   const modalRef = useRef<any>(null);
 
+  const [startPos, setStartPos] = useState<number>(-1);
+
   const openModal = () => {
     (modalRef.current as any).open();
   };
@@ -22,8 +24,20 @@ const GlobalVarButton: React.FC<any> = (props: any) => {
 
   const confirm = (val: any) => {
     let tmp: any = value || '';
-    tmp = tmp + (val?.[0]?.name ? `\$\{${val[0].name}\}` : '');
+    let target = val?.[0]?.name ? `\$\{${val[0].name}\}` : '';
+    if (startPos > -1) {
+      let pre = tmp.slice(0, startPos);
+      let last = tmp.slice(startPos);
+      tmp = pre + target + last;
+    } else {
+      tmp = tmp + target;
+    }
     onChange(tmp);
+  };
+
+  const blurEvent = (e: any) => {
+    let num = e.target.selectionStart;
+    setStartPos(isNaN(num) ? -1 : num);
   };
 
   return (
@@ -31,6 +45,7 @@ const GlobalVarButton: React.FC<any> = (props: any) => {
       <Input
         value={value}
         onChange={changeVal}
+        onBlur={blurEvent}
         placeholder={props.placeholder}
         style={style}
         {...res}
