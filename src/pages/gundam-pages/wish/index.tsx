@@ -117,12 +117,11 @@ const DetailPages: React.FC = (props: any) => {
       dataIndex: 'trainData',
       title: '训练数据',
       search: false,
-      fixed: 'right',
       render: (text: any, record: any) => {
         return (
           <Space>
             <a onClick={() => ruleTemplate(record)}>规则模版</a>
-            <a onClick={() => samples(record)}>样板</a>
+            <a onClick={() => samples(record)}>样本</a>
           </Space>
         );
       },
@@ -131,6 +130,7 @@ const DetailPages: React.FC = (props: any) => {
       dataIndex: 'operation',
       title: '操作',
       search: false,
+      fixed: 'right',
       render: (text: any, record: any) => {
         return (
           <Space>
@@ -165,6 +165,9 @@ const DetailPages: React.FC = (props: any) => {
         columns={[...tableList, ...operation]}
         actionRef={actionRef}
         style={{ backgroundColor: 'white' }}
+        pagination={{
+          pageSize: 10,
+        }}
         toolBarRender={() => [
           <Button key="0" type="primary" onClick={() => operIntent({}, 'add')}>
             新增

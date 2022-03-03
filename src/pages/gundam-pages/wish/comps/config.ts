@@ -60,7 +60,7 @@ export const tableList: any = [
     valueEnum: {
       0: { text: '是', status: 0 },
       1: { text: '否', status: 1 },
-      2: { text: '全部', status: 2 },
+      '': { text: '全部', status: '' },
     },
   },
   {
