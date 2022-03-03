@@ -48,16 +48,19 @@ export default (props: any) => {
       actionType: 'text',
     };
     const res: any = await getDialogData(params);
-
-    let newData = [...dialogList];
-    newData.push({
-      type: 'robot',
-      message: 'I am a robot',
-    });
-    setTimeout(() => {
-      setDialogList(newData);
-      setTextMessage('');
-    }, 1000);
+    if (res?.resultCode == '100') {
+      let newData = [...dialogList];
+      newData.push({
+        type: 'robot',
+        message: res?.resultDesc,
+      });
+      setTimeout(() => {
+        setDialogList(newData);
+        setTextMessage('');
+      }, 1);
+    } else {
+      message.error(res?.resultDesc);
+    }
   };
 
   // 发送按钮
@@ -89,7 +92,7 @@ export default (props: any) => {
   };
 
   useEffect(() => {
-    robotResponse();
+    number > 0 && robotResponse();
   }, [number]);
 
   return (

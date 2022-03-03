@@ -74,7 +74,9 @@ export default (props: any) => {
     });
     console.log(res?.datas);
     if (res?.datas) {
-      let newData = [...res?.datas];
+      let newData = res?.datas?.filter((item: any) => {
+        return item.intentName !== modalData.headIntent;
+      });
       setTriggerIntentList(newData);
     } else {
       setTriggerIntentList([]);
