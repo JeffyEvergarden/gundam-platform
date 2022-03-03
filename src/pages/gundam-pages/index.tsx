@@ -65,7 +65,7 @@ const MachinePagesHome: React.FC = (props: any) => {
   useEffect(() => {
     // console.log('机器人子系统获取：');
     // console.log(info);
-    let robotId = info.id || location?.query?.id || localStorage.getItem('robot_id') || '';
+    let robotId = location?.query?.id || localStorage.getItem('robot_id') || info.id || '';
     console.log(robotId);
     _getInfo({ id: robotId });
   }, []);

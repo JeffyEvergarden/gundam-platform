@@ -122,6 +122,9 @@ export const useNodeOpsModel = () => {
     const map: any = {};
     nodes = nodes.map((item: any, index: number) => {
       const type = parserType(item.nodeType);
+      if (map[item.frontId]) {
+        return null;
+      }
       if (item.frontId) {
         map[item.frontId] = true;
       }
@@ -134,6 +137,9 @@ export const useNodeOpsModel = () => {
         _nodetype: type, // 节点类型
         ...getDefaultNode(type),
       };
+    });
+    nodes = nodes.filter((item: any) => {
+      return item;
     });
     edges = edges
       .filter((item: any, index: number) => {
