@@ -116,9 +116,9 @@ const MachinePagesHome: React.FC = (props: any) => {
 
   useEffect(() => {
     // 开启定时刷新生产时间
-    getTime();
+    getTime(info.id);
     const fn: any = setInterval(() => {
-      getTime();
+      getTime(info.id);
     }, 30 * 1000);
     return () => {
       clearInterval(fn);
@@ -207,7 +207,7 @@ const MachinePagesHome: React.FC = (props: any) => {
                         type="primary"
                         loading={loading}
                         onClick={() => {
-                          publishProduction();
+                          publishProduction(info.id);
                         }}
                       >
                         发布生产
@@ -217,7 +217,7 @@ const MachinePagesHome: React.FC = (props: any) => {
                         type="default"
                         loading={testLoading}
                         onClick={() => {
-                          publishTest();
+                          publishTest(info.id);
                         }}
                       >
                         发布测试

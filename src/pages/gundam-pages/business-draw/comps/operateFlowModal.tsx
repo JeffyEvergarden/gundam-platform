@@ -62,6 +62,8 @@ export default (props: any) => {
       message.info(res?.resultDesc || '正在处理');
       operateFunc();
       form.resetFields();
+    } else {
+      message.info(res?.resultDesc);
     }
     handleSpinning(false);
   };
@@ -74,7 +76,9 @@ export default (props: any) => {
     });
     console.log(res?.datas);
     if (res?.datas) {
-      let newData = [...res?.datas];
+      let newData = res?.datas?.filter((item: any) => {
+        return item.intentName !== modalData.headIntent;
+      });
       setTriggerIntentList(newData);
     } else {
       setTriggerIntentList([]);

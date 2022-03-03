@@ -107,7 +107,13 @@ const DrawerForm = (props: any) => {
       <Form form={form}>
         <div className={styles['antd-form']}>
           <FormItem
-            rules={[{ required: true, message: '请输入节点名称' }]}
+            rules={[
+              { required: true, message: '请输入节点名称' },
+              {
+                pattern: /^[A-Za-z0-9_\-\u4e00-\u9fa5]+$/g,
+                message: '请输入汉字、字母、下划线、数字、横杠',
+              },
+            ]}
             name="name"
             label="节点名称"
             style={{ width: '400px' }}

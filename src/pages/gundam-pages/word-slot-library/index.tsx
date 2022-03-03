@@ -113,6 +113,9 @@ const DetailPages: React.FC = (props: any) => {
           </Space>
         }
         actionRef={actionRef}
+        pagination={{
+          pageSize: 10,
+        }}
         scroll={{ x: wordSlotTableList.length * 200 }}
         rowKey={(record) => Math.random()}
         columns={[...wordSlotTableList, operationList]}
