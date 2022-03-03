@@ -253,7 +253,7 @@ const EditorView = (props: PageViewProps) => {
   const editorEvent = {
     // 插入前
     onBeforeChange: (event: any) => {
-      // console.log('before', event);
+      console.log('before', event);
       if (event.action === 'add') {
         const [nodes] = getAllNode();
         let node: any = nodes.find((item: any) => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Form, Input, Select, Space, Button, message } from 'antd';
+import { Modal, Form, Input, Select, Space, Button, message, Spin } from 'antd';
 import { operateFlowFormList } from '../config';
 import { useTableModel } from '../model';
 import style from './style.less';
@@ -13,9 +13,15 @@ const selectOptList = [
   },
 ];
 
+const tailLayout = {
+  wrapperCol: { offset: 8, span: 12 },
+};
+
 export default (props: any) => {
   const { visible, title, modalData, operateFunc } = props;
   const [form] = Form.useForm();
+  const [spinning, handleSpinning] = useState<boolean>(false);
+
   const { editFlowData, addFlowData } = useTableModel();
   const { getIntentInfoList, getIntentTableList } = useIntentModel();
 
@@ -24,7 +30,9 @@ export default (props: any) => {
     if (visible) {
       getIntentSelList();
       if (title == 'edit') {
+        handleSpinning(true);
         form.setFieldsValue({ ...modalData });
+        handleSpinning(false);
       }
     }
   }, [visible]);
@@ -44,6 +52,7 @@ export default (props: any) => {
       robotId: modalData.robotId,
     };
     let res: any;
+    handleSpinning(true);
     if (title == 'edit') {
       res = await editFlowData({ ...params, id: modalData.id });
     } else {
@@ -54,6 +63,7 @@ export default (props: any) => {
       operateFunc();
       form.resetFields();
     }
+    handleSpinning(false);
   };
 
   //  获取触发意图
@@ -81,51 +91,53 @@ export default (props: any) => {
         onOk={submit}
       >
         <div className={style['modal_bg']} style={{ paddingLeft: '110px' }}>
-          <Form form={form} style={{ width: '360px' }}>
-            {operateFlowFormList?.map((item: any) => {
-              return (
-                <React.Fragment key={item.name}>
-                  {item.type == 'input' && (
-                    <Form.Item
-                      name={item.name}
-                      label={item.label}
-                      rules={item.rules}
-                      style={{ width: '360px' }}
-                    >
-                      <Input max={150} />
-                    </Form.Item>
-                  )}
-                  {item.type == 'select' && (
-                    <Form.Item
-                      name={item.name}
-                      label={item.label}
-                      rules={item.rules}
-                      style={{ width: '360px' }}
-                    >
-                      <Select>
-                        {triggerIntentList?.map((itex: any) => {
-                          return (
-                            <Option key={itex.id || itex.intentName} value={itex.intentName}>
-                              {itex.intentName}
-                            </Option>
-                          );
-                        })}
-                      </Select>
-                    </Form.Item>
-                  )}
-                </React.Fragment>
-              );
-            })}
+          <Spin spinning={spinning}>
+            <Form form={form} style={{ width: '360px' }}>
+              {operateFlowFormList?.map((item: any) => {
+                return (
+                  <React.Fragment key={item.name}>
+                    {item.type == 'input' && (
+                      <Form.Item
+                        name={item.name}
+                        label={item.label}
+                        rules={item.rules}
+                        style={{ width: '360px' }}
+                      >
+                        <Input max={150} />
+                      </Form.Item>
+                    )}
+                    {item.type == 'select' && (
+                      <Form.Item
+                        name={item.name}
+                        label={item.label}
+                        rules={item.rules}
+                        style={{ width: '360px' }}
+                      >
+                        <Select>
+                          {triggerIntentList?.map((itex: any) => {
+                            return (
+                              <Option key={itex.id || itex.intentName} value={itex.intentName}>
+                                {itex.intentName}
+                              </Option>
+                            );
+                          })}
+                        </Select>
+                      </Form.Item>
+                    )}
+                  </React.Fragment>
+                );
+              })}
 
-            {/* <Form.Item>
+              {/* <Form.Item>
               <Space>
                 <Button onClick={closeModal}>取消</Button>
                 <Button type="primary" onClick={submit}>
                   确认
                 </Button>
               </Space>
-            </Form.Item> */}
-          </Form>
+            </Form.Item>*/}
+            </Form>
+          </Spin>
         </div>
       </Modal>
     </React.Fragment>

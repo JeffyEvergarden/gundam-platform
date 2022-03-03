@@ -137,7 +137,7 @@ const RuleConfig = (props: any) => {
                 </div>
                 {outFields.map((outFields: any, i: number) => {
                   return (
-                    <div key={outFields.key}>
+                    <div key={outFields.key} className={styles['rule-box']}>
                       <FormList name={[outFields.name, 'ruleList']}>
                         {(fields, { add, remove }) => {
                           const addNew = () => {
@@ -195,9 +195,9 @@ const RuleConfig = (props: any) => {
                                   // console.log(ruleType, compareList);
 
                                   return (
-                                    <div key={field.key} className={styles['list-box']}>
+                                    <div key={field.key} className={styles['rule-list-box']}>
                                       <div style={{ width: '30px', flexShrink: 0 }}>
-                                        <Condition r-if={index > 0}>
+                                        <Condition r-if={index > -1}>
                                           <Button
                                             icon={<MinusCircleOutlined />}
                                             type="link"

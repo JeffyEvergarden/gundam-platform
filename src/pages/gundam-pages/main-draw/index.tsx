@@ -8,6 +8,7 @@ import style from './style.less';
 import { useNodeOpsModel, useSelectModel } from './model';
 import { processType } from './model/const';
 import eventbus from './flow/utils/eventbus';
+import { message } from 'antd';
 
 const MainDraw = (props: any) => {
   const { type = 'main' } = props;
@@ -82,6 +83,11 @@ const MainDraw = (props: any) => {
     console.log('外层监测到删除Node');
     console.log(node);
     if (!node._id) {
+      return;
+    }
+    if (node._nodetype === 'start') {
+      message.warning('开始节点不允许删除');
+      (fake.current as any).executeCommand?.('undo');
       return;
     }
     let params: any = {

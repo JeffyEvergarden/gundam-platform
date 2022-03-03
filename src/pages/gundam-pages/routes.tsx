@@ -4,7 +4,7 @@ export default [
   {
     icon: <CrownOutlined />,
     path: '/gundamPages/mainDraw',
-    name: '主流程管理',
+    name: '主流程配置',
   },
   {
     icon: <CrownOutlined />,

@@ -156,7 +156,7 @@ const getLineConfig = (req: any, res: any) => {
     resultCode: successCode,
     datas: {
       name: '七龙珠',
-      level: 10,
+      // level: 10,
       nodeDesc: '七龙珠',
     },
   });

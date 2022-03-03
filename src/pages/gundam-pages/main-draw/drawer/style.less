@@ -26,11 +26,32 @@
   align-items: center;
 }
 
-.list-box {
+.rule-list-box {
+  position: relative;
   display: flex;
   padding-top: 16px;
   padding-left: 20px;
   border-bottom: 1px solid #f3f3f3;
+
+  &::after {
+    position: absolute;
+    bottom: -8px;
+    left: 70px;
+    display: block;
+    padding: 0 2px;
+    color: #d48806;
+    line-height: 14px;
+    text-align: center;
+    background: #fffbe6;
+    border: 1px solid #ffe58f;
+    content: '且';
+  }
+
+  &:last-child {
+    &::after {
+      display: none;
+    }
+  }
 }
 
 .zy-row_end {
@@ -90,4 +111,36 @@
 
 .table-box {
   // .scrollbar(2px)
+}
+
+.rule-box {
+  position: relative;
+  margin-bottom: 10px;
+
+  &::after {
+    position: absolute;
+    bottom: -8px;
+    left: 6px;
+    display: block;
+    padding: 0 2px;
+    color: #096dd9;
+    line-height: 14px;
+    background: #e6f7ff;
+    border: 1px solid #91d5ff;
+    content: '或';
+  }
+
+  &:last-child {
+    &::after {
+      display: none;
+    }
+  }
+}
+
+.list-box {
+  position: relative;
+  display: flex;
+  padding-top: 16px;
+  padding-left: 20px;
+  border-bottom: 1px solid #f3f3f3;
 }

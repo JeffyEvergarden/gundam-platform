@@ -122,12 +122,12 @@ const NodeForm: React.FC<DetailFormProps> = (props: DetailFormProps) => {
         </Item>
 
         <div className={style['button-box']}>
-          <Button type="primary" shape="round" onClick={_save} loading={loading}>
+          <Button type="primary" shape="round" size="small" onClick={_save} loading={loading}>
             保存
           </Button>
 
           <Button icon={<SettingOutlined />} type="link" onClick={_openSetting}>
-            开启详细配置
+            详细配置
           </Button>
         </div>
       </Form>

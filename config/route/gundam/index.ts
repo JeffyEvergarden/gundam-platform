@@ -49,7 +49,7 @@ export default [
       {
         path: '/gundamPages/mainDraw',
         component: './gundam-pages/main-draw',
-        name: '主流程管理',
+        name: '主流程配置',
       },
       {
         path: '/gundamPages/businessDraw',
