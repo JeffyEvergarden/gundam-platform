@@ -25,6 +25,8 @@ const MachinePagesHome: React.FC = (props: any) => {
 
   const [pathname, setPathname] = useState(location.pathname);
 
+  const [finish, setFinish] = useState<boolean>(false);
+
   useEffect(() => {
     setPathname(location.pathname);
   }, [location]);
@@ -42,7 +44,7 @@ const MachinePagesHome: React.FC = (props: any) => {
   const { getInfo } = useOpModel();
 
   const _getInfo = async (params: any) => {
-    // 获取用户信息
+    // 获取用户信息getInfo
     let _info = await getInfo(params);
     console.log(_info);
     if (_info) {
@@ -56,6 +58,7 @@ const MachinePagesHome: React.FC = (props: any) => {
           };
         }) || [];
       setGlobalVarList(list);
+      setFinish(true);
     } else {
       message.warning('获取不到机器人信息');
       history.replace('/robot/home');
@@ -71,7 +74,7 @@ const MachinePagesHome: React.FC = (props: any) => {
   }, []);
 
   const goBack = () => {
-    history.push('/robot/home');
+    history.push('/gundam/home');
   };
 
   const MenuHeader = (props: any) => (
@@ -223,7 +226,7 @@ const MachinePagesHome: React.FC = (props: any) => {
                   ),
                 }}
               >
-                {props.children}
+                {finish && props.children}
                 <div className={style['hover-style']} onClick={robotChatComp}>
                   <img alt="robot" src={hoverRobot} style={{ width: 44, height: 44 }} />
                 </div>
