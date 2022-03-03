@@ -13,6 +13,7 @@ export const ACTION_LIST: any = [
   },
 ];
 
+// 普通规则
 export const RUlE_LIST: any[] = [
   {
     name: '用户意图',
@@ -165,5 +166,50 @@ export const RUlE_LIST: any[] = [
         label: '大于等于',
       },
     ],
+  },
+];
+
+// 线规则
+export const EDGE_RULE_LIST: any[] = [
+  {
+    name: '高级配置变量',
+    label: '高级配置变量',
+    list: [
+      {
+        name: '==',
+        label: '等于',
+      },
+      {
+        name: '<',
+        label: '小于',
+      },
+      {
+        name: '<=',
+        label: '小于等于',
+      },
+      {
+        name: '>',
+        label: '大于',
+      },
+      {
+        name: '<=',
+        label: '大于等于',
+      },
+    ],
+  },
+];
+
+export const EDGE_VAR_LIST: any[] = [
+  {
+    name: '静默次数',
+    label: '静默次数',
+  },
+  {
+    name: '拒识次数',
+    label: '拒识次数',
+  },
+  {
+    name: '未听清次数',
+    label: '未听清次数',
   },
 ];

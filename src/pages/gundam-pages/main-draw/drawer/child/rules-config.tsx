@@ -1,16 +1,18 @@
 import { useState, useMemo } from 'react';
-import { Form, Input, Select, Button, Space, DatePicker } from 'antd';
+import { Form, Input, Select, Button, Space, DatePicker, InputNumber } from 'antd';
 import { MinusCircleOutlined, AppstoreAddOutlined } from '@ant-design/icons';
 import Condition from '@/components/Condition';
 import { useModel } from 'umi';
 import styles from '../style.less';
-import { ACTION_LIST, RUlE_LIST } from '../const';
+import { ACTION_LIST, RUlE_LIST, EDGE_VAR_LIST, EDGE_RULE_LIST } from '../const';
 
 const { Item: FormItem, List: FormList } = Form;
 const { Option } = Select;
 
 const RuleConfig = (props: any) => {
-  const { wishList, wordSlotList, form } = props;
+  const { wishList, wordSlotList, form, type = 'node' } = props;
+
+  const CURRENT_RULE_LIST = type === 'node' ? RUlE_LIST : [...RUlE_LIST, ...EDGE_RULE_LIST];
 
   // 监听数组变化
   const onValuesChange = (obj: any, curObj: any) => {
@@ -188,7 +190,7 @@ const RuleConfig = (props: any) => {
                                   const compareVal: any = curItem?.condition || '';
 
                                   const compareList: any[] =
-                                    RUlE_LIST.find((item: any) => {
+                                    CURRENT_RULE_LIST.find((item: any) => {
                                       return ruleType === item.name;
                                     })?.list || []; // 比较关系下拉列表
                                   // console.log('重新渲染');
@@ -222,7 +224,7 @@ const RuleConfig = (props: any) => {
                                             size="small"
                                             showSearch
                                           >
-                                            {RUlE_LIST.map((item: any, index: number) => {
+                                            {CURRENT_RULE_LIST.map((item: any, index: number) => {
                                               return (
                                                 <Option key={index} value={item.name} opt={item}>
                                                   {item.label}
@@ -256,7 +258,7 @@ const RuleConfig = (props: any) => {
                                           </FormItem>
                                         </Condition>
 
-                                        <Condition r-if={ruleType !== '变量'}>
+                                        <Condition r-if={ruleType === '槽值填充状态'}>
                                           <FormItem
                                             name={[field.name, 'ruleKey']}
                                             fieldKey={[field.fieldKey, 'ruleKey']}
@@ -270,6 +272,32 @@ const RuleConfig = (props: any) => {
                                               showSearch
                                             >
                                               {wordSlotList?.map((item: any, index: number) => {
+                                                return (
+                                                  <Option key={index} value={item.name} opt={item}>
+                                                    {item.label}
+                                                  </Option>
+                                                );
+                                              })}
+                                            </Select>
+                                          </FormItem>
+                                        </Condition>
+
+                                        <Condition r-if={ruleType === '高级配置变量'}>
+                                          <FormItem
+                                            name={[field.name, 'ruleKey']}
+                                            fieldKey={[field.fieldKey, 'ruleKey']}
+                                            style={{ width: '180px' }}
+                                            rules={[
+                                              { required: true, message: '请选择高级配置变量' },
+                                            ]}
+                                          >
+                                            {/* 全局变量的情况 */}
+                                            <Select
+                                              placeholder="请选择高级配置变量"
+                                              size="small"
+                                              showSearch
+                                            >
+                                              {EDGE_VAR_LIST?.map((item: any, index: number) => {
                                                 return (
                                                   <Option key={index} value={item.name} opt={item}>
                                                     {item.label}
@@ -310,7 +338,7 @@ const RuleConfig = (props: any) => {
                                             <FormItem
                                               name={[field.name, 'ruleValue']}
                                               fieldKey={[field.fieldKey, 'ruleValue']}
-                                              style={{ width: '120px' }}
+                                              style={{ width: '140px' }}
                                               rules={[{ required: true, message: '请选择' }]}
                                             >
                                               <Select
@@ -338,7 +366,7 @@ const RuleConfig = (props: any) => {
                                             <FormItem
                                               name={[field.name, 'ruleValue']}
                                               fieldKey={[field.fieldKey, 'ruleValue']}
-                                              style={{ width: '120px' }}
+                                              style={{ width: '140px' }}
                                               rules={[{ required: true, message: '请选择' }]}
                                             >
                                               <Select
@@ -371,7 +399,7 @@ const RuleConfig = (props: any) => {
                                             <FormItem
                                               name={[field.name, 'ruleValue']}
                                               fieldKey={[field.fieldKey, 'ruleValue']}
-                                              style={{ width: '120px' }}
+                                              style={{ width: '140px' }}
                                               rules={[{ required: true, message: '请选择' }]}
                                             >
                                               <Input
@@ -384,12 +412,12 @@ const RuleConfig = (props: any) => {
                                           </Condition>
                                         </Condition>
 
-                                        {/* 槽值填充状态 */}
+                                        {/* 其他 */}
                                         <Condition r-if={['当前用户输入文本'].includes(ruleType)}>
                                           <FormItem
                                             name={[field.name, 'ruleValue']}
                                             fieldKey={[field.fieldKey, 'ruleValue']}
-                                            style={{ width: '120px' }}
+                                            style={{ width: '140px' }}
                                             rules={[{ required: true, message: '请输入' }]}
                                           >
                                             <Input
@@ -405,7 +433,7 @@ const RuleConfig = (props: any) => {
                                           <FormItem
                                             name={[field.name, 'ruleValue']}
                                             fieldKey={[field.fieldKey, 'ruleValue']}
-                                            style={{ width: '120px' }}
+                                            style={{ width: '140px' }}
                                             rules={[{ required: true, message: '请输入' }]}
                                           >
                                             <Input
@@ -421,10 +449,29 @@ const RuleConfig = (props: any) => {
                                           <FormItem
                                             name={[field.name, 'ruleValue']}
                                             fieldKey={[field.fieldKey, 'ruleValue']}
-                                            style={{ width: '120px' }}
+                                            style={{ width: '140px' }}
                                             rules={[{ required: true, message: '请选择' }]}
                                           >
                                             <DatePicker placeholder="请选择系统时间" size="small" />
+                                          </FormItem>
+                                        </Condition>
+
+                                        <Condition r-if={['高级配置变量'].includes(ruleType)}>
+                                          <FormItem
+                                            name={[field.name, 'ruleValue']}
+                                            fieldKey={[field.fieldKey, 'ruleValue']}
+                                            style={{ width: '140px' }}
+                                            rules={[{ required: true, message: '请选择' }]}
+                                          >
+                                            <InputNumber
+                                              placeholder="请输入"
+                                              autoComplete="off"
+                                              size="small"
+                                              precision={0}
+                                              min={0}
+                                              max={1000000}
+                                              style={{ width: '140px' }}
+                                            />
                                           </FormItem>
                                         </Condition>
                                       </Space>
