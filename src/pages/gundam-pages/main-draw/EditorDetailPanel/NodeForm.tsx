@@ -92,6 +92,7 @@ const NodeForm: React.FC<DetailFormProps> = (props: DetailFormProps) => {
     } else {
       // 线的话不做保存限制
       propsAPI.update(model.id, {
+        _name: valueObj.label,
         label: `${model.level || 1}.${valueObj.label}`,
       });
     }
