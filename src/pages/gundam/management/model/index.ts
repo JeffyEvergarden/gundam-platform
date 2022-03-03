@@ -8,7 +8,9 @@ import {
   addNewMachine,
   editMachine,
   getMachineInfo,
-  publishRobot,
+  publishProd,
+  getPublishTest,
+  getPublishStatus,
 } from './api';
 
 export const successCode = 100;
@@ -138,39 +140,50 @@ export const usePublishModel = () => {
   const [result, setResult] = useState<any>('未知系统异常');
   const [testResult, setTestResult] = useState<any>('未知系统异常');
 
-  const publishProduction = async () => {
+  const publishProduction = async (robotId: any) => {
     setLoading(true);
-    let res: any = await publishRobot({
-      occurTime: moment().format('YYYY-MM-DD HH:mm'),
-      id: '',
+    let res: any = await publishProd({
+      robotId,
     });
     setLoading(false);
     if (res.resultCode === successCode) {
       message.success('发布生产成功');
-      setProductionTime(moment().format('YYYY-MM-DD HH:mm'));
+      setProductionTime(res.datas?.publishTime || moment().format('YYYY-MM-DD HH:mm'));
+      setStatus(res.datas?.status);
+      setResult(res.datas?.desc);
     } else {
       message.warning(res.resultDesc || '发布生产失败');
     }
   };
 
-  const publishTest = async () => {
+  const publishTest = async (robotId: any) => {
     setTestLoading(true);
-    let res: any = await publishRobot({
-      occurTime: moment().format('YYYY-MM-DD HH:mm'),
-      id: '',
+    let res: any = await getPublishTest({
+      robotId,
     });
     setTestLoading(false);
     if (res.resultCode === successCode) {
       message.success('发布测试成功');
-      setTestTime(moment().format('YYYY-MM-DD HH:mm'));
+      setTestTime(res.datas?.publishTime || moment().format('YYYY-MM-DD HH:mm'));
+      setTestStatus(res.datas?.status);
+      setTestResult(res.datas?.desc);
     } else {
       message.warning(res.resultDesc || '发布测试失败');
     }
   };
 
-  const getTime = () => {
-    setProductionTime(moment().format('YYYY-MM-DD HH:mm'));
-    setTestTime(moment().format('YYYY-MM-DD HH:mm'));
+  const getTime = async (robotId: any) => {
+    let res: any = await getPublishStatus({
+      robotId,
+    });
+    console.log(res);
+
+    setProductionTime(res.datas?.prodTime || moment().format('YYYY-MM-DD HH:mm'));
+    setStatus(res.datas?.prodStatus);
+    setResult(res.datas?.prodDesc);
+    setTestTime(res.datas?.testTime || moment().format('YYYY-MM-DD HH:mm'));
+    setTestStatus(res.datas?.testStatus);
+    setTestResult(res.datas?.testDesc);
   };
 
   return {

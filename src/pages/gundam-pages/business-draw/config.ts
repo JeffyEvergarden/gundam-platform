@@ -49,7 +49,7 @@ export const operateFlowFormList = [
     label: '流程描述',
     type: 'input',
     placeholder: '',
-    rules: [{ required: false }],
+    rules: [],
   },
   {
     name: 'headIntent',

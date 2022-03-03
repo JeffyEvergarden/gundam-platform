@@ -51,9 +51,23 @@ export async function editMachine(data?: { [key: string]: any }) {
   });
 }
 
-// 发布机器人
-export async function publishRobot(data?: { [key: string]: any }) {
-  return request(`${baseUrl}/robot/robot/robotRelease`, {
+// 发布测试机器人
+export async function publishProd(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/robot/publishProd`, {
+    method: 'POST',
+    data,
+  });
+}
+// 发布生产机器人
+export async function getPublishTest(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/robot/publishTest`, {
+    method: 'POST',
+    data,
+  });
+}
+// 获取发布机器人
+export async function getPublishStatus(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/robot/getPublishStatus`, {
     method: 'POST',
     data,
   });
