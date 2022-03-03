@@ -7,7 +7,7 @@ import RuleModal from './rule-modal';
 const { Option } = Select;
 
 const RuleSelect: React.FC<any> = (props: any) => {
-  const { value, onChange, wishList, wordSlotList = [] } = props;
+  const { value, onChange, wishList, wordSlotList = [], type = 'node' } = props;
 
   const modelRef = useRef<any>(null);
 
@@ -33,6 +33,7 @@ const RuleSelect: React.FC<any> = (props: any) => {
       </div>
       <RuleModal
         cref={modelRef}
+        type={type}
         confirm={onConfirm}
         wishList={wishList}
         wordSlotList={wordSlotList}

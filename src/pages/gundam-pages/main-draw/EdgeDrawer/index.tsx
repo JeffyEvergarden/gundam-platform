@@ -124,12 +124,12 @@ const EdgeDrawerForm = (props: any) => {
               precision={0}
               min={0}
               max={999}
-              style={{ width: '120px' }}
+              style={{ width: '140px' }}
             />
           </FormItem>
 
           <FormItem name="rules" label="规则配置" style={{ width: '400px' }}>
-            <RuleVarButton wishList={wishList} wordSlotList={wordSlotList} />
+            <RuleVarButton type="edge" wishList={wishList} wordSlotList={wordSlotList} />
           </FormItem>
         </div>
       </Form>
