@@ -166,7 +166,7 @@ const DetailPages: React.FC = (props: any) => {
                         key={field.fieldKey + 'configKey'}
                         fieldKey={[field.fieldKey, 'configKey']}
                       >
-                        <Input />
+                        <Input maxLength={200} />
                       </FormItem>
                       <FormItem
                         // {...col}
@@ -175,7 +175,7 @@ const DetailPages: React.FC = (props: any) => {
                         key={field.fieldKey + 'configName'}
                         fieldKey={[field.fieldKey, 'configName']}
                       >
-                        <Input />
+                        <Input maxLength={200} />
                       </FormItem>
                       <FormItem
                         // {...col}
@@ -184,7 +184,7 @@ const DetailPages: React.FC = (props: any) => {
                         key={field.fieldKey + 'configDesc'}
                         fieldKey={[field.fieldKey, 'configDesc']}
                       >
-                        <Input />
+                        <Input maxLength={200} />
                       </FormItem>
                       {/* <Condition r-if={index != 0}> */}
                       <Popconfirm

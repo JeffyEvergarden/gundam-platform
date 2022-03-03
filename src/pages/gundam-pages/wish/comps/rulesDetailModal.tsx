@@ -158,7 +158,7 @@ export default (props: any) => {
       > */}
       <Form form={form} {...layout}>
         <Form.Item name="intentName" label="意图">
-          <Input />
+          <Input maxLength={200} />
         </Form.Item>
         <Form.Item label="模版片段">
           <Form.List name="ruleClips">
@@ -179,7 +179,7 @@ export default (props: any) => {
                       </Select>
                     </Form.Item>
                     <Form.Item {...restField} name={[name, 'content']} label="模版内容">
-                      <Input onFocus={() => templateFocus(key, name)} width={300} />
+                      <Input onFocus={() => templateFocus(key, name)} width={300} maxLength={200} />
                     </Form.Item>
                     <Form.Item {...restField} name={[name, 'number']} label="顺序">
                       <InputNumber min={0} />
@@ -232,10 +232,10 @@ export default (props: any) => {
           <InputNumber step={0.1} max={1} min={0} />
         </Form.Item>
         <Form.Item name="blackList" label="词表黑名单">
-          <Input />
+          <Input maxLength={200} />
         </Form.Item>
         <Form.Item name="intentDesc" label="描述">
-          <Input />
+          <Input maxLength={200} />
         </Form.Item>
         <Form.Item {...tailLayout}>
           <Space>

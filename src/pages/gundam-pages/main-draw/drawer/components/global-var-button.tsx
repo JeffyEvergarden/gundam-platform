@@ -1,5 +1,5 @@
 import { useState, useImperativeHandle, useEffect, useRef } from 'react';
-import { Drawer, Form, Input, Select, Button, Tag } from 'antd';
+import { Drawer, Form, Input, Select, Button, Tag, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import GlobalVarModal from './global-var-modal';
 import styles from './style.less';
@@ -8,7 +8,7 @@ import { useModel } from '@/.umi/plugin-model/useModel';
 const { Option } = Select;
 
 const GlobalVarButton: React.FC<any> = (props: any) => {
-  const { value, onChange, style, ...res } = props;
+  const { value, onChange, style, maxlength = 200, ...res } = props;
 
   const modalRef = useRef<any>(null);
 
@@ -29,6 +29,10 @@ const GlobalVarButton: React.FC<any> = (props: any) => {
       let pre = tmp.slice(0, startPos);
       let last = tmp.slice(startPos);
       tmp = pre + target + last;
+      if (tmp.length > maxlength) {
+        message.warning(`字符不能超过${maxlength}个字`);
+        tmp = value;
+      }
     } else {
       tmp = tmp + target;
     }
@@ -43,6 +47,7 @@ const GlobalVarButton: React.FC<any> = (props: any) => {
   return (
     <div className={styles['zy-row']}>
       <Input
+        maxLength={maxlength}
         value={value}
         onChange={changeVal}
         onBlur={blurEvent}

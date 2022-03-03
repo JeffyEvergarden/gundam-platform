@@ -22,7 +22,7 @@ export default (props: any) => {
     <Modal title="新增特征词" visible={visible} footer={null} onCancel={cancel}>
       <Form form={form}>
         <Form.Item name="newWord" rules={[{ required: true, message: '请输入特征词' }]}>
-          <Input />
+          <Input maxLength={200} />
         </Form.Item>
         <Form.Item>
           <Space>

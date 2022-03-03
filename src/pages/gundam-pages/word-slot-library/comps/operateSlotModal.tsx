@@ -208,7 +208,7 @@ export default (props: any) => {
                 <React.Fragment key={item.name}>
                   {item.type == 'input' && (
                     <Form.Item name={item.name} label={item.label} rules={item.rules}>
-                      <Input placeholder={item.placeholder} />
+                      <Input placeholder={item.placeholder} maxLength={200} />
                     </Form.Item>
                   )}
                   {item.type == 'select' && item.name !== 'slotSource' && (
@@ -291,7 +291,7 @@ export default (props: any) => {
                             label={'值'}
                             rules={[{ required: true, message: '请输入意图' }]}
                           >
-                            <Input placeholder={'请输入值'} />
+                            <Input placeholder={'请输入值'} maxLength={200} />
                           </Form.Item>
                         </React.Fragment>
                       )}

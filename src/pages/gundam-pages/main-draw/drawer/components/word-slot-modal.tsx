@@ -167,6 +167,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
               placeholder="请输入结束话术"
               style={{ width: '400px' }}
               autoComplete="off"
+              maxlength={150}
             />
           </FormItem>
 

@@ -50,6 +50,7 @@ export default (props: any) => {
                   <Input
                     placeholder={item.placeholder}
                     readOnly={item.readonly && title == 'edit'}
+                    maxLength={200}
                   />
                 </Form.Item>
               )}

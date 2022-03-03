@@ -107,7 +107,7 @@ export default (props: any) => {
                         rules={item.rules}
                         style={{ width: '360px' }}
                       >
-                        <Input max={150} />
+                        <Input maxLength={150} />
                       </Form.Item>
                     )}
                     {item.type == 'select' && (

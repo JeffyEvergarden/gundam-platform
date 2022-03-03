@@ -65,7 +65,7 @@ export default (props: any) => {
                 <React.Fragment key={item.name}>
                   {item.type == 'input' && (
                     <Form.Item name={item.name} label={item.label} rules={item.rules}>
-                      <Input />
+                      <Input maxLength={200} />
                     </Form.Item>
                   )}
 

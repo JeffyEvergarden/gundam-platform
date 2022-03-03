@@ -85,7 +85,7 @@ const FormModal: React.FC<any> = (props: any) => {
             label="链接路径"
             style={{ width: '360px' }}
           >
-            <Input placeholder="请填写链接路径" {...extra} />
+            <Input placeholder="请填写链接路径" {...extra} maxLength={200} />
           </FormItem>
         </Form>
       </div>

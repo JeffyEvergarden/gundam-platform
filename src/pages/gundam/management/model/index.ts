@@ -147,10 +147,10 @@ export const usePublishModel = () => {
     });
     setLoading(false);
     if (res.resultCode === successCode) {
-      message.success('发布生产成功');
-      setProductionTime(res.datas?.publishTime || '-');
-      setStatus(res.datas?.status || false);
-      setResult(res.datas?.desc || '未知错误');
+      message.success('发布中...');
+      // setProductionTime(res.datas?.publishTime || '-');
+      // setStatus(res.datas?.status || false);
+      // setResult(res.datas?.desc || '未知错误');
     } else {
       message.warning(res.resultDesc || '发布生产失败');
     }
@@ -163,10 +163,10 @@ export const usePublishModel = () => {
     });
     setTestLoading(false);
     if (res.resultCode === successCode) {
-      message.success('发布测试成功');
-      setTestTime(res.datas?.publishTime || '-');
-      setTestStatus(res.datas?.status || false);
-      setTestResult(res.datas?.desc || '未知错误');
+      message.info('发布中...');
+      // setTestTime(res.datas?.publishTime || '-');
+      // setTestStatus(res.datas?.status || false);
+      // setTestResult(res.datas?.desc || '未知错误');
     } else {
       message.warning(res.resultDesc || '发布测试失败');
     }
