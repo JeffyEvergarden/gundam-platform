@@ -180,7 +180,7 @@ const MainDraw = (props: any) => {
       ...config,
       id: info._id,
       frontId: info.id,
-      name: config.nodeName || config.name || info._name || info.label,
+      name: info._name || config.nodeName || config.name || info.label || '',
       source: (fake.current as any)?.find(info.source)?._id,
       target: (fake.current as any)?.find(info.target)?._id,
     };
