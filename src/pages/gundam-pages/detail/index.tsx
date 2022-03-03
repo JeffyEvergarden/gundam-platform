@@ -186,18 +186,18 @@ const DetailPages: React.FC = (props: any) => {
                       >
                         <Input />
                       </FormItem>
-                      <Condition r-if={index != 0}>
-                        <Popconfirm
-                          title="确定要删除该变量吗?"
-                          okText="确定"
-                          cancelText="取消"
-                          onConfirm={() => {
-                            remove(index);
-                          }}
-                        >
-                          <MinusCircleFilled />
-                        </Popconfirm>
-                      </Condition>
+                      {/* <Condition r-if={index != 0}> */}
+                      <Popconfirm
+                        title="确定要删除该变量吗?"
+                        okText="确定"
+                        cancelText="取消"
+                        onConfirm={() => {
+                          remove(index);
+                        }}
+                      >
+                        <MinusCircleFilled />
+                      </Popconfirm>
+                      {/* </Condition> */}
                     </Space>
                   </div>
                 ))}
