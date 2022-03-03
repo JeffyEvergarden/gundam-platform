@@ -5,7 +5,7 @@ import style from './style.less';
 import { useModel } from 'umi';
 
 const LabelSelectModal: React.FC<any> = (props: any) => {
-  const { cref, confirm, list } = props;
+  const { cref, confirm, list, type = 'radio' } = props;
 
   const { labelList } = useModel('gundam' as any, (model: any) => ({
     labelList: model.labelList,
@@ -102,7 +102,7 @@ const LabelSelectModal: React.FC<any> = (props: any) => {
       <div className={style['table-box']}>
         <Table
           rowSelection={{
-            type: 'checkbox',
+            type: type === 'radio' ? 'radio' : 'checkbox',
             ...rowSelection,
             selectedRowKeys,
           }}

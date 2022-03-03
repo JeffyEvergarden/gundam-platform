@@ -36,7 +36,10 @@ const EdgeDrawerForm = (props: any) => {
       recordInfo.current.info = info;
       recordInfo.current.callback = callback;
       form.resetFields();
-      form.setFieldsValue(info);
+      form.setFieldsValue({
+        level: 1,
+        ...info,
+      });
       setVisible(true);
     },
     close: onClose,
