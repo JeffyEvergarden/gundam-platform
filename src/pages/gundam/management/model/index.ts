@@ -123,13 +123,20 @@ export const useOpModel = () => {
 };
 
 export const usePublishModel = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false); // 接口状态
 
-  const [testLoading, setTestLoading] = useState<boolean>(false);
+  const [testLoading, setTestLoading] = useState<boolean>(false); //
 
-  const [productionTime, setProductionTime] = useState<any>('');
+  const [status, setStatus] = useState<boolean>(true); // 发布状态
 
-  const [testTime, setTestTime] = useState<any>('');
+  const [testStatus, setTestStatus] = useState<boolean>(true); // 测试发布状态
+
+  const [productionTime, setProductionTime] = useState<any>(''); // 时间
+
+  const [testTime, setTestTime] = useState<any>(''); // 时间
+
+  const [result, setResult] = useState<any>('未知系统异常');
+  const [testResult, setTestResult] = useState<any>('未知系统异常');
 
   const publishProduction = async () => {
     setLoading(true);
@@ -174,5 +181,9 @@ export const usePublishModel = () => {
     productionTime,
     testTime,
     getTime,
+    status,
+    testStatus,
+    result,
+    testResult,
   };
 };

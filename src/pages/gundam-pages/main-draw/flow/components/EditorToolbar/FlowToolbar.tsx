@@ -12,7 +12,7 @@ const FlowToolbar = (props: any) => {
     <div className={styles.toolbox}>
       <Toolbar className={styles.toolbar}>
         {/* 上一步 */}
-        <ToolbarButton command="undo" text={'上一步'} />
+        {/* <ToolbarButton command="undo" text={'上一步'} /> */}
         {/* 下一步 */}
 
         {/* <ToolbarButton command="redo" text={'下一步'} /> */}

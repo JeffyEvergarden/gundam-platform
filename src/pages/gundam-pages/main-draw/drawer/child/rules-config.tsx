@@ -195,7 +195,7 @@ const RuleConfig = (props: any) => {
                                   // console.log(ruleType, compareList);
 
                                   return (
-                                    <div key={field.key} className={styles['list-box']}>
+                                    <div key={field.key} className={styles['rule-list-box']}>
                                       <div style={{ width: '30px', flexShrink: 0 }}>
                                         <Condition r-if={index > -1}>
                                           <Button

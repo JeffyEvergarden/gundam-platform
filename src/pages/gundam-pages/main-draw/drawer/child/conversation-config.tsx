@@ -170,43 +170,6 @@ const ConversationConfig = (props: any) => {
                         </FormItem>
                       </Space>
 
-                      {/* 是否发送短信*/}
-                      <Space>
-                        <FormItem
-                          name={[field.name, 'isMessage']}
-                          label="是否发送短信"
-                          valuePropName="checked"
-                          style={{ width: '230px' }}
-                        >
-                          <Checkbox>是否发送短信</Checkbox>
-                        </FormItem>
-
-                        <FormItem
-                          name={[field.name, 'message']}
-                          label="短信内容"
-                          style={{ width: '300px' }}
-                        >
-                          <Input
-                            placeholder="请输入短信内容"
-                            maxLength={150}
-                            autoComplete="off"
-                            size="small"
-                          />
-                        </FormItem>
-                      </Space>
-
-                      <FormItem name={[field.name, 'nodeTransferText']} label="过渡话术">
-                        <GlobalVarButton
-                          placeholder="请输入过渡话术"
-                          style={{ width: '400px' }}
-                          autoComplete="off"
-                        />
-                      </FormItem>
-
-                      <FormItem name={[field.name, 'textLabels']} label="选择标签">
-                        <LabelSelect color="orange"></LabelSelect>
-                      </FormItem>
-
                       <FormItem name={[field.name, 'rules']} label="规则配置">
                         <RuleSelect wishList={wishList} wordSlotList={wordSlotList}></RuleSelect>
                       </FormItem>
