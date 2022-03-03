@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useModel, history, useLocation } from 'umi';
-import { message, Button, Space, Modal } from 'antd';
+import { message, Button, Space, Modal, Badge, Tooltip } from 'antd';
 import { LoginOutlined } from '@ant-design/icons';
 import hoverRobot from '@/asset/image/hoverRobot.png';
 import RobotChatBox from './ai-simulation';
@@ -105,6 +105,10 @@ const MachinePagesHome: React.FC = (props: any) => {
     productionTime,
     testTime,
     getTime,
+    status,
+    testStatus,
+    result,
+    testResult,
   } = usePublishModel();
 
   useEffect(() => {
@@ -156,15 +160,43 @@ const MachinePagesHome: React.FC = (props: any) => {
                     <Space>
                       <div className={style['time-box']}>
                         <Condition r-if={productionTime}>
-                          <span className={style['time-module']} style={{ marginRight: '16px' }}>
+                          <span className={style['time-module']} style={{ marginRight: '24px' }}>
                             <span className={style['label']}>生产发布时间:</span>
-                            <span>{productionTime}</span>
+                            {status && (
+                              <span>
+                                <Badge status="success" size="default" />
+                                <span>{productionTime}</span>
+                              </span>
+                            )}
+
+                            {!status && (
+                              <Tooltip placement="bottomLeft" title={result || '未知系统异常'}>
+                                <span>
+                                  <Badge status="error" />
+                                  <span>{productionTime}</span>
+                                </span>
+                              </Tooltip>
+                            )}
                           </span>
                         </Condition>
                         <Condition r-if={testTime}>
                           <span className={style['time-module']}>
                             <span className={style['label']}>测试发布时间:</span>
-                            <span>{testTime}</span>
+                            {testStatus && (
+                              <span>
+                                <Badge status="success" />
+                                <span>{testTime}</span>
+                              </span>
+                            )}
+
+                            {!testStatus && (
+                              <Tooltip placement="bottomLeft" title={testResult || '未知系统异常'}>
+                                <span>
+                                  <Badge status="error" />
+                                  <span>{productionTime}</span>
+                                </span>
+                              </Tooltip>
+                            )}
                           </span>
                         </Condition>
                       </div>

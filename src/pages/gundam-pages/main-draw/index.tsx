@@ -185,9 +185,9 @@ const MainDraw = (props: any) => {
       target: (fake.current as any)?.find(info.target)?._id,
     };
 
-    const callBack = (name: string, id: any) => {
+    const callBack = (obj: any, id: any) => {
       (fake.current as any).updateNode(info.id, {
-        label: name || info.label,
+        ...obj,
         _id: id,
       });
       eventbus.$emit('refresh');

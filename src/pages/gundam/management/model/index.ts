@@ -129,7 +129,7 @@ export const usePublishModel = () => {
 
   const [status, setStatus] = useState<boolean>(true); // 发布状态
 
-  const [testStatus, setTestStatus] = useState<boolean>(true); // 测试发布状态
+  const [testStatus, setTestStatus] = useState<boolean>(false); // 测试发布状态
 
   const [productionTime, setProductionTime] = useState<any>(''); // 时间
 

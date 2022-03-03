@@ -92,7 +92,7 @@ const NodeForm: React.FC<DetailFormProps> = (props: DetailFormProps) => {
     } else {
       // 线的话不做保存限制
       propsAPI.update(model.id, {
-        label: valueObj.label,
+        label: `${model.level || 1}.${valueObj.label}`,
       });
     }
   };
@@ -109,9 +109,15 @@ const NodeForm: React.FC<DetailFormProps> = (props: DetailFormProps) => {
   useEffect(() => {
     const model: any = item?.getModel();
     console.log('item:', model);
-    form.setFieldsValue({
-      label: model?.label || '',
-    });
+    if (type === 'node') {
+      form.setFieldsValue({
+        label: model?.label || '',
+      });
+    } else {
+      form.setFieldsValue({
+        label: model?._name || model?.label || '',
+      });
+    }
   }, [item, num]);
 
   return (
