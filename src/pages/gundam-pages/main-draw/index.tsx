@@ -188,8 +188,8 @@ const MainDraw = (props: any) => {
       frontSource: (fake.current as any)?.find(info.source)?.id,
       target: (fake.current as any)?.find(info.target)?._id,
       frontTarget: (fake.current as any)?.find(info.target)?.id,
-      sourceAnchor: (fake.current as any)?.find(info.source)?.sourceAnchor,
-      targetAnchor: (fake.current as any)?.find(info.target)?.targetAnchor,
+      sourceAnchor: info?.sourceAnchor,
+      targetAnchor: info?.targetAnchor,
     };
 
     const callBack = (obj: any, id: any) => {

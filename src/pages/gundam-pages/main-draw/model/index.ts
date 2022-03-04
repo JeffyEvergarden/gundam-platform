@@ -131,7 +131,7 @@ export const useNodeOpsModel = () => {
       }
       _map[item.id] = item.frontId;
       return {
-        id: String(item.frontId),
+        id: item.frontId ? String(item.frontId) : String(item.id),
         _id: item.id,
         label: item.label || item.nodeName || '',
         x: item.x,
@@ -163,7 +163,7 @@ export const useNodeOpsModel = () => {
         let label = item.label || item.nodeName || item.name || '';
         let level = item.level || 1;
         return {
-          id: item.frontId ? String(item.frontId) : String(index + 1),
+          id: item.frontId ? String(item.frontId) : String(item.id),
           _id: item.id,
           label: `${level ? level + '.' : ''}${label}`,
           _name: label,
