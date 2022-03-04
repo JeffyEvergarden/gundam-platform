@@ -40,8 +40,6 @@ export default (props: any) => {
   };
 
   const showChatText = async () => {
-    let clearFlag = clearDialogFlag;
-    handleClearDialog(!clearFlag); // 清理画布
     let newDay = new Date().toLocaleDateString();
     let occurDay = newDay.replace(/\//g, '-');
     let newTime = new Date().toLocaleTimeString('en-GB');
@@ -61,6 +59,8 @@ export default (props: any) => {
     };
     const res: any = await getRobotChatData(params);
     if (res?.resultCode == '100') {
+      let clearFlag = clearDialogFlag;
+      handleClearDialog(!clearFlag); // 清理画布
       setRobotChatData(res);
       setInitRobotChat(true);
       handleBeginTalking(true); // 开始会话功能

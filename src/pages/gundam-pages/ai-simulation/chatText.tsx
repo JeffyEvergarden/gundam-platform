@@ -115,19 +115,18 @@ export default (props: any) => {
     setDialogList([]); // 清空会话内容
   };
 
-  useEffect(() => {
-    number > 1 && robotResponse();
-  }, [number]);
-
   //  只负责清空
   useEffect(() => {
-    message.info('123456');
     setDialogList([]); // 清空会话内容
     setChatEvent('begin'); // 更换环境、会话重新开始
     let a = number;
     a++;
     setNumber(a);
   }, [clearDialogFlag]);
+
+  useEffect(() => {
+    number > 1 && robotResponse();
+  }, [number]);
 
   // 初始化，先执行上一个接口
   // useEffect(() => {
