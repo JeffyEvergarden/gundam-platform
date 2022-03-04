@@ -147,7 +147,7 @@ export const usePublishModel = () => {
     });
     setLoading(false);
     if (res.resultCode === successCode) {
-      message.success('发布中...');
+      message.info('发布中...');
       // setProductionTime(res.datas?.publishTime || '-');
       // setStatus(res.datas?.status || false);
       // setResult(res.datas?.desc || '未知错误');
