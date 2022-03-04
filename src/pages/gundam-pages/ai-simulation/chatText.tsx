@@ -7,12 +7,12 @@ import customerPhoto from '@/asset/image/headWoman.png';
 const { TextArea } = Input;
 
 export default (props: any) => {
-  const { modalData } = props;
+  const { modalData, beginFlag, eventType, getEnvirmentValue } = props;
   const [dialogList, setDialogList] = useState<any>([]); // 对话内容
   const [textMessage, setTextMessage] = useState<string>(''); // 输入的信息，发送成功之后立马清空
   const [number, setNumber] = useState<number>(0); // 存储 发送按钮 点击的次数，监听变化
   const [environment, setEnvironment] = useState<string>('test'); // 设置环境值： 生产、测试 默认为测试
-  const [eventType, setEventType] = useState<string>(''); //机器人事件响应类型
+  // begin(开始),silence(客户沉默),dialogue(对话),end(结束)
 
   const { getDialogData } = useChatModel();
 
@@ -54,14 +54,14 @@ export default (props: any) => {
       let newData = [...dialogList];
       newData.push({
         type: 'robot',
-        message: res?.resultDesc,
+        message: res?.actionMessage,
       });
       setTimeout(() => {
         setDialogList(newData);
         setTextMessage('');
       }, 1);
     } else {
-      message.error(res?.resultDesc);
+      // message.error(res?.resultDesc);
     }
   };
 
@@ -91,11 +91,12 @@ export default (props: any) => {
   // 环境值 判断是生产环境还是测试环境
   const radioChange = (e: any) => {
     setEnvironment(e?.target?.value);
+    getEnvirmentValue(e?.target?.value);
   };
 
   useEffect(() => {
-    number > 0 && robotResponse();
-  }, [number]);
+    robotResponse();
+  }, [number, beginFlag]);
 
   useEffect(() => {
     (boxRef.current as any).scrollTop = (boxRef.current as any).scrollHeight;
