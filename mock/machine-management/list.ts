@@ -116,7 +116,7 @@ const publishProd = (req: any, res: any) => {
     datas: {
       publishTime: '2022-03-01 17:51',
       desc: 'aaa',
-      status: false,
+      status: 0,
     },
   });
 };
@@ -127,7 +127,7 @@ const publishTest = (req: any, res: any) => {
     datas: {
       publishTime: '2022-03-02 17:51',
       desc: 'aaa',
-      status: true,
+      status: 1,
     },
   });
 };
@@ -138,10 +138,10 @@ const getPublishStatus = (req: any, res: any) => {
     datas: {
       prodTime: '2022-03-02 17:51',
       prodDesc: '123',
-      prodStatus: true,
+      prodStatus: 1,
       testTime: '2022-03-03 17:51',
       testDesc: '456',
-      testStatus: false,
+      testStatus: 0,
     },
   });
 };
