@@ -12,16 +12,19 @@ const layout = {
   wrapperCol: { span: 12 },
 };
 
+const tailLayout = {
+  wrapperCol: { offset: 8, span: 12 },
+};
+
 export default (props: any) => {
   const { chatVisible = false, robotInfo } = props;
   const [form] = Form.useForm();
-  const [beginFlag, setBeginFlag] = useState<boolean>(false); // 初始化文本框标识, 只判断第一次
-  const [eventType, setEventType] = useState<string>('begin'); // 事件类型
-  const [runNum, setRunNum] = useState<number>(0); // 运行次数
   const [envirValue, setEnvirValue] = useState<string>('');
 
   const [robotChatData, setRobotChatData] = useState<any>({}); // 保存机器人form表单数据
   const [robotFormList, setRobotFormList] = useState<any>([]);
+  const [initRobotChat, setInitRobotChat] = useState<boolean>(false); // 初始化机器人聊天框
+
   const { getRobotChatData } = useChatModel();
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -53,16 +56,11 @@ export default (props: any) => {
     };
     console.log('params', params);
     const res: any = await getRobotChatData(params);
-    message.info(res?.resultDesc || '正在处理');
     if (res?.resultCode == 100) {
       setRobotChatData(res);
-      setBeginFlag(true);
-      let a = runNum;
-      a++;
-      if (a > 0) {
-        setEventType('dialogue');
-      }
-      setRunNum(a);
+      setInitRobotChat(true);
+    } else {
+      message.info(res?.resultDesc || res?.message || '正在处理');
     }
   };
 
@@ -71,7 +69,7 @@ export default (props: any) => {
   useEffect(() => {
     setRobotChatData({});
     setRobotFormList(robotInfo); // 表单信息
-    console.log('formList', robotInfo);
+    // console.log('formList', robotInfo);
     showChatText();
   }, [chatVisible]);
 
@@ -94,8 +92,10 @@ export default (props: any) => {
                   </React.Fragment>
                 );
               })}
-              <Form.Item>
-                <Button onClick={showChatText}>开始对话</Button>
+              <Form.Item {...tailLayout}>
+                <Button type="primary" onClick={showChatText}>
+                  开始对话
+                </Button>
               </Form.Item>
             </Form>
           </div>
@@ -103,9 +103,8 @@ export default (props: any) => {
         <Col span={14}>
           <RobotChatText
             modalData={robotChatData}
-            beginFlag={beginFlag}
-            eventType={eventType}
             getEnvirmentValue={getEnvirmentValue}
+            initRobotChat={initRobotChat}
           />
         </Col>
       </Row>

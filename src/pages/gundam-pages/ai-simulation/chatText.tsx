@@ -7,12 +7,14 @@ import customerPhoto from '@/asset/image/headWoman.png';
 const { TextArea } = Input;
 
 export default (props: any) => {
-  const { modalData, beginFlag, eventType, getEnvirmentValue } = props;
+  const { modalData, getEnvirmentValue, initRobotChat } = props;
   const [dialogList, setDialogList] = useState<any>([]); // 对话内容
   const [textMessage, setTextMessage] = useState<string>(''); // 输入的信息，发送成功之后立马清空
   const [number, setNumber] = useState<number>(0); // 存储 发送按钮 点击的次数，监听变化
   const [environment, setEnvironment] = useState<string>('test'); // 设置环境值： 生产、测试 默认为测试
   // begin(开始),silence(客户沉默),dialogue(对话),end(结束)
+
+  const [chatEvent, setChatEvent] = useState<string>('begin'); // 会话事件类型
 
   const { getDialogData } = useChatModel();
 
@@ -21,10 +23,10 @@ export default (props: any) => {
   // 保存输入的文字内容
   const inputChange = (e: any) => {
     setTextMessage(e.target.value);
+    setChatEvent('dialogue');
   };
 
   const onKeyDown = (e: any) => {
-    // console.log('keyDown', e?.keyCode, e?.which);
     if ((e?.keyCode == '13' || e?.which == '13') && !e?.shiftKey) {
       sendMessage();
       // 禁止换行
@@ -46,7 +48,7 @@ export default (props: any) => {
       systemCode: modalData.systemCode,
       sessionId: modalData.sessionId,
       message: textMessage,
-      event: eventType,
+      event: chatEvent, // 事件类型
       actionType: 'text',
     };
     const res: any = await getDialogData(params);
@@ -82,7 +84,9 @@ export default (props: any) => {
     setDialogList(data);
   };
 
-  const resetDialog = () => {};
+  const resetDialog = () => {
+    setDialogList([]);
+  };
 
   const clearDialog = () => {
     setDialogList([]);
@@ -95,8 +99,13 @@ export default (props: any) => {
   };
 
   useEffect(() => {
-    robotResponse();
-  }, [number, beginFlag]);
+    number > 0 && robotResponse();
+  }, [number]);
+
+  // 初始化，先执行上一个接口
+  useEffect(() => {
+    initRobotChat && robotResponse();
+  }, [initRobotChat]);
 
   useEffect(() => {
     (boxRef.current as any).scrollTop = (boxRef.current as any).scrollHeight;
