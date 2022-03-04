@@ -46,18 +46,20 @@
 
 .hover-style {
   position: fixed;
-  right: 60px;
+  right: -60px;
   bottom: 60px;
   z-index: 999;
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: '44px';
-  height: '44px';
+  width: 80px;
+  height: 44px;
   line-height: 44px;
-  background-color: white;
   border-radius: 50%;
   box-shadow: '4px 4px 12px rgba(24, 144, 255, 0.2)';
+  transition: all linear 0.5s;
+  &:hover {
+    right: -25px;
+  }
 }
 
 .time-box {

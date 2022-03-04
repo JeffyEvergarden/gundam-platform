@@ -93,6 +93,7 @@ export default (props: any) => {
         title={title == 'edit' ? '编辑' : '新增'}
         onCancel={closeModal}
         onOk={submit}
+        footer={null}
       >
         <div className={style['modal_bg']} style={{ paddingLeft: '110px' }}>
           <Spin spinning={spinning}>
@@ -132,14 +133,14 @@ export default (props: any) => {
                 );
               })}
 
-              {/* <Form.Item>
-              <Space>
-                <Button onClick={closeModal}>取消</Button>
-                <Button type="primary" onClick={submit}>
-                  确认
-                </Button>
-              </Space>
-            </Form.Item>*/}
+              <Form.Item {...tailLayout}>
+                <Space>
+                  <Button onClick={closeModal}>取消</Button>
+                  <Button type="primary" onClick={submit}>
+                    确认
+                  </Button>
+                </Space>
+              </Form.Item>
             </Form>
           </Spin>
         </div>

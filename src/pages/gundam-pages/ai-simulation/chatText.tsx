@@ -7,7 +7,14 @@ import customerPhoto from '@/asset/image/headWoman.png';
 const { TextArea } = Input;
 
 export default (props: any) => {
-  const { modalData, getEnvirmentValue, initRobotChat } = props;
+  const {
+    modalData,
+    getEnvirmentValue,
+    initRobotChat,
+    resetTalking,
+    talkingFlag,
+    clearDialogFlag,
+  } = props;
   const [dialogList, setDialogList] = useState<any>([]); // 对话内容
   const [textMessage, setTextMessage] = useState<string>(''); // 输入的信息，发送成功之后立马清空
   const [number, setNumber] = useState<number>(0); // 存储 发送按钮 点击的次数，监听变化
@@ -23,7 +30,10 @@ export default (props: any) => {
   // 保存输入的文字内容
   const inputChange = (e: any) => {
     setTextMessage(e.target.value);
-    setChatEvent('dialogue');
+    // 开始会话 触发成功后，设置事件
+    if (talkingFlag) {
+      setChatEvent('dialogue');
+    }
   };
 
   const onKeyDown = (e: any) => {
@@ -63,12 +73,16 @@ export default (props: any) => {
         setTextMessage('');
       }, 1);
     } else {
-      // message.error(res?.resultDesc);
+      message.error(res?.resultDesc);
     }
   };
 
   // 发送按钮
   const sendMessage = () => {
+    if (!talkingFlag) {
+      message.info('请点击‘开始对话’按钮启动对话');
+      return;
+    }
     if (textMessage?.length == 0 || textMessage.trim().length == 0) {
       message.info('不能发送空白字符');
       return;
@@ -96,16 +110,28 @@ export default (props: any) => {
   const radioChange = (e: any) => {
     setEnvironment(e?.target?.value);
     getEnvirmentValue(e?.target?.value);
+    setChatEvent('begin'); // 更换环境、会话重新开始
+    resetTalking(); // 环境切换后重置对话
+    setDialogList([]); // 清空会话内容
   };
 
+  //  只负责清空
   useEffect(() => {
-    number > 0 && robotResponse();
+    setDialogList([]); // 清空会话内容
+    setChatEvent('begin'); // 更换环境、会话重新开始
+    let a = number;
+    a++;
+    setNumber(a);
+  }, [clearDialogFlag]);
+
+  useEffect(() => {
+    number > 1 && robotResponse();
   }, [number]);
 
   // 初始化，先执行上一个接口
-  useEffect(() => {
-    initRobotChat && robotResponse();
-  }, [initRobotChat]);
+  // useEffect(() => {
+  //   initRobotChat && robotResponse();
+  // }, [initRobotChat]);
 
   useEffect(() => {
     (boxRef.current as any).scrollTop = (boxRef.current as any).scrollHeight;
@@ -119,9 +145,9 @@ export default (props: any) => {
           <Button size={'small'} onClick={clearDialog}>
             清空内容
           </Button>
-          <Button type="primary" size={'small'} onClick={resetDialog}>
+          {/* <Button type="primary" size={'small'} onClick={resetDialog}>
             重置对话
-          </Button>
+          </Button> */}
         </Space>
       </div>
       <div className={styles['chat-environment']}>
@@ -142,7 +168,7 @@ export default (props: any) => {
                       <img className={styles['head-customer']} alt="customer" src={customerPhoto} />
                       <div>
                         <div className={styles['words']}>{item.message}</div>
-                        <div className={styles['words-type']}>肯定意图</div>
+                        {/* <div className={styles['words-type']}>肯定意图</div> */}
                       </div>
                     </div>
                   )}

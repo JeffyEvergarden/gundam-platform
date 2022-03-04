@@ -58,8 +58,15 @@ const EdgeDrawerForm = (props: any) => {
         ...preParams,
         ...res,
         id: recordInfo.current.info?.id,
+        frontId: recordInfo.current.info?.frontId,
         source: recordInfo.current.info?.source,
         target: recordInfo.current.info?.target,
+        frontTarget: recordInfo.current.info?.frontTarget,
+        frontSource: recordInfo.current.info?.frontSource,
+        sourceAnchor: recordInfo.current.info?.sourceAnchor,
+        targetAnchor: recordInfo.current.info?.targetAnchor,
+        targetType: recordInfo.current.info?.targetType,
+        sourceType: recordInfo.current.info?.sourceType,
       });
       let label = `${res.level}.${res?.name}`;
       if (result !== false) {
@@ -102,16 +109,18 @@ const EdgeDrawerForm = (props: any) => {
       <Form form={form}>
         <div className={styles['antd-form']}>
           <FormItem
-            rules={[{ required: true, message: '请输入连线名称' }]}
+            rules={[
+              { required: true, message: '请输入连线名称' },
+              {
+                pattern: /^[A-Za-z0-9_\-\u4e00-\u9fa5]+$/g,
+                message: '请输入汉字、字母、下划线、数字、横杠',
+              },
+            ]}
             name="name"
             label="连线名称"
             style={{ width: '400px' }}
           >
             <Input placeholder="请输入流程名称" maxLength={150} autoComplete="off" />
-          </FormItem>
-
-          <FormItem name="nodeDesc" label="连线描述" style={{ width: '400px' }}>
-            <TextArea rows={4} placeholder="请输入流程描述" maxLength={200} />
           </FormItem>
 
           <FormItem

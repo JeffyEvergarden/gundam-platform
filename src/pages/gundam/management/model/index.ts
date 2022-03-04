@@ -129,9 +129,9 @@ export const usePublishModel = () => {
 
   const [testLoading, setTestLoading] = useState<boolean>(false); //
 
-  const [status, setStatus] = useState<boolean>(true); // 发布状态
+  const [status, setStatus] = useState<any>(); // 发布状态
 
-  const [testStatus, setTestStatus] = useState<boolean>(false); // 测试发布状态
+  const [testStatus, setTestStatus] = useState<any>(); // 测试发布状态
 
   const [productionTime, setProductionTime] = useState<any>(''); // 时间
 
@@ -179,10 +179,10 @@ export const usePublishModel = () => {
     console.log(res);
 
     setProductionTime(res.datas?.prodTime || '-');
-    setStatus(res.datas?.prodStatus || false);
+    setStatus(!!res.datas?.prodStatus || false);
     setResult(res.datas?.prodDesc || '未知错误');
     setTestTime(res.datas?.testTime || '-');
-    setTestStatus(res.datas?.testStatus || false);
+    setTestStatus(!!res.datas?.testStatus || false);
     setTestResult(res.datas?.testDesc || '未知错误');
   };
 

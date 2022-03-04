@@ -87,40 +87,40 @@ export const operateSlotFormList = [
 ];
 
 export const slotSourceFormList = [
-  {
-    value: 0,
-    name: '来自实体',
-  },
+  // {
+  //   value: 0,
+  //   name: '来自实体',
+  // },
   {
     value: 1,
     name: '来自意图',
   },
-  {
-    value: 2,
-    name: '用户文本',
-  },
-  {
-    value: 3,
-    name: '规则模版',
-  },
-  {
-    value: 4,
-    name: '正则',
-  },
-  {
-    value: 5,
-    name: '函数返回值',
-  },
-  {
-    value: 6,
-    name: '全局变量',
-  },
-  {
-    value: 7,
-    name: '接口',
-  },
-  {
-    value: 8,
-    name: '业务参数',
-  },
+  // {
+  //   value: 2,
+  //   name: '用户文本',
+  // },
+  // {
+  //   value: 3,
+  //   name: '规则模版',
+  // },
+  // {
+  //   value: 4,
+  //   name: '正则',
+  // },
+  // {
+  //   value: 5,
+  //   name: '函数返回值',
+  // },
+  // {
+  //   value: 6,
+  //   name: '全局变量',
+  // },
+  // {
+  //   value: 7,
+  //   name: '接口',
+  // },
+  // {
+  //   value: 8,
+  //   name: '业务参数',
+  // },
 ];
