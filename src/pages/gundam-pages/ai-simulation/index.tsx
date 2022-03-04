@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Row, Col, Form, Card, Input, Radio, Select, Button, message } from 'antd';
 import RobotChatText from './chatText';
 import { useChatModel } from './model';
@@ -19,24 +19,29 @@ const tailLayout = {
 export default (props: any) => {
   const { chatVisible = false, robotInfo } = props;
   const [form] = Form.useForm();
-  const [envirValue, setEnvirValue] = useState<string>('');
+  const [envirValue, setEnvirValue] = useState<string>('test'); // 环境值：生产、测试
 
   const [robotChatData, setRobotChatData] = useState<any>({}); // 保存机器人form表单数据
-  const [robotFormList, setRobotFormList] = useState<any>([]);
+  const [robotFormList, setRobotFormList] = useState<any>([]); // 机器人form列表
   const [initRobotChat, setInitRobotChat] = useState<boolean>(false); // 初始化机器人聊天框
 
+  const [beginTalking, handleBeginTalking] = useState<boolean>(false); // 是否开启会话功能,必须点击 ‘开始会话’按钮
+  const [clearDialogFlag, handleClearDialog] = useState<boolean>(false); // 是否清理画布
+
   const { getRobotChatData } = useChatModel();
+
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
 
-  // 获取环境值
+  // 从对话框获取环境值,会话重新开始
   const getEnvirmentValue = (value: any) => {
     setEnvirValue(value);
   };
 
   const showChatText = async () => {
-    console.log('info', info);
+    let clearFlag = clearDialogFlag;
+    handleClearDialog(!clearFlag); // 清理画布
     let newDay = new Date().toLocaleDateString();
     let occurDay = newDay.replace(/\//g, '-');
     let newTime = new Date().toLocaleTimeString('en-GB');
@@ -54,14 +59,19 @@ export default (props: any) => {
       robotId: envirValue == 'prod' ? info.id : 'test-' + info.id,
       businessCode: info.businessCode,
     };
-    console.log('params', params);
     const res: any = await getRobotChatData(params);
-    if (res?.resultCode == 100) {
+    if (res?.resultCode == '100') {
       setRobotChatData(res);
       setInitRobotChat(true);
+      handleBeginTalking(true); // 开始会话功能
     } else {
       message.info(res?.resultDesc || res?.message || '正在处理');
     }
+  };
+
+  // 重置会话
+  const resetTalking = () => {
+    handleBeginTalking(false); // 重置开始会话功能
   };
 
   const fieldValueChange = () => {};
@@ -69,8 +79,7 @@ export default (props: any) => {
   useEffect(() => {
     setRobotChatData({});
     setRobotFormList(robotInfo); // 表单信息
-    // console.log('formList', robotInfo);
-    showChatText();
+    // showChatText(); // 初始化不开启会话功能
   }, [chatVisible]);
 
   return (
@@ -105,6 +114,9 @@ export default (props: any) => {
             modalData={robotChatData}
             getEnvirmentValue={getEnvirmentValue}
             initRobotChat={initRobotChat}
+            talkingFlag={beginTalking}
+            resetTalking={resetTalking}
+            clearDialogFlag={clearDialogFlag}
           />
         </Col>
       </Row>
