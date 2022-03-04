@@ -54,7 +54,7 @@ export default (props: any) => {
       data: { ...newData },
       customerId: '9012',
       // validity: '',
-      robotId: envirValue == 'prod' ? info.id : 'test-' + info.id,
+      robotId: envirValue == 'prod' ? info.id : 'test_' + info.id,
       businessCode: info.businessCode,
     };
     const res: any = await getRobotChatData(params);
