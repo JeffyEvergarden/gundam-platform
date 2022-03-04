@@ -15,20 +15,22 @@ const layout = {
 export default (props: any) => {
   const { chatVisible = false, robotInfo } = props;
   const [form] = Form.useForm();
-  const [formSelectArr, setFormSelectArr] = useState<any>({
-    fakeArray: [
-      {
-        value: 'fake',
-        name: 'fake',
-      },
-    ],
-  });
+  const [beginFlag, setBeginFlag] = useState<boolean>(false); // 初始化文本框标识, 只判断第一次
+  const [eventType, setEventType] = useState<string>('begin'); // 事件类型
+  const [runNum, setRunNum] = useState<number>(0); // 运行次数
+  const [envirValue, setEnvirValue] = useState<string>('');
+
   const [robotChatData, setRobotChatData] = useState<any>({}); // 保存机器人form表单数据
   const [robotFormList, setRobotFormList] = useState<any>([]);
   const { getRobotChatData } = useChatModel();
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
+
+  // 获取环境值
+  const getEnvirmentValue = (value: any) => {
+    setEnvirValue(value);
+  };
 
   const showChatText = async () => {
     console.log('info', info);
@@ -46,7 +48,7 @@ export default (props: any) => {
       data: { ...newData },
       customerId: '9012',
       // validity: '',
-      robotId: info.id,
+      robotId: envirValue == 'prod' ? info.id : 'test-' + info.id,
       businessCode: info.businessCode,
     };
     console.log('params', params);
@@ -54,6 +56,13 @@ export default (props: any) => {
     message.info(res?.resultDesc || '正在处理');
     if (res?.resultCode == 100) {
       setRobotChatData(res);
+      setBeginFlag(true);
+      let a = runNum;
+      a++;
+      if (a > 0) {
+        setEventType('dialogue');
+      }
+      setRunNum(a);
     }
   };
 
@@ -62,7 +71,8 @@ export default (props: any) => {
   useEffect(() => {
     setRobotChatData({});
     setRobotFormList(robotInfo); // 表单信息
-    console.log('robotInfo', robotInfo);
+    console.log('formList', robotInfo);
+    showChatText();
   }, [chatVisible]);
 
   return (
@@ -75,8 +85,11 @@ export default (props: any) => {
               {robotFormList?.map((item: any) => {
                 return (
                   <React.Fragment key={item.name}>
-                    <Form.Item name={item.name} label={item.label}>
-                      <Input placeholder={item.placeholder} />
+                    <Form.Item
+                      name={item?.configName || item?.name}
+                      label={item?.configValue || item?.label}
+                    >
+                      <Input placeholder={item?.placeholder} />
                     </Form.Item>
                   </React.Fragment>
                 );
@@ -88,7 +101,12 @@ export default (props: any) => {
           </div>
         </Col>
         <Col span={14}>
-          <RobotChatText modalData={robotChatData} />
+          <RobotChatText
+            modalData={robotChatData}
+            beginFlag={beginFlag}
+            eventType={eventType}
+            getEnvirmentValue={getEnvirmentValue}
+          />
         </Col>
       </Row>
     </React.Fragment>
