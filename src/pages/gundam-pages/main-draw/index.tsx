@@ -170,11 +170,14 @@ const MainDraw = (props: any) => {
       return;
     }
     let config: any = null;
-    console.log((fake.current as any).find(info.source)); // 获取节点id
-    config = await getLineConfig({
-      ...preParams,
-      id: info._id,
-    });
+    if (!info._id) {
+      config = {};
+    } else {
+      config = await getLineConfig({
+        ...preParams,
+        id: info._id,
+      });
+    }
     config = {
       ...info,
       ...config,
@@ -182,7 +185,11 @@ const MainDraw = (props: any) => {
       frontId: info.id,
       name: info._name || config.nodeName || config.name || info.label || '',
       source: (fake.current as any)?.find(info.source)?._id,
+      frontSource: (fake.current as any)?.find(info.source)?.id,
       target: (fake.current as any)?.find(info.target)?._id,
+      frontTarget: (fake.current as any)?.find(info.target)?.id,
+      sourceAnchor: (fake.current as any)?.find(info.source)?.sourceAnchor,
+      targetAnchor: (fake.current as any)?.find(info.target)?.targetAnchor,
     };
 
     const callBack = (obj: any, id: any) => {

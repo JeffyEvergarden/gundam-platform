@@ -120,6 +120,7 @@ export const useNodeOpsModel = () => {
   const parser = (data: any) => {
     let { nodes = [], edges = [] }: any = data;
     const map: any = {};
+    const _map: any = {};
     nodes = nodes.map((item: any, index: number) => {
       const type = parserType(item.nodeType);
       if (map[item.frontId]) {
@@ -128,6 +129,7 @@ export const useNodeOpsModel = () => {
       if (item.frontId) {
         map[item.frontId] = true;
       }
+      _map[item.id] = item.frontId;
       return {
         id: String(item.frontId),
         _id: item.id,
@@ -141,23 +143,35 @@ export const useNodeOpsModel = () => {
     nodes = nodes.filter((item: any) => {
       return item;
     });
+    const edgeMap: any = {};
     edges = edges
+      .map((item: any, index: number) => {
+        item.frontSource = item.frontSource || _map[item.id] || '';
+        item.frontTarget = item.frontTarget || _map[item.id] || '';
+        let label: string = item.frontSource + '_' + item.frontTarget;
+        if (edgeMap[label]) {
+          return null;
+        } else {
+          edgeMap[label] = true;
+        }
+        return item;
+      })
       .filter((item: any, index: number) => {
-        return map[item.frontSource] && map[item.frontTarget];
+        return item && map[item.frontSource] && map[item.frontTarget];
       })
       .map((item: any, index: number) => {
         let label = item.label || item.nodeName || item.name || '';
         let level = item.level || 1;
         return {
-          id: String(item.frontId),
+          id: item.frontId ? String(item.frontId) : String(index + 1),
           _id: item.id,
           label: `${level ? level + '.' : ''}${label}`,
           _name: label,
           level: item.level,
           source: item.frontSource, // 后端的头id
           target: item.frontTarget, // 后端的尾id
-          sourceAnchor: item.sourceAnchor, // 前锥点
-          targetAnchor: item.targetAnchor, // 尾锥点
+          sourceAnchor: item.sourceAnchor || 1, // 前锥点
+          targetAnchor: item.targetAnchor || 3, // 尾锥点
           _source: item.source, // 后端的头id
           _target: item.target, // 后端的尾id
         };
