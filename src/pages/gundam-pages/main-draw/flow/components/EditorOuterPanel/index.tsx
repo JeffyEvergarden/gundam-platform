@@ -168,6 +168,7 @@ const NodeList = (props: any) => {
           placeholder="搜索任务名"
           onChange={changeNameVal}
           onPressEnter={search}
+          maxLength={200}
           // allowClear
         />
         <PlusSquareOutlined

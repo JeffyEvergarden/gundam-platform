@@ -95,6 +95,7 @@ const AddModal: React.FC<BaseFormProps> = (props) => {
               placeholder="请输入TASK_ID"
               autoComplete="off"
               style={{ width: '300px' }}
+              maxLength={200}
             ></Input>
           </FormItem>
 

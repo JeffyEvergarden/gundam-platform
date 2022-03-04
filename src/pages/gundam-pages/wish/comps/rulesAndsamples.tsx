@@ -94,7 +94,7 @@ export default (props: any) => {
           <Select value={selectValue} style={{ width: 130 }} size="middle" onChange={selectFunc}>
             <Select.Option value="1">模版片段内容</Select.Option>
           </Select>
-          <Input style={{ width: '66%' }} defaultValue="搜索模版" />
+          <Input style={{ width: '66%' }} defaultValue="搜索模版" maxLength={200} />
         </Input.Group>
       </div>
     </div>

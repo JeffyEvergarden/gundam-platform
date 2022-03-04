@@ -92,6 +92,7 @@ const NodeForm: React.FC<DetailFormProps> = (props: DetailFormProps) => {
     } else {
       // 线的话不做保存限制
       propsAPI.update(model.id, {
+        _name: valueObj.label,
         label: `${model.level || 1}.${valueObj.label}`,
       });
     }
@@ -124,7 +125,7 @@ const NodeForm: React.FC<DetailFormProps> = (props: DetailFormProps) => {
     <Card type="inner" size="small" title={formatStr(type)} bordered={false}>
       <Form form={form}>
         <Item label={`${formatStr(type)}名称`} name="label">
-          <Input placeholder={`请输入${formatStr(type)}名称`} autoComplete="off" />
+          <Input placeholder={`请输入${formatStr(type)}名称`} autoComplete="off" maxLength={200} />
         </Item>
 
         <div className={style['button-box']}>

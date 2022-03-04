@@ -16,6 +16,8 @@ export default (props: any) => {
 
   const { getDialogData } = useChatModel();
 
+  const boxRef: any = useRef<any>(null);
+
   // 保存输入的文字内容
   const inputChange = (e: any) => {
     setTextMessage(e.target.value);
@@ -96,6 +98,10 @@ export default (props: any) => {
     robotResponse();
   }, [number, beginFlag]);
 
+  useEffect(() => {
+    (boxRef.current as any).scrollTop = (boxRef.current as any).scrollHeight;
+  }, [dialogList]);
+
   return (
     <div>
       <div className={styles['chat-topTitle']}>
@@ -118,7 +124,7 @@ export default (props: any) => {
 
       {true && (
         <div className={styles['chat-box']}>
-          <div className={styles['chat-dialog']}>
+          <div className={styles['chat-dialog']} ref={boxRef}>
             {dialogList?.map((item: any, index: number) => {
               return (
                 <React.Fragment key={index}>

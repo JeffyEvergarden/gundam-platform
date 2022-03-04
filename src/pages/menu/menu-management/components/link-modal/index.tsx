@@ -175,7 +175,7 @@ const LinkModal: React.FC<any> = (props: any) => {
             label="链接名称"
             style={{ width: '360px' }}
           >
-            <Input placeholder="请填写链接名称" {...extra} />
+            <Input placeholder="请填写链接名称" {...extra} maxLength={200} />
           </FormItem>
 
           <Condition r-if={type !== 1}>
@@ -186,7 +186,7 @@ const LinkModal: React.FC<any> = (props: any) => {
               label="链接路径"
               style={{ width: '360px' }}
             >
-              <Input placeholder="请填写链接路径" {...extra} />
+              <Input placeholder="请填写链接路径" {...extra} maxLength={200} />
             </FormItem>
           </Condition>
           {/* 链接路径 */}

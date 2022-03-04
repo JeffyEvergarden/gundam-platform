@@ -51,8 +51,8 @@ export const operateSlotFormList = [
       { required: true, message: '请输入名称' },
       { max: 50, min: 1 },
       {
-        pattern: /^[A-Za-z0-9_\-]+$/g,
-        message: '请输入汉字、字母、下划线、数字、横杠',
+        pattern: /^[A-Za-z_\-]+$/g,
+        message: '只支持英文，_和-',
       },
     ],
   },
