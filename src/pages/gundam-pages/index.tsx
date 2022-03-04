@@ -61,7 +61,7 @@ const MachinePagesHome: React.FC = (props: any) => {
       setFinish(true);
     } else {
       message.warning('获取不到机器人信息');
-      history.replace('/robot/home');
+      history.replace('/gundam/home/list');
     }
   };
 
@@ -74,7 +74,7 @@ const MachinePagesHome: React.FC = (props: any) => {
   }, []);
 
   const goBack = () => {
-    history.push('/gundam/home');
+    history.push('/gundam/home/list');
   };
 
   const MenuHeader = (props: any) => (

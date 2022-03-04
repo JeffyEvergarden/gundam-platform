@@ -38,7 +38,7 @@ const DetailPages: React.FC = (props: any) => {
     if (data?.length) {
       data?.forEach((item: any) => {
         if (item?.configType == 0) {
-          formData[item.configName] = item.configKey;
+          formData[item.configName] = item.configValue;
         }
         if (item?.configType == 1) {
           formData.varConfig.push(item);
