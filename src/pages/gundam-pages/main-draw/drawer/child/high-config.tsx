@@ -265,7 +265,7 @@ const HighConfig = (props: any) => {
           </div>
           <div style={{ marginLeft: '30px' }}>
             <FormItem name="repeatIntent" label="未听清意图名称" style={{ width: '400px' }}>
-              <Select placeholder="请选择未听清意图名称" mode="multiple">
+              <Select placeholder="请选择未听清意图名称">
                 {wishList.map((item: any, index: number) => {
                   return (
                     <Option key={index} value={item.name} opt={item}>

@@ -65,6 +65,8 @@ const EdgeDrawerForm = (props: any) => {
         frontSource: recordInfo.current.info?.frontSource,
         sourceAnchor: recordInfo.current.info?.sourceAnchor,
         targetAnchor: recordInfo.current.info?.targetAnchor,
+        targetType: recordInfo.current.info?.targetType,
+        sourceType: recordInfo.current.info?.sourceType,
       });
       let label = `${res.level}.${res?.name}`;
       if (result !== false) {

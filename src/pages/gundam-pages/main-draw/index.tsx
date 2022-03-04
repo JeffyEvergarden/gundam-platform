@@ -190,7 +190,12 @@ const MainDraw = (props: any) => {
       frontTarget: (fake.current as any)?.find(info.target)?.id,
       sourceAnchor: info?.sourceAnchor,
       targetAnchor: info?.targetAnchor,
+      sourceType: processType((fake.current as any)?.find(info.source)?._nodetype),
+      targetType: processType((fake.current as any)?.find(info.target)?._nodetype),
     };
+    console.log((fake.current as any)?.find(info.target));
+
+    console.log(config);
 
     const callBack = (obj: any, id: any) => {
       (fake.current as any).updateNode(info.id, {
