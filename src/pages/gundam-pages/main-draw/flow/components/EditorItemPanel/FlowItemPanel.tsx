@@ -15,7 +15,7 @@ const FlowItemPanel = (props: PanelProps) => {
         size="140*45"
         shape="flow-rect"
         model={{
-          color: '#1890FF',
+          color: '#2890F3',
           label: '新节点',
           _nodetype: 'normal',
         }}
@@ -30,13 +30,12 @@ const FlowItemPanel = (props: PanelProps) => {
           size="140*45"
           shape="flow-rect"
           model={{
-            color: '#fffbe6',
+            color: '#ffd591',
             label: '业务流程节点',
             _nodetype: 'business',
             style: {
               stroke: '#f90',
               lineWidth: 1,
-              strokeOpacity: 1,
             },
           }}
           src={''}
