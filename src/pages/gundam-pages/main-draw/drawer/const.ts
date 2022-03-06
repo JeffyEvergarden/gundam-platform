@@ -28,145 +28,145 @@ export const RUlE_LIST: any[] = [
         name: '!=',
         label: '不等于',
       },
-      {
-        name: 'include',
-        label: '包含',
-      },
-      {
-        name: 'uninclude',
-        label: '不包含',
-      },
+      // {
+      //   name: 'include',
+      //   label: '包含',
+      // },
+      // {
+      //   name: 'uninclude',
+      //   label: '不包含',
+      // },
     ],
   },
-  {
-    name: '槽值填充状态',
-    label: '槽值填充状态',
-    list: [
-      {
-        name: 'fill',
-        label: '已填充', // 没有后续输入
-      },
-      {
-        name: 'unfill',
-        label: '未填充', // 没有后续输入
-      },
-      {
-        name: '==',
-        label: '等于',
-      },
-      {
-        name: '!==',
-        label: '不等于',
-      },
-      {
-        name: '<',
-        label: '小于',
-      },
-      {
-        name: '<=',
-        label: '小于等于',
-      },
-      {
-        name: '>',
-        label: '大于',
-      },
-      {
-        name: '<=',
-        label: '大于等于',
-      },
-      {
-        name: 'like',
-        label: '包含',
-      },
-      {
-        name: 'unlike',
-        label: '不包含',
-      },
-    ],
-  },
-  {
-    name: '当前用户输入文本',
-    label: '当前用户输入文本',
-    list: [
-      {
-        name: '==',
-        label: '等于',
-      },
-      {
-        name: '!==',
-        label: '不等于',
-      },
-      {
-        name: 'like',
-        label: '包含',
-      },
-      {
-        name: 'unlike',
-        label: '不包含',
-      },
-    ],
-  },
-  {
-    name: '系统时间',
-    label: '系统时间',
-    type: 'date',
-    list: [
-      {
-        name: '==',
-        label: '等于',
-      },
-      {
-        name: '!=',
-        label: '不等于',
-      },
-      {
-        name: '<',
-        label: '小于',
-      },
-      {
-        name: '<=',
-        label: '小于等于',
-      },
-      {
-        name: '>',
-        label: '大于',
-      },
-      {
-        name: '<=',
-        label: '大于等于',
-      },
-    ],
-  },
-  {
-    name: '变量',
-    label: '变量',
-    list: [
-      {
-        name: '==',
-        label: '等于',
-      },
-      {
-        name: '!=',
-        label: '不等于',
-      },
-      {
-        name: '<',
-        label: '小于',
-      },
-      {
-        name: '<=',
-        label: '小于等于',
-      },
-      {
-        name: '>',
-        label: '大于',
-      },
-      {
-        name: '<=',
-        label: '大于等于',
-      },
-    ],
-  },
+  // {
+  //   name: '槽值填充状态',
+  //   label: '槽值填充状态',
+  //   list: [
+  //     {
+  //       name: 'fill',
+  //       label: '已填充', // 没有后续输入
+  //     },
+  //     {
+  //       name: 'unfill',
+  //       label: '未填充', // 没有后续输入
+  //     },
+  //     {
+  //       name: '==',
+  //       label: '等于',
+  //     },
+  //     {
+  //       name: '!==',
+  //       label: '不等于',
+  //     },
+  //     {
+  //       name: '<',
+  //       label: '小于',
+  //     },
+  //     {
+  //       name: '<=',
+  //       label: '小于等于',
+  //     },
+  //     {
+  //       name: '>',
+  //       label: '大于',
+  //     },
+  //     {
+  //       name: '>=',
+  //       label: '大于等于',
+  //     },
+  //     {
+  //       name: 'like',
+  //       label: '包含',
+  //     },
+  //     {
+  //       name: 'unlike',
+  //       label: '不包含',
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: '当前用户输入文本',
+  //   label: '当前用户输入文本',
+  //   list: [
+  //     {
+  //       name: '==',
+  //       label: '等于',
+  //     },
+  //     {
+  //       name: '!==',
+  //       label: '不等于',
+  //     },
+  //     {
+  //       name: 'like',
+  //       label: '包含',
+  //     },
+  //     {
+  //       name: 'unlike',
+  //       label: '不包含',
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: '系统时间',
+  //   label: '系统时间',
+  //   type: 'date',
+  //   list: [
+  //     {
+  //       name: '==',
+  //       label: '等于',
+  //     },
+  //     {
+  //       name: '!=',
+  //       label: '不等于',
+  //     },
+  //     {
+  //       name: '<',
+  //       label: '小于',
+  //     },
+  //     {
+  //       name: '<=',
+  //       label: '小于等于',
+  //     },
+  //     {
+  //       name: '>',
+  //       label: '大于',
+  //     },
+  //     {
+  //       name: '>=',
+  //       label: '大于等于',
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: '变量',
+  //   label: '变量',
+  //   list: [
+  //     {
+  //       name: '==',
+  //       label: '等于',
+  //     },
+  //     {
+  //       name: '!=',
+  //       label: '不等于',
+  //     },
+  //     {
+  //       name: '<',
+  //       label: '小于',
+  //     },
+  //     {
+  //       name: '<=',
+  //       label: '小于等于',
+  //     },
+  //     {
+  //       name: '>',
+  //       label: '大于',
+  //     },
+  //     {
+  //       name: '>=',
+  //       label: '大于等于',
+  //     },
+  //   ],
+  // },
 ];
 
 // 线规则
@@ -192,7 +192,7 @@ export const EDGE_RULE_LIST: any[] = [
         label: '大于',
       },
       {
-        name: '<=',
+        name: '>=',
         label: '大于等于',
       },
     ],
