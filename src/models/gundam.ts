@@ -3,13 +3,15 @@ import { queryLabelList, getFlowList } from '@/services/api';
 import config from '@/config';
 
 export default function useGundamModel() {
+  const localBusinessFlowId = localStorage.getItem('businessFlowId') || '';
+
   const [info, setInfo] = useState<any>({});
 
   // 机器人的全局变量
   const [globalVarList, setGlobalVarList] = useState<any>([]);
 
   // 业务流程id
-  const [businessFlowId, setBusinessFlowId] = useState<any>('');
+  const [businessFlowId, setBusinessFlowId] = useState<any>(localBusinessFlowId);
 
   // 机器人的话术标签列表
   const [labelList, setLabelList] = useState<any>([]);
