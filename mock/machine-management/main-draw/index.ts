@@ -99,7 +99,7 @@ const getNodesConfig = (req: any, res: any) => {
             },
           ],
           hungUp: true, // 结束挂机
-          replyTransfer: '', // 动作 (下拉选择)
+          transfer: '', // 动作 (下拉选择)
           isMessage: true, // 是否发送短信
           message: '', // 短信内容
           nodeTransferText: 'fake', // 过渡话术

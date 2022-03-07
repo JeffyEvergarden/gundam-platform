@@ -91,7 +91,7 @@ const GlobalVarModal: React.FC<any> = (props: any) => {
       <div className={style['table-box']}>
         <Table
           rowSelection={{
-            type: 'radio',
+            type: 'checkbox',
             ...rowSelection,
             selectedRowKeys,
           }}

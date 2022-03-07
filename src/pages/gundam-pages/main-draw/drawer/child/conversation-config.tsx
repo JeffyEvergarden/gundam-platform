@@ -25,7 +25,7 @@ const ConversationConfig = (props: any) => {
                 actionType: 'text',
                 nodeText: [],
                 hungUp: false,
-                replyTransfer: undefined,
+                transfer: undefined,
                 msgFlag: false,
                 msg: '',
                 nodeTransferText: '',
@@ -156,7 +156,7 @@ const ConversationConfig = (props: any) => {
                         </FormItem>
 
                         <FormItem
-                          name={[field.name, 'replyTransfer']}
+                          name={[field.name, 'transfer']}
                           label="动作"
                           style={{ width: '250px' }}
                         >

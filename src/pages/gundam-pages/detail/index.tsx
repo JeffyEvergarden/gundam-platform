@@ -139,10 +139,10 @@ const DetailPages: React.FC = (props: any) => {
         <Divider type="horizontal" />
         <Condition r-if={info.robotType == 1}>
           <FormItem name="threshold" label="阈值" {...layout} rules={[{ required: true }]}>
-            <InputNumber style={{ width: 200 }} min="0" max="1" step="0.01" />
+            <InputNumber style={{ width: 200 }} min="0" max="1" step="0.01" precision={2} />
           </FormItem>
           <FormItem name="thresholdGap" label="得分差值" {...layout} rules={[{ required: true }]}>
-            <InputNumber style={{ width: 200 }} min="0" max="1" step="0.01" />
+            <InputNumber style={{ width: 200 }} min="0" max="1" step="0.01" precision={2} />
           </FormItem>
           <FormItem name="clearToDeal" label="澄清话术" {...layout} rules={[{ required: true }]}>
             <Input maxLength={200} placeholder={'请输入澄清话术'}></Input>

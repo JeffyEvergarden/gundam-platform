@@ -23,8 +23,12 @@ const GlobalVarButton: React.FC<any> = (props: any) => {
   };
 
   const confirm = (val: any) => {
+    console.log(val);
+    let target = '';
     let tmp: any = value || '';
-    let target = val?.[0]?.name ? `\$\{${val[0].name}\}` : '';
+    val.forEach((item: any) => {
+      target += item?.name ? `\$\{${item.name}\}` : '';
+    });
     if (startPos > -1) {
       let pre = tmp.slice(0, startPos);
       let last = tmp.slice(startPos);
