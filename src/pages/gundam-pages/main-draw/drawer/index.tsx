@@ -167,6 +167,7 @@ const DrawerForm = (props: any) => {
         <Condition r-if={nodetype === 'start'}>
           <ConversationConfig
             form={form}
+            showRule={false}
             wishList={wishList}
             wordSlotList={wordSlotList}
           ></ConversationConfig>
