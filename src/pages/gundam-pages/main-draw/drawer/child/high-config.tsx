@@ -154,11 +154,11 @@ const HighConfig = (props: any) => {
         <Space style={{ paddingLeft: '50px', paddingTop: '10px' }}>
           <FormItem
             name="silenceHungup"
-            label="结束挂机"
+            label="是否结束挂机"
             valuePropName="checked"
             style={{ width: '200px' }}
           >
-            <Checkbox>是否结束挂机</Checkbox>
+            <Checkbox>结束挂机</Checkbox>
           </FormItem>
 
           <FormItem name="silenceTransfer" label="动作" style={{ width: '200px' }}>
@@ -241,11 +241,11 @@ const HighConfig = (props: any) => {
         <Space style={{ paddingLeft: '50px', paddingTop: '10px' }}>
           <FormItem
             name="discernHungup"
-            label="结束挂机"
+            label="是否结束挂机"
             valuePropName="checked"
             style={{ width: '200px' }}
           >
-            <Checkbox>是否结束挂机</Checkbox>
+            <Checkbox>结束挂机</Checkbox>
           </FormItem>
 
           <FormItem name="discernTransfer" label="动作" style={{ width: '200px' }}>
@@ -285,11 +285,11 @@ const HighConfig = (props: any) => {
             <Space>
               <FormItem
                 name="repeatHungup"
-                label="结束挂机"
+                label="是否结束挂机"
                 valuePropName="checked"
                 style={{ width: '220px' }}
               >
-                <Checkbox>是否结束挂机</Checkbox>
+                <Checkbox>结束挂机</Checkbox>
               </FormItem>
 
               <FormItem name="repeatTransfer" label="动作" style={{ width: '200px' }}>
