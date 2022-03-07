@@ -3,6 +3,7 @@ import { PlusCircleOutlined, MinusCircleOutlined, AppstoreAddOutlined } from '@a
 import LabelSelect from '../components/label-select';
 import GlobalVarButton from '../components/global-var-button';
 import RuleSelect from '../components/rule-var-button';
+import Condition from '@/components/Condition';
 import styles from '../style.less';
 import { ACTION_LIST } from '../const';
 
@@ -10,7 +11,7 @@ const { Item: FormItem, List: FormList } = Form;
 const { Option } = Select;
 
 const ConversationConfig = (props: any) => {
-  const { wishList, wordSlotList } = props;
+  const { wishList, wordSlotList, showRule = true } = props;
 
   return (
     <div>
@@ -170,9 +171,11 @@ const ConversationConfig = (props: any) => {
                         </FormItem>
                       </Space>
 
-                      <FormItem name={[field.name, 'rules']} label="规则配置">
-                        <RuleSelect wishList={wishList} wordSlotList={wordSlotList}></RuleSelect>
-                      </FormItem>
+                      <Condition r-if={showRule}>
+                        <FormItem name={[field.name, 'rules']} label="规则配置">
+                          <RuleSelect wishList={wishList} wordSlotList={wordSlotList}></RuleSelect>
+                        </FormItem>
+                      </Condition>
                     </div>
                   </div>
                 ))}
