@@ -26,10 +26,15 @@ const DetailPages: React.FC = (props: any) => {
   const [form] = Form.useForm();
   const { configMsg, configLoading, getRobotConfig, editRobotConfig } = useConfigModel();
 
-  const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
-    info: model.info,
-    setInfo: model.setInfo,
-  }));
+  const { info, setInfo, globalVarList, setGlobalVarList } = useModel(
+    'gundam' as any,
+    (model: any) => ({
+      info: model.info,
+      setInfo: model.setInfo,
+      globalVarList: model.globalVarList,
+      setGlobalVarList: model.setGlobalVarList,
+    }),
+  );
 
   const getConfig = async () => {
     let formData: any = { varConfig: [] };
@@ -46,13 +51,13 @@ const DetailPages: React.FC = (props: any) => {
       });
     }
     console.log('formData', formData);
-    if (!formData.varConfig?.length) {
-      formData.varConfig.push({
-        configKey: undefined,
-        configName: undefined,
-        configDesc: undefined,
-      });
-    }
+    // if (!formData.varConfig?.length) {
+    //   formData.varConfig.push({
+    //     configKey: undefined,
+    //     configName: undefined,
+    //     configDesc: undefined,
+    //   });
+    // }
 
     form.setFieldsValue({ ...formData });
   };
@@ -81,6 +86,15 @@ const DetailPages: React.FC = (props: any) => {
 
     await editRobotConfig({ robotId: info.id, ...reqData }).then((res) => {
       if (res.resultCode == 100) {
+        let list: any[] =
+          reqData.varConfig?.map((item: any) => {
+            return {
+              name: item.configKey,
+              label: item.configName,
+              desc: item.configDesc,
+            };
+          }) || [];
+        setGlobalVarList(list);
         getConfig();
       }
     });
