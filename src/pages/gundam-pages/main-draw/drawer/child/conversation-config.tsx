@@ -148,11 +148,11 @@ const ConversationConfig = (props: any) => {
                       <Space>
                         <FormItem
                           name={[field.name, 'hungUp']}
-                          label="结束挂机"
+                          label="是否结束挂机"
                           valuePropName="checked"
                           style={{ width: '220px' }}
                         >
-                          <Checkbox>是否结束挂机</Checkbox>
+                          <Checkbox>结束挂机</Checkbox>
                         </FormItem>
 
                         <FormItem
