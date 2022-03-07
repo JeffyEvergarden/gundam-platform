@@ -88,12 +88,8 @@ const DetailPages: React.FC = (props: any) => {
 
   useEffect(() => {
     console.log(info);
-
     let formData = form.getFieldsValue();
     getConfig();
-    if (!formData.varConfig?.length) {
-      addConfig();
-    }
   }, []);
   return (
     <div className={style['machineDetail-page']}>
@@ -179,7 +175,6 @@ const DetailPages: React.FC = (props: any) => {
                         name={[field.name, 'configKey']}
                         key={field.fieldKey + 'configKey'}
                         fieldKey={[field.fieldKey, 'configKey']}
-                        rules={[{ required: true }]}
                       >
                         <Input maxLength={200} />
                       </FormItem>
@@ -189,7 +184,6 @@ const DetailPages: React.FC = (props: any) => {
                         name={[field.name, 'configName']}
                         key={field.fieldKey + 'configName'}
                         fieldKey={[field.fieldKey, 'configName']}
-                        rules={[{ required: true }]}
                       >
                         <Input maxLength={200} />
                       </FormItem>
@@ -199,7 +193,6 @@ const DetailPages: React.FC = (props: any) => {
                         name={[field.name, 'configDesc']}
                         key={field.fieldKey + 'configDesc'}
                         fieldKey={[field.fieldKey, 'configDesc']}
-                        rules={[{ required: true }]}
                       >
                         <Input maxLength={200} />
                       </FormItem>

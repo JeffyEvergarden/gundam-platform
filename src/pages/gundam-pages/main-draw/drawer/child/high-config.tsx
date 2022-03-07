@@ -174,7 +174,7 @@ const HighConfig = (props: any) => {
           </FormItem>
         </Space>
 
-        {/* 拒绝处理 */}
+        {/* 拒识处理 */}
 
         <FormList name="discernText">
           {(fields, { add, remove }) => {
@@ -187,7 +187,7 @@ const HighConfig = (props: any) => {
               <div style={{ paddingLeft: '20px' }}>
                 <div className={styles['zy-row']}>
                   <div className={styles['title_sec']} style={{ marginRight: '20px' }}>
-                    拒绝处理:
+                    拒识处理:
                   </div>
                   <Button type="link" icon={<PlusCircleOutlined />} onClick={addNew}></Button>
                 </div>
