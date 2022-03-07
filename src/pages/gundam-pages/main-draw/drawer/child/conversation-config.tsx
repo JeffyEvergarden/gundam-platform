@@ -112,6 +112,7 @@ const ConversationConfig = (props: any) => {
                                       name={[field.name, 'actionText']}
                                       fieldKey={[field.fieldKey, 'actionText']}
                                       label="答复内容"
+                                      rules={[{ required: true, message: '请输入答复内容' }]}
                                     >
                                       <GlobalVarButton
                                         placeholder="请输入响应话术"

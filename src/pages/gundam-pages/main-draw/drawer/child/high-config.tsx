@@ -119,6 +119,7 @@ const HighConfig = (props: any) => {
                         name={[field.name, 'actionText']}
                         fieldKey={[field.fieldKey, 'actionText']}
                         label="响应话术"
+                        rules={[{ required: true, message: '请输入响应话术' }]}
                       >
                         <GlobalVarButton
                           placeholder="请输入响应话术"
@@ -204,6 +205,7 @@ const HighConfig = (props: any) => {
                           name={[field.name, 'actionText']}
                           fieldKey={[field.fieldKey, 'actionText']}
                           label="响应话术"
+                          rules={[{ required: true, message: '请输入响应话术' }]}
                         >
                           <GlobalVarButton
                             placeholder="请输入响应话术"
