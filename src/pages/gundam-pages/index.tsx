@@ -213,7 +213,7 @@ const MachinePagesHome: React.FC = (props: any) => {
                         onClick={() => {
                           publishProduction(info.id);
                         }}
-                        disabled={info.status == 0}
+                        disabled={info.status == 1}
                       >
                         发布生产
                       </Button>
@@ -224,7 +224,7 @@ const MachinePagesHome: React.FC = (props: any) => {
                         onClick={() => {
                           publishTest(info.id);
                         }}
-                        disabled={info.status == 0 ? true : false}
+                        disabled={info.status == 1 ? true : false}
                       >
                         发布测试
                       </Button>
