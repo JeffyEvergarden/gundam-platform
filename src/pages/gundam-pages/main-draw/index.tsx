@@ -90,15 +90,15 @@ const MainDraw = (props: any) => {
       (fake.current as any).executeCommand?.('undo');
       return;
     }
-    let params: any = {
-      ...preParams,
-      id: node._id, // 后端id
-    };
-    let res = await deleteNode(params);
-    if (res === false) {
-      // 删除失败 - 返回上一步
-      (fake.current as any).executeCommand?.('undo');
-    }
+    // let params: any = {
+    //   ...preParams,
+    //   id: node._id, // 后端id
+    // };
+    // let res = await deleteNode(params);
+    // if (res === false) {
+    //   // 删除失败 - 返回上一步
+    //   (fake.current as any).executeCommand?.('undo');
+    // }
   };
 
   const clickItem = (node: any) => {
