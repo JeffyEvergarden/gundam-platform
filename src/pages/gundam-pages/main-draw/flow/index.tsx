@@ -247,7 +247,7 @@ const EditorView = (props: PageViewProps) => {
         illegalNode.push(nodeMap[item]);
       }
     });
-    if (illegalNode.length > 0) {
+    if (illegalNode.length > 0 && nodes.length > 1) {
       let labels = illegalNode.map((item) => item.label).join('、');
       message.warning(`节点${labels}需补全连接关系`);
     } else {
