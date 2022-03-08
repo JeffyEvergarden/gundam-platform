@@ -51,9 +51,9 @@ const DetailPages: React.FC = (props: any) => {
       const res: any = await getIntentTableList(params);
       return {
         data: res?.datas || [],
-        pageSize: pageData.pageSize || 10,
+        pageSize: pageData.pageSize || 0,
         current: pageData.current || 1,
-        total: res?.totalSize || res?.datas?.length || pageData.pageSize,
+        total: res?.totalSize || res?.datas?.length || 0,
       };
     } catch {
       return {
