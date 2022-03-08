@@ -195,7 +195,7 @@ const MainDraw = (props: any) => {
     };
     console.log((fake.current as any)?.find(info.target));
 
-    console.log(config);
+    // console.log(config);
 
     const callBack = (obj: any, id: any) => {
       (fake.current as any).updateNode(info.id, {

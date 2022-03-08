@@ -342,11 +342,18 @@ const EditorView = (props: PageViewProps) => {
     <GGEditor className={styles.editor} ref={editorRef}>
       {/* 上层按钮   相关了解 commend 组件 */}
       <Row style={{ height: '100%' }}>
-        <Col span={4}>
+        <Col span={5} style={{ borderRight: '1px solid #e6f7ff' }}>
+          <div className={styles.editorHd}>新增节点</div>
           <FlowItemPanel type={type} />
+
+          <FlowDetailPanel
+            type={type}
+            openSetting={openSetting}
+            openEdgeSetting={openEdgeSetting}
+          />
         </Col>
 
-        <Col span={20}>
+        <Col span={19}>
           <div className={styles['editor-box']}>
             <div className={styles.editorHd}>
               <FlowToolbar save={saveFn} />
@@ -354,18 +361,18 @@ const EditorView = (props: PageViewProps) => {
 
             {/* 编辑部分   左菜单  中间编辑 */}
             <Row className={styles.editorBd}>
-              <Col span={18} className={styles.editorContent}>
+              <Col span={24} className={styles.editorContent}>
                 <Flow className={styles.flow} {...editorEvent} />
               </Col>
 
-              <Col span={6} className={styles.editorSidebar}>
+              {/* <Col span={} className={styles.editorSidebar}>
                 <FlowDetailPanel
                   type={type}
                   openSetting={openSetting}
                   openEdgeSetting={openEdgeSetting}
                 />
                 <EditorMinimap />
-              </Col>
+              </Col> */}
             </Row>
           </div>
         </Col>
