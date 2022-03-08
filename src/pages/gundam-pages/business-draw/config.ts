@@ -52,7 +52,7 @@ export const operateFlowFormList = [
     rules: [],
   },
   {
-    name: 'headIntent',
+    name: 'headIntentName',
     label: '触发意图',
     type: 'select',
     placeholder: '',
