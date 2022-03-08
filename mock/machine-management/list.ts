@@ -137,10 +137,10 @@ const getPublishStatus = (req: any, res: any) => {
     resultCode: successCode,
     datas: {
       prodTime: '2022-03-02 17:51',
-      prodDesc: '123',
+      prodDesc: '哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
       prodStatus: 1,
       testTime: '2022-03-03 17:51',
-      testDesc: '456',
+      testDesc: '黑黑黑黑黑黑黑黑黑黑黑黑黑黑黑黑黑黑',
       testStatus: 0,
     },
   });
