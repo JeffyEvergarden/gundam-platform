@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import { useNodeOpsModel } from '../model';
 import { processType } from '../model/const';
 import eventbus from '../flow/utils/eventbus';
+import Condition from '@/components/Condition';
 
 const upperFirst = (str: string) =>
   str.toLowerCase().replace(/( |^)[a-z]/g, (l: string) => l.toUpperCase());
@@ -124,15 +125,31 @@ const NodeForm: React.FC<DetailFormProps> = (props: DetailFormProps) => {
   return (
     <Card type="inner" size="small" title={formatStr(type)} bordered={false}>
       <Form form={form}>
-        <Item label={`${formatStr(type)}名称`} name="label">
-          <Input placeholder={`请输入${formatStr(type)}名称`} autoComplete="off" maxLength={200} />
+        <Item
+          label={`${formatStr(type)}名称`}
+          name="label"
+          rules={[
+            { required: true, message: `请输入${formatStr(type)}名称` },
+            {
+              pattern: /^[A-Za-z0-9_\-\u4e00-\u9fa5]+$/g,
+              message: '请输入汉字、字母、下划线、数字、横杠',
+            },
+          ]}
+        >
+          <Input
+            placeholder={`请输入${formatStr(type)}名称`}
+            autoComplete="off"
+            maxLength={type === 'edge' ? 10 : 200}
+            disabled={_type === 'start'}
+          />
         </Item>
 
         <div className={style['button-box']}>
-          <Button type="primary" shape="round" size="small" onClick={_save} loading={loading}>
-            保存
-          </Button>
-
+          <Condition r-if={_type !== 'start'}>
+            <Button type="primary" shape="round" size="small" onClick={_save} loading={loading}>
+              保存
+            </Button>
+          </Condition>
           <Button icon={<SettingOutlined />} type="link" onClick={_openSetting}>
             详细配置
           </Button>

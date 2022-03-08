@@ -1,7 +1,9 @@
 import React from 'react';
-import { useModel } from 'umi';
+import { useModel, Link } from 'umi';
 import MainDraw from '@/pages/gundam-pages/main-draw';
-import { Result } from 'antd';
+import { Result, Button, Space, Badge, Tooltip, Breadcrumb } from 'antd';
+
+import { PageContainer, ProBreadcrumb } from '@ant-design/pro-layout';
 
 const SubDrawPages: React.FC<any> = (props: any) => {
   const { businessFlowId } = useModel('gundam' as any, (model: any) => ({
@@ -10,7 +12,25 @@ const SubDrawPages: React.FC<any> = (props: any) => {
   }));
 
   if (businessFlowId) {
-    return <MainDraw type="business"></MainDraw>;
+    return (
+      <PageContainer
+        header={{
+          title: (
+            <Breadcrumb>
+              <Breadcrumb.Item>
+                <Link to={'/gundamPages/businessDraw'}>业务流程管理-详情配置</Link>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <Link to={'/gundamPages/businessDraw/detail'}>业务流程管理-详情配置</Link>
+              </Breadcrumb.Item>
+            </Breadcrumb>
+          ),
+          ghost: true,
+        }}
+      >
+        <MainDraw type="business"></MainDraw>
+      </PageContainer>
+    );
   } else {
     return (
       <Result

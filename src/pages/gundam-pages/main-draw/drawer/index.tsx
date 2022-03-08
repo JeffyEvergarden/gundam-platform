@@ -106,6 +106,9 @@ const DrawerForm = (props: any) => {
     >
       <Form form={form}>
         <div className={styles['antd-form']}>
+          <div className={styles['title']} style={{ marginTop: 0 }}>
+            基本信息
+          </div>
           <FormItem
             rules={[
               { required: true, message: '请输入节点名称' },
@@ -118,7 +121,12 @@ const DrawerForm = (props: any) => {
             label="节点名称"
             style={{ width: '400px' }}
           >
-            <Input placeholder="请输入节点名称" maxLength={150} autoComplete="off" />
+            <Input
+              placeholder="请输入节点名称"
+              maxLength={150}
+              disabled={nodetype === 'start'}
+              autoComplete="off"
+            />
           </FormItem>
           <FormItem
             // rules={[{ required: true, message: '请输入节点描述' }]}

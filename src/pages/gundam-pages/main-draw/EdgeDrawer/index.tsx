@@ -120,7 +120,7 @@ const EdgeDrawerForm = (props: any) => {
             label="连线名称"
             style={{ width: '400px' }}
           >
-            <Input placeholder="请输入流程名称" maxLength={150} autoComplete="off" />
+            <Input placeholder="请输入连线名称" maxLength={10} autoComplete="off" />
           </FormItem>
 
           <FormItem
@@ -132,7 +132,7 @@ const EdgeDrawerForm = (props: any) => {
             <InputNumber
               placeholder="请输入优先级"
               precision={0}
-              min={0}
+              min={1}
               max={999}
               style={{ width: '140px' }}
             />

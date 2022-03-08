@@ -6,6 +6,7 @@ export const startNode: any = {
   size: '140*45',
   _nodetype: 'start',
   type: 'node',
+  label: '开始节点',
 };
 
 export const normalNode: any = {

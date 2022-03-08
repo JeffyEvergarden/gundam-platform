@@ -48,7 +48,7 @@ export default [
       },
       {
         path: '/gundamPages/mainDraw',
-        component: './gundam-pages/main-draw',
+        component: './gundam-pages/main-draw/layout',
         name: '主流程配置',
       },
       {

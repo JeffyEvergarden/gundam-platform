@@ -98,37 +98,6 @@ const MachinePagesHome: React.FC = (props: any) => {
     handleChatVisible(true);
   };
 
-  const timeFun = useRef<any>({});
-
-  const {
-    loading,
-    testLoading,
-    publishProduction,
-    publishTest,
-    productionTime,
-    testTime,
-    getTime,
-    status,
-    testStatus,
-    result,
-    testResult,
-  } = usePublishModel();
-
-  useEffect(() => {
-    if (!info.id) {
-      return;
-    }
-    // 开启定时刷新生产时间
-    getTime(info.id);
-    const fn: any = setInterval(() => {
-      getTime(info.id);
-    }, 30 * 1000);
-
-    return () => {
-      clearInterval(fn);
-    };
-  }, [info]);
-
   return (
     <ProLayout
       title="机器人详情"
@@ -159,79 +128,7 @@ const MachinePagesHome: React.FC = (props: any) => {
           // const title: any = route?.pageTitleInfo?.title || route?.title;
           return (
             info?.id && (
-              <PageContainer
-                header={{
-                  title: <ProBreadcrumb />,
-                  ghost: true,
-                  extra: (
-                    <Space>
-                      <div className={style['time-box']}>
-                        <Condition r-if={productionTime}>
-                          <span className={style['time-module']} style={{ marginRight: '24px' }}>
-                            <span className={style['label']}>生产发布时间:</span>
-                            {status && (
-                              <span>
-                                <Badge status="success" size="default" />
-                                <span>{productionTime}</span>
-                              </span>
-                            )}
-
-                            {!status && (
-                              <Tooltip placement="bottomLeft" title={result || '未知系统异常'}>
-                                <span>
-                                  <Badge status="error" />
-                                  <span>{productionTime}</span>
-                                </span>
-                              </Tooltip>
-                            )}
-                          </span>
-                        </Condition>
-                        <Condition r-if={testTime}>
-                          <span className={style['time-module']}>
-                            <span className={style['label']}>测试发布时间:</span>
-                            {testStatus && (
-                              <span>
-                                <Badge status="success" />
-                                <span>{testTime}</span>
-                              </span>
-                            )}
-
-                            {!testStatus && (
-                              <Tooltip placement="bottomLeft" title={testResult || '未知系统异常'}>
-                                <span>
-                                  <Badge status="error" />
-                                  <span>{productionTime}</span>
-                                </span>
-                              </Tooltip>
-                            )}
-                          </span>
-                        </Condition>
-                      </div>
-                      <Button
-                        type="primary"
-                        loading={loading}
-                        onClick={() => {
-                          publishProduction(info.id);
-                        }}
-                        disabled={info.status == 1}
-                      >
-                        发布生产
-                      </Button>
-
-                      <Button
-                        type="default"
-                        loading={testLoading}
-                        onClick={() => {
-                          publishTest(info.id);
-                        }}
-                        disabled={info.status == 1 ? true : false}
-                      >
-                        发布测试
-                      </Button>
-                    </Space>
-                  ),
-                }}
-              >
+              <>
                 {finish && props.children}
                 <div className={style['hover-style']} onClick={robotChatComp}>
                   <img alt="robot" src={hoverRobot} style={{ width: 44, height: 44 }} />
@@ -245,7 +142,7 @@ const MachinePagesHome: React.FC = (props: any) => {
                 >
                   <RobotChatBox robotInfo={globalVarList} chatVisible={chatVisible} />
                 </Modal>
-              </PageContainer>
+              </>
             )
           );
         }}
