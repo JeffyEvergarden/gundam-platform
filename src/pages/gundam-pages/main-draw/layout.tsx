@@ -52,19 +52,21 @@ const MainLayout: React.FC = (props: any) => {
             <div className={style['time-box']}>
               <Condition r-if={productionTime}>
                 <span className={style['time-module']} style={{ marginRight: '24px' }}>
-                  <span className={style['label']}>生产发布时间:</span>
+                  <span className={style['label']}>生产发布状态:</span>
                   {status && (
-                    <span>
+                    <span className={style['box']}>
                       <Badge status="success" size="default" />
-                      <span>{productionTime}</span>
+                      <span className={style['msg']}>正常</span>
+                      <span className={style['time']}>({productionTime})</span>
                     </span>
                   )}
 
                   {!status && (
                     <Tooltip placement="bottomLeft" title={result || '未知系统异常'}>
-                      <span>
+                      <span className={style['box']}>
                         <Badge status="error" />
-                        <span>{productionTime}</span>
+                        <span className={style['msg']}>失败，{result}</span>
+                        <span className={style['time']}>({productionTime})</span>
                       </span>
                     </Tooltip>
                   )}
@@ -72,19 +74,21 @@ const MainLayout: React.FC = (props: any) => {
               </Condition>
               <Condition r-if={testTime}>
                 <span className={style['time-module']}>
-                  <span className={style['label']}>测试发布时间:</span>
+                  <span className={style['label']}>测试发布状态:</span>
                   {testStatus && (
-                    <span>
+                    <span className={style['box']}>
                       <Badge status="success" />
-                      <span>{testTime}</span>
+                      <span className={style['msg']}>正常</span>
+                      <span className={style['time']}>({testTime})</span>
                     </span>
                   )}
 
                   {!testStatus && (
                     <Tooltip placement="bottomLeft" title={testResult || '未知系统异常'}>
-                      <span>
+                      <span className={style['box']}>
                         <Badge status="error" />
-                        <span>{productionTime}</span>
+                        <span className={style['msg']}>失败，{testResult}</span>
+                        <span className={style['time']}>({testTime})</span>
                       </span>
                     </Tooltip>
                   )}

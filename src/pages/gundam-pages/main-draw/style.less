@@ -33,10 +33,30 @@
   }
 
   .time-module {
+    display: flex;
+    align-items: center;
     margin-right: 8px;
 
     .label {
       margin-right: 8px;
     }
   }
+}
+
+.time {
+  color: rgba(0, 0, 0, 0.345098039215686);
+}
+
+.msg {
+  display: inline-block;
+  max-width: 100px;
+  margin-right: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.box {
+  display: flex;
+  align-items: center;
 }
