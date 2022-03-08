@@ -121,7 +121,7 @@ export default (props: any) => {
                         <Select>
                           {triggerIntentList?.map((itex: any) => {
                             return (
-                              <Option key={itex.id || itex.intentName} value={itex.intentName}>
+                              <Option key={itex.id || itex.intentName} value={itex.id}>
                                 {itex.intentName}
                               </Option>
                             );
