@@ -180,10 +180,10 @@ export const usePublishModel = () => {
 
     setProductionTime(res.datas?.prodTime || '-');
     setStatus(!!res.datas?.prodStatus || false);
-    setResult(res.datas?.prodDesc || '未知错误');
+    setResult(res.datas?.prodDesc || '-');
     setTestTime(res.datas?.testTime || '-');
     setTestStatus(!!res.datas?.testStatus || false);
-    setTestResult(res.datas?.testDesc || '未知错误');
+    setTestResult(res.datas?.testDesc || '-');
   };
 
   return {
