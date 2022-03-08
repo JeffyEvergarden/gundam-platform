@@ -23,14 +23,18 @@ export const wordSlotTableList: any = [
       // 8: { text: '业务参数', status: 8 },
     },
   },
-  {
-    dataIndex: 'flowName',
-    title: '所属业务流程',
-  },
-  {
-    dataIndex: 'entity',
-    title: '引用实体',
-  },
+  // {
+  //   dataIndex: 'nodeName',
+  //   title: '所属节点',
+  // },
+  // {
+  //   dataIndex: 'number',
+  //   title: '被引用次数',
+  // },
+  // {
+  //   dataIndex: 'entity',
+  //   title: '引用实体',
+  // },
   {
     dataIndex: 'creator',
     title: '创建者',

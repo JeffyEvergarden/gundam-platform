@@ -38,7 +38,7 @@ const DetailPages: React.FC = (props: any) => {
       return {
         data: res?.datas || [],
         total: res?.totalSize || res?.datas?.length,
-        current: pageData.current || 1,
+        current: pageData.current,
         pageSize: pageData.pageSize,
       };
     } catch {
