@@ -134,8 +134,8 @@ export const useNodeOpsModel = () => {
         id: item.frontId ? String(item.frontId) : String(item.id),
         _id: item.id,
         label: item.label || item.nodeName || '',
-        x: item.x,
-        y: item.y,
+        x: typeof item.x === 'number' ? item.x : 100,
+        y: typeof item.y === 'number' ? item.y : 100,
         _nodetype: type, // 节点类型
         ...getDefaultNode(type),
       };
