@@ -64,10 +64,9 @@ const MainLayout: React.FC = (props: any) => {
                   {!status && (
                     <Tooltip placement="bottomLeft" title={result || '未知系统异常'}>
                       <span className={style['box']}>
-                        <Badge status="error" />
+                        <Badge status={`${testTime == '-' ? 'default' : 'error'}`} />
                         <span className={style['msg']}>
-                          {productionTime == '-' ? '' : '失败，'}
-                          {result}
+                          {productionTime == '-' ? '未发布' : `失败，${result}`}
                         </span>
                         <span className={style['time']}>({productionTime})</span>
                       </span>
@@ -89,10 +88,9 @@ const MainLayout: React.FC = (props: any) => {
                   {!testStatus && (
                     <Tooltip placement="bottomLeft" title={testResult || '未知系统异常'}>
                       <span className={style['box']}>
-                        <Badge status="error" />
+                        <Badge status={`${testTime == '-' ? 'default' : 'error'}`} />
                         <span className={style['msg']}>
-                          {testTime == '-' ? '' : '失败，'}
-                          {result}
+                          {testTime == '-' ? '未发布' : `失败，${testResult}`}
                         </span>
                         <span className={style['time']}>({testTime})</span>
                       </span>
