@@ -22,7 +22,7 @@ const ConversationConfig = (props: any) => {
             // console.log(length);
             add(
               {
-                actionType: 'text',
+                actionType: '文本',
                 nodeText: [],
                 hungUp: false,
                 transfer: undefined,
@@ -70,7 +70,7 @@ const ConversationConfig = (props: any) => {
                         label="答复类型"
                       >
                         <Radio.Group>
-                          <Radio value={'text'}>文本</Radio>
+                          <Radio value={'文本'}>文本</Radio>
                         </Radio.Group>
                       </FormItem>
 
