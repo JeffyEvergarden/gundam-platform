@@ -25,7 +25,7 @@ const LabelSelect: React.FC<any> = (props: any) => {
   const deleteCurrentTag = (index: number) => {
     let temp: any[] = value || [];
     temp.splice(index, 1);
-    onChange(temp);
+    onChange([...temp]);
   };
 
   // useEffect(() => {
