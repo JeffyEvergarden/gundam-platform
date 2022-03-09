@@ -87,6 +87,7 @@
 .scrollbar(@width, @color: #f5f5f5) {
   ::-webkit-scrollbar {
     width: @width;
+    height: @width * 4;
     background: transparent;
     visibility: hidden;
   }
@@ -94,7 +95,7 @@
   ::-webkit-scrollbar-thumb {
     width: @width;
     background: @color;
-    border-radius: @width / 2;
+    border-radius: 30px;
     visibility: hidden;
   }
 
@@ -110,7 +111,7 @@
 }
 
 .table-box {
-  .scrollbar(1px);
+  .scrollbar(1px, #1890ff);
 }
 
 .rule-box {
@@ -143,4 +144,11 @@
   padding-top: 16px;
   padding-left: 20px;
   border-bottom: 1px solid #f3f3f3;
+}
+
+.inner-list-box {
+  display: flex;
+  padding-top: 16px;
+  padding-left: 20px;
+  background: #fafafa;
 }

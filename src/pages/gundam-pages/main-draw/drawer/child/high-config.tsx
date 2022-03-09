@@ -47,7 +47,7 @@ const HighConfig = (props: any) => {
           }}
         >
           高级配置
-          <span style={{ color: '#1890ff', marginLeft: '8px' }}>
+          <span style={{ color: '#1890ff', marginLeft: '24px' }}>
             {!flag && <SettingOutlined />}
             {flag && <CaretUpOutlined />}
           </span>
@@ -110,7 +110,7 @@ const HighConfig = (props: any) => {
                 {fields.map((field: any, index: number) => (
                   <div
                     key={field.key}
-                    className={styles['list-box']}
+                    className={styles['inner-list-box']}
                     style={{ marginLeft: '30px' }}
                   >
                     <div className={styles['num']}>{index + 1}.</div>
@@ -140,6 +140,7 @@ const HighConfig = (props: any) => {
                     <Button
                       icon={<MinusCircleOutlined />}
                       type="link"
+                      danger
                       onClick={() => {
                         remove(index);
                       }}
@@ -195,7 +196,7 @@ const HighConfig = (props: any) => {
                 {fields.map((field: any, index: number) => (
                   <div
                     key={field.key}
-                    className={styles['list-box']}
+                    className={styles['inner-list-box']}
                     style={{ marginLeft: '30px' }}
                   >
                     <div className={styles['num']}>{index + 1}.</div>
@@ -227,6 +228,7 @@ const HighConfig = (props: any) => {
                     <Button
                       icon={<MinusCircleOutlined />}
                       type="link"
+                      danger
                       onClick={() => {
                         remove(index);
                       }}
