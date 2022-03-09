@@ -65,12 +65,17 @@ const MachinePagesHome: React.FC = (props: any) => {
     }
   };
 
-  useEffect(() => {
+  // 获取最新的信息
+  const getLastInfo = () => {
     // console.log('机器人子系统获取：');
     // console.log(info);
     let robotId = location?.query?.id || localStorage.getItem('robot_id') || info.id || '';
     console.log(robotId);
     _getInfo({ id: robotId });
+  };
+
+  useEffect(() => {
+    getLastInfo();
   }, []);
 
   const goBack = () => {
@@ -95,6 +100,7 @@ const MachinePagesHome: React.FC = (props: any) => {
 
   // 机器人聊天
   const robotChatComp = () => {
+    getLastInfo();
     handleChatVisible(true);
   };
 

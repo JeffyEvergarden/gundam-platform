@@ -79,7 +79,7 @@ export default (props: any) => {
     if (res?.datas) {
       let newData = res?.datas?.filter((item: any) => {
         // return item.intentName !== modalData.headIntent;
-        return item?.isInvokeByFlow == '0';
+        return item?.isInvokeByFlow !== '1' || item.id == modalData.headIntent;
       });
       setTriggerIntentList(newData);
     } else {

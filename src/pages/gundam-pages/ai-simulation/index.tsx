@@ -17,7 +17,7 @@ const tailLayout = {
 };
 
 export default (props: any) => {
-  const { chatVisible = false, robotInfo } = props;
+  const { chatVisible, robotInfo } = props;
   const [form] = Form.useForm();
   const [envirValue, setEnvirValue] = useState<string>('test'); // 环境值：生产、测试
 
@@ -30,8 +30,9 @@ export default (props: any) => {
 
   const { getRobotChatData } = useChatModel();
 
-  const { info } = useModel('gundam' as any, (model: any) => ({
+  const { info, globalVarList } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
+    globalVarList: model.globalVarList,
   }));
 
   // 从对话框获取环境值,会话重新开始
@@ -78,9 +79,11 @@ export default (props: any) => {
 
   useEffect(() => {
     setRobotChatData({});
-    setRobotFormList(robotInfo); // 表单信息
+    console.log('globalVarList', globalVarList);
+    setRobotFormList(globalVarList);
+    // setRobotFormList(robotInfo); // 表单信息
     // showChatText(); // 初始化不开启会话功能
-  }, [chatVisible]);
+  }, [chatVisible, robotInfo]);
 
   return (
     <React.Fragment>
