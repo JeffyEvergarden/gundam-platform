@@ -59,7 +59,7 @@ export const tableList: any = [
     title: '是否头部意图',
     search: true,
     valueType: 'select',
-    width: 80,
+    width: 160,
     valueEnum: {
       0: { text: '是', status: 0 },
       1: { text: '否', status: 1 },
@@ -71,14 +71,14 @@ export const tableList: any = [
     title: '业务流程',
     search: false,
     ellipsis: true,
-    width: 200,
+    width: 220,
   },
   {
     dataIndex: 'intentDesc',
     title: '描述',
     search: false,
     ellipsis: true,
-    width: 200,
+    width: 260,
   },
   //   {
   //     dataIndex: 'status',
@@ -93,14 +93,14 @@ export const tableList: any = [
     title: '创建者',
     search: false,
     ellipsis: true,
-    width: 100,
+    width: 120,
   },
   {
     dataIndex: 'createTime',
     title: '创建时间',
     search: false,
     ellipsis: true,
-    width: 100,
+    width: 120,
   },
 ];
 

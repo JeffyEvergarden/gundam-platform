@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useModel } from 'umi';
 
 import IntentOperModal from './comps/addIntentModal';
-import RulesSampleModal from './comps/rulesAndSamples';
+// import RulesSampleModal from './comps/rulesAndsamples';
 
 import { useIntentModel } from './model';
 
@@ -131,6 +131,7 @@ const DetailPages: React.FC = (props: any) => {
       title: '操作',
       search: false,
       fixed: 'right',
+      width: 120,
       render: (text: any, record: any) => {
         return (
           <Space>
