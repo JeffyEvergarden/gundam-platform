@@ -64,7 +64,7 @@ const MainLayout: React.FC = (props: any) => {
                   {!status && (
                     <Tooltip placement="bottomLeft" title={result || '未知系统异常'}>
                       <span className={style['box']}>
-                        <Badge status={`${testTime == '-' ? 'default' : 'error'}`} />
+                        <Badge status={`${productionTime == '-' ? 'default' : 'error'}`} />
                         <span className={style['msg']}>
                           {productionTime == '-' ? '未发布' : `失败，${result}`}
                         </span>
