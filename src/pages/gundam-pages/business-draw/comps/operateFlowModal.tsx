@@ -31,7 +31,7 @@ export default (props: any) => {
       getIntentSelList();
       if (title == 'edit') {
         handleSpinning(true);
-        form.setFieldsValue({ ...modalData });
+        form.setFieldsValue({ ...modalData, headIntent: modalData?.headIntentName });
         handleSpinning(false);
       }
     }
@@ -77,7 +77,8 @@ export default (props: any) => {
     console.log(res?.datas);
     if (res?.datas) {
       let newData = res?.datas?.filter((item: any) => {
-        return item.intentName !== modalData.headIntent;
+        // return item.intentName !== modalData.headIntent;
+        return item?.isInvokeByFlow == '0';
       });
       setTriggerIntentList(newData);
     } else {

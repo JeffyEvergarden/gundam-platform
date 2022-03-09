@@ -150,6 +150,9 @@ const DetailPages: React.FC = (props: any) => {
             新增业务流程
           </Button>,
         ]}
+        pagination={{
+          pageSize: 10,
+        }}
         search={{
           // defaultCollapsed: false,
           labelWidth: 'auto',

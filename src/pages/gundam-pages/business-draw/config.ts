@@ -10,7 +10,7 @@ export const businessTableColumnsList: any = [
     search: false,
   },
   {
-    dataIndex: 'headIntent',
+    dataIndex: 'headIntentName',
     title: '触发意图名称',
     search: false,
   },
