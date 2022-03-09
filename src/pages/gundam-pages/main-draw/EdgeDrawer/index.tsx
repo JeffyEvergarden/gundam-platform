@@ -6,6 +6,7 @@ import { useModel } from 'umi';
 
 import { useNodeOpsModel } from '../model';
 import RuleVarButton from '../drawer/components/rule-var-button';
+import RulesConfig from '../drawer/child/rules-config';
 
 const { Item: FormItem } = Form;
 const { TextArea } = Input;
@@ -15,6 +16,8 @@ const EdgeDrawerForm = (props: any) => {
   const { cref, confirm, type, wishList, wordSlotList } = props;
 
   const [form] = Form.useForm();
+
+  const [form2] = Form.useForm();
 
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -51,9 +54,17 @@ const EdgeDrawerForm = (props: any) => {
   const saveLine = async () => {
     // console.log(form.getFieldsValue());
     let res: any = await form.validateFields().catch(() => false);
-    if (res === false) {
+    let res2: any = await form2.validateFields().catch(() => false);
+
+    console.log(res2);
+    if (res === false || res2 === false) {
       return;
     } else {
+      let rules: any =
+        res2?.['list']?.map((item: any, index: number) => {
+          return item?.ruleList || [];
+        }) || [];
+
       let result: any = await _saveLine({
         ...preParams,
         ...res,
@@ -67,6 +78,7 @@ const EdgeDrawerForm = (props: any) => {
         targetAnchor: recordInfo.current.info?.targetAnchor,
         targetType: recordInfo.current.info?.targetType,
         sourceType: recordInfo.current.info?.sourceType,
+        rules,
       });
       let label = `${res.level}.${res?.name}`;
       if (result !== false) {
@@ -137,12 +149,18 @@ const EdgeDrawerForm = (props: any) => {
               style={{ width: '140px' }}
             />
           </FormItem>
-
-          <FormItem name="rules" label="规则配置" style={{ width: '400px' }}>
-            <RuleVarButton type="edge" wishList={wishList} wordSlotList={wordSlotList} />
-          </FormItem>
         </div>
       </Form>
+
+      <RulesConfig
+        form={form2}
+        title={'规则配置: '}
+        hasForm={false}
+        style={{ marginLeft: '30px' }}
+        type="edge"
+        wishList={wishList || []}
+        wordSlotList={wordSlotList || []}
+      />
     </Drawer>
   );
 };
