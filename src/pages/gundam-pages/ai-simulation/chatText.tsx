@@ -197,6 +197,7 @@ export default (props: any) => {
               // handleKeyDown={()=>{}}
               onKeyDown={onKeyDown}
               onChange={inputChange}
+              maxLength={200}
               placeholder={'请输入文本，按回车键发送'}
               // showCount
             />
