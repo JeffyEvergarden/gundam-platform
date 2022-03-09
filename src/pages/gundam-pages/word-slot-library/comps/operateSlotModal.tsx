@@ -131,7 +131,7 @@ export default (props: any) => {
   const getIntentSelList = async () => {
     const res: any = await getIntentInfoList({
       robotId: modalData?.robotId,
-      headIntent: 0,
+      // headIntent: 0,
     });
     console.log(res?.datas);
     // const res: any = await getIntentTableList();

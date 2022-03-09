@@ -80,11 +80,15 @@ export default (props: any) => {
   // 发送按钮
   const sendMessage = () => {
     if (!talkingFlag) {
-      message.info('请点击‘开始对话’按钮启动对话');
+      message.warning('请点击‘开始对话’按钮启动对话');
       return;
     }
     if (textMessage?.length == 0 || textMessage.trim().length == 0) {
-      message.info('不能发送空白字符');
+      message.warning('不能发送空白文字');
+      return;
+    }
+    if (textMessage?.length > 200 || textMessage.trim().length > 200) {
+      message.warning('最多发送200字');
       return;
     }
     let a = number;
@@ -193,13 +197,14 @@ export default (props: any) => {
               // handleKeyDown={()=>{}}
               onKeyDown={onKeyDown}
               onChange={inputChange}
+              maxLength={200}
               placeholder={'请输入文本，按回车键发送'}
               // showCount
             />
 
-            <div className={styles['send-btn']} onClick={sendMessage}>
+            <Button className={styles['send-btn']} type="primary" onClick={sendMessage}>
               发送
-            </div>
+            </Button>
           </div>
         </div>
       )}
