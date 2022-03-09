@@ -56,7 +56,11 @@ export async function getInitialState(): Promise<{
       return msg || {};
     } catch (error) {
       // 回登陆界面
-      history.push(loginPath);
+      if (process.env.UMI_ENV == 'dev') {
+        history.push(`/login`);
+      } else {
+        window.location.href = '/login';
+      }
     }
     return undefined;
   };
