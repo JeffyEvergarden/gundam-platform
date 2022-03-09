@@ -10,7 +10,7 @@ export const businessTableColumnsList: any = [
     search: false,
   },
   {
-    dataIndex: 'headIntent',
+    dataIndex: 'headIntentName',
     title: '触发意图名称',
     search: false,
   },
@@ -52,7 +52,7 @@ export const operateFlowFormList = [
     rules: [],
   },
   {
-    name: 'headIntentName',
+    name: 'headIntent',
     label: '触发意图',
     type: 'select',
     placeholder: '',
