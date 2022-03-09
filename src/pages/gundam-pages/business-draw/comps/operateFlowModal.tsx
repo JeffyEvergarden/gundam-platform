@@ -78,10 +78,17 @@ export default (props: any) => {
     console.log(res?.datas);
     if (res?.datas) {
       let newData = res?.datas?.filter((item: any) => {
-        // return item.intentName !== modalData.headIntent;
-        return item?.isInvokeByFlow !== '1' || item.id == modalData.headIntent;
+        return item.isInvokeByFlow == '0';
       });
-      setTriggerIntentList(newData);
+      if (title == 'edit') {
+        let newArray = [
+          ...newData,
+          { id: modalData?.headIntent, intentName: modalData?.headIntentName },
+        ];
+        setTriggerIntentList(newArray);
+      } else {
+        setTriggerIntentList(newData);
+      }
     } else {
       setTriggerIntentList([]);
     }
