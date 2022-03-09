@@ -202,9 +202,9 @@ export default (props: any) => {
               // showCount
             />
 
-            <div className={styles['send-btn']} onClick={sendMessage}>
+            <Button className={styles['send-btn']} type="primary" onClick={sendMessage}>
               发送
-            </div>
+            </Button>
           </div>
         </div>
       )}
