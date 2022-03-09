@@ -87,6 +87,10 @@ export default (props: any) => {
       message.info('不能发送空白字符');
       return;
     }
+    if (textMessage?.length > 200 || textMessage.trim().length > 0) {
+      message.info('最多发送200字符');
+      return;
+    }
     let a = number;
     a++;
     setNumber(a);

@@ -31,7 +31,8 @@ export default (props: any) => {
       getIntentSelList();
       if (title == 'edit') {
         handleSpinning(true);
-        form.setFieldsValue({ ...modalData, headIntent: modalData?.headIntentName });
+        let headIntent = modalData?.headIntent;
+        form.setFieldsValue({ ...modalData, headIntent });
         handleSpinning(false);
       }
     }
