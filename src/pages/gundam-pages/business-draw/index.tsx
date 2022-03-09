@@ -69,7 +69,9 @@ const DetailPages: React.FC = (props: any) => {
   const goToConfig = (record: any) => {
     localStorage.setItem('businessFlowId', record?.id || record?.flowId || '');
     setBusinessFlowId(record?.id || record?.flowId || '');
-    history.push('/gundamPages/businessDraw/detail');
+    setTimeout(() => {
+      history.push('/gundamPages/businessDraw/detail');
+    }, 300);
   };
 
   const operateColumn = {

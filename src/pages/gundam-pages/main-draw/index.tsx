@@ -209,12 +209,16 @@ const MainDraw = (props: any) => {
 
   // 初始化设置
   useEffect(() => {
-    getMachineInfo(); // 获取机器人主流程信息
     getLabelList(); // 获取话术标签
     getFlowList(); // 获取业务流程列表
     getWishList(info.id);
     getWordSlotList(info.id);
   }, []);
+
+  useEffect(() => {
+    getMachineInfo(); // 获取机器人主流程信息
+  }, [businessFlowId]);
+
   // -- end-----
 
   return (
