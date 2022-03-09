@@ -103,8 +103,8 @@ const ConversationConfig = (props: any) => {
                               {fields.map((field: any, index: number) => (
                                 <div
                                   key={field.key}
-                                  className={styles['list-box']}
-                                  style={{ marginLeft: '30px' }}
+                                  className={styles['inner-list-box']}
+                                  style={{ paddingLeft: '30px' }}
                                 >
                                   <div className={styles['num']}>{index + 1}.</div>
                                   <div>
@@ -133,6 +133,7 @@ const ConversationConfig = (props: any) => {
                                   <Button
                                     icon={<MinusCircleOutlined />}
                                     type="link"
+                                    danger
                                     onClick={() => {
                                       remove(index);
                                     }}

@@ -1,6 +1,6 @@
 import { useState, useRef, useImperativeHandle, useEffect, useMemo } from 'react';
 import { Drawer, Form, Input, Select, Button, Tag, Table, Tooltip } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, AppstoreAddOutlined } from '@ant-design/icons';
 import styles from '../style.less';
 import LabelSelectModal from './label-select-modal';
 import { values } from 'lodash';
@@ -216,7 +216,7 @@ const WordSlotTable: React.FC<any> = (props: any) => {
     <div className={styles['table-box']}>
       <div className={styles['zy-row']} style={{ padding: '10px 0' }}>
         <div className={styles['left']}>设置关联词槽</div>
-        <Button type="link" size="small" icon={<PlusOutlined />} onClick={openEditModal}>
+        <Button type="link" size="small" icon={<AppstoreAddOutlined />} onClick={openEditModal}>
           新增词槽
         </Button>
       </div>

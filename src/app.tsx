@@ -53,10 +53,14 @@ export async function getInitialState(): Promise<{
   const fetchUserInfo = async () => {
     try {
       const msg = await queryCurrentUser();
-      return msg.data;
+      return msg || {};
     } catch (error) {
       // 回登陆界面
-      history.push(loginPath);
+      if (process.env.UMI_ENV == 'dev') {
+        history.push(`/login`);
+      } else {
+        window.location.href = '/login';
+      }
     }
     return undefined;
   };
@@ -74,7 +78,7 @@ export async function getInitialState(): Promise<{
   console.log(`history.location.pathname: ${history.location.pathname}`);
 
   // 用户信息结果
-  //let res1: any = fetchUserInfo();
+  let res1: any = fetchUserInfo();
   // 判断该页面是否需要进行抓取用户信息
   if (routersFilter.indexOf(history.location.pathname) > -1) {
     console.log('初始页面为不需权限页面, 不尝试抓去用户信息');
@@ -93,22 +97,25 @@ export async function getInitialState(): Promise<{
   // 抓取权限信息结果
   // let res2: any = fetchAuthInfo();
   // let [currentUser, userAuth] = await Promise.all([res1]);
-  let [currentUser, userAuth]: any[] = [{ userName: 'hello world' }, { isWhite: true }];
+
+  let [userMsg]: any[] = await Promise.all([res1]);
+
   // 部门
-  const orz = userAuth?.userSummary?.organizations?.[0]?.name || '';
-  const isWhite = userAuth?.isWhite;
+  // const orz = userAuth?.userSummary?.organizations?.[0]?.name || '';
+  const orz = userMsg?.principal?.organizations?.[0]?.name || '';
+  const isWhite = userMsg?.isWhite || true;
   return {
     fetchUserInfo,
     fetchAuthInfo, // 抓取用户权限
     routersFilter,
     currentUser: {
-      userName: currentUser?.userName,
+      userName: userMsg?.principal?.userName,
       department: orz,
-      ...currentUser,
+      ...userMsg?.principal,
     }, // 用户信息  部门信息
     userAuth: { userType: isWhite ? 'leader' : 'user' }, // 权限信息   userType 用户类型
-    isLogin: currentUser?.userName ? true : false,
-    hadDone: currentUser?.userName ? true : false,
+    isLogin: userMsg?.principal?.userName ? true : false,
+    hadDone: userMsg?.principal?.userName ? true : false,
     settings: {},
   };
 }

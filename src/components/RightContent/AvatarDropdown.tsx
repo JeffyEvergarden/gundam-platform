@@ -7,6 +7,7 @@ import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 import { outLogin } from '@/services/ant-design-pro/api';
 import userPic from './user.png';
+import userPic1 from './user1.png';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 
 export type GlobalHeaderRightProps = {
@@ -42,7 +43,12 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
         loginOut();
         return;
       } else if (key === 'login') {
-        history.push(`/login`);
+        // history.push(`/login`);
+        if (process.env.UMI_ENV == 'dev') {
+          history.push(`/login`);
+        } else {
+          window.location.href = '/login';
+        }
       }
     },
     [setInitialState],
@@ -81,7 +87,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
     return (
       <HeaderDropdown overlay={menuDefaultDropdown}>
         <span className={`${styles.action} ${styles.account}`}>
-          <Avatar size="small" className={styles.avatar} src={userPic} alt="avatar" />
+          <Avatar size="small" className={styles.avatar} src={userPic1} alt="avatar" />
         </span>
       </HeaderDropdown>
     );
@@ -113,8 +119,13 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   return (
     <HeaderDropdown overlay={menuHeaderDropdown}>
       <span className={`${styles.action} ${styles.account}`}>
-        <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
-        <span className={`${styles.name} anticon`}>{currentUser.name}</span>
+        <Avatar
+          size="small"
+          className={styles.avatar}
+          src={currentUser.avatar || userPic1}
+          alt="avatar"
+        />
+        <span className={`${styles.name} anticon`}>{currentUser.userName}</span>
       </span>
     </HeaderDropdown>
   );
