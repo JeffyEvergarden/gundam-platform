@@ -20,7 +20,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     open: (obj: any) => {
-      if (!obj) {
+      if (!obj.slotId) {
         form.resetFields();
         form.setFieldsValue({
           clear_list: [{}],
@@ -51,6 +51,8 @@ const WordSlotModal: React.FC<any> = (props: any) => {
         slotName: curItem?.slotName,
         slotDesc: curItem?.slotDesc,
       };
+      console.log(newFormValue);
+
       confirm?.(newFormValue);
       setVisible(false);
     } catch (e) {}
