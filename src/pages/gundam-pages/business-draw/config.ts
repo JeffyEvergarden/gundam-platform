@@ -39,7 +39,7 @@ export const operateFlowFormList = [
         message: '请输入汉字、字母、下划线、数字、横杠',
       },
       {
-        max: 50,
+        max: 150,
         min: 1,
       },
     ],
@@ -49,7 +49,12 @@ export const operateFlowFormList = [
     label: '流程描述',
     type: 'input',
     placeholder: '',
-    rules: [],
+    rules: [
+      {
+        max: 150,
+        min: 0,
+      },
+    ],
   },
   {
     name: 'headIntent',
