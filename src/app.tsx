@@ -12,7 +12,7 @@ import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import routers from '../config/routes';
 
 const isDev = process.env.NODE_ENV === 'development';
-const loginPath = '/login';
+const loginPath = '/aichat/login';
 
 const routersFilter: any[] = [];
 
@@ -59,7 +59,7 @@ export async function getInitialState(): Promise<{
       if (process.env.UMI_ENV == 'dev') {
         history.push(`/login`);
       } else {
-        window.location.href = '/login';
+        window.location.href = loginPath;
       }
     }
     return undefined;
