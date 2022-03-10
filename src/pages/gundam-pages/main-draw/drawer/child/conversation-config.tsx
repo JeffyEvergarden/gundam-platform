@@ -45,7 +45,7 @@ const ConversationConfig = (props: any) => {
                   style={{ marginLeft: '10px' }}
                   onClick={addNew}
                 >
-                  新增回复
+                  新增答复
                 </Button>
               </div>
               <div>

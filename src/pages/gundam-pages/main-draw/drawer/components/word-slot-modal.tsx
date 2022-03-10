@@ -128,6 +128,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
                         <Button
                           icon={<MinusCircleOutlined />}
                           type="link"
+                          danger
                           onClick={() => {
                             remove(index);
                           }}
@@ -140,10 +141,11 @@ const WordSlotModal: React.FC<any> = (props: any) => {
                             name={[field.name, 'actionText']}
                             fieldKey={[field.fieldKey, 'actionText']}
                             label="澄清话术"
+                            rules={[{ required: true }]}
                           >
                             <GlobalVarButton
                               placeholder="请输入澄清话术"
-                              style={{ width: '400px' }}
+                              style={{ width: '300px' }}
                               autoComplete="off"
                             />
                           </FormItem>
