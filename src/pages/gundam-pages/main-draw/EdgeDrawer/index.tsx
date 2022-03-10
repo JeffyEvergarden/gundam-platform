@@ -40,9 +40,19 @@ const EdgeDrawerForm = (props: any) => {
       recordInfo.current.callback = callback;
       form.resetFields();
       console.log(info);
+      let rules =
+        info?.rules?.map((item: any) => {
+          return {
+            ruleList: Array.isArray(item) ? item : [],
+          };
+        }) || [];
       form.setFieldsValue({
         ...info,
         level: info.level || 1,
+      });
+      console.log(rules);
+      form2.setFieldsValue({
+        list: rules,
       });
       setVisible(true);
     },
