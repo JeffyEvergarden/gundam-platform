@@ -39,7 +39,7 @@ const EdgeDrawerForm = (props: any) => {
       recordInfo.current.info = info;
       recordInfo.current.callback = callback;
       form.resetFields();
-      console.log(info);
+      // console.log(info);
       let rules =
         info?.rules?.map((item: any) => {
           return {
