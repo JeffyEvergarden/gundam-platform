@@ -176,8 +176,6 @@ export const usePublishModel = () => {
     let res: any = await getPublishStatus({
       robotId,
     });
-    console.log(res);
-
     setProductionTime(res.datas?.prodTime || '-');
     setStatus(!!res.datas?.prodStatus || false);
     setResult(res.datas?.prodDesc || '-');
