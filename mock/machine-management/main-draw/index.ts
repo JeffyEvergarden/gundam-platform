@@ -158,6 +158,17 @@ const getLineConfig = (req: any, res: any) => {
       name: '七龙珠',
       // level: 10,
       nodeDesc: '七龙珠',
+      rules: [
+        [
+          // 且关系
+          {
+            ruleType: '用户意图', // 枚举值: 用户意图、变量、系统时间 等
+            ruleKey: '011',
+            condition: '==', // ==、!=、>=、>、<、<=、include、uninclude、like、unlike、unfill、fill
+            ruleValue: '001',
+          },
+        ],
+      ],
     },
   });
 };

@@ -17,8 +17,9 @@ const WordSlotTable: React.FC<any> = (props: any) => {
 
   const confirm = (val: any) => {
     let list: any[] = Array.isArray(value) ? value : [];
-    if (selectIndex > 0) {
+    if (selectIndex >= 0) {
       list[selectIndex] = val;
+      list = [...list];
     } else {
       list = [...list, val];
     }
@@ -26,7 +27,10 @@ const WordSlotTable: React.FC<any> = (props: any) => {
   };
 
   const openEditModal = (item?: any, index: number = -1) => {
-    if (index > 0) {
+    console.log(index);
+    console.log(item);
+
+    if (index >= 0) {
       setSelectIndex(index);
     } else {
       setSelectIndex(-1);
@@ -159,7 +163,7 @@ const WordSlotTable: React.FC<any> = (props: any) => {
       title: '操作',
       dataIndex: 'op',
       fixed: 'right',
-      width: 150,
+      width: 70,
       render: (val: any, row: any, index: number) => {
         return (
           <div>
@@ -216,7 +220,14 @@ const WordSlotTable: React.FC<any> = (props: any) => {
     <div className={styles['table-box']}>
       <div className={styles['zy-row']} style={{ padding: '10px 0' }}>
         <div className={styles['left']}>设置关联词槽</div>
-        <Button type="link" size="small" icon={<AppstoreAddOutlined />} onClick={openEditModal}>
+        <Button
+          type="link"
+          size="small"
+          icon={<AppstoreAddOutlined />}
+          onClick={() => {
+            openEditModal({}, -1);
+          }}
+        >
           新增词槽
         </Button>
       </div>
