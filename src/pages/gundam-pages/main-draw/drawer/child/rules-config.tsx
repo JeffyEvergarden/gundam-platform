@@ -160,7 +160,7 @@ const RuleConfig = (props: any) => {
 
                             return (
                               <div>
-                                <div className={styles['zy-row']}>
+                                <div className={styles['zy-row']} style={{ paddingBottom: '6px' }}>
                                   <span style={{ width: '30px' }}>{i + 1}、</span>
                                   <Button
                                     type="link"
