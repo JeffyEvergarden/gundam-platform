@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-const getNotices = (req: Request, res: Response) => {
+const getUsers = (req: Request, res: Response) => {
   res.json({
     data: [
       {
@@ -103,5 +103,5 @@ const getNotices = (req: Request, res: Response) => {
 };
 
 export default {
-  'GET /api/notices': getNotices,
+  'GET /users/userlist': getUsers,
 };

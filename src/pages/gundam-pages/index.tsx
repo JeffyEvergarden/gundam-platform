@@ -69,7 +69,12 @@ const MachinePagesHome: React.FC = (props: any) => {
   const getLastInfo = () => {
     // console.log('机器人子系统获取：');
     // console.log(info);
-    let robotId = location?.query?.id || localStorage.getItem('robot_id') || info.id || '';
+    let robotId =
+      location?.query?.id ||
+      sessionStorage.getItem('robot_id') ||
+      localStorage.getItem('robot_id') ||
+      info.id ||
+      '';
     console.log(robotId);
     _getInfo({ id: robotId });
   };

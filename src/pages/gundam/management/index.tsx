@@ -68,6 +68,7 @@ const MachineManagement: React.FC = (props: any) => {
     }
     history.push(`/gundamPages/mainDraw?id=${row.id}`);
     localStorage.setItem('robot_id', row.id);
+    sessionStorage.setItem('robot_id', row.id);
   };
 
   const deleteRow = async (row: any) => {

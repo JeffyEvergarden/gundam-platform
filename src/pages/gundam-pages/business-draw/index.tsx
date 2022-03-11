@@ -68,6 +68,7 @@ const DetailPages: React.FC = (props: any) => {
 
   const goToConfig = (record: any) => {
     localStorage.setItem('businessFlowId', record?.id || record?.flowId || '');
+    sessionStorage.setItem('businessFlowId', record?.id || record?.flowId || '');
     setBusinessFlowId(record?.id || record?.flowId || '');
     setTimeout(() => {
       history.push('/gundamPages/businessDraw/detail');
