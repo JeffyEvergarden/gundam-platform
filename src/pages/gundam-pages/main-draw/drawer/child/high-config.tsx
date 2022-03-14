@@ -281,7 +281,7 @@ const HighConfig = (props: any) => {
             </FormItem>
 
             <FormItem name="repeatSize" label="重复次数" style={{ width: '400px' }}>
-              <InputNumber min={1} />
+              <InputNumber min={1} step="1" precision={0} />
             </FormItem>
 
             <Space>
