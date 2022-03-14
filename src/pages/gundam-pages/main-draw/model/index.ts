@@ -167,11 +167,19 @@ export const useNodeOpsModel = () => {
           _id: item.id,
           label: `${level ? level + '.' : ''}${label}`,
           _name: label,
-          level: item.level,
+          level: item.level ? (isNaN(item.level) ? item.level : Number(item.level)) : item.level,
           source: item.frontSource, // 后端的头id
           target: item.frontTarget, // 后端的尾id
-          sourceAnchor: item.sourceAnchor || 1, // 前锥点
-          targetAnchor: item.targetAnchor || 3, // 尾锥点
+          sourceAnchor: item.sourceAnchor
+            ? isNaN(item.sourceAnchor)
+              ? item.sourceAnchor
+              : Number(item.sourceAnchor)
+            : item.sourceAnchor || 1, // 前锥点
+          targetAnchor: item.targetAnchor
+            ? isNaN(item.targetAnchor)
+              ? item.targetAnchor
+              : Number(item.targetAnchor)
+            : item.targetAnchor || 3, // 尾锥点
           _source: item.source, // 后端的头id
           _target: item.target, // 后端的尾id
         };
