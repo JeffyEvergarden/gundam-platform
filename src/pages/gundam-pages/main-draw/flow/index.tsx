@@ -240,6 +240,19 @@ const EditorView = (props: PageViewProps) => {
         return;
       }
     }
+    // 判断根节点个数
+    const tailNodesIds = lines.map((item: any) => {
+      return item.target;
+    });
+    // 找出根节点个数
+    const rootNodes = nodes.filter((item: any) => {
+      return !tailNodesIds.includes(item.id);
+    });
+    if (rootNodes?.length > 1) {
+      message.warning(`只能存在一个根节点`);
+      return;
+    }
+    // 这里判断是否存在没有任何关系的节点
     let illegalNode: any[] = []; // 违法Node
     keys.forEach((item: any) => {
       if (map[item] === 0) {
@@ -341,7 +354,7 @@ const EditorView = (props: PageViewProps) => {
   return (
     <GGEditor className={styles.editor} ref={editorRef}>
       {/* 上层按钮   相关了解 commend 组件 */}
-      <Row style={{ height: '100%' }}>
+      <Row style={{ height: '100%', userSelect: 'none' }}>
         <Col span={5} style={{ borderRight: '1px solid #e6f7ff' }}>
           <div className={styles.editorHd}>新增节点</div>
           <FlowItemPanel type={type} />

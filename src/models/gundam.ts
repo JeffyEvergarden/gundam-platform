@@ -3,7 +3,8 @@ import { queryLabelList, getFlowList } from '@/services/api';
 import config from '@/config';
 
 export default function useGundamModel() {
-  const localBusinessFlowId = localStorage.getItem('businessFlowId') || '';
+  const localBusinessFlowId =
+    sessionStorage.getItem('businessFlowId') || localStorage.getItem('businessFlowId') || '';
 
   const [info, setInfo] = useState<any>({});
 
