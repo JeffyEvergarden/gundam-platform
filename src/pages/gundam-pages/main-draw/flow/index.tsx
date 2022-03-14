@@ -341,7 +341,7 @@ const EditorView = (props: PageViewProps) => {
   return (
     <GGEditor className={styles.editor} ref={editorRef}>
       {/* 上层按钮   相关了解 commend 组件 */}
-      <Row style={{ height: '100%' }}>
+      <Row style={{ height: '100%', userSelect: 'none' }}>
         <Col span={5} style={{ borderRight: '1px solid #e6f7ff' }}>
           <div className={styles.editorHd}>新增节点</div>
           <FlowItemPanel type={type} />
