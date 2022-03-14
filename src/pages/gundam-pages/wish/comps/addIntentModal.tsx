@@ -45,7 +45,7 @@ export default (props: any) => {
       message.success(res?.resultDesc);
       submit();
     } else {
-      message.error(res?.resultDesc || '正在处理');
+      message.error(res?.resultDesc || '失败');
     }
     handleSpinning(false);
   };

@@ -91,7 +91,7 @@ const DetailPages: React.FC = (props: any) => {
       message.success(res?.resultDesc);
       refreshTable();
     } else {
-      message.error(res?.resultDesc || '正在处理');
+      message.error(res?.resultDesc || '失败');
     }
   };
 
