@@ -34,7 +34,6 @@ const DetailPages: React.FC = (props: any) => {
     let params = {
       // occurTime: occurDay + ' ' + newTime,
       robotId: info?.id,
-      // current: pageData.current,
       ...pageData,
     };
     let res: any;

@@ -208,7 +208,11 @@ export default (props: any) => {
                 <React.Fragment key={item.name}>
                   {item.type == 'input' && (
                     <Form.Item name={item.name} label={item.label} rules={item.rules}>
-                      <Input placeholder={item.placeholder} maxLength={200} />
+                      <Input
+                        placeholder={item.placeholder}
+                        maxLength={200}
+                        readOnly={item.name == 'slotName' && title == 'edit'}
+                      />
                     </Form.Item>
                   )}
                   {item.type == 'select' && item.name !== 'slotSource' && (
@@ -278,7 +282,7 @@ export default (props: any) => {
                                 return (
                                   <Option
                                     key={itex?.value || itex?.intentName}
-                                    value={itex?.value || itex?.intentName}
+                                    value={itex?.id || itex?.intentName}
                                   >
                                     {itex?.name || itex?.intentName}
                                   </Option>
