@@ -224,6 +224,7 @@ const RuleConfig = (props: any) => {
                                             <Select
                                               placeholder="请选择规则类型"
                                               size="small"
+                                              optionFilterProp="children"
                                               showSearch
                                             >
                                               {CURRENT_RULE_LIST.map((item: any, index: number) => {
@@ -249,6 +250,7 @@ const RuleConfig = (props: any) => {
                                               <Select
                                                 placeholder="请选择变量名称"
                                                 size="small"
+                                                optionFilterProp="children"
                                                 showSearch
                                               >
                                                 {tableList?.map((item: any, index: number) => {
@@ -279,6 +281,7 @@ const RuleConfig = (props: any) => {
                                               <Select
                                                 placeholder="请选择词槽名称"
                                                 size="small"
+                                                optionFilterProp="children"
                                                 showSearch
                                               >
                                                 {wordSlotList?.map((item: any, index: number) => {
@@ -309,6 +312,7 @@ const RuleConfig = (props: any) => {
                                               <Select
                                                 placeholder="请选择高级配置变量"
                                                 size="small"
+                                                optionFilterProp="children"
                                                 showSearch
                                               >
                                                 {EDGE_VAR_LIST?.map((item: any, index: number) => {
@@ -336,6 +340,7 @@ const RuleConfig = (props: any) => {
                                             <Select
                                               placeholder="请选择比较关系"
                                               size="small"
+                                              optionFilterProp="children"
                                               showSearch
                                             >
                                               {compareList?.map((item: any, index: number) => {
@@ -362,6 +367,7 @@ const RuleConfig = (props: any) => {
                                                 <Select
                                                   placeholder="请选择用户意图"
                                                   size="small"
+                                                  optionFilterProp="children"
                                                   showSearch
                                                 >
                                                   {wishList?.map((item: any, index: number) => {
@@ -390,6 +396,7 @@ const RuleConfig = (props: any) => {
                                                 <Select
                                                   placeholder="请选择用户意图"
                                                   size="small"
+                                                  optionFilterProp="children"
                                                   mode={'multiple'}
                                                   showSearch
                                                 >
