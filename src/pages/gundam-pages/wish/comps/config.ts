@@ -67,7 +67,7 @@ export const tableList: any = [
     },
   },
   {
-    dataIndex: 'flowName',
+    dataIndex: 'flowInfoName',
     title: '业务流程',
     search: false,
     ellipsis: true,

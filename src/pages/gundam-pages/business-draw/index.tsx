@@ -34,10 +34,8 @@ const DetailPages: React.FC = (props: any) => {
     let params = {
       // occurTime: occurDay + ' ' + newTime,
       robotId: info?.id,
-      page: pageData.current,
       ...pageData,
     };
-    delete params.current;
     let res: any;
     handleLoading(true);
     res = await getFlowTableList(params);
@@ -130,7 +128,7 @@ const DetailPages: React.FC = (props: any) => {
       id: data.id,
     };
     const res: any = await deleteFlowData(params);
-    message.info(res?.resultDesc || '正在处理');
+    message.info(res?.resultDesc || '失败');
     if (res?.resultCode == '100') {
       refreshTable();
     }

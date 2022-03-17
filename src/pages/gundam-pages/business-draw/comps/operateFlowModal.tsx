@@ -60,11 +60,11 @@ export default (props: any) => {
       res = await addFlowData({ ...params, flowType: 1 });
     }
     if (res?.resultCode == '100') {
-      message.info(res?.resultDesc || '正在处理');
+      message.info(res?.resultDesc);
       operateFunc();
       form.resetFields();
     } else {
-      message.info(res?.resultDesc);
+      message.info(res?.resultDesc || '失败');
     }
     handleSpinning(false);
   };
