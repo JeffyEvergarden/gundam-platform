@@ -116,6 +116,7 @@ const DetailPages: React.FC = (props: any) => {
     {
       dataIndex: 'trainData',
       title: '训练数据',
+      width: 160,
       search: false,
       render: (text: any, record: any) => {
         return (
@@ -131,7 +132,7 @@ const DetailPages: React.FC = (props: any) => {
       title: '操作',
       search: false,
       fixed: 'right',
-      width: 120,
+      width: 160,
       render: (text: any, record: any) => {
         return (
           <Space>
@@ -143,7 +144,7 @@ const DetailPages: React.FC = (props: any) => {
               onCancel={() => {}}
               onConfirm={() => deleteIntent(record)}
             >
-              <a>删除</a>
+              <a style={{ color: 'red' }}>删除</a>
             </Popconfirm>
           </Space>
         );
