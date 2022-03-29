@@ -92,7 +92,7 @@ const DetailPages: React.FC = (props: any) => {
             onCancel={() => {}}
             onConfirm={() => deleteSlot(record)}
           >
-            <a>删除</a>
+            <a style={{ color: 'red' }}>删除</a>
           </Popconfirm>
         </Space>
       );
