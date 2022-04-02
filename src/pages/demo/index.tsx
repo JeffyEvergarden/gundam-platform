@@ -5,6 +5,8 @@ import styles from './style.less';
 import { getFileInfo } from 'prettier';
 import { add } from 'lodash';
 
+import TestPage from './demo';
+
 const { Item: FormItem, List: FormList } = Form;
 const { TextArea } = Input;
 const { Option } = Select;
@@ -129,6 +131,8 @@ const DrawerForm = (props: any) => {
       </div>
 
       {footer}
+
+      <TestPage />
     </Form>
   );
 };

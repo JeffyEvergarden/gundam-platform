@@ -277,6 +277,10 @@ const EditorView = (props: PageViewProps) => {
 
   // 汇总绑定到 组件上
   const editorEvent = {
+    onNodeDoubleClick: (event: any) => {
+      console.log('双击:');
+      console.log(event);
+    },
     // 插入前
     onBeforeChange: (event: any) => {
       console.log('before', event);
@@ -356,8 +360,8 @@ const EditorView = (props: PageViewProps) => {
       {/* 上层按钮   相关了解 commend 组件 */}
       <Row style={{ height: '100%', userSelect: 'none' }}>
         <Col span={5} style={{ borderRight: '1px solid #e6f7ff' }}>
-          <div className={styles.editorHd}>新增节点</div>
-          <FlowItemPanel type={type} />
+          {/* <div className={styles.editorHd}>新增节点</div>
+          <FlowItemPanel type={type} /> */}
 
           <FlowDetailPanel
             type={type}
@@ -369,7 +373,7 @@ const EditorView = (props: PageViewProps) => {
         <Col span={19}>
           <div className={styles['editor-box']}>
             <div className={styles.editorHd}>
-              <FlowToolbar save={saveFn} />
+              <FlowToolbar save={saveFn} type={type} />
             </div>
 
             {/* 编辑部分   左菜单  中间编辑 */}
