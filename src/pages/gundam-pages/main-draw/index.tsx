@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react';
 
 import FlowPage from './flow';
 import { useModel } from 'umi';
-import DrawerForm from './drawer';
+import DrawerForm from './drawerV2';
 import EdgeDrawerForm from './EdgeDrawer';
 import style from './style.less';
 import { useNodeOpsModel, useSelectModel } from './model';

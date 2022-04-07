@@ -278,8 +278,13 @@ const EditorView = (props: PageViewProps) => {
   // 汇总绑定到 组件上
   const editorEvent = {
     onNodeDoubleClick: (event: any) => {
-      console.log('双击:');
-      console.log(event);
+      // console.log('双击:');
+      // console.log(event);
+      if (event.item.type === 'node') {
+        openSetting?.(event.item.model);
+      } else if (event.item.type === 'edge') {
+        openEdgeSetting?.(event.item.model);
+      }
     },
     // 插入前
     onBeforeChange: (event: any) => {
@@ -359,18 +364,18 @@ const EditorView = (props: PageViewProps) => {
     <GGEditor className={styles.editor} ref={editorRef}>
       {/* 上层按钮   相关了解 commend 组件 */}
       <Row style={{ height: '100%', userSelect: 'none' }}>
-        <Col span={5} style={{ borderRight: '1px solid #e6f7ff' }}>
-          {/* <div className={styles.editorHd}>新增节点</div>
-          <FlowItemPanel type={type} /> */}
+        {/* <Col span={5} style={{ borderRight: '1px solid #e6f7ff' }}>
+          <div className={styles.editorHd}>新增节点</div>
+          <FlowItemPanel type={type} />  // 拖拽创建
 
-          <FlowDetailPanel
+          <FlowDetailPanel   // 节点详情
             type={type}
             openSetting={openSetting}
             openEdgeSetting={openEdgeSetting}
           />
-        </Col>
+        </Col> */}
 
-        <Col span={19}>
+        <Col span={24}>
           <div className={styles['editor-box']}>
             <div className={styles.editorHd}>
               <FlowToolbar save={saveFn} type={type} />
@@ -383,12 +388,12 @@ const EditorView = (props: PageViewProps) => {
               </Col>
 
               {/* <Col span={} className={styles.editorSidebar}>
-                <FlowDetailPanel
+                <FlowDetailPanel  // 节点详情
                   type={type}
                   openSetting={openSetting}
                   openEdgeSetting={openEdgeSetting}
                 />
-                <EditorMinimap />
+                <EditorMinimap />  // 预览图
               </Col> */}
             </Row>
           </div>
