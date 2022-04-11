@@ -1,7 +1,14 @@
 import { useState } from 'react';
 import { message } from 'antd';
 import config from '@/config';
-import { normalNode, startNode, businessNode, parserType, processType } from './const';
+import {
+  normalNode,
+  startNode,
+  businessNode,
+  spBusinessNode,
+  parserType,
+  processType,
+} from './const';
 import {
   addNode,
   deleteNode,
@@ -23,6 +30,8 @@ const getDefaultNode = (type: string) => {
     return startNode;
   } else if (type === 'business') {
     return businessNode;
+  } else if (type === 'sp_business') {
+    return spBusinessNode;
   }
   return normalNode;
 };

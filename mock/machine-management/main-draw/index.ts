@@ -15,6 +15,7 @@ const nodeOps = (req: any, res: any) => {
 };
 
 const getConfig = (req: any, res: any) => {
+  const body = req.body || {};
   res.json({
     resultCode: successCode,
     datas: {
@@ -35,7 +36,6 @@ const getConfig = (req: any, res: any) => {
           x: 500,
           y: 500,
         },
-
         {
           frontId: '03',
           id: '03',
@@ -44,6 +44,7 @@ const getConfig = (req: any, res: any) => {
           x: 700,
           y: 200,
         },
+        { frontId: '04', id: '04', nodeType: 3, label: '特殊业务节点', x: 100, y: 300 },
       ],
       edges: [
         {

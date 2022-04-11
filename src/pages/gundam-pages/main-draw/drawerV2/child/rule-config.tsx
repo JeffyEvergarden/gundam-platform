@@ -1,0 +1,560 @@
+import { useState, useMemo } from 'react';
+import { Form, Input, Select, Button, Space, DatePicker, InputNumber } from 'antd';
+import { MinusCircleOutlined, AppstoreAddOutlined } from '@ant-design/icons';
+import Condition from '@/components/Condition';
+import { useModel } from 'umi';
+import styles from './style.less';
+import { ACTION_LIST, RUlE_LIST, EDGE_VAR_LIST, EDGE_RULE_LIST } from '../const';
+
+const { Item: FormItem, List: FormList } = Form;
+const { Option } = Select;
+
+const RuleConfig = (props: any) => {
+  const { wishList, wordSlotList, form, type = 'node', title, style } = props;
+
+  const CURRENT_RULE_LIST = type === 'node' ? RUlE_LIST : [...RUlE_LIST, ...EDGE_RULE_LIST];
+
+  // 监听数组变化
+  const onValuesChange = (obj: any, curObj: any) => {
+    // console.log(obj, curObj);
+    // return null;
+    let curIndex: number = -1;
+    let index: number = -1;
+    let item: any = obj.list.find((item: any, i: number) => {
+      if (item) {
+        curIndex = i;
+      }
+      return item;
+    });
+    if (!item) {
+      return;
+    }
+    if (curIndex < 0) {
+      return;
+    }
+    item = item['ruleList'].find((item: any, i: number) => {
+      if (item) {
+        index = i;
+      }
+      return item;
+    });
+    // ----------------
+    if (index < 0) {
+      return;
+    }
+    // 找出变动对象
+    curObj = curObj['list'][curIndex]['ruleList'];
+
+    let keys: any[] = Object.keys(item);
+    // console.log(keys);
+    if (keys.length > 1) {
+      console.log('删除/新增'); // 变动参数多代表是删除/新增
+      // setNum(num + 1);
+      return;
+    }
+    // console.log('-----------');
+    // console.log(obj, curObj, keys);
+    const formObj: any = form.getFieldsValue();
+    const list: any = formObj['list'];
+    const ruleList: any[] = list[curIndex]?.ruleList;
+    // 如果是rule_type 变动
+    if (keys.includes('ruleType')) {
+      curObj[index].ruleKey = undefined;
+      curObj[index].condition = undefined; // todo
+      curObj[index].ruleValue = undefined; // todo
+    } else if (keys.includes('condition')) {
+      if (['fill', 'unfill'].includes(curObj[index].condition)) {
+        // console.log(curObj[index]);
+        curObj[index].ruleValue = undefined;
+      } else if (
+        Array.isArray(curObj[index].ruleValue) && // 该值是数组
+        !['include', 'uninclude'].includes(curObj[index].condition) //选的比较符号不是多选模式
+      ) {
+        curObj[index].ruleValue = curObj[index]?.ruleValue?.[1] || undefined;
+      } else if (
+        curObj[index].ruleValue && // 选了值
+        !Array.isArray(curObj[index].ruleValue) && // 并且非数组
+        ['include', 'uninclude'].includes(curObj[index].condition) // 选择了多选模式
+      ) {
+        curObj[index].ruleValue = [curObj[index]?.ruleValue?.[1]];
+      }
+    }
+    // 直接更改curObj[index] 无效
+    ruleList[index] = curObj[index];
+    list[curIndex].ruleList = [...curObj];
+    form.setFieldsValue({
+      list: [...list],
+    });
+    // setNum(num + 1); // 刷新
+    return;
+  };
+
+  const { globalVarList } = useModel('gundam' as any, (model: any) => ({
+    globalVarList: model.globalVarList || [],
+  }));
+
+  const tableList: any[] = useMemo(() => {
+    return globalVarList.map((item: any, index: number) => {
+      return {
+        ...item,
+        index: index,
+      };
+    });
+  }, [globalVarList]);
+
+  const innerHtml = (
+    <FormList name="list">
+      {(outFields, { add: _add, remove: _remove }) => {
+        const length = outFields.length;
+        const addOutNew = () => {
+          // console.log(fields);
+          _add(
+            {
+              ruleList: [
+                {
+                  ruleType: undefined,
+                  ruleKey: undefined,
+                  condition: undefined,
+                  value: undefined,
+                },
+              ],
+            },
+            length,
+          );
+        };
+
+        return (
+          <div>
+            <div className={styles['zy-row']} style={{ marginBottom: '10px' }}>
+              <div className={styles['title_sp']}>规则配置</div>
+            </div>
+            <div className={styles['rule-box_bg']}>
+              <div style={style}>
+                {outFields.map((outFields: any, i: number) => {
+                  return (
+                    <div key={outFields.key} className={styles['rule-box']}>
+                      <FormList name={[outFields.name, 'ruleList']}>
+                        {(fields, { add, remove }) => {
+                          const length = fields.length;
+
+                          const addNew = () => {
+                            // console.log('------------form');
+                            // console.log(form);
+                            add(
+                              {
+                                ruleType: undefined,
+                                ruleKey: undefined,
+                                condition: undefined,
+                                ruleValue: undefined,
+                              },
+                              length,
+                            );
+                          };
+
+                          return (
+                            <div>
+                              <div className={styles['zy-row']} style={{ paddingBottom: '6px' }}>
+                                <span
+                                  className={styles['del-bt']}
+                                  onClick={() => {
+                                    _remove(i);
+                                  }}
+                                >
+                                  <MinusCircleOutlined />
+                                </span>
+                                <span>{i + 1}.规则组</span>
+                              </div>
+
+                              <div className={styles['rule-box_inner']}>
+                                <div style={{ display: 'flex' }}>
+                                  <div className={styles['flex-one']}>
+                                    {fields.map((field: any, index: number) => {
+                                      const curItem =
+                                        form.getFieldValue('list')?.[i]?.['ruleList']?.[index];
+                                      const ruleType: any = curItem?.ruleType || ''; // 规则类型
+
+                                      const compareVal: any = curItem?.condition || '';
+
+                                      const compareList: any[] =
+                                        CURRENT_RULE_LIST.find((item: any) => {
+                                          return ruleType === item.name;
+                                        })?.list || []; // 比较关系下拉列表
+                                      // console.log('重新渲染');
+                                      console.log(ruleType, compareList);
+
+                                      return (
+                                        <div key={field.key} className={styles['rule-list-box']}>
+                                          <div style={{ width: '30px', flexShrink: 0 }}>
+                                            <Condition r-if={index > -1}>
+                                              <Button
+                                                icon={<MinusCircleOutlined />}
+                                                type="link"
+                                                danger
+                                                onClick={() => {
+                                                  remove(index);
+                                                }}
+                                              />
+                                            </Condition>
+                                          </div>
+                                          <div className={styles['num']}>{index + 1}.</div>
+                                          {/* 规则罗列 */}
+                                          <Space>
+                                            <FormItem
+                                              name={[field.name, 'ruleType']}
+                                              fieldKey={[field.fieldKey, 'ruleType']}
+                                              rules={[
+                                                { required: true, message: '请选择规则类型' },
+                                              ]}
+                                              style={{ width: '180px' }}
+                                            >
+                                              <Select
+                                                placeholder="请选择规则类型"
+                                                size="small"
+                                                optionFilterProp="children"
+                                                showSearch
+                                              >
+                                                {CURRENT_RULE_LIST.map(
+                                                  (item: any, index: number) => {
+                                                    return (
+                                                      <Option
+                                                        key={index}
+                                                        value={item.name}
+                                                        opt={item}
+                                                      >
+                                                        {item.label}
+                                                      </Option>
+                                                    );
+                                                  },
+                                                )}
+                                              </Select>
+                                            </FormItem>
+
+                                            <Condition r-if={ruleType === '变量'}>
+                                              <FormItem
+                                                name={[field.name, 'ruleKey']}
+                                                fieldKey={[field.fieldKey, 'ruleKey']}
+                                                style={{ width: '180px' }}
+                                                rules={[
+                                                  { required: true, message: '请选择变量名称' },
+                                                ]}
+                                              >
+                                                {/* 全局变量的情况 */}
+                                                <Select
+                                                  placeholder="请选择变量名称"
+                                                  size="small"
+                                                  optionFilterProp="children"
+                                                  showSearch
+                                                >
+                                                  {tableList?.map((item: any, index: number) => {
+                                                    return (
+                                                      <Option
+                                                        key={index}
+                                                        value={item.name}
+                                                        opt={item}
+                                                      >
+                                                        {item.label}
+                                                      </Option>
+                                                    );
+                                                  })}
+                                                </Select>
+                                              </FormItem>
+                                            </Condition>
+
+                                            <Condition r-if={ruleType === '槽值填充状态'}>
+                                              <FormItem
+                                                name={[field.name, 'ruleKey']}
+                                                fieldKey={[field.fieldKey, 'ruleKey']}
+                                                style={{ width: '180px' }}
+                                                rules={[
+                                                  { required: true, message: '请选择词槽名称' },
+                                                ]}
+                                              >
+                                                {/* 全局变量的情况 */}
+                                                <Select
+                                                  placeholder="请选择词槽名称"
+                                                  size="small"
+                                                  optionFilterProp="children"
+                                                  showSearch
+                                                >
+                                                  {wordSlotList?.map((item: any, index: number) => {
+                                                    return (
+                                                      <Option
+                                                        key={index}
+                                                        value={item.name}
+                                                        opt={item}
+                                                      >
+                                                        {item.label}
+                                                      </Option>
+                                                    );
+                                                  })}
+                                                </Select>
+                                              </FormItem>
+                                            </Condition>
+
+                                            <Condition r-if={ruleType === '高级配置变量'}>
+                                              <FormItem
+                                                name={[field.name, 'ruleKey']}
+                                                fieldKey={[field.fieldKey, 'ruleKey']}
+                                                style={{ width: '180px' }}
+                                                rules={[
+                                                  { required: true, message: '请选择高级配置变量' },
+                                                ]}
+                                              >
+                                                {/* 全局变量的情况 */}
+                                                <Select
+                                                  placeholder="请选择高级配置变量"
+                                                  size="small"
+                                                  optionFilterProp="children"
+                                                  showSearch
+                                                >
+                                                  {EDGE_VAR_LIST?.map(
+                                                    (item: any, index: number) => {
+                                                      return (
+                                                        <Option
+                                                          key={index}
+                                                          value={item.name}
+                                                          opt={item}
+                                                        >
+                                                          {item.label}
+                                                        </Option>
+                                                      );
+                                                    },
+                                                  )}
+                                                </Select>
+                                              </FormItem>
+                                            </Condition>
+
+                                            <FormItem
+                                              name={[field.name, 'condition']}
+                                              fieldKey={[field.fieldKey, 'condition']}
+                                              style={{ width: '140px' }}
+                                              rules={[
+                                                { required: true, message: '请选择比较关系' },
+                                              ]}
+                                            >
+                                              {/* 全局变量的情况 */}
+                                              <Select
+                                                placeholder="请选择比较关系"
+                                                size="small"
+                                                optionFilterProp="children"
+                                                showSearch
+                                              >
+                                                {compareList?.map((item: any, index: number) => {
+                                                  return (
+                                                    <Option
+                                                      key={index}
+                                                      value={item.name}
+                                                      opt={item}
+                                                    >
+                                                      {item.label}
+                                                    </Option>
+                                                  );
+                                                })}
+                                              </Select>
+                                            </FormItem>
+
+                                            {/* 意图的情况 */}
+                                            <Condition r-if={['用户意图'].includes(ruleType)}>
+                                              <Condition
+                                                r-if={['==', '!=', undefined].includes(compareVal)}
+                                              >
+                                                <FormItem
+                                                  name={[field.name, 'ruleValue']}
+                                                  fieldKey={[field.fieldKey, 'ruleValue']}
+                                                  style={{ width: '140px' }}
+                                                  rules={[{ required: true, message: '请选择' }]}
+                                                >
+                                                  <Select
+                                                    placeholder="请选择用户意图"
+                                                    size="small"
+                                                    optionFilterProp="children"
+                                                    showSearch
+                                                  >
+                                                    {wishList?.map((item: any, index: number) => {
+                                                      return (
+                                                        <Option
+                                                          key={index}
+                                                          value={item.name}
+                                                          opt={item}
+                                                        >
+                                                          {item.label}
+                                                        </Option>
+                                                      );
+                                                    })}
+                                                  </Select>
+                                                </FormItem>
+                                              </Condition>
+                                              <Condition
+                                                r-if={['include', 'uninclude'].includes(compareVal)}
+                                              >
+                                                <FormItem
+                                                  name={[field.name, 'ruleValue']}
+                                                  fieldKey={[field.fieldKey, 'ruleValue']}
+                                                  style={{ width: '140px' }}
+                                                  rules={[{ required: true, message: '请选择' }]}
+                                                >
+                                                  <Select
+                                                    placeholder="请选择用户意图"
+                                                    size="small"
+                                                    optionFilterProp="children"
+                                                    mode={'multiple'}
+                                                    showSearch
+                                                  >
+                                                    {wishList?.map((item: any, index: number) => {
+                                                      return (
+                                                        <Option
+                                                          key={index}
+                                                          value={item.name}
+                                                          opt={item}
+                                                        >
+                                                          {item.label}
+                                                        </Option>
+                                                      );
+                                                    })}
+                                                  </Select>
+                                                </FormItem>
+                                              </Condition>
+                                            </Condition>
+
+                                            {/* 槽值填充状态 */}
+                                            <Condition r-if={['槽值填充状态'].includes(ruleType)}>
+                                              <Condition
+                                                r-if={!['fill', 'unfill'].includes(compareVal)}
+                                              >
+                                                <FormItem
+                                                  name={[field.name, 'ruleValue']}
+                                                  fieldKey={[field.fieldKey, 'ruleValue']}
+                                                  style={{ width: '140px' }}
+                                                  rules={[{ required: true, message: '请选择' }]}
+                                                >
+                                                  <Input
+                                                    placeholder="请输入"
+                                                    maxLength={150}
+                                                    autoComplete="off"
+                                                    size="small"
+                                                  />
+                                                </FormItem>
+                                              </Condition>
+                                            </Condition>
+
+                                            {/* 其他 */}
+                                            <Condition
+                                              r-if={['当前用户输入文本'].includes(ruleType)}
+                                            >
+                                              <FormItem
+                                                name={[field.name, 'ruleValue']}
+                                                fieldKey={[field.fieldKey, 'ruleValue']}
+                                                style={{ width: '140px' }}
+                                                rules={[{ required: true, message: '请输入' }]}
+                                              >
+                                                <Input
+                                                  placeholder="请输入"
+                                                  maxLength={150}
+                                                  autoComplete="off"
+                                                  size="small"
+                                                />
+                                              </FormItem>
+                                            </Condition>
+
+                                            <Condition r-if={['变量'].includes(ruleType)}>
+                                              <FormItem
+                                                name={[field.name, 'ruleValue']}
+                                                fieldKey={[field.fieldKey, 'ruleValue']}
+                                                style={{ width: '140px' }}
+                                                rules={[{ required: true, message: '请输入' }]}
+                                              >
+                                                <Input
+                                                  placeholder="请输入"
+                                                  maxLength={150}
+                                                  autoComplete="off"
+                                                  size="small"
+                                                />
+                                              </FormItem>
+                                            </Condition>
+
+                                            <Condition r-if={['系统时间'].includes(ruleType)}>
+                                              <FormItem
+                                                name={[field.name, 'ruleValue']}
+                                                fieldKey={[field.fieldKey, 'ruleValue']}
+                                                style={{ width: '140px' }}
+                                                rules={[{ required: true, message: '请选择' }]}
+                                              >
+                                                <DatePicker
+                                                  placeholder="请选择系统时间"
+                                                  size="small"
+                                                />
+                                              </FormItem>
+                                            </Condition>
+
+                                            <Condition r-if={['高级配置变量'].includes(ruleType)}>
+                                              <FormItem
+                                                name={[field.name, 'ruleValue']}
+                                                fieldKey={[field.fieldKey, 'ruleValue']}
+                                                style={{ width: '140px' }}
+                                                rules={[{ required: true, message: '请选择' }]}
+                                              >
+                                                <InputNumber
+                                                  placeholder="请输入"
+                                                  autoComplete="off"
+                                                  size="small"
+                                                  precision={0}
+                                                  min={0}
+                                                  max={1000000}
+                                                  style={{ width: '140px' }}
+                                                />
+                                              </FormItem>
+                                            </Condition>
+                                          </Space>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                  <Condition r-if={length > 1}>
+                                    <div className={styles['relation-text_bg']}>
+                                      <div className={styles['relation-text']}>且</div>
+                                    </div>
+                                  </Condition>
+                                </div>
+
+                                <div>
+                                  <Button
+                                    type="link"
+                                    icon={<AppstoreAddOutlined />}
+                                    style={{ marginLeft: '20px' }}
+                                    onClick={addNew}
+                                  >
+                                    新增规则
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        }}
+                      </FormList>
+
+                      <Condition r-if={i + 1 < length}>
+                        <div className={styles['or-box_bg']}>
+                          <div className={styles['or-box']}>或</div>
+                        </div>
+                      </Condition>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* 按钮组 */}
+              <div>
+                <Button type="link" icon={<AppstoreAddOutlined />} onClick={addOutNew}>
+                  新增规则组
+                </Button>
+              </div>
+            </div>
+          </div>
+        );
+      }}
+    </FormList>
+  );
+  return innerHtml;
+};
+
+export default RuleConfig;
