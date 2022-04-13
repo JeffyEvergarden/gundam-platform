@@ -1,0 +1,190 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { useModel, history } from 'umi';
+import {
+  Form,
+  Row,
+  Col,
+  Space,
+  Input,
+  Select,
+  Divider,
+  InputNumber,
+  Popconfirm,
+  Table,
+  Button,
+} from 'antd';
+import style from './style.less';
+import Condition from '@/components/Condition';
+import ProTable from '@ant-design/pro-table';
+import { PlusOutlined } from '@ant-design/icons';
+import InfoModal from './components/infoModal';
+import { useGlobalModel } from '../model';
+
+const InterfaceConfig: React.FC = (props: any) => {
+  const { getTableList, configLoading } = useGlobalModel();
+  const globalTableRef = useRef<any>({});
+  const globalModalRef = useRef<any>({});
+
+  const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+    setInfo: model.setInfo,
+  }));
+
+  const columns: any[] = [
+    {
+      title: '变量ID',
+      dataIndex: 'configKey',
+      width: 180,
+      ellipsis: true,
+      render: (val: any, row: any) => {
+        return val;
+      },
+    },
+    {
+      title: '变量名称',
+      dataIndex: 'configName',
+      width: 180,
+      ellipsis: true,
+      fixed: 'left',
+      render: (val: any, row: any) => {
+        return val;
+      },
+    },
+    {
+      title: '接口名称',
+      dataIndex: 'interfaceName',
+      search: false,
+      width: 200,
+    },
+    {
+      title: '变量类型',
+      dataIndex: 'configType',
+      search: false,
+      width: 200,
+      valueEnum: {
+        0: { text: '系统配置' },
+        1: { text: '变量配置' },
+      },
+    },
+    {
+      title: '变量说明',
+      dataIndex: 'configDesc',
+      search: false,
+      width: 200,
+    },
+    {
+      title: '操作',
+      dataIndex: 'op',
+      search: false,
+      fixed: 'right',
+      width: 130,
+      render: (val: any, row: any, index: number) => {
+        return (
+          <div>
+            <div style={{ display: 'flex' }}>
+              <Button // 标签无法编辑
+                type="link"
+                onClick={() => {
+                  globalModalRef.current?.open?.(row);
+                }}
+              >
+                编辑
+              </Button>
+
+              <Popconfirm
+                title="删除将不可恢复，确认删除？"
+                okText="确定"
+                cancelText="取消"
+                onConfirm={() => {
+                  deleteRow(row);
+                }}
+              >
+                <Button type="link" danger>
+                  删除
+                </Button>
+              </Popconfirm>
+            </div>
+          </div>
+        );
+      },
+    },
+  ];
+
+  const deleteRow = async (row: any) => {
+    let params: any = {
+      robotId: info.id,
+      id: row.id,
+    };
+    // let res: any = await deleteLabel(params);
+    // if (res) {
+    //   console.log('删除接口');
+    //   // message.success('删除成功');
+    //   labelTableRef.current.reload();
+    // } else {
+    //   message.error(res);
+    // }
+  };
+
+  return (
+    <div className={style['machine-page']}>
+      <ProTable<any>
+        columns={columns}
+        actionRef={globalTableRef}
+        scroll={{ x: columns.length * 200 }}
+        request={async (params = {}, sort, filter) => {
+          // console.log(sort, filter);
+          return getTableList({ robotId: info.id, ...params });
+          return {};
+        }}
+        editable={{
+          type: 'multiple',
+        }}
+        columnsState={{
+          persistenceKey: 'pro-table-machine-list',
+          persistenceType: 'localStorage',
+        }}
+        rowKey={(record) => record.id}
+        search={{
+          labelWidth: 'auto',
+        }}
+        form={{
+          // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
+          // 查询参数转化
+          syncToUrl: (values, type) => {
+            if (type === 'get') {
+              return {
+                ...values,
+              };
+            }
+            return values;
+          },
+        }}
+        pagination={{
+          pageSize: 10,
+        }}
+        dateFormatter="string"
+        headerTitle="全局变量列表"
+        toolBarRender={() => [
+          <Button
+            key="button"
+            icon={<PlusOutlined />}
+            type="primary"
+            onClick={() => {
+              globalModalRef.current?.open?.();
+            }}
+          >
+            新建
+          </Button>,
+        ]}
+      />
+
+      <InfoModal
+        cref={globalModalRef}
+        // confirm={confirmInfo}
+        // loading={opLoading}
+      />
+    </div>
+  );
+};
+
+export default InterfaceConfig;

@@ -18,3 +18,35 @@ export async function editConfig(data?: { [key: string]: any }) {
     data,
   });
 }
+
+/** 接口配置分页列表 **/
+export async function getInterfaceCurrentList(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/interface/listPage`, {
+    method: 'GET',
+    params,
+  });
+}
+
+/** 接口配置列表 **/
+export async function getInterfaceList(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/interface/list`, {
+    method: 'GET',
+    params,
+  });
+}
+
+/** 接口配置详情 **/
+export async function getInterfaceDetail(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/interface/param`, {
+    method: 'GET',
+    params,
+  });
+}
+
+/** 变量配置分页列表 **/
+export async function getConfigCurrentList(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/config/listPage`, {
+    method: 'GET',
+    params,
+  });
+}

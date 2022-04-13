@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { message } from 'antd';
 
-import { getConfig, editConfig } from './api';
+import { getConfig, editConfig, getInterfaceCurrentList, getConfigCurrentList } from './api';
 
 export const successCode = 100;
 
@@ -35,5 +35,45 @@ export const useConfigModel = () => {
     configLoading,
     getRobotConfig,
     editRobotConfig,
+  };
+};
+
+//接口配置
+export const useInterfaceModel = () => {
+  const [configLoading, setConfigLoading] = useState<boolean>(false);
+
+  const getTableList = async (params: any) => {
+    setConfigLoading(true);
+    let res: any = await getInterfaceCurrentList(params);
+    console.log(res);
+
+    setConfigLoading(false);
+
+    return { data: res.data.list, total: res.data.total };
+  };
+
+  return {
+    getTableList,
+    configLoading,
+  };
+};
+
+//变量配置
+export const useGlobalModel = () => {
+  const [configLoading, setConfigLoading] = useState<boolean>(false);
+
+  const getTableList = async (params: any) => {
+    setConfigLoading(true);
+    let res: any = await getConfigCurrentList(params);
+    console.log(res);
+
+    setConfigLoading(false);
+
+    return { data: res.data.list, total: res.data.total };
+  };
+
+  return {
+    getTableList,
+    configLoading,
   };
 };
