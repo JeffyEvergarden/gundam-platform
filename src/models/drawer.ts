@@ -12,6 +12,10 @@ export default function useGundamModel() {
   // 业务流程列表
   const [_flowList, _setFlowList] = useState<any[]>([]); // 业务流程列表
 
+  const [_wordSlotList, _setWordSlotList] = useState<any[]>([]);
+
+  const [_messageList, _setMessageList] = useState<any[]>([]);
+
   return {
     _wishList,
     _setWishList,
@@ -21,5 +25,9 @@ export default function useGundamModel() {
     _setLabelList,
     _flowList,
     _setFlowList,
+    _wordSlotList,
+    _setWordSlotList,
+    _messageList,
+    _setMessageList,
   };
 }

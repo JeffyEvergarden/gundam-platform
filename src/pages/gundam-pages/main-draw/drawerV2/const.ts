@@ -1,24 +1,23 @@
 export const ACTION_LIST: any = [
   {
-    name: '否',
-    label: '否',
+    name: 1,
+    label: '系统挂机',
   },
   {
-    name: '转人工',
-    label: '转人工',
+    name: 2,
+    label: '转业务流程',
   },
   {
-    name: '转ivr',
-    label: '转ivr',
+    name: 3,
+    label: '转人工服务流程',
   },
 ];
 
 // 普通规则
 export const RUlE_LIST: any[] = [
   {
-    name: '用户意图',
-    label: '用户意图',
-    type: 'wish', // 多选 取意图列表
+    name: 0,
+    label: '意图名称',
     list: [
       {
         name: '==',
@@ -39,8 +38,30 @@ export const RUlE_LIST: any[] = [
     ],
   },
   {
-    name: '槽值填充状态',
-    label: '槽值填充状态',
+    name: 2,
+    label: '输入文本',
+    list: [
+      {
+        name: '==',
+        label: '等于',
+      },
+      {
+        name: '!==',
+        label: '不等于',
+      },
+      {
+        name: 'like',
+        label: '包含',
+      },
+      {
+        name: 'unlike',
+        label: '不包含',
+      },
+    ],
+  },
+  {
+    name: 1,
+    label: '词槽',
     list: [
       {
         name: 'fill',
@@ -85,60 +106,7 @@ export const RUlE_LIST: any[] = [
     ],
   },
   {
-    name: '当前用户输入文本',
-    label: '当前用户输入文本',
-    list: [
-      {
-        name: '==',
-        label: '等于',
-      },
-      {
-        name: '!==',
-        label: '不等于',
-      },
-      {
-        name: 'like',
-        label: '包含',
-      },
-      {
-        name: 'unlike',
-        label: '不包含',
-      },
-    ],
-  },
-  {
-    name: '系统时间',
-    label: '系统时间',
-    type: 'date',
-    list: [
-      {
-        name: '==',
-        label: '等于',
-      },
-      {
-        name: '!=',
-        label: '不等于',
-      },
-      {
-        name: '<',
-        label: '小于',
-      },
-      {
-        name: '<=',
-        label: '小于等于',
-      },
-      {
-        name: '>',
-        label: '大于',
-      },
-      {
-        name: '>=',
-        label: '大于等于',
-      },
-    ],
-  },
-  {
-    name: '变量',
+    name: 4,
     label: '变量',
     list: [
       {
@@ -172,7 +140,7 @@ export const RUlE_LIST: any[] = [
 // 线规则
 export const EDGE_RULE_LIST: any[] = [
   {
-    name: '高级配置变量',
+    name: 5,
     label: '高级配置变量',
     list: [
       {
@@ -213,3 +181,11 @@ export const EDGE_VAR_LIST: any[] = [
     label: '未听清次数',
   },
 ];
+
+export const selectMap = {
+  意图名称: 0,
+  词槽: 1,
+  输入文本: 2,
+  变量: 4,
+  高级配置变量: 5,
+};

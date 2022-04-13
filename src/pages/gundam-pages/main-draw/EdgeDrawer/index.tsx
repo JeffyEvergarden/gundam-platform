@@ -67,13 +67,10 @@ const EdgeDrawerForm = (props: any) => {
     // await form2.validateFields().catch(() => false);
 
     console.log(res2);
-    if (res === false || res2 === false) {
+    if (res === false) {
       return;
     } else {
-      let rules: any =
-        res2?.['list']?.map((item: any, index: number) => {
-          return item?.ruleList || [];
-        }) || [];
+      let rules: any = res2?.['list'] || [];
 
       let result: any = await _saveLine({
         ...preParams,
@@ -121,10 +118,10 @@ const EdgeDrawerForm = (props: any) => {
   return (
     <Drawer
       title="连线配置"
-      width={850}
+      width={800}
       onClose={onClose}
       visible={visible}
-      bodyStyle={{ paddingBottom: 80 }}
+      bodyStyle={{ paddingBottom: 40 }}
       footer={footer}
       destroyOnClose
     >
@@ -164,6 +161,7 @@ const EdgeDrawerForm = (props: any) => {
         <RulesConfig
           form={form}
           title={'规则配置: '}
+          formName={'list'}
           type="edge"
           wishList={wishList || []}
           wordSlotList={wordSlotList || []}

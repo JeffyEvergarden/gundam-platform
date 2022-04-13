@@ -3,9 +3,8 @@ import { Modal, Button, Table } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import style from './style.less';
 import { useModel } from 'umi';
-import GlobalVarButton from './global-var-button';
 
-const GlobalVarModal: React.FC<any> = (props: any) => {
+const WordSlotSelectModal: React.FC<any> = (props: any) => {
   const { cref, onConfirm } = props;
 
   const [visible, setVisible] = useState<boolean>(false);
@@ -107,4 +106,4 @@ const GlobalVarModal: React.FC<any> = (props: any) => {
   );
 };
 
-export default GlobalVarModal;
+export default WordSlotSelectModal;

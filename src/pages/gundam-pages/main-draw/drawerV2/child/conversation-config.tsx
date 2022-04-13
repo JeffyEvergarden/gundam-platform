@@ -1,7 +1,7 @@
 import { Form, Input, Select, Button, Checkbox, Space, Radio } from 'antd';
 import { PlusCircleOutlined, MinusCircleOutlined, AppstoreAddOutlined } from '@ant-design/icons';
 import LabelSelect from '../../drawer/components/label-select';
-import GlobalVarButton from '../components/global-var-button';
+import CvsInput from '../components/cvs-input';
 import Condition from '@/components/Condition';
 import styles from './style.less';
 
@@ -28,118 +28,61 @@ const ConversationConfig = (props: any) => {
 
           return (
             <div>
-              <div className={styles['title_thrid']} style={{ paddingLeft: '20px' }}>
-                对话回应
-                <Button
-                  type="link"
-                  icon={<AppstoreAddOutlined />}
-                  style={{ marginLeft: '10px' }}
-                  onClick={addNew}
-                >
-                  新增答复
-                </Button>
+              <div className={styles['zy-row']} style={{ marginBottom: '10px' }}>
+                <div className={styles['title_sp']}>答复配置</div>
               </div>
 
-              <div>
+              <div className={styles['cvs-box']}>
                 {fields.map((field: any, index: number) => (
                   <div key={field.key} className={styles['list-box']}>
-                    <div style={{ width: '30px', flexShrink: 0 }}>
-                      <Button
-                        icon={<MinusCircleOutlined />}
-                        type="link"
-                        danger
+                    <div style={{ lineHeight: '32px' }}>
+                      <span
+                        className={styles['del-bt']}
                         onClick={() => {
                           remove(index);
                         }}
-                      />
-                    </div>
-                    <div className={styles['num']}>{index + 1}.</div>
-                    <div>
-                      {/* 类型 */}
-                      <FormItem
-                        name={[field.name, 'actionType']}
-                        fieldKey={[field.fieldKey, 'actionType']}
-                        label="答复类型"
                       >
-                        <Radio.Group>
-                          <Radio value={'文本'}>文本</Radio>
-                        </Radio.Group>
-                      </FormItem>
+                        <MinusCircleOutlined />
+                      </span>
+                      <span className={styles['cvs-num']}>{index + 1}.</span>
+                    </div>
+                    <div style={{ flex: '1 1 auto' }}>
+                      {/* 类型 */}
+                      <Form.Item
+                        name={[field.name, 'actionText']}
+                        fieldKey={[field.fieldKey, 'actionText']}
+                        rules={[{ required: true, message: '请输入答复内容' }]}
+                      >
+                        <CvsInput
+                          placeholder="请输入答复内容"
+                          title={'答复内容：'}
+                          type="textarea"
+                          style={{ width: '100%' }}
+                          autoComplete="off"
+                        />
+                      </Form.Item>
 
-                      {/* 答复内容 */}
-                      <FormList name={[field.name, 'nodeText']}>
-                        {(innerfields, { add, remove }) => {
-                          // console.log(fields);
-                          const addNew = () => {
-                            let length = innerfields.length;
-                            add({ actionText: '', textLabels: [] }, length);
-                          };
-
-                          return (
-                            <div style={{ paddingBottom: '20px' }}>
-                              <div className={styles['zy-row']}>
-                                <div
-                                  className={styles['title_thrid']}
-                                  style={{ marginRight: '20px' }}
-                                >
-                                  答复内容:
-                                </div>
-                                <Button
-                                  type="link"
-                                  icon={<PlusCircleOutlined />}
-                                  onClick={addNew}
-                                  style={{ marginLeft: '2px' }}
-                                ></Button>
-                              </div>
-
-                              {innerfields.map((innerfield: any, index: number) => (
-                                <div
-                                  key={innerfield.key}
-                                  className={styles['inner-list-box']}
-                                  style={{ paddingLeft: '30px' }}
-                                >
-                                  <div className={styles['num']}>{index + 1}.</div>
-                                  <div>
-                                    <Form.Item
-                                      name={[innerfield.name, 'actionText']}
-                                      fieldKey={[innerfield.fieldKey, 'actionText']}
-                                      label="答复内容"
-                                      rules={[{ required: true, message: '请输入答复内容' }]}
-                                    >
-                                      <GlobalVarButton
-                                        placeholder="请输入响应话术"
-                                        type="textarea"
-                                        style={{ width: '400px' }}
-                                        autoComplete="off"
-                                      />
-                                    </Form.Item>
-
-                                    <Form.Item
-                                      name={[innerfield.name, 'textLabels']}
-                                      fieldKey={[innerfield.fieldKey, 'textLabels']}
-                                      label="选择标签"
-                                    >
-                                      <LabelSelect color="orange"></LabelSelect>
-                                    </Form.Item>
-                                  </div>
-
-                                  <Button
-                                    icon={<MinusCircleOutlined />}
-                                    type="link"
-                                    danger
-                                    onClick={() => {
-                                      remove(index);
-                                    }}
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                          );
-                        }}
-                      </FormList>
+                      <Form.Item
+                        name={[field.name, 'textLabels']}
+                        fieldKey={[field.fieldKey, 'textLabels']}
+                        label="选择标签"
+                      >
+                        <LabelSelect color="magenta"></LabelSelect>
+                      </Form.Item>
                     </div>
                   </div>
                 ))}
+
+                <div>
+                  <Button
+                    type="link"
+                    icon={<AppstoreAddOutlined />}
+                    style={{ marginLeft: '10px' }}
+                    onClick={addNew}
+                  >
+                    新增答复内容
+                  </Button>
+                </div>
               </div>
             </div>
           );
