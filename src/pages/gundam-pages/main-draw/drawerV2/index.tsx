@@ -5,6 +5,7 @@ import { PlusCircleOutlined, AppstoreAddOutlined, MinusCircleOutlined } from '@a
 import ConversationConfig from './child/conversation-config';
 import RuleConfig from './child/rule-config';
 import ActionConfig from './child/action-config';
+import HighConfig from './child/high-config';
 import { useModel } from 'umi';
 import { useNodeOpsModel } from '../model';
 import styles from './style.less';
@@ -20,6 +21,7 @@ const DrawerForm = (props: any) => {
   const { cref, type, wishList, wordSlotList } = props;
 
   const [form] = Form.useForm();
+  const [form2] = Form.useForm();
 
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -73,6 +75,14 @@ const DrawerForm = (props: any) => {
       message.warning('存在未填写完全的配置');
       return false;
     });
+
+    let res2: any = await form2.validateFields().catch(() => {
+      message.warning('存在未填写完全的配置');
+      return false;
+    });
+    console.log('高级配置');
+    console.log(res2);
+
     if (res === false) {
       return;
     } else {
@@ -111,7 +121,6 @@ const DrawerForm = (props: any) => {
     >
       <Form form={form}>
         {/* 基础信息 */}
-
         <div className={styles['antd-form']}>
           <div className={styles['title']} style={{ marginTop: 0 }}>
             基本信息
@@ -233,6 +242,11 @@ const DrawerForm = (props: any) => {
             }}
           </FormList>
         </div>
+      </Form>
+
+      <Form form={form2}>
+        {/* 高级配置 */}
+        <HighConfig form={form2} bussinessList={flowList} />
       </Form>
     </Drawer>
   );

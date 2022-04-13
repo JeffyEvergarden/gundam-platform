@@ -1,18 +1,46 @@
-import { Form, Input, Select, Button, Checkbox, Space, Radio } from 'antd';
-import { PlusCircleOutlined, MinusCircleOutlined, AppstoreAddOutlined } from '@ant-design/icons';
+import { useState } from 'react';
+import { Form, Select, Button, Checkbox, Space, InputNumber, Radio } from 'antd';
+import {
+  PlusCircleOutlined,
+  MinusCircleOutlined,
+  SettingOutlined,
+  CaretUpOutlined,
+  AppstoreAddOutlined,
+} from '@ant-design/icons';
+import Condition from '@/components/Condition';
 import LabelSelect from '../../drawer/components/label-select';
 import CvsInput from '../components/cvs-input';
-import Condition from '@/components/Condition';
 import styles from './style.less';
+import ActionConfig from './action-config';
+import { ACTION_LIST } from '../const';
 
 const { Item: FormItem, List: FormList } = Form;
 const { Option } = Select;
 
-const ConversationConfig = (props: any) => {
-  const { name } = props;
+const HightformTemplate: any = (props: any) => {
+  const { form, name, title, showDefault } = props;
+
+  const isDisabled = false;
+
+  const onChange = (val: any) => {};
+
   return (
-    <div className={styles['conversation-list']}>
-      <FormList name={name}>
+    <div className={styles['high-config']}>
+      <Space align="baseline">
+        <div className={styles['title_sp']} style={{ marginRight: '16px' }}>
+          {title}处理
+        </div>
+
+        <Form.Item name={[name, 'defaultSetting']}>
+          <Radio.Group onChange={onChange} size="small">
+            <Radio value={1}>默认配置</Radio>
+            <Radio value={2}>自定义配置</Radio>
+          </Radio.Group>
+        </Form.Item>
+      </Space>
+
+      {/* 响应话术 */}
+      <FormList name={[name, 'responseList']}>
         {(fields, { add, remove }) => {
           const addNew = () => {
             let length = fields.length;
@@ -27,9 +55,9 @@ const ConversationConfig = (props: any) => {
           };
 
           return (
-            <div>
+            <div className={styles['conversation-list']}>
               <div className={styles['zy-row']} style={{ marginBottom: '10px' }}>
-                <div className={styles['title_sp']}>答复配置</div>
+                <div className={styles['title_third']}>响应话术</div>
               </div>
 
               <div className={styles['cvs-box']}>
@@ -51,11 +79,11 @@ const ConversationConfig = (props: any) => {
                       <Form.Item
                         name={[field.name, 'actionText']}
                         fieldKey={[field.fieldKey, 'actionText']}
-                        rules={[{ required: true, message: '请输入答复内容' }]}
+                        rules={[{ required: true, message: '请输入响应话术' }]}
                       >
                         <CvsInput
-                          placeholder="请输入答复内容"
-                          title={'答复内容：'}
+                          placeholder="请输入响应话术"
+                          title={'响应话术：'}
                           type="textarea"
                           style={{ width: '100%' }}
                           autoComplete="off"
@@ -80,7 +108,7 @@ const ConversationConfig = (props: any) => {
                     style={{ marginLeft: '10px' }}
                     onClick={addNew}
                   >
-                    新增答复内容
+                    新增响应话术
                   </Button>
                 </div>
               </div>
@@ -88,8 +116,30 @@ const ConversationConfig = (props: any) => {
           );
         }}
       </FormList>
+
+      <FormItem name={[name, 'times']} label={title + '次数'} style={{ marginTop: '8px' }}>
+        <InputNumber
+          max={100000}
+          min={1}
+          step="1"
+          precision={0}
+          style={{ width: '200px' }}
+          placeholder={'请输入' + title + '次数'}
+        />
+      </FormItem>
+
+      {/* 超限动作 */}
+      <div className={'label_sp'} style={{ marginTop: '8px' }}>
+        <ActionConfig
+          form={form}
+          title={title + '执行动作'}
+          formName={[name, 'action']}
+          name={[name, 'action']}
+          titleType={2}
+        />
+      </div>
     </div>
   );
 };
 
-export default ConversationConfig;
+export default HightformTemplate;

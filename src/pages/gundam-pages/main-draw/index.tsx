@@ -85,8 +85,8 @@ const MainDraw = (props: any) => {
     if (!node._id) {
       return;
     }
-    if (node._nodetype === 'start') {
-      message.warning('开始节点不允许删除');
+    if (node._nodetype === 'start' || node._nodetype === 'sp_business') {
+      message.warning('该节点不允许删除');
       (fake.current as any).executeCommand?.('undo');
       return;
     }
@@ -213,6 +213,8 @@ const MainDraw = (props: any) => {
     getFlowList(); // 获取业务流程列表
     getWishList(info.id);
     getWordSlotList(info.id);
+
+    (drawerRef.current as any).open({});
   }, []);
 
   useEffect(() => {

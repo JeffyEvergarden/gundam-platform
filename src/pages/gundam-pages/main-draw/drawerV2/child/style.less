@@ -229,3 +229,29 @@
   margin-top: 8px;
   padding: 0 16px;
 }
+
+// ------------- 执行动作
+
+.high-config {
+  margin-bottom: 36px;
+
+  :global {
+    .ant-tag {
+      height: 22px;
+    }
+
+    .ant-form-item {
+      margin-bottom: 12px !important;
+    }
+
+    .label_sp {
+      .ant-form-item-label > label {
+        flex: 1;
+        justify-content: flex-end;
+        min-width: 85px !important;
+        padding-right: 0;
+        text-align: right;
+      }
+    }
+  }
+}

@@ -7,16 +7,27 @@ import LabelSelect from '../../drawer/components/label-select';
 import { useModel } from 'umi';
 import styles from './style.less';
 import { ACTION_LIST } from '../const';
+import { useCallback } from 'react';
 
 const { Item: FormItem, List: FormList } = Form;
 const { Option } = Select;
 
 const ActionConfig = (props: any) => {
-  const { name, title, formName: _formName, form } = props;
+  const { name, title, formName: _formName, form, titleType = 1 } = props;
+
+  const [num, setNum] = useState<number>(1);
+
+  const update = useCallback(() => {
+    setNum(num + 1);
+  }, [num]);
 
   const getFormName = (text: any) => {
     if (name !== undefined) {
-      return [name, text];
+      if (name instanceof Array) {
+        return [...name, text];
+      } else {
+        return [name, text];
+      }
     } else {
       return text;
     }
@@ -68,7 +79,7 @@ const ActionConfig = (props: any) => {
         if (index === 0) {
           item = form.getFieldValue(key);
         } else {
-          item = item[key];
+          item = item?.[key] || {};
         }
       });
     } else {
@@ -79,26 +90,34 @@ const ActionConfig = (props: any) => {
 
   const currentItem = getItem();
   const _actionType = currentItem?.actionType;
+  // console.log('--------', currentItem, _actionType);
 
   const change = (val: any) => {
-    if (isArray) {
-      const list = form.getFieldValue(key);
-      const item = getItem();
-      item.businessId = undefined;
+    const item = getItem();
+    console.log(item);
+    item.businessId = undefined;
+    const list = form.getFieldValue(key);
+    if (isArray && list instanceof Array) {
       form.setFieldsValue({
         [key]: [...list],
       });
     } else {
+      // console.log(form.getFieldValue());
+      // console.log('change:', key, item);
       form.setFieldsValue({
-        businessId: undefined,
+        [key]: {
+          ...item,
+        },
       });
+      update();
     }
   };
 
   const innerHtml = (
     <div className={styles['action-config']}>
       <div className={styles['zy-row']} style={{ marginBottom: '10px' }}>
-        <div className={styles['title_sp']}>{title || '执行动作'}</div>
+        {titleType === 1 && <div className={styles['title_sp']}>{title || '执行动作'}</div>}
+        {titleType === 2 && <div className={styles['title_third']}>{title || '执行动作'}</div>}
       </div>
 
       <div>
@@ -150,7 +169,7 @@ const ActionConfig = (props: any) => {
           />
         </FormItem>
 
-        <FormItem name={getFormName('responseLabel')} label="标签">
+        <FormItem name={getFormName('responseLabel')} label="选择标签">
           <LabelSelect color="magenta"></LabelSelect>
         </FormItem>
 
