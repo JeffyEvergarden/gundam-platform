@@ -117,6 +117,8 @@ const MachinePagesHome: React.FC = (props: any) => {
       location={{
         pathname,
       }}
+      fixedHeader={true}
+      fixSiderbar={true}
       className={style['sp-layout']}
       route={{ routes }}
       menuHeaderRender={() => <MenuHeader />}
