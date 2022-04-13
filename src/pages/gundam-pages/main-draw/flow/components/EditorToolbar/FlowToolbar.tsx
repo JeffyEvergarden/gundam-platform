@@ -1,10 +1,11 @@
 import { Divider, Button } from 'antd';
 import { Toolbar } from 'gg-editor';
 import ToolbarButton from './ToolbarButton';
+import { FlowItemPanel } from '../EditorItemPanel';
 import styles from './index.less';
 
 const FlowToolbar = (props: any) => {
-  const { save } = props;
+  const { save, type } = props;
   const onSave = () => {
     save?.();
   };
@@ -25,6 +26,8 @@ const FlowToolbar = (props: any) => {
         <ToolbarButton command="zoomOut" icon="zoom-out" text="缩小" />
         <ToolbarButton command="autoZoom" icon="fit-map" text="居中定位" />
         <ToolbarButton command="resetZoom" icon="actual-size" text="回归原始尺寸" />
+
+        <FlowItemPanel type={type} />
       </Toolbar>
 
       <div className={styles.extraBar}>

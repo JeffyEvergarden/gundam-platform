@@ -15,6 +15,7 @@ const nodeOps = (req: any, res: any) => {
 };
 
 const getConfig = (req: any, res: any) => {
+  const body = req.body || {};
   res.json({
     resultCode: successCode,
     datas: {
@@ -35,7 +36,6 @@ const getConfig = (req: any, res: any) => {
           x: 500,
           y: 500,
         },
-
         {
           frontId: '03',
           id: '03',
@@ -44,6 +44,7 @@ const getConfig = (req: any, res: any) => {
           x: 700,
           y: 200,
         },
+        { frontId: '04', id: '04', nodeType: 3, label: '特殊业务节点', x: 100, y: 300 },
       ],
       edges: [
         {
@@ -173,6 +174,10 @@ const getLineConfig = (req: any, res: any) => {
   });
 };
 
+const getMessageList = (req: any, res: any) => {
+  res.json({});
+};
+
 // 菜单管理相关
 export default {
   // 主流程管理相关
@@ -186,6 +191,7 @@ export default {
   'POST /aichat/robot/node/nodeSave': nodeOps, // 保存节点配置
   'POST /aichat/robot/mainDraw/lineSave': nodeOps, // 保存线配置
   'POST /aichat/robot/mainDraw/lineRuleInfo': getLineConfig, // 获取线配置
+  'GET /aichat/robot/message/list': getMessageList,
 };
 
 // 接口1、获取机器人信息 传robotid

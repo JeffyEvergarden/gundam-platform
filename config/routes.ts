@@ -17,6 +17,14 @@ export default [
     noAuth: true,
   },
   {
+    path: '/demo2',
+    layout: false,
+    hideInMenu: true,
+    name: 'demo事例2',
+    component: './demo/demo',
+    noAuth: true,
+  },
+  {
     path: '/login',
     layout: false,
     hideInMenu: true,

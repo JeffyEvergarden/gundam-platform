@@ -1,0 +1,148 @@
+.antd-form {
+  :global {
+    .ant-form-item-label > label {
+      min-width: 100px;
+      padding-right: 10px;
+    }
+
+    .ant-tag {
+      height: 22px;
+    }
+  }
+}
+
+.title {
+  margin: 16px 0;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.title_sec {
+  font-size: 16px;
+}
+
+.title_thrid {
+  font-size: 14px;
+}
+
+.zy-row {
+  display: flex;
+  align-items: center;
+}
+
+.zy-row_end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 10px 0;
+}
+
+.num {
+  flex-shrink: 0;
+  width: 20px;
+  line-height: 32px;
+}
+
+.left {
+  margin-right: 16px;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.btn {
+  width: 30px;
+}
+
+.slot-box {
+  display: flex;
+  padding-top: 16px;
+  padding-left: 5px;
+  border-bottom: 1px solid #f3f3f3;
+}
+
+.scrollbar(@width, @color: #f5f5f5) {
+  ::-webkit-scrollbar {
+    width: @width;
+    height: @width * 4;
+    background: transparent;
+    visibility: hidden;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    width: @width;
+    background: @color;
+    border-radius: 30px;
+    visibility: hidden;
+  }
+
+  :hover {
+    ::-webkit-scrollbar {
+      visibility: visible;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      visibility: visible;
+    }
+  }
+}
+
+.table-box {
+  .scrollbar(1px, #1890ff);
+}
+
+.new-list-box {
+  position: relative;
+  padding-left: 20px;
+  border-bottom: 1px solid #f3f3f3;
+}
+
+.rule-list-box {
+  position: relative;
+  display: flex;
+  padding-top: 16px;
+  padding-left: 20px;
+  border-bottom: 1px solid #f3f3f3;
+
+  &::after {
+    position: absolute;
+    bottom: -8px;
+    left: 70px;
+    display: block;
+    padding: 0 2px;
+    color: #d48806;
+    line-height: 14px;
+    text-align: center;
+    background: #fffbe6;
+    border: 1px solid #ffe58f;
+    content: '\4e14';
+  }
+
+  &:last-child {
+    &::after {
+      display: none;
+    }
+  }
+}
+
+.module-box {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.del-bt {
+  margin-right: 6px;
+  color: #00000040;
+  cursor: pointer;
+}
+
+.num-circle {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  color: #fff;
+  font-size: 12px;
+  line-height: 20px;
+  text-align: center;
+  background: #1890ff;
+  border-radius: 50%;
+}

@@ -210,12 +210,16 @@ const EditorView = (props: PageViewProps) => {
     const map = {};
     const nodeMap = {};
     let startNode: any = null;
+    let spBussinessNode: any = null;
     nodes.forEach((item: any) => {
       map[item.id] = 0;
       nodeMap[item.id] = item;
       if (item._nodetype === 'start') {
         console.log('存在开始节点');
         startNode = item;
+      } else if (item._nodetype === 'sp_business') {
+        console.log('存在特殊业务流程节点');
+        spBussinessNode = item;
       }
     });
     let keys = Object.keys(map);
@@ -230,7 +234,7 @@ const EditorView = (props: PageViewProps) => {
       }
     });
     if (startNode) {
-      // 如果存在startNode, 不允许有节点的target是它
+      // 如果存在startNode(开始节点), 不允许有节点的target是它
       let line: any = lines.find((item: any) => {
         return item.target === startNode.id;
       });
@@ -240,6 +244,7 @@ const EditorView = (props: PageViewProps) => {
         return;
       }
     }
+
     // 判断根节点个数
     const tailNodesIds = lines.map((item: any) => {
       return item.target;
@@ -252,6 +257,15 @@ const EditorView = (props: PageViewProps) => {
       message.warning(`只能存在一个根节点`);
       return;
     }
+    //______
+    const sourceNodesIds = lines.map((item: any) => {
+      return item.source;
+    });
+    // 找出所有最后的尾节点 （因为尾节点不会作为连线的源头）
+    const tailNodes: any[] = nodes.filter((item: any) => {
+      return !sourceNodesIds.includes(item.id);
+    });
+
     // 这里判断是否存在没有任何关系的节点
     let illegalNode: any[] = []; // 违法Node
     keys.forEach((item: any) => {
@@ -263,9 +277,17 @@ const EditorView = (props: PageViewProps) => {
     if (illegalNode.length > 0 && nodes.length > 1) {
       let labels = illegalNode.map((item) => item.label).join('、');
       message.warning(`节点${labels}需补全连接关系`);
-    } else {
-      save?.({ nodes, edges: lines });
+      return;
     }
+    if (spBussinessNode) {
+      // 如果存在特殊的业务流程节点，则该节点必须是结束尾节点 （而且仅有一个尾节点）。
+      if (!tailNodes.includes(spBussinessNode) || tailNodes.length > 1) {
+        message.warning('特殊的业务流程节点(红色)必须作为唯一的流程结束节点');
+        return;
+      }
+    }
+
+    save?.({ nodes, edges: lines });
   };
 
   // 开启设置
@@ -277,6 +299,16 @@ const EditorView = (props: PageViewProps) => {
 
   // 汇总绑定到 组件上
   const editorEvent = {
+    onDoubleClick: (event: any) => {
+      if (!event || !event?.item) {
+        return;
+      }
+      if (event.item.type === 'node') {
+        openSetting?.(event.item.model);
+      } else if (event.item.type === 'edge') {
+        openEdgeSetting?.(event.item.model);
+      }
+    },
     // 插入前
     onBeforeChange: (event: any) => {
       console.log('before', event);
@@ -355,21 +387,21 @@ const EditorView = (props: PageViewProps) => {
     <GGEditor className={styles.editor} ref={editorRef}>
       {/* 上层按钮   相关了解 commend 组件 */}
       <Row style={{ height: '100%', userSelect: 'none' }}>
-        <Col span={5} style={{ borderRight: '1px solid #e6f7ff' }}>
+        {/* <Col span={5} style={{ borderRight: '1px solid #e6f7ff' }}>
           <div className={styles.editorHd}>新增节点</div>
-          <FlowItemPanel type={type} />
+          <FlowItemPanel type={type} />  // 拖拽创建
 
-          <FlowDetailPanel
+          <FlowDetailPanel   // 节点详情
             type={type}
             openSetting={openSetting}
             openEdgeSetting={openEdgeSetting}
           />
-        </Col>
+        </Col> */}
 
-        <Col span={19}>
+        <Col span={24}>
           <div className={styles['editor-box']}>
             <div className={styles.editorHd}>
-              <FlowToolbar save={saveFn} />
+              <FlowToolbar save={saveFn} type={type} />
             </div>
 
             {/* 编辑部分   左菜单  中间编辑 */}
@@ -379,12 +411,12 @@ const EditorView = (props: PageViewProps) => {
               </Col>
 
               {/* <Col span={} className={styles.editorSidebar}>
-                <FlowDetailPanel
+                <FlowDetailPanel  // 节点详情
                   type={type}
                   openSetting={openSetting}
                   openEdgeSetting={openEdgeSetting}
                 />
-                <EditorMinimap />
+                <EditorMinimap />  // 预览图
               </Col> */}
             </Row>
           </div>

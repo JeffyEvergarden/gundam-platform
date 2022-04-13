@@ -110,7 +110,7 @@ const NodeForm: React.FC<DetailFormProps> = (props: DetailFormProps) => {
 
   useEffect(() => {
     const model: any = item?.getModel();
-    console.log('item:', model);
+    // console.log('item:', model);
     if (type === 'node') {
       form.setFieldsValue({
         label: model?.label || '',

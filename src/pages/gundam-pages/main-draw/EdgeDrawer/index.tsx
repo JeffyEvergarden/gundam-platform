@@ -5,8 +5,7 @@ import styles from '../drawer/style.less';
 import { useModel } from 'umi';
 
 import { useNodeOpsModel } from '../model';
-import RuleVarButton from '../drawer/components/rule-var-button';
-import RulesConfig from '../drawer/child/rules-config';
+import RulesConfig from '../drawerV2/child/rule-config';
 
 const { Item: FormItem } = Form;
 const { TextArea } = Input;
@@ -17,7 +16,7 @@ const EdgeDrawerForm = (props: any) => {
 
   const [form] = Form.useForm();
 
-  const [form2] = Form.useForm();
+  // const [form2] = Form.useForm();
 
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -50,10 +49,10 @@ const EdgeDrawerForm = (props: any) => {
         ...info,
         level: info.level || 1,
       });
-      console.log(rules);
-      form2.setFieldsValue({
-        list: rules,
-      });
+      // console.log(rules);
+      // form2.setFieldsValue({
+      //   list: rules,
+      // });
       setVisible(true);
     },
     close: onClose,
@@ -64,16 +63,14 @@ const EdgeDrawerForm = (props: any) => {
   const saveLine = async () => {
     // console.log(form.getFieldsValue());
     let res: any = await form.validateFields().catch(() => false);
-    let res2: any = await form2.validateFields().catch(() => false);
+    let res2: any = false;
+    // await form2.validateFields().catch(() => false);
 
     console.log(res2);
-    if (res === false || res2 === false) {
+    if (res === false) {
       return;
     } else {
-      let rules: any =
-        res2?.['list']?.map((item: any, index: number) => {
-          return item?.ruleList || [];
-        }) || [];
+      let rules: any = res2?.['list'] || [];
 
       let result: any = await _saveLine({
         ...preParams,
@@ -121,10 +118,10 @@ const EdgeDrawerForm = (props: any) => {
   return (
     <Drawer
       title="连线配置"
-      width={850}
+      width={800}
       onClose={onClose}
       visible={visible}
-      bodyStyle={{ paddingBottom: 80 }}
+      bodyStyle={{ paddingBottom: 40 }}
       footer={footer}
       destroyOnClose
     >
@@ -160,17 +157,16 @@ const EdgeDrawerForm = (props: any) => {
             />
           </FormItem>
         </div>
-      </Form>
 
-      <RulesConfig
-        form={form2}
-        title={'规则配置: '}
-        hasForm={false}
-        style={{ marginLeft: '30px' }}
-        type="edge"
-        wishList={wishList || []}
-        wordSlotList={wordSlotList || []}
-      />
+        <RulesConfig
+          form={form}
+          title={'规则配置: '}
+          formName={'list'}
+          type="edge"
+          wishList={wishList || []}
+          wordSlotList={wordSlotList || []}
+        />
+      </Form>
     </Drawer>
   );
 };
