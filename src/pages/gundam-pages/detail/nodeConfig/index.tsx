@@ -1,434 +1,60 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Form, Select, Button, Checkbox, Space, InputNumber } from 'antd';
-import {
-  PlusCircleOutlined,
-  MinusCircleOutlined,
-  SettingOutlined,
-  CaretUpOutlined,
-} from '@ant-design/icons';
-import LabelSelect from '@/pages/gundam-pages/main-draw/drawer/components/label-select';
-import GlobalVarButton from '@/pages/gundam-pages/main-draw/drawer/components/global-var-button';
-import Condition from '@/components/Condition';
+import HighConfig from '../../main-draw/drawerV2/child/high-config';
 import style from './style.less';
-import { ACTION_LIST } from './const';
-import { useModel, history } from 'umi';
+import { useModel } from 'umi';
 
-const { Item: FormItem, List: FormList } = Form;
 const { Option } = Select;
 
 const NodeConfig: React.FC = (props: any) => {
   const [form] = Form.useForm();
 
-  const { info, setInfo, globalVarList, setGlobalVarList } = useModel(
+  const { info, flowList, businessFlowId, getLabelList, getFlowList } = useModel(
     'gundam' as any,
     (model: any) => ({
       info: model.info,
-      setInfo: model.setInfo,
-      globalVarList: model.globalVarList,
-      setGlobalVarList: model.setGlobalVarList,
+      flowList: model.flowList, // 业务流程列表
+      businessFlowId: model.businessFlowId,
+      getLabelList: model.getLabelList,
+      getFlowList: model.getFlowList,
     }),
   );
 
+  const submit = async () => {
+    let res: any = await form.validateFields();
+    console.log(res);
+  };
+  useEffect(() => {
+    getLabelList(); // 获取话术标签
+    getFlowList();
+    form.setFieldsValue({
+      rejectAction: {
+        responseList: [
+          { actionText: '不好意思，能再说一遍吗？' },
+          { actionText: '刚刚没听清楚，能再说一次吗？' },
+          { actionText: '我刚刚没听明白，能再说一遍吗？' },
+        ],
+      },
+      silenceAction: {
+        responseList: [
+          { actionText: '您好，您还在吗？' },
+          { actionText: '您好，能听到我说话吗？' },
+          { actionText: '您好，请问还在吗？' },
+        ],
+      },
+    });
+  }, []);
+
   return (
     <div className={style['machine-page']}>
-      <Form form={form}>
-        <div style={{ paddingLeft: '20px' }}>
-          <div className={style['zy-row']}>
-            <div className={style['title_sec']} style={{ marginRight: '20px', fontWeight: 'bold' }}>
-              允许跳转至业务流程：
-            </div>
-            <FormItem name="allowFlows" style={{ width: '400px', marginBottom: '0px' }}>
-              <Select placeholder="请选择允许跳转至业务流程" mode="multiple">
-                {[].map((item: any, index: number) => {
-                  return (
-                    <Option key={index} value={item.name} opt={item}>
-                      {item.label}
-                    </Option>
-                  );
-                })}
-              </Select>
-            </FormItem>
-          </div>
-        </div>
-
-        {/* 静默处理 */}
-
-        <FormList name="silenceText">
-          {(fields, { add, remove }) => {
-            const addNew = () => {
-              let length = fields.length;
-              add({ actionText: '', textLabels: [] }, length);
-            };
-
-            return (
-              <div style={{ paddingLeft: '20px' }}>
-                <div className={style['zy-row']}>
-                  <div
-                    className={style['title_sec']}
-                    style={{ marginRight: '20px', fontWeight: 'bold' }}
-                  >
-                    静默处理:
-                  </div>
-                  <Button type="link" icon={<PlusCircleOutlined />} onClick={addNew}></Button>
-                </div>
-
-                {fields.map((field: any, index: number) => (
-                  <div
-                    key={field.key}
-                    className={style['inner-list-box']}
-                    style={{ marginLeft: '30px' }}
-                  >
-                    <div className={style['num']}>{index + 1}.</div>
-                    <div>
-                      <Form.Item
-                        name={[field.name, 'actionText']}
-                        fieldKey={[field.fieldKey, 'actionText']}
-                        label="响应话术"
-                        rules={[{ required: true, message: '请输入响应话术' }]}
-                      >
-                        <GlobalVarButton
-                          placeholder="请输入响应话术"
-                          style={{ width: '400px' }}
-                          autoComplete="off"
-                        />
-                      </Form.Item>
-
-                      <Form.Item
-                        name={[field.name, 'textLabels']}
-                        fieldKey={[field.fieldKey, 'textLabels']}
-                        label="选择标签"
-                      >
-                        <LabelSelect color="orange"></LabelSelect>
-                      </Form.Item>
-                    </div>
-
-                    <Button
-                      icon={<MinusCircleOutlined />}
-                      type="link"
-                      danger
-                      onClick={() => {
-                        remove(index);
-                      }}
-                    />
-                  </div>
-                ))}
-              </div>
-            );
-          }}
-        </FormList>
-
-        <Space style={{ paddingLeft: '50px', paddingTop: '10px' }}>
-          <FormItem
-            name="silenceHungup"
-            label="是否结束挂机"
-            valuePropName="checked"
-            style={{ width: '200px' }}
-          >
-            <Checkbox>结束挂机</Checkbox>
-          </FormItem>
-
-          <FormItem name="silenceTransfer" label="动作" style={{ width: '200px' }}>
-            <Select placeholder="请选择动作" size="small">
-              {ACTION_LIST.map((item: any, index: number) => {
-                return (
-                  <Option key={index} value={item.name} opt={item}>
-                    {item.label}
-                  </Option>
-                );
-              })}
-            </Select>
-          </FormItem>
-        </Space>
-
-        {/* 拒识处理 */}
-
-        <FormList name="discernText">
-          {(fields, { add, remove }) => {
-            const addNew = () => {
-              let length = fields.length;
-              add({ actionText: '', textLabels: [] }, length);
-            };
-
-            return (
-              <div style={{ paddingLeft: '20px' }}>
-                <div className={style['zy-row']}>
-                  <div
-                    className={style['title_sec']}
-                    style={{ marginRight: '20px', fontWeight: 'bold' }}
-                  >
-                    拒识处理:
-                  </div>
-                  <Button type="link" icon={<PlusCircleOutlined />} onClick={addNew}></Button>
-                </div>
-
-                {fields.map((field: any, index: number) => (
-                  <div
-                    key={field.key}
-                    className={style['inner-list-box']}
-                    style={{ marginLeft: '30px' }}
-                  >
-                    <div className={style['num']}>{index + 1}.</div>
-                    <div>
-                      <Space>
-                        <FormItem
-                          name={[field.name, 'actionText']}
-                          fieldKey={[field.fieldKey, 'actionText']}
-                          label="响应话术"
-                          rules={[{ required: true, message: '请输入响应话术' }]}
-                        >
-                          <GlobalVarButton
-                            placeholder="请输入响应话术"
-                            style={{ width: '400px' }}
-                            autoComplete="off"
-                          />
-                        </FormItem>
-                      </Space>
-
-                      <FormItem
-                        name={[field.name, 'textLabels']}
-                        fieldKey={[field.fieldKey, 'textLabels']}
-                        label="选择标签"
-                      >
-                        <LabelSelect color="orange"></LabelSelect>
-                      </FormItem>
-                    </div>
-
-                    <Button
-                      icon={<MinusCircleOutlined />}
-                      type="link"
-                      danger
-                      onClick={() => {
-                        remove(index);
-                      }}
-                    />
-                  </div>
-                ))}
-              </div>
-            );
-          }}
-        </FormList>
-
-        <Space style={{ paddingLeft: '50px', paddingTop: '10px' }}>
-          <FormItem
-            name="discernHungup"
-            label="是否结束挂机"
-            valuePropName="checked"
-            style={{ width: '200px' }}
-          >
-            <Checkbox>结束挂机</Checkbox>
-          </FormItem>
-
-          <FormItem name="discernTransfer" label="动作" style={{ width: '200px' }}>
-            <Select placeholder="请选择动作" size="small">
-              {ACTION_LIST.map((item: any, index: number) => {
-                return (
-                  <Option key={index} value={item.name} opt={item}>
-                    {item.label}
-                  </Option>
-                );
-              })}
-            </Select>
-          </FormItem>
-        </Space>
-
-        {/* 澄清处理 */}
-
-        <FormList name="clarifyText">
-          {(fields, { add, remove }) => {
-            const addNew = () => {
-              let length = fields.length;
-              add({ actionText: '', textLabels: [] }, length);
-            };
-
-            return (
-              <div style={{ paddingLeft: '20px' }}>
-                <div className={style['zy-row']}>
-                  <div
-                    className={style['title_sec']}
-                    style={{ marginRight: '20px', fontWeight: 'bold' }}
-                  >
-                    澄清处理:
-                  </div>
-                </div>
-                <div style={{ marginLeft: '30px' }}>
-                  <Condition r-if={info?.robotType == 1}>
-                    <FormItem name="threshold" label="阈值" rules={[{ required: true }]}>
-                      <InputNumber
-                        style={{ width: 200 }}
-                        min="0"
-                        max="1"
-                        step="0.01"
-                        precision={2}
-                      />
-                    </FormItem>
-                    <FormItem name="thresholdGap" label="得分差值" rules={[{ required: true }]}>
-                      <InputNumber
-                        style={{ width: 200 }}
-                        min="0"
-                        max="1"
-                        step="0.01"
-                        precision={2}
-                      />
-                    </FormItem>
-                  </Condition>
-                  <Condition r-if={info?.robotType == 0}>
-                    <FormItem name="maxThreshold" label="最大阈值" rules={[{ required: true }]}>
-                      <InputNumber
-                        style={{ width: 200 }}
-                        min="0"
-                        max="1"
-                        step="0.01"
-                        precision={2}
-                      />
-                    </FormItem>
-                    <FormItem name="minThreshold" label="最小阈值" rules={[{ required: true }]}>
-                      <InputNumber
-                        style={{ width: 200 }}
-                        min="0"
-                        max="1"
-                        step="0.01"
-                        precision={2}
-                      />
-                    </FormItem>
-                  </Condition>
-                </div>
-
-                {fields.map((field: any, index: number) => (
-                  <div
-                    key={field.key}
-                    className={style['inner-list-box']}
-                    style={{ marginLeft: '30px' }}
-                  >
-                    <div className={style['num']}>{index + 1}.</div>
-                    <div>
-                      <Space>
-                        <FormItem
-                          name={[field.name, 'actionText']}
-                          fieldKey={[field.fieldKey, 'actionText']}
-                          label="响应话术"
-                          rules={[{ required: true, message: '请输入响应话术' }]}
-                        >
-                          <GlobalVarButton
-                            placeholder="请输入响应话术"
-                            style={{ width: '400px' }}
-                            autoComplete="off"
-                          />
-                        </FormItem>
-                      </Space>
-
-                      <FormItem
-                        name={[field.name, 'textLabels']}
-                        fieldKey={[field.fieldKey, 'textLabels']}
-                        label="选择标签"
-                      >
-                        <LabelSelect color="orange"></LabelSelect>
-                      </FormItem>
-                    </div>
-
-                    <Button
-                      icon={<MinusCircleOutlined />}
-                      type="link"
-                      danger
-                      onClick={() => {
-                        remove(index);
-                      }}
-                    />
-                  </div>
-                ))}
-                <div
-                  className={style['inner-list-box']}
-                  style={{ marginLeft: '30px', paddingTop: '0' }}
-                >
-                  <Button type="link" icon={<PlusCircleOutlined />} onClick={addNew}>
-                    新增响应话术
-                  </Button>
-                </div>
-              </div>
-            );
-          }}
-        </FormList>
-
-        <Space style={{ paddingLeft: '50px', paddingTop: '10px' }}>
-          <FormItem
-            name="discernHungup"
-            label="是否结束挂机"
-            valuePropName="checked"
-            style={{ width: '200px' }}
-          >
-            <Checkbox>结束挂机</Checkbox>
-          </FormItem>
-
-          <FormItem name="discernTransfer" label="动作" style={{ width: '200px' }}>
-            <Select placeholder="请选择动作" size="small">
-              {ACTION_LIST.map((item: any, index: number) => {
-                return (
-                  <Option key={index} value={item.name} opt={item}>
-                    {item.label}
-                  </Option>
-                );
-              })}
-            </Select>
-          </FormItem>
-        </Space>
-
-        <div style={{ paddingLeft: '20px' }}>
-          <div className={style['title_sec']} style={{ marginRight: '20px', fontWeight: 'bold' }}>
-            客户未听清处理:
-          </div>
-          <div style={{ marginLeft: '30px' }}>
-            <FormItem name="repeatIntent" label="未听清意图名称" style={{ width: '400px' }}>
-              <Select placeholder="请选择未听清意图名称">
-                {[].map((item: any, index: number) => {
-                  return (
-                    <Option key={index} value={item.name} opt={item}>
-                      {item.label}
-                    </Option>
-                  );
-                })}
-              </Select>
-            </FormItem>
-
-            <FormItem name="repeatSize" label="重复次数" style={{ width: '400px' }}>
-              <InputNumber min={1} step="1" precision={0} />
-            </FormItem>
-
-            <Space>
-              <FormItem
-                name="repeatHungup"
-                label="是否结束挂机"
-                valuePropName="checked"
-                style={{ width: '220px' }}
-              >
-                <Checkbox>结束挂机</Checkbox>
-              </FormItem>
-
-              <FormItem name="repeatTransfer" label="动作" style={{ width: '200px' }}>
-                <Select placeholder="请选择动作" size="small">
-                  {ACTION_LIST.map((item: any, index: number) => {
-                    return (
-                      <Option key={index} value={item.name} opt={item}>
-                        {item.label}
-                      </Option>
-                    );
-                  })}
-                </Select>
-              </FormItem>
-            </Space>
-
-            <FormItem name="repeatTransferText" label="过渡话术">
-              <GlobalVarButton
-                placeholder="请输入过渡话术"
-                style={{ width: '400px' }}
-                autoComplete="off"
-              />
-            </FormItem>
-
-            <FormItem name="textLabels" label="选择标签">
-              <LabelSelect color="orange"></LabelSelect>
-            </FormItem>
-          </div>
-        </div>
-      </Form>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <Form form={form}>
+          <HighConfig form={form} bussinessList={flowList} type={'config'}></HighConfig>
+        </Form>
+        <Button type="primary" onClick={submit} style={{ alignSelf: 'flex-end' }}>
+          保存
+        </Button>
+      </div>
     </div>
   );
 };

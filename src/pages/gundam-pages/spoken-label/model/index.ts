@@ -3,7 +3,7 @@ import { message } from 'antd';
 
 import { getLabelList, deleteLabel, addNewLabel, editLabel } from './api';
 
-export const successCode = 100;
+export const successCode = '0000';
 
 // 菜单管理的表格数据
 export const useLabelModel = () => {
@@ -15,11 +15,11 @@ export const useLabelModel = () => {
     setLabelLoading(true);
     let res: any = await getLabelList(params);
     setLabelLoading(false);
-    let { datas = [], totalPage, totalSize } = res;
-    if (!Array.isArray(datas)) {
-      datas = [];
+    let { list = [], totalPage, totalSize } = res?.data;
+    if (!Array.isArray(list)) {
+      list = [];
     }
-    datas = datas.map((item: any, index: number) => {
+    list = list.map((item: any, index: number) => {
       return {
         ...item,
         title: item.name,
@@ -27,8 +27,8 @@ export const useLabelModel = () => {
       };
     });
     // console.log('labelList', data);
-    setLabelList(datas || []);
-    return { data: datas, total: totalSize };
+    setLabelList(list || []);
+    return { data: list, total: totalSize };
   };
 
   return {

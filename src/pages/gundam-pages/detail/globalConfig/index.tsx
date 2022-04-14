@@ -133,7 +133,11 @@ const InterfaceConfig: React.FC = (props: any) => {
         scroll={{ x: columns.length * 200 }}
         request={async (params = {}, sort, filter) => {
           // console.log(sort, filter);
-          return getTableList({ robotId: info.id, ...params });
+          return getTableList({
+            robotId: info.id,
+            page: params.current,
+            ...params,
+          });
           return {};
         }}
         editable={{

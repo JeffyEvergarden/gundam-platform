@@ -143,7 +143,11 @@ const DetailPages: React.FC = (props: any) => {
         scroll={{ x: columns.length * 200 }}
         request={async (params = {}, sort, filter) => {
           // console.log(sort, filter);
-          return getLabelTableList({ robotId: info.id, ...params });
+          return getLabelTableList({
+            robotId: info.id,
+            page: params.current,
+            ...params,
+          });
           // return {};
         }}
         editable={{
