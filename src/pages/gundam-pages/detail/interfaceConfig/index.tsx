@@ -68,25 +68,19 @@ const InterfaceConfig: React.FC = (props: any) => {
       width: 200,
       ellipsis: true,
       valueEnum: {
-        0: { text: 'POST' },
-        1: { text: 'GET' },
+        0: { text: 'post' },
+        1: { text: 'get' },
       },
-    },
-    {
-      title: '请求头',
-      dataIndex: 'requestHeader',
-      search: false,
-      width: 200,
-    },
-    {
-      title: '请求报文体',
-      dataIndex: 'requestBody',
-      search: false,
-      width: 200,
     },
     {
       title: '接口描述',
       dataIndex: 'interfaceDesc',
+      search: false,
+      width: 200,
+    },
+    {
+      title: '关联词槽数量',
+      dataIndex: '',
       search: false,
       width: 200,
     },
@@ -111,7 +105,11 @@ const InterfaceConfig: React.FC = (props: any) => {
         actionRef={interfaceTableRef}
         scroll={{ x: columns.length * 200 }}
         request={async (params = {}, sort, filter) => {
-          return getTableList({ robotId: info.id, ...params });
+          return getTableList({
+            robotId: info.id,
+            page: params.current,
+            ...params,
+          });
           return {};
         }}
         editable={{

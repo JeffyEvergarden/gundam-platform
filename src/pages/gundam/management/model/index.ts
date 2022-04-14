@@ -13,7 +13,7 @@ import {
   getPublishStatus,
 } from './api';
 
-export const successCode = 100;
+export const successCode = '0000';
 
 // 菜单管理的表格数据
 export const useTableModel = () => {
@@ -25,11 +25,11 @@ export const useTableModel = () => {
     setTableLoading(true);
     let res: any = await getMachineList(params);
     setTableLoading(false);
-    let { datas = [], totalPage, totalSize } = res;
-    if (!Array.isArray(datas)) {
-      datas = [];
+    let { list = [], totalPage, totalSize } = res.data;
+    if (!Array.isArray(list)) {
+      list = [];
     }
-    datas = datas.map((item: any, index: number) => {
+    list = list.map((item: any, index: number) => {
       return {
         ...item,
         title: item.name,
@@ -37,8 +37,8 @@ export const useTableModel = () => {
       };
     });
     // console.log('tableList', datas);
-    setTableList(datas || []);
-    return { data: datas, total: totalSize };
+    setTableList(list || []);
+    return { data: list, total: totalSize };
   };
 
   return {

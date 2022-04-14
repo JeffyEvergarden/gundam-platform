@@ -304,8 +304,7 @@ const MachineManagement: React.FC = (props: any) => {
         actionRef={tableRef}
         scroll={{ x: columns.length * 200 }}
         request={async (params = {}, sort, filter) => {
-          // console.log(sort, filter);
-          return getTableList(params);
+          return getTableList({ page: params.current, ...params });
         }}
         editable={{
           type: 'multiple',

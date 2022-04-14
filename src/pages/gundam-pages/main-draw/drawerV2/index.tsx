@@ -246,7 +246,7 @@ const DrawerForm = (props: any) => {
 
       <Form form={form2}>
         {/* 高级配置 */}
-        <HighConfig form={form2} bussinessList={flowList} />
+        <HighConfig form={form2} bussinessList={flowList} type={'flow'} />
       </Form>
     </Drawer>
   );

@@ -3,7 +3,7 @@ import { message } from 'antd';
 
 import { getChatInitData, getTextDialogData } from './api';
 
-export const successCode = 100;
+export const successCode = '0000';
 
 // 菜单管理的表格数据
 export const useChatModel = () => {

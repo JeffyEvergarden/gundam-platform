@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Form, Select, Button, Checkbox, Space, InputNumber } from 'antd';
+import { Form, Select, Button, Checkbox, Space, Radio } from 'antd';
 import {
   PlusCircleOutlined,
   MinusCircleOutlined,
@@ -15,29 +15,44 @@ const { Item: FormItem, List: FormList } = Form;
 const { Option } = Select;
 
 const HighConfig = (props: any) => {
-  const { form, wishList, bussinessList } = props;
+  const { form, wishList, bussinessList, type } = props;
 
   const [flag, setFlag] = useState<boolean>(false);
 
   return (
     <>
-      <div>
-        <div
-          className={styles['title']}
-          onClick={() => {
-            setFlag(!flag);
-          }}
-        >
-          高级配置
-          <span style={{ color: '#1890ff', marginLeft: '24px', fontSize: '16px' }}>
-            {!flag && <SettingOutlined />}
-            {flag && <CaretUpOutlined />}
-          </span>
+      <Condition r-if={type == 'flow'}>
+        <div>
+          <div
+            className={styles['title']}
+            onClick={() => {
+              setFlag(!flag);
+            }}
+          >
+            高级配置
+            <span style={{ color: '#1890ff', marginLeft: '24px', fontSize: '16px' }}>
+              {!flag && <SettingOutlined />}
+              {flag && <CaretUpOutlined />}
+            </span>
+          </div>
         </div>
-      </div>
+      </Condition>
 
-      <Condition r-show={flag}>
+      <Condition r-show={flag || type == 'config'}>
         <div className={styles['antd-form']}>
+          <Space align="baseline">
+            <div className={styles['title_sp']} style={{ marginRight: '16px' }}>
+              流程跳转
+            </div>
+            <Condition r-if={type == 'flow'}>
+              <Form.Item name="defaultSetting">
+                <Radio.Group size="small">
+                  <Radio value={1}>默认配置</Radio>
+                  <Radio value={2}>自定义配置</Radio>
+                </Radio.Group>
+              </Form.Item>
+            </Condition>
+          </Space>
           <FormItem name="allowFlows" label="允许跳转至业务流程" style={{ width: '400px' }}>
             <Select placeholder="请选择允许跳转至业务流程" mode="multiple">
               {bussinessList.map((item: any, index: number) => {
@@ -51,13 +66,13 @@ const HighConfig = (props: any) => {
           </FormItem>
         </div>
 
-        <HightformTemplate form={form} name="silenceAction" title={'静默'} />
+        <HightformTemplate form={form} name="silenceAction" title={'静默'} type={type} />
 
-        <HightformTemplate form={form} name="rejectAction" title={'拒识'} />
+        <HightformTemplate form={form} name="rejectAction" title={'拒识'} type={type} />
 
-        <HightformTemplate form={form} name="clearAction" title={'澄清'} />
+        <HightformTemplate form={form} name="clearAction" title={'澄清'} type={type} />
 
-        <HightformTemplate form={form} name="unclearAction" title={'客户未听清'} />
+        <HightformTemplate form={form} name="unclearAction" title={'客户未听清'} type={type} />
       </Condition>
     </>
   );
