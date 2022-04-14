@@ -71,69 +71,12 @@ export const RUlE_LIST: any[] = [
         name: 'unfill',
         label: '未填充', // 没有后续输入
       },
-      {
-        name: '==',
-        label: '等于',
-      },
-      {
-        name: '!==',
-        label: '不等于',
-      },
-      {
-        name: '<',
-        label: '小于',
-      },
-      {
-        name: '<=',
-        label: '小于等于',
-      },
-      {
-        name: '>',
-        label: '大于',
-      },
-      {
-        name: '>=',
-        label: '大于等于',
-      },
-      {
-        name: 'like',
-        label: '包含',
-      },
-      {
-        name: 'unlike',
-        label: '不包含',
-      },
     ],
   },
   {
     name: 4,
     label: '变量',
-    list: [
-      {
-        name: '==',
-        label: '等于',
-      },
-      {
-        name: '!=',
-        label: '不等于',
-      },
-      {
-        name: '<',
-        label: '小于',
-      },
-      {
-        name: '<=',
-        label: '小于等于',
-      },
-      {
-        name: '>',
-        label: '大于',
-      },
-      {
-        name: '>=',
-        label: '大于等于',
-      },
-    ],
+    list: [],
   },
 ];
 
@@ -167,6 +110,7 @@ export const EDGE_RULE_LIST: any[] = [
   },
 ];
 
+// 高级配置（连线下拉）
 export const EDGE_VAR_LIST: any[] = [
   {
     name: '静默次数',
@@ -182,10 +126,87 @@ export const EDGE_VAR_LIST: any[] = [
   },
 ];
 
+// 一级筛选映射
 export const selectMap = {
   意图名称: 0,
   词槽: 1,
   输入文本: 2,
   变量: 4,
   高级配置变量: 5,
+};
+
+// 四级筛选映射
+export const VALUE_TYPE_MAP = {
+  变量: 1,
+  词槽: 2,
+  自定义: 3,
+};
+
+// 四级筛选下拉
+export const VALUE_TYPE_LIST = [
+  {
+    name: 1,
+    label: '变量',
+  },
+  {
+    name: 2,
+    label: '词槽',
+  },
+  {
+    name: 3,
+    label: '自定义',
+  },
+];
+
+// 条件过滤
+export const conditionFilter = (valueType: any) => {
+  let list: any[] = [];
+  if (valueType === 'number' || valueType === 'date') {
+    list = [
+      {
+        name: '==',
+        label: '等于',
+      },
+      {
+        name: '!==',
+        label: '不等于',
+      },
+      {
+        name: '<',
+        label: '小于',
+      },
+      {
+        name: '<=',
+        label: '小于等于',
+      },
+      {
+        name: '>',
+        label: '大于',
+      },
+      {
+        name: '>=',
+        label: '大于等于',
+      },
+    ];
+  } else if (valueType === 'text') {
+    list = [
+      {
+        name: '==',
+        label: '等于',
+      },
+      {
+        name: '!==',
+        label: '不等于',
+      },
+      {
+        name: 'like',
+        label: '包含',
+      },
+      {
+        name: 'unlike',
+        label: '不包含',
+      },
+    ];
+  }
+  return list;
 };

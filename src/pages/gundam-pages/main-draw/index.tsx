@@ -3,6 +3,7 @@ import { useRef, useEffect } from 'react';
 import FlowPage from './flow';
 import { useModel } from 'umi';
 import DrawerForm from './drawerV2';
+import SpDrawerForm from './drawerV2/sp-index';
 import EdgeDrawerForm from './EdgeDrawer';
 import style from './style.less';
 import { useNodeOpsModel, useSelectModel } from './model';
@@ -17,6 +18,7 @@ const MainDraw = (props: any) => {
   const fake = useRef<any>(null);
   const drawerRef = useRef<any>(null);
   const edgeDrawerRef = useRef<any>(null);
+  const spNodeDrawerRef = useRef<any>(null);
 
   const { info, getLabelList, getFlowList, businessFlowId } = useModel(
     'gundam' as any,
@@ -159,8 +161,11 @@ const MainDraw = (props: any) => {
       });
       eventbus.$emit('refresh');
     };
-
-    (drawerRef.current as any).open(config, callBack);
+    if (['sp_business', 'business'].includes(info._nodetype)) {
+      (spNodeDrawerRef.current as any).open(config, callBack);
+    } else {
+      (drawerRef.current as any).open(config, callBack);
+    }
   };
 
   // 打开线配置
@@ -241,6 +246,8 @@ const MainDraw = (props: any) => {
       </div>
 
       <DrawerForm cref={drawerRef} type={type} wishList={wishList} wordSlotList={wordSlotList} />
+
+      <SpDrawerForm cref={spNodeDrawerRef} type={type} />
 
       <EdgeDrawerForm
         cref={edgeDrawerRef}
