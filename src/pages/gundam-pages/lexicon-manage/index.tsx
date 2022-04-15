@@ -3,7 +3,6 @@ import ProTable from '@ant-design/pro-table';
 import { useLexiconModel } from './model';
 import { Space, Button, Tabs, Popconfirm, message } from 'antd';
 import OperateModal from './components/modalCompo';
-import { uuid2 } from '@/uitils';
 const { TabPane } = Tabs;
 
 const LexiconManage: React.FC = (props: any) => {

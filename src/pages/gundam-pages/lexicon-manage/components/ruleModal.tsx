@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Modal, Form, Input, Button, Space } from 'antd';
-import { uuid2 } from '@/uitils';
 
 const { TextArea } = Input;
 

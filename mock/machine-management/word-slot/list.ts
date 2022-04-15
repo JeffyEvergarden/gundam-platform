@@ -144,5 +144,5 @@ export default {
   'GET /aichat/robot/entity/list': getzzReal, // 获取实体列表
   'GET /aichat/robot/interface/list': interFace, // 获取接口列表
   'GET /aichat/robot/interface/param': paramList, // 获取入参值列表
-  'POST /aichat/robot/slot/slotInfo': slotInfoList, // 获取入参值-下级列表
+  'GET /aichat/robot/slot/slotInfo': slotInfoList, // 获取入参值-下级列表
 };

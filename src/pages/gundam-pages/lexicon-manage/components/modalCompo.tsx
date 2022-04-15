@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Modal, Form, Input, Button, Space, Tag, message } from 'antd';
-import { uuid2 } from '@/uitils';
 import RuleDecriModal from './ruleModal';
 import styles from './index.less';
 

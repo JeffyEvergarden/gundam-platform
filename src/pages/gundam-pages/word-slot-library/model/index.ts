@@ -10,6 +10,7 @@ import {
   zzReal,
   interFace,
   paramList,
+  slotInfo,
 } from './api';
 
 export const successCode = 100;
@@ -71,7 +72,7 @@ export const useKeyWordModel = () => {
 
   const getslotInfo = async (params?: any) => {
     setTableLoading(true);
-    let res: any = await paramList(params);
+    let res: any = await slotInfo(params);
     return res;
   };
 

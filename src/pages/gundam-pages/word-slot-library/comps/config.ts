@@ -7,6 +7,7 @@ export const wordSlotTableList: any = [
   {
     dataIndex: 'slotDesc',
     title: '描述',
+    ellipsis: true,
   },
   {
     dataIndex: 'slotSource',

@@ -1,4 +1,3 @@
-import { message } from 'antd';
 import { useState } from 'react';
 import { lexiconList, delLexicon, add, edit } from './api';
 

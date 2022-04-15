@@ -16,7 +16,6 @@ const tailLayout = {
 };
 
 const slotSourceData = [
-  // { value: 1, intentName: '枚举实体' },
   { value: 4, intentName: '正则实体' },
   { value: 2, intentName: '用户文本' },
   { value: 7, intentName: '接口' },
@@ -101,8 +100,8 @@ export default (props: any) => {
     }
   };
 
-  const inValChange = async (val: number) => {
-    if (val == 1) {
+  const inValChange = async (val: number, option: any) => {
+    if (option.key == 1) {
       setInval_val('变量');
     } else setInval_val('词槽');
 
@@ -219,10 +218,7 @@ export default (props: any) => {
   const getIntentSelList = async () => {
     const res: any = await getIntentInfoList({
       robotId: modalData?.robotId,
-      // headIntent: 0,
     });
-    console.log(res?.datas);
-    // const res: any = await getIntentTableList();
     let arr: any = { ...fieldSelectData };
     if (res?.datas) {
       let data: any =
@@ -415,7 +411,7 @@ export default (props: any) => {
                   <Select placeholder={''} onChange={inValChange}>
                     {inVal.map((itex: any) => {
                       return (
-                        <Option key={itex?.id} value={itex?.intentName}>
+                        <Option key={itex?.value} value={itex?.intentName}>
                           {itex?.intentName}
                         </Option>
                       );
