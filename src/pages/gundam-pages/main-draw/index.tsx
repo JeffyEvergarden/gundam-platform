@@ -39,13 +39,13 @@ const MainDraw = (props: any) => {
     getLabelList,
     getFlowList,
   } = useModel('drawer' as any, (model: any) => ({
-    wishList: model._wishList,
-    wordSlotList: model._wordSlotList,
-    getMessageList: model.getMessageList,
-    getWishList: model.getWishList,
-    getWordSlotList: model.getWordSlotList,
-    getLabelList: model.getLabelList,
-    getFlowList: model.getFlowList,
+    wishList: model._wishList || [],
+    wordSlotList: model._wordSlotList || [],
+    getMessageList: model.getMessageList || [],
+    getWishList: model.getWishList || [],
+    getWordSlotList: model.getWordSlotList || [],
+    getLabelList: model.getLabelList || [],
+    getFlowList: model.getFlowList || [],
   }));
 
   // 前置参数

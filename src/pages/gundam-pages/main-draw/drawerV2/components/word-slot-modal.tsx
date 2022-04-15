@@ -61,6 +61,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
         ...newForm,
         slotName: curItem?.slotName,
         slotDesc: curItem?.slotDesc,
+        slotSource: curItem?.slotSource,
       };
 
       confirm?.(newFormValue);

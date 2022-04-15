@@ -217,3 +217,15 @@ export const conditionFilter = (valueType: any) => {
   }
   return list;
 };
+
+export const wordSlotSourceMap = {
+  0: '枚举实体',
+  1: '意图',
+  2: '用户文本',
+  3: '规则模版',
+  4: '正则实体',
+  5: '函数返回值',
+  6: '全局变量',
+  7: '接口',
+  8: '业务参数',
+};

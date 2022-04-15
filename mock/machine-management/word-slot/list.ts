@@ -13,7 +13,8 @@ const getWordSlotList = (req: any, res: any) => {
         {
           id: '011',
           slotName: '前端mock词槽1',
-          slotDesc: '描述1',
+          slotDesc:
+            '描述1前端mock词槽1前端mock词槽1前端mock词槽1前端mock词槽1前端mock词槽1前端mock词槽1前端mock词槽1前端mock词槽1前端mock词槽1',
           slotSource: '0',
           flowName: '1',
           entity: '0',

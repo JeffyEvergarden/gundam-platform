@@ -8,6 +8,7 @@ import {
 } from '@ant-design/icons';
 import styles from '../style.less';
 import WordSlotModal from './word-slot-modal';
+import { wordSlotSourceMap } from '../const';
 
 const { Option } = Select;
 
@@ -113,12 +114,14 @@ const WordSlotTable: React.FC<any> = (props: any) => {
     },
     {
       title: '来源',
-      dataIndex: 'source',
+      dataIndex: 'slotSource',
       width: 80,
       ellipsis: {
         showTitle: false,
       },
-      render: (val: any) => val,
+      render: (val: any) => {
+        return wordSlotSourceMap[val] || '';
+      },
     },
     {
       title: '操作',
