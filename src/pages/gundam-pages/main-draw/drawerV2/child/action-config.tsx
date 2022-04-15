@@ -159,7 +159,7 @@ const ActionConfig = (props: any) => {
             </FormItem>
           </Condition>
         </Space>
-        <FormItem name={getFormName('responseText')} label="话术">
+        <FormItem name={getFormName('actionText')} label="话术">
           <CvsInput
             placeholder="请输入话术内容"
             type="textarea"
