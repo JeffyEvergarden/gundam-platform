@@ -65,7 +65,7 @@ const MachineManagement: React.FC = (props: any) => {
   // 下钻系统
   const goToNewSystem = (row: any) => {
     if (!row.id) {
-      message.warning('获取不到机器人信息');
+      message.warning('获取不到机器人ID');
       return null;
     }
     history.push(`/gundamPages/mainDraw?id=${row.id}`);
@@ -103,7 +103,7 @@ const MachineManagement: React.FC = (props: any) => {
 
       if (res.resultCode === config.successCode) {
         modalRef.current?.close?.();
-        goToNewSystem({ ...res.datas });
+        goToNewSystem({ ...res.data });
       } else {
         // message.error(res?.resultDesc || '未知系统异常');
       }

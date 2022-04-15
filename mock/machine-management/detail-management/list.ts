@@ -115,6 +115,7 @@ const getConfig = (req: any, res: any) => {
   });
 };
 
+//接口配置
 const getInterface = (req: any, res: any) => {
   console.log(req.query);
 
@@ -141,12 +142,14 @@ const getInterface = (req: any, res: any) => {
           updateTime: '2022-04-11 11:16:00',
           dataStatus: 0, //
           uppdateBy: 'x',
+          connectTimes: 5, // 关联词槽数量
         },
       ],
     },
   });
 };
 
+//接口详情
 const getInterfaceDetail = (req: any, res: any) => {
   console.log(req.query);
 

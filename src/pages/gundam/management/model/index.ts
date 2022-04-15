@@ -176,12 +176,12 @@ export const usePublishModel = () => {
     let res: any = await getPublishStatus({
       robotId,
     });
-    setProductionTime(res.datas?.prodTime || '-');
-    setStatus(!!res.datas?.prodStatus || false);
-    setResult(res.datas?.prodDesc || '-');
-    setTestTime(res.datas?.testTime || '-');
-    setTestStatus(!!res.datas?.testStatus || false);
-    setTestResult(res.datas?.testDesc || '-');
+    setProductionTime(res.data?.prodTime || '-');
+    setStatus(!!res.data?.prodStatus || false);
+    setResult(res.data?.prodDesc || '-');
+    setTestTime(res.data?.testTime || '-');
+    setTestStatus(!!res.data?.testStatus || false);
+    setTestResult(res.data?.testDesc || '-');
   };
 
   return {
