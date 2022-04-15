@@ -274,8 +274,6 @@ export const useSelectModel = () => {
   const _getWishList = async (id?: any) => {
     let res: any = await getIntentList({
       robotId: id,
-      current: 1,
-      pageSize: 1000,
     });
     let data: any[] = res?.data || res?.datas;
     data = Array.isArray(data) ? data : [];
@@ -295,8 +293,6 @@ export const useSelectModel = () => {
   const _getWordSlotList = async (id?: any) => {
     let res: any = await getWordSlotTableList({
       robotId: id,
-      current: 1,
-      pageSize: 1000,
     });
     let data: any[] = res?.data || res?.datas;
     data = Array.isArray(data) ? data : [];
@@ -318,8 +314,6 @@ export const useSelectModel = () => {
   const _getFlowList = async (id?: any) => {
     let res: any = await getFlowList({
       robotId: id,
-      current: 1,
-      pageSize: 1000,
     });
     let data: any[] =
       res?.datas?.map?.((item: any, index: number) => {

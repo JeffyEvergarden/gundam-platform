@@ -28,7 +28,7 @@ export const useLabelModel = () => {
     });
     // console.log('labelList', data);
     setLabelList(list || []);
-    return { data: list, total: totalSize };
+    return { data: list, total: totalPage };
   };
 
   return {

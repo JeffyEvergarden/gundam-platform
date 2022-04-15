@@ -139,29 +139,29 @@ const getInfo = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
     data: {
-      robotInfo: {
-        id: '100',
-        flowId: '100',
-        robotName: '命运官位指定阿尔托莉亚潘多拉',
-        robotType: 1,
-      },
-      globalVarList: [
-        {
-          configKey: '01',
-          configName: '小米',
-          configDesc: '小米',
-        },
-        {
-          configKey: '02',
-          configName: '小米2',
-          configDesc: '小米',
-        },
-        {
-          configKey: '03',
-          configName: '小米3',
-          configDesc: '小米',
-        },
-      ],
+      // robotInfo: {
+      id: '100',
+      flowId: '100',
+      robotName: '命运官位指定阿尔托莉亚潘多拉',
+      robotType: 1,
+      // },
+      // globalVarList: [
+      //   {
+      //     configKey: '01',
+      //     configName: '小米',
+      //     configDesc: '小米',
+      //   },
+      //   {
+      //     configKey: '02',
+      //     configName: '小米2',
+      //     configDesc: '小米',
+      //   },
+      //   {
+      //     configKey: '03',
+      //     configName: '小米3',
+      //     configDesc: '小米',
+      //   },
+      // ],
     },
   });
 };
@@ -238,7 +238,7 @@ const getMessageList = (req: any, res: any) => {
 // 菜单管理相关
 export default {
   // 主流程管理相关
-  'POST /aichat/robot/robot/robotConfig': getInfo, // 获取预先配置信息 (全局变量、主流程id)
+  'GET /aichat/robot/robot/robotConfig': getInfo, // 获取预先配置信息 (全局变量、主流程id)
   'POST /aichat/robot/mainDraw/nodeAdd': nodeOps, // 添加节点
   'POST /aichat/robot/mainDraw/nodeUpdate': nodeOps, // 修改业务状态
   'POST /aichat/robot/node/nodeDelete': nodeOps, // 删除节点

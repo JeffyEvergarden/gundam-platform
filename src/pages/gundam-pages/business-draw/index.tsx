@@ -26,15 +26,11 @@ const DetailPages: React.FC = (props: any) => {
   }));
 
   const getTables = async (p?: any) => {
-    let newDay = new Date().toLocaleDateString();
-    let occurDay = newDay.replace(/\//g, '-');
-    let newTime = new Date().toLocaleTimeString('en-GB');
-    const [pageData] = p;
-    let data: any = [];
+    console.log(p);
     let params = {
-      // occurTime: occurDay + ' ' + newTime,
       robotId: info?.id,
-      ...pageData,
+      page: p.current,
+      ...p,
     };
     let res: any;
     handleLoading(true);
@@ -42,17 +38,13 @@ const DetailPages: React.FC = (props: any) => {
     console.log(res);
     try {
       return {
-        data: res?.datas || data,
-        total: res?.totalSize,
-        current: pageData?.current,
-        pageSize: pageData?.pageSize,
+        data: res?.data?.list || [],
+        total: res?.data?.totalPage,
       };
     } catch {
       return {
         data: [],
         total: 1,
-        current: pageData?.current,
-        pageSize: pageData?.pageSize,
       };
     } finally {
       handleLoading(false);
@@ -156,7 +148,7 @@ const DetailPages: React.FC = (props: any) => {
           // defaultCollapsed: false,
           labelWidth: 'auto',
         }}
-        request={async (...params) => {
+        request={async (params) => {
           return getTables(params);
         }}
       />

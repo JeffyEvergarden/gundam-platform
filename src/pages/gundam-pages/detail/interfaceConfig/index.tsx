@@ -67,10 +67,6 @@ const InterfaceConfig: React.FC = (props: any) => {
       search: false,
       width: 200,
       ellipsis: true,
-      valueEnum: {
-        0: { text: 'post' },
-        1: { text: 'get' },
-      },
     },
     {
       title: '接口描述',

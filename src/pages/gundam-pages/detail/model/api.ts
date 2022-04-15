@@ -50,3 +50,27 @@ export async function getConfigCurrentList(params?: { [key: string]: any }) {
     params,
   });
 }
+
+/** 变量配置新增 **/
+export async function addNewGlobal(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/config/add`, {
+    method: 'POST',
+    data,
+  });
+}
+
+/** 变量配置编辑 **/
+export async function editNewGlobal(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/config/update`, {
+    method: 'POST',
+    data,
+  });
+}
+
+/** 变量配置编辑 **/
+export async function deleteGlobal(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/config/del`, {
+    method: 'POST',
+    data,
+  });
+}

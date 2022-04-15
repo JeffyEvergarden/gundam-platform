@@ -80,31 +80,6 @@ const InfoModal: React.FC<any> = (props: any) => {
     submit,
   }));
 
-  const handleVarInterface = () => {
-    let val = form.getFieldValue('interfaceName');
-    setVarInterface(val);
-    console.log(val);
-  };
-
-  const addInParams = () => {
-    const tempChildrenList = form.getFieldValue('inParams') || [];
-    tempChildrenList.push({
-      inParam: undefined,
-    });
-    form.setFieldsValue({
-      inParams: [...tempChildrenList],
-    });
-  };
-  const addOutParams = () => {
-    const tempChildrenList = form.getFieldValue('outParams') || [];
-    tempChildrenList.push({
-      outParam: undefined,
-    });
-    form.setFieldsValue({
-      outParams: [...tempChildrenList],
-    });
-  };
-
   return (
     <Modal
       width={650}

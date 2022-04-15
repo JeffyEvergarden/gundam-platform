@@ -102,8 +102,8 @@ const DetailPages: React.FC = (props: any) => {
 
   useEffect(() => {
     console.log(info);
-    let formData = form.getFieldsValue();
-    getConfig();
+    // let formData = form.getFieldsValue();
+    // getConfig();
   }, []);
   // return (
   //   <div className={style['machineDetail-page']}>

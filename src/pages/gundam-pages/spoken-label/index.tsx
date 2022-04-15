@@ -7,6 +7,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import Condition from '@/components/Condition';
 import InfoModal from './components/info-modal';
 import { useOpModel, useLabelModel } from './model';
+import config from '@/config';
 
 // 话术标签列表
 const DetailPages: React.FC = (props: any) => {
@@ -28,7 +29,7 @@ const DetailPages: React.FC = (props: any) => {
         ...formData?.form,
       };
       res = await addNewLabel(params);
-      if (res.resultCode === 100) {
+      if (res.resultCode === config.successCode) {
         labelModalRef.current?.close?.();
         labelTableRef.current.reload();
       } else {

@@ -12,6 +12,7 @@ import {
   Popconfirm,
   Table,
   Button,
+  message,
 } from 'antd';
 import style from './style.less';
 import Condition from '@/components/Condition';
@@ -19,9 +20,10 @@ import ProTable from '@ant-design/pro-table';
 import { PlusOutlined } from '@ant-design/icons';
 import InfoModal from './components/infoModal';
 import { useGlobalModel } from '../model';
+import config from '@/config';
 
 const InterfaceConfig: React.FC = (props: any) => {
-  const { getTableList, configLoading } = useGlobalModel();
+  const { _deleteLabel, addGlobal, editGlobal, getTableList, configLoading } = useGlobalModel();
   const globalTableRef = useRef<any>({});
   const globalModalRef = useRef<any>({});
 
@@ -109,14 +111,46 @@ const InterfaceConfig: React.FC = (props: any) => {
       robotId: info.id,
       id: row.id,
     };
-    // let res: any = await deleteLabel(params);
-    // if (res) {
-    //   console.log('删除接口');
-    //   // message.success('删除成功');
-    //   labelTableRef.current.reload();
-    // } else {
-    //   message.error(res);
-    // }
+    let res: any = await _deleteLabel(params);
+    if (res) {
+      console.log('删除接口');
+      // message.success('删除成功');
+      globalTableRef.current.reload();
+    } else {
+      message.error(res);
+    }
+  };
+
+  const confirmInfo = async (formData: any) => {
+    let res: any = null;
+    if (formData._openType === 'new') {
+      let params: any = {
+        robotId: info.id,
+        configType: 1, //这里默认1
+        ...formData?.form,
+      };
+      res = await addGlobal(params);
+      if (res.resultCode === config.successCode) {
+        globalModalRef.current?.close?.();
+        globalTableRef.current.reload();
+      } else {
+        message.error(res?.resultDesc || '未知系统异常');
+      }
+    } else if (formData._openType === 'edit') {
+      let params: any = {
+        robotId: info.id,
+        id: formData?._originInfo?.id,
+        configType: 1, //这里默认1
+        ...formData?.form,
+      };
+      res = await editGlobal(params);
+      if (res === true) {
+        globalModalRef.current?.close?.();
+        globalTableRef.current.reload();
+      } else {
+        message.error(res);
+      }
+    }
   };
 
   return (
@@ -178,7 +212,7 @@ const InterfaceConfig: React.FC = (props: any) => {
 
       <InfoModal
         cref={globalModalRef}
-        // confirm={confirmInfo}
+        confirm={confirmInfo}
         // loading={opLoading}
       />
     </div>

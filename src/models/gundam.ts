@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { queryLabelList, queryFlowList } from '@/services/api';
+import { queryLabelList, queryFlowList, queryGlobalValConfig } from '@/services/api';
 import config from '@/config';
 
 export default function useGundamModel() {
@@ -14,6 +14,9 @@ export default function useGundamModel() {
   // 业务流程id
   const [businessFlowId, setBusinessFlowId] = useState<any>(localBusinessFlowId);
 
+  // 业务流程列表
+  const [flowList, setFlowList] = useState<any[]>([]);
+
   // 机器人的话术标签列表
   const [labelList, setLabelList] = useState<any>([]);
 
@@ -26,8 +29,6 @@ export default function useGundamModel() {
     let data: any[] = res?.data?.list || [];
     setLabelList(data);
   };
-
-  const [flowList, setFlowList] = useState<any[]>([]); // 业务流程列表
 
   // 获取业务流程列表
   const _getFlowList = async () => {
@@ -48,11 +49,21 @@ export default function useGundamModel() {
     setFlowList(data);
   };
 
+  const getGlobalValConfig = async () => {
+    if (!info.id) {
+      console.log('机器人的全局变量配置获取不到机器人id');
+      return null;
+    }
+    let res: any = await queryGlobalValConfig({ robotId: info.id });
+    let data: any[] = res?.data?.list || [];
+    setGlobalVarList(data);
+  };
+
   return {
     info,
     setInfo,
     globalVarList,
-    setGlobalVarList,
+    getGlobalValConfig,
     labelList,
     getLabelList,
     flowList,

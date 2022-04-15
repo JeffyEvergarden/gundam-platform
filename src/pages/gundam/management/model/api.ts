@@ -12,10 +12,10 @@ export async function getMachineList(params?: { [key: string]: any }) {
 }
 
 /** 获取单个机器人列表 **/
-export async function getMachineInfo(data?: { [key: string]: any }) {
+export async function getMachineInfo(params?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/robot/robotConfig`, {
-    method: 'POST',
-    data,
+    method: 'GET',
+    params,
   });
 }
 
@@ -70,5 +70,13 @@ export async function getPublishStatus(data?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/robot/getPublishStatus`, {
     method: 'POST',
     data,
+  });
+}
+
+//全局变量配置
+export async function _getGlobalValConfig(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/config/list`, {
+    method: 'GET',
+    params,
   });
 }

@@ -76,13 +76,13 @@ const InfoModal: React.FC<any> = (props: any) => {
     await getInterfaceDetail(params).then((res) => {
       console.log(res);
       setReqList(
-        res?.data.filter((item: any) => {
-          return item.paramType == 0;
+        res?.data?.filter((item: any) => {
+          return item?.paramType == 0;
         }),
       );
       setResList(
-        res?.data.filter((item: any) => {
-          return item.paramType == 1;
+        res?.data?.filter((item: any) => {
+          return item?.paramType == 1;
         }),
       );
       form.setFieldsValue({ ...res?.data?.[0], ...row });
@@ -158,8 +158,8 @@ const InfoModal: React.FC<any> = (props: any) => {
             style={{ width: '480px' }}
           >
             <Radio.Group defaultValue={0}>
-              <Radio value={0}>post</Radio>
-              <Radio value={1}>get</Radio>
+              <Radio value={'post'}>post</Radio>
+              <Radio value={'get'}>get</Radio>
             </Radio.Group>
           </FormItem>
 
@@ -173,7 +173,7 @@ const InfoModal: React.FC<any> = (props: any) => {
             search={false}
             toolBarRender={false}
             pagination={false}
-            rowKey={(record) => record.id}
+            rowKey={(record: any) => record.id}
           ></ProTable>
 
           <Divider plain>出参管理</Divider>
@@ -183,7 +183,7 @@ const InfoModal: React.FC<any> = (props: any) => {
             search={false}
             toolBarRender={false}
             pagination={false}
-            rowKey={(record) => record.id}
+            rowKey={(record: any) => record.id}
           ></ProTable>
         </Form>
       </div>

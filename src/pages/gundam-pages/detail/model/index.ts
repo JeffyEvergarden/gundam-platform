@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { message } from 'antd';
 
-import { getConfig, editConfig, getInterfaceCurrentList, getConfigCurrentList } from './api';
+import { getConfig, editConfig, getInterfaceCurrentList } from './api';
+//变量配置接口
+import { getConfigCurrentList, addNewGlobal, editNewGlobal, deleteGlobal } from './api';
 
 export const successCode = '0000';
 
@@ -49,7 +51,7 @@ export const useInterfaceModel = () => {
 
     setConfigLoading(false);
 
-    return { data: res.data.list, total: res.data.total };
+    return { data: res.data.list, total: res.data.totalPage };
   };
 
   return {
@@ -69,10 +71,49 @@ export const useGlobalModel = () => {
 
     setConfigLoading(false);
 
-    return { data: res.data.list, total: res.data.total };
+    return { data: res.data.list, total: res.data.totalPage };
+  };
+
+  const _deleteLabel = async (data: any) => {
+    setConfigLoading(true);
+    let res: any = await deleteGlobal(data);
+    setConfigLoading(false);
+    if (res.resultCode === successCode) {
+      message.success(res?.resultDesc || '删除标签成功');
+      return true;
+    } else {
+      message.error(res?.resultDesc || '未知错误');
+    }
+  };
+
+  const addGlobal = async (data: any) => {
+    setConfigLoading(true);
+    let res: any = await addNewGlobal(data);
+    setConfigLoading(false);
+    if (res.resultCode === successCode) {
+      message.success(res?.resultDesc || '新增标签成功');
+      return res;
+    } else {
+      return res;
+    }
+  };
+
+  const editGlobal = async (data: any) => {
+    setConfigLoading(true);
+    let res: any = await editNewGlobal(data);
+    setConfigLoading(false);
+    if (res.resultCode === successCode) {
+      message.success(res?.resultDesc || '修改标签信息成功');
+      return true;
+    } else {
+      return res?.resultDesc || '未知系统异常';
+    }
   };
 
   return {
+    _deleteLabel,
+    addGlobal,
+    editGlobal,
     getTableList,
     configLoading,
   };

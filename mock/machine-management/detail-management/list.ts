@@ -133,7 +133,7 @@ const getInterface = (req: any, res: any) => {
           id: '123456',
           interfaceName: '接口1',
           interfaceUrl: 'robot/interface/listPage',
-          interfaceType: 1,
+          interfaceType: 'post',
           requestHeader: '',
           requestBody: '',
           interfaceDesc: 'xxx',

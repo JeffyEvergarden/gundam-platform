@@ -11,6 +11,7 @@ import {
   publishProd,
   getPublishTest,
   getPublishStatus,
+  _getGlobalValConfig,
 } from './api';
 
 export const successCode = '0000';
@@ -38,7 +39,7 @@ export const useTableModel = () => {
     });
     // console.log('tableList', datas);
     setTableList(list || []);
-    return { data: list, total: totalSize };
+    return { data: list, total: totalPage };
   };
 
   return {
@@ -63,6 +64,18 @@ export const useOpModel = () => {
       return data;
     } else {
       message.warning('获取不到机器人信息');
+      return null;
+    }
+  };
+
+  // 全局变量配置
+  const getGlobalValConfig = async (params: any) => {
+    let res = await _getGlobalValConfig(params);
+    if (res.resultCode === successCode) {
+      let data: any = res?.data || {};
+      return data;
+    } else {
+      message.warning('获取不到全局变量配置');
       return null;
     }
   };
@@ -121,6 +134,7 @@ export const useOpModel = () => {
     editMachine: _editMachine, // 编辑机器人
     opLoading: loading,
     getInfo,
+    getGlobalValConfig, //全局变量配置
   };
 };
 

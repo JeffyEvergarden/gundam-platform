@@ -11,11 +11,9 @@ export async function queryAuthInfo(options?: Record<string, any>) {
 
 // 抓取话术标签列表
 export async function queryLabelList(params?: Record<string, any>) {
-  return request<Record<string, any>>(`${baseUrl}/robot/actionLabel/actionLabelList`, {
+  return request<Record<string, any>>(`${baseUrl}/robot/actionLabel/actionLabelInfo`, {
     method: 'get',
     params: {
-      page: 1,
-      pageSize: 1000,
       ...params,
     },
   });
@@ -66,5 +64,13 @@ export async function queryWordSlotTableList(params?: { [key: string]: any }) {
       pageSize: 1000,
       ...params,
     },
+  });
+}
+
+//获取所有全局变量配置
+export async function queryGlobalValConfig(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/config/list`, {
+    method: 'GET',
+    params,
   });
 }

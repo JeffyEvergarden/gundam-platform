@@ -41,23 +41,29 @@ const MachinePagesHome: React.FC = (props: any) => {
     }),
   );
 
-  const { getInfo } = useOpModel();
+  const { getInfo, getGlobalValConfig } = useOpModel();
 
   const _getInfo = async (params: any) => {
-    // 获取用户信息getInfo
+    // 获取机器人信息getInfo
     let _info = await getInfo(params);
-    console.log(_info);
+    // let globalValConfig = await getGlobalValConfig(params);
+    // console.log(_info);
+    // console.log(globalValConfig);
+
+    // if (globalValConfig?.list?.length) {
+    //   setGlobalVarList(globalValConfig?.list);
+    // }
     if (_info) {
-      setInfo(_info.robotInfo || {});
-      let list: any[] =
-        _info.globalVarList?.map((item: any) => {
-          return {
-            name: item.configKey,
-            label: item.configName,
-            desc: item.configDesc,
-          };
-        }) || [];
-      setGlobalVarList(list);
+      setInfo(_info || {});
+      // let list: any[] =
+      //   _info.globalVarList?.map((item: any) => {
+      //     return {
+      //       name: item.configKey,
+      //       label: item.configName,
+      //       desc: item.configDesc,
+      //     };
+      //   }) || [];
+      // setGlobalVarList(globalValConfig?.list);
       setFinish(true);
     } else {
       message.warning('获取不到机器人信息');
