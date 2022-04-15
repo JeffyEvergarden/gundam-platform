@@ -9,16 +9,11 @@ const { Option } = Select;
 const NodeConfig: React.FC = (props: any) => {
   const [form] = Form.useForm();
 
-  const { info, flowList, businessFlowId, getLabelList, getFlowList } = useModel(
-    'gundam' as any,
-    (model: any) => ({
-      info: model.info,
-      flowList: model.flowList, // 业务流程列表
-      businessFlowId: model.businessFlowId,
-      getLabelList: model.getLabelList,
-      getFlowList: model.getFlowList,
-    }),
-  );
+  const { flowList, getLabelList, getFlowList } = useModel('drawer' as any, (model: any) => ({
+    flowList: model._flowList, // 业务流程列表
+    getLabelList: model.getLabelList,
+    getFlowList: model.getFlowList,
+  }));
 
   const submit = async () => {
     let res: any = await form.validateFields();
