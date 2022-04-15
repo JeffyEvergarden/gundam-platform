@@ -23,28 +23,30 @@ const MainDraw = (props: any) => {
   // 历史遗留问题
   // 话术标签、业务流程列表
 
-  const { info, businessFlowId, getLabelList, getFlowList } = useModel(
-    'gundam' as any,
-    (model: any) => ({
-      info: model.info,
-      businessFlowId: model.businessFlowId,
-      getLabelList: model.getLabelList,
-      getFlowList: model.getFlowList,
-    }),
-  );
+  const { info, businessFlowId } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+    businessFlowId: model.businessFlowId,
+  }));
 
   // 意图列表、词槽列表
   // 短信模版列表
-  const { getMessageList, wishList, wordSlotList, getWishList, getWordSlotList } = useModel(
-    'drawer' as any,
-    (model: any) => ({
-      wishList: model._wishList,
-      wordSlotList: model._wordSlotList,
-      getMessageList: model.getMessageList,
-      getWishList: model.getWishList,
-      getWordSlotList: model.getWordSlotList,
-    }),
-  );
+  const {
+    getMessageList,
+    wishList,
+    wordSlotList,
+    getWishList,
+    getWordSlotList,
+    getLabelList,
+    getFlowList,
+  } = useModel('drawer' as any, (model: any) => ({
+    wishList: model._wishList,
+    wordSlotList: model._wordSlotList,
+    getMessageList: model.getMessageList,
+    getWishList: model.getWishList,
+    getWordSlotList: model.getWordSlotList,
+    getLabelList: model.getLabelList,
+    getFlowList: model.getFlowList,
+  }));
 
   // 前置参数
   const preParams: any = {

@@ -20,9 +20,8 @@ const { Option } = Select;
 
 const HightformTemplate: any = (props: any) => {
   const { form, name, title, showDefault, type } = props;
-  const { info, flowList, businessFlowId } = useModel('gundam' as any, (model: any) => ({
+  const { info, businessFlowId } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
-    flowList: model.flowList, // 业务流程列表
     businessFlowId: model.businessFlowId,
   }));
 
