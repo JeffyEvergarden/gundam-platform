@@ -27,10 +27,13 @@ const DrawerForm = (props: any) => {
 
   const [nodetype, setNodetype] = useState<string>('');
 
-  const { info, flowList, businessFlowId } = useModel('gundam' as any, (model: any) => ({
+  const { info, businessFlowId } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
-    flowList: model.flowList, // 业务流程列表
     businessFlowId: model.businessFlowId,
+  }));
+
+  const { flowList } = useModel('drawer' as any, (model: any) => ({
+    flowList: model._flowList, // 业务流程列表
   }));
 
   // 前置参数

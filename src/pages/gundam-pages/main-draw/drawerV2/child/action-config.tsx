@@ -33,14 +33,14 @@ const ActionConfig = (props: any) => {
     }
   };
 
-  const { flowList, globalVarList } = useModel('gundam' as any, (model: any) => ({
-    flowList: model.flowList,
+  const { globalVarList } = useModel('gundam' as any, (model: any) => ({
     globalVarList: model.globalVarList,
   }));
 
-  const { messageList, wordSlotList } = useModel('drawer' as any, (model: any) => ({
+  const { flowList, messageList, wordSlotList } = useModel('drawer' as any, (model: any) => ({
     messageList: model._messageList,
     wordSlotList: model._wordSlotList,
+    flowList: model._flowList,
   }));
 
   const cascaderList: any = useMemo(() => {

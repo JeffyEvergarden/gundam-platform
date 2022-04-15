@@ -9,10 +9,9 @@ import {
 import config from '@/config';
 
 export default function useGundamModel() {
-  // 机器人的全局变量
   const [_wishList, _setWishList] = useState<any>([]); // 意图列表
 
-  const [_globalVarList, _setGlobalVarList] = useState<any>([]);
+  const [_globalVarList, _setGlobalVarList] = useState<any>([]); // 机器人的全局变量
   // 机器人的话术标签列表
   const [_labelList, _setLabelList] = useState<any>([]);
   // 业务流程列表
@@ -104,6 +103,16 @@ export default function useGundamModel() {
     _setFlowList(data);
   };
 
+  const getLabelList = async (id?: any) => {
+    if (!id) {
+      console.log('机器人的话术标签获取不到机器人id');
+      return null;
+    }
+    let res: any = await queryLabelList({ robotId: id });
+    let data: any[] = res?.data?.list || [];
+    _setLabelList(data);
+  };
+
   return {
     _wishList,
     _setWishList,
@@ -117,9 +126,10 @@ export default function useGundamModel() {
     _setWordSlotList,
     _messageList,
     _setMessageList,
-    getMessageList,
-    getWishList,
-    getWordSlotList,
-    getFlowList,
+    getMessageList, // 短信模版
+    getWishList, // 意图
+    getWordSlotList, // 词槽
+    getFlowList, // 业务流程
+    getLabelList, // 话术标签
   };
 }
