@@ -201,6 +201,29 @@
   margin-left: 2px;
 }
 
+.cvs-row {
+  display: flex;
+  align-items: flex-start;
+
+  .cvs-label {
+    flex-shrink: 1;
+    min-width: 85px !important;
+    text-align: right;
+
+    &::after {
+      position: relative;
+      padding: 0 8px 0 2px;
+      content: ':';
+    }
+  }
+}
+
+.cvs-content {
+  flex: 1 1 auto;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
 // ------------- 执行动作
 
 .action-config {

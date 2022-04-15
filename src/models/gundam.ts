@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { queryLabelList, getFlowList } from '@/services/api';
+import { queryLabelList, queryFlowList } from '@/services/api';
 import config from '@/config';
 
 export default function useGundamModel() {
@@ -31,7 +31,7 @@ export default function useGundamModel() {
 
   // 获取业务流程列表
   const _getFlowList = async () => {
-    let res: any = await getFlowList({
+    let res: any = await queryFlowList({
       robotId: info.id,
       page: 1,
       pageSize: 1000,

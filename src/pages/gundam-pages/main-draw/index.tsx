@@ -21,15 +21,28 @@ const MainDraw = (props: any) => {
   const spNodeDrawerRef = useRef<any>(null);
 
   // 历史遗留问题
-  // 话术、
+  // 话术标签、业务流程列表
 
-  const { info, getLabelList, getFlowList, businessFlowId } = useModel(
+  const { info, businessFlowId, getLabelList, getFlowList } = useModel(
     'gundam' as any,
     (model: any) => ({
       info: model.info,
+      businessFlowId: model.businessFlowId,
       getLabelList: model.getLabelList,
       getFlowList: model.getFlowList,
-      businessFlowId: model.businessFlowId,
+    }),
+  );
+
+  // 意图列表、词槽列表
+  // 短信模版列表
+  const { getMessageList, wishList, wordSlotList, getWishList, getWordSlotList } = useModel(
+    'drawer' as any,
+    (model: any) => ({
+      wishList: model._wishList,
+      wordSlotList: model._wordSlotList,
+      getMessageList: model.getMessageList,
+      getWishList: model.getWishList,
+      getWordSlotList: model.getWordSlotList,
     }),
   );
 
@@ -48,9 +61,6 @@ const MainDraw = (props: any) => {
     getNodesConfig,
     getLineConfig,
   } = useNodeOpsModel();
-
-  // 意图列表、词槽列表
-  const { wishList, wordSlotList, getWishList, getWordSlotList } = useSelectModel();
 
   // 流程图相关 -----------------------
   // -- start-----
@@ -150,12 +160,17 @@ const MainDraw = (props: any) => {
       nodeType: processType(info._nodetype),
     });
     config = {
-      ...info,
-      ...config,
-      id: info._id,
-      frontId: info.id,
-      name: config.nodeName || config.name,
-      nodeType: processType(info._nodetype),
+      node: {
+        ...info,
+      },
+      config: {
+        ...config,
+      },
+      id: info._id, // 后端id
+      frontId: info.id, // 前端id
+      name: config.nodeName || config.name, // 前端名称
+      nodeType: processType(info._nodetype), // 后端节点类型
+      _nodetype: info._nodetype,
     };
 
     const callBack = (name: string) => {
@@ -217,11 +232,11 @@ const MainDraw = (props: any) => {
 
   // 初始化设置
   useEffect(() => {
-    getLabelList(); // 获取话术标签
-    getFlowList(); // 获取业务流程列表
+    getLabelList(info.id); // 获取话术标签
+    getFlowList(info.id); // 获取业务流程列表
     getWishList(info.id); // 意图列表
     getWordSlotList(info.id); // 词槽列表
-    // 获取全局变量列表
+    getMessageList(info.id); // 获取全局变量列表
   }, []);
 
   useEffect(() => {

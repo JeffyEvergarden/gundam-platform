@@ -10,6 +10,7 @@ import RulesConfig from '../drawerV2/child/rule-config';
 const { Item: FormItem } = Form;
 const { TextArea } = Input;
 import config from '@/config';
+import { processRequest, parserBody } from './formate';
 
 const EdgeDrawerForm = (props: any) => {
   const { cref, confirm, type, wishList, wordSlotList } = props;
@@ -39,20 +40,11 @@ const EdgeDrawerForm = (props: any) => {
       recordInfo.current.callback = callback;
       form.resetFields();
       // console.log(info);
-      let rules =
-        info?.rules?.map((item: any) => {
-          return {
-            ruleList: Array.isArray(item) ? item : [],
-          };
-        }) || [];
+      info = parserBody(info);
       form.setFieldsValue({
         ...info,
         level: info.level || 1,
       });
-      // console.log(rules);
-      // form2.setFieldsValue({
-      //   list: rules,
-      // });
       setVisible(true);
     },
     close: onClose,
@@ -63,14 +55,11 @@ const EdgeDrawerForm = (props: any) => {
   const saveLine = async () => {
     // console.log(form.getFieldsValue());
     let res: any = await form.validateFields().catch(() => false);
-    let res2: any = false;
-    // await form2.validateFields().catch(() => false);
 
-    console.log(res2);
     if (res === false) {
       return;
     } else {
-      let rules: any = res2?.['list'] || [];
+      res = processRequest(res);
 
       let result: any = await _saveLine({
         ...preParams,
@@ -85,7 +74,6 @@ const EdgeDrawerForm = (props: any) => {
         targetAnchor: recordInfo.current.info?.targetAnchor,
         targetType: recordInfo.current.info?.targetType,
         sourceType: recordInfo.current.info?.sourceType,
-        rules,
       });
       let label = `${res.level}.${res?.name}`;
       if (result !== false) {
@@ -161,7 +149,7 @@ const EdgeDrawerForm = (props: any) => {
         <RulesConfig
           form={form}
           title={'规则配置: '}
-          formName={'list'}
+          formName={'ruleList'}
           type="edge"
           wishList={wishList || []}
           wordSlotList={wordSlotList || []}

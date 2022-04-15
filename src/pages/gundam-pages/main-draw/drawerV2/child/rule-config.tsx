@@ -85,7 +85,8 @@ const RuleConfig = (props: any) => {
       item.valueType = undefined;
       item.ruleValue = undefined;
     } else if (level === 2) {
-      item.ruleKeyType = opt?.opt?.type || undefined;
+      let val = opt?.opt?.type;
+      item.ruleKeyType = isNaN(val) ? undefined : val;
       item.condition = undefined;
       item.valueType = undefined;
       item.ruleValue = undefined;
@@ -115,7 +116,7 @@ const RuleConfig = (props: any) => {
                   ruleKeyType: undefined, //
                   condition: undefined, // 比较条件
                   valueType: undefined, //值类型  词槽、变量 (数字、文本、时间)
-                  value: undefined,
+                  ruleValue: undefined,
                 },
               ],
             },
@@ -177,7 +178,9 @@ const RuleConfig = (props: any) => {
 
                                       const ruleType: any = curItem?.ruleType || 0; // 规则类型
 
-                                      const ruleKeyType: any = curItem?.ruleKeyType || 'text'; //词槽/变量类型
+                                      const ruleKeyType: any = isNaN(curItem?.ruleKeyType)
+                                        ? undefined
+                                        : curItem?.ruleKeyType; //词槽/变量类型
                                       // console.log('ruleKeyType: ' + ruleKeyType);
                                       const compareVal: any = curItem?.condition || undefined;
 
@@ -736,7 +739,7 @@ const RuleConfig = (props: any) => {
                                                   <FormItem
                                                     name={[field.name, 'ruleValue']}
                                                     fieldKey={[field.fieldKey, 'ruleValue']}
-                                                    style={{ width: '180px' }}
+                                                    style={{ width: '280px' }}
                                                     rules={[
                                                       { required: true, message: '请选择日期' },
                                                     ]}

@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { template } from 'lodash';
 import { getFileInfo } from 'prettier';
 import config from '../../../src/config';
 
@@ -68,55 +69,68 @@ const getNodesConfig = (req: any, res: any) => {
     data: {
       name: '名侦探柯南',
       nodeDesc: '高中生侦探',
-      nodeFlowId: 'front_mock_id_1',
       nodeSlots: [
-        // 词槽列表
         {
-          slotDesc: '1', // 词槽描述
-          slotId: '011', // 词槽id
-          slotName: '123', // 词槽名称
-          textLabels: [], // 结束话术标签
-          endText: '1213', // 结束话术
-          required: true, // 是否必填
-          clearText: [
-            // 澄清话术列表
-            {
-              actionText: 'helloworld', // 澄清话术
-              textLabels: [], // 标签
-            },
-          ],
-        },
-      ],
-      conversationList: [
-        // 对话回应
-        {
-          actionType: 'text', // 选择框
-          nodeText: [
-            // 答复内容列表
-            {
-              actionText: 'sadsadjljqiwoueioqwu', // 内容
-              textLabels: ['话术标签2'], // 标签
-            },
-          ],
-          hungUp: true, // 结束挂机
-          transfer: '', // 动作 (下拉选择)
-          isMessage: true, // 是否发送短信
-          message: '', // 短信内容
-          nodeTransferText: 'fake', // 过渡话术
-          textLabels: [], // 过渡话术标签
-          rules: [
-            [
-              // 且关系
+          slotId: '011',
+          required: 1,
+          action: {
+            actionType: 1,
+            actionText: '1231231',
+            textLabels: ['话术标签2'],
+            messageList: [
               {
-                ruleType: '用户意图', // 枚举值: 用户意图、变量、系统时间 等
-                ruleKey: '011',
-                condition: '==', // ==、!=、>=、>、<、<=、include、uninclude、like、unlike、unfill、fill
-                ruleValue: '001',
+                messageNode: '001',
+                telPhone: [2, '012'],
+                content: '世界如此之美好',
+                placeholder: ['123', '456', '789'],
               },
             ],
-          ],
+          },
+          slotName: '前端mock词槽1',
+          slotDesc: '描述1',
         },
       ],
+      strategyList: [
+        {
+          ruleList: [
+            {
+              rules: [
+                { ruleType: 0, condition: '==', ruleValue: '001' },
+                {
+                  ruleType: 1,
+                  ruleKey: '011',
+                  ruleKeyType: 0,
+                  condition: '==',
+                  valueType: 3,
+                  ruleValue: '30',
+                },
+                {
+                  ruleType: 1,
+                  ruleKey: '013',
+                  ruleKeyType: 2,
+                  condition: '==',
+                  valueType: 3,
+                  ruleValue: '2022-04-29 11:32:41',
+                },
+              ],
+            },
+          ],
+          conversationList: [{ actionText: '123123123', textLabels: [] }],
+          actionType: 1,
+          actionText: '12312312',
+          textLabels: ['话术标签2'],
+        },
+      ],
+      highConfig: {
+        silenceAction: { times: 3, action: {} },
+        rejectAction: { times: 3, action: {} },
+        clearAction: { times: 3, action: {} },
+        unclearAction: { unclearName: '客户未听清意图', times: 3, action: {} },
+      },
+      nodeName: '名侦探柯南',
+      robotId: '100',
+      flowId: '100',
+      nodeType: 0,
     },
   });
 };
@@ -156,26 +170,69 @@ const getLineConfig = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
     data: {
+      robotId: '100',
+      flowId: '100',
       name: '七龙珠',
-      // level: 10,
-      nodeDesc: '七龙珠',
-      rules: [
-        [
-          // 且关系
-          {
-            ruleType: '用户意图', // 枚举值: 用户意图、变量、系统时间 等
-            ruleKey: '011',
-            condition: '==', // ==、!=、>=、>、<、<=、include、uninclude、like、unlike、unfill、fill
-            ruleValue: '001',
-          },
-        ],
+      level: 1,
+      ruleList: [
+        {
+          rules: [
+            {
+              ruleType: 1,
+              ruleKey: '011',
+              ruleKeyType: 0,
+              condition: '==',
+              valueType: 3,
+              ruleValue: '20',
+            },
+            {
+              ruleType: 1,
+              ruleKey: '013',
+              ruleKeyType: 2,
+              condition: '!==',
+              valueType: 3,
+              ruleValue: '2022-04-01 04:42:41',
+            },
+          ],
+        },
       ],
+      id: '001',
+      frontId: '001',
+      source: '01',
+      target: '03',
+      frontTarget: '03',
+      frontSource: '01',
+      sourceAnchor: 1,
+      targetAnchor: 3,
+      targetType: 1,
+      sourceType: 2,
     },
   });
 };
 
 const getMessageList = (req: any, res: any) => {
-  res.json({});
+  res.json({
+    resultCode: successCode,
+    data: {
+      pageSize: 20,
+      totalSize: 200,
+      page: 1,
+      list: [
+        {
+          templateId: '001',
+          templateTitle: 'fake',
+          content: '世界如此之美好',
+          placeholder: ['123', '456', '789'],
+        },
+        {
+          templateId: '002',
+          templateTitle: '命运多舛',
+          content: '世界如此之美好',
+          placeholder: ['123', '456', '789'],
+        },
+      ],
+    },
+  });
 };
 
 // 菜单管理相关
@@ -191,7 +248,7 @@ export default {
   'POST /aichat/robot/node/nodeSave': nodeOps, // 保存节点配置
   'POST /aichat/robot/mainDraw/lineSave': nodeOps, // 保存线配置
   'POST /aichat/robot/mainDraw/lineRuleInfo': getLineConfig, // 获取线配置
-  'GET /aichat/robot/message/list': getMessageList,
+  'GET /aichat/notification/templateListPage': getMessageList,
 };
 
 // 接口1、获取机器人信息 传robotid

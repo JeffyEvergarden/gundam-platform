@@ -67,7 +67,7 @@ const DrawerForm = (props: any) => {
         ...res,
         nodeName: res.name,
         ...preParams,
-        id: recordInfo.current.info?._id,
+        id: recordInfo.current.info?.id,
         nodeType: recordInfo.current.info?.nodeType,
       });
       if (result === true) {

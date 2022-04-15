@@ -94,8 +94,7 @@ const ActionConfig = (props: any) => {
 
   const change = (val: any) => {
     const item = getItem();
-    console.log(item);
-    item.businessId = undefined;
+    item.toFlowId = undefined;
     const list = form.getFieldValue(key);
     if (isArray && list instanceof Array) {
       form.setFieldsValue({
@@ -111,6 +110,15 @@ const ActionConfig = (props: any) => {
       });
       update();
     }
+  };
+
+  const changeItem = (opt: any, index: number) => {
+    const item = getItem();
+    const currenItem = item?.messageList?.[index];
+    let obj = opt?.opt;
+    currenItem.placeholder = obj.placeholder;
+    currenItem.content = obj.content;
+    update();
   };
 
   const innerHtml = (
@@ -177,14 +185,17 @@ const ActionConfig = (props: any) => {
         </div>
 
         <div className={styles['action-box']}>
-          <FormList name={getFormName('messageMode')}>
+          <FormList name={getFormName('messageList')}>
             {(outFields, { add: _add, remove: _remove }) => {
               const addOutNew = () => {
                 // console.log(fields);
                 let length = outFields.length;
                 _add(
                   {
-                    ruleList: [],
+                    messageNode: undefined,
+                    telPhone: undefined,
+                    content: '',
+                    placeholder: [],
                   },
                   length,
                 );
@@ -192,65 +203,81 @@ const ActionConfig = (props: any) => {
 
               return (
                 <div className={styles['cvs-box']}>
-                  {outFields.map((field: any, index: number) => (
-                    <div key={field.key} className={styles['message-box']}>
-                      <div style={{ lineHeight: '32px' }}>
-                        <span
-                          className={styles['del-bt']}
-                          onClick={() => {
-                            _remove(index);
-                          }}
-                        >
-                          <MinusCircleOutlined />
-                        </span>
-                        <span className={styles['cvs-num']}>{index + 1}.</span>
-                      </div>
-                      <div style={{ flex: '1 1 auto' }}>
-                        <div>
-                          <Space>
-                            {/* 类型 */}
-                            <Form.Item
-                              label={'短信模版'}
-                              name={[field.name, 'messageId']}
-                              fieldKey={[field.fieldKey, 'messageId']}
-                              rules={[{ required: true, message: '请选择短信模版' }]}
-                            >
-                              <Select
-                                placeholder="请选择规则类型"
-                                optionFilterProp="children"
-                                showSearch
-                                style={{ width: '200px' }}
-                              >
-                                {flowList.map((item: any, index: number) => {
-                                  return (
-                                    <Option key={index} value={item.name} opt={item}>
-                                      {item.label}
-                                    </Option>
-                                  );
-                                })}
-                              </Select>
-                            </Form.Item>
+                  {outFields.map((field: any, index: number) => {
+                    const _item = getItem();
+                    const currentItem = _item?.messageList?.[index];
 
-                            <Form.Item
-                              name={[field.name, 'telPhone']}
-                              fieldKey={[field.fieldKey, 'telPhone']}
-                              label="接受号码"
-                              rules={[{ required: true, message: '请选择接受号码' }]}
-                            >
-                              <Cascader
-                                options={cascaderList}
-                                expandTrigger="hover"
-                                displayRender={(label: any[]) => {
-                                  return label[label.length - 1];
-                                }}
-                                style={{ width: '200px' }}
-                              />
-                            </Form.Item>
-                          </Space>
+                    const content: any = currentItem.content;
+
+                    return (
+                      <div key={field.key} className={styles['message-box']}>
+                        <div style={{ lineHeight: '32px' }}>
+                          <span
+                            className={styles['del-bt']}
+                            onClick={() => {
+                              _remove(index);
+                            }}
+                          >
+                            <MinusCircleOutlined />
+                          </span>
+                          <span className={styles['cvs-num']}>{index + 1}.</span>
+                        </div>
+                        <div style={{ flex: '1 1 auto' }}>
+                          <div>
+                            <Space>
+                              {/* 类型 */}
+                              <Form.Item
+                                label={'短信模版'}
+                                name={[field.name, 'messageNode']}
+                                fieldKey={[field.fieldKey, 'messageNode']}
+                                rules={[{ required: true, message: '请选择短信模版' }]}
+                              >
+                                <Select
+                                  placeholder="请选择短信模版"
+                                  optionFilterProp="children"
+                                  showSearch
+                                  style={{ width: '200px' }}
+                                  onChange={(val: any, opt: any) => {
+                                    changeItem(opt, index);
+                                  }}
+                                >
+                                  {messageList.map((item: any, index: number) => {
+                                    return (
+                                      <Option key={index} value={item.name} opt={item}>
+                                        {item.label}
+                                      </Option>
+                                    );
+                                  })}
+                                </Select>
+                              </Form.Item>
+
+                              <Form.Item
+                                name={[field.name, 'telPhone']}
+                                fieldKey={[field.fieldKey, 'telPhone']}
+                                label="接受号码"
+                                rules={[{ required: true, message: '请选择接受号码' }]}
+                              >
+                                <Cascader
+                                  options={cascaderList}
+                                  expandTrigger="hover"
+                                  displayRender={(label: any[]) => {
+                                    return label[label.length - 1];
+                                  }}
+                                  style={{ width: '200px' }}
+                                />
+                              </Form.Item>
+                            </Space>
+                            <Condition r-if={content}>
+                              <div className={styles['cvs-row']}>
+                                <div className={styles['cvs-label']}>模版内容</div>
+                                <div className={styles['cvs-content']}>{content}</div>
+                              </div>
+                            </Condition>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                   <div>
                     <Button
                       type="link"

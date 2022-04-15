@@ -3,32 +3,38 @@ import { Request, Response } from 'express';
 const successCode = '0000';
 
 const getIntentList = (req: any, res: any) => {
+  const datas = [
+    {
+      intentName: '意图01',
+      id: '001',
+      inquiryText: '澄清01',
+      headIntent: 0,
+      flowName: '业务流程01',
+      intentDesc: '意图描述01',
+      status: 0,
+      creator: 'yyb',
+      createTime: '2022-02-14',
+    },
+    {
+      intentName: '意图02',
+      id: '002',
+      inquiryText: '澄清02',
+      headIntent: 1,
+      flowName: '业务流程02',
+      intentDesc: '意图描述02',
+      status: 1,
+      creator: 'yyb',
+      createTime: '2022-02-18',
+    },
+  ];
   res.json({
     resultCode: successCode,
-    datas: [
-      {
-        intentName: '意图01',
-        id: '001',
-        inquiryText: '澄清01',
-        headIntent: 0,
-        flowName: '业务流程01',
-        intentDesc: '意图描述01',
-        status: 0,
-        creator: 'yyb',
-        createTime: '2022-02-14',
-      },
-      {
-        intentName: '意图02',
-        id: '002',
-        inquiryText: '澄清02',
-        headIntent: 1,
-        flowName: '业务流程02',
-        intentDesc: '意图描述02',
-        status: 1,
-        creator: 'yyb',
-        createTime: '2022-02-18',
-      },
-    ],
+    data: {
+      pageSize: 20,
+      totalSize: 200,
+      page: 10,
+      list: datas,
+    },
   });
 };
 

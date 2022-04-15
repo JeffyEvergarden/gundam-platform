@@ -1,5 +1,5 @@
 //版本2
-import { useState, useRef, useImperativeHandle } from 'react';
+import { useState, useRef, useImperativeHandle, useEffect } from 'react';
 import { Drawer, Form, Input, Select, Button, message } from 'antd';
 import { PlusCircleOutlined, AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import ConversationConfig from './child/conversation-config';
@@ -9,13 +9,13 @@ import HighConfig from './child/high-config';
 import { useModel } from 'umi';
 import { useNodeOpsModel } from '../model';
 import styles from './style.less';
+import { processRequest, parserBody } from './formate';
 
 const { Item: FormItem, List: FormList } = Form;
 const { TextArea } = Input;
 const { Option } = Select;
 
 import WordSlotTable from './components/wordslot-table-select';
-import { useEffect } from 'react';
 
 const DrawerForm = (props: any) => {
   const { cref, type, wishList, wordSlotList } = props;
@@ -32,15 +32,6 @@ const DrawerForm = (props: any) => {
     flowList: model.flowList, // 业务流程列表
     businessFlowId: model.businessFlowId,
   }));
-
-  const { setWordSlotList, setFlowList } = useModel('drawer' as any, (model: any) => ({
-    setWordSlotList: model._setWordSlotList,
-    setFlowList: model._setFlowList,
-  }));
-  useEffect(() => {
-    setWordSlotList(wordSlotList);
-    setFlowList(flowList);
-  }, [wordSlotList, flowList]);
 
   // 前置参数
   const preParams: any = {
@@ -61,8 +52,9 @@ const DrawerForm = (props: any) => {
       recordInfo.current.info = info;
       recordInfo.current.callback = callback;
       setNodetype(info._nodetype || 'normal');
+      const _info: any = parserBody(info.config);
       form.resetFields();
-      form.setFieldsValue(info);
+      form.setFieldsValue(_info);
       setVisible(true);
     },
     close: onClose,
@@ -80,18 +72,17 @@ const DrawerForm = (props: any) => {
       message.warning('存在未填写完全的配置');
       return false;
     });
-    console.log('高级配置');
-    console.log(res2);
 
     if (res === false) {
       return;
     } else {
+      let body: any = processRequest(res, res2);
       let result: any = await _saveNode({
-        ...res,
+        ...body,
         nodeName: res.name,
         ...preParams,
-        id: recordInfo.current.info?._id,
-        nodeType: recordInfo.current.info?.nodeType,
+        id: recordInfo.current.info?.id,
+        nodeType: recordInfo.current.info?.node.nodeType,
       });
       if (result === true) {
         recordInfo.current?.callback?.(res?.name); // 成功回调修改名称
