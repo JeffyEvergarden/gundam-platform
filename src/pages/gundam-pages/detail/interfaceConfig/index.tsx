@@ -80,13 +80,13 @@ const InterfaceConfig: React.FC = (props: any) => {
     },
     {
       title: '关联词槽数量',
-      dataIndex: '',
+      dataIndex: 'connectTimes',
       search: false,
       width: 200,
     },
     {
       title: '创建者',
-      dataIndex: 'creater',
+      dataIndex: 'creator',
       search: false,
       width: 200,
     },
