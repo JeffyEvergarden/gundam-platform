@@ -178,7 +178,7 @@ const ActionConfig = (props: any) => {
         </div>
 
         <div className={styles['action-box']}>
-          <FormList name={getFormName('messageList')}>
+          <FormList name={getFormName('messageMode')}>
             {(outFields, { add: _add, remove: _remove }) => {
               const addOutNew = () => {
                 // console.log(fields);
