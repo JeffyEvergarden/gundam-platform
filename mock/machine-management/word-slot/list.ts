@@ -74,6 +74,56 @@ const deleteWordSlot = (req: any, res: any) => {
   });
 };
 
+const getzzReal = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    resultDesc: '成功',
+    occurTime: '2022-0221-18:16',
+    data: [
+      { id: '1', entityName: '实体名称1' },
+      { id: '2', entityName: '实体名称2' },
+    ],
+  });
+};
+
+const interFace = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    resultDesc: '成功',
+    occurTime: '2022-0221-18:16',
+    data: [
+      { id: '11', interFaceName: '接口列表11', interfaceDesc: '接口描述1' },
+      { id: '22', interFaceName: '接口列表22', interfaceDesc: '接口描述2' },
+    ],
+  });
+};
+
+const paramList = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    resultDesc: '成功',
+    occurTime: '2022-0221-18:16',
+    data: [
+      { id: '112', paramName: '参数名称112', paramValue: 1 },
+      { id: '223', paramName: '参数名称表223', paramValue: 2 },
+      { id: '11245', paramName: '参数名称334', paramValue: 3 },
+    ],
+  });
+};
+
+const slotInfoList = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    resultDesc: '成功',
+    occurTime: '2022-0221-18:16',
+    data: [
+      { id: '1', paramName: '入参值1', paramValue: 1 },
+      { id: '2', paramName: '入参值2', paramValue: 2 },
+      { id: '3', paramName: '入参值3', paramValue: 3 },
+    ],
+  });
+};
+
 // 词槽管理相关
 export default {
   // 机器人管理相关
@@ -81,4 +131,8 @@ export default {
   'POST /aichat/robot/slot/slotAdd': getWordSlotList, // 新增词槽
   'POST /aichat/robot/slot/slotUpdate': editWordSlot, // 编辑词槽
   'POST /aichat/robot/slot/slotDelete': deleteWordSlot, // 删除词槽
+  'GET /aichat/robot/entity/list': getzzReal, // 获取实体列表
+  'GET /aichat/robot/interface/list': interFace, // 获取接口列表
+  'GET /aichat/robot/interface/param': paramList, // 获取入参值列表
+  'POST /aichat/robot/slot/slotInfo': slotInfoList, // 获取入参值-下级列表
 };

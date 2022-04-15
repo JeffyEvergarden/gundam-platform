@@ -7,6 +7,9 @@ import {
   addWordSlotItem,
   editWordSlotItem,
   deleteWordSlotItem,
+  zzReal,
+  interFace,
+  paramList,
 } from './api';
 
 export const successCode = 100;
@@ -48,12 +51,40 @@ export const useKeyWordModel = () => {
     return res;
   };
 
+  const getzzReal = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await zzReal(params);
+    return res;
+  };
+
+  const interFaceList = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await interFace(params);
+    return res;
+  };
+
+  const getparamList = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await paramList(params);
+    return res;
+  };
+
+  const getslotInfo = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await paramList(params);
+    return res;
+  };
+
   return {
     getWordSlotTable,
     getWordSlotDetail,
     addWordSlot,
     editWordSlot,
     deleteWordSlot,
+    getzzReal,
+    interFaceList,
+    getparamList,
+    getslotInfo,
     tableLoading,
   };
 };

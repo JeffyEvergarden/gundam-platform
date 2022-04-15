@@ -42,6 +42,11 @@ export default [
         name: '词槽管理',
       },
       {
+        path: '/gundamPages/lexiconManage',
+        component: './gundam-pages/lexicon-manage',
+        name: '词库管理',
+      },
+      {
         path: '/gundamPages/spokenLabel',
         component: './gundam-pages/spoken-label',
         name: '话术标签管理',

@@ -72,8 +72,8 @@ export default (props: any) => {
                   {item.type == 'radio' && (
                     <Form.Item name={item.name} label={item.label} rules={item.rules}>
                       <Radio.Group disabled={title == 'edit'}>
-                        <Radio value={0}>是</Radio>
-                        <Radio value={1}>否</Radio>
+                        <Radio value={0}>头部意图</Radio>
+                        <Radio value={1}>辅助意图</Radio>
                       </Radio.Group>
                     </Form.Item>
                   )}

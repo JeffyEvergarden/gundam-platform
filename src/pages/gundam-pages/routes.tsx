@@ -23,6 +23,11 @@ export default [
   },
   {
     icon: <CrownOutlined />,
+    path: '/gundamPages/lexiconManage',
+    name: '词库管理',
+  },
+  {
+    icon: <CrownOutlined />,
     path: '/gundamPages/spokenLabel',
     name: '话术标签管理',
   },

@@ -1,17 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, Form, Input, Select, Space, Button, message, Spin } from 'antd';
+import React, { useState, useEffect, Fragment } from 'react';
+import { Modal, Form, Input, Select, Space, Button, message, Spin, Tooltip } from 'antd';
 import { operateSlotFormList, slotSourceFormList } from './config';
+import { QuestionCircleFilled } from '@ant-design/icons';
 import { useKeyWordModel } from '../model';
 import { useIntentModel } from '../../wish/model';
+import styles from './../../style.less';
 
 const { Option } = Select;
 const layout = {
   labelCol: { span: 6 },
-  wrapperCol: { span: 16 },
+  wrapperCol: { span: 14 },
 };
 const tailLayout = {
   wrapperCol: { offset: 8, span: 12 },
 };
+
+const slotSourceData = [
+  // { value: 1, intentName: '枚举实体' },
+  { value: 4, intentName: '正则实体' },
+  { value: 2, intentName: '用户文本' },
+  { value: 7, intentName: '接口' },
+];
+const typeData = [
+  { value: 0, intentName: '文本' },
+  { value: 1, intentName: '数值' },
+  { value: 2, intentName: '时间' },
+];
+
+const slotPro = [
+  { value: 1, intentName: '贷款产品' },
+  { value: 2, intentName: '词库管理的所有枚举实体' },
+];
+
+const inVal = [
+  { value: 0, intentName: '词槽' },
+  { value: 1, intentName: '变量' },
+];
 
 export default (props: any) => {
   const { visible, title, modalData, onSubmit, onCancel } = props;
@@ -20,9 +44,73 @@ export default (props: any) => {
   const [fieldSelectData, setFieldSelectData] = useState<any>({
     slotSource: slotSourceFormList,
   });
+  const [slotSource, setSource] = useState<number>(0);
   const [form] = Form.useForm();
-  const { addWordSlot, editWordSlot, getWordSlotDetail } = useKeyWordModel();
+  const {
+    addWordSlot,
+    editWordSlot,
+    getWordSlotDetail,
+    getzzReal,
+    interFaceList,
+    getparamList,
+    getslotInfo,
+  } = useKeyWordModel();
   const { getIntentInfoList, getIntentTableList } = useIntentModel();
+  const [realList, setRealList] = useState<any>([]);
+  const [interfaceList, setInterfaceList] = useState<any>([]);
+  const [inValList, setinValList] = useState<any>([]);
+  const [inval_val, setInval_val] = useState<string>('');
+  const [interfaceDesc, setinterfaceDesc] = useState<string>('');
+  const [inParams, setInparams] = useState<any>([]);
+  const [outVal, setOutVal] = useState<any>([]);
+
+  useEffect(() => {
+    getRealList();
+    getInterFaceList();
+  }, [visible]);
+
+  const getRealList = async () => {
+    const res = await getzzReal();
+    if (res.resultCode === '0000') {
+      setRealList(res?.data);
+    }
+  };
+
+  const getInterFaceList = async () => {
+    const res = await interFaceList();
+    if (res.resultCode === '0000') {
+      setInterfaceList(res?.data);
+    }
+  };
+
+  const interfaceChange = async (val: any, option: any) => {
+    interfaceList.map((item: any) => {
+      if (option.key == item.id) {
+        setinterfaceDesc(item.interfaceDesc);
+      }
+    });
+
+    const resIn = await getparamList({ interfaceId: val, paramType: 0 }); //入参枚举
+    if (resIn.resultCode === '0000') {
+      setInparams(resIn?.data);
+    }
+
+    const resOut = await getparamList({ interfaceId: val, paramType: 1 }); //出参枚举
+    if (resOut.resultCode === '0000') {
+      setOutVal(resOut?.data);
+    }
+  };
+
+  const inValChange = async (val: number) => {
+    if (val == 1) {
+      setInval_val('变量');
+    } else setInval_val('词槽');
+
+    const invalChild = await getslotInfo({ interfaceId: val, paramType: 1 }); //入参值
+    if (invalChild.resultCode === '0000') {
+      setinValList(invalChild?.data);
+    }
+  };
 
   const fieldValueChange = (changedValues: any, allValues: any) => {
     if (changedValues?.slotSource) {
@@ -191,7 +279,12 @@ export default (props: any) => {
         getEditSlotData(modalData?.id);
       }
     }
+    setSource(0);
   }, [visible]);
+
+  const slotSourceChange = (value: any, option: any) => {
+    setSource(value);
+  };
 
   return (
     <React.Fragment>
@@ -203,120 +296,158 @@ export default (props: any) => {
       >
         <Spin spinning={spinning}>
           <Form form={form} {...layout} onValuesChange={fieldValueChange}>
-            {operateSlotFormList?.map((item: any) => {
-              return (
-                <React.Fragment key={item.name}>
-                  {item.type == 'input' && (
-                    <Form.Item name={item.name} label={item.label} rules={item.rules}>
-                      <Input
-                        placeholder={item.placeholder}
-                        maxLength={200}
-                        readOnly={item.name == 'slotName' && title == 'edit'}
-                      />
-                    </Form.Item>
-                  )}
-                  {item.type == 'select' && item.name !== 'slotSource' && (
-                    <Form.Item name={item.name} label={item.label} rules={item.rules}>
-                      <Select placeholder={item.placeholder}>
-                        {fieldSelectData[item.name]?.map((itex: any) => {
-                          return (
-                            <Option
-                              key={itex?.value || itex?.intentName}
-                              value={itex?.value || itex?.intentName}
-                            >
-                              {itex?.name || itex?.intentName}
-                            </Option>
-                          );
-                        })}
-                      </Select>
-                    </Form.Item>
-                  )}
-                  {item.type == 'multiSelect' && (
-                    <Form.Item name={item.name} label={item.label} rules={item.rules}>
-                      <Select placeholder={item.placeholder} mode={'multiple'}>
-                        {fieldSelectData[item?.name]?.map((itex: any) => {
-                          return (
-                            <Option key={itex?.id} value={itex?.id}>
-                              {itex?.intentName}
-                            </Option>
-                          );
-                        })}
-                      </Select>
-                    </Form.Item>
-                  )}
-                  {item.name == 'slotSource' && (
-                    <React.Fragment>
-                      <Form.Item name={item.name} label={item.label} rules={item.rules}>
-                        <Select placeholder={item.placeholder}>
-                          {fieldSelectData[item.name]?.map((itex: any) => {
-                            return (
-                              <Option key={itex.value} value={itex.value}>
-                                {itex.name}
-                              </Option>
-                            );
-                          })}
-                        </Select>
-                      </Form.Item>
-                      {diffSourceData == '0' && (
-                        <Form.Item name={'entity'} label={'引用词库实体'}>
-                          <Select placeholder={item.placeholder} mode={'multiple'}>
-                            {fieldSelectData['entity']?.map((itex: any) => {
-                              return (
-                                <Option key={itex.value} value={itex.value}>
-                                  {itex.name}
-                                </Option>
-                              );
-                            })}
-                          </Select>
-                        </Form.Item>
-                      )}
-                      {diffSourceData == '1' && (
-                        <React.Fragment>
-                          <Form.Item
-                            name={'intentName'}
-                            label={'意图名称'}
-                            rules={[{ required: true, message: '请选择意图' }]}
-                          >
-                            <Select placeholder={item.placeholder} mode={'multiple'}>
-                              {fieldSelectData['intentName']?.map((itex: any) => {
-                                return (
-                                  <Option
-                                    key={itex?.value || itex?.intentName}
-                                    value={itex?.id || itex?.intentName}
-                                  >
-                                    {itex?.name || itex?.intentName}
-                                  </Option>
-                                );
-                              })}
-                            </Select>
-                          </Form.Item>
-                          <Form.Item
-                            name={'intentValue'}
-                            label={'值'}
-                            rules={[{ required: true, message: '请输入意图' }]}
-                          >
-                            <Input placeholder={'请输入值'} maxLength={200} />
-                          </Form.Item>
-                        </React.Fragment>
-                      )}
-                      {diffSourceData == '2' && (
-                        <Form.Item name={'interface'} label={'接口地址'}>
-                          <Select placeholder={item.placeholder}>
-                            {fieldSelectData['interface']?.map((itex: any) => {
-                              return (
-                                <Option key={itex.value} value={itex.value}>
-                                  {itex.name}
-                                </Option>
-                              );
-                            })}
-                          </Select>
-                        </Form.Item>
-                      )}
-                    </React.Fragment>
-                  )}
-                </React.Fragment>
-              );
-            })}
+            <Form.Item
+              name={'slotId'}
+              label={'词槽ID'}
+              rules={[
+                { required: true, message: '请输入名称' },
+                { max: 50, min: 1 },
+                {
+                  pattern: /^[A-zA-Z0-9_\-]+$/g,
+                  message: '仅支持英文大小写、数字与下划线"_"',
+                },
+              ]}
+            >
+              <Input
+                placeholder={'仅支持英文大小写、数字与下划线"_"'}
+                maxLength={50}
+                readOnly={title == 'edit'}
+              />
+            </Form.Item>
+            <Form.Item
+              name={'slotName'}
+              label={'词槽名称'}
+              rules={[
+                { required: true, message: '请输入名称' },
+                { max: 50, min: 1 },
+              ]}
+            >
+              <Input placeholder={'尽量使用中文'} maxLength={50} readOnly={title == 'edit'} />
+            </Form.Item>
+            <Form.Item name={'slotSource'} label={'槽值来源'} rules={[{ required: true }]}>
+              <Select onChange={slotSourceChange}>
+                {slotSourceData.map((itex: any) => {
+                  return (
+                    <Option
+                      key={itex?.value || itex?.intentName}
+                      value={itex?.value || itex?.intentName}
+                    >
+                      {itex?.name || itex?.intentName}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+            <Form.Item name={'type'} label={'数据类型'} rules={[{ required: true }]}>
+              <Select placeholder={''}>
+                {typeData.map((itex: any) => {
+                  return (
+                    <Option
+                      key={itex?.value || itex?.intentName}
+                      value={itex?.value || itex?.intentName}
+                    >
+                      {itex?.name || itex?.intentName}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+            {slotSource === 1 && (
+              <Form.Item name={'slotPro'} label={'枚举实体'} rules={[{ required: true }]}>
+                <Select placeholder={''}>
+                  {slotPro.map((itex: any) => {
+                    return (
+                      <Option
+                        key={itex?.value || itex?.intentName}
+                        value={itex?.value || itex?.intentName}
+                      >
+                        {itex?.name || itex?.intentName}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              </Form.Item>
+            )}
+            {slotSource === 4 && (
+              <Form.Item name={'zzReal'} label={'正则实体'} rules={[{ required: true }]}>
+                <Select placeholder={''}>
+                  {realList.map((itex: any) => {
+                    return (
+                      <Option key={itex?.id} value={itex?.entityName}>
+                        {itex?.entityName}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              </Form.Item>
+            )}
+            {slotSource === 7 && (
+              <Fragment>
+                <Form.Item name={'changeData'} label={'变量接口'} rules={[{ required: true }]}>
+                  <Select placeholder={'请选择'} onChange={interfaceChange}>
+                    {interfaceList.map((itex: any) => {
+                      return (
+                        <Option key={itex.id} value={itex?.interFaceName}>
+                          {itex?.interFaceName}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                  <Tooltip title={interfaceDesc}>
+                    <span className={styles.information}>
+                      <QuestionCircleFilled />
+                      接口说明
+                    </span>
+                  </Tooltip>
+                </Form.Item>
+                <Form.Item name={'inParams'} label={'入参字段名'} rules={[{ required: true }]}>
+                  <Select placeholder={''}>
+                    {inParams.map((itex: any) => {
+                      return (
+                        <Option key={itex?.paramValue} value={itex?.paramName}>
+                          {itex?.paramName}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                </Form.Item>
+                <Form.Item name={'inVal'} label={'入参值'} rules={[{ required: true }]}>
+                  <Select placeholder={''} onChange={inValChange}>
+                    {inVal.map((itex: any) => {
+                      return (
+                        <Option key={itex?.id} value={itex?.intentName}>
+                          {itex?.intentName}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                </Form.Item>
+                {inval_val && (
+                  <Form.Item name={'inValList'} label={inval_val} rules={[{ required: true }]}>
+                    <Select placeholder={''}>
+                      {inValList.map((itex: any) => {
+                        return (
+                          <Option key={itex?.paramValue} value={itex?.paramName}>
+                            {itex?.paramName}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  </Form.Item>
+                )}
+                <Form.Item name={'outVal'} label={'出参字段名'} rules={[{ required: true }]}>
+                  <Select placeholder={''}>
+                    {outVal.map((itex: any) => {
+                      return (
+                        <Option key={itex?.paramValue} value={itex?.paramName}>
+                          {itex?.paramName}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                </Form.Item>
+              </Fragment>
+            )}
             <Form.Item {...tailLayout}>
               <Space>
                 <Button onClick={cancel}>取消</Button>

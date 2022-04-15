@@ -25,10 +25,10 @@ export const operateFormList = [
     ],
   },
   {
-    label: '是否头部意图',
+    label: '意图类型',
     name: 'headIntent',
     type: 'radio',
-    rules: [{ required: true, message: '请选择是否头部意图' }],
+    rules: [{ required: true, message: '请选择意图类型' }],
   },
   {
     label: '描述',
@@ -48,24 +48,37 @@ export const tableList: any = [
     width: 200,
   },
   {
+    dataIndex: 'headIntent',
+    title: '意图类型',
+    search: true,
+    ellipsis: true,
+    width: 160,
+    initialValue: '',
+    valueEnum: {
+      0: { text: '头部意图', status: 0 },
+      1: { text: '辅助意图', status: 1 },
+      '': { text: '全部', status: '' },
+    },
+  },
+  {
     dataIndex: 'inquiryText',
     title: '澄清名称',
     search: false,
     ellipsis: true,
     width: 200,
   },
-  {
-    dataIndex: 'headIntent',
-    title: '是否头部意图',
-    search: true,
-    valueType: 'select',
-    width: 160,
-    valueEnum: {
-      0: { text: '是', status: 0 },
-      1: { text: '否', status: 1 },
-      '': { text: '全部', status: '' },
-    },
-  },
+  // {
+  //   dataIndex: 'headIntent',
+  //   title: '是否头部意图',
+  //   search: true,
+  //   valueType: 'select',
+  //   width: 160,
+  //   valueEnum: {
+  //     0: { text: '是', status: 0 },
+  //     1: { text: '否', status: 1 },
+  //     '': { text: '全部', status: '' },
+  //   },
+  // },
   {
     dataIndex: 'flowInfoName',
     title: '业务流程',
