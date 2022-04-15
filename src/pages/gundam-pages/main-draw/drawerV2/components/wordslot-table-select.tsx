@@ -1,6 +1,11 @@
 import { useState, useRef, useImperativeHandle, useEffect, useMemo } from 'react';
 import { Drawer, Form, Input, Select, Button, Tag, Table, Tooltip } from 'antd';
-import { PlusOutlined, AppstoreAddOutlined } from '@ant-design/icons';
+import {
+  PlusOutlined,
+  AppstoreAddOutlined,
+  ArrowUpOutlined,
+  ArrowDownOutlined,
+} from '@ant-design/icons';
 import styles from '../style.less';
 import WordSlotModal from './word-slot-modal';
 
@@ -83,12 +88,12 @@ const WordSlotTable: React.FC<any> = (props: any) => {
       title: '词槽名称',
       dataIndex: 'slotName',
       fixed: 'left',
-      width: 100,
+      width: 80,
     },
     {
       title: '词槽描述',
       dataIndex: 'slotDesc',
-      width: 120,
+      width: 90,
       ellipsis: {
         showTitle: false,
       },
@@ -101,7 +106,7 @@ const WordSlotTable: React.FC<any> = (props: any) => {
     {
       title: '词槽必填',
       dataIndex: 'required',
-      width: 80,
+      width: 70,
       render: (val: any) => {
         return val == '1' ? '是' : '否';
       },
@@ -109,7 +114,7 @@ const WordSlotTable: React.FC<any> = (props: any) => {
     {
       title: '来源',
       dataIndex: 'source',
-      width: 120,
+      width: 80,
       ellipsis: {
         showTitle: false,
       },
@@ -119,31 +124,29 @@ const WordSlotTable: React.FC<any> = (props: any) => {
       title: '操作',
       dataIndex: 'op',
       fixed: 'right',
-      width: 70,
+      width: 80,
       render: (val: any, row: any, index: number) => {
         return (
           <div>
             {index > 0 && (
               <Button
                 type="link"
+                icon={<ArrowUpOutlined />}
                 size="small"
                 onClick={() => {
                   upPos(index);
                 }}
-              >
-                上移
-              </Button>
+              ></Button>
             )}
             {index < computeValue.length - 1 && (
               <Button
                 type="link"
                 size="small"
+                icon={<ArrowDownOutlined />}
                 onClick={() => {
                   downPos(index);
                 }}
-              >
-                下移
-              </Button>
+              ></Button>
             )}
 
             <Button

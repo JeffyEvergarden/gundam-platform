@@ -128,7 +128,7 @@ const ActionConfig = (props: any) => {
               optionFilterProp="children"
               showSearch
               onChange={change}
-              style={{ width: '280px' }}
+              style={{ width: '220px' }}
             >
               {ACTION_LIST.map((item: any, index: number) => {
                 return (
@@ -145,8 +145,7 @@ const ActionConfig = (props: any) => {
                 placeholder="请选择跳转业务流程"
                 optionFilterProp="children"
                 showSearch
-                onChange={() => {}}
-                style={{ width: '280px' }}
+                style={{ width: '220px' }}
               >
                 {flowList.map((item: any, index: number) => {
                   return (

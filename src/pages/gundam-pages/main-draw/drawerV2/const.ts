@@ -27,14 +27,14 @@ export const RUlE_LIST: any[] = [
         name: '!=',
         label: '不等于',
       },
-      {
-        name: 'include',
-        label: '包含',
-      },
-      {
-        name: 'uninclude',
-        label: '不包含',
-      },
+      // {
+      //   name: 'include',
+      //   label: '包含',
+      // },
+      // {
+      //   name: 'uninclude',
+      //   label: '不包含',
+      // },
     ],
   },
   {
