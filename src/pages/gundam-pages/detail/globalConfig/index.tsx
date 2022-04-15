@@ -51,12 +51,6 @@ const InterfaceConfig: React.FC = (props: any) => {
       },
     },
     {
-      title: '接口名称',
-      dataIndex: 'interfaceName',
-      search: false,
-      width: 200,
-    },
-    {
       title: '变量类型',
       dataIndex: 'configType',
       search: false,
