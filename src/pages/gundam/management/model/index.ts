@@ -59,7 +59,7 @@ export const useOpModel = () => {
   const getInfo = async (params: any) => {
     let res = await getMachineInfo(params);
     if (res.resultCode === successCode) {
-      let data: any = res?.datas || {};
+      let data: any = res?.data || {};
       return data;
     } else {
       message.warning('获取不到机器人信息');
@@ -176,12 +176,12 @@ export const usePublishModel = () => {
     let res: any = await getPublishStatus({
       robotId,
     });
-    setProductionTime(res.datas?.prodTime || '-');
-    setStatus(!!res.datas?.prodStatus || false);
-    setResult(res.datas?.prodDesc || '-');
-    setTestTime(res.datas?.testTime || '-');
-    setTestStatus(!!res.datas?.testStatus || false);
-    setTestResult(res.datas?.testDesc || '-');
+    setProductionTime(res.data?.prodTime || '-');
+    setStatus(!!res.data?.prodStatus || false);
+    setResult(res.data?.prodDesc || '-');
+    setTestTime(res.data?.testTime || '-');
+    setTestStatus(!!res.data?.testStatus || false);
+    setTestResult(res.data?.testDesc || '-');
   };
 
   return {
