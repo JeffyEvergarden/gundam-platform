@@ -2,8 +2,6 @@ import { useState, useRef, useImperativeHandle, useEffect, useMemo } from 'react
 import { Drawer, Form, Input, Select, Button, Tag, Table, Tooltip } from 'antd';
 import { PlusOutlined, AppstoreAddOutlined } from '@ant-design/icons';
 import styles from '../style.less';
-import LabelSelectModal from './label-select-modal';
-import { values } from 'lodash';
 import WordSlotModal from './word-slot-modal';
 
 const { Option } = Select;

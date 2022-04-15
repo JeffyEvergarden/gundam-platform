@@ -1,6 +1,8 @@
 import { useState, useImperativeHandle, useEffect, useMemo } from 'react';
 import { Modal, Button, Table, Tooltip, Form, Input, Select, Checkbox, Space } from 'antd';
 import { PlusOutlined, MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import ConversationConfig from '../child/conversation-config';
+import ActionConfig from '../child/action-config';
 import styles from '../style.less';
 import { useModel } from 'umi';
 
@@ -66,7 +68,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
   return (
     <Modal
       width={700}
-      title={'选择词槽'}
+      title={'选择词槽12331'}
       visible={visible}
       onCancel={() => setVisible(false)}
       okText={'确定'}
@@ -99,46 +101,20 @@ const WordSlotModal: React.FC<any> = (props: any) => {
             <Checkbox>必填</Checkbox>
           </FormItem>
 
-          <FormList name="clearText">
-            {(fields, { add, remove }) => {
-              const addNew = () => {
-                let length = fields.length;
-                add({ speak: '', label_var: [] }, length);
-              };
+          {/* fake */}
+          <div style={{ paddingTop: '8px' }}>
+            <ConversationConfig name={'clearList'} title="澄清话术" placeholder="话术" />
+          </div>
 
-              return (
-                <div style={{ marginBottom: '20px' }}>
-                  <div className={styles['zy-row']}>
-                    <div className={styles['title_sec']} style={{ marginRight: '20px' }}>
-                      澄清话术:
-                    </div>
-                    <Button type="link" icon={<PlusCircleOutlined />} onClick={addNew}></Button>
-                  </div>
-
-                  {fields.map((field: any, index: number) => (
-                    <div
-                      key={field.key}
-                      className={styles['slot-box']}
-                      style={{ marginLeft: '10px' }}
-                    >
-                      <div className={styles['btn']}>
-                        <Button
-                          icon={<MinusCircleOutlined />}
-                          type="link"
-                          danger
-                          onClick={() => {
-                            remove(index);
-                          }}
-                        />
-                      </div>
-                      <div className={styles['num']}>{index + 1}.</div>
-                      <div></div>
-                    </div>
-                  ))}
-                </div>
-              );
-            }}
-          </FormList>
+          <div style={{ paddingTop: '8px' }}>
+            <ActionConfig
+              form={form}
+              title={'执行动作'}
+              formName={'action'}
+              name={'action'}
+              titleType={2}
+            />
+          </div>
         </Form>
       </div>
     </Modal>

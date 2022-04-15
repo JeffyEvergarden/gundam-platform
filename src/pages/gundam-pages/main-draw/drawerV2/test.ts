@@ -4,6 +4,8 @@ const req = {
   flowId: '100', // 流程id
   id: '02', // 节点ID
   nodeType: 0, // 节点类型
+  name: '', // 节点名字
+  nodeDesc: '', // 节点描述
   // 词槽 (待商定)
   nodeSlots: [
     {
@@ -12,7 +14,7 @@ const req = {
       slotName: '123',
       textLabels: [],
       endText: '1213',
-      required: true,
+      required: 1, // 1,0
       clearText: [{ actionText: 'helloworld', textLabels: [] }],
     },
   ],
@@ -21,7 +23,20 @@ const req = {
   strategyList: [
     {
       // 规则列表  ruleList => {rules} => ruleType, ruleKey,  condition, ruleValue
-      ruleList: [{ rules: [{ ruleType: 0, condition: '==', ruleValue: '001' }] }],
+      ruleList: [
+        {
+          rules: [
+            {
+              ruleType: undefined, // 选择类型  (0,1,2,4,5)
+              ruleKey: undefined, // 词槽、高级变量(静默:1,拒识2,未听清3)、变量的id
+              ruleKeyType: undefined, // (text 0、number 1、date 2)
+              condition: undefined, // 比较条件  ==、!=、like、unlike、include、uninclude 等
+              valueType: undefined, //值类型  变量、词槽、自定义(1、2、3)
+              ruleValue: undefined, //  数字、文本、日期(YYYY-MM-DD)
+            },
+          ],
+        },
+      ],
       // 答复内容 列表
       conversationList: [
         {

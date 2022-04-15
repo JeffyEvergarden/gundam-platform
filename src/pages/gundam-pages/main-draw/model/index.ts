@@ -45,7 +45,6 @@ export const useNodeOpsModel = () => {
     let res: any = await addNode(data);
     setLoading(false);
     if (res.resultCode !== config.successCode) {
-      message.success('更新成功');
       message.warning(res.resultDesc || '未知系统异常');
       return false;
     } else {
@@ -84,7 +83,7 @@ export const useNodeOpsModel = () => {
     let res: any = await getNodesConfig(data);
     setInfoLoading(false);
     if (res.resultCode === config.successCode) {
-      let config: any = res.datas || {};
+      let config: any = res.data || {};
       return config;
     } else {
       message.warning('获取节点信息失败');
@@ -106,7 +105,7 @@ export const useNodeOpsModel = () => {
   const _getLineConfig = async (data: any) => {
     let res: any = await getLineConfig(data);
     if (res.resultCode === config.successCode) {
-      let config: any = res.datas || {};
+      let config: any = res.data || {};
       return config;
     } else {
       message.warning('获取节点信息失败');
@@ -194,7 +193,7 @@ export const useNodeOpsModel = () => {
   const _getMachineMainDraw = async (data: any) => {
     let res: any = await getMachineMainDraw(data);
     if (res.resultCode === config.successCode) {
-      let data: any = res?.datas || {};
+      let data: any = res?.data || {};
       return parser(data);
     } else {
       message.error('获取不到画布信息');
@@ -308,7 +307,7 @@ export const useSelectModel = () => {
           index,
           name: item.id,
           label: item.slotName,
-          type: item.type,
+          type: item.dataType,
           intentName: item.slotName,
         };
       }) || [];

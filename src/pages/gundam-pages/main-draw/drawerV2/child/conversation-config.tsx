@@ -9,7 +9,7 @@ const { Item: FormItem, List: FormList } = Form;
 const { Option } = Select;
 
 const ConversationConfig = (props: any) => {
-  const { name } = props;
+  const { name, title = '答复配置', placeholder = '答复内容' } = props;
   return (
     <div className={styles['conversation-list']}>
       <FormList name={name}>
@@ -29,7 +29,7 @@ const ConversationConfig = (props: any) => {
           return (
             <div>
               <div className={styles['zy-row']} style={{ marginBottom: '10px' }}>
-                <div className={styles['title_sp']}>答复配置</div>
+                <div className={styles['title_sp']}>{title}</div>
               </div>
 
               <div className={styles['cvs-box']}>
@@ -51,11 +51,11 @@ const ConversationConfig = (props: any) => {
                       <Form.Item
                         name={[field.name, 'actionText']}
                         fieldKey={[field.fieldKey, 'actionText']}
-                        rules={[{ required: true, message: '请输入答复内容' }]}
+                        rules={[{ required: true, message: `请输入${placeholder}` }]}
                       >
                         <CvsInput
-                          placeholder="请输入答复内容"
-                          title={'答复内容：'}
+                          placeholder={`请输入${placeholder}`}
+                          title={`${placeholder}：`}
                           type="textarea"
                           style={{ width: '100%' }}
                           autoComplete="off"
@@ -80,7 +80,7 @@ const ConversationConfig = (props: any) => {
                     style={{ marginLeft: '10px' }}
                     onClick={addNew}
                   >
-                    新增答复内容
+                    新增{placeholder}
                   </Button>
                 </div>
               </div>

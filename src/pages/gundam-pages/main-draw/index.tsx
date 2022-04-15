@@ -20,6 +20,9 @@ const MainDraw = (props: any) => {
   const edgeDrawerRef = useRef<any>(null);
   const spNodeDrawerRef = useRef<any>(null);
 
+  // 历史遗留问题
+  // 话术、
+
   const { info, getLabelList, getFlowList, businessFlowId } = useModel(
     'gundam' as any,
     (model: any) => ({
@@ -75,7 +78,7 @@ const MainDraw = (props: any) => {
       (fake.current as any).deleteNode(node);
     } else {
       (fake.current as any).updateNode(node.id, {
-        _id: res.datas?.id, //得到后端id
+        _id: res?.data?.id, //得到后端id
       });
     }
   };
@@ -216,10 +219,9 @@ const MainDraw = (props: any) => {
   useEffect(() => {
     getLabelList(); // 获取话术标签
     getFlowList(); // 获取业务流程列表
-    getWishList(info.id);
-    getWordSlotList(info.id);
-
-    (drawerRef.current as any).open({});
+    getWishList(info.id); // 意图列表
+    getWordSlotList(info.id); // 词槽列表
+    // 获取全局变量列表
   }, []);
 
   useEffect(() => {

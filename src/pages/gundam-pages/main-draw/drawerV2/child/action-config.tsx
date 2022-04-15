@@ -140,7 +140,7 @@ const ActionConfig = (props: any) => {
             </Select>
           </FormItem>
           <Condition r-if={_actionType === 2}>
-            <FormItem name={getFormName('businessId')}>
+            <FormItem name={getFormName('toFlowId')}>
               <Select
                 placeholder="请选择跳转业务流程"
                 optionFilterProp="children"
@@ -169,7 +169,7 @@ const ActionConfig = (props: any) => {
           />
         </FormItem>
 
-        <FormItem name={getFormName('responseLabel')} label="选择标签">
+        <FormItem name={getFormName('textLabels')} label="选择标签">
           <LabelSelect color="magenta"></LabelSelect>
         </FormItem>
 
