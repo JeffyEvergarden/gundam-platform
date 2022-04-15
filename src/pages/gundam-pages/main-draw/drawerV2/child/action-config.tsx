@@ -128,7 +128,7 @@ const ActionConfig = (props: any) => {
               optionFilterProp="children"
               showSearch
               onChange={change}
-              style={{ width: '280px' }}
+              style={{ width: '220px' }}
             >
               {ACTION_LIST.map((item: any, index: number) => {
                 return (
@@ -145,8 +145,7 @@ const ActionConfig = (props: any) => {
                 placeholder="请选择跳转业务流程"
                 optionFilterProp="children"
                 showSearch
-                onChange={() => {}}
-                style={{ width: '280px' }}
+                style={{ width: '220px' }}
               >
                 {flowList.map((item: any, index: number) => {
                   return (
@@ -159,7 +158,7 @@ const ActionConfig = (props: any) => {
             </FormItem>
           </Condition>
         </Space>
-        <FormItem name={getFormName('responseText')} label="话术">
+        <FormItem name={getFormName('actionText')} label="话术">
           <CvsInput
             placeholder="请输入话术内容"
             type="textarea"
@@ -169,7 +168,7 @@ const ActionConfig = (props: any) => {
           />
         </FormItem>
 
-        <FormItem name={getFormName('testLabels')} label="选择标签">
+        <FormItem name={getFormName('textLabels')} label="选择标签">
           <LabelSelect color="magenta"></LabelSelect>
         </FormItem>
 

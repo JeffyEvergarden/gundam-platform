@@ -12,6 +12,7 @@ import {
   selectMap,
   VALUE_TYPE_MAP,
   VALUE_TYPE_LIST,
+  RULE_KEY_TYPE_MAP,
   conditionFilter,
 } from '../const';
 
@@ -180,7 +181,9 @@ const RuleConfig = (props: any) => {
                                       // console.log('ruleKeyType: ' + ruleKeyType);
                                       const compareVal: any = curItem?.condition || undefined;
 
-                                      const valueType: any = curItem?.valueType || undefined;
+                                      const valueType: any = isNaN(curItem?.valueType)
+                                        ? undefined
+                                        : curItem?.valueType;
 
                                       let compareList: any[] =
                                         CURRENT_RULE_LIST.find((item: any) => {
@@ -601,7 +604,7 @@ const RuleConfig = (props: any) => {
                                             r-if={
                                               [selectMap['变量'], selectMap['词槽']].includes(
                                                 ruleType,
-                                              ) && valueType
+                                              ) && valueType !== undefined
                                             }
                                           >
                                             <div
@@ -683,7 +686,7 @@ const RuleConfig = (props: any) => {
                                                 <Condition
                                                   r-if={
                                                     valueType === VALUE_TYPE_MAP['自定义'] &&
-                                                    ruleKeyType === 'number'
+                                                    ruleKeyType === RULE_KEY_TYPE_MAP['number']
                                                   }
                                                 >
                                                   <FormItem
@@ -706,7 +709,7 @@ const RuleConfig = (props: any) => {
                                                 <Condition
                                                   r-if={
                                                     valueType === VALUE_TYPE_MAP['自定义'] &&
-                                                    ruleKeyType === 'text'
+                                                    ruleKeyType === RULE_KEY_TYPE_MAP['text']
                                                   }
                                                 >
                                                   <FormItem
@@ -727,7 +730,7 @@ const RuleConfig = (props: any) => {
                                                 <Condition
                                                   r-if={
                                                     valueType === VALUE_TYPE_MAP['自定义'] &&
-                                                    ruleKeyType === 'date'
+                                                    ruleKeyType === RULE_KEY_TYPE_MAP['date']
                                                   }
                                                 >
                                                   <FormItem

@@ -95,7 +95,7 @@ const EdgeDrawerForm = (props: any) => {
             _name: res?.name,
             level: res.level || 1,
           },
-          result?.datas?.id,
+          result?.data?.id,
         ); // 成功回调修改名称
         onClose();
       }

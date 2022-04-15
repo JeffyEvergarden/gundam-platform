@@ -5,10 +5,9 @@ import config from '../../../src/config';
 const successCode = config.successCode;
 
 const nodeOps = (req: any, res: any) => {
-  console.log(req.query);
   res.json({
     resultCode: successCode,
-    datas: {
+    data: {
       id: Math.random().toFixed(4),
     },
   });
@@ -18,7 +17,7 @@ const getConfig = (req: any, res: any) => {
   const body = req.body || {};
   res.json({
     resultCode: successCode,
-    datas: {
+    data: {
       nodes: [
         {
           frontId: '01', // 前端节点id
@@ -66,7 +65,7 @@ const getNodesConfig = (req: any, res: any) => {
   console.log('-------getNodesConfig');
   res.json({
     resultCode: successCode,
-    datas: {
+    data: {
       name: '名侦探柯南',
       nodeDesc: '高中生侦探',
       nodeFlowId: 'front_mock_id_1',
@@ -125,7 +124,7 @@ const getNodesConfig = (req: any, res: any) => {
 const getInfo = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
-    datas: {
+    data: {
       robotInfo: {
         id: '100',
         flowId: '100',
@@ -156,7 +155,7 @@ const getInfo = (req: any, res: any) => {
 const getLineConfig = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
-    datas: {
+    data: {
       name: '七龙珠',
       // level: 10,
       nodeDesc: '七龙珠',

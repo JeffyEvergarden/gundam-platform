@@ -27,14 +27,14 @@ export const RUlE_LIST: any[] = [
         name: '!=',
         label: '不等于',
       },
-      {
-        name: 'include',
-        label: '包含',
-      },
-      {
-        name: 'uninclude',
-        label: '不包含',
-      },
+      // {
+      //   name: 'include',
+      //   label: '包含',
+      // },
+      // {
+      //   name: 'uninclude',
+      //   label: '不包含',
+      // },
     ],
   },
   {
@@ -113,15 +113,15 @@ export const EDGE_RULE_LIST: any[] = [
 // 高级配置（连线下拉）
 export const EDGE_VAR_LIST: any[] = [
   {
-    name: '静默次数',
+    name: '1',
     label: '静默次数',
   },
   {
-    name: '拒识次数',
+    name: '2',
     label: '拒识次数',
   },
   {
-    name: '未听清次数',
+    name: '3',
     label: '未听清次数',
   },
 ];
@@ -158,10 +158,17 @@ export const VALUE_TYPE_LIST = [
   },
 ];
 
+//
+export const RULE_KEY_TYPE_MAP = {
+  text: 0,
+  number: 1,
+  date: 2,
+};
+
 // 条件过滤
 export const conditionFilter = (valueType: any) => {
   let list: any[] = [];
-  if (valueType === 'number' || valueType === 'date') {
+  if (valueType === RULE_KEY_TYPE_MAP['number'] || valueType === RULE_KEY_TYPE_MAP['date']) {
     list = [
       {
         name: '==',
@@ -188,7 +195,7 @@ export const conditionFilter = (valueType: any) => {
         label: '大于等于',
       },
     ];
-  } else if (valueType === 'text') {
+  } else if (valueType === RULE_KEY_TYPE_MAP['text']) {
     list = [
       {
         name: '==',

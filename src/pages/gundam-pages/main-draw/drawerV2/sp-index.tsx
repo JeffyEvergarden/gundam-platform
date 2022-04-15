@@ -3,11 +3,8 @@ import { Drawer, Form, Input, Select, Button, message } from 'antd';
 import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import styles from './style.less';
 import { useModel } from 'umi';
-import ConversationConfig from './child/conversation-config';
-import HighConfig from './child/high-config';
-import WordSlotTable from './components/word-slot-table';
 
-import { useSelectModel, useNodeOpsModel } from '../model';
+import { useNodeOpsModel } from '../model';
 import { useEffect } from 'react';
 import Condition from '@/components/Condition';
 import config from '@/config';
