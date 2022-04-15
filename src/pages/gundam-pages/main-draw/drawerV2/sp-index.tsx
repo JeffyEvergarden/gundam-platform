@@ -1,5 +1,5 @@
 import { useState, useImperativeHandle, useRef } from 'react';
-import { Drawer, Form, Input, Select, Button, message } from 'antd';
+import { Modal, Drawer, Form, Input, Select, Button, message } from 'antd';
 import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import styles from './style.less';
 import { useModel } from 'umi';
@@ -19,6 +19,11 @@ const DrawerForm = (props: any) => {
   const [form] = Form.useForm();
 
   const [visible, setVisible] = useState<boolean>(false);
+
+  const [autoCloseTipsFlag, setAutoCloseTipsFlag] = useState<boolean>(false);
+  const onValuesChange = () => {
+    setAutoCloseTipsFlag(true);
+  };
 
   const [nodetype, setNodetype] = useState<string>('');
 
@@ -41,13 +46,23 @@ const DrawerForm = (props: any) => {
   const { saveNode: _saveNode } = useNodeOpsModel();
 
   const onClose = () => {
-    setVisible(false);
+    if (autoCloseTipsFlag) {
+      Modal.confirm({
+        title: '温馨提示',
+        content: '已对内容进行修改,若不保存将丢失编辑信息',
+        onOk: () => {
+          setVisible(false);
+        },
+      });
+    } else {
+      setVisible(false);
+    }
   };
 
   useImperativeHandle(cref, () => ({
     open: (info: any, callback: any) => {
-      console.log(info);
-
+      // console.log(info);
+      setAutoCloseTipsFlag(false);
       recordInfo.current.info = info;
       recordInfo.current.callback = callback;
       setNodetype(info._nodetype || 'normal');
@@ -75,6 +90,7 @@ const DrawerForm = (props: any) => {
         nodeType: recordInfo.current.info?.nodeType,
       });
       if (result === true) {
+        setAutoCloseTipsFlag(false);
         recordInfo.current?.callback?.(res?.name); // 成功回调修改名称
         onClose();
       }
@@ -102,7 +118,7 @@ const DrawerForm = (props: any) => {
       footer={footer}
       destroyOnClose
     >
-      <Form form={form}>
+      <Form form={form} onValuesChange={onValuesChange}>
         <div className={styles['antd-form']}>
           <div className={styles['title']} style={{ marginTop: 0 }}>
             基本信息
