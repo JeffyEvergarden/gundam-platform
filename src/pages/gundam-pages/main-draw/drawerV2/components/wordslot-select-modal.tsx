@@ -1,11 +1,11 @@
 import { useState, useImperativeHandle, useEffect, useMemo } from 'react';
-import { Modal, Button, Table } from 'antd';
+import { Modal, Button, Table, Tooltip } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import style from './style.less';
 import { useModel } from 'umi';
-import GlobalVarButton from './global-var-button';
+import { wordSlotSourceMap } from '../const';
 
-const GlobalVarModal: React.FC<any> = (props: any) => {
+const WordSlotSelectModal: React.FC<any> = (props: any) => {
   const { cref, onConfirm } = props;
 
   const [visible, setVisible] = useState<boolean>(false);
@@ -20,18 +20,18 @@ const GlobalVarModal: React.FC<any> = (props: any) => {
     setCurrent(val);
   };
 
-  const { globalVarList } = useModel('gundam' as any, (model: any) => ({
-    globalVarList: model.globalVarList || [],
+  const { wordSlotList } = useModel('drawer' as any, (model: any) => ({
+    wordSlotList: model._wordSlotList || [],
   }));
 
   const tableList: any[] = useMemo(() => {
-    return globalVarList.map((item: any, index: number) => {
+    return wordSlotList.map((item: any, index: number) => {
       return {
         ...item,
         index: index,
       };
     });
-  }, [globalVarList]);
+  }, [wordSlotList]);
 
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
@@ -47,18 +47,44 @@ const GlobalVarModal: React.FC<any> = (props: any) => {
 
   const columns: any[] = [
     {
-      title: '变量值',
-      dataIndex: 'name',
-      width: 200,
+      title: '词槽ID',
+      dataIndex: 'id',
+      width: 120,
+      ellipsis: {
+        showTitle: false,
+      },
     },
     {
-      title: '变量名称',
-      dataIndex: 'label',
-      width: 200,
+      title: '词槽名称',
+      dataIndex: 'slotName',
+      width: 120,
+      ellipsis: {
+        showTitle: false,
+      },
     },
     {
-      title: '变量描述',
-      dataIndex: 'desc',
+      title: '词槽描述',
+      dataIndex: 'slotDesc',
+      width: 120,
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (val: any) => (
+        <Tooltip placement="topLeft" title={val}>
+          {val}
+        </Tooltip>
+      ),
+    },
+    {
+      title: '来源',
+      dataIndex: 'slotSource',
+      width: 90,
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (val: any) => {
+        return wordSlotSourceMap[val] || '';
+      },
     },
   ];
 
@@ -81,7 +107,7 @@ const GlobalVarModal: React.FC<any> = (props: any) => {
 
   return (
     <Modal
-      width={700}
+      width={750}
       title={'选择词槽'}
       visible={visible}
       onCancel={() => setVisible(false)}
@@ -107,4 +133,4 @@ const GlobalVarModal: React.FC<any> = (props: any) => {
   );
 };
 
-export default GlobalVarModal;
+export default WordSlotSelectModal;

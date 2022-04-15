@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-const successCode = 100;
+const successCode = '0000';
 
 const addNewLabel = (req: any, res: any) => {
   console.log(req.query);
@@ -28,29 +28,34 @@ const getLabelList = (req: any, res: any) => {
   console.log(req.query);
   res.json({
     resultCode: successCode,
-    datas: [
-      {
-        actionLabel: '话术标签1',
-        id: 'hsbq1',
-        labelDesc: '话术标签话术标签话术标签话术标签',
-        creator: 'ujiangjiahao',
-        createTime: '2022-02-17 11:54:59',
-      },
-      {
-        actionLabel: '话术标签2',
-        id: 'hsbq2',
-        labelDesc: '话术标签话术标签话术标签话术标签',
-        creator: 'ujiangjiahao',
-        createTime: '2022-02-17 11:54:59',
-      },
-      {
-        actionLabel: '话术标签3',
-        id: 'hsbq3',
-        labelDesc: '话术标签话术标签话术标签话术标签',
-        creator: 'ujiangjiahao',
-        createTime: '2022-02-17 11:54:59',
-      },
-    ],
+    data: {
+      page: 1,
+      pageSize: 10,
+      totalSize: 3,
+      list: [
+        {
+          actionLabel: '话术标签1',
+          id: 'hsbq1',
+          labelDesc: '话术标签话术标签话术标签话术标签',
+          creator: 'ujiangjiahao',
+          createTime: '2022-02-17 11:54:59',
+        },
+        {
+          actionLabel: '话术标签2',
+          id: 'hsbq2',
+          labelDesc: '话术标签话术标签话术标签话术标签',
+          creator: 'ujiangjiahao',
+          createTime: '2022-02-17 11:54:59',
+        },
+        {
+          actionLabel: '话术标签3',
+          id: 'hsbq3',
+          labelDesc: '话术标签话术标签话术标签话术标签',
+          creator: 'ujiangjiahao',
+          createTime: '2022-02-17 11:54:59',
+        },
+      ],
+    },
   });
 };
 

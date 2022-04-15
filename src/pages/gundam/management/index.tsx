@@ -35,6 +35,8 @@ const MachineManagement: React.FC = (props: any) => {
 
   const modalRef = useRef<any>({});
 
+  // const [searchForm, setSearchForm] = useState<any>({});
+
   // 分页相关 ---
   // const [current, setCurrent] = useState<number>(1);
 
@@ -63,7 +65,7 @@ const MachineManagement: React.FC = (props: any) => {
   // 下钻系统
   const goToNewSystem = (row: any) => {
     if (!row.id) {
-      message.warning('获取不到机器人信息');
+      message.warning('获取不到机器人ID');
       return null;
     }
     history.push(`/gundamPages/mainDraw?id=${row.id}`);
@@ -101,7 +103,7 @@ const MachineManagement: React.FC = (props: any) => {
 
       if (res.resultCode === config.successCode) {
         modalRef.current?.close?.();
-        goToNewSystem({ ...res.datas });
+        goToNewSystem({ ...res.data });
       } else {
         // message.error(res?.resultDesc || '未知系统异常');
       }
@@ -127,6 +129,14 @@ const MachineManagement: React.FC = (props: any) => {
       fixed: 'left',
       fieldProps: {
         placeholder: '请输入机器人名称',
+        // onPressEnter: (e: any) => {
+        //   console.log(e);
+        //   let obj = { ...searchForm, robotName: e.target.value };
+        //   // if (e.target.value == '') {
+        //   //   delete obj.robotName;
+        //   // }
+        //   setSearchForm(obj);
+        // },
       },
       ellipsis: true,
       width: 180,
@@ -151,6 +161,20 @@ const MachineManagement: React.FC = (props: any) => {
       initialValue: undefined,
       valueEnum: {
         ...listToMap(BUSSINESS_CODE),
+      },
+      width: 120,
+    },
+    {
+      title: '服务分类',
+      dataIndex: 'soundType',
+      fieldProps: {
+        placeholder: '请选择服务分类',
+      },
+      valueType: 'select',
+      initialValue: undefined,
+      valueEnum: {
+        0: { text: '呼入' },
+        1: { text: '呼出' },
       },
       width: 120,
     },
@@ -275,12 +299,12 @@ const MachineManagement: React.FC = (props: any) => {
   return (
     <div className={style['machine-page']}>
       <ProTable<any>
+        // params={searchForm}
         columns={columns}
         actionRef={tableRef}
         scroll={{ x: columns.length * 200 }}
         request={async (params = {}, sort, filter) => {
-          // console.log(sort, filter);
-          return getTableList(params);
+          return getTableList({ page: params.current, ...params });
         }}
         editable={{
           type: 'multiple',
@@ -292,6 +316,8 @@ const MachineManagement: React.FC = (props: any) => {
         rowKey="index"
         search={{
           labelWidth: 'auto',
+          // optionRender: false,
+          // collapsed: false,
         }}
         form={{
           // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
@@ -304,6 +330,17 @@ const MachineManagement: React.FC = (props: any) => {
             }
             return values;
           },
+          // onFieldsChange: (change, all) => {
+          //   let params: any = {};
+          //   clearTimeout(time);
+          //   all.forEach((item) => {
+          //     if (item.touched) {
+          //       params[item.name[0]] = item.value;
+          //     }
+          //   });
+          //   delete params.robotName;
+          //   setSearchForm(params);
+          // },
         }}
         pagination={{
           pageSize: 10,

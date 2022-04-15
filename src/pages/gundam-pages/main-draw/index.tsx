@@ -3,6 +3,7 @@ import { useRef, useEffect } from 'react';
 import FlowPage from './flow';
 import { useModel } from 'umi';
 import DrawerForm from './drawerV2';
+import SpDrawerForm from './drawerV2/sp-index';
 import EdgeDrawerForm from './EdgeDrawer';
 import style from './style.less';
 import { useNodeOpsModel, useSelectModel } from './model';
@@ -17,16 +18,35 @@ const MainDraw = (props: any) => {
   const fake = useRef<any>(null);
   const drawerRef = useRef<any>(null);
   const edgeDrawerRef = useRef<any>(null);
+  const spNodeDrawerRef = useRef<any>(null);
 
-  const { info, getLabelList, getFlowList, businessFlowId } = useModel(
-    'gundam' as any,
-    (model: any) => ({
-      info: model.info,
-      getLabelList: model.getLabelList,
-      getFlowList: model.getFlowList,
-      businessFlowId: model.businessFlowId,
-    }),
-  );
+  // 历史遗留问题
+  // 话术标签、业务流程列表
+
+  const { info, businessFlowId } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+    businessFlowId: model.businessFlowId,
+  }));
+
+  // 意图列表、词槽列表
+  // 短信模版列表
+  const {
+    getMessageList,
+    wishList,
+    wordSlotList,
+    getWishList,
+    getWordSlotList,
+    getLabelList,
+    getFlowList,
+  } = useModel('drawer' as any, (model: any) => ({
+    wishList: model._wishList || [],
+    wordSlotList: model._wordSlotList || [],
+    getMessageList: model.getMessageList || [],
+    getWishList: model.getWishList || [],
+    getWordSlotList: model.getWordSlotList || [],
+    getLabelList: model.getLabelList || [],
+    getFlowList: model.getFlowList || [],
+  }));
 
   // 前置参数
   const preParams: any = {
@@ -43,9 +63,6 @@ const MainDraw = (props: any) => {
     getNodesConfig,
     getLineConfig,
   } = useNodeOpsModel();
-
-  // 意图列表、词槽列表
-  const { wishList, wordSlotList, getWishList, getWordSlotList } = useSelectModel();
 
   // 流程图相关 -----------------------
   // -- start-----
@@ -73,7 +90,7 @@ const MainDraw = (props: any) => {
       (fake.current as any).deleteNode(node);
     } else {
       (fake.current as any).updateNode(node.id, {
-        _id: res.datas?.id, //得到后端id
+        _id: res?.data?.id, //得到后端id
       });
     }
   };
@@ -85,8 +102,8 @@ const MainDraw = (props: any) => {
     if (!node._id) {
       return;
     }
-    if (node._nodetype === 'start') {
-      message.warning('开始节点不允许删除');
+    if (node._nodetype === 'start' || node._nodetype === 'sp_business') {
+      message.warning('该节点不允许删除');
       (fake.current as any).executeCommand?.('undo');
       return;
     }
@@ -145,12 +162,17 @@ const MainDraw = (props: any) => {
       nodeType: processType(info._nodetype),
     });
     config = {
-      ...info,
-      ...config,
-      id: info._id,
-      frontId: info.id,
-      name: config.nodeName || config.name,
-      nodeType: processType(info._nodetype),
+      node: {
+        ...info,
+      },
+      config: {
+        ...config,
+      },
+      id: info._id, // 后端id
+      frontId: info.id, // 前端id
+      name: config.nodeName || config.name, // 前端名称
+      nodeType: processType(info._nodetype), // 后端节点类型
+      _nodetype: info._nodetype,
     };
 
     const callBack = (name: string) => {
@@ -159,8 +181,11 @@ const MainDraw = (props: any) => {
       });
       eventbus.$emit('refresh');
     };
-
-    (drawerRef.current as any).open(config, callBack);
+    if (['sp_business', 'business'].includes(info._nodetype)) {
+      (spNodeDrawerRef.current as any).open(config, callBack);
+    } else {
+      (drawerRef.current as any).open(config, callBack);
+    }
   };
 
   // 打开线配置
@@ -209,10 +234,11 @@ const MainDraw = (props: any) => {
 
   // 初始化设置
   useEffect(() => {
-    getLabelList(); // 获取话术标签
-    getFlowList(); // 获取业务流程列表
-    getWishList(info.id);
-    getWordSlotList(info.id);
+    getLabelList(info.id); // 获取话术标签
+    getFlowList(info.id); // 获取业务流程列表
+    getWishList(info.id); // 意图列表
+    getWordSlotList(info.id); // 词槽列表
+    getMessageList(info.id); // 获取全局变量列表
   }, []);
 
   useEffect(() => {
@@ -239,6 +265,8 @@ const MainDraw = (props: any) => {
       </div>
 
       <DrawerForm cref={drawerRef} type={type} wishList={wishList} wordSlotList={wordSlotList} />
+
+      <SpDrawerForm cref={spNodeDrawerRef} type={type} />
 
       <EdgeDrawerForm
         cref={edgeDrawerRef}

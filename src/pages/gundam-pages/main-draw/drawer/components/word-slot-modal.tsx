@@ -6,6 +6,7 @@ import GlobalVarButton from './global-var-button';
 import styles from '../style.less';
 import { useModel } from 'umi';
 import { useForm } from 'antd/lib/form/Form';
+import Condition from '@/components/Condition';
 
 const { Item: FormItem, List: FormList } = Form;
 const { TextArea } = Input;
@@ -15,6 +16,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
   const { cref, confirm, list } = props;
 
   const [visible, setVisible] = useState<boolean>(false);
+  const [solt, setSolt] = useState<boolean>(true);
 
   const [form] = Form.useForm();
 
@@ -22,12 +24,16 @@ const WordSlotModal: React.FC<any> = (props: any) => {
     open: (obj: any) => {
       if (!obj.slotId) {
         form.resetFields();
+        setSolt(true);
         form.setFieldsValue({
           clear_list: [{}],
+          required: true,
         });
+        console.log(form.getFieldsValue());
       } else {
         // console.log(obj);
         form.resetFields();
+        setSolt(obj.required);
         form.setFieldsValue({
           ...obj,
         });
@@ -66,12 +72,19 @@ const WordSlotModal: React.FC<any> = (props: any) => {
     // });
   };
 
+  const handleChange = (val: any) => {
+    setSolt(form.getFieldValue('required'));
+  };
+
   return (
     <Modal
       width={700}
       title={'选择词槽'}
       visible={visible}
-      onCancel={() => setVisible(false)}
+      onCancel={() => {
+        setVisible(false);
+        setSolt(true);
+      }}
       okText={'确定'}
       onOk={submit}
     >
@@ -99,85 +112,87 @@ const WordSlotModal: React.FC<any> = (props: any) => {
             valuePropName="checked"
             style={{ width: '400px' }}
           >
-            <Checkbox>必填</Checkbox>
+            <Checkbox onChange={handleChange}>必填</Checkbox>
           </FormItem>
 
-          <FormList name="clearText">
-            {(fields, { add, remove }) => {
-              const addNew = () => {
-                let length = fields.length;
-                add({ speak: '', label_var: [] }, length);
-              };
+          <Condition r-if={solt}>
+            <FormList name="clearText">
+              {(fields, { add, remove }) => {
+                const addNew = () => {
+                  let length = fields.length;
+                  add({ speak: '', label_var: [] }, length);
+                };
 
-              return (
-                <div style={{ marginBottom: '20px' }}>
-                  <div className={styles['zy-row']}>
-                    <div className={styles['title_sec']} style={{ marginRight: '20px' }}>
-                      澄清话术:
-                    </div>
-                    <Button type="link" icon={<PlusCircleOutlined />} onClick={addNew}></Button>
-                  </div>
-
-                  {fields.map((field: any, index: number) => (
-                    <div
-                      key={field.key}
-                      className={styles['slot-box']}
-                      style={{ marginLeft: '10px' }}
-                    >
-                      <div className={styles['btn']}>
-                        <Button
-                          icon={<MinusCircleOutlined />}
-                          type="link"
-                          danger
-                          onClick={() => {
-                            remove(index);
-                          }}
-                        />
+                return (
+                  <div style={{ marginBottom: '20px' }}>
+                    <div className={styles['zy-row']}>
+                      <div className={styles['title_sec']} style={{ marginRight: '20px' }}>
+                        澄清话术:
                       </div>
-                      <div className={styles['num']}>{index + 1}.</div>
-                      <div>
-                        <Space>
+                      <Button type="link" icon={<PlusCircleOutlined />} onClick={addNew}></Button>
+                    </div>
+
+                    {fields.map((field: any, index: number) => (
+                      <div
+                        key={field.key}
+                        className={styles['slot-box']}
+                        style={{ marginLeft: '10px' }}
+                      >
+                        <div className={styles['btn']}>
+                          <Button
+                            icon={<MinusCircleOutlined />}
+                            type="link"
+                            danger
+                            onClick={() => {
+                              remove(index);
+                            }}
+                          />
+                        </div>
+                        <div className={styles['num']}>{index + 1}.</div>
+                        <div>
+                          <Space>
+                            <FormItem
+                              name={[field.name, 'actionText']}
+                              fieldKey={[field.fieldKey, 'actionText']}
+                              label="澄清话术"
+                              rules={[{ required: true }]}
+                            >
+                              <GlobalVarButton
+                                placeholder="请输入澄清话术"
+                                style={{ width: '300px' }}
+                                autoComplete="off"
+                              />
+                            </FormItem>
+                          </Space>
+
                           <FormItem
-                            name={[field.name, 'actionText']}
-                            fieldKey={[field.fieldKey, 'actionText']}
-                            label="澄清话术"
-                            rules={[{ required: true }]}
+                            name={[field.name, 'textLabels']}
+                            fieldKey={[field.fieldKey, 'textLabels']}
+                            label="选择标签"
                           >
-                            <GlobalVarButton
-                              placeholder="请输入澄清话术"
-                              style={{ width: '300px' }}
-                              autoComplete="off"
-                            />
+                            <LabelSelect color="orange"></LabelSelect>
                           </FormItem>
-                        </Space>
-
-                        <FormItem
-                          name={[field.name, 'textLabels']}
-                          fieldKey={[field.fieldKey, 'textLabels']}
-                          label="选择标签"
-                        >
-                          <LabelSelect color="orange"></LabelSelect>
-                        </FormItem>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              );
-            }}
-          </FormList>
+                    ))}
+                  </div>
+                );
+              }}
+            </FormList>
 
-          <FormItem name="endText" label="结束话术">
-            <GlobalVarButton
-              placeholder="请输入结束话术"
-              style={{ width: '400px' }}
-              autoComplete="off"
-              maxlength={150}
-            />
-          </FormItem>
+            <FormItem name="endText" label="结束话术">
+              <GlobalVarButton
+                placeholder="请输入结束话术"
+                style={{ width: '400px' }}
+                autoComplete="off"
+                maxlength={150}
+              />
+            </FormItem>
 
-          <FormItem name="textLabels" label="选择标签">
-            <LabelSelect color="orange"></LabelSelect>
-          </FormItem>
+            <FormItem name="textLabels" label="选择标签">
+              <LabelSelect color="orange"></LabelSelect>
+            </FormItem>
+          </Condition>
         </Form>
       </div>
     </Modal>

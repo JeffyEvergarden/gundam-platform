@@ -9,7 +9,27 @@ export default [
   {
     icon: <CrownOutlined />,
     path: '/gundamPages/detail',
-    name: '机器人配置',
+    name: '全局配置',
+    routes: [
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/detail/nodeConfig',
+        // component: './gundam-pages/detail',
+        name: '节点配置',
+      },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/detail/globalConfig',
+        // component: './gundam-pages/detail',
+        name: '全局变量配置',
+      },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/detail/interfaceConfig',
+        // component: './gundam-pages/detail/interfaceConfig',
+        name: '接口配置',
+      },
+    ],
   },
   {
     icon: <CrownOutlined />,

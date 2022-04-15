@@ -11,9 +11,10 @@ import {
   publishProd,
   getPublishTest,
   getPublishStatus,
+  _getGlobalValConfig,
 } from './api';
 
-export const successCode = 100;
+export const successCode = '0000';
 
 // 菜单管理的表格数据
 export const useTableModel = () => {
@@ -25,11 +26,11 @@ export const useTableModel = () => {
     setTableLoading(true);
     let res: any = await getMachineList(params);
     setTableLoading(false);
-    let { datas = [], totalPage, totalSize } = res;
-    if (!Array.isArray(datas)) {
-      datas = [];
+    let { list = [], totalPage, totalSize } = res.data;
+    if (!Array.isArray(list)) {
+      list = [];
     }
-    datas = datas.map((item: any, index: number) => {
+    list = list.map((item: any, index: number) => {
       return {
         ...item,
         title: item.name,
@@ -37,8 +38,8 @@ export const useTableModel = () => {
       };
     });
     // console.log('tableList', datas);
-    setTableList(datas || []);
-    return { data: datas, total: totalSize };
+    setTableList(list || []);
+    return { data: list, total: totalPage };
   };
 
   return {
@@ -59,10 +60,22 @@ export const useOpModel = () => {
   const getInfo = async (params: any) => {
     let res = await getMachineInfo(params);
     if (res.resultCode === successCode) {
-      let data: any = res?.datas || {};
+      let data: any = res?.data || {};
       return data;
     } else {
       message.warning('获取不到机器人信息');
+      return null;
+    }
+  };
+
+  // 全局变量配置
+  const getGlobalValConfig = async (params: any) => {
+    let res = await _getGlobalValConfig(params);
+    if (res.resultCode === successCode) {
+      let data: any = res?.data || {};
+      return data;
+    } else {
+      message.warning('获取不到全局变量配置');
       return null;
     }
   };
@@ -121,6 +134,7 @@ export const useOpModel = () => {
     editMachine: _editMachine, // 编辑机器人
     opLoading: loading,
     getInfo,
+    getGlobalValConfig, //全局变量配置
   };
 };
 
@@ -176,12 +190,12 @@ export const usePublishModel = () => {
     let res: any = await getPublishStatus({
       robotId,
     });
-    setProductionTime(res.datas?.prodTime || '-');
-    setStatus(!!res.datas?.prodStatus || false);
-    setResult(res.datas?.prodDesc || '-');
-    setTestTime(res.datas?.testTime || '-');
-    setTestStatus(!!res.datas?.testStatus || false);
-    setTestResult(res.datas?.testDesc || '-');
+    setProductionTime(res.data?.prodTime || '-');
+    setStatus(!!res.data?.prodStatus || false);
+    setResult(res.data?.prodDesc || '-');
+    setTestTime(res.data?.testTime || '-');
+    setTestStatus(!!res.data?.testStatus || false);
+    setTestResult(res.data?.testDesc || '-');
   };
 
   return {

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-const successCode = 100;
+const successCode = '0000';
 
 const getBusinessTableData = (req: any, res: any) => {
   res.json({

@@ -30,6 +30,24 @@ export default [
         path: '/gundamPages/detail',
         component: './gundam-pages/detail',
         name: '机器人配置',
+        routes: [
+          {
+            path: '/gundamPages/detail/nodeConfig',
+            component: './gundam-pages/detail/nodeConfig',
+            name: '业务流程管理',
+          },
+          {
+            path: '/gundamPages/detail/globalConfig',
+            component: './gundam-pages/detail/globalConfig',
+            name: '业务流程管理-详情配置',
+          },
+          {
+            path: '/gundamPages/detail/interfaceConfig',
+            component: './gundam-pages/detail/interfaceConfig',
+            name: '业务流程管理',
+          },
+          { redirect: '/gundamPages/detail' },
+        ],
       },
       {
         path: '/gundamPages/wish',

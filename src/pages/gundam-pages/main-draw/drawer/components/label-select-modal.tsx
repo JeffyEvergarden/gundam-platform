@@ -7,8 +7,8 @@ import { useModel } from 'umi';
 const LabelSelectModal: React.FC<any> = (props: any) => {
   const { cref, confirm, list, type = 'radio' } = props;
 
-  const { labelList } = useModel('gundam' as any, (model: any) => ({
-    labelList: model.labelList,
+  const { labelList } = useModel('drawer' as any, (model: any) => ({
+    labelList: model._labelList,
   }));
 
   const [visible, setVisible] = useState<boolean>(false);

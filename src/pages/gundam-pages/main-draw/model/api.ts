@@ -78,25 +78,25 @@ export async function getLineConfig(data?: { [key: string]: any }) {
 // -----------------------------
 
 /** 获取意图列表 **/
-export async function getIntentList(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/robot/intent/intentList`, {
-    method: 'GET',
-    params,
+export async function getIntentList(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/intent/intentInfo`, {
+    method: 'POST',
+    data,
   });
 }
 
 /** 获取词槽列表 **/
-export async function getWordSlotTableList(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/robot/slot/slotList`, {
-    method: 'GET',
-    params,
+export async function getWordSlotTableList(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/slot/slotInfo`, {
+    method: 'POST',
+    data,
   });
 }
 
 /** 获取流程图列表 **/
-export async function getFlowList(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/robot/flow/flowList`, {
-    method: 'GET',
-    params,
+export async function getFlowList(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/flow/flowInfo`, {
+    method: 'POST',
+    data,
   });
 }

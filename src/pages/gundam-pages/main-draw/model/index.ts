@@ -1,7 +1,14 @@
 import { useState } from 'react';
 import { message } from 'antd';
 import config from '@/config';
-import { normalNode, startNode, businessNode, parserType, processType } from './const';
+import {
+  normalNode,
+  startNode,
+  businessNode,
+  spBusinessNode,
+  parserType,
+  processType,
+} from './const';
 import {
   addNode,
   deleteNode,
@@ -23,6 +30,8 @@ const getDefaultNode = (type: string) => {
     return startNode;
   } else if (type === 'business') {
     return businessNode;
+  } else if (type === 'sp_business') {
+    return spBusinessNode;
   }
   return normalNode;
 };
@@ -36,7 +45,6 @@ export const useNodeOpsModel = () => {
     let res: any = await addNode(data);
     setLoading(false);
     if (res.resultCode !== config.successCode) {
-      message.success('更新成功');
       message.warning(res.resultDesc || '未知系统异常');
       return false;
     } else {
@@ -75,7 +83,7 @@ export const useNodeOpsModel = () => {
     let res: any = await getNodesConfig(data);
     setInfoLoading(false);
     if (res.resultCode === config.successCode) {
-      let config: any = res.datas || {};
+      let config: any = res.data || {};
       return config;
     } else {
       message.warning('获取节点信息失败');
@@ -97,7 +105,7 @@ export const useNodeOpsModel = () => {
   const _getLineConfig = async (data: any) => {
     let res: any = await getLineConfig(data);
     if (res.resultCode === config.successCode) {
-      let config: any = res.datas || {};
+      let config: any = res.data || {};
       return config;
     } else {
       message.warning('获取节点信息失败');
@@ -185,7 +193,7 @@ export const useNodeOpsModel = () => {
   const _getMachineMainDraw = async (data: any) => {
     let res: any = await getMachineMainDraw(data);
     if (res.resultCode === config.successCode) {
-      let data: any = res?.datas || {};
+      let data: any = res?.data || {};
       return parser(data);
     } else {
       message.error('获取不到画布信息');
@@ -266,8 +274,6 @@ export const useSelectModel = () => {
   const _getWishList = async (id?: any) => {
     let res: any = await getIntentList({
       robotId: id,
-      current: 1,
-      pageSize: 1000,
     });
     let data: any[] = res?.data || res?.datas;
     data = Array.isArray(data) ? data : [];
@@ -287,8 +293,6 @@ export const useSelectModel = () => {
   const _getWordSlotList = async (id?: any) => {
     let res: any = await getWordSlotTableList({
       robotId: id,
-      current: 1,
-      pageSize: 1000,
     });
     let data: any[] = res?.data || res?.datas;
     data = Array.isArray(data) ? data : [];
@@ -299,6 +303,7 @@ export const useSelectModel = () => {
           index,
           name: item.id,
           label: item.slotName,
+          type: item.dataType,
           intentName: item.slotName,
         };
       }) || [];
@@ -309,8 +314,6 @@ export const useSelectModel = () => {
   const _getFlowList = async (id?: any) => {
     let res: any = await getFlowList({
       robotId: id,
-      current: 1,
-      pageSize: 1000,
     });
     let data: any[] =
       res?.datas?.map?.((item: any, index: number) => {
