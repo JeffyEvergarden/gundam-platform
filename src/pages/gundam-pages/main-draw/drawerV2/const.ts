@@ -57,6 +57,10 @@ export const RUlE_LIST: any[] = [
         name: 'unlike',
         label: '不包含',
       },
+      {
+        name: 'reg',
+        label: '符合正则',
+      },
     ],
   },
   {

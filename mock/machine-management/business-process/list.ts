@@ -6,7 +6,9 @@ const getBusinessTableData = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
     data: {
-      totalPage: 1,
+      pageSize: 20,
+      totalSize: 200,
+      page: 10,
       list: [
         {
           flowName: '前端mock-流程1',
