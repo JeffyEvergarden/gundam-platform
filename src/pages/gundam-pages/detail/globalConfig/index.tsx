@@ -75,18 +75,24 @@ const InterfaceConfig: React.FC = (props: any) => {
                 编辑
               </Button>
 
-              <Popconfirm
-                title="删除将不可恢复，确认删除？"
-                okText="确定"
-                cancelText="取消"
-                onConfirm={() => {
-                  deleteRow(row);
-                }}
-              >
-                <Button type="link" danger>
+              {!row.updateType ? (
+                <Button type="link" danger disabled={true}>
                   删除
                 </Button>
-              </Popconfirm>
+              ) : (
+                <Popconfirm
+                  title="删除将不可恢复，确认删除？"
+                  okText="确定"
+                  cancelText="取消"
+                  onConfirm={() => {
+                    deleteRow(row);
+                  }}
+                >
+                  <Button type="link" danger>
+                    删除
+                  </Button>
+                </Popconfirm>
+              )}
             </div>
           </div>
         );

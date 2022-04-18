@@ -215,7 +215,7 @@ const ActionConfig = (props: any) => {
                     const _item = getItem();
                     const currentItem = _item?.messageList?.[index];
 
-                    const content: any = currentItem.content;
+                    const content: any = currentItem?.content;
 
                     return (
                       <div key={field.key} className={styles['message-box']}>

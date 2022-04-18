@@ -132,7 +132,6 @@ export default function useGundamModel() {
           index,
           name: item.id,
           label: item.flowName,
-          headIntent: item.headIntent,
         };
       }) || [];
     _setFlowList(data);

@@ -4,11 +4,16 @@ import HighConfig from '../../main-draw/drawerV2/child/high-config';
 import style from './style.less';
 import { useModel } from 'umi';
 import { useNodeModel } from '../model';
+import { _saveNode } from '../model/api';
 
 const { Option } = Select;
+const { Item: FormItem, List: FormList } = Form;
 
 const NodeConfig: React.FC = (props: any) => {
   const [form] = Form.useForm();
+  const [form2] = Form.useForm();
+
+  const [config, setConfig] = useState<any>();
 
   const { getNodeConfig, saveNode, configLoading } = useNodeModel();
 
@@ -32,13 +37,46 @@ const NodeConfig: React.FC = (props: any) => {
 
   const submit = async () => {
     let res: any = await form.validateFields();
-    console.log(res);
+    let res1: any = await form2.validateFields();
+    console.log(config);
+    let _res = config.map((item: any) => {
+      Object.keys(res1.systemConfigList).forEach((v) => {
+        console.log(item.configKey, v);
+        if (item?.configKey == v) {
+          item.configValue = res1.systemConfigList[v];
+        }
+      });
+      return item;
+    });
+
+    let params = {
+      robotId: info.id,
+      highConfig: res,
+      systemConfigList: _res,
+    };
+
+    await _saveNode(params);
+
+    console.log(params);
+  };
+
+  const findValue = (data: any, val: any) => {
+    return data?.systemConfigList?.find((item: any) => {
+      return item[val] == val;
+    })?.configValue;
   };
 
   const _getNodesConfig = async () => {
     await getNodeConfig({ robotId: info.id }).then((res) => {
       console.log(res);
-      form.setFieldsValue(res);
+      setConfig(res.systemConfigList);
+      let obj: any = {};
+      res.systemConfigList.forEach((item: any) => {
+        obj[item.configKey] = item.configValue;
+      });
+
+      form.setFieldsValue(res?.highConfig);
+      form2.setFieldsValue({ systemConfigList: { ...obj } });
     });
   };
 
@@ -72,7 +110,39 @@ const NodeConfig: React.FC = (props: any) => {
     <div className={style['machine-page']}>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <Form form={form}>
-          <HighConfig form={form} bussinessList={flowList} type={'config'}></HighConfig>
+          <HighConfig
+            form={form}
+            bussinessList={flowList}
+            type={'config'}
+            config={config}
+          ></HighConfig>
+        </Form>
+
+        <Form form={form2}>
+          <div className={style['antd-form']}>
+            <Space align="baseline">
+              <div
+                className={style['title_sp']}
+                style={{ marginRight: '16px', marginBottom: '20px' }}
+              >
+                意图澄清配置
+              </div>
+            </Space>
+
+            {config?.map((item: any) => {
+              return (
+                <FormItem
+                  // {...col}
+                  label={item.configName}
+                  name={['systemConfigList', item.configKey]}
+                  key={'systemConfigList' + item.configKey}
+                  rules={[{ required: true }]}
+                >
+                  <InputNumber style={{ width: 200 }} min={0} max={1} step="0.01" precision={2} />
+                </FormItem>
+              );
+            })}
+          </div>
         </Form>
         <Button type="primary" onClick={submit} style={{ alignSelf: 'flex-end' }}>
           保存
