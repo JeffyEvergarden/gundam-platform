@@ -74,3 +74,11 @@ export async function queryGlobalValConfig(params?: { [key: string]: any }) {
     params,
   });
 }
+
+//获取所有全局节点配置
+export async function queryNodeConfig(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/node/list`, {
+    method: 'GET',
+    params,
+  });
+}

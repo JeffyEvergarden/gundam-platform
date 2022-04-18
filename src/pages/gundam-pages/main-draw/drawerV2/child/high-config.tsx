@@ -11,13 +11,35 @@ import Condition from '@/components/Condition';
 import styles from './style.less';
 import { ACTION_LIST } from '../const';
 
+import { useModel } from 'umi';
+
 const { Item: FormItem, List: FormList } = Form;
 const { Option } = Select;
 
 const HighConfig = (props: any) => {
   const { form, wishList, bussinessList, type } = props;
 
+  const { nodeConfig } = useModel('drawer' as any, (model: any) => ({
+    nodeConfig: model._globalNodeList,
+  }));
+
   const [flag, setFlag] = useState<boolean>(false);
+
+  const [disabled, setDisabled] = useState<boolean>(false);
+
+  const onChange = (val: any) => {
+    console.log(nodeConfig);
+    let res = form.getFieldsValue();
+    if (res.configType == 1) {
+      res.allowFlows = nodeConfig.allowFlows;
+      setDisabled(true);
+      form.setFieldsValue(res);
+    } else if (res.configType == 2) {
+      res.allowFlows = undefined;
+      form.setFieldsValue(res);
+      setDisabled(false);
+    }
+  };
 
   return (
     <>
@@ -45,8 +67,8 @@ const HighConfig = (props: any) => {
               流程跳转
             </div>
             <Condition r-if={type == 'flow'}>
-              <Form.Item name="configType">
-                <Radio.Group size="small">
+              <Form.Item name="configType" initialValue={2}>
+                <Radio.Group size="small" onChange={onChange}>
                   <Radio value={1}>默认配置</Radio>
                   <Radio value={2}>自定义配置</Radio>
                 </Radio.Group>
@@ -54,7 +76,7 @@ const HighConfig = (props: any) => {
             </Condition>
           </Space>
           <FormItem name="allowFlows" label="允许跳转至业务流程" style={{ width: '400px' }}>
-            <Select placeholder="请选择允许跳转至业务流程" mode="multiple">
+            <Select placeholder="请选择允许跳转至业务流程" mode="multiple" disabled={disabled}>
               {bussinessList.map((item: any, index: number) => {
                 return (
                   <Option key={index} value={item.name} opt={item}>

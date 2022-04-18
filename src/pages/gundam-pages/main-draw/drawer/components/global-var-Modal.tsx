@@ -20,7 +20,7 @@ const GlobalVarModal: React.FC<any> = (props: any) => {
     setCurrent(val);
   };
 
-  const { globalVarList } = useModel('gundam' as any, (model: any) => ({
+  const { globalVarList } = useModel('drawer' as any, (model: any) => ({
     globalVarList: model.globalVarList || [],
   }));
 

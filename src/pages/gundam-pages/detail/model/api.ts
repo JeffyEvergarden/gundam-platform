@@ -74,3 +74,19 @@ export async function deleteGlobal(data?: { [key: string]: any }) {
     data,
   });
 }
+
+/** 获取全局节点信息 **/
+export async function _getNodeConfig(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/node/list`, {
+    method: 'GET',
+    params,
+  });
+}
+
+/** 获取全局节点信息 **/
+export async function _saveNode(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/node/save`, {
+    method: 'GET',
+    params,
+  });
+}

@@ -23,9 +23,10 @@ const MainDraw = (props: any) => {
   // 历史遗留问题
   // 话术标签、业务流程列表
 
-  const { info, businessFlowId } = useModel('gundam' as any, (model: any) => ({
+  const { info, businessFlowId, getGlobalValConfig } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     businessFlowId: model.businessFlowId,
+    getGlobalValConfig: model.getGlobalValConfig,
   }));
 
   // 意图列表、词槽列表
@@ -38,6 +39,7 @@ const MainDraw = (props: any) => {
     getWordSlotList,
     getLabelList,
     getFlowList,
+    getGlobalConfig,
   } = useModel('drawer' as any, (model: any) => ({
     wishList: model._wishList || [],
     wordSlotList: model._wordSlotList || [],
@@ -46,6 +48,7 @@ const MainDraw = (props: any) => {
     getWordSlotList: model.getWordSlotList || [],
     getLabelList: model.getLabelList || [],
     getFlowList: model.getFlowList || [],
+    getGlobalConfig: model.getGlobalConfig || {},
   }));
 
   // 前置参数
@@ -238,7 +241,9 @@ const MainDraw = (props: any) => {
     getFlowList(info.id); // 获取业务流程列表
     getWishList(info.id); // 意图列表
     getWordSlotList(info.id); // 词槽列表
-    getMessageList(info.id); // 获取全局变量列表
+    getMessageList(info.id); // 短信
+    getGlobalValConfig(info.id); // 获取全局变量列表
+    getGlobalConfig(info.id); //获取全局节点配置
   }, []);
 
   useEffect(() => {
