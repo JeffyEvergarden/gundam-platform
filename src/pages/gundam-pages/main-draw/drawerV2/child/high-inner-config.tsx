@@ -21,10 +21,6 @@ const { Option } = Select;
 const HightformTemplate: any = (props: any) => {
   const { form, name, title, showDefault, type } = props;
   const [disabled, setDisabled] = useState<boolean>(false);
-  const { info, businessFlowId } = useModel('gundam' as any, (model: any) => ({
-    info: model.info,
-    businessFlowId: model.businessFlowId,
-  }));
   const { nodeConfig } = useModel('drawer' as any, (model: any) => ({
     nodeConfig: model._globalNodeList,
   }));
@@ -70,26 +66,6 @@ const HightformTemplate: any = (props: any) => {
           </Form.Item>
         </Condition>
       </Space>
-
-      {/* 澄清 阈值等 */}
-      <Condition r-if={name == 'clearAction' && type == 'config'}>
-        <Condition r-if={info.robotType == 1}>
-          <FormItem name={[name, 'threshold']} label="阈值" rules={[{ required: true }]}>
-            <InputNumber style={{ width: 200 }} min={0} max={1} step="0.01" precision={2} />
-          </FormItem>
-          <FormItem name={[name, 'thresholdGap']} label="得分差值" rules={[{ required: true }]}>
-            <InputNumber style={{ width: 200 }} min={0} max={1} step="0.01" precision={2} />
-          </FormItem>
-        </Condition>
-        <Condition r-if={info.robotType == 0}>
-          <FormItem name={[name, 'maxThreshold']} label="最大阈值" rules={[{ required: true }]}>
-            <InputNumber style={{ width: 200 }} min={0} max={1} step="0.01" precision={2} />
-          </FormItem>
-          <FormItem name={[name, 'minThreshold']} label="最小阈值" rules={[{ required: true }]}>
-            <InputNumber style={{ width: 200 }} min={0} max={1} step="0.01" precision={2} />
-          </FormItem>
-        </Condition>
-      </Condition>
 
       {/* 响应话术 */}
       <Condition r-if={name != 'unclearAction'}>
