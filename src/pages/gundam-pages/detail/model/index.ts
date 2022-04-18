@@ -4,6 +4,8 @@ import { message } from 'antd';
 import { getConfig, editConfig, getInterfaceCurrentList } from './api';
 //变量配置接口
 import { getConfigCurrentList, addNewGlobal, editNewGlobal, deleteGlobal } from './api';
+//节点配置
+import { _getNodeConfig, _saveNode } from './api';
 
 export const successCode = '0000';
 
@@ -115,6 +117,37 @@ export const useGlobalModel = () => {
     addGlobal,
     editGlobal,
     getTableList,
+    configLoading,
+  };
+};
+
+//节点配置
+export const useNodeModel = () => {
+  const [configLoading, setConfigLoading] = useState<boolean>(false);
+
+  const getNodeConfig = async (params: any) => {
+    setConfigLoading(true);
+    let res: any = await _getNodeConfig(params);
+    setConfigLoading(false);
+
+    return res.data;
+  };
+
+  const saveNode = async (data: any) => {
+    setConfigLoading(true);
+    let res: any = await _saveNode(data);
+    setConfigLoading(false);
+    if (res.resultCode === successCode) {
+      message.success(res?.resultDesc || '修改标签信息成功');
+      return true;
+    } else {
+      return res?.resultDesc || '未知系统异常';
+    }
+  };
+
+  return {
+    getNodeConfig,
+    saveNode,
     configLoading,
   };
 };

@@ -5,13 +5,14 @@ import {
   queryMessageList,
   queryWordSlotTableList,
   queryWishList,
+  queryNodeConfig,
 } from '@/services/api';
 import config from '@/config';
 
 export default function useGundamModel() {
   const [_wishList, _setWishList] = useState<any>([]); // 意图列表
 
-  const [_globalVarList, _setGlobalVarList] = useState<any>([]); // 机器人的全局变量
+  const [_globalNodeList, _setGlobalNodeList] = useState<any>([]); // 机器人的全局节点
   // 机器人的话术标签列表
   const [_labelList, _setLabelList] = useState<any>([]);
   // 业务流程列表
@@ -112,12 +113,24 @@ export default function useGundamModel() {
     let data: any[] = res?.data?.list || [];
     _setLabelList(data);
   };
+  //高级配置信息
+  const getGlobalConfig = async (id?: any) => {
+    if (!id) {
+      console.log('机器人的高级配置获取不到机器人id');
+      return null;
+    }
+    let res: any = await queryNodeConfig({ robotId: id });
+    let data: any[] = res?.data || {};
+    console.log(data);
+
+    _setGlobalNodeList(data);
+  };
 
   return {
     _wishList,
     _setWishList,
-    _globalVarList,
-    _setGlobalVarList,
+    _globalNodeList,
+    _setGlobalNodeList,
     _labelList,
     _setLabelList,
     _flowList,
@@ -131,5 +144,6 @@ export default function useGundamModel() {
     getWordSlotList, // 词槽
     getFlowList, // 业务流程
     getLabelList, // 话术标签
+    getGlobalConfig, //高级配置 节点
   };
 }

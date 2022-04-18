@@ -20,14 +20,35 @@ const { Option } = Select;
 
 const HightformTemplate: any = (props: any) => {
   const { form, name, title, showDefault, type } = props;
+  const [disabled, setDisabled] = useState<boolean>(false);
   const { info, businessFlowId } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     businessFlowId: model.businessFlowId,
   }));
+  const { nodeConfig } = useModel('drawer' as any, (model: any) => ({
+    nodeConfig: model._globalNodeList,
+  }));
 
   const isDisabled = false;
 
-  const onChange = (val: any) => {};
+  const onChange = (val: any) => {
+    console.log(nodeConfig[name]);
+    console.log(name);
+
+    let res = form.getFieldsValue();
+    console.log(res);
+
+    if (res[name].configType == 1) {
+      res[name] = nodeConfig[name];
+      setDisabled(true);
+      form.setFieldsValue(res);
+    } else if (res[name].configType == 2) {
+      // res[name] = undefined;
+      form.setFieldsValue(res);
+      setDisabled(false);
+    }
+    console.log(res);
+  };
 
   return (
     <div className={styles['high-config']}>
@@ -48,38 +69,18 @@ const HightformTemplate: any = (props: any) => {
       {/* 澄清 阈值等 */}
       <Condition r-if={name == 'clearAction' && type == 'config'}>
         <Condition r-if={info.robotType == 1}>
-          <FormItem
-            name={[name, 'threshold']}
-            label="阈值"
-            rules={[{ required: true }]}
-            initialValue={0.9}
-          >
+          <FormItem name={[name, 'threshold']} label="阈值" rules={[{ required: true }]}>
             <InputNumber style={{ width: 200 }} min={0} max={1} step="0.01" precision={2} />
           </FormItem>
-          <FormItem
-            name={[name, 'thresholdGap']}
-            label="得分差值"
-            rules={[{ required: true }]}
-            initialValue={0.02}
-          >
+          <FormItem name={[name, 'thresholdGap']} label="得分差值" rules={[{ required: true }]}>
             <InputNumber style={{ width: 200 }} min={0} max={1} step="0.01" precision={2} />
           </FormItem>
         </Condition>
         <Condition r-if={info.robotType == 0}>
-          <FormItem
-            name={[name, 'maxThreshold']}
-            label="最大阈值"
-            rules={[{ required: true }]}
-            initialValue={0.9}
-          >
+          <FormItem name={[name, 'maxThreshold']} label="最大阈值" rules={[{ required: true }]}>
             <InputNumber style={{ width: 200 }} min={0} max={1} step="0.01" precision={2} />
           </FormItem>
-          <FormItem
-            name={[name, 'minThreshold']}
-            label="最小阈值"
-            rules={[{ required: true }]}
-            initialValue={0.6}
-          >
+          <FormItem name={[name, 'minThreshold']} label="最小阈值" rules={[{ required: true }]}>
             <InputNumber style={{ width: 200 }} min={0} max={1} step="0.01" precision={2} />
           </FormItem>
         </Condition>
@@ -114,10 +115,10 @@ const HightformTemplate: any = (props: any) => {
                         <span
                           className={styles['del-bt']}
                           onClick={() => {
-                            remove(index);
+                            if (!disabled) remove(index);
                           }}
                         >
-                          <MinusCircleOutlined />
+                          <MinusCircleOutlined disabled={disabled} />
                         </span>
                         <span className={styles['cvs-num']}>{index + 1}.</span>
                       </div>
@@ -134,6 +135,7 @@ const HightformTemplate: any = (props: any) => {
                             type="textarea"
                             style={{ width: '100%' }}
                             autoComplete="off"
+                            canEdit={disabled}
                           />
                         </Form.Item>
 
@@ -142,7 +144,7 @@ const HightformTemplate: any = (props: any) => {
                           fieldKey={[field.fieldKey, 'textLabels']}
                           label="选择标签"
                         >
-                          <LabelSelect color="magenta"></LabelSelect>
+                          <LabelSelect color="magenta" canEdit={disabled}></LabelSelect>
                         </Form.Item>
                       </div>
                     </div>
@@ -154,6 +156,7 @@ const HightformTemplate: any = (props: any) => {
                       icon={<AppstoreAddOutlined />}
                       style={{ marginLeft: '10px' }}
                       onClick={addNew}
+                      disabled={disabled}
                     >
                       新增响应话术
                     </Button>
@@ -182,12 +185,7 @@ const HightformTemplate: any = (props: any) => {
       </Condition>
 
       {/* 次数 */}
-      <FormItem
-        name={[name, 'times']}
-        label={title + '次数'}
-        style={{ marginTop: '8px' }}
-        initialValue={3}
-      >
+      <FormItem name={[name, 'times']} label={title + '次数'} style={{ marginTop: '8px' }}>
         <InputNumber
           max={100000}
           min={1}
@@ -195,6 +193,7 @@ const HightformTemplate: any = (props: any) => {
           precision={0}
           style={{ width: '200px' }}
           placeholder={'请输入' + title + '次数'}
+          disabled={disabled}
         />
       </FormItem>
 
@@ -206,6 +205,7 @@ const HightformTemplate: any = (props: any) => {
           formName={[name, 'action']}
           name={[name, 'action']}
           titleType={2}
+          canEdit={disabled}
         />
       </div>
     </div>

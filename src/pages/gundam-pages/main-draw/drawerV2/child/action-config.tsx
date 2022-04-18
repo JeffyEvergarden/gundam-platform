@@ -13,7 +13,7 @@ const { Item: FormItem, List: FormList } = Form;
 const { Option } = Select;
 
 const ActionConfig = (props: any) => {
-  const { name, title, formName: _formName, form, titleType = 1 } = props;
+  const { name, title, formName: _formName, form, titleType = 1, canEdit } = props;
 
   const [num, setNum] = useState<number>(1);
 
@@ -137,6 +137,7 @@ const ActionConfig = (props: any) => {
               showSearch
               onChange={change}
               style={{ width: '220px' }}
+              disabled={canEdit}
             >
               {ACTION_LIST.map((item: any, index: number) => {
                 return (
@@ -154,6 +155,7 @@ const ActionConfig = (props: any) => {
                 optionFilterProp="children"
                 showSearch
                 style={{ width: '220px' }}
+                disabled={canEdit}
               >
                 {flowList.map((item: any, index: number) => {
                   return (
@@ -173,11 +175,12 @@ const ActionConfig = (props: any) => {
             style={{ width: '100%' }}
             autoComplete="off"
             rows={3}
+            disabled={canEdit}
           />
         </FormItem>
 
         <FormItem name={getFormName('textLabels')} label="选择标签">
-          <LabelSelect color="magenta"></LabelSelect>
+          <LabelSelect color="magenta" canEdit={canEdit}></LabelSelect>
         </FormItem>
 
         <div className={'ant-form-item-label'}>
@@ -215,10 +218,10 @@ const ActionConfig = (props: any) => {
                           <span
                             className={styles['del-bt']}
                             onClick={() => {
-                              _remove(index);
+                              if (!canEdit) _remove(index);
                             }}
                           >
-                            <MinusCircleOutlined />
+                            <MinusCircleOutlined disabled={canEdit} />
                           </span>
                           <span className={styles['cvs-num']}>{index + 1}.</span>
                         </div>
@@ -240,6 +243,7 @@ const ActionConfig = (props: any) => {
                                   onChange={(val: any, opt: any) => {
                                     changeItem(opt, index);
                                   }}
+                                  disabled={canEdit}
                                 >
                                   {messageList.map((item: any, index: number) => {
                                     return (
@@ -264,6 +268,7 @@ const ActionConfig = (props: any) => {
                                     return label[label.length - 1];
                                   }}
                                   style={{ width: '200px' }}
+                                  disabled={canEdit}
                                 />
                               </Form.Item>
                             </Space>
@@ -284,6 +289,7 @@ const ActionConfig = (props: any) => {
                       icon={<AppstoreAddOutlined />}
                       style={{ marginLeft: '10px' }}
                       onClick={addOutNew}
+                      disabled={canEdit}
                     >
                       新增短信发送
                     </Button>

@@ -123,7 +123,7 @@ const InfoModal: React.FC<any> = (props: any) => {
             style={{ width: '460px' }}
             initialValue={0}
           >
-            <Select placeholder={'请输入'} defaultValue={0}>
+            <Select placeholder={'请输入'}>
               {dataTypeList.map((item: any) => {
                 return (
                   <Option key={item.name} value={item.name}>

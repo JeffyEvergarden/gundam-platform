@@ -63,6 +63,7 @@ const getLabelList = (req: any, res: any) => {
 export default {
   // 话术标签管理相关
   'GET /aichat/robot/actionLabel/actionLabelList': getLabelList, //话术标签列表
+  'GET /aichat/robot/actionLabel/actionLabelInfo': getLabelList, //话术标签列表
   'POST /aichat/robot/actionLabel/actionLabelAdd': addNewLabel, //话术标签新增
   'POST /aichat/robot/actionLabel/actionLabelUpdate': editLabel, //话术标签编辑
   'POST /aichat/robot/actionLabel/actionLabelDelete': deleteLabel, //话术标签删除

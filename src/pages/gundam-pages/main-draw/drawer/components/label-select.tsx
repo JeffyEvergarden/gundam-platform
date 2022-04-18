@@ -7,7 +7,7 @@ import LabelSelectModal from './label-select-modal';
 const { Option } = Select;
 
 const LabelSelect: React.FC<any> = (props: any) => {
-  const { value, onChange, color, style } = props;
+  const { value, onChange, color, style, canEdit } = props;
 
   const [num, setNum] = useState<number>(1);
 
@@ -42,7 +42,7 @@ const LabelSelect: React.FC<any> = (props: any) => {
               <Tag
                 color={color}
                 key={index}
-                closable
+                closable={!canEdit}
                 onClose={() => {
                   deleteCurrentTag(index);
                 }}
@@ -53,7 +53,7 @@ const LabelSelect: React.FC<any> = (props: any) => {
           })}
       </div>
       <div className={styles['right']}>
-        <Button type="link" icon={<PlusOutlined />} onClick={openModal}></Button>
+        <Button type="link" icon={<PlusOutlined />} onClick={openModal} disabled={canEdit}></Button>
       </div>
       <LabelSelectModal cref={modelRef} confirm={onConfirm} />
     </div>
