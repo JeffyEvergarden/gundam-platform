@@ -6,6 +6,7 @@ const getBusinessTableData = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
     data: {
+      totalPage: 1,
       list: [
         {
           flowName: '前端mock-流程1',
@@ -50,6 +51,7 @@ const deleteBusinessItem = (req: any, res: any) => {
 // 业务流程管理相关
 export default {
   'GET /aichat/robot/flow/flowList': getBusinessTableData, // 获取业务流程管理列表
+  'POST /aichat/robot/flow/flowInfo': getBusinessTableData, // 获取业务流程管理列表
   'POST /aichat/robot/flow/flowAdd': addBusinessItem, // 新增业务流程
   'POST /aichat/robot/flow/flowUpdate': editBusinessItem, // 编辑业务流程
   'POST /aichat/robot/flow/flowDelete': deleteBusinessItem, // 删除业务流程

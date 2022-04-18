@@ -1,7 +1,7 @@
 import { useState, useImperativeHandle, useEffect, useRef } from 'react';
 import { Drawer, Form, Input, Select, Button, Tag, message } from 'antd';
 import { PlusOutlined, DiffOutlined } from '@ant-design/icons';
-import GlobalVarModal from '../../drawer/components/global-var-modal';
+import GlobalVarModal from '../../drawer/components/global-var-Modal';
 import WordSlotModal from './wordslot-select-modal';
 import styles from './style.less';
 import Condition from '@/components/Condition';
@@ -11,7 +11,17 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 const CvsInput: React.FC<any> = (props: any) => {
-  const { value, type = 'input', onChange, style, maxlength = 200, title, rows, ...res } = props;
+  const {
+    value,
+    type = 'input',
+    onChange,
+    style,
+    maxlength = 200,
+    title,
+    rows,
+    canEdit,
+    ...res
+  } = props;
 
   const modalRef = useRef<any>(null);
 
@@ -66,14 +76,30 @@ const CvsInput: React.FC<any> = (props: any) => {
     setStartPos(isNaN(num) ? -1 : num);
   };
 
+  useEffect(() => {
+    console.log(canEdit);
+  }, [canEdit]);
+
   return (
     <div className={''}>
       <div className={styles['zy-row']}>
         <div>{title}</div>
-        <Button type="link" onClick={openGlobalVarModal}>
+        <Button
+          type="link"
+          disabled={canEdit}
+          onClick={() => {
+            openGlobalVarModal();
+          }}
+        >
           {'{$}'}添加变量
         </Button>
-        <Button type="link" onClick={openWordSlotModal}>
+        <Button
+          type="link"
+          disabled={canEdit}
+          onClick={() => {
+            openWordSlotModal();
+          }}
+        >
           {'{#}'}添加词槽
         </Button>
       </div>
@@ -85,6 +111,7 @@ const CvsInput: React.FC<any> = (props: any) => {
           onBlur={blurEvent}
           placeholder={props.placeholder}
           style={style}
+          disabled={canEdit}
           {...res}
         />
       </Condition>
@@ -98,6 +125,7 @@ const CvsInput: React.FC<any> = (props: any) => {
           rows={rows || 4}
           placeholder={props.placeholder}
           style={style}
+          disabled={canEdit}
           {...res}
         />
       </Condition>

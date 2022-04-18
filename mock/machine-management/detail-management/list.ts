@@ -17,7 +17,7 @@ const getConfig = (req: any, res: any) => {
     success: true,
     data: {
       pageSize: 10,
-      totalSize: 1,
+      totalPage: 1,
       page: 1,
       list: [
         {
@@ -98,10 +98,10 @@ const getConfig = (req: any, res: any) => {
         {
           id: '6',
           configType: 1,
-          configName: 'thresholdGap',
+          configName: 'test',
           configValue: '1.0',
           configDesc: 'var1',
-          configKey: 'THRESHOLD_GAP',
+          configKey: 'test',
           robotId: '00000',
           creator: 'ujiangjiahao',
           createTime: '2022-04-11 17:16:00',
@@ -126,7 +126,7 @@ const getInterface = (req: any, res: any) => {
     success: true,
     data: {
       pageSize: 10,
-      totalSize: 1,
+      totalPage: 1,
       page: 1,
       list: [
         {
@@ -193,6 +193,70 @@ const getInterfaceDetail = (req: any, res: any) => {
   });
 };
 
+//节点配置
+const getNodeConfig = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    requestId: 'xx',
+    resultDesc: '成功',
+    success: true,
+    data: {
+      allowFlows: ['front_mock_id_1'],
+      clearAction: {
+        action: {
+          actionText: undefined,
+          actionType: undefined,
+          messageList: undefined,
+          textLabels: ['话术标签1'],
+        },
+        responseList: [],
+        threshold: 0.9,
+        thresholdGap: 0.02,
+        times: 3,
+      },
+      rejectAction: {
+        action: {
+          actionText: undefined,
+          actionType: undefined,
+          messageList: [
+            {
+              content: '世界如此之美好',
+              messageNode: '001',
+              placeholder: ['123', '456', '789'],
+              telPhone: [2, '011'],
+            },
+          ],
+          textLabels: ['话术标签2'],
+        },
+        responseList: [{ actionText: 'buhaoyisi', textLabels: undefined }],
+        times: 3,
+      },
+      silenceAction: {
+        action: {
+          actionText: '2',
+          actionType: 1,
+          messageList: undefined,
+          textLabels: ['话术标签3'],
+        },
+        responseList: [],
+        times: 3,
+      },
+      unclearAction: {
+        action: {
+          actionText: '123',
+          actionType: 2,
+          messageList: undefined,
+          textLabels: ['话术标签1'],
+          toFlowId: ['front_mock_id_1'],
+        },
+        responseList: [],
+        times: 3,
+        unclearName: '客户未听清意图',
+      },
+    },
+  });
+};
+
 export default {
   // 'POST /aichat/robot/config/configInfo': getConfig, //
   // 'POST /aichat/robot/config/configUpdate': editConfig, //
@@ -200,5 +264,8 @@ export default {
   'GET /aichat/robot/interface/listPage': getInterface, // 接口配置分页列表
   'GET /aichat/robot/interface/param': getInterfaceDetail, // 接口配置详情
 
-  'GET /aichat/robot/config/listPage': getConfig, // 接口配置分页列表
+  'GET /aichat/robot/config/listPage': getConfig, // 全局变量分页
+  'GET /aichat/robot/config/list': getConfig, // 全局变量所有
+
+  'GET /aichat/robot/node/list': getNodeConfig, // 节点
 };

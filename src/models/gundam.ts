@@ -15,16 +15,15 @@ export default function useGundamModel() {
   const [businessFlowId, setBusinessFlowId] = useState<any>(localBusinessFlowId);
 
   // 全局变量
-
-  const getGlobalValConfig = async () => {
-    if (!info.id) {
+  const getGlobalValConfig = async (id: any) => {
+    if (!id) {
       console.log('机器人的全局变量配置获取不到机器人id');
       return null;
     }
-    let res: any = await queryGlobalValConfig({ robotId: info.id });
+    let res: any = await queryGlobalValConfig({ robotId: id });
     let data: any[] = res?.data?.list || [];
 
-    data?.map((item: any) => {
+    data = data?.map((item: any) => {
       return {
         name: item.configKey,
         label: item.configName,
@@ -32,6 +31,8 @@ export default function useGundamModel() {
         type: item.dataType,
       };
     });
+    console.log(data);
+
     setGlobalVarList(data);
   };
 

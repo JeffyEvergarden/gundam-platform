@@ -9,7 +9,7 @@ const getList = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
     data: {
-      totalSize: 7,
+      totalPage: 7,
       pageSize: 10,
       page: 1,
       list: [
