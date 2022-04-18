@@ -175,7 +175,7 @@ const ActionConfig = (props: any) => {
             style={{ width: '100%' }}
             autoComplete="off"
             rows={3}
-            disabled={canEdit}
+            canEdit={canEdit}
           />
         </FormItem>
 
