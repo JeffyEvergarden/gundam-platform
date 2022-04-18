@@ -101,7 +101,7 @@ const MachineManagement: React.FC = (props: any) => {
       res = await addNewMachine(params);
       console.log(res);
 
-      if (res.resultCode === config.successCode) {
+      if (res?.resultCode === config?.successCode) {
         modalRef.current?.close?.();
         goToNewSystem({ ...res.data });
       } else {

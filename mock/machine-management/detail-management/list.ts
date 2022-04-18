@@ -208,6 +208,7 @@ const getNodeConfig = (req: any, res: any) => {
     success: true,
     data: {
       allowFlows: ['front_mock_id_1'],
+      configType: 2,
       clearAction: {
         action: {
           actionText: undefined,
