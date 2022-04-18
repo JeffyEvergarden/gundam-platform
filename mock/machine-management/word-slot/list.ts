@@ -94,9 +94,9 @@ const paramList = (req: any, res: any) => {
     resultDesc: '成功',
     occurTime: '2022-0221-18:16',
     data: [
-      { id: '112', paramName: '参数名称112', paramValue: 1 },
-      { id: '223', paramName: '参数名称表223', paramValue: 2 },
-      { id: '11245', paramName: '参数名称334', paramValue: 3 },
+      { id: '112', paramName: '参数名称112', paramValue: 1, dataType: 0 },
+      { id: '223', paramName: '参数名称表223', paramValue: 2, dataType: 1 },
+      { id: '11245', paramName: '参数名称334', paramValue: 3, dataType: 2 },
     ],
   });
 };

@@ -1,7 +1,7 @@
 export const wordSlotTableList: any = [
   {
     dataIndex: 'slotName',
-    title: '名称',
+    title: '词槽名称',
     fixed: 'left',
   },
   {
@@ -11,16 +11,16 @@ export const wordSlotTableList: any = [
   },
   {
     dataIndex: 'slotSource',
-    title: '来源',
+    title: '词槽来源',
     valueEnum: {
       // 0: { text: '来自实体', status: 0 },
-      1: { text: '来自意图', status: 1 },
-      // 2: { text: '用户文本', status: 2 },
+      // 1: { text: '来自意图', status: 1 },
+      2: { text: '用户文本', status: 2 },
       // 3: { text: '规则模版', status: 3 },
-      // 4: { text: '正则', status: 4 },
+      4: { text: '正则实体', status: 4 },
       // 5: { text: '函数返回值', status: 5 },
       // 6: { text: '全局变量', status: 6 },
-      // 7: { text: '接口', status: 7 },
+      7: { text: '接口', status: 7 },
       // 8: { text: '业务参数', status: 8 },
     },
   },
@@ -38,11 +38,11 @@ export const wordSlotTableList: any = [
   // },
   {
     dataIndex: 'creator',
-    title: '更新人',
+    title: '创建者',
   },
   {
     dataIndex: 'createTime',
-    title: '更新时间',
+    title: '创建时间',
   },
 ];
 

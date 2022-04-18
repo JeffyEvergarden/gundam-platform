@@ -50,7 +50,7 @@ export async function deleteWordSlotItem(params?: Record<string, any>) {
 export async function zzReal(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/entity/list`, {
     method: 'GET',
-    data: params,
+    params,
   });
 }
 
@@ -58,7 +58,7 @@ export async function zzReal(params?: Record<string, any>) {
 export async function interFace(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/interface/list`, {
     method: 'GET',
-    data: params,
+    params,
   });
 }
 
@@ -66,7 +66,7 @@ export async function interFace(params?: Record<string, any>) {
 export async function paramList(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/interface/param`, {
     method: 'GET',
-    data: params,
+    params,
   });
 }
 
@@ -74,6 +74,6 @@ export async function paramList(params?: Record<string, any>) {
 export async function slotInfo(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/slot/slotInfo`, {
     method: 'GET',
-    data: params,
+    params,
   });
 }

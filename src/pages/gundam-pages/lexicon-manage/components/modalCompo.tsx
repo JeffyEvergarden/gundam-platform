@@ -21,7 +21,7 @@ export default (props: any) => {
 
   useEffect(() => {
     setRulist(editObj?.entityValueList || []);
-  }, [editObj, visible]);
+  }, [visible]);
   const addRule = () => {
     setRuleEditData({});
     setRuleVisible(true);
@@ -48,7 +48,7 @@ export default (props: any) => {
   };
 
   const handle = (values: any) => {
-    let temp = [...ruleList];
+    let temp = JSON.parse(JSON.stringify(ruleList));
     if (operate === 'edit') {
       temp.map((item: any) => {
         if (item.entityValueName === ruleEditData.entityValueName) {
@@ -110,10 +110,10 @@ export default (props: any) => {
           >
             <div className={styles.ruleListBox}>
               <div className={styles.listBox}>
-                {ruleList.map((item: any) => {
+                {ruleList?.map((item: any) => {
                   return (
-                    <Tag closable key={item.ID} onClose={() => handleClose(item.entityValueName)}>
-                      <span onDoubleClick={() => editRule(item)}>{item.entityValueName}</span>
+                    <Tag closable key={item?.ID} onClose={() => handleClose(item?.entityValueName)}>
+                      <span onDoubleClick={() => editRule(item)}>{item?.entityValueName}</span>
                     </Tag>
                   );
                 })}

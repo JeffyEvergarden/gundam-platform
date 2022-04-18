@@ -4,7 +4,7 @@ export const operateFormList = [
     label: '意图名称',
     name: 'intentName',
     type: 'input',
-    placeholder: '请输入',
+    placeholder: '请输入意图名称',
     rules: [
       { required: true, message: '请输入意图名称' },
       //   { trigger: 'blur' },
@@ -20,7 +20,7 @@ export const operateFormList = [
     label: '澄清名称',
     name: 'inquiryText',
     type: 'input',
-    placeholder: '请输入',
+    placeholder: '请输入澄清名称',
     rules: [
       { required: true, message: '请输入澄清名称' },
       { max: 200, min: 1 },
@@ -36,7 +36,7 @@ export const operateFormList = [
     label: '描述',
     name: 'intentDesc',
     type: 'input',
-    placeholder: '请输入',
+    placeholder: '请输入描述',
     rules: [{ required: false }, { max: 200, min: 0 }],
   },
 ];
@@ -60,7 +60,6 @@ export const tableList: any = [
     valueEnum: {
       0: { text: '头部意图', status: 0 },
       1: { text: '辅助意图', status: 1 },
-      '': { text: '全部', status: '' },
     },
   },
   {

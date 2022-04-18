@@ -40,10 +40,11 @@ const LexiconManage: React.FC = (props: any) => {
   };
 
   const deleteRow = async (record: any) => {
-    let datas = { id: record.id, robotzId: record.robotzId };
+    let datas = { id: record.id, robotId: record.robotId };
     const res: any = await deleteLexicon(datas);
     if (res.resultCode === '0000') {
       message.success(res.resultDesc);
+      actionRef.current.reloadAndRest();
     } else {
       message.warning(res.resultDesc);
     }
@@ -62,6 +63,7 @@ const LexiconManage: React.FC = (props: any) => {
     if (pageType === 'add') {
       res = await addLexicon({ ...params });
     } else if (pageType === 'edit') {
+      params.id = editObj.id;
       res = await editLexicon({ ...params });
     }
     if (res.resultCode === '0000') {
