@@ -127,6 +127,7 @@ const getNodesConfig = (req: any, res: any) => {
         clearAction: { times: 3, action: {} },
         unclearAction: { unclearName: '客户未听清意图', times: 3, action: {} },
       },
+      nodeFlowId: 'front_mock_id_1',
       nodeName: '名侦探柯南',
       robotId: '100',
       flowId: '100',
@@ -139,29 +140,10 @@ const getInfo = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
     data: {
-      // robotInfo: {
       id: '100',
       flowId: '100',
       robotName: '命运官位指定阿尔托莉亚潘多拉',
       robotType: 1,
-      // },
-      // globalVarList: [
-      //   {
-      //     configKey: '01',
-      //     configName: '小米',
-      //     configDesc: '小米',
-      //   },
-      //   {
-      //     configKey: '02',
-      //     configName: '小米2',
-      //     configDesc: '小米',
-      //   },
-      //   {
-      //     configKey: '03',
-      //     configName: '小米3',
-      //     configDesc: '小米',
-      //   },
-      // ],
     },
   });
 };

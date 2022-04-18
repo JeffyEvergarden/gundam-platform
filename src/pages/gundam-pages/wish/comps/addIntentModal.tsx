@@ -41,7 +41,7 @@ export default (props: any) => {
       res = await addIntentItem({ robotId: modalData.robotId, ...values });
     }
 
-    if (res?.resultCode == '100') {
+    if (res?.resultCode == '0000') {
       message.success(res?.resultDesc);
       submit();
     } else {
@@ -65,7 +65,7 @@ export default (props: any) => {
                 <React.Fragment key={item.name}>
                   {item.type == 'input' && (
                     <Form.Item name={item.name} label={item.label} rules={item.rules}>
-                      <Input maxLength={200} />
+                      <Input maxLength={200} placeholder={item.placeholder} />
                     </Form.Item>
                   )}
 

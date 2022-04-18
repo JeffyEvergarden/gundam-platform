@@ -35,7 +35,7 @@ const LabelSelect: React.FC<any> = (props: any) => {
   return (
     <div className={styles['zy-row']} style={style}>
       <div className={styles['left']}>
-        {!value && '--'}
+        {(!value || (value && value.length === 0)) && '--'}
         {value &&
           value?.map?.((item: any, index: number) => {
             return (

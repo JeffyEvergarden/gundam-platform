@@ -4,6 +4,7 @@ import { operateFlowFormList } from '../config';
 import { useTableModel } from '../model';
 import style from './style.less';
 import { useIntentModel } from '../../wish/model';
+import { useModel } from 'umi';
 
 const { Option } = Select;
 const selectOptList = [
@@ -23,12 +24,18 @@ export default (props: any) => {
   const [spinning, handleSpinning] = useState<boolean>(false);
 
   const { editFlowData, addFlowData } = useTableModel();
-  const { getIntentInfoList, getIntentTableList } = useIntentModel();
+  const { flowList, getFlowList } = useModel('drawer' as any, (model: any) => ({
+    flowList: model._flowList || [],
+    getFlowList: model.getFlowList, // 业务流程列表
+  }));
 
-  const [triggerIntentList, setTriggerIntentList] = useState<any>([]);
   useEffect(() => {
     if (visible) {
-      getIntentSelList();
+      // getIntentSelList();
+      getFlowList({
+        robotId: modalData?.robotId,
+        headIntent: 0,
+      });
       if (title == 'edit') {
         handleSpinning(true);
         let headIntent = modalData?.headIntent;
@@ -69,31 +76,6 @@ export default (props: any) => {
     handleSpinning(false);
   };
 
-  //  获取触发意图
-  const getIntentSelList = async () => {
-    const res: any = await getIntentInfoList({
-      robotId: modalData?.robotId,
-      headIntent: 0,
-    });
-    console.log(res?.datas);
-    if (res?.datas) {
-      let newData = res?.datas?.filter((item: any) => {
-        return item.isInvokeByFlow == '0';
-      });
-      if (title == 'edit') {
-        let newArray = [
-          ...newData,
-          { id: modalData?.headIntent, intentName: modalData?.headIntentName },
-        ];
-        setTriggerIntentList(newArray);
-      } else {
-        setTriggerIntentList(newData);
-      }
-    } else {
-      setTriggerIntentList([]);
-    }
-  };
-
   return (
     <React.Fragment>
       <Modal
@@ -128,10 +110,10 @@ export default (props: any) => {
                         style={{ width: '360px' }}
                       >
                         <Select>
-                          {triggerIntentList?.map((itex: any) => {
+                          {flowList?.map((itex: any, index: number) => {
                             return (
-                              <Option key={itex.id || itex.intentName} value={itex.id}>
-                                {itex.intentName}
+                              <Option key={item.name} value={item.name} opt={item}>
+                                {item.label}
                               </Option>
                             );
                           })}
