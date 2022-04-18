@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Form, Select, Button, Checkbox, Space, Radio } from 'antd';
+import { Form, Select, Button, Checkbox, Space, Radio, InputNumber } from 'antd';
 import {
   PlusCircleOutlined,
   MinusCircleOutlined,
@@ -21,6 +21,9 @@ const HighConfig = (props: any) => {
 
   const { nodeConfig } = useModel('drawer' as any, (model: any) => ({
     nodeConfig: model._globalNodeList,
+  }));
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
   }));
 
   const [flag, setFlag] = useState<boolean>(false);
@@ -95,6 +98,33 @@ const HighConfig = (props: any) => {
         <HightformTemplate form={form} name="clearAction" title={'澄清'} type={type} />
 
         <HightformTemplate form={form} name="unclearAction" title={'客户未听清'} type={type} />
+
+        <Condition r-if={type == 'config'}>
+          <div className={styles['antd-form']}>
+            <Space align="baseline">
+              <div className={styles['title_sp']} style={{ marginRight: '16px' }}>
+                意图澄清配置
+              </div>
+            </Space>
+
+            <Condition r-if={info.robotType == 1}>
+              <FormItem name={'threshold'} label="阈值" rules={[{ required: true }]}>
+                <InputNumber style={{ width: 200 }} min={0} max={1} step="0.01" precision={2} />
+              </FormItem>
+              <FormItem name={'thresholdGap'} label="得分差值" rules={[{ required: true }]}>
+                <InputNumber style={{ width: 200 }} min={0} max={1} step="0.01" precision={2} />
+              </FormItem>
+            </Condition>
+            <Condition r-if={info.robotType == 0}>
+              <FormItem name={'maxThreshold'} label="最大阈值" rules={[{ required: true }]}>
+                <InputNumber style={{ width: 200 }} min={0} max={1} step="0.01" precision={2} />
+              </FormItem>
+              <FormItem name={'minThreshold'} label="最小阈值" rules={[{ required: true }]}>
+                <InputNumber style={{ width: 200 }} min={0} max={1} step="0.01" precision={2} />
+              </FormItem>
+            </Condition>
+          </div>
+        </Condition>
       </Condition>
     </>
   );

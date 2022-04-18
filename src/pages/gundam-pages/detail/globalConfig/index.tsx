@@ -83,6 +83,7 @@ const InterfaceConfig: React.FC = (props: any) => {
                 onClick={() => {
                   globalModalRef.current?.open?.(row);
                 }}
+                disabled={!row.updateType}
               >
                 编辑
               </Button>
