@@ -7,6 +7,7 @@ import { useIntentModel } from '../../wish/model';
 import styles from './../../style.less';
 
 const { Option } = Select;
+const { TextArea } = Input;
 const layout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 14 },
@@ -69,7 +70,7 @@ export default (props: any) => {
   }, [visible]);
 
   const getRealList = async () => {
-    const res = await getzzReal();
+    const res = await getzzReal({ robotId: localStorage.getItem('robot_id'), entityType: 1 });
     if (res.resultCode === '0000') {
       setRealList(res?.data);
     }
@@ -83,11 +84,7 @@ export default (props: any) => {
   };
 
   const interfaceChange = async (val: any, option: any) => {
-    interfaceListInfo?.map((item: any) => {
-      if (option.key == item.id) {
-        setinterfaceDesc(item.interfaceDesc);
-      }
-    });
+    setinterfaceDesc(option?.ItemObj?.iterfaceDesc);
 
     const resIn = await getparamList({ interfaceId: val, paramType: 0 }); //入参枚举
     if (resIn.resultCode === '0000') {
@@ -182,6 +179,7 @@ export default (props: any) => {
       robotId: modalData?.robotId,
       slot: values?.slot,
       slotName: values?.slotName,
+      slotDesc: values?.slotDesc,
       slotSource: values?.slotSource,
       dataType: values?.dataType,
       slosourceId: values?.slosourceId,
@@ -275,6 +273,15 @@ export default (props: any) => {
 
   const slotSourceChange = (value: any, option: any) => {
     setSource(value);
+    if (value === 7) {
+      form?.setFieldsValue({ dataType: null });
+    } else {
+      form?.setFieldsValue({ dataType: 0 });
+    }
+  };
+
+  const outValChange = (value: any, option: any) => {
+    form?.setFieldsValue({ dataType: option?.itemObj?.dataType });
   };
 
   return (
@@ -293,6 +300,8 @@ export default (props: any) => {
             initialValues={{
               slot: modalData?.slot,
               slotName: modalData?.slotName,
+              slotDesc: modalData?.slotDesc,
+              slotSource: modalData?.slotSource,
             }}
           >
             <Form.Item
@@ -321,7 +330,10 @@ export default (props: any) => {
                 { max: 50, min: 1 },
               ]}
             >
-              <Input placeholder={'尽量使用中文'} maxLength={50} readOnly={title == 'edit'} />
+              <Input placeholder={'尽量使用中文'} maxLength={50} />
+            </Form.Item>
+            <Form.Item name={'slotDesc'} label={'描述'}>
+              <TextArea placeholder={'请输入描述'} maxLength={200} rows={4} />
             </Form.Item>
             <Form.Item name={'slotSource'} label={'槽值来源'} rules={[{ required: true }]}>
               <Select onChange={slotSourceChange}>
@@ -334,8 +346,12 @@ export default (props: any) => {
                 })}
               </Select>
             </Form.Item>
-            <Form.Item name={'dataType'} label={'数据类型'}>
-              <Select placeholder={''}>
+            <Form.Item
+              name={'dataType'}
+              label={'数据类型'}
+              initialValue={slotSource !== 7 ? 0 : null}
+            >
+              <Select placeholder={''} disabled={slotSource === 7}>
                 {typeData?.map((itex: any) => {
                   return (
                     <Option key={itex?.value} value={itex?.value}>
@@ -363,7 +379,7 @@ export default (props: any) => {
             )} */}
             {slotSource === 4 && (
               <Form.Item name={'slosourceId'} label={'正则实体'} rules={[{ required: true }]}>
-                <Select placeholder={''}>
+                <Select placeholder={'请选择正则实体'}>
                   {realList?.map((itex: any) => {
                     return (
                       <Option key={itex?.id} value={itex?.id}>
@@ -385,7 +401,7 @@ export default (props: any) => {
                     <Select placeholder={'请选择'} onChange={interfaceChange}>
                       {interfaceListInfo?.map((itex: any) => {
                         return (
-                          <Option key={itex?.id} value={itex?.id}>
+                          <Option key={itex?.id} value={itex?.id} ItemObj={itex}>
                             {itex?.interFaceName}
                           </Option>
                         );
@@ -435,10 +451,10 @@ export default (props: any) => {
                   </Form.Item>
                 )}
                 <Form.Item name={'outputParamId'} label={'出参字段名'}>
-                  <Select placeholder={''}>
+                  <Select placeholder={''} onChange={outValChange}>
                     {outVal?.map((itex: any) => {
                       return (
-                        <Option key={itex?.id} value={itex?.id}>
+                        <Option key={itex?.id} value={itex?.id} itemObj={itex}>
                           {itex?.paramName}
                         </Option>
                       );

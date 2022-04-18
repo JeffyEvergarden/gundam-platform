@@ -48,6 +48,7 @@ const DetailPages: React.FC = (props: any) => {
         robotId: info.id,
         pageSize: pageData.pageSize,
         page: pageData.current,
+        headIntent: Number(pageData.headIntent),
       };
       const res: any = await getIntentTableList(params);
       return {

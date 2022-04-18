@@ -67,7 +67,7 @@ const DetailPages: React.FC = (props: any) => {
   };
 
   const deleteSlot = async (data: any) => {
-    const res: any = await deleteWordSlot({ robot: info.id, id: data.id });
+    const res: any = await deleteWordSlot({ robotId: info.id, id: data.id });
     if (res?.resultCode == '100') {
       message.success(res?.resultDesc);
       refreshTable();
