@@ -67,7 +67,7 @@ const HighConfig = (props: any) => {
               流程跳转
             </div>
             <Condition r-if={type == 'flow'}>
-              <Form.Item name="configType">
+              <Form.Item name="configType" initialValue={2}>
                 <Radio.Group size="small" onChange={onChange}>
                   <Radio value={1}>默认配置</Radio>
                   <Radio value={2}>自定义配置</Radio>

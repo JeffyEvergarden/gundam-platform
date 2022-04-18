@@ -76,10 +76,6 @@ const CvsInput: React.FC<any> = (props: any) => {
     setStartPos(isNaN(num) ? -1 : num);
   };
 
-  useEffect(() => {
-    console.log(canEdit);
-  }, [canEdit]);
-
   return (
     <div className={''}>
       <div className={styles['zy-row']}>
@@ -91,7 +87,7 @@ const CvsInput: React.FC<any> = (props: any) => {
             openGlobalVarModal();
           }}
         >
-          {'{$}'}添加变量
+          {'{$}'}添加变量{canEdit}
         </Button>
         <Button
           type="link"

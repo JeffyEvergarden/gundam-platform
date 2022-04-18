@@ -32,18 +32,23 @@ const HightformTemplate: any = (props: any) => {
   const isDisabled = false;
 
   const onChange = (val: any) => {
-    console.log(nodeConfig[name]);
-    console.log(name);
-
     let res = form.getFieldsValue();
-    console.log(res);
-
     if (res[name].configType == 1) {
       res[name] = nodeConfig[name];
       setDisabled(true);
       form.setFieldsValue(res);
     } else if (res[name].configType == 2) {
-      // res[name] = undefined;
+      res[name] = {
+        action: {
+          actionText: '',
+          actionType: null,
+          messageList: [],
+          textLabels: [],
+        },
+        configType: 2,
+        responseList: [],
+        times: null,
+      };
       form.setFieldsValue(res);
       setDisabled(false);
     }
@@ -57,7 +62,7 @@ const HightformTemplate: any = (props: any) => {
           {title}处理
         </div>
         <Condition r-if={type == 'flow'}>
-          <Form.Item name={[name, 'configType']}>
+          <Form.Item name={[name, 'configType']} initialValue={2}>
             <Radio.Group onChange={onChange} size="small">
               <Radio value={1}>默认配置</Radio>
               <Radio value={2}>自定义配置</Radio>
