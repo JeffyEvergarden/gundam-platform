@@ -46,14 +46,15 @@ const DetailPages: React.FC = (props: any) => {
       handleLoading(true);
       let params = {
         robotId: info.id,
-        ...pageData,
+        pageSize: pageData.pageSize,
+        page: pageData.current,
       };
       const res: any = await getIntentTableList(params);
       return {
-        data: res?.datas || [],
+        data: res?.data?.list || [],
         pageSize: pageData.pageSize,
         current: pageData.current,
-        total: res?.totalSize || res?.datas?.length || 0,
+        total: res?.data?.totalPage || res?.data?.list?.length || 0,
       };
     } catch {
       return {

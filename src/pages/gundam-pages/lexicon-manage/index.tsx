@@ -13,7 +13,12 @@ const LexiconManage: React.FC = (props: any) => {
   const [editObj, setEditObj] = useState<any>({});
 
   const getInitTable = async (payload: any) => {
-    let res: any = await getLexiconList(payload);
+    let params = {
+      page: payload.current,
+      pageSize: payload.pageSize,
+      robotId: localStorage.getItem('robot_id'),
+    };
+    let res: any = await getLexiconList(params);
     return {
       data: res?.data?.list || [],
       total: res?.data.totalSize || res?.data?.list?.length,
@@ -129,7 +134,7 @@ const LexiconManage: React.FC = (props: any) => {
             search={false}
             options={false}
             request={async (params = {}) => {
-              return getInitTable(params);
+              return getInitTable({ page: params.current, ...params });
             }}
           />
         </TabPane>

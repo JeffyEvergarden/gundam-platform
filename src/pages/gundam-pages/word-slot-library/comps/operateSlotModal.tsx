@@ -56,7 +56,7 @@ export default (props: any) => {
   } = useKeyWordModel();
   const { getIntentInfoList, getIntentTableList } = useIntentModel();
   const [realList, setRealList] = useState<any>([]);
-  const [interfaceList, setInterfaceList] = useState<any>([]);
+  const [interfaceListInfo, setInterfaceList] = useState<any>([]);
   const [inValList, setinValList] = useState<any>([]);
   const [inval_val, setInval_val] = useState<string>('');
   const [interfaceDesc, setinterfaceDesc] = useState<string>('');
@@ -83,7 +83,7 @@ export default (props: any) => {
   };
 
   const interfaceChange = async (val: any, option: any) => {
-    interfaceList.map((item: any) => {
+    interfaceListInfo?.map((item: any) => {
       if (option.key == item.id) {
         setinterfaceDesc(item.interfaceDesc);
       }
@@ -103,7 +103,9 @@ export default (props: any) => {
   const inValChange = async (val: number, option: any) => {
     if (option.key == 1) {
       setInval_val('变量');
-    } else setInval_val('词槽');
+    } else if (option.key == 0) {
+      setInval_val('词槽');
+    }
 
     const invalChild = await getslotInfo({ interfaceId: val, paramType: 1 }); //入参值
     if (invalChild.resultCode === '0000') {
@@ -111,61 +113,61 @@ export default (props: any) => {
     }
   };
 
-  const fieldValueChange = (changedValues: any, allValues: any) => {
-    if (changedValues?.slotSource) {
-      setDiffSourceData(changedValues?.slotSource);
-    } else if (changedValues?.allowIntents) {
-      let obj = { ...fieldSelectData };
-      if (changedValues?.allowIntents.includes('ALL')) {
-        form.setFieldsValue({
-          allowIntents: ['ALL'],
-          nonIntents: ['NULL'],
-        });
-        // obj.nonIntents = [];
-        obj.nonIntents = [
-          { value: 'NULL', name: '空', id: 'NULL', intentName: '空' },
-          ...obj.normalIntents,
-        ];
-        obj.allowIntents = [
-          { value: 'ALL', name: '所有', id: 'ALL', intentName: '所有' },
-          ...obj.normalIntents,
-        ];
-        setFieldSelectData(obj);
-      } else {
-        let newArr =
-          changedValues?.allowIntents?.length == 0 ? obj?.normalIntents : obj?.nonIntents;
-        let arr: any = newArr?.filter((item: any) => {
-          return !changedValues?.allowIntents?.includes(item?.value || item?.id);
-        });
-        obj.nonIntents = [...arr];
-        setFieldSelectData(obj);
-      }
-    } else if (changedValues?.nonIntents) {
-      let obk: any = { ...fieldSelectData };
-      if (changedValues?.nonIntents.includes('NULL') || changedValues?.nonIntents?.length == 0) {
-        form.setFieldsValue({
-          allowIntents: ['ALL'],
-          nonIntents: changedValues?.nonIntents?.length == 0 ? [] : ['NULL'],
-        });
-        obk.nonIntents = [
-          { value: 'NULL', name: '空', id: 'NULL', intentName: '空' },
-          ...obk.normalIntents,
-        ];
-        obk.allowIntents = [
-          { value: 'ALL', name: '所有', id: 'ALL', intentName: '所有' },
-          ...obk.normalIntents,
-        ];
-        setFieldSelectData(obk);
-      } else {
-        let obj = { ...fieldSelectData };
-        let arr: any = obj?.allowIntents?.filter((item: any) => {
-          return !changedValues?.nonIntents?.includes(item?.value || item?.id);
-        });
-        obj.allowIntents = [...arr];
-        setFieldSelectData(obj);
-      }
-    }
-  };
+  // const fieldValueChange = (changedValues: any, allValues: any) => {
+  //   if (changedValues?.slotSource) {
+  //     setDiffSourceData(changedValues?.slotSource);
+  //   } else if (changedValues?.allowIntents) {
+  //     let obj = { ...fieldSelectData };
+  //     if (changedValues?.allowIntents.includes('ALL')) {
+  //       form.setFieldsValue({
+  //         allowIntents: ['ALL'],
+  //         nonIntents: ['NULL'],
+  //       });
+  //       // obj.nonIntents = [];
+  //       obj.nonIntents = [
+  //         { value: 'NULL', name: '空', id: 'NULL', intentName: '空' },
+  //         ...obj.normalIntents,
+  //       ];
+  //       obj.allowIntents = [
+  //         { value: 'ALL', name: '所有', id: 'ALL', intentName: '所有' },
+  //         ...obj.normalIntents,
+  //       ];
+  //       setFieldSelectData(obj);
+  //     } else {
+  //       let newArr =
+  //         changedValues?.allowIntents?.length == 0 ? obj?.normalIntents : obj?.nonIntents;
+  //       let arr: any = newArr?.filter((item: any) => {
+  //         return !changedValues?.allowIntents?.includes(item?.value || item?.id);
+  //       });
+  //       obj.nonIntents = [...arr];
+  //       setFieldSelectData(obj);
+  //     }
+  //   } else if (changedValues?.nonIntents) {
+  //     let obk: any = { ...fieldSelectData };
+  //     if (changedValues?.nonIntents.includes('NULL') || changedValues?.nonIntents?.length == 0) {
+  //       form.setFieldsValue({
+  //         allowIntents: ['ALL'],
+  //         nonIntents: changedValues?.nonIntents?.length == 0 ? [] : ['NULL'],
+  //       });
+  //       obk.nonIntents = [
+  //         { value: 'NULL', name: '空', id: 'NULL', intentName: '空' },
+  //         ...obk.normalIntents,
+  //       ];
+  //       obk.allowIntents = [
+  //         { value: 'ALL', name: '所有', id: 'ALL', intentName: '所有' },
+  //         ...obk.normalIntents,
+  //       ];
+  //       setFieldSelectData(obk);
+  //     } else {
+  //       let obj = { ...fieldSelectData };
+  //       let arr: any = obj?.allowIntents?.filter((item: any) => {
+  //         return !changedValues?.nonIntents?.includes(item?.value || item?.id);
+  //       });
+  //       obj.allowIntents = [...arr];
+  //       setFieldSelectData(obj);
+  //     }
+  //   }
+  // };
 
   const cancel = () => {
     form.resetFields();
@@ -174,39 +176,32 @@ export default (props: any) => {
 
   const submit = async () => {
     const values = await form.validateFields();
+    debugger;
     let res: any;
-    let params = form.getFieldsValue();
-    console.log('params', params);
-    let newValue = form.getFieldValue('intentValue');
-    let newName = form.getFieldValue('intentName');
-    let newAllIntentValue = form.getFieldValue('allowIntents');
-    let newNonIntentValue = form.getFieldValue('nonIntents');
-    // 拼接 意图 值
-    let newObj = {
-      [newValue]: newName,
+    let params: any = {
+      robotId: modalData?.robotId,
+      slot: values?.slot,
+      slotName: values?.slotName,
+      slotSource: values?.slotSource,
+      dataType: values?.dataType,
+      slosourceId: values?.slosourceId,
+      slotInfo: {
+        id: values?.interfaceChangeId,
+        inputParamList: [
+          { id: values?.inParams, sourceType: values?.sourceType, value: values?.sourceType_val },
+        ],
+        outPutParamId: values?.outputParamId,
+      },
     };
-    console.log('111', newAllIntentValue, newNonIntentValue);
     handleSpinning(true);
     if (title == 'edit') {
-      res = await editWordSlot({
-        ...params,
-        robotId: modalData.robotId,
-        id: modalData.id,
-        slotInfos: newObj,
-        allowIntents: newAllIntentValue?.length > 0 ? newAllIntentValue : ['ALL'],
-        nonIntents: newNonIntentValue?.length > 0 ? newNonIntentValue : ['NULL'],
-      });
+      params.id = modalData.id;
+      res = await editWordSlot(params);
     } else if (title == 'add') {
-      res = await addWordSlot({
-        ...params,
-        robotId: modalData.robotId,
-        slotInfos: newObj,
-        allowIntents: newAllIntentValue?.length > 0 ? newAllIntentValue : ['ALL'],
-        nonIntents: newNonIntentValue?.length > 0 ? newNonIntentValue : ['NULL'],
-      });
+      res = await addWordSlot(params);
     }
     console.log('res', res);
-    if (res?.resultCode == '100') {
+    if (res?.resultCode == '0000') {
       message.success(res?.resultDesc);
       onSubmit();
     } else {
@@ -291,9 +286,17 @@ export default (props: any) => {
         footer={null}
       >
         <Spin spinning={spinning}>
-          <Form form={form} {...layout} onValuesChange={fieldValueChange}>
+          <Form
+            form={form}
+            {...layout}
+            // onValuesChange={fieldValueChange}
+            initialValues={{
+              slot: modalData?.slot,
+              slotName: modalData?.slotName,
+            }}
+          >
             <Form.Item
-              name={'slotId'}
+              name={'slot'}
               label={'词槽ID'}
               rules={[
                 { required: true, message: '请输入名称' },
@@ -322,34 +325,28 @@ export default (props: any) => {
             </Form.Item>
             <Form.Item name={'slotSource'} label={'槽值来源'} rules={[{ required: true }]}>
               <Select onChange={slotSourceChange}>
-                {slotSourceData.map((itex: any) => {
+                {slotSourceData?.map((itex: any) => {
                   return (
-                    <Option
-                      key={itex?.value || itex?.intentName}
-                      value={itex?.value || itex?.intentName}
-                    >
-                      {itex?.name || itex?.intentName}
+                    <Option key={itex?.value} value={itex?.value}>
+                      {itex?.intentName}
                     </Option>
                   );
                 })}
               </Select>
             </Form.Item>
-            <Form.Item name={'type'} label={'数据类型'} rules={[{ required: true }]}>
+            <Form.Item name={'dataType'} label={'数据类型'}>
               <Select placeholder={''}>
-                {typeData.map((itex: any) => {
+                {typeData?.map((itex: any) => {
                   return (
-                    <Option
-                      key={itex?.value || itex?.intentName}
-                      value={itex?.value || itex?.intentName}
-                    >
-                      {itex?.name || itex?.intentName}
+                    <Option key={itex?.value} value={itex?.value}>
+                      {itex?.intentName}
                     </Option>
                   );
                 })}
               </Select>
             </Form.Item>
-            {slotSource === 1 && (
-              <Form.Item name={'slotPro'} label={'枚举实体'} rules={[{ required: true }]}>
+            {/* {slotSource === 1 && (
+              <Form.Item name={'slosourceId'} label={'枚举实体'} rules={[{ required: true }]}>
                 <Select placeholder={''}>
                   {slotPro.map((itex: any) => {
                     return (
@@ -363,13 +360,13 @@ export default (props: any) => {
                   })}
                 </Select>
               </Form.Item>
-            )}
+            )} */}
             {slotSource === 4 && (
-              <Form.Item name={'zzReal'} label={'正则实体'} rules={[{ required: true }]}>
+              <Form.Item name={'slosourceId'} label={'正则实体'} rules={[{ required: true }]}>
                 <Select placeholder={''}>
-                  {realList.map((itex: any) => {
+                  {realList?.map((itex: any) => {
                     return (
-                      <Option key={itex?.id} value={itex?.entityName}>
+                      <Option key={itex?.id} value={itex?.id}>
                         {itex?.entityName}
                       </Option>
                     );
@@ -379,39 +376,45 @@ export default (props: any) => {
             )}
             {slotSource === 7 && (
               <Fragment>
-                <Form.Item name={'changeData'} label={'变量接口'} rules={[{ required: true }]}>
-                  <Select placeholder={'请选择'} onChange={interfaceChange}>
-                    {interfaceList.map((itex: any) => {
-                      return (
-                        <Option key={itex.id} value={itex?.interFaceName}>
-                          {itex?.interFaceName}
-                        </Option>
-                      );
-                    })}
-                  </Select>
+                <div className={styles.interfaceChangeId_box}>
+                  <Form.Item
+                    name={'interfaceChangeId'}
+                    label={'变量接口'}
+                    // rules={[{ required: true }]}
+                  >
+                    <Select placeholder={'请选择'} onChange={interfaceChange}>
+                      {interfaceListInfo?.map((itex: any) => {
+                        return (
+                          <Option key={itex?.id} value={itex?.id}>
+                            {itex?.interFaceName}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  </Form.Item>
                   <Tooltip title={interfaceDesc}>
                     <span className={styles.information}>
                       <QuestionCircleFilled />
                       接口说明
                     </span>
                   </Tooltip>
-                </Form.Item>
-                <Form.Item name={'inParams'} label={'入参字段名'} rules={[{ required: true }]}>
+                </div>
+                <Form.Item name={'inParams'} label={'入参字段名'}>
                   <Select placeholder={''}>
-                    {inParams.map((itex: any) => {
+                    {inParams?.map((itex: any) => {
                       return (
-                        <Option key={itex?.paramValue} value={itex?.paramName}>
+                        <Option key={itex?.id} value={itex?.id}>
                           {itex?.paramName}
                         </Option>
                       );
                     })}
                   </Select>
                 </Form.Item>
-                <Form.Item name={'inVal'} label={'入参值'} rules={[{ required: true }]}>
+                <Form.Item name={'sourceType'} label={'入参值'}>
                   <Select placeholder={''} onChange={inValChange}>
-                    {inVal.map((itex: any) => {
+                    {inVal?.map((itex: any) => {
                       return (
-                        <Option key={itex?.value} value={itex?.intentName}>
+                        <Option key={itex?.value} value={itex?.value}>
                           {itex?.intentName}
                         </Option>
                       );
@@ -419,11 +422,11 @@ export default (props: any) => {
                   </Select>
                 </Form.Item>
                 {inval_val && (
-                  <Form.Item name={'inValList'} label={inval_val} rules={[{ required: true }]}>
+                  <Form.Item name={'sourceType_val'} label={inval_val}>
                     <Select placeholder={''}>
-                      {inValList.map((itex: any) => {
+                      {inValList?.map((itex: any) => {
                         return (
-                          <Option key={itex?.paramValue} value={itex?.paramName}>
+                          <Option key={itex?.id} value={itex?.id}>
                             {itex?.paramName}
                           </Option>
                         );
@@ -431,11 +434,11 @@ export default (props: any) => {
                     </Select>
                   </Form.Item>
                 )}
-                <Form.Item name={'outVal'} label={'出参字段名'} rules={[{ required: true }]}>
+                <Form.Item name={'outputParamId'} label={'出参字段名'}>
                   <Select placeholder={''}>
-                    {outVal.map((itex: any) => {
+                    {outVal?.map((itex: any) => {
                       return (
-                        <Option key={itex?.paramValue} value={itex?.paramName}>
+                        <Option key={itex?.id} value={itex?.id}>
                           {itex?.paramName}
                         </Option>
                       );

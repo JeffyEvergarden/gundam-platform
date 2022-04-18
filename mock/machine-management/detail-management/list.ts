@@ -34,6 +34,7 @@ const getConfig = (req: any, res: any) => {
           dataStatus: 0, //
           uppdateBy: 'x',
           dataType: 0,
+          updateType: 0,
         },
         {
           id: '2',
@@ -49,6 +50,7 @@ const getConfig = (req: any, res: any) => {
           dataStatus: 0, //
           uppdateBy: 'x',
           dataType: 0,
+          updateType: 0,
         },
         {
           id: '3',
@@ -64,6 +66,7 @@ const getConfig = (req: any, res: any) => {
           dataStatus: 0, //
           uppdateBy: 'x',
           dataType: 0,
+          updateType: 0,
         },
         {
           id: '4',
@@ -79,6 +82,7 @@ const getConfig = (req: any, res: any) => {
           dataStatus: 0, //
           uppdateBy: 'x',
           dataType: 0,
+          updateType: 0,
         },
         {
           id: '5',
@@ -94,6 +98,7 @@ const getConfig = (req: any, res: any) => {
           dataStatus: 0, //
           uppdateBy: 'x',
           dataType: 0,
+          updateType: 0,
         },
         {
           id: '6',
@@ -109,6 +114,7 @@ const getConfig = (req: any, res: any) => {
           dataStatus: 0, //
           uppdateBy: 'x',
           dataType: 0,
+          updateType: 1,
         },
       ],
     },
@@ -210,8 +216,6 @@ const getNodeConfig = (req: any, res: any) => {
           textLabels: ['话术标签1'],
         },
         responseList: [],
-        threshold: 0.9,
-        thresholdGap: 0.02,
         times: 3,
       },
       rejectAction: {
@@ -253,6 +257,8 @@ const getNodeConfig = (req: any, res: any) => {
         times: 3,
         unclearName: '客户未听清意图',
       },
+      threshold: 0.9,
+      thresholdGap: 0.02,
     },
   });
 };

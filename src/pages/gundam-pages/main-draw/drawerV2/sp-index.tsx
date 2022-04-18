@@ -60,7 +60,13 @@ const DrawerForm = (props: any) => {
     }
   };
 
-  const onChange = (val: any) => {};
+  const onChange = (val: any, opt: any) => {
+    console.log(opt);
+    let headIntent: any = opt?.opt.headIntent || '';
+    form.setFieldsValue({
+      headIntent: headIntent,
+    });
+  };
 
   useImperativeHandle(cref, () => ({
     open: (info: any, callback: any) => {
@@ -69,8 +75,17 @@ const DrawerForm = (props: any) => {
       recordInfo.current.info = info;
       recordInfo.current.callback = callback;
       setNodetype(info._nodetype || 'normal');
+      const config: any = info.config || {};
+      let nodeFlowId: any = config.nodeFlowId;
+      let headIntent: any =
+        flowList.find((item: any) => {
+          return item.name === nodeFlowId;
+        })?.headIntent || '';
       form.resetFields();
-      form.setFieldsValue(info);
+      form.setFieldsValue({
+        ...config,
+        headIntent: headIntent || undefined,
+      });
       setVisible(true);
     },
     close: onClose,
@@ -170,7 +185,7 @@ const DrawerForm = (props: any) => {
               </Select>
             </FormItem>
 
-            <FormItem label="意图名称" name="wishId" style={{ width: '400px' }}>
+            <FormItem label="意图名称" name="headIntent" style={{ width: '400px' }}>
               <Select placeholder="请选择意图名称" disabled={true}>
                 {wishList.map((item: any, index: number) => {
                   return (
