@@ -4,6 +4,7 @@ export const operateFormList = [
     label: '意图名称',
     name: 'intentName',
     type: 'input',
+    placeholder: '请输入',
     rules: [
       { required: true, message: '请输入意图名称' },
       //   { trigger: 'blur' },
@@ -19,6 +20,7 @@ export const operateFormList = [
     label: '澄清名称',
     name: 'inquiryText',
     type: 'input',
+    placeholder: '请输入',
     rules: [
       { required: true, message: '请输入澄清名称' },
       { max: 200, min: 1 },
@@ -34,6 +36,7 @@ export const operateFormList = [
     label: '描述',
     name: 'intentDesc',
     type: 'input',
+    placeholder: '请输入',
     rules: [{ required: false }, { max: 200, min: 0 }],
   },
 ];
