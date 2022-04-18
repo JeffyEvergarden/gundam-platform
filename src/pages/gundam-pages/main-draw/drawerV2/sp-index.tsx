@@ -32,8 +32,9 @@ const DrawerForm = (props: any) => {
     businessFlowId: model.businessFlowId,
   }));
 
-  const { flowList } = useModel('drawer' as any, (model: any) => ({
+  const { flowList, wishList } = useModel('drawer' as any, (model: any) => ({
     flowList: model._flowList, // 业务流程列表
+    wishList: model._wishList,
   }));
 
   // 前置参数
@@ -59,6 +60,14 @@ const DrawerForm = (props: any) => {
     }
   };
 
+  const onChange = (val: any, opt: any) => {
+    console.log(opt);
+    let headIntent: any = opt?.opt.headIntent || '';
+    form.setFieldsValue({
+      headIntent: headIntent,
+    });
+  };
+
   useImperativeHandle(cref, () => ({
     open: (info: any, callback: any) => {
       // console.log(info);
@@ -66,8 +75,17 @@ const DrawerForm = (props: any) => {
       recordInfo.current.info = info;
       recordInfo.current.callback = callback;
       setNodetype(info._nodetype || 'normal');
+      const config: any = info.config || {};
+      let nodeFlowId: any = config.nodeFlowId;
+      let headIntent: any =
+        flowList.find((item: any) => {
+          return item.name === nodeFlowId;
+        })?.headIntent || '';
       form.resetFields();
-      form.setFieldsValue(info);
+      form.setFieldsValue({
+        ...config,
+        headIntent: headIntent || undefined,
+      });
       setVisible(true);
     },
     close: onClose,
@@ -92,7 +110,7 @@ const DrawerForm = (props: any) => {
       if (result === true) {
         setAutoCloseTipsFlag(false);
         recordInfo.current?.callback?.(res?.name); // 成功回调修改名称
-        onClose();
+        setVisible(false);
       }
     }
   };
@@ -156,8 +174,20 @@ const DrawerForm = (props: any) => {
         <Condition r-if={nodetype === 'business'}>
           <div className={styles['antd-form']}>
             <FormItem label="业务流程" name="nodeFlowId" style={{ width: '400px' }}>
-              <Select placeholder="请选择业务流程">
+              <Select placeholder="请选择业务流程" onChange={onChange}>
                 {flowList.map((item: any, index: number) => {
+                  return (
+                    <Option key={index} value={item.name} opt={item}>
+                      {item.label}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </FormItem>
+
+            <FormItem label="意图名称" name="headIntent" style={{ width: '400px' }}>
+              <Select placeholder="请选择意图名称" disabled={true}>
+                {wishList.map((item: any, index: number) => {
                   return (
                     <Option key={index} value={item.name} opt={item}>
                       {item.label}

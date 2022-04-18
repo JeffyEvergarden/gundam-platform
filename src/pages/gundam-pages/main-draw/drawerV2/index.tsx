@@ -102,12 +102,12 @@ const DrawerForm = (props: any) => {
         nodeName: res.name,
         ...preParams,
         id: recordInfo.current.info?.id,
-        nodeType: recordInfo.current.info?.node.nodeType,
+        nodeType: recordInfo.current.info?.nodeType,
       });
       if (result === true) {
         setAutoCloseTipsFlag(false);
         recordInfo.current?.callback?.(res?.name); // 成功回调修改名称
-        onClose();
+        setVisible(false);
       }
     }
   };

@@ -13,11 +13,16 @@ export default {
     //   changeOrigin: true,
     //   pathRewrite: { '^': '' },
     // },
-    // '/robot/': {
-    //   target: 'http://11.113.1.50:9086',
-    //   changeOrigin: true,
-    //   pathRewrite: { '^': '' },
-    // },
+    '/robot/': {
+      target: 'http://10.192.170.145:8080',
+      changeOrigin: true,
+      pathRewrite: { '^': '' },
+    },
+    '/notification/': {
+      target: 'http://10.192.170.145:8080',
+      changeOrigin: true,
+      pathRewrite: { '^': '' },
+    },
   },
   test: {
     '/api/': {

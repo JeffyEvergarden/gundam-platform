@@ -105,7 +105,12 @@ const InfoModal: React.FC<any> = (props: any) => {
             label="变量ID"
             style={{ width: '460px' }}
           >
-            <Input placeholder="请填写变量ID" {...extra} maxLength={50} />
+            <Input
+              placeholder="请填写变量ID"
+              {...extra}
+              maxLength={50}
+              disabled={openType == 'edit'}
+            />
           </FormItem>
 
           <FormItem

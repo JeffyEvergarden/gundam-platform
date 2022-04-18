@@ -1,19 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useModel, history } from 'umi';
-import {
-  Form,
-  Row,
-  Col,
-  Space,
-  Input,
-  Select,
-  Divider,
-  InputNumber,
-  Popconfirm,
-  Table,
-  Button,
-  message,
-} from 'antd';
+import { Popconfirm, Table, Button, message } from 'antd';
 import style from './style.less';
 import Condition from '@/components/Condition';
 import ProTable from '@ant-design/pro-table';
@@ -88,18 +75,24 @@ const InterfaceConfig: React.FC = (props: any) => {
                 编辑
               </Button>
 
-              <Popconfirm
-                title="删除将不可恢复，确认删除？"
-                okText="确定"
-                cancelText="取消"
-                onConfirm={() => {
-                  deleteRow(row);
-                }}
-              >
-                <Button type="link" danger>
+              {!row.updateType ? (
+                <Button type="link" danger disabled={true}>
                   删除
                 </Button>
-              </Popconfirm>
+              ) : (
+                <Popconfirm
+                  title="删除将不可恢复，确认删除？"
+                  okText="确定"
+                  cancelText="取消"
+                  onConfirm={() => {
+                    deleteRow(row);
+                  }}
+                >
+                  <Button type="link" danger>
+                    删除
+                  </Button>
+                </Popconfirm>
+              )}
             </div>
           </div>
         );
@@ -165,6 +158,7 @@ const InterfaceConfig: React.FC = (props: any) => {
           return getTableList({
             robotId: info.id,
             page: params.current,
+            configType: 1,
             ...params,
           });
           return {};
@@ -176,7 +170,7 @@ const InterfaceConfig: React.FC = (props: any) => {
           persistenceKey: 'pro-table-machine-list',
           persistenceType: 'localStorage',
         }}
-        rowKey={(record) => record.id}
+        rowKey={(record) => record.configKey}
         search={{
           labelWidth: 'auto',
         }}

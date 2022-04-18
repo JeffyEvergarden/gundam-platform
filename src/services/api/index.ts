@@ -77,7 +77,7 @@ export async function queryGlobalValConfig(params?: { [key: string]: any }) {
 
 //获取所有全局节点配置
 export async function queryNodeConfig(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/robot/node/list`, {
+  return request(`${baseUrl}/robot/node/getOverConfig`, {
     method: 'GET',
     params,
   });

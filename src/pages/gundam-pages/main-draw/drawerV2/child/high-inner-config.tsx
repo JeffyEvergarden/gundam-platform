@@ -21,8 +21,9 @@ const { Option } = Select;
 const HightformTemplate: any = (props: any) => {
   const { form, name, title, showDefault, type } = props;
   const [disabled, setDisabled] = useState<boolean>(false);
-  const { nodeConfig } = useModel('drawer' as any, (model: any) => ({
+  const { nodeConfig, wishList } = useModel('drawer' as any, (model: any) => ({
     nodeConfig: model._globalNodeList,
+    wishList: model._wishList,
   }));
 
   const isDisabled = false;
@@ -54,7 +55,7 @@ const HightformTemplate: any = (props: any) => {
   return (
     <div className={styles['high-config']}>
       <Space align="baseline">
-        <div className={styles['title_sp']} style={{ marginRight: '16px' }}>
+        <div className={styles['title_sp']} style={{ marginRight: '16px', marginBottom: '20px' }}>
           {title}处理
         </div>
         <Condition r-if={type == 'flow'}>
@@ -155,12 +156,15 @@ const HightformTemplate: any = (props: any) => {
           name={[name, 'unclearName']}
           label={'未听清意图名称'}
           style={{ marginTop: '8px' }}
-          initialValue={'客户未听清意图'}
         >
           <Select disabled={true} style={{ width: '300px' }}>
-            <Option key={'1'} value={'客户未听清意图'}>
-              客户未听清意图
-            </Option>
+            {wishList?.map((item: any, index: number) => {
+              return (
+                <Option key={index} value={item.name} opt={item}>
+                  {item.label}
+                </Option>
+              );
+            })}
           </Select>
         </FormItem>
       </Condition>

@@ -77,16 +77,16 @@ export async function deleteGlobal(data?: { [key: string]: any }) {
 
 /** 获取全局节点信息 **/
 export async function _getNodeConfig(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/robot/node/list`, {
+  return request(`${baseUrl}/robot/node/getOverConfig`, {
     method: 'GET',
     params,
   });
 }
 
-/** 获取全局节点信息 **/
-export async function _saveNode(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/robot/node/save`, {
-    method: 'GET',
-    params,
+/** 提交全局节点信息 **/
+export async function _saveNode(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/node/overConfig`, {
+    method: 'POST',
+    data,
   });
 }

@@ -14,7 +14,7 @@ const getBusinessTableData = (req: any, res: any) => {
           flowName: '前端mock-流程1',
           id: 'front_mock_id_1',
           flowDesc: '前端mock-描述1',
-          headIntent: '前端mock-意图1',
+          headIntent: 100,
           creator: 'yyb',
           createTime: '2022-02-23 17:36:00',
         },

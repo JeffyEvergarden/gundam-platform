@@ -33,7 +33,7 @@ const getConfig = (req: any, res: any) => {
           updateTime: '2022-04-11 17:16:00',
           dataStatus: 0, //
           uppdateBy: 'x',
-          dataType: 0,
+          dataType: 1,
           updateType: 0,
         },
         {
@@ -207,21 +207,30 @@ const getNodeConfig = (req: any, res: any) => {
     resultDesc: '成功',
     success: true,
     data: {
-      allowFlows: ['front_mock_id_1'],
-      clearAction: {
-        action: {
-          actionText: undefined,
-          actionType: undefined,
+      robotId: 'xxx',
+      highConfig: {
+        allowFlows: ['front_mock_id_1'],
+        configType: 2,
+        clearAction: {
+          configType: 1,
+          jumpAction: {
+            actionText: undefined,
+            actionType: undefined,
+
+            textLabels: ['话术标签1'],
+          },
           messageList: undefined,
-          textLabels: ['话术标签1'],
+          responseList: [],
+          times: 3,
         },
-        responseList: [],
-        times: 3,
-      },
-      rejectAction: {
-        action: {
-          actionText: undefined,
-          actionType: undefined,
+        rejectAction: {
+          configType: 1,
+          jumpAction: {
+            actionText: undefined,
+            actionType: undefined,
+
+            textLabels: ['话术标签2'],
+          },
           messageList: [
             {
               content: '世界如此之美好',
@@ -230,35 +239,56 @@ const getNodeConfig = (req: any, res: any) => {
               telPhone: [2, '011'],
             },
           ],
-          textLabels: ['话术标签2'],
+          responseList: [{ actionText: 'buhaoyisi', textLabels: undefined }],
+          times: 3,
         },
-        responseList: [{ actionText: 'buhaoyisi', textLabels: undefined }],
-        times: 3,
-      },
-      silenceAction: {
-        action: {
-          actionText: '2',
-          actionType: 1,
+        silenceAction: {
+          configType: 1,
+          jumpAction: {
+            actionText: '2',
+            actionType: 1,
+
+            textLabels: ['话术标签3'],
+          },
           messageList: undefined,
-          textLabels: ['话术标签3'],
+          responseList: [],
+          times: 3,
         },
-        responseList: [],
-        times: 3,
-      },
-      unclearAction: {
-        action: {
-          actionText: '123',
-          actionType: 2,
+        unclearAction: {
+          configType: 1,
+          jumpAction: {
+            actionText: '123',
+            actionType: 2,
+
+            textLabels: ['话术标签1'],
+            toFlowId: ['front_mock_id_1'],
+          },
           messageList: undefined,
-          textLabels: ['话术标签1'],
-          toFlowId: ['front_mock_id_1'],
+          responseList: [],
+          times: 3,
+          unclearName: '客户未听清意图',
         },
-        responseList: [],
-        times: 3,
-        unclearName: '客户未听清意图',
+        threshold: 0.9,
+        thresholdGap: 0.02,
       },
-      threshold: 0.9,
-      thresholdGap: 0.02,
+      systemConfigList: [
+        {
+          id: '111',
+          robotId: 'xxx',
+          configKey: 'threshold',
+          configName: '阈值',
+          configValue: 0.9,
+          dataType: 0,
+        },
+        {
+          id: '222',
+          robotId: 'xxx',
+          configKey: 'thresholdGap',
+          configName: '得分差值',
+          configValue: 0.02,
+          dataType: 0,
+        },
+      ],
     },
   });
 };
@@ -273,5 +303,5 @@ export default {
   'GET /aichat/robot/config/listPage': getConfig, // 全局变量分页
   'GET /aichat/robot/config/list': getConfig, // 全局变量所有
 
-  'GET /aichat/robot/node/list': getNodeConfig, // 节点
+  'GET /aichat/robot/node/getOverConfig': getNodeConfig, // 节点
 };

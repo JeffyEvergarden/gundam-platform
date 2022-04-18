@@ -1,7 +1,7 @@
 import { useState, useImperativeHandle, useEffect, useRef } from 'react';
 import { Drawer, Form, Input, Select, Button, Tag, message } from 'antd';
 import { PlusOutlined, DiffOutlined } from '@ant-design/icons';
-import GlobalVarModal from '../../drawer/components/global-var-Modal';
+import GlobalVarModal from '../../drawer/components/global-var-modal';
 import WordSlotModal from './wordslot-select-modal';
 import styles from './style.less';
 import Condition from '@/components/Condition';
