@@ -1,19 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useModel, history } from 'umi';
-import {
-  Form,
-  Row,
-  Col,
-  Space,
-  Input,
-  Select,
-  Divider,
-  InputNumber,
-  Popconfirm,
-  Table,
-  Button,
-  message,
-} from 'antd';
+import { Popconfirm, Table, Button, message } from 'antd';
 import style from './style.less';
 import Condition from '@/components/Condition';
 import ProTable from '@ant-design/pro-table';
@@ -165,6 +152,7 @@ const InterfaceConfig: React.FC = (props: any) => {
           return getTableList({
             robotId: info.id,
             page: params.current,
+            configType: 1,
             ...params,
           });
           return {};
@@ -176,7 +164,7 @@ const InterfaceConfig: React.FC = (props: any) => {
           persistenceKey: 'pro-table-machine-list',
           persistenceType: 'localStorage',
         }}
-        rowKey={(record) => record.id}
+        rowKey={(record) => record.configKey}
         search={{
           labelWidth: 'auto',
         }}
