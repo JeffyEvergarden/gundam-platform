@@ -5,16 +5,21 @@ const successCode = '0000';
 const getBusinessTableData = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
-    datas: [
-      {
-        flowName: '前端mock-流程1',
-        id: 'front_mock_id_1',
-        flowDesc: '前端mock-描述1',
-        headIntent: '前端mock-意图1',
-        creator: 'yyb',
-        createTime: '2022-02-23 17:36:00',
-      },
-    ],
+    data: {
+      list: [
+        {
+          flowName: '前端mock-流程1',
+          id: 'front_mock_id_1',
+          flowDesc: '前端mock-描述1',
+          headIntent: '前端mock-意图1',
+          creator: 'yyb',
+          createTime: '2022-02-23 17:36:00',
+        },
+      ],
+    },
+    page: 1,
+    pageSize: 10,
+    totalSize: 3,
   });
 };
 
