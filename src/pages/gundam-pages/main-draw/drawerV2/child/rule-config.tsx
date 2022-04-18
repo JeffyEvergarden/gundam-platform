@@ -181,7 +181,7 @@ const RuleConfig = (props: any) => {
                                       const ruleKeyType: any = isNaN(curItem?.ruleKeyType)
                                         ? undefined
                                         : curItem?.ruleKeyType; //词槽/变量类型
-                                      // console.log('ruleKeyType: ' + ruleKeyType);
+                                      console.log('ruleKeyType: ' + ruleKeyType);
                                       const compareVal: any = curItem?.condition || undefined;
 
                                       const valueType: any = isNaN(curItem?.valueType)
@@ -216,7 +216,7 @@ const RuleConfig = (props: any) => {
                                             style={{
                                               display: 'flex',
                                               alignItems: 'baseline',
-                                              height: '40px',
+                                              height: '46px',
                                             }}
                                           >
                                             <div style={{ width: '20px', flexShrink: 0 }}>
@@ -275,7 +275,7 @@ const RuleConfig = (props: any) => {
                                           {/* 二～四级筛选 */}
                                           <div
                                             style={{
-                                              height: '40px',
+                                              height: '46px',
                                             }}
                                           >
                                             <Space align="baseline">
@@ -612,7 +612,7 @@ const RuleConfig = (props: any) => {
                                           >
                                             <div
                                               style={{
-                                                height: '40px',
+                                                height: '46px',
                                               }}
                                             >
                                               <Space align="baseline">

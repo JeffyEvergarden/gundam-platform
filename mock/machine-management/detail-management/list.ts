@@ -33,7 +33,7 @@ const getConfig = (req: any, res: any) => {
           updateTime: '2022-04-11 17:16:00',
           dataStatus: 0, //
           uppdateBy: 'x',
-          dataType: 0,
+          dataType: 1,
           updateType: 0,
         },
         {

@@ -21,10 +21,14 @@ const ActionConfig = (props: any) => {
     setNum(num + 1);
   }, [num]);
 
-  const getFormName = (text: any) => {
+  const getFormName = (text: any, val?: number) => {
     if (name !== undefined) {
       if (name instanceof Array) {
-        return [...name, text];
+        let slicename = name;
+        if (val) {
+          slicename = slicename.slice(0, val);
+        }
+        return [...slicename, text];
       } else {
         return [name, text];
       }
@@ -189,7 +193,7 @@ const ActionConfig = (props: any) => {
         </div>
 
         <div className={styles['action-box']}>
-          <FormList name={getFormName('messageList')}>
+          <FormList name={getFormName('messageList', -1)}>
             {(outFields, { add: _add, remove: _remove }) => {
               const addOutNew = () => {
                 // console.log(fields);

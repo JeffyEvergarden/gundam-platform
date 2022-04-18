@@ -110,7 +110,7 @@ const DrawerForm = (props: any) => {
       if (result === true) {
         setAutoCloseTipsFlag(false);
         recordInfo.current?.callback?.(res?.name); // 成功回调修改名称
-        onClose();
+        setVisible(false);
       }
     }
   };
