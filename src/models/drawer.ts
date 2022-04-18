@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import {
   queryLabelList,
   queryFlowList,
@@ -10,19 +10,43 @@ import {
 import config from '@/config';
 
 export default function useGundamModel() {
+  const timeFc = useRef<any>({});
+
   const [_wishList, _setWishList] = useState<any>([]); // 意图列表
 
   const [_globalNodeList, _setGlobalNodeList] = useState<any>([]); // 机器人的全局节点
-  // 机器人的话术标签列表
-  const [_labelList, _setLabelList] = useState<any>([]);
   // 业务流程列表
+  const [_globalVarList, _setGlobalVarList] = useState<any>([]); // 机器人的全局变量
+
+  const [_labelList, _setLabelList] = useState<any>([]); // 机器人的话术标签列表
+
   const [_flowList, _setFlowList] = useState<any[]>([]); // 业务流程列表
 
-  const [_wordSlotList, _setWordSlotList] = useState<any[]>([]);
+  const [_wordSlotList, _setWordSlotList] = useState<any[]>([]); // 词槽列表
 
-  const [_messageList, _setMessageList] = useState<any[]>([]);
+  const [_messageList, _setMessageList] = useState<any[]>([]); // 信息列表
+
+  const allowRequest = (str: any) => {
+    const timeObj: any = timeFc.current;
+    const _time = timeObj[str];
+    let now = Date.now();
+    if (!_time) {
+      // 没有调过该接口
+      timeObj[str] = now;
+      return true;
+    }
+    // 15秒内不允许重新调
+    if (_time && now - _time > 15 * 1000) {
+      timeObj[str] = now;
+      return true;
+    }
+    return false;
+  };
 
   const getMessageList = async (id: any) => {
+    if (!allowRequest('message')) {
+      return;
+    }
     let res: any = await queryMessageList({
       robotId: id,
       page: 1,
@@ -43,6 +67,9 @@ export default function useGundamModel() {
   };
 
   const getWishList = async (id?: any) => {
+    if (!allowRequest('wish')) {
+      return;
+    }
     let res: any = await queryWishList({
       robotId: id,
       current: 1,
@@ -64,6 +91,9 @@ export default function useGundamModel() {
   };
 
   const getWordSlotList = async (id?: any) => {
+    if (!allowRequest('wordslot')) {
+      return;
+    }
     let res: any = await queryWordSlotTableList({
       robotId: id,
       current: 1,
@@ -87,6 +117,9 @@ export default function useGundamModel() {
 
   // 获取流程列表
   const getFlowList = async (id?: any) => {
+    if (!allowRequest('flow')) {
+      return;
+    }
     let res: any = await queryFlowList({
       robotId: id,
       current: 1,
@@ -105,6 +138,9 @@ export default function useGundamModel() {
   };
 
   const getLabelList = async (id?: any) => {
+    if (!allowRequest('label')) {
+      return;
+    }
     if (!id) {
       console.log('机器人的话术标签获取不到机器人id');
       return null;

@@ -1,6 +1,6 @@
 //版本2
-import { useState, useRef, useImperativeHandle, useEffect } from 'react';
-import { Drawer, Form, Input, Select, Button, message } from 'antd';
+import { useState, useRef, useImperativeHandle } from 'react';
+import { Modal, Drawer, Form, Input, Select, Button, message } from 'antd';
 import { PlusCircleOutlined, AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import ConversationConfig from './child/conversation-config';
 import RuleConfig from './child/rule-config';
@@ -19,6 +19,8 @@ import WordSlotTable from './components/wordslot-table-select';
 
 const DrawerForm = (props: any) => {
   const { cref, type, wishList, wordSlotList } = props;
+
+  const [autoCloseTipsFlag, setAutoCloseTipsFlag] = useState<boolean>(false);
 
   const [form] = Form.useForm();
   const [form2] = Form.useForm();
@@ -45,13 +47,28 @@ const DrawerForm = (props: any) => {
 
   const { saveNode: _saveNode } = useNodeOpsModel();
 
+  const onValuesChange = () => {
+    setAutoCloseTipsFlag(true);
+  };
+
   const onClose = () => {
-    setVisible(false);
+    if (autoCloseTipsFlag) {
+      Modal.confirm({
+        title: '温馨提示',
+        content: '已对内容进行修改,若不保存将丢失编辑信息',
+        onOk: () => {
+          setVisible(false);
+        },
+      });
+    } else {
+      setVisible(false);
+    }
   };
 
   useImperativeHandle(cref, () => ({
     open: (info: any, callback: any) => {
       // console.log(info);
+      setAutoCloseTipsFlag(false);
       recordInfo.current.info = info;
       recordInfo.current.callback = callback;
       setNodetype(info._nodetype || 'normal');
@@ -88,6 +105,7 @@ const DrawerForm = (props: any) => {
         nodeType: recordInfo.current.info?.node.nodeType,
       });
       if (result === true) {
+        setAutoCloseTipsFlag(false);
         recordInfo.current?.callback?.(res?.name); // 成功回调修改名称
         onClose();
       }
@@ -113,7 +131,7 @@ const DrawerForm = (props: any) => {
       footer={footer}
       destroyOnClose
     >
-      <Form form={form}>
+      <Form form={form} onValuesChange={onValuesChange}>
         {/* 基础信息 */}
         <div className={styles['antd-form']}>
           <div className={styles['title']} style={{ marginTop: 0 }}>
@@ -238,7 +256,7 @@ const DrawerForm = (props: any) => {
         </div>
       </Form>
 
-      <Form form={form2}>
+      <Form form={form2} onValuesChange={onValuesChange}>
         {/* 高级配置 */}
         <HighConfig form={form2} bussinessList={flowList} type={'flow'} />
       </Form>
