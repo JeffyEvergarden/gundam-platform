@@ -31,7 +31,7 @@ const HightformTemplate: any = (props: any) => {
   const onChange = (val: any) => {
     let res = form.getFieldsValue();
     if (res[name].configType == 1) {
-      res[name] = nodeConfig[name];
+      res[name] = nodeConfig?.highConfig[name];
       setDisabled(true);
       form.setFieldsValue(res);
     } else if (res[name].configType == 2) {
@@ -39,9 +39,10 @@ const HightformTemplate: any = (props: any) => {
         action: {
           actionText: '',
           actionType: null,
-          messageList: [],
+
           textLabels: [],
         },
+        messageList: [],
         configType: 2,
         responseList: [],
         times: null,
