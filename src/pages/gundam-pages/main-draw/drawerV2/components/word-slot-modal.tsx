@@ -27,6 +27,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
         form.setFieldsValue({
           required: false,
         });
+        setShow(false);
       } else {
         obj = obj || {};
         form.resetFields();
@@ -34,6 +35,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
           ...obj,
           required: obj.required === 1,
         });
+        setShow(obj.required === 1);
       }
       setVisible(true);
     },
