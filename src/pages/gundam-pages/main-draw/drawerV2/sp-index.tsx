@@ -32,8 +32,9 @@ const DrawerForm = (props: any) => {
     businessFlowId: model.businessFlowId,
   }));
 
-  const { flowList } = useModel('drawer' as any, (model: any) => ({
+  const { flowList, wishList } = useModel('drawer' as any, (model: any) => ({
     flowList: model._flowList, // 业务流程列表
+    wishList: model._wishList,
   }));
 
   // 前置参数
@@ -58,6 +59,8 @@ const DrawerForm = (props: any) => {
       setVisible(false);
     }
   };
+
+  const onChange = (val: any) => {};
 
   useImperativeHandle(cref, () => ({
     open: (info: any, callback: any) => {
@@ -156,8 +159,20 @@ const DrawerForm = (props: any) => {
         <Condition r-if={nodetype === 'business'}>
           <div className={styles['antd-form']}>
             <FormItem label="业务流程" name="nodeFlowId" style={{ width: '400px' }}>
-              <Select placeholder="请选择业务流程">
+              <Select placeholder="请选择业务流程" onChange={onChange}>
                 {flowList.map((item: any, index: number) => {
+                  return (
+                    <Option key={index} value={item.name} opt={item}>
+                      {item.label}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </FormItem>
+
+            <FormItem label="意图名称" name="wishId" style={{ width: '400px' }}>
+              <Select placeholder="请选择意图名称" disabled={true}>
+                {wishList.map((item: any, index: number) => {
                   return (
                     <Option key={index} value={item.name} opt={item}>
                       {item.label}

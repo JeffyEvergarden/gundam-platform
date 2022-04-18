@@ -13,7 +13,7 @@ const { Item: FormItem, List: FormList } = Form;
 const { Option } = Select;
 
 const ActionConfig = (props: any) => {
-  const { name, title, formName: _formName, form, titleType = 1, canEdit } = props;
+  const { name, title, formName: _formName, form, maxLength = 150, titleType = 1, canEdit } = props;
 
   const [num, setNum] = useState<number>(1);
 
@@ -175,6 +175,7 @@ const ActionConfig = (props: any) => {
             style={{ width: '100%' }}
             autoComplete="off"
             rows={3}
+            maxLength={maxLength}
             canEdit={canEdit}
           />
         </FormItem>

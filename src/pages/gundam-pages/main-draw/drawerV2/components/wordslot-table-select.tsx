@@ -1,5 +1,5 @@
 import { useState, useRef, useImperativeHandle, useEffect, useMemo } from 'react';
-import { Drawer, Form, Input, Select, Button, Tag, Table, Tooltip } from 'antd';
+import { Drawer, Form, Input, Select, Button, Tag, Table, Tooltip, Popconfirm } from 'antd';
 import {
   PlusOutlined,
   AppstoreAddOutlined,
@@ -162,16 +162,19 @@ const WordSlotTable: React.FC<any> = (props: any) => {
               编辑
             </Button>
 
-            <Button
-              type="link"
-              size="small"
-              danger
-              onClick={() => {
+            <Popconfirm
+              placement="topRight"
+              title={'是否确认删除?'}
+              onConfirm={() => {
                 remove(index);
               }}
+              okText="确定"
+              cancelText="取消"
             >
-              删除
-            </Button>
+              <Button type="link" size="small" danger>
+                删除
+              </Button>
+            </Popconfirm>
           </div>
         );
       },
