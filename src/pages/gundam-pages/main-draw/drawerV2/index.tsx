@@ -102,7 +102,7 @@ const DrawerForm = (props: any) => {
         nodeName: res.name,
         ...preParams,
         id: recordInfo.current.info?.id,
-        nodeType: recordInfo.current.info?.node.nodeType,
+        nodeType: recordInfo.current.info?.nodeType,
       });
       if (result === true) {
         setAutoCloseTipsFlag(false);
