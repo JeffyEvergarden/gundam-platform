@@ -118,10 +118,11 @@ const DetailPages: React.FC = (props: any) => {
     let params = {
       occurTime: occurDay + ' ' + newTime,
       id: data.id,
+      robotId: localStorage.getItem('robot_id'),
     };
     const res: any = await deleteFlowData(params);
     message.info(res?.resultDesc || '失败');
-    if (res?.resultCode == '100') {
+    if (res?.resultCode == '0000') {
       refreshTable();
     }
   };

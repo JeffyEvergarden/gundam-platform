@@ -41,7 +41,6 @@ export default (props: any) => {
       if (title == 'edit') {
         handleSpinning(true);
         setDisableNum(modalData.headIntent);
-        // let headIntent = modalData?.headIntent;
         form.setFieldsValue({ ...modalData });
         handleSpinning(false);
       }
@@ -120,7 +119,13 @@ export default (props: any) => {
                                 key={itex.name}
                                 value={itex.name}
                                 opt={itex}
-                                disabled={itex.connect == 1 && disabledNum !== itex.headIntent}
+                                disabled={
+                                  disabledNum == itex.name
+                                    ? false
+                                    : itex.connect == 1
+                                    ? true
+                                    : false
+                                }
                               >
                                 {itex.label}
                               </Option>
