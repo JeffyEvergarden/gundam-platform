@@ -29,7 +29,8 @@ export default (props: any) => {
   };
 
   const handleClose = (entityValueName: string) => {
-    const tags = ruleList.filter((item: any) => item.entityValueName !== entityValueName);
+    let temp = JSON.parse(JSON.stringify(ruleList));
+    const tags = temp.filter((item: any) => item.entityValueName !== entityValueName);
     setRulist(tags);
   };
 

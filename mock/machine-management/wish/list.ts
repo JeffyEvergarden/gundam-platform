@@ -9,7 +9,7 @@ const intentList = (req: any, res: any) => {
       page: 1,
       list: [
         {
-          id: 100,
+          id: '100',
           intentName: '意图名称',
           headIntent: 0,
           inquiryText: '澄清名称',
