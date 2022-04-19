@@ -36,9 +36,10 @@ const NodeConfig: React.FC = (props: any) => {
     }));
 
   const submit = async () => {
-    let res: any = await form.validateFields();
+    let res: any = await form.validateFields().catch(() => {
+      message.warning('存在未填写项目');
+    });
     let res1: any = await form2.validateFields();
-    console.log(config);
     let _res = config.map((item: any) => {
       Object.keys(res1.systemConfigList).forEach((v) => {
         console.log(item.configKey, v);
@@ -54,14 +55,15 @@ const NodeConfig: React.FC = (props: any) => {
       highConfig: res,
       systemConfigList: _res,
     };
-
-    await _saveNode(params).then((res) => {
-      if (res.resultCode == '0000') {
-        message.success(res.resultDesc);
-      } else {
-        message.error(res.resultDesc);
-      }
-    });
+    if (res && res1) {
+      await _saveNode(params).then((res) => {
+        if (res.resultCode == '0000') {
+          message.success(res.resultDesc);
+        } else {
+          message.error(res.resultDesc);
+        }
+      });
+    }
 
     console.log(params);
   };

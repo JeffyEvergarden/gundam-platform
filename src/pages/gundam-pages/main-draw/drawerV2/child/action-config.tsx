@@ -200,7 +200,7 @@ const ActionConfig = (props: any) => {
                 let length = outFields.length;
                 _add(
                   {
-                    messageNode: undefined,
+                    messageMode: undefined,
                     telPhone: undefined,
                     content: '',
                     placeholder: [],
@@ -232,12 +232,12 @@ const ActionConfig = (props: any) => {
                         </div>
                         <div style={{ flex: '1 1 auto' }}>
                           <div>
-                            <Space>
+                            <Space align="baseline">
                               {/* 类型 */}
                               <Form.Item
                                 label={'短信模版'}
-                                name={[field.name, 'messageNode']}
-                                fieldKey={[field.fieldKey, 'messageNode']}
+                                name={[field.name, 'messageMode']}
+                                fieldKey={[field.fieldKey, 'messageMode']}
                                 rules={[{ required: true, message: '请选择短信模版' }]}
                               >
                                 <Select
@@ -269,6 +269,7 @@ const ActionConfig = (props: any) => {
                                 <Cascader
                                   options={cascaderList}
                                   expandTrigger="hover"
+                                  placeholder={'请选择接受号码'}
                                   displayRender={(label: any[]) => {
                                     return label[label.length - 1];
                                   }}

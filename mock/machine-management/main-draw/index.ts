@@ -79,7 +79,7 @@ const getNodesConfig = (req: any, res: any) => {
             textLabels: ['话术标签2'],
             messageList: [
               {
-                messageNode: '001',
+                messageMode: '001',
                 telPhone: [2, '012'],
                 content: '世界如此之美好',
                 placeholder: ['123', '456', '789'],
