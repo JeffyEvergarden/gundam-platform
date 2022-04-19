@@ -52,6 +52,14 @@ const HightformTemplate: any = (props: any) => {
     }
     console.log(res);
   };
+  useEffect(() => {
+    let res = form.getFieldsValue();
+    if (res[name].configType == 1) {
+      res[name] = nodeConfig?.highConfig[name];
+      setDisabled(true);
+      form.setFieldsValue(res);
+    }
+  });
 
   return (
     <div className={styles['high-config']}>

@@ -73,11 +73,15 @@ const DrawerForm = (props: any) => {
       recordInfo.current.callback = callback;
       setNodetype(info._nodetype || 'normal');
       const _info: any = parserBody(info.config);
+      console.log(_info);
+
       form.resetFields();
       form.setFieldsValue({
         ..._info,
         name: _info.nodeName || info.name,
       });
+      form2.setFieldsValue(_info?.highConfig);
+
       setVisible(true);
     },
     close: onClose,
