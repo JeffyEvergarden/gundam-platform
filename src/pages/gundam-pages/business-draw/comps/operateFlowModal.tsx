@@ -21,6 +21,7 @@ export default (props: any) => {
   const { visible, title, modalData, operateFunc } = props;
   const [form] = Form.useForm();
   const [spinning, handleSpinning] = useState<boolean>(false);
+  const [disabledNum, setDisableNum] = useState<any>(null);
 
   const { editFlowData, addFlowData } = useTableModel();
   const { _wishList, getWishList } = useModel('drawer' as any, (model: any) => ({
@@ -39,6 +40,7 @@ export default (props: any) => {
       getWishList(modalData?.robotId);
       if (title == 'edit') {
         handleSpinning(true);
+        setDisableNum(modalData.headIntent);
         // let headIntent = modalData?.headIntent;
         form.setFieldsValue({ ...modalData });
         handleSpinning(false);
@@ -118,7 +120,7 @@ export default (props: any) => {
                                 key={itex.name}
                                 value={itex.name}
                                 opt={itex}
-                                disable={itex.connect == 1}
+                                disabled={itex.connect == 1 && disabledNum !== itex.headIntent}
                               >
                                 {itex.label}
                               </Option>
