@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Form, Select, Button, Checkbox, Space, InputNumber, Radio } from 'antd';
+import { Form, Select, Button, Checkbox, Space, InputNumber, Radio, message } from 'antd';
 import {
   PlusCircleOutlined,
   MinusCircleOutlined,
@@ -73,8 +73,8 @@ const HightformTemplate: any = (props: any) => {
       <Condition r-if={name != 'unclearAction'}>
         <FormList name={[name, 'responseList']}>
           {(fields, { add, remove }) => {
+            let length = fields.length;
             const addNew = () => {
-              let length = fields.length;
               // console.log(length);
               add(
                 {
@@ -98,7 +98,16 @@ const HightformTemplate: any = (props: any) => {
                         <span
                           className={styles['del-bt']}
                           onClick={() => {
-                            if (!disabled) remove(index);
+                            if (!disabled) {
+                              if (
+                                length == 1 &&
+                                (name == 'silenceAction' || name == 'rejectAction')
+                              ) {
+                                message.warning('至少保留一条话术');
+                                return;
+                              }
+                              remove(index);
+                            }
                           }}
                         >
                           <MinusCircleOutlined disabled={disabled} />
