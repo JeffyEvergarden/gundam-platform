@@ -24,22 +24,19 @@ export default (props: any) => {
   const [spinning, handleSpinning] = useState<boolean>(false);
 
   const { editFlowData, addFlowData } = useTableModel();
-  const { flowList, getFlowList } = useModel('drawer' as any, (model: any) => ({
-    flowList: model._flowList || [],
-    getFlowList: model.getFlowList, // 业务流程列表
+  const { _wishList, getWishList } = useModel('drawer' as any, (model: any) => ({
+    _wishList: model._wishList || [],
+    getWishList: model.getWishList, // 业务流程列表
   }));
 
   useEffect(() => {
     if (visible) {
       // getIntentSelList();
-      getFlowList({
-        robotId: modalData?.robotId,
-        headIntent: 0,
-      });
+      getWishList(modalData?.robotId);
       if (title == 'edit') {
         handleSpinning(true);
-        let headIntent = modalData?.headIntent;
-        form.setFieldsValue({ ...modalData, headIntent });
+        // let headIntent = modalData?.headIntent;
+        form.setFieldsValue({ ...modalData });
         handleSpinning(false);
       }
     }
@@ -66,7 +63,7 @@ export default (props: any) => {
     } else {
       res = await addFlowData({ ...params, flowType: 1 });
     }
-    if (res?.resultCode == '100') {
+    if (res?.resultCode == '0000') {
       message.info(res?.resultDesc);
       operateFunc();
       form.resetFields();
@@ -110,10 +107,10 @@ export default (props: any) => {
                         style={{ width: '360px' }}
                       >
                         <Select>
-                          {flowList?.map((itex: any, index: number) => {
+                          {_wishList?.map((itex: any, index: number) => {
                             return (
-                              <Option key={item.name} value={item.name} opt={item}>
-                                {item.label}
+                              <Option key={itex.name} value={itex.name} opt={itex}>
+                                {itex.label}
                               </Option>
                             );
                           })}
