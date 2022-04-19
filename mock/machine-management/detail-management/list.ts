@@ -266,7 +266,7 @@ const getNodeConfig = (req: any, res: any) => {
           messageList: undefined,
           responseList: [],
           times: 3,
-          unclearName: '客户未听清意图',
+          wishId: '100',
         },
         threshold: 0.9,
         thresholdGap: 0.02,

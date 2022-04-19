@@ -162,11 +162,7 @@ const HightformTemplate: any = (props: any) => {
 
       {/* 未听清意图名称 */}
       <Condition r-if={name == 'unclearAction'}>
-        <FormItem
-          name={[name, 'unclearName']}
-          label={'未听清意图名称'}
-          style={{ marginTop: '8px' }}
-        >
+        <FormItem name={[name, 'wishId']} label={'未听清意图名称'} style={{ marginTop: '8px' }}>
           <Select disabled={true} style={{ width: '300px' }}>
             {wishList?.map((item: any, index: number) => {
               return (
