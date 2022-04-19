@@ -66,7 +66,7 @@ export default (props: any) => {
       setInitRobotChat(true);
       handleBeginTalking(true); // 开始会话功能
     } else {
-      message.info(res?.resultDesc || res?.message || '失败');
+      message.error(res?.resultDesc || res?.message || '失败');
     }
   };
 
