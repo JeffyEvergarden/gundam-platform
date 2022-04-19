@@ -182,7 +182,7 @@ export const useNodeOpsModel = () => {
         return item && map[item.frontSource] && map[item.frontTarget];
       })
       .map((item: any, index: number) => {
-        let label = item.label || item.nodeName || item.name || '';
+        let label = item.label || item.lineName || item.nodeName || item.name || '';
         let level = item.level || 1;
         return {
           id: item.frontId ? String(item.frontId) : String(item.id),
@@ -232,7 +232,7 @@ export const useNodeOpsModel = () => {
       return {
         frontId: item.id, // 前端id
         id: item._id, // 后端id (如果有的话)
-        nodeName: item._name || item.label || '',
+        lineName: item._name || item.label || '',
         name: item._name || item.label || '',
         level: item.level || 1,
         frontSource: item.source, // 前端的头id
@@ -257,7 +257,7 @@ export const useNodeOpsModel = () => {
       message.success('保存成功');
       return true;
     } else {
-      message.error(message.warning(res.resultDesc || '未知系统异常'));
+      message.error(res.resultDesc || '未知系统异常');
       return false;
     }
   };
