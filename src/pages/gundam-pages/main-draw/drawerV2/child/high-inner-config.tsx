@@ -68,7 +68,7 @@ const HightformTemplate: any = (props: any) => {
           {title}处理
         </div>
         <Condition r-if={type == 'flow'}>
-          <Form.Item name={[name, 'configType']} initialValue={2}>
+          <Form.Item name={[name, 'configType']} initialValue={1}>
             <Radio.Group onChange={onChange} size="small">
               <Radio value={1}>默认配置</Radio>
               <Radio value={2}>自定义配置</Radio>

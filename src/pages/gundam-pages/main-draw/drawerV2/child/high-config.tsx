@@ -46,6 +46,13 @@ const HighConfig = (props: any) => {
 
   useEffect(() => {
     console.log(config);
+    let res = form.getFieldsValue();
+
+    if (res.configType == 1) {
+      res.allowFlows = nodeConfig?.highConfig?.allowFlows;
+      setDisabled(true);
+      form.setFieldsValue(res);
+    }
   });
 
   return (
@@ -77,7 +84,7 @@ const HighConfig = (props: any) => {
               流程跳转
             </div>
             <Condition r-if={type == 'flow'}>
-              <Form.Item name="configType" initialValue={2}>
+              <Form.Item name="configType" initialValue={1}>
                 <Radio.Group size="small" onChange={onChange}>
                   <Radio value={1}>默认配置</Radio>
                   <Radio value={2}>自定义配置</Radio>
