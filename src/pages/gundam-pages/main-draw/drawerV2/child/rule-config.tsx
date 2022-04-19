@@ -733,7 +733,8 @@ const RuleConfig = (props: any) => {
                                                 <Condition
                                                   r-if={
                                                     valueType === VALUE_TYPE_MAP['自定义'] &&
-                                                    ruleKeyType === RULE_KEY_TYPE_MAP['date']
+                                                    ruleKeyType === RULE_KEY_TYPE_MAP['date'] &&
+                                                    compareVal !== 'between'
                                                   }
                                                 >
                                                   <FormItem
@@ -745,7 +746,33 @@ const RuleConfig = (props: any) => {
                                                     ]}
                                                   >
                                                     <DatePicker
+                                                      showTime
                                                       placeholder="请选择日期"
+                                                      size="small"
+                                                    />
+                                                  </FormItem>
+                                                </Condition>
+                                                <Condition
+                                                  r-if={
+                                                    valueType === VALUE_TYPE_MAP['自定义'] &&
+                                                    ruleKeyType === RULE_KEY_TYPE_MAP['date'] &&
+                                                    compareVal === 'between'
+                                                  }
+                                                >
+                                                  <FormItem
+                                                    name={[field.name, 'ruleValue']}
+                                                    fieldKey={[field.fieldKey, 'ruleValue']}
+                                                    style={{ width: '300px' }}
+                                                    rules={[
+                                                      { required: true, message: '请选择日期' },
+                                                    ]}
+                                                  >
+                                                    <DatePicker.RangePicker
+                                                      showTime
+                                                      placeholder={[
+                                                        '请选择开始日期',
+                                                        '请选择开始日期',
+                                                      ]}
                                                       size="small"
                                                     />
                                                   </FormItem>

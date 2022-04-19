@@ -199,6 +199,12 @@ export const conditionFilter = (valueType: any) => {
         label: '大于等于',
       },
     ];
+    // if (valueType === RULE_KEY_TYPE_MAP['date']) {
+    //   list.push({
+    //     name: 'between',
+    //     label: '介于',
+    //   });
+    // }
   } else if (valueType === RULE_KEY_TYPE_MAP['text']) {
     list = [
       {

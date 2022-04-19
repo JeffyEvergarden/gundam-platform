@@ -12,14 +12,23 @@ export const parserBody = (info: any) => {
         // 日期格式且是自定义
         if (item?.ruleKeyType === 2 && item.valueType === 3) {
           // 日期格式
-          if (item.ruleValue && reg.test(item.ruleValue)) {
+          if (Array.isArray(item.ruleValue)) {
             try {
-              item.ruleValue = moment(item.ruleValue);
+              item.ruleValue[0] = moment(item.ruleValue[0]);
+              item.ruleValue[1] = moment(item.ruleValue[1]);
             } catch (e) {
               item.ruleValue = undefined;
             }
           } else {
-            item.ruleValue = undefined;
+            if (item.ruleValue && reg.test(item.ruleValue)) {
+              try {
+                item.ruleValue = moment(item.ruleValue);
+              } catch (e) {
+                item.ruleValue = undefined;
+              }
+            } else {
+              item.ruleValue = undefined;
+            }
           }
         }
       });
@@ -39,7 +48,14 @@ export const processRequest = (form1: any, form2: any) => {
     _item?.ruleList?.forEach((obj: any) => {
       obj?.rules?.forEach((item: any) => {
         if (item?.ruleValue instanceof moment) {
-          item.ruleValue = item.ruleValue.format('YYYY-MM-DD hh:mm:ss');
+          item.ruleValue = item.ruleValue.format('YYYY-MM-DD HH:mm:ss');
+        } else if (Array.isArray(item?.ruleValue)) {
+          try {
+            item.ruleValue[0] = item.ruleValue[0]?.format('YYYY-MM-DD HH:mm:ss');
+            item.ruleValue[1] = item.ruleValue[1]?.format('YYYY-MM-DD HH:mm:ss');
+          } catch (e) {
+            item.ruleValue = undefined;
+          }
         }
       });
     });

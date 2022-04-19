@@ -20,7 +20,7 @@ export default function useGundamModel() {
       console.log('机器人的全局变量配置获取不到机器人id');
       return null;
     }
-    let res: any = await queryGlobalValConfig({ robotId: id });
+    let res: any = await queryGlobalValConfig({ robotId: id, configType: 1 });
     let data: any[] = res?.data?.list || [];
 
     data = data?.map((item: any) => {
