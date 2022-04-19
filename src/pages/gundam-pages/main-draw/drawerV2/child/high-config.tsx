@@ -53,7 +53,7 @@ const HighConfig = (props: any) => {
       setDisabled(true);
       form.setFieldsValue(res);
     }
-  });
+  }, []);
 
   return (
     <>

@@ -59,7 +59,7 @@ const HightformTemplate: any = (props: any) => {
       setDisabled(true);
       form.setFieldsValue(res);
     }
-  });
+  }, []);
 
   return (
     <div className={styles['high-config']}>
