@@ -59,7 +59,7 @@ export default function useGundamModel() {
           ...item,
           index,
           name: item.templateId,
-          label: item.templateTime,
+          label: item.templateTitle,
           placeholder: item.placeholder,
           content: item.content,
         };

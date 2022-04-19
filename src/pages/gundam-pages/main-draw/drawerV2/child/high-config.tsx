@@ -34,7 +34,7 @@ const HighConfig = (props: any) => {
     console.log(nodeConfig);
     let res = form.getFieldsValue();
     if (res.configType == 1) {
-      res.allowFlows = nodeConfig.allowFlows;
+      res.allowFlows = nodeConfig?.highConfig?.allowFlows;
       setDisabled(true);
       form.setFieldsValue(res);
     } else if (res.configType == 2) {
