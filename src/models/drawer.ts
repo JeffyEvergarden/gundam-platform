@@ -67,8 +67,8 @@ export default function useGundamModel() {
     _setMessageList(data);
   };
 
-  const getWishList = async (id?: any) => {
-    if (!allowRequest('wish')) {
+  const getWishList = async (id?: any, forceUpDate: boolean = false) => {
+    if (!forceUpDate && !allowRequest('wish')) {
       return;
     }
     let res: any = await queryWishList({

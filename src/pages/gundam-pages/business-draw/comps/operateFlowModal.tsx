@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Modal, Form, Input, Select, Space, Button, message, Spin } from 'antd';
 import { operateFlowFormList } from '../config';
 import { useTableModel } from '../model';
 import style from './style.less';
-import { useIntentModel } from '../../wish/model';
 import { useModel } from 'umi';
 
 const { Option } = Select;
@@ -28,6 +27,11 @@ export default (props: any) => {
     _wishList: model._wishList || [],
     getWishList: model.getWishList, // 业务流程列表
   }));
+
+  const wishListArr = useMemo(() => {
+    const tempIntent = _wishList.filter((item: any) => item.headIntent !== 1);
+    return tempIntent;
+  }, [_wishList]);
 
   useEffect(() => {
     if (visible) {
@@ -67,6 +71,7 @@ export default (props: any) => {
       message.info(res?.resultDesc);
       operateFunc();
       form.resetFields();
+      getWishList(modalData?.robotId, true);
     } else {
       message.info(res?.resultDesc || '失败');
     }
@@ -107,9 +112,14 @@ export default (props: any) => {
                         style={{ width: '360px' }}
                       >
                         <Select>
-                          {_wishList?.map((itex: any, index: number) => {
+                          {wishListArr?.map((itex: any, index: number) => {
                             return (
-                              <Option key={itex.name} value={itex.name} opt={itex}>
+                              <Option
+                                key={itex.name}
+                                value={itex.name}
+                                opt={itex}
+                                disable={itex.connect == 1}
+                              >
                                 {itex.label}
                               </Option>
                             );
