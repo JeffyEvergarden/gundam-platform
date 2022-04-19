@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Form, Select, Button, Checkbox, Space, InputNumber } from 'antd';
+import { Form, Select, Button, Checkbox, Space, InputNumber, message } from 'antd';
 import HighConfig from '../../main-draw/drawerV2/child/high-config';
 import style from './style.less';
 import { useModel } from 'umi';
@@ -55,23 +55,23 @@ const NodeConfig: React.FC = (props: any) => {
       systemConfigList: _res,
     };
 
-    await _saveNode(params);
+    await _saveNode(params).then((res) => {
+      if (res.resultCode == '0000') {
+        message.success(res.resultDesc);
+      } else {
+        message.error(res.resultDesc);
+      }
+    });
 
     console.log(params);
-  };
-
-  const findValue = (data: any, val: any) => {
-    return data?.systemConfigList?.find((item: any) => {
-      return item[val] == val;
-    })?.configValue;
   };
 
   const _getNodesConfig = async () => {
     await getNodeConfig({ robotId: info.id }).then((res) => {
       console.log(res);
-      setConfig(res.systemConfigList);
+      setConfig(res?.systemConfigList);
       let obj: any = {};
-      res.systemConfigList.forEach((item: any) => {
+      res?.systemConfigList?.forEach((item: any) => {
         obj[item.configKey] = item.configValue;
       });
 
@@ -88,22 +88,6 @@ const NodeConfig: React.FC = (props: any) => {
     getWordSlotList(info.id); // 词槽列表
     getMessageList(info.id); // 短信
     getGlobalValConfig(info.id); // 获取全局变量列表
-    // form.setFieldsValue({
-    //   rejectAction: {
-    //     responseList: [
-    //       { actionText: '不好意思，能再说一遍吗？' },
-    //       { actionText: '刚刚没听清楚，能再说一次吗？' },
-    //       { actionText: '我刚刚没听明白，能再说一遍吗？' },
-    //     ],
-    //   },
-    //   silenceAction: {
-    //     responseList: [
-    //       { actionText: '您好，您还在吗？' },
-    //       { actionText: '您好，能听到我说话吗？' },
-    //       { actionText: '您好，请问还在吗？' },
-    //     ],
-    //   },
-    // });
   }, []);
 
   return (

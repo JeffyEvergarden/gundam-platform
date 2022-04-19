@@ -213,7 +213,7 @@ const getNodeConfig = (req: any, res: any) => {
         configType: 2,
         clearAction: {
           configType: 1,
-          jumpAction: {
+          action: {
             actionText: undefined,
             actionType: undefined,
 
@@ -225,7 +225,7 @@ const getNodeConfig = (req: any, res: any) => {
         },
         rejectAction: {
           configType: 1,
-          jumpAction: {
+          action: {
             actionText: undefined,
             actionType: undefined,
 
@@ -244,7 +244,7 @@ const getNodeConfig = (req: any, res: any) => {
         },
         silenceAction: {
           configType: 1,
-          jumpAction: {
+          action: {
             actionText: '2',
             actionType: 1,
 
@@ -256,7 +256,7 @@ const getNodeConfig = (req: any, res: any) => {
         },
         unclearAction: {
           configType: 1,
-          jumpAction: {
+          action: {
             actionText: '123',
             actionType: 2,
 

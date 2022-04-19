@@ -12,17 +12,6 @@ export default {
     //   target: 'http://10.192.174.85:9085',
     //   changeOrigin: true,
     //   pathRewrite: { '^': '' },
-    // },
-    '/robot/': {
-      target: 'http://10.192.170.145:8080',
-      changeOrigin: true,
-      pathRewrite: { '^': '' },
-    },
-    '/notification/': {
-      target: 'http://10.192.170.145:8080',
-      changeOrigin: true,
-      pathRewrite: { '^': '' },
-    },
   },
   test: {
     '/api/': {

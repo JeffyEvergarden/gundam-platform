@@ -49,6 +49,7 @@ export default function useGundamModel() {
     }
     let res: any = await queryMessageList({
       robotId: id,
+      pushType: 'sms',
       page: 1,
       pageSize: 1000,
     });

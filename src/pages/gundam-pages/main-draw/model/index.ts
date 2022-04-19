@@ -22,6 +22,8 @@ import {
   saveNode,
   saveLine,
   getLineConfig,
+  saveBizNode,
+  getBizNodesConfig,
 } from './api';
 
 // 获取默认节点参数
@@ -80,7 +82,13 @@ export const useNodeOpsModel = () => {
   // 获取节点信息
   const _getNodesConfig = async (data: any) => {
     setInfoLoading(true);
-    let res: any = await getNodesConfig(data);
+    let getNodeWay: any = null;
+    if (parserType(data.nodeType) === 'business') {
+      getNodeWay = getBizNodesConfig;
+    } else {
+      getNodeWay = getNodesConfig;
+    }
+    let res: any = await getNodeWay(data);
     setInfoLoading(false);
     if (res.resultCode === config.successCode) {
       let config: any = res.data || {};
@@ -92,7 +100,13 @@ export const useNodeOpsModel = () => {
   };
 
   const _saveNode = async (data: any) => {
-    let res: any = await saveNode(data);
+    let saveNodeWay: any = null;
+    if (parserType(data.nodeType) === 'business') {
+      saveNodeWay = saveBizNode;
+    } else {
+      saveNodeWay = saveNode;
+    }
+    let res: any = await saveNodeWay(data);
     if (res.resultCode === config.successCode) {
       message.success('保存成功');
       return true;
