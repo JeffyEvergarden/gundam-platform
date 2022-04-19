@@ -73,7 +73,7 @@ export async function paramList(params?: Record<string, any>) {
 /** 入参值**/
 export async function slotInfo(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/slot/slotInfo`, {
-    method: 'GET',
-    params,
+    method: 'POSt',
+    data: params,
   });
 }

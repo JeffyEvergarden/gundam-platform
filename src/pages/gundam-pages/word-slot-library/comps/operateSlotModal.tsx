@@ -95,85 +95,48 @@ export default (props: any) => {
     if (resOut.resultCode === '0000') {
       setOutVal(resOut?.data);
     }
+    setInval_val('');
+    form.setFieldsValue({
+      inParams: null,
+      sourceType: null,
+      sourceType_val: null,
+      outputParamId: null,
+    });
   };
 
   const inValChange = async (val: number, option: any) => {
     if (option.key == 1) {
       setInval_val('变量');
+      const invalChild = await getzzReal({ robotId: localStorage.getItem('robot_id') }); //入参值
+      if (invalChild.resultCode === '0000') {
+        setinValList(invalChild?.data);
+      } else {
+        message.warning(invalChild.resultDesc);
+        setinValList([]);
+      }
     } else if (option.key == 0) {
       setInval_val('词槽');
+      const invalChild = await getslotInfo({ robotId: localStorage.getItem('robot_id') }); //入参值
+      if (invalChild.resultCode === '0000') {
+        setinValList(invalChild?.data);
+      } else {
+        message.warning(invalChild.resultDesc);
+        setinValList([]);
+      }
     }
-
-    const invalChild = await getslotInfo({ interfaceId: val, paramType: 1 }); //入参值
-    if (invalChild.resultCode === '0000') {
-      setinValList(invalChild?.data);
-    }
+    form.setFieldsValue({
+      sourceType_val: null,
+    });
   };
-
-  // const fieldValueChange = (changedValues: any, allValues: any) => {
-  //   if (changedValues?.slotSource) {
-  //     setDiffSourceData(changedValues?.slotSource);
-  //   } else if (changedValues?.allowIntents) {
-  //     let obj = { ...fieldSelectData };
-  //     if (changedValues?.allowIntents.includes('ALL')) {
-  //       form.setFieldsValue({
-  //         allowIntents: ['ALL'],
-  //         nonIntents: ['NULL'],
-  //       });
-  //       // obj.nonIntents = [];
-  //       obj.nonIntents = [
-  //         { value: 'NULL', name: '空', id: 'NULL', intentName: '空' },
-  //         ...obj.normalIntents,
-  //       ];
-  //       obj.allowIntents = [
-  //         { value: 'ALL', name: '所有', id: 'ALL', intentName: '所有' },
-  //         ...obj.normalIntents,
-  //       ];
-  //       setFieldSelectData(obj);
-  //     } else {
-  //       let newArr =
-  //         changedValues?.allowIntents?.length == 0 ? obj?.normalIntents : obj?.nonIntents;
-  //       let arr: any = newArr?.filter((item: any) => {
-  //         return !changedValues?.allowIntents?.includes(item?.value || item?.id);
-  //       });
-  //       obj.nonIntents = [...arr];
-  //       setFieldSelectData(obj);
-  //     }
-  //   } else if (changedValues?.nonIntents) {
-  //     let obk: any = { ...fieldSelectData };
-  //     if (changedValues?.nonIntents.includes('NULL') || changedValues?.nonIntents?.length == 0) {
-  //       form.setFieldsValue({
-  //         allowIntents: ['ALL'],
-  //         nonIntents: changedValues?.nonIntents?.length == 0 ? [] : ['NULL'],
-  //       });
-  //       obk.nonIntents = [
-  //         { value: 'NULL', name: '空', id: 'NULL', intentName: '空' },
-  //         ...obk.normalIntents,
-  //       ];
-  //       obk.allowIntents = [
-  //         { value: 'ALL', name: '所有', id: 'ALL', intentName: '所有' },
-  //         ...obk.normalIntents,
-  //       ];
-  //       setFieldSelectData(obk);
-  //     } else {
-  //       let obj = { ...fieldSelectData };
-  //       let arr: any = obj?.allowIntents?.filter((item: any) => {
-  //         return !changedValues?.nonIntents?.includes(item?.value || item?.id);
-  //       });
-  //       obj.allowIntents = [...arr];
-  //       setFieldSelectData(obj);
-  //     }
-  //   }
-  // };
 
   const cancel = () => {
     form.resetFields();
     onCancel();
+    setInval_val('');
   };
 
   const submit = async () => {
     const values = await form.validateFields();
-    debugger;
     let res: any;
     let params: any = {
       robotId: modalData?.robotId,
@@ -402,7 +365,7 @@ export default (props: any) => {
                       {interfaceListInfo?.map((itex: any) => {
                         return (
                           <Option key={itex?.id} value={itex?.id} ItemObj={itex}>
-                            {itex?.interFaceName}
+                            {itex?.interfaceName}
                           </Option>
                         );
                       })}
@@ -443,7 +406,7 @@ export default (props: any) => {
                       {inValList?.map((itex: any) => {
                         return (
                           <Option key={itex?.id} value={itex?.id}>
-                            {itex?.paramName}
+                            {itex?.slotName || itex?.entityName}
                           </Option>
                         );
                       })}

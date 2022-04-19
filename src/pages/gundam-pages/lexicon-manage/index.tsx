@@ -97,6 +97,7 @@ const LexiconManage: React.FC = (props: any) => {
       title: '操作',
       key: 'option',
       width: 120,
+      fixed: 'right',
       valueType: 'option',
       render: (text: any, record: any) => {
         return (

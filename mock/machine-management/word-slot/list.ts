@@ -82,8 +82,8 @@ const interFace = (req: any, res: any) => {
     resultDesc: '成功',
     occurTime: '2022-0221-18:16',
     data: [
-      { id: '11', interFaceName: '接口列表11', interfaceDesc: '接口描述1' },
-      { id: '22', interFaceName: '接口列表22', interfaceDesc: '接口描述2' },
+      { id: '11', interfaceName: '接口列表11', interfaceDesc: '接口描述1' },
+      { id: '22', interfaceName: '接口列表22', interfaceDesc: '接口描述2' },
     ],
   });
 };
@@ -132,5 +132,5 @@ export default {
   'GET /aichat/robot/entity/list': getzzReal, // 获取实体列表
   'GET /aichat/robot/interface/list': interFace, // 获取接口列表
   'GET /aichat/robot/interface/param': paramList, // 获取入参值列表
-  'GET /aichat/robot/slot/slotInfo': slotInfoList, // 获取入参值-下级列表
+  'POST /aichat/robot/slot/slotInfo': slotInfoList, // 获取入参值-下级列表
 };
