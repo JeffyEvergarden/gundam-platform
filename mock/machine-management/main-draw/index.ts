@@ -227,7 +227,9 @@ export default {
   'POST /aichat/robot/mainDraw/nodeLineInfo': getConfig, // 获取画布
   'POST /aichat/robot/mainDraw/nodeLineSave': nodeOps, // 保存画布
   'POST /aichat/robot/node/nodeInfo': getNodesConfig, // 获取节点信息
+  'GET /aichat/robot/node/getBizNodeInfo': getNodesConfig,
   'POST /aichat/robot/node/nodeSave': nodeOps, // 保存节点配置
+  'POST /aichat/robot/node/bizNodeConfigSave': nodeOps, // 保存节点配置
   'POST /aichat/robot/mainDraw/lineSave': nodeOps, // 保存线配置
   'POST /aichat/robot/mainDraw/lineRuleInfo': getLineConfig, // 获取线配置
   'GET /aichat/notification/templateListPage': getMessageList,

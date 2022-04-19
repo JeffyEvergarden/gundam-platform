@@ -43,9 +43,16 @@ export async function saveMachineMainDraw(data?: { [key: string]: any }) {
   });
 }
 
-// 保存机器人
+// 保存机器人节点
 export async function saveNode(data?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/node/nodeSave`, {
+    method: 'POST',
+    data,
+  });
+}
+// 保存机器人业务流程节点
+export async function saveBizNode(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/node/bizNodeConfigSave`, {
     method: 'POST',
     data,
   });
@@ -64,6 +71,13 @@ export async function getNodesConfig(data?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/node/nodeInfo`, {
     method: 'POST',
     data,
+  });
+}
+
+export async function getBizNodesConfig(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/node/getBizNodeInfo`, {
+    method: 'GET',
+    params: data,
   });
 }
 
