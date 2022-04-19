@@ -67,7 +67,7 @@ const getNodesConfig = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
     data: {
-      name: '名侦探柯南',
+      // name: '名侦探柯南',
       nodeDesc: '高中生侦探',
       nodeSlots: [
         {

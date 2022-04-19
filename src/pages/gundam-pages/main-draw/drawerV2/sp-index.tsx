@@ -85,6 +85,7 @@ const DrawerForm = (props: any) => {
       form.setFieldsValue({
         ...config,
         headIntent: headIntent || undefined,
+        name: config.nodeName || info.name,
       });
       setVisible(true);
     },

@@ -1,7 +1,7 @@
 //版本2
 import { useState, useRef, useImperativeHandle } from 'react';
 import { Modal, Drawer, Form, Input, Select, Button, message } from 'antd';
-import { PlusCircleOutlined, AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import ConversationConfig from './child/conversation-config';
 import RuleConfig from './child/rule-config';
 import ActionConfig from './child/action-config';
@@ -74,7 +74,10 @@ const DrawerForm = (props: any) => {
       setNodetype(info._nodetype || 'normal');
       const _info: any = parserBody(info.config);
       form.resetFields();
-      form.setFieldsValue(_info);
+      form.setFieldsValue({
+        ..._info,
+        name: _info.nodeName || info.name,
+      });
       setVisible(true);
     },
     close: onClose,
