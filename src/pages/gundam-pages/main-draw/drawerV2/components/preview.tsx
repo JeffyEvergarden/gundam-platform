@@ -1,5 +1,6 @@
 import { useState, useImperativeHandle, useEffect, useMemo } from 'react';
 import { Button, Popover } from 'antd';
+import style from './style.less';
 import { useModel } from 'umi';
 
 const WordSlotModal: React.FC<any> = (props: any) => {
@@ -34,28 +35,33 @@ const WordSlotModal: React.FC<any> = (props: any) => {
           str = _list.join(key);
         }
       }
+      strList.push(str);
       return strList;
     } else {
       return [str];
     }
   };
+  console.log(formatHtml(text));
+
   const fanyi = (textArr: any) => {
     return (
-      <div>
+      <div className={style['div-content']}>
         {textArr?.map((item: any, index: any) => {
           if (typeof item == 'string') {
             return item;
           } else {
             if (item.type == '变量') {
               return (
-                <span key={index} style={{ background: '#b6e3f5' }}>
-                  {globalVarList?.find((val: any) => item.value == val.name)?.label || item.value}
+                <span key={index} className={style['varView-block']}>
+                  {globalVarList?.find((val: any) => item.value == val.name)?.label ||
+                    `\${${item.value}}`}
                 </span>
               );
             } else if (item.type == '词槽') {
               return (
-                <span key={index} style={{ background: '#FFD8B8' }}>
-                  {wordSlotList?.find((val: any) => item.value == val.name)?.label || item.value}
+                <span key={index} className={style['wordSoltView-block']}>
+                  {wordSlotList?.find((val: any) => item.value == val.name)?.label ||
+                    `#{${item.value}}`}
                 </span>
               );
             }
@@ -69,8 +75,10 @@ const WordSlotModal: React.FC<any> = (props: any) => {
   }, [text]);
 
   return (
-    <Popover content={content} trigger="click">
-      <Button type="link">预览</Button>
+    <Popover content={content}>
+      <Button type="link" style={{ justifySelf: 'flex-end' }}>
+        预览
+      </Button>
     </Popover>
   );
 };

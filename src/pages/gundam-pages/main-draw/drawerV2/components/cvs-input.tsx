@@ -86,26 +86,28 @@ const CvsInput: React.FC<any> = (props: any) => {
 
   return (
     <div className={''}>
-      <div className={styles['zy-row']}>
-        <div>{title}</div>
-        <Button
-          type="link"
-          disabled={canEdit}
-          onClick={() => {
-            openGlobalVarModal();
-          }}
-        >
-          {'{$}'}添加变量{canEdit}
-        </Button>
-        <Button
-          type="link"
-          disabled={canEdit}
-          onClick={() => {
-            openWordSlotModal();
-          }}
-        >
-          {'{#}'}添加词槽
-        </Button>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div className={styles['zy-row']}>
+          <div>{title}</div>
+          <Button
+            type="link"
+            disabled={canEdit}
+            onClick={() => {
+              openGlobalVarModal();
+            }}
+          >
+            {'{$}'}添加变量{canEdit}
+          </Button>
+          <Button
+            type="link"
+            disabled={canEdit}
+            onClick={() => {
+              openWordSlotModal();
+            }}
+          >
+            {'{#}'}添加词槽
+          </Button>
+        </div>
         <Preview text={content}></Preview>
       </div>
       <Condition r-if={type === 'input'}>

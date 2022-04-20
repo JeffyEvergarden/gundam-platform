@@ -124,7 +124,7 @@ const LexiconManage: React.FC = (props: any) => {
           <ProTable
             headerTitle={
               <Space>
-                <Button onClick={() => add()}>新增词槽</Button>
+                <Button onClick={() => add()}>新增正则实体</Button>
               </Space>
             }
             rowKey={(record) => record?.id}
