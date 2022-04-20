@@ -108,9 +108,9 @@ export default (props: any) => {
           >
             <div className={styles.ruleListBox}>
               <div className={styles.listBox}>
-                {ruleList?.map((item: any) => {
+                {ruleList?.map((item: any, index: any) => {
                   return (
-                    <Tag closable key={item?.ID} onClose={() => handleClose(item?.entityValueName)}>
+                    <Tag closable key={index} onClose={() => handleClose(item?.entityValueName)}>
                       <span onDoubleClick={() => editRule(item)}>{item?.entityValueName}</span>
                     </Tag>
                   );
