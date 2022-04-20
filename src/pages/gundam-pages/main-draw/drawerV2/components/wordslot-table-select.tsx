@@ -86,23 +86,16 @@ const WordSlotTable: React.FC<any> = (props: any) => {
 
   const columns: any[] = [
     {
-      title: '词槽名称',
-      dataIndex: 'slotName',
+      title: '词槽ID',
+      dataIndex: 'slotId',
       fixed: 'left',
       width: 80,
     },
     {
-      title: '词槽描述',
-      dataIndex: 'slotDesc',
-      width: 90,
-      ellipsis: {
-        showTitle: false,
-      },
-      render: (val: any) => (
-        <Tooltip placement="topLeft" title={val}>
-          {val}
-        </Tooltip>
-      ),
+      title: '词槽名称',
+      dataIndex: 'slotName',
+      fixed: 'left',
+      width: 80,
     },
     {
       title: '词槽必填',

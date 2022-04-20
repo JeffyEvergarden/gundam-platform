@@ -72,30 +72,43 @@ const DetailPages: React.FC = (props: any) => {
     fixed: 'right',
     render: (text: any, record: any) => (
       <Space>
-        <a
+        <Button
+          type={'link'}
           onClick={() => {
             operateBusiness(record, 'edit');
           }}
+          style={{ padding: 0 }}
+          disabled={record?.flowType == 3}
         >
           编辑
-        </a>
-        <a
+        </Button>
+        <Button
+          type={'link'}
           onClick={() => {
             goToConfig(record);
           }}
+          style={{ padding: 0 }}
         >
           配置
-        </a>
-        <Popconfirm
-          title="删除将不可恢复，确认删除？"
-          okText="确定"
-          cancelText="取消"
-          onConfirm={() => {
-            deleteFlowFunc(record);
-          }}
-        >
-          <a style={{ color: 'red' }}>删除</a>
-        </Popconfirm>
+        </Button>
+        {record?.flowType != 3 ? (
+          <Popconfirm
+            title="删除将不可恢复，确认删除？"
+            okText="确定"
+            cancelText="取消"
+            onConfirm={() => {
+              deleteFlowFunc(record);
+            }}
+          >
+            <Button type={'link'} style={{ color: 'red', padding: 0 }}>
+              删除
+            </Button>
+          </Popconfirm>
+        ) : (
+          <Button type={'link'} disabled={true} style={{ padding: 0 }}>
+            删除
+          </Button>
+        )}
       </Space>
     ),
   };
