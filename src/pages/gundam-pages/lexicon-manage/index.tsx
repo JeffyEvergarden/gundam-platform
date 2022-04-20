@@ -21,7 +21,7 @@ const LexiconManage: React.FC = (props: any) => {
     let res: any = await getLexiconList(params);
     return {
       data: res?.data?.list || [],
-      total: res?.data.totalSize || res?.data?.list?.length,
+      total: res?.data.totalPage || res?.data?.list?.length,
       current: payload.current,
       pageSize: payload.pageSize,
     };

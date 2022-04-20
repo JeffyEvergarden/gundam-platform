@@ -5,7 +5,7 @@ const getLexiconList = (req: any, res: any) => {
     resultCode: successCode,
     data: {
       pageSize: 20,
-      totalSize: 80,
+      totalPage: 80,
       page: 1,
       list: [
         {
