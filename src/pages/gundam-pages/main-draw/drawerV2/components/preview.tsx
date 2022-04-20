@@ -39,29 +39,37 @@ const WordSlotModal: React.FC<any> = (props: any) => {
       return [str];
     }
   };
-  console.log(formatHtml(text));
   const fanyi = (textArr: any) => {
-    let str = '';
-    textArr?.forEach((item: any) => {
-      if (typeof item == 'string') {
-        str += item;
-      } else {
-        if (item.type == '变量') {
-          console.log(globalVarList.find((val: any) => item.value == val.name));
-          str += `<span>${globalVarList.find((val: any) => item.value == val.name).label}</span>`;
-        } else if (item.type == '词槽') {
-          str += `<span>${wordSlotList.find((val: any) => item.value == val.name).label}</span>`;
-        }
-      }
-    });
-    return <div dangerouslySetInnerHTML={{ __html: str }}></div>;
+    return (
+      <div>
+        {textArr?.map((item: any, index: any) => {
+          if (typeof item == 'string') {
+            return item;
+          } else {
+            if (item.type == '变量') {
+              return (
+                <span key={index} style={{ background: '#b6e3f5' }}>
+                  {globalVarList?.find((val: any) => item.value == val.name)?.label || item.value}
+                </span>
+              );
+            } else if (item.type == '词槽') {
+              return (
+                <span key={index} style={{ background: '#FFD8B8' }}>
+                  {wordSlotList?.find((val: any) => item.value == val.name)?.label || item.value}
+                </span>
+              );
+            }
+          }
+        })}
+      </div>
+    );
   };
   useEffect(() => {
     setContent(fanyi(formatHtml(text)));
   }, [text]);
 
   return (
-    <Popover content={content}>
+    <Popover content={content} trigger="click">
       <Button type="link">预览</Button>
     </Popover>
   );

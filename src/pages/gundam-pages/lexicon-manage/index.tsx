@@ -91,7 +91,7 @@ const LexiconManage: React.FC = (props: any) => {
       width: 200,
     },
     { dataIndex: 'entityDesc', title: '说明', ellipsis: true, fixed: 'left', width: 260 },
-    { dataIndex: 'creator', title: '创建者', search: false, ellipsis: true, width: 120 },
+    { dataIndex: 'creator', title: '创建人', search: false, ellipsis: true, width: 120 },
     { dataIndex: 'createTime', title: '创建时间', search: false, ellipsis: true, width: 120 },
     {
       title: '操作',

@@ -80,6 +80,10 @@ const CvsInput: React.FC<any> = (props: any) => {
     setStartPos(isNaN(num) ? -1 : num);
   };
 
+  useEffect(() => {
+    setContent(value);
+  }, []);
+
   return (
     <div className={''}>
       <div className={styles['zy-row']}>
