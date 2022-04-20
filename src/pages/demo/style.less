@@ -57,3 +57,41 @@
   width: 100%;
   min-height: 50px;
 }
+
+.div-content {
+  flex: 1 1 auto;
+  width: 100%;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.sp-text {
+  padding: 2px 4px;
+  color: #fff;
+  background: #1890ff;
+  border-radius: 2px;
+}
+
+.focus {
+  animation: focus-light 1s infinite ease-in-out;
+
+  &::after {
+    color: #333;
+    font-size: 16px;
+    content: '|';
+  }
+}
+
+@keyframes focus-light {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

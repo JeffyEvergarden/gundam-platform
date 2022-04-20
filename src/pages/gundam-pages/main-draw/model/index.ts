@@ -183,13 +183,14 @@ export const useNodeOpsModel = () => {
       })
       .map((item: any, index: number) => {
         let label = item.label || item.lineName || item.nodeName || item.name || '';
-        let level = item.level || 1;
+        let level = isNaN(item.priority) ? 1 : Number(item.priority);
+
         return {
           id: item.frontId ? String(item.frontId) : String(item.id),
           _id: item.id,
           label: `${level ? level + '.' : ''}${label}`,
           _name: label,
-          level: isNaN(item.level) ? 1 : Number(item.level),
+          level: level,
           source: item.frontSource, // 后端的头id
           target: item.frontTarget, // 后端的尾id
           sourceAnchor: isNaN(item.sourceAnchor) ? 1 : Number(item.sourceAnchor), // 前锥点
@@ -234,7 +235,7 @@ export const useNodeOpsModel = () => {
         id: item._id, // 后端id (如果有的话)
         lineName: item._name || item.label || '',
         name: item._name || item.label || '',
-        level: item.level || 1,
+        priority: item.level || 1,
         frontSource: item.source, // 前端的头id
         frontTarget: item.target, // 前端的尾id
         sourceAnchor: item.sourceAnchor, // 前锥点

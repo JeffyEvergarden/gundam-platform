@@ -5,77 +5,54 @@ import styles from './style.less';
 import { getFileInfo } from 'prettier';
 import { add } from 'lodash';
 
-const { Item: FormItem, List: FormList } = Form;
 const { TextArea } = Input;
 const { Option } = Select;
 
+const reg = /(\$|#)\{\w+\}/g;
+
+const formatHtml = (str: any) => {
+  if (!str) {
+    return ['无内容展示'];
+  }
+  // 正则列表匹配出来的
+  const list: any[] = str.match(reg);
+  console.log(list);
+  if (list) {
+    let strList = [];
+    while (list.length > 0) {
+      let key = list.shift();
+      let _list: any[] = str.split(key);
+      if (_list.length > 1) {
+        let val = _list.shift();
+        strList.push(val, {
+          type: key[0] === '$' ? '变量' : '词槽',
+          value: key.substring(2, key.length - 1),
+        });
+        str = _list.join(key);
+      }
+    }
+    return strList;
+  } else {
+    return [str];
+  }
+};
+
 const DrawerForm = (props: any) => {
-  const [form] = Form.useForm();
+  const strList: any[] = formatHtml('asfasfafa${fa${fuck00}ke}d#{fuck}adadas${fake2}');
+
+  const [focus, setFocus] = useState<boolean>(true);
 
   return (
-    <Form form={form}>
-      <div className={styles['antd-form']}>
-        <FormList name="list">
-          {(outFields, { add: _add, remove: _remove }) => {
-            const addOutNew = () => {
-              // console.log(fields);
-              let length = outFields.length;
-              _add(
-                {
-                  ruleList: [
-                    {
-                      ruleType: undefined,
-                      ruleKey: undefined,
-                      condition: undefined,
-                      value: undefined,
-                    },
-                  ],
-                },
-                length,
-              );
-            };
-
-            return (
-              <div>
-                <div className={styles['zy-row']}>
-                  <div className={styles['title_sec']}>对话回应</div>
-                  <Button
-                    type="link"
-                    icon={<AppstoreAddOutlined />}
-                    style={{ marginLeft: '10px' }}
-                    onClick={addOutNew}
-                  >
-                    新增回应策略
-                  </Button>
-                </div>
-                <div>
-                  {outFields.map((outFields: any, i: number) => {
-                    return (
-                      <div key={outFields.key} className={styles['rule-box']}>
-                        <div style={{ paddingLeft: '24px' }}>
-                          <div className={styles['zy-row']} style={{ paddingBottom: '6px' }}>
-                            <Button
-                              type="text"
-                              icon={<MinusCircleOutlined />}
-                              onClick={() => {
-                                _remove(i);
-                              }}
-                            ></Button>
-                            <span>回应策略 {i + 1}</span>
-                          </div>
-
-                          <div>fuck</div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          }}
-        </FormList>
-      </div>
-    </Form>
+    <div className={`${styles['div-content']}`}>
+      {strList?.map((item: any) => {
+        if (typeof item === 'string') {
+          return item;
+        } else if (typeof item === 'object') {
+          return <span className={styles['sp-text']}>{item.value}</span>;
+        }
+      })}
+      {focus && <span className={styles['focus']}></span>}
+    </div>
   );
 };
 

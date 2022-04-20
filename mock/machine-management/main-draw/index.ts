@@ -56,6 +56,7 @@ const getConfig = (req: any, res: any) => {
           targetAnchor: 3, // 尾锥点
           source: '01', // 后端的头id
           target: '01', // 后端的尾id
+          priority: 10,
         },
       ],
     },
@@ -155,7 +156,7 @@ const getLineConfig = (req: any, res: any) => {
       robotId: '100',
       flowId: '100',
       name: '七龙珠',
-      level: 1,
+      priority: 10,
       ruleList: [
         {
           rules: [

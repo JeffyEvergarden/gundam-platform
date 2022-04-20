@@ -77,13 +77,13 @@ const EdgeDrawerForm = (props: any) => {
         targetType: recordInfo.current.info?.targetType,
         sourceType: recordInfo.current.info?.sourceType,
       });
-      let label = `${res.level}.${res?.name}`;
+      let label = `${res.priority}.${res?.name}`;
       if (result !== false) {
         recordInfo.current?.callback?.(
           {
             label,
             _name: res?.name,
-            level: res.level || 1,
+            level: res.priority || 1,
           },
           result?.data?.id,
         ); // 成功回调修改名称
@@ -134,7 +134,7 @@ const EdgeDrawerForm = (props: any) => {
 
           <FormItem
             rules={[{ required: true, message: '请输入优先级' }]}
-            name="level"
+            name="priority"
             label="优先级"
             style={{ width: '400px' }}
           >
