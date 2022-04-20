@@ -306,7 +306,7 @@ const RuleConfig = (props: any) => {
                                                         return (
                                                           <Option
                                                             key={index}
-                                                            value={item.name}
+                                                            value={item.id}
                                                             opt={item}
                                                           >
                                                             {item.label}
@@ -342,7 +342,7 @@ const RuleConfig = (props: any) => {
                                                         return (
                                                           <Option
                                                             key={index}
-                                                            value={item.name}
+                                                            value={item.id}
                                                             opt={item}
                                                           >
                                                             {item.label}
@@ -640,7 +640,7 @@ const RuleConfig = (props: any) => {
                                                           return (
                                                             <Option
                                                               key={index}
-                                                              value={item.name}
+                                                              value={item.id}
                                                               opt={item}
                                                             >
                                                               {item.label}
@@ -674,7 +674,7 @@ const RuleConfig = (props: any) => {
                                                           return (
                                                             <Option
                                                               key={index}
-                                                              value={item.name}
+                                                              value={item.id}
                                                               opt={item}
                                                             >
                                                               {item.label}

@@ -39,8 +39,9 @@ const EdgeDrawerForm = (props: any) => {
       recordInfo.current.info = info;
       recordInfo.current.callback = callback;
       form.resetFields();
-      // console.log(info);
+      console.log('info:-----');
       info = parserBody(info);
+      console.log(info);
       form.setFieldsValue({
         ...info,
         level: info.level || 1,
@@ -60,6 +61,7 @@ const EdgeDrawerForm = (props: any) => {
       return;
     } else {
       res = processRequest(res);
+      console.log(res);
 
       let result: any = await _saveLine({
         ...preParams,

@@ -4,6 +4,7 @@ import moment from 'moment';
 const reg = /\d{4}-\d{2}-\d{2}/;
 
 export const parserBody = (form: any) => {
+  form = depyClone(form);
   const ruleList: any = form?.ruleList || [];
 
   ruleList?.forEach((obj: any) => {
@@ -29,7 +30,7 @@ export const parserBody = (form: any) => {
 // 节点信息 解析传回参数
 export const processRequest = (form: any) => {
   // 日期格式 moment转化
-  const ruleList: any = form?.ruleList || [];
+  const ruleList: any = depyClone(form?.ruleList) || [];
 
   ruleList?.forEach((obj: any) => {
     obj?.rules?.forEach((item: any) => {

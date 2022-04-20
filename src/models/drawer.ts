@@ -107,7 +107,8 @@ export default function useGundamModel() {
         return {
           ...item,
           index,
-          name: item.id,
+          id: item.id,
+          name: item.slot,
           label: item.slotName,
           type: item.dataType,
           intentName: item.slotName,
@@ -144,7 +145,7 @@ export default function useGundamModel() {
     }
     if (!id) {
       console.log('机器人的话术标签获取不到机器人id');
-      return null;
+      return;
     }
     let res: any = await queryLabelList({ robotId: id });
     let data: any[] = res?.data?.list || [];
@@ -154,7 +155,7 @@ export default function useGundamModel() {
   const getGlobalConfig = async (id?: any) => {
     if (!id) {
       console.log('机器人的高级配置获取不到机器人id');
-      return null;
+      return;
     }
     let res: any = await queryNodeConfig({ robotId: id });
     let data: any[] = res?.data || {};

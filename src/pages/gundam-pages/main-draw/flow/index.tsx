@@ -40,6 +40,23 @@ const EditorView = (props: PageViewProps) => {
     return editorRef.current?.propsAPI;
   };
 
+  // ------ eventbus 事件
+  //
+  const addNode = (newNode: any) => {
+    const propsAPI = getPropsAPI();
+    propsAPI.add('node', newNode);
+    refreshOtherPane();
+  };
+
+  const updateNode = (id: any, model: any) => {
+    const propsAPI = getPropsAPI();
+    propsAPI.update(id, model);
+    refreshOtherPane();
+  };
+  const watchCommand = (msg: any) => {
+    console.log('watch:' + msg);
+  };
+
   // 初始化
   useImperativeHandle(cref, () => ({
     init: (initData: any) => {
@@ -353,23 +370,6 @@ const EditorView = (props: PageViewProps) => {
         }
       }
     },
-  };
-
-  // ------ eventbus 事件
-  //
-  const addNode = (newNode: any) => {
-    const propsAPI = getPropsAPI();
-    propsAPI.add('node', newNode);
-    refreshOtherPane();
-  };
-
-  const updateNode = (id: any, model: any) => {
-    const propsAPI = getPropsAPI();
-    propsAPI.update(id, model);
-    refreshOtherPane();
-  };
-  const watchCommand = (msg: any) => {
-    console.log('watch:' + msg);
   };
 
   useEffect(() => {

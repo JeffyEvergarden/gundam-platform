@@ -23,8 +23,10 @@ export default function useGundamModel() {
     let res: any = await queryGlobalValConfig({ robotId: id, configType: 1 });
     let data: any[] = res?.data?.list || [];
 
-    data = data?.map((item: any) => {
+    data = data?.map((item: any, index: number) => {
       return {
+        index,
+        id: item.id,
         name: item.configKey,
         label: item.configName,
         desc: item.configDesc,

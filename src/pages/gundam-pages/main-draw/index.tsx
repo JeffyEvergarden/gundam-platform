@@ -179,7 +179,7 @@ const MainDraw = (props: any) => {
     };
 
     const callBack = (name: string) => {
-      (fake.current as any).updateNode(info.id, {
+      (fake.current as any)?.updateNode(info.id, {
         label: name || info.label,
       });
       eventbus.$emit('refresh');
@@ -226,7 +226,8 @@ const MainDraw = (props: any) => {
     // console.log(config);
 
     const callBack = (obj: any, id: any) => {
-      (fake.current as any).updateNode(info.id, {
+      console.log(fake.current);
+      (fake.current as any)?.updateNode(info.id, {
         ...obj,
         _id: id,
       });
