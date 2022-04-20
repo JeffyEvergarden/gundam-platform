@@ -35,7 +35,7 @@ export const processRequest = (form: any) => {
   ruleList?.forEach((obj: any) => {
     obj?.rules?.forEach((item: any) => {
       if (item?.ruleValue instanceof moment) {
-        item.ruleValue = item.ruleValue.format('YYYY-MM-DD hh:mm:ss');
+        item.ruleValue = item.ruleValue.format('YYYY-MM-DD HH:mm:ss');
       }
     });
   });
