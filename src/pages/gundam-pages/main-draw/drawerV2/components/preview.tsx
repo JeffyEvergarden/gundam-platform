@@ -5,7 +5,6 @@ import { useModel } from 'umi';
 
 const WordSlotModal: React.FC<any> = (props: any) => {
   const { text } = props;
-  const [content, setContent] = useState<any>();
   const { wordSlotList } = useModel('drawer' as any, (model: any) => ({
     wordSlotList: model._wordSlotList, // 业务流程列表
   }));
@@ -41,7 +40,6 @@ const WordSlotModal: React.FC<any> = (props: any) => {
       return [str];
     }
   };
-  console.log(formatHtml(text));
 
   const fanyi = (textArr: any) => {
     return (
@@ -70,12 +68,9 @@ const WordSlotModal: React.FC<any> = (props: any) => {
       </div>
     );
   };
-  useEffect(() => {
-    setContent(fanyi(formatHtml(text)));
-  }, [text]);
 
   return (
-    <Popover content={content}>
+    <Popover content={fanyi(formatHtml(text))}>
       <Button type="link" style={{ justifySelf: 'flex-end' }}>
         预览
       </Button>

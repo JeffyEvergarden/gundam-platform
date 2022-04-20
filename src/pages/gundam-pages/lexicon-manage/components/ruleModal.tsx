@@ -61,7 +61,7 @@ export default (props: any) => {
           label={'规则内容'}
           // rules={[{ required: true, message: '请输入规则内容' }]}
         >
-          <TextArea rows={4} />
+          <TextArea rows={4} placeholder={'请输入规则内容'} maxLength={150} />
         </Form.Item>
         <Form.Item {...tailLayout}>
           <Space>

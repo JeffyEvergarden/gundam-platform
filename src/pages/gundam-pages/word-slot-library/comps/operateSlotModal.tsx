@@ -84,7 +84,7 @@ export default (props: any) => {
   };
 
   const interfaceChange = async (val: any, option: any) => {
-    setinterfaceDesc(option?.ItemObj?.iterfaceDesc);
+    setinterfaceDesc(option?.itemobj?.interfaceDesc);
 
     const resIn = await getparamList({ interfaceId: val, paramType: 0 }); //入参枚举
     if (resIn.resultCode === '0000') {
@@ -101,6 +101,7 @@ export default (props: any) => {
       sourceType: null,
       sourceType_val: null,
       outputParamId: null,
+      dataType: null,
     });
   };
 
@@ -364,7 +365,7 @@ export default (props: any) => {
                     <Select placeholder={'请选择'} onChange={interfaceChange}>
                       {interfaceListInfo?.map((itex: any) => {
                         return (
-                          <Option key={itex?.id} value={itex?.id} ItemObj={itex}>
+                          <Option key={itex?.id} value={itex?.id} itemobj={itex}>
                             {itex?.interfaceName}
                           </Option>
                         );
