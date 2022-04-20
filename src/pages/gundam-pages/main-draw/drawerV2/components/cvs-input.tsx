@@ -29,7 +29,6 @@ const CvsInput: React.FC<any> = (props: any) => {
   const modalRef2 = useRef<any>(null);
 
   const [startPos, setStartPos] = useState<number>(-1);
-  const [content, setContent] = useState<string>('');
 
   const openGlobalVarModal = () => {
     (modalRef.current as any).open();
@@ -42,7 +41,6 @@ const CvsInput: React.FC<any> = (props: any) => {
 
   const changeVal = (e: any) => {
     onChange(e.target.value);
-    setContent(e.target.value);
   };
 
   const confirm = (val: any, type: any = '变量') => {
@@ -68,7 +66,6 @@ const CvsInput: React.FC<any> = (props: any) => {
       tmp = tmp + target;
     }
     onChange(tmp);
-    setContent(tmp);
   };
 
   const confirm2 = (val: any) => {
@@ -79,10 +76,6 @@ const CvsInput: React.FC<any> = (props: any) => {
     let num = e.target.selectionStart;
     setStartPos(isNaN(num) ? -1 : num);
   };
-
-  useEffect(() => {
-    setContent(value);
-  }, []);
 
   return (
     <div className={''}>
@@ -108,7 +101,7 @@ const CvsInput: React.FC<any> = (props: any) => {
             {'{#}'}添加词槽
           </Button>
         </div>
-        <Preview text={content}></Preview>
+        <Preview text={value}></Preview>
       </div>
       <Condition r-if={type === 'input'}>
         <Input
