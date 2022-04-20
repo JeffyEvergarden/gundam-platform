@@ -21,6 +21,7 @@ export default (props: any) => {
 
   useEffect(() => {
     setRulist(editObj?.entityValueList || []);
+    form.setFieldsValue({ entityName: editObj?.entityName, entityDesc: editObj?.entityDesc });
   }, [visible]);
   const addRule = () => {
     setRuleEditData({});
@@ -89,11 +90,7 @@ export default (props: any) => {
         onCancel={cancelZZ}
         destroyOnClose={true}
       >
-        <Form
-          form={form}
-          {...layout}
-          initialValues={{ entityName: editObj?.entityName, entityDesc: editObj?.entityDesc }}
-        >
+        <Form form={form} {...layout}>
           <Form.Item
             name={'entityName'}
             label={'正则实体'}

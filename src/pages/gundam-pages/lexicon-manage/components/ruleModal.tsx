@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Form, Input, Button, Space } from 'antd';
 
 const { TextArea } = Input;
@@ -14,6 +14,14 @@ const layout = {
 export default (props: any) => {
   const [form] = Form.useForm();
   const { ruleVisible, ruleEditData, operate, closeRuleDecri, handle } = props;
+
+  useEffect(() => {
+    form.setFieldsValue({
+      entityValueName: ruleEditData.entityValueName,
+      entityValue: ruleEditData.entityValue,
+    });
+  }, [ruleVisible]);
+
   const cancelRule = () => {
     closeRuleDecri();
     form.resetFields();
@@ -22,8 +30,7 @@ export default (props: any) => {
   const handleOver = async () => {
     const values = await form.validateFields();
     if (operate === 'edit') {
-      let val = { ...values, ID: ruleEditData.ID };
-      handle(val);
+      handle(values);
     }
     if (operate === 'add') {
       handle(values);
@@ -40,15 +47,7 @@ export default (props: any) => {
       destroyOnClose={true}
       onCancel={cancelRule}
     >
-      <Form
-        name="userForm"
-        form={form}
-        {...layout}
-        initialValues={{
-          entityValueName: ruleEditData.entityValueName,
-          entityValue: ruleEditData.entityValue,
-        }}
-      >
+      <Form name="userForm" form={form} {...layout}>
         <Form.Item
           name={'entityValueName'}
           label={'规则名称'}
