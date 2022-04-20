@@ -5,6 +5,7 @@ import GlobalVarModal from '../../drawer/components/global-var-modal';
 import WordSlotModal from './wordslot-select-modal';
 import styles from './style.less';
 import Condition from '@/components/Condition';
+import Preview from './preview';
 import { useModel } from 'umi';
 
 const { Option } = Select;
@@ -28,6 +29,7 @@ const CvsInput: React.FC<any> = (props: any) => {
   const modalRef2 = useRef<any>(null);
 
   const [startPos, setStartPos] = useState<number>(-1);
+  const [content, setContent] = useState<string>('');
 
   const openGlobalVarModal = () => {
     (modalRef.current as any).open();
@@ -40,6 +42,7 @@ const CvsInput: React.FC<any> = (props: any) => {
 
   const changeVal = (e: any) => {
     onChange(e.target.value);
+    setContent(e.target.value);
   };
 
   const confirm = (val: any, type: any = '变量') => {
@@ -65,6 +68,7 @@ const CvsInput: React.FC<any> = (props: any) => {
       tmp = tmp + target;
     }
     onChange(tmp);
+    setContent(tmp);
   };
 
   const confirm2 = (val: any) => {
@@ -98,6 +102,7 @@ const CvsInput: React.FC<any> = (props: any) => {
         >
           {'{#}'}添加词槽
         </Button>
+        <Preview text={content}></Preview>
       </div>
       <Condition r-if={type === 'input'}>
         <Input
