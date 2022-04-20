@@ -20,7 +20,9 @@ export default function useGundamModel() {
 
   const [_labelList, _setLabelList] = useState<any>([]); // 机器人的话术标签列表
 
-  const [_flowList, _setFlowList] = useState<any[]>([]); // 业务流程列表
+  const [_flowList, _setFlowList] = useState<any[]>([]); // 过滤后业务流程列表
+
+  const [_originFlowList, _setOriginFlowList] = useState<any[]>([]); // 原业务流程列表
 
   const [_wordSlotList, _setWordSlotList] = useState<any[]>([]); // 词槽列表
 
@@ -127,8 +129,8 @@ export default function useGundamModel() {
       current: 1,
       pageSize: 1000,
     });
-    let data: any[] =
-      res?.data?.list.map?.((item: any, index: number) => {
+    let originData: any[] =
+      res?.data?.list?.map?.((item: any, index: number) => {
         return {
           ...item,
           index,
@@ -136,7 +138,23 @@ export default function useGundamModel() {
           label: item.flowName,
         };
       }) || [];
+    let data: any[] =
+      res?.data?.list
+        .filter?.((item: any) => {
+          return item.flowType != 3;
+        })
+        ?.map?.((item: any, index: number) => {
+          return {
+            ...item,
+            index,
+            name: item.id,
+            label: item.flowName,
+          };
+        }) || [];
+    console.log(data, originData);
+
     _setFlowList(data);
+    _setOriginFlowList(originData);
   };
 
   const getLabelList = async (id?: any) => {
