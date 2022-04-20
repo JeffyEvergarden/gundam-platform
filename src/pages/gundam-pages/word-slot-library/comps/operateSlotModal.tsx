@@ -146,7 +146,7 @@ export default (props: any) => {
       slotDesc: values?.slotDesc,
       slotSource: values?.slotSource,
       dataType: values?.dataType,
-      slosourceId: values?.slosourceId,
+      slotSourceId: values?.slotSourceId,
       slotInfo: {
         id: values?.interfaceChangeId,
         inputParamList: [
@@ -226,7 +226,7 @@ export default (props: any) => {
   useEffect(() => {
     if (visible) {
       form.resetFields();
-      getIntentSelList();
+      // getIntentSelList();
       if (title == 'edit') {
         setDiffSourceData(modalData?.slotSource || '');
         getEditSlotData(modalData?.id);
@@ -326,7 +326,7 @@ export default (props: any) => {
               </Select>
             </Form.Item>
             {/* {slotSource === 1 && (
-              <Form.Item name={'slosourceId'} label={'枚举实体'} rules={[{ required: true }]}>
+              <Form.Item name={'slotSourceId'} label={'枚举实体'} rules={[{ required: true }]}>
                 <Select placeholder={''}>
                   {slotPro.map((itex: any) => {
                     return (
@@ -342,7 +342,7 @@ export default (props: any) => {
               </Form.Item>
             )} */}
             {slotSource === 4 && (
-              <Form.Item name={'slosourceId'} label={'正则实体'} rules={[{ required: true }]}>
+              <Form.Item name={'slotSourceId'} label={'正则实体'} rules={[{ required: true }]}>
                 <Select placeholder={'请选择正则实体'}>
                   {realList?.map((itex: any) => {
                     return (
