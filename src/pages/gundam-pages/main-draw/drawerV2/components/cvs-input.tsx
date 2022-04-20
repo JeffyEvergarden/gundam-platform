@@ -5,6 +5,7 @@ import GlobalVarModal from '../../drawer/components/global-var-modal';
 import WordSlotModal from './wordslot-select-modal';
 import styles from './style.less';
 import Condition from '@/components/Condition';
+import Preview from './preview';
 import { useModel } from 'umi';
 
 const { Option } = Select;
@@ -78,26 +79,29 @@ const CvsInput: React.FC<any> = (props: any) => {
 
   return (
     <div className={''}>
-      <div className={styles['zy-row']}>
-        <div>{title}</div>
-        <Button
-          type="link"
-          disabled={canEdit}
-          onClick={() => {
-            openGlobalVarModal();
-          }}
-        >
-          {'{$}'}添加变量{canEdit}
-        </Button>
-        <Button
-          type="link"
-          disabled={canEdit}
-          onClick={() => {
-            openWordSlotModal();
-          }}
-        >
-          {'{#}'}添加词槽
-        </Button>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div className={styles['zy-row']}>
+          <div>{title}</div>
+          <Button
+            type="link"
+            disabled={canEdit}
+            onClick={() => {
+              openGlobalVarModal();
+            }}
+          >
+            {'{$}'}添加变量{canEdit}
+          </Button>
+          <Button
+            type="link"
+            disabled={canEdit}
+            onClick={() => {
+              openWordSlotModal();
+            }}
+          >
+            {'{#}'}添加词槽
+          </Button>
+        </div>
+        <Preview text={value}></Preview>
       </div>
       <Condition r-if={type === 'input'}>
         <Input

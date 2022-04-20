@@ -91,7 +91,7 @@ const LexiconManage: React.FC = (props: any) => {
       width: 200,
     },
     { dataIndex: 'entityDesc', title: '说明', ellipsis: true, fixed: 'left', width: 260 },
-    { dataIndex: 'creator', title: '创建者', search: false, ellipsis: true, width: 120 },
+    { dataIndex: 'creator', title: '创建人', search: false, ellipsis: true, width: 120 },
     { dataIndex: 'createTime', title: '创建时间', search: false, ellipsis: true, width: 120 },
     {
       title: '操作',
@@ -124,7 +124,7 @@ const LexiconManage: React.FC = (props: any) => {
           <ProTable
             headerTitle={
               <Space>
-                <Button onClick={() => add()}>新增词槽</Button>
+                <Button onClick={() => add()}>新增正则实体</Button>
               </Space>
             }
             rowKey={(record) => record?.id}
