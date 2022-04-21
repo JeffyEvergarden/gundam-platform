@@ -201,8 +201,8 @@ const HightformTemplate: any = (props: any) => {
         <ActionConfig
           form={form}
           title={title + '执行动作'}
-          formName={[name, 'action']}
-          name={[name, 'action']}
+          formName={[name]}
+          name={[name]}
           titleType={2}
           canEdit={disabled}
         />
