@@ -12,6 +12,8 @@ import config from '@/config';
 export default function useGundamModel() {
   const timeFc = useRef<any>({});
 
+  const idFc = useRef<any>({});
+
   const [_wishList, _setWishList] = useState<any>([]); // 意图列表
 
   const [_globalNodeList, _setGlobalNodeList] = useState<any>([]); // 机器人的全局节点
@@ -28,7 +30,17 @@ export default function useGundamModel() {
 
   const [_messageList, _setMessageList] = useState<any[]>([]); // 信息列表
 
-  const allowRequest = (str: any) => {
+  const allowRequest = (str: any, id?: any, t?: number) => {
+    if (id) {
+      const idFcObj = idFc.current;
+      const _idFc: any = idFcObj[str];
+      if (_idFc !== id) {
+        // 如果查询id 不等于上次查询id
+        idFcObj[str] = id; // 进行记录
+        return true; // 可以查询
+      }
+    }
+
     const timeObj: any = timeFc.current;
     const _time = timeObj[str];
     let now = Date.now();
@@ -38,7 +50,7 @@ export default function useGundamModel() {
       return true;
     }
     // 15秒内不允许重新调
-    if (_time && now - _time > 15 * 1000) {
+    if (_time && now - _time > (t ? t : 15) * 1000) {
       timeObj[str] = now;
       return true;
     }
@@ -46,7 +58,7 @@ export default function useGundamModel() {
   };
 
   const getMessageList = async (id: any) => {
-    if (!allowRequest('message')) {
+    if (!allowRequest('message', id)) {
       return;
     }
     let res: any = await queryMessageList({
@@ -70,7 +82,7 @@ export default function useGundamModel() {
   };
 
   const getWishList = async (id?: any, forceUpDate: boolean = false) => {
-    if (!forceUpDate && !allowRequest('wish')) {
+    if (!forceUpDate && !allowRequest('wish', id)) {
       return;
     }
     let res: any = await queryWishList({
@@ -94,7 +106,7 @@ export default function useGundamModel() {
   };
 
   const getWordSlotList = async (id?: any) => {
-    if (!allowRequest('wordslot')) {
+    if (!allowRequest('wordslot', id)) {
       return;
     }
     let res: any = await queryWordSlotTableList({
@@ -121,7 +133,7 @@ export default function useGundamModel() {
 
   // 获取流程列表
   const getFlowList = async (id?: any) => {
-    if (!allowRequest('flow')) {
+    if (!allowRequest('flow', id)) {
       return;
     }
     let res: any = await queryFlowList({
@@ -158,7 +170,7 @@ export default function useGundamModel() {
   };
 
   const getLabelList = async (id?: any) => {
-    if (!allowRequest('label')) {
+    if (!allowRequest('label', id)) {
       return;
     }
     if (!id) {
@@ -171,6 +183,9 @@ export default function useGundamModel() {
   };
   //高级配置信息
   const getGlobalConfig = async (id?: any) => {
+    if (!allowRequest('high', id, 8)) {
+      return;
+    }
     if (!id) {
       console.log('机器人的高级配置获取不到机器人id');
       return;
