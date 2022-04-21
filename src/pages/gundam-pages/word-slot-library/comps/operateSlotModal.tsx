@@ -75,6 +75,11 @@ export default (props: any) => {
       if (title == 'edit') {
         setDiffSourceData(modalData?.slotSource || '');
         setSource(modalData?.slotSource);
+        interfaceListInfo?.map((item: any) => {
+          if (item.id === modalData?.slotInfo?.id) {
+            setinterfaceDesc(item.interfaceDesc);
+          }
+        });
         if (modalData?.slotInfo?.id) {
           paramListIn({ interfaceId: modalData?.slotInfo?.id, paramType: 0 });
           paramListOut({ interfaceId: modalData?.slotInfo?.id, paramType: 0 });
