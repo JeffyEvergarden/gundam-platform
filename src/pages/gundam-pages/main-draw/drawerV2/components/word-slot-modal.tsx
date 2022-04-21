@@ -57,6 +57,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
       const newForm: any = {
         ...formValue,
         required: formValue.required ? 1 : 0,
+        action: formValue.action?.actionType ? formValue.action : undefined,
       };
 
       const newFormValue: any = {
