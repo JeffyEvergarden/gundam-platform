@@ -95,7 +95,7 @@ export const processForm = (form: any) => {
   const list: any[] = ['silenceAction', 'rejectAction', 'clearAction', 'unclearAction'];
 
   list.forEach((key: any) => {
-    const action = _form[key].action;
+    const action = _form[key]?.action || {};
     // 遍历键值
     let _list = Object.keys(action);
     if (_list.length === 0) {
@@ -109,7 +109,7 @@ export const processForm = (form: any) => {
         // 找到返回 该值不能为空且不等于0
         return !action[_key] && action[_key] !== 0;
       });
-      if (_item) {
+      if (!_item) {
         _form[key].action = undefined;
       }
     }
