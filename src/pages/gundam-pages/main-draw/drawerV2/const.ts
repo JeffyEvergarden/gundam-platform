@@ -99,16 +99,8 @@ export const EDGE_RULE_LIST: any[] = [
         label: '小于',
       },
       {
-        name: '<=',
-        label: '小于等于',
-      },
-      {
         name: '>',
         label: '大于',
-      },
-      {
-        name: '>=',
-        label: '大于等于',
       },
     ],
   },
