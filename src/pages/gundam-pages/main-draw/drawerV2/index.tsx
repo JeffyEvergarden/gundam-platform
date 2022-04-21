@@ -248,6 +248,7 @@ const DrawerForm = (props: any) => {
                                   name={outFields.name}
                                   form={form}
                                   formName={['strategyList', i]}
+                                  deep={false}
                                 />
                               </div>
                             </div>

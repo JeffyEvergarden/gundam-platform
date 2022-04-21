@@ -13,7 +13,16 @@ const { Item: FormItem, List: FormList } = Form;
 const { Option } = Select;
 
 const ActionConfig = (props: any) => {
-  const { name, title, formName: _formName, form, maxlength = 150, titleType = 1, canEdit } = props;
+  const {
+    name,
+    title,
+    formName: _formName,
+    form,
+    maxlength = 150,
+    titleType = 1,
+    canEdit,
+    deep = true,
+  } = props;
 
   const [num, setNum] = useState<number>(1);
 
@@ -22,15 +31,14 @@ const ActionConfig = (props: any) => {
   }, [num]);
 
   const getFormName = (text: any, val?: number) => {
+    let lastVal = text[text.length - 1];
+    text = deep ? text : [lastVal];
     if (name !== undefined) {
       if (name instanceof Array) {
         let slicename = name;
-        if (val) {
-          slicename = slicename.slice(0, val);
-        }
-        return [...slicename, text];
+        return [...slicename, ...text];
       } else {
-        return [name, text];
+        return [name, ...text];
       }
     } else {
       return text;
@@ -73,8 +81,8 @@ const ActionConfig = (props: any) => {
     return options;
   }, [wordSlotList, globalVarList]);
 
-  const isArray = Array.isArray(_formName);
-  const key = isArray ? _formName[0] : _formName;
+  const isArray = Array.isArray(_formName); // 数组
+  const key = isArray ? _formName[0] : _formName; // 首字段
 
   const getItem = () => {
     let item: any = null;
@@ -86,6 +94,7 @@ const ActionConfig = (props: any) => {
           item = item?.[key] || {};
         }
       });
+      // 获取到对象
     } else {
       item = form.getFieldValue(_formName);
     }
@@ -120,8 +129,11 @@ const ActionConfig = (props: any) => {
     const item = getItem();
     const currenItem = item?.messageList?.[index];
     let obj = opt?.opt;
-    currenItem.placeholder = obj.placeholder;
-    currenItem.content = obj.content;
+    if (!currenItem) {
+      return;
+    }
+    currenItem.placeholder = obj?.placeholder;
+    currenItem.content = obj?.content;
     update();
   };
 
@@ -134,7 +146,7 @@ const ActionConfig = (props: any) => {
 
       <div>
         <Space>
-          <FormItem name={getFormName('actionType')} label="跳转动作">
+          <FormItem name={getFormName(['action', 'actionType'])} label="跳转动作">
             <Select
               placeholder="请选择跳转动作"
               optionFilterProp="children"
@@ -154,7 +166,7 @@ const ActionConfig = (props: any) => {
             </Select>
           </FormItem>
           <Condition r-if={_actionType === 2}>
-            <FormItem name={getFormName('toFlowId')}>
+            <FormItem name={getFormName(['action', 'toFlowId'])}>
               <Select
                 placeholder="请选择跳转业务流程"
                 optionFilterProp="children"
@@ -173,7 +185,7 @@ const ActionConfig = (props: any) => {
             </FormItem>
           </Condition>
         </Space>
-        <FormItem name={getFormName('actionText')} label="话术">
+        <FormItem name={getFormName(['action', 'actionText'])} label="话术">
           <CvsInput
             placeholder="请输入话术内容"
             type="textarea"
@@ -185,7 +197,7 @@ const ActionConfig = (props: any) => {
           />
         </FormItem>
 
-        <FormItem name={getFormName('textLabels')} label="选择标签">
+        <FormItem name={getFormName(['action', 'textLabels'])} label="选择标签">
           <LabelSelect color="magenta" canEdit={canEdit}></LabelSelect>
         </FormItem>
 
@@ -194,7 +206,7 @@ const ActionConfig = (props: any) => {
         </div>
 
         <div className={styles['action-box']}>
-          <FormList name={getFormName('messageList', -1)}>
+          <FormList name={getFormName(['messageList'])}>
             {(outFields, { add: _add, remove: _remove }) => {
               const addOutNew = () => {
                 // console.log(fields);
@@ -216,7 +228,10 @@ const ActionConfig = (props: any) => {
                     const _item = getItem();
                     const currentItem = _item?.messageList?.[index];
 
-                    const content: any = currentItem?.content;
+                    const content: any =
+                      messageList?.find((item: any) => {
+                        return item.name === currentItem?.messageMode;
+                      })?.content || '';
 
                     return (
                       <div key={field.key} className={styles['message-box']}>
