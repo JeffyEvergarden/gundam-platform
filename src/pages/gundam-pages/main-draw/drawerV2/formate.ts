@@ -107,7 +107,7 @@ export const processForm = (form: any) => {
           return false;
         }
         // 找到返回 该值不能为空且不等于0
-        return !action[_key] && action[_key] !== 0;
+        return action[_key] || action[_key] === 0;
       });
       if (!_item) {
         _form[key].action = undefined;
