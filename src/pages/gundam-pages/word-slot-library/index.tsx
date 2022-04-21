@@ -61,6 +61,8 @@ const DetailPages: React.FC = (props: any) => {
   };
 
   const operate = (data: any, type: string) => {
+    console.log(data);
+
     handleOperModalVisible(true);
     handleOperModalData(data);
     handleOperModalTitle(type);

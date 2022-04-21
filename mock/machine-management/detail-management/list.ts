@@ -5,6 +5,7 @@ const editConfig = (req: any, res: any) => {
   console.log(req.query);
   res.json({
     resultCode: successCode,
+    resultDesc: '成功',
   });
 };
 
@@ -304,4 +305,5 @@ export default {
   'GET /aichat/robot/config/list': getConfig, // 全局变量所有
 
   'GET /aichat/robot/node/getOverConfig': getNodeConfig, // 节点
+  'POST /aichat/robot/node/overConfig': editConfig, // 节点
 };

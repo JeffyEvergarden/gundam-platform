@@ -90,7 +90,7 @@ const deepClone = (obj: any) => {
   return newObj;
 };
 
-const processForm = (form: any) => {
+export const processForm = (form: any) => {
   const _form = deepClone(form);
   const list: any[] = ['silenceAction', 'rejectAction', 'clearAction', 'unclearAction'];
 

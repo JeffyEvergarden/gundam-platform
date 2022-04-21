@@ -5,6 +5,7 @@ import style from './style.less';
 import { useModel } from 'umi';
 import { useNodeModel } from '../model';
 import { _saveNode } from '../model/api';
+import { processForm } from '../../main-draw/drawerV2/formate';
 
 const { Option } = Select;
 const { Item: FormItem, List: FormList } = Form;
@@ -52,13 +53,14 @@ const NodeConfig: React.FC = (props: any) => {
 
     let params = {
       robotId: info.id,
-      highConfig: res,
+      highConfig: processForm(res),
       systemConfigList: _res,
     };
     if (res && res1) {
       await _saveNode(params).then((res) => {
         if (res.resultCode == '0000') {
           message.success(res.resultDesc);
+          _getNodesConfig();
         } else {
           message.error(res.resultDesc);
         }
