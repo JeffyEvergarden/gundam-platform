@@ -21,7 +21,7 @@ export const normalNode: any = {
 export const businessNode: any = {
   color: '#FEB444',
   shape: 'flow-rect',
-  size: '140*45',
+  size: '180*45',
   _nodetype: 'business',
   type: 'node',
   style: {

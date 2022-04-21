@@ -101,16 +101,30 @@ const DrawerForm = (props: any) => {
     if (res === false) {
       return;
     } else {
+      const businessName: any = flowList.find((item: any) => {
+        return res.nodeFlowId === item.name;
+      })?.label;
+
+      const wishName: any =
+        wishList.find((item: any) => {
+          return res.headIntent === item.name;
+        })?.label || res.headIntent;
+
+      let name =
+        (businessName ? '流程:' + businessName : '业务流程节点') +
+        (wishName ? '\n' + '意图:' + wishName : '');
+
       let result: any = await _saveNode({
         ...res,
-        nodeName: res.name,
+        nodeName: name,
         ...preParams,
         id: recordInfo.current.info?.id,
         nodeType: recordInfo.current.info?.nodeType,
       });
       if (result === true) {
         setAutoCloseTipsFlag(false);
-        recordInfo.current?.callback?.(res?.name); // 成功回调修改名称
+
+        recordInfo.current?.callback?.(name); // 成功回调修改名称
         setVisible(false);
       }
     }
@@ -142,7 +156,7 @@ const DrawerForm = (props: any) => {
           <div className={styles['title']} style={{ marginTop: 0 }}>
             基本信息
           </div>
-          <FormItem
+          {/* <FormItem
             rules={[
               { required: true, message: '请输入节点名称' },
               {
@@ -160,7 +174,42 @@ const DrawerForm = (props: any) => {
               disabled={nodetype === 'start'}
               autoComplete="off"
             />
-          </FormItem>
+          </FormItem> */}
+
+          {/* 业务节点 */}
+          <Condition r-if={nodetype === 'business'}>
+            <div className={styles['antd-form']}>
+              <FormItem
+                label="业务流程"
+                name="nodeFlowId"
+                style={{ width: '400px' }}
+                rules={[{ required: true, message: '请选择业务流程' }]}
+              >
+                <Select placeholder="请选择业务流程" onChange={onChange}>
+                  {flowList.map((item: any, index: number) => {
+                    return (
+                      <Option key={index} value={item.name} opt={item}>
+                        {item.label}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              </FormItem>
+
+              <FormItem label="意图名称" name="headIntent" style={{ width: '400px' }}>
+                <Select placeholder="请选择意图名称" disabled={true}>
+                  {wishList.map((item: any, index: number) => {
+                    return (
+                      <Option key={index} value={item.name} opt={item}>
+                        {item.label}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              </FormItem>
+            </div>
+          </Condition>
+
           <FormItem
             // rules={[{ required: true, message: '请输入节点描述' }]}
             name="nodeDesc"
@@ -170,35 +219,6 @@ const DrawerForm = (props: any) => {
             <TextArea rows={4} placeholder="请输入节点描述" maxLength={150} />
           </FormItem>
         </div>
-
-        {/* 业务节点 */}
-        <Condition r-if={nodetype === 'business'}>
-          <div className={styles['antd-form']}>
-            <FormItem label="业务流程" name="nodeFlowId" style={{ width: '400px' }}>
-              <Select placeholder="请选择业务流程" onChange={onChange}>
-                {flowList.map((item: any, index: number) => {
-                  return (
-                    <Option key={index} value={item.name} opt={item}>
-                      {item.label}
-                    </Option>
-                  );
-                })}
-              </Select>
-            </FormItem>
-
-            <FormItem label="意图名称" name="headIntent" style={{ width: '400px' }}>
-              <Select placeholder="请选择意图名称" disabled={true}>
-                {wishList.map((item: any, index: number) => {
-                  return (
-                    <Option key={index} value={item.name} opt={item}>
-                      {item.label}
-                    </Option>
-                  );
-                })}
-              </Select>
-            </FormItem>
-          </div>
-        </Condition>
       </Form>
     </Drawer>
   );
