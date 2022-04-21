@@ -194,8 +194,8 @@ export default (props: any) => {
   };
 
   const cancel = () => {
-    form.resetFields();
     onCancel();
+    // form.resetFields();
     setInval_val('');
   };
 
