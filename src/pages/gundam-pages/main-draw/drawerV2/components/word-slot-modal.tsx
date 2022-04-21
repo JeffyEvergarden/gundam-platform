@@ -25,9 +25,9 @@ const WordSlotModal: React.FC<any> = (props: any) => {
       if (!obj.slotId) {
         form.resetFields();
         form.setFieldsValue({
-          required: false,
+          required: 1,
         });
-        setShow(false);
+        setShow(true);
       } else {
         obj = obj || {};
         form.resetFields();
