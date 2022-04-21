@@ -78,6 +78,9 @@ const EdgeDrawerForm = (props: any) => {
         sourceType: recordInfo.current.info?.sourceType,
       });
       let label = `${res.priority}.${res?.name}`;
+      if (label.length > 15) {
+        label = label.slice(0, 15) + '...';
+      }
       if (result !== false) {
         recordInfo.current?.callback?.(
           {
@@ -129,7 +132,7 @@ const EdgeDrawerForm = (props: any) => {
             label="连线名称"
             style={{ width: '400px' }}
           >
-            <Input placeholder="请输入连线名称" maxLength={10} autoComplete="off" />
+            <Input placeholder="请输入连线名称" maxLength={200} autoComplete="off" />
           </FormItem>
 
           <FormItem

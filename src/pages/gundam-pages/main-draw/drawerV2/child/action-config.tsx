@@ -139,6 +139,7 @@ const ActionConfig = (props: any) => {
               placeholder="请选择跳转动作"
               optionFilterProp="children"
               showSearch
+              allowClear
               onChange={change}
               style={{ width: '220px' }}
               disabled={canEdit}

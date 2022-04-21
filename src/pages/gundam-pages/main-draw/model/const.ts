@@ -26,6 +26,7 @@ export const businessNode: any = {
   type: 'node',
   style: {
     lineWidth: 1,
+    lineHeight: 20,
     stroke: '#f90',
     strokeOpacity: 1,
   },
