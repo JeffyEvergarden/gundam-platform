@@ -229,7 +229,7 @@ export default (props: any) => {
       // getIntentSelList();
       if (title == 'edit') {
         setDiffSourceData(modalData?.slotSource || '');
-        getEditSlotData(modalData?.id);
+        // getEditSlotData(modalData?.id);
       }
     }
     setSource(0);
