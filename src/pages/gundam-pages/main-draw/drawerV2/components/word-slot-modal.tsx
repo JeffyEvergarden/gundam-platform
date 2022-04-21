@@ -25,8 +25,11 @@ const WordSlotModal: React.FC<any> = (props: any) => {
       if (!obj.slotId) {
         form.resetFields();
         form.setFieldsValue({
-          required: 1,
+          required: true,
         });
+        // form.setFieldsValue({
+        // required: false,
+        // });
         setShow(true);
       } else {
         obj = obj || {};
@@ -108,6 +111,8 @@ const WordSlotModal: React.FC<any> = (props: any) => {
             label="词槽是否必填"
             valuePropName="checked"
             style={{ width: '400px' }}
+            rules={[{ required: true, message: '请选择词槽' }]}
+            initialValue={true}
           >
             <Checkbox onChange={onChange}>必填</Checkbox>
           </FormItem>
