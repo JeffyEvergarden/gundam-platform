@@ -32,7 +32,32 @@ const getWordSlotList = (req: any, res: any) => {
                 value: '1',
               },
             ],
-            outPutParamId: '11245',
+            outputParamId: '11245',
+          },
+        },
+        {
+          id: '222',
+          slotDesc:
+            '描述1前端mock词槽1前端mock词槽1前端mock词槽1前端mock词槽1前端mock词槽1前端mock词槽1前端mock词槽1前端mock词槽1前端mock词槽1',
+          flowName: '1',
+          entity: '0',
+          creator: 'yyb',
+          createTime: '2022-02-16',
+          slot: 'qwqew1rrw',
+          slotName: '前端mock词槽2',
+          slotSource: 7,
+          dataType: 2,
+          slosourceId: 1,
+          slotInfo: {
+            id: '2',
+            inputParamList: [
+              {
+                id: '5',
+                sourceType: 0,
+                value: '1',
+              },
+            ],
+            outputParamId: '11245',
           },
         },
       ],

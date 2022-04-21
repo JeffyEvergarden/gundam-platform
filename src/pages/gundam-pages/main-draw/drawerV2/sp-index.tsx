@@ -116,6 +116,7 @@ const DrawerForm = (props: any) => {
 
       let result: any = await _saveNode({
         ...res,
+        name,
         nodeName: name,
         ...preParams,
         id: recordInfo.current.info?.id,

@@ -54,6 +54,7 @@ const NodeConfig: React.FC = (props: any) => {
     let params = {
       robotId: info.id,
       highConfig: processForm(res),
+      highConfig1: res,
       systemConfigList: _res,
     };
     if (res && res1) {
