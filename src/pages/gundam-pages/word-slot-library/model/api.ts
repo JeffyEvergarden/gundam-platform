@@ -54,6 +54,13 @@ export async function zzReal(params?: Record<string, any>) {
   });
 }
 
+export async function configData(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/config/list`, {
+    method: 'GET',
+    params,
+  });
+}
+
 /** 接口列表**/
 export async function interFace(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/interface/list`, {

@@ -52,6 +52,7 @@ export default (props: any) => {
     editWordSlot,
     getWordSlotDetail,
     getzzReal,
+    configList,
     interFaceList,
     getparamList,
     getslotInfo,
@@ -91,7 +92,7 @@ export default (props: any) => {
         }
         if (modalData?.sourceType == 1) {
           setInval_val('变量');
-          zzRealList();
+          getConfigList();
         } else if (modalData?.sourceType == 0) {
           setInval_val('词槽');
           slotInfoList();
@@ -166,8 +167,8 @@ export default (props: any) => {
     });
   };
 
-  const zzRealList = async () => {
-    const invalChild = await getzzReal({ robotId: info.id }); //入参值
+  const getConfigList = async () => {
+    const invalChild = await configList({ robotId: info.id, configType: 1 }); //入参值
     if (invalChild.resultCode === '0000') {
       setinValList(invalChild?.data);
     } else {
@@ -188,7 +189,7 @@ export default (props: any) => {
   const inValChange = async (val: number, option: any) => {
     if (option.key == 1) {
       setInval_val('变量');
-      zzRealList();
+      getConfigList();
     } else if (option.key == 0) {
       setInval_val('词槽');
       slotInfoList();
@@ -457,7 +458,7 @@ export default (props: any) => {
                       {inValList?.map((itex: any) => {
                         return (
                           <Option key={itex?.id} value={itex?.id}>
-                            {itex?.slotName || itex?.entityName}
+                            {itex?.slotName || itex?.configName}
                           </Option>
                         );
                       })}
