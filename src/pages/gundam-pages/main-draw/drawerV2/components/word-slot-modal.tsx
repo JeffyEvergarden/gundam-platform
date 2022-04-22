@@ -36,6 +36,10 @@ const WordSlotModal: React.FC<any> = (props: any) => {
         form.resetFields();
         form.setFieldsValue({
           ...obj,
+          config: {
+            action: obj?.action || {},
+            messageList: obj?.messageList || [],
+          },
           required: obj.required === 1,
         });
         setShow(obj.required === 1);
