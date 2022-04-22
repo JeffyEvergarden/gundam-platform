@@ -14,6 +14,9 @@ export default function useGundamModel() {
   // 业务流程id
   const [businessFlowId, setBusinessFlowId] = useState<any>(localBusinessFlowId);
 
+  // 画布类型
+  const [drawType, setDrawType] = useState<any>('');
+
   // 全局变量
   const getGlobalValConfig = async (id: any) => {
     if (!id) {
@@ -39,11 +42,13 @@ export default function useGundamModel() {
   };
 
   return {
-    info,
+    info, // 机器人信息
     setInfo,
-    businessFlowId,
+    businessFlowId, // 流程画布
     setBusinessFlowId,
-    globalVarList,
+    globalVarList, // 全局变量列表
     getGlobalValConfig,
+    drawType, // 画布类型
+    setDrawType,
   };
 }
