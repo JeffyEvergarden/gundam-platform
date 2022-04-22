@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useModel } from 'umi';
 import { Modal, Form, Input, Select, Space, Button, message, Spin, Tooltip } from 'antd';
 import { operateSlotFormList, slotSourceFormList } from './config';
 import { QuestionCircleFilled } from '@ant-design/icons';
@@ -64,6 +65,10 @@ export default (props: any) => {
   const [inParams, setInparams] = useState<any>([]);
   const [outVal, setOutVal] = useState<any>([]);
 
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
+
   useEffect(() => {
     getRealList();
     getInterFaceList();
@@ -121,7 +126,7 @@ export default (props: any) => {
   }, [visible]);
 
   const getRealList = async () => {
-    const res = await getzzReal({ robotId: localStorage.getItem('robot_id'), entityType: 1 });
+    const res = await getzzReal({ robotId: info.id, entityType: 1 });
     if (res.resultCode === '0000') {
       setRealList(res?.data);
     }
@@ -162,7 +167,7 @@ export default (props: any) => {
   };
 
   const zzRealList = async () => {
-    const invalChild = await getzzReal({ robotId: localStorage.getItem('robot_id') }); //入参值
+    const invalChild = await getzzReal({ robotId: info.id }); //入参值
     if (invalChild.resultCode === '0000') {
       setinValList(invalChild?.data);
     } else {
@@ -172,7 +177,7 @@ export default (props: any) => {
   };
 
   const slotInfoList = async () => {
-    const invalChild = await getslotInfo({ robotId: localStorage.getItem('robot_id') }); //入参值
+    const invalChild = await getslotInfo({ robotId: info.id }); //入参值
     if (invalChild.resultCode === '0000') {
       setinValList(invalChild?.data);
     } else {

@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
+import { useModel } from 'umi';
 import { Modal, Form, Input, Button, Space, Tag, message } from 'antd';
 import RuleDecriModal from './ruleModal';
 import styles from './index.less';
@@ -18,6 +19,10 @@ export default (props: any) => {
   const [ruleVisible, setRuleVisible] = useState<boolean>(false);
   const [ruleEditData, setRuleEditData] = useState<any>({});
   const [operate, setOperate] = useState<string>('');
+
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
 
   useEffect(() => {
     setRulist(editObj?.entityValueList || []);
@@ -74,7 +79,7 @@ export default (props: any) => {
   const submit = async () => {
     const values = await form.validateFields();
     let para = {
-      robotId: localStorage.getItem('robot_id'),
+      robotId: info.id,
       ...values,
       entityValueList: [...ruleList],
     };

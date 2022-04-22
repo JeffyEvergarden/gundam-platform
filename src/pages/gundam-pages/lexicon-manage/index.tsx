@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, Fragment } from 'react';
+import { useModel } from 'umi';
 import ProTable from '@ant-design/pro-table';
 import { useLexiconModel } from './model';
 import { Space, Button, Tabs, Popconfirm, message } from 'antd';
@@ -12,11 +13,15 @@ const LexiconManage: React.FC = (props: any) => {
   const [pageType, setPagetype] = useState<string>('');
   const [editObj, setEditObj] = useState<any>({});
 
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
+
   const getInitTable = async (payload: any) => {
     let params = {
       page: payload.current,
       pageSize: payload.pageSize,
-      robotId: localStorage.getItem('robot_id'),
+      robotId: info.id,
     };
     let res: any = await getLexiconList(params);
     return {
