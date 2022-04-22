@@ -24,6 +24,11 @@ const ActionConfig = (props: any) => {
     deep = true,
   } = props;
 
+  const { drawType, businessFlowId } = useModel('gundam' as any, (model: any) => ({
+    businessFlowId: model.businessFlowId,
+    drawType: model.drawType, // 画布类型
+  }));
+
   const [num, setNum] = useState<number>(1);
 
   const update = useCallback(() => {
@@ -142,6 +147,8 @@ const ActionConfig = (props: any) => {
     update();
   };
 
+  const _flowdisabled = drawType === 'business';
+
   const innerHtml = (
     <div className={styles['action-config']}>
       <div className={styles['zy-row']} style={{ marginBottom: '10px' }}>
@@ -181,7 +188,12 @@ const ActionConfig = (props: any) => {
               >
                 {flowList.map((item: any, index: number) => {
                   return (
-                    <Option key={index} value={item.name} opt={item}>
+                    <Option
+                      key={index}
+                      value={item.name}
+                      opt={item}
+                      disabled={_flowdisabled && item.name === businessFlowId}
+                    >
                       {item.label}
                     </Option>
                   );

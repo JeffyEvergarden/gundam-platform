@@ -23,11 +23,16 @@ const MainDraw = (props: any) => {
   // 历史遗留问题
   // 话术标签、业务流程列表
 
-  const { info, businessFlowId, getGlobalValConfig } = useModel('gundam' as any, (model: any) => ({
-    info: model.info,
-    businessFlowId: model.businessFlowId,
-    getGlobalValConfig: model.getGlobalValConfig,
-  }));
+  const { info, businessFlowId, getGlobalValConfig, drawType, setDrawType } = useModel(
+    'gundam' as any,
+    (model: any) => ({
+      info: model.info,
+      businessFlowId: model.businessFlowId,
+      getGlobalValConfig: model.getGlobalValConfig,
+      drawType: model.drawType, // 画布类型
+      setDrawType: model.setDrawType,
+    }),
+  );
 
   // 意图列表、词槽列表
   // 短信模版列表
@@ -238,6 +243,7 @@ const MainDraw = (props: any) => {
 
   // 初始化设置
   useEffect(() => {
+    setDrawType(type);
     getLabelList(info.id); // 获取话术标签
     getFlowList(info.id); // 获取业务流程列表
     getWishList(info.id); // 意图列表
