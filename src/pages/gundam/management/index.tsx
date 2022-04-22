@@ -225,10 +225,10 @@ const MachineManagement: React.FC = (props: any) => {
       dataIndex: 'op',
       search: false,
       fixed: 'right',
-      width: 130,
+      width: 200,
       render: (val: any, row: any, index: number) => {
         return (
-          <div>
+          <>
             <div style={{ display: 'flex' }}>
               <Condition r-if={row.status === MACHINE_STATUS.RUNNING}>
                 <Button
@@ -262,8 +262,7 @@ const MachineManagement: React.FC = (props: any) => {
               >
                 编辑
               </Button>
-            </div>
-            <div style={{ display: 'flex' }}>
+
               <Button
                 type="link"
                 onClick={() => {
@@ -286,7 +285,7 @@ const MachineManagement: React.FC = (props: any) => {
                 </Button>
               </Popconfirm>
             </div>
-          </div>
+          </>
         );
       },
     },
