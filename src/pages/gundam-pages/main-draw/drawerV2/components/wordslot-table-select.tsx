@@ -87,7 +87,7 @@ const WordSlotTable: React.FC<any> = (props: any) => {
   const columns: any[] = [
     {
       title: '词槽ID',
-      dataIndex: 'slotId',
+      dataIndex: 'slot',
       fixed: 'left',
       width: 80,
     },

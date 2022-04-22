@@ -24,7 +24,7 @@ export default (props: any) => {
 
   const cancelRule = () => {
     closeRuleDecri();
-    form.resetFields();
+    // form.resetFields();
   };
 
   const handleOver = async () => {

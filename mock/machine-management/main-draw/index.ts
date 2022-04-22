@@ -89,6 +89,7 @@ const getNodesConfig = (req: any, res: any) => {
           },
           slotName: '前端mock词槽1',
           slotDesc: '描述1',
+          slot: '111',
         },
       ],
       strategyList: [

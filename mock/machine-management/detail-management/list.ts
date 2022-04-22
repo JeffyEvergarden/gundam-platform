@@ -234,7 +234,7 @@ const getNodeConfig = (req: any, res: any) => {
           },
           messageList: [
             {
-              content: '世界如此之美好',
+              // content: '世界如此之美好',
               messageMode: '001',
               placeholder: ['123', '456', '789'],
               telPhone: [2, '011'],
