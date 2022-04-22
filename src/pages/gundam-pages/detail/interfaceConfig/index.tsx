@@ -81,7 +81,7 @@ const InterfaceConfig: React.FC = (props: any) => {
       width: 200,
     },
     {
-      title: '创建者',
+      title: '更新人',
       dataIndex: 'creator',
       search: false,
       width: 200,

@@ -131,7 +131,7 @@ const DetailPages: React.FC = (props: any) => {
     let params = {
       occurTime: occurDay + ' ' + newTime,
       id: data.id,
-      robotId: localStorage.getItem('robot_id'),
+      robotId: info.id,
     };
     const res: any = await deleteFlowData(params);
     message.info(res?.resultDesc || '失败');

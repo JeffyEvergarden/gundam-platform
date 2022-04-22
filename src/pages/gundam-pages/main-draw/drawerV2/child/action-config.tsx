@@ -24,6 +24,11 @@ const ActionConfig = (props: any) => {
     deep = true,
   } = props;
 
+  const { drawType, businessFlowId } = useModel('gundam' as any, (model: any) => ({
+    businessFlowId: model.businessFlowId,
+    drawType: model.drawType, // 画布类型
+  }));
+
   const [num, setNum] = useState<number>(1);
 
   const update = useCallback(() => {
@@ -107,7 +112,12 @@ const ActionConfig = (props: any) => {
 
   const change = (val: any) => {
     const item = getItem();
-    item.toFlowId = undefined;
+    if (deep) {
+      item.action.toFlowId = undefined;
+    } else {
+      item.toFlowId = undefined;
+    }
+
     const list = form.getFieldValue(key);
     if (isArray && list instanceof Array) {
       form.setFieldsValue({
@@ -136,6 +146,8 @@ const ActionConfig = (props: any) => {
     currenItem.content = obj?.content;
     update();
   };
+
+  const _flowdisabled = drawType === 'business';
 
   const innerHtml = (
     <div className={styles['action-config']}>
@@ -176,7 +188,12 @@ const ActionConfig = (props: any) => {
               >
                 {flowList.map((item: any, index: number) => {
                   return (
-                    <Option key={index} value={item.name} opt={item}>
+                    <Option
+                      key={index}
+                      value={item.name}
+                      opt={item}
+                      disabled={_flowdisabled && item.name === businessFlowId}
+                    >
                       {item.label}
                     </Option>
                   );

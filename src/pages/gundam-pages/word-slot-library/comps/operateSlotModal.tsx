@@ -88,7 +88,7 @@ export default (props: any) => {
         });
         if (modalData?.slotInfo?.id) {
           paramListIn({ interfaceId: modalData?.slotInfo?.id, paramType: 0 });
-          paramListOut({ interfaceId: modalData?.slotInfo?.id, paramType: 0 });
+          paramListOut({ interfaceId: modalData?.slotInfo?.id, paramType: 1 });
         }
         if (modalData?.sourceType == 1) {
           setInval_val('变量');
@@ -156,7 +156,7 @@ export default (props: any) => {
   const interfaceChange = async (val: any, option: any) => {
     setinterfaceDesc(option?.itemobj?.interfaceDesc);
     paramListIn({ interfaceId: val, paramType: 0 });
-    paramListOut({ interfaceId: val, paramType: 0 });
+    paramListOut({ interfaceId: val, paramType: 1 });
     setInval_val('');
     form.setFieldsValue({
       inParams: null,
