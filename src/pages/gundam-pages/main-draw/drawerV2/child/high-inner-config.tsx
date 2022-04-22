@@ -148,6 +148,7 @@ const HightformTemplate: any = (props: any) => {
                             style={{ width: '100%' }}
                             autoComplete="off"
                             canEdit={disabled}
+                            required={true}
                           />
                         </Form.Item>
 

@@ -46,7 +46,7 @@ export default (props: any) => {
   };
   const cancelZZ = () => {
     onCancel();
-    form.resetFields();
+    // form.resetFields();
   };
 
   const handle = (values: any) => {

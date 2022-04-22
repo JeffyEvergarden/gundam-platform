@@ -31,7 +31,7 @@ export const operateFlowFormList = [
     name: 'flowName',
     label: '流程名称',
     type: 'input',
-    placeholder: '',
+    placeholder: '请输入流程名称',
     rules: [
       { required: true, message: '请输入流程名称' },
       {
@@ -48,7 +48,7 @@ export const operateFlowFormList = [
     name: 'flowDesc',
     label: '流程描述',
     type: 'input',
-    placeholder: '',
+    placeholder: '请输入流程描述',
     rules: [
       {
         max: 150,
@@ -60,7 +60,7 @@ export const operateFlowFormList = [
     name: 'headIntent',
     label: '触发意图',
     type: 'select',
-    placeholder: '',
-    rules: [{ required: true }, { max: 200, min: 0 }],
+    placeholder: '请选择触发意图',
+    rules: [{ max: 200, min: 0 }],
   },
 ];

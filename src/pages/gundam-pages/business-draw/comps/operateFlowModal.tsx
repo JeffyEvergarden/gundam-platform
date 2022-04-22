@@ -102,7 +102,7 @@ export default (props: any) => {
                         rules={item.rules}
                         style={{ width: '360px' }}
                       >
-                        <Input maxLength={150} />
+                        <Input maxLength={150} placeholder={item.placeholder} />
                       </Form.Item>
                     )}
                     {item.type == 'select' && (
@@ -112,7 +112,7 @@ export default (props: any) => {
                         rules={item.rules}
                         style={{ width: '360px' }}
                       >
-                        <Select>
+                        <Select placeholder={item.placeholder}>
                           {wishListArr?.map((itex: any, index: number) => {
                             return (
                               <Option

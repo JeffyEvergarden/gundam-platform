@@ -30,7 +30,7 @@ const ActionConfig = (props: any) => {
     setNum(num + 1);
   }, [num]);
 
-  const getFormName = (text: any, val?: number) => {
+  const getFormName = (text: any) => {
     let lastVal = text[text.length - 1];
     text = deep ? text : [lastVal];
     if (name !== undefined) {
@@ -85,7 +85,7 @@ const ActionConfig = (props: any) => {
   const key = isArray ? _formName[0] : _formName; // 首字段
 
   const getItem = () => {
-    let item: any = null;
+    let item: any = form?.getFieldsValue?.() || {};
     if (isArray) {
       _formName.forEach((key: any, index: number) => {
         if (index === 0) {
@@ -102,7 +102,7 @@ const ActionConfig = (props: any) => {
   };
 
   const currentItem = getItem();
-  const _actionType = currentItem?.actionType;
+  const _actionType = deep ? currentItem?.action?.actionType : currentItem?.actionType;
   // console.log('--------', currentItem, _actionType);
 
   const change = (val: any) => {
