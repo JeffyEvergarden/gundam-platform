@@ -214,12 +214,12 @@ const getNodeConfig = (req: any, res: any) => {
         configType: 2,
         clearAction: {
           configType: 1,
-          action: {
-            actionText: undefined,
-            actionType: undefined,
+          // action: {
+          //   actionText: undefined,
+          //   actionType: undefined,
 
-            textLabels: ['话术标签1'],
-          },
+          //   textLabels: ['话术标签1'],
+          // },
           messageList: undefined,
           responseList: [],
           times: 3,
@@ -229,7 +229,6 @@ const getNodeConfig = (req: any, res: any) => {
           action: {
             actionText: undefined,
             actionType: undefined,
-
             textLabels: ['话术标签2'],
           },
           messageList: [
