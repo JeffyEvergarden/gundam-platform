@@ -9,7 +9,7 @@ const { Item: FormItem, List: FormList } = Form;
 const { Option } = Select;
 
 const ConversationConfig = (props: any) => {
-  const { name, title = '答复配置', placeholder = '答复内容' } = props;
+  const { name, title = '答复配置', placeholder = '答复内容', required } = props;
   return (
     <div className={styles['conversation-list']}>
       <FormList name={name}>
@@ -59,6 +59,7 @@ const ConversationConfig = (props: any) => {
                           type="textarea"
                           style={{ width: '100%' }}
                           autoComplete="off"
+                          required
                         />
                       </Form.Item>
 

@@ -48,7 +48,7 @@ const WordSlotSelectModal: React.FC<any> = (props: any) => {
   const columns: any[] = [
     {
       title: '词槽ID',
-      dataIndex: 'id',
+      dataIndex: 'slot',
       width: 120,
       ellipsis: {
         showTitle: false,

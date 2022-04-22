@@ -21,6 +21,7 @@ const CvsInput: React.FC<any> = (props: any) => {
     title,
     rows,
     canEdit,
+    required = false,
     ...res
   } = props;
 
@@ -81,7 +82,12 @@ const CvsInput: React.FC<any> = (props: any) => {
     <div className={''}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <div className={styles['zy-row']}>
-          <div>{title}</div>
+          <div>
+            <Condition r-if={required}>
+              <span style={{ color: 'red' }}>*</span>{' '}
+            </Condition>
+            {title}
+          </div>
           <Button
             type="link"
             disabled={canEdit}

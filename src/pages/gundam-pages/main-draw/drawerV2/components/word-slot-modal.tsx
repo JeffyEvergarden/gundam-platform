@@ -36,6 +36,10 @@ const WordSlotModal: React.FC<any> = (props: any) => {
         form.resetFields();
         form.setFieldsValue({
           ...obj,
+          config: {
+            action: obj?.action || {},
+            messageList: obj?.messageList || [],
+          },
           required: obj.required === 1,
         });
         setShow(obj.required === 1);
@@ -67,6 +71,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
 
       const newFormValue: any = {
         ...newForm,
+        slot: curItem?.slot,
         slotName: curItem?.slotName,
         slotDesc: curItem?.slotDesc,
         slotSource: curItem?.slotSource,
@@ -121,7 +126,12 @@ const WordSlotModal: React.FC<any> = (props: any) => {
 
           <Condition r-if={show}>
             <div style={{ paddingTop: '8px' }}>
-              <ConversationConfig name={'clearList'} title="澄清话术" placeholder="话术" />
+              <ConversationConfig
+                name={'clearList'}
+                title="澄清话术"
+                placeholder="话术"
+                required={true}
+              />
             </div>
 
             <div style={{ paddingTop: '8px' }}>

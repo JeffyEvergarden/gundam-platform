@@ -31,6 +31,19 @@ const HightformTemplate: any = (props: any) => {
   const onChange = (val: any) => {
     let res = form.getFieldsValue();
     if (res[name].configType == 1) {
+      res[name] = {
+        action: {
+          actionText: '',
+          actionType: null,
+          textLabels: [],
+        },
+        messageList: [],
+        configType: 1,
+        responseList: [],
+        times: null,
+      };
+      form.setFieldsValue(res); //由于有些字段后端没存 所以先清空
+
       res[name] = nodeConfig?.highConfig[name];
       setDisabled(true);
       form.setFieldsValue(res);
@@ -39,7 +52,6 @@ const HightformTemplate: any = (props: any) => {
         action: {
           actionText: '',
           actionType: null,
-
           textLabels: [],
         },
         messageList: [],
@@ -136,6 +148,7 @@ const HightformTemplate: any = (props: any) => {
                             style={{ width: '100%' }}
                             autoComplete="off"
                             canEdit={disabled}
+                            required={true}
                           />
                         </Form.Item>
 
