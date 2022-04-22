@@ -56,13 +56,14 @@ const WordSlotModal: React.FC<any> = (props: any) => {
         return item.id === slotId;
       });
 
+      console.log(formValue);
       // 表单配置
       const newForm: any = {
         ...formValue,
+        ...formValue.config,
         required: formValue.required ? 1 : 0,
-        action: formValue.action?.actionType ? formValue.action : undefined,
-        messageList: formValue.action?.messageList || [],
       };
+      delete newForm.config;
 
       const newFormValue: any = {
         ...newForm,
@@ -127,8 +128,8 @@ const WordSlotModal: React.FC<any> = (props: any) => {
               <ActionConfig
                 form={form}
                 title={'执行动作'}
-                formName={'action'}
-                name={'action'}
+                formName={'config'}
+                name={'config'}
                 titleType={2}
               />
             </div>
