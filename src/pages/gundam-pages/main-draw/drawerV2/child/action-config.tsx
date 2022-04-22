@@ -107,7 +107,12 @@ const ActionConfig = (props: any) => {
 
   const change = (val: any) => {
     const item = getItem();
-    item.toFlowId = undefined;
+    if (deep) {
+      item.action.toFlowId = undefined;
+    } else {
+      item.toFlowId = undefined;
+    }
+
     const list = form.getFieldValue(key);
     if (isArray && list instanceof Array) {
       form.setFieldsValue({
