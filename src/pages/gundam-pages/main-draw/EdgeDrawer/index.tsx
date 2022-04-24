@@ -44,7 +44,7 @@ const EdgeDrawerForm = (props: any) => {
       console.log(info);
       form.setFieldsValue({
         ...info,
-        level: info.level || 1,
+        priority: info.level || 1,
       });
       setVisible(true);
     },
@@ -78,8 +78,8 @@ const EdgeDrawerForm = (props: any) => {
         sourceType: recordInfo.current.info?.sourceType,
       });
       let label = `${res.priority}.${res?.name}`;
-      if (label.length > 15) {
-        label = label.slice(0, 15) + '...';
+      if (label.length > 10) {
+        label = label.slice(0, 10) + '...';
       }
       if (result !== false) {
         recordInfo.current?.callback?.(

@@ -184,11 +184,15 @@ export const useNodeOpsModel = () => {
       .map((item: any, index: number) => {
         let label = item.label || item.lineName || item.nodeName || item.name || '';
         let level = isNaN(item.priority) ? 1 : Number(item.priority);
+        let _label = `${level ? level + '.' : ''}${label}`;
+        if (_label.length > 10) {
+          _label = _label.slice(0, 10) + '...';
+        }
 
         return {
           id: item.frontId ? String(item.frontId) : String(item.id),
           _id: item.id,
-          label: `${level ? level + '.' : ''}${label}`,
+          label: _label,
           _name: label,
           level: level,
           source: item.frontSource, // 后端的头id
