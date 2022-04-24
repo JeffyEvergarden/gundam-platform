@@ -29,7 +29,7 @@ export const wordSlotTableList: any = [
   //   title: '所属节点',
   // },
   {
-    dataIndex: 'number',
+    dataIndex: 'connectTimes',
     title: '应用次数',
   },
   // {
