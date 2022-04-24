@@ -1,5 +1,5 @@
 //版本2
-import { useState, useRef, useImperativeHandle } from 'react';
+import { useState, useRef, useImperativeHandle, useEffect } from 'react';
 import { Modal, Drawer, Form, Input, Select, Button, message } from 'antd';
 import { AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import ConversationConfig from './child/conversation-config';
@@ -34,8 +34,9 @@ const DrawerForm = (props: any) => {
     businessFlowId: model.businessFlowId,
   }));
 
-  const { flowList } = useModel('drawer' as any, (model: any) => ({
+  const { flowList, selectBody } = useModel('drawer' as any, (model: any) => ({
     flowList: model._flowList, // 业务流程列表
+    selectBody: model.selectBody,
   }));
 
   // 前置参数
@@ -138,136 +139,138 @@ const DrawerForm = (props: any) => {
       footer={footer}
       destroyOnClose
     >
-      <Form form={form} onValuesChange={onValuesChange}>
-        {/* 基础信息 */}
-        <div className={styles['antd-form']}>
-          <div className={styles['title']} style={{ marginTop: 0 }}>
-            基本信息
+      <div ref={selectBody}>
+        <Form form={form} onValuesChange={onValuesChange}>
+          {/* 基础信息 */}
+          <div className={styles['antd-form']}>
+            <div className={styles['title']} style={{ marginTop: 0 }}>
+              基本信息
+            </div>
+            <FormItem
+              rules={[
+                { required: true, message: '请输入节点名称' },
+                {
+                  pattern: /^[A-Za-z0-9_\-\u4e00-\u9fa5]+$/g,
+                  message: '请输入汉字、字母、下划线、数字、横杠',
+                },
+              ]}
+              name="name"
+              label="节点名称"
+              style={{ width: '400px' }}
+            >
+              <Input
+                placeholder="请输入节点名称"
+                maxLength={150}
+                disabled={nodetype === 'start'}
+                autoComplete="off"
+              />
+            </FormItem>
+            <FormItem
+              // rules={[{ required: true, message: '请输入节点描述' }]}
+              name="nodeDesc"
+              label="节点描述"
+              style={{ width: '400px' }}
+            >
+              <TextArea rows={4} placeholder="请输入节点描述" maxLength={150} />
+            </FormItem>
           </div>
-          <FormItem
-            rules={[
-              { required: true, message: '请输入节点名称' },
-              {
-                pattern: /^[A-Za-z0-9_\-\u4e00-\u9fa5]+$/g,
-                message: '请输入汉字、字母、下划线、数字、横杠',
-              },
-            ]}
-            name="name"
-            label="节点名称"
-            style={{ width: '400px' }}
-          >
-            <Input
-              placeholder="请输入节点名称"
-              maxLength={150}
-              disabled={nodetype === 'start'}
-              autoComplete="off"
-            />
-          </FormItem>
-          <FormItem
-            // rules={[{ required: true, message: '请输入节点描述' }]}
-            name="nodeDesc"
-            label="节点描述"
-            style={{ width: '400px' }}
-          >
-            <TextArea rows={4} placeholder="请输入节点描述" maxLength={150} />
-          </FormItem>
-        </div>
 
-        <div className={styles['antd-form']}>
-          {/* 词槽 */}
-          <FormItem name="nodeSlots">
-            <WordSlotTable list={wordSlotList} />
-          </FormItem>
+          <div className={styles['antd-form']}>
+            {/* 词槽 */}
+            <FormItem name="nodeSlots">
+              <WordSlotTable list={wordSlotList} />
+            </FormItem>
 
-          {/* 回应策略 */}
-          <FormList name="strategyList">
-            {(outFields, { add: _add, remove: _remove }) => {
-              const addOutNew = () => {
-                // console.log(fields);
-                let length = outFields.length;
-                _add(
-                  {
-                    ruleList: [],
-                  },
-                  length,
-                );
-              };
+            {/* 回应策略 */}
+            <FormList name="strategyList">
+              {(outFields, { add: _add, remove: _remove }) => {
+                const addOutNew = () => {
+                  // console.log(fields);
+                  let length = outFields.length;
+                  _add(
+                    {
+                      ruleList: [],
+                    },
+                    length,
+                  );
+                };
 
-              return (
-                <div>
-                  <div className={styles['zy-row']}>
-                    <div className={styles['title']}>对话回应</div>
-                    <Button
-                      type="link"
-                      icon={<AppstoreAddOutlined />}
-                      style={{ marginLeft: '10px' }}
-                      onClick={addOutNew}
-                    >
-                      新增回应策略
-                    </Button>
-                  </div>
+                return (
                   <div>
-                    {outFields.map((outFields: any, i: number) => {
-                      return (
-                        <div key={outFields.key} className={styles['module-box']}>
-                          <div style={{ paddingLeft: '12px' }}>
-                            <div className={styles['zy-row']} style={{ paddingBottom: '6px' }}>
-                              <span
-                                className={styles['del-bt']}
-                                onClick={() => {
-                                  _remove(i);
-                                }}
-                              >
-                                <MinusCircleOutlined />
-                              </span>
-                              <div className={styles['num-circle']}>{i + 1}</div>
-                              <span className={styles['title_sec']}>回应策略</span>
-                            </div>
-
-                            <div style={{ paddingLeft: '16px', paddingTop: '8px' }}>
-                              {/* 规则组 */}
-                              <div>
-                                <RuleConfig
-                                  form={form}
-                                  formName={['strategyList', i, 'ruleList']}
-                                  name={[outFields.name, 'ruleList']}
-                                  type="node"
-                                  wishList={wishList || []}
-                                  wordSlotList={wordSlotList || []}
-                                />
+                    <div className={styles['zy-row']}>
+                      <div className={styles['title']}>对话回应</div>
+                      <Button
+                        type="link"
+                        icon={<AppstoreAddOutlined />}
+                        style={{ marginLeft: '10px' }}
+                        onClick={addOutNew}
+                      >
+                        新增回应策略
+                      </Button>
+                    </div>
+                    <div>
+                      {outFields.map((outFields: any, i: number) => {
+                        return (
+                          <div key={outFields.key} className={styles['module-box']}>
+                            <div style={{ paddingLeft: '12px' }}>
+                              <div className={styles['zy-row']} style={{ paddingBottom: '6px' }}>
+                                <span
+                                  className={styles['del-bt']}
+                                  onClick={() => {
+                                    _remove(i);
+                                  }}
+                                >
+                                  <MinusCircleOutlined />
+                                </span>
+                                <div className={styles['num-circle']}>{i + 1}</div>
+                                <span className={styles['title_sec']}>回应策略</span>
                               </div>
 
-                              {/* 内容组 */}
-                              <div style={{ paddingTop: '8px' }}>
-                                <ConversationConfig name={[outFields.name, 'conversationList']} />
-                              </div>
+                              <div style={{ paddingLeft: '16px', paddingTop: '8px' }}>
+                                {/* 规则组 */}
+                                <div>
+                                  <RuleConfig
+                                    form={form}
+                                    formName={['strategyList', i, 'ruleList']}
+                                    name={[outFields.name, 'ruleList']}
+                                    type="node"
+                                    wishList={wishList || []}
+                                    wordSlotList={wordSlotList || []}
+                                  />
+                                </div>
 
-                              {/* 动作组 */}
-                              <div style={{ paddingTop: '8px' }}>
-                                <ActionConfig
-                                  name={outFields.name}
-                                  form={form}
-                                  formName={['strategyList', i]}
-                                  deep={false}
-                                />
+                                {/* 内容组 */}
+                                <div style={{ paddingTop: '8px' }}>
+                                  <ConversationConfig name={[outFields.name, 'conversationList']} />
+                                </div>
+
+                                {/* 动作组 */}
+                                <div style={{ paddingTop: '8px' }}>
+                                  <ActionConfig
+                                    name={outFields.name}
+                                    form={form}
+                                    formName={['strategyList', i]}
+                                    deep={false}
+                                  />
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              );
-            }}
-          </FormList>
-        </div>
-      </Form>
+                );
+              }}
+            </FormList>
+          </div>
+        </Form>
 
-      <Form form={form2} onValuesChange={onValuesChange}>
-        {/* 高级配置 */}
-        <HighConfig form={form2} bussinessList={flowList} type={'flow'} />
-      </Form>
+        <Form form={form2} onValuesChange={onValuesChange}>
+          {/* 高级配置 */}
+          <HighConfig form={form2} bussinessList={flowList} type={'flow'} />
+        </Form>
+      </div>
     </Drawer>
   );
 };

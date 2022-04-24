@@ -184,7 +184,11 @@ const HightformTemplate: any = (props: any) => {
       {/* 未听清意图名称 */}
       <Condition r-if={name == 'unclearAction'}>
         <FormItem name={[name, 'wishId']} label={'未听清意图名称'} style={{ marginTop: '8px' }}>
-          <Select disabled={true} style={{ width: '300px' }}>
+          <Select
+            disabled={true}
+            style={{ width: '300px' }}
+            getPopupContainer={(trigger) => trigger.parentElement}
+          >
             {wishList?.map((item: any, index: number) => {
               return (
                 <Option key={index} value={item.name} opt={item}>

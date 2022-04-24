@@ -112,7 +112,7 @@ export default (props: any) => {
                         rules={item.rules}
                         style={{ width: '360px' }}
                       >
-                        <Select placeholder={item.placeholder}>
+                        <Select placeholder={item.placeholder} allowClear>
                           {wishListArr?.map((itex: any, index: number) => {
                             return (
                               <Option

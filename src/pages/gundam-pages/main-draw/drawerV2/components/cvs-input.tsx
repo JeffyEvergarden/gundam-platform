@@ -45,9 +45,12 @@ const CvsInput: React.FC<any> = (props: any) => {
   };
 
   const confirm = (val: any, type: any = '变量') => {
-    // console.log(val);
+    console.log(val);
     let target = '';
     let tmp: any = value || '';
+    console.log(value);
+    console.log(startPos);
+
     val.forEach((item: any) => {
       if (type === '变量') {
         target += item?.name ? `\$\{${item.name}\}` : '';
@@ -55,7 +58,7 @@ const CvsInput: React.FC<any> = (props: any) => {
         target += item?.name ? `#\{${item.name}\}` : '';
       }
     });
-    if (startPos > -1) {
+    if (startPos >= -1) {
       let pre = tmp.slice(0, startPos);
       let last = tmp.slice(startPos);
       tmp = pre + target + last;

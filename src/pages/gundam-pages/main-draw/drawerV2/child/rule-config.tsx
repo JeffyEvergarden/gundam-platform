@@ -253,6 +253,9 @@ const RuleConfig = (props: any) => {
                                                     onChange={() => {
                                                       change(i, index, 1);
                                                     }}
+                                                    getPopupContainer={(trigger) =>
+                                                      trigger.parentElement
+                                                    }
                                                   >
                                                     {CURRENT_RULE_LIST.map(
                                                       (item: any, index: number) => {
@@ -300,6 +303,9 @@ const RuleConfig = (props: any) => {
                                                     onChange={(val: any, opt: any) => {
                                                       change(i, index, 2, opt);
                                                     }}
+                                                    getPopupContainer={(trigger) =>
+                                                      trigger.parentElement
+                                                    }
                                                   >
                                                     {_globalVarList?.map(
                                                       (item: any, index: number) => {
@@ -336,6 +342,9 @@ const RuleConfig = (props: any) => {
                                                     onChange={(val: any, opt: any) => {
                                                       change(i, index, 2, opt);
                                                     }}
+                                                    getPopupContainer={(trigger) =>
+                                                      trigger.parentElement
+                                                    }
                                                   >
                                                     {wordSlotList?.map(
                                                       (item: any, index: number) => {
@@ -377,6 +386,9 @@ const RuleConfig = (props: any) => {
                                                     onChange={() => {
                                                       change(i, index, 2);
                                                     }}
+                                                    getPopupContainer={(trigger) =>
+                                                      trigger.parentElement
+                                                    }
                                                   >
                                                     {EDGE_VAR_LIST?.map(
                                                       (item: any, index: number) => {
@@ -413,6 +425,9 @@ const RuleConfig = (props: any) => {
                                                   onChange={() => {
                                                     change(i, index, 3);
                                                   }}
+                                                  getPopupContainer={(trigger) =>
+                                                    trigger.parentElement
+                                                  }
                                                 >
                                                   {compareList?.map((item: any, index: number) => {
                                                     return (
@@ -449,6 +464,9 @@ const RuleConfig = (props: any) => {
                                                       size="small"
                                                       optionFilterProp="children"
                                                       showSearch
+                                                      getPopupContainer={(trigger) =>
+                                                        trigger.parentElement
+                                                      }
                                                     >
                                                       {wishList?.map((item: any, index: number) => {
                                                         return (
@@ -481,6 +499,9 @@ const RuleConfig = (props: any) => {
                                                       optionFilterProp="children"
                                                       mode={'multiple'}
                                                       showSearch
+                                                      getPopupContainer={(trigger) =>
+                                                        trigger.parentElement
+                                                      }
                                                     >
                                                       {wishList?.map((item: any, index: number) => {
                                                         return (
@@ -525,6 +546,9 @@ const RuleConfig = (props: any) => {
                                                       onChange={() => {
                                                         change(i, index, 4);
                                                       }}
+                                                      getPopupContainer={(trigger) =>
+                                                        trigger.parentElement
+                                                      }
                                                     >
                                                       {VALUE_TYPE_LIST?.map(
                                                         (item: any, index: number) => {
@@ -573,6 +597,9 @@ const RuleConfig = (props: any) => {
                                                   <DatePicker
                                                     placeholder="请选择系统时间"
                                                     size="small"
+                                                    getPopupContainer={(trigger: any) =>
+                                                      trigger.parentElement
+                                                    }
                                                   />
                                                 </FormItem>
                                               </Condition>
@@ -634,6 +661,9 @@ const RuleConfig = (props: any) => {
                                                       size="small"
                                                       optionFilterProp="children"
                                                       showSearch
+                                                      getPopupContainer={(trigger) =>
+                                                        trigger.parentElement
+                                                      }
                                                     >
                                                       {filter(_globalVarList, ruleKeyType)?.map(
                                                         (item: any, index: number) => {
@@ -668,6 +698,9 @@ const RuleConfig = (props: any) => {
                                                       size="small"
                                                       optionFilterProp="children"
                                                       showSearch
+                                                      getPopupContainer={(trigger) =>
+                                                        trigger.parentElement
+                                                      }
                                                     >
                                                       {filter(wordSlotList, ruleKeyType)?.map(
                                                         (item: any, index: number) => {
@@ -749,6 +782,9 @@ const RuleConfig = (props: any) => {
                                                       showTime
                                                       placeholder="请选择日期"
                                                       size="small"
+                                                      getPopupContainer={(trigger: any) =>
+                                                        trigger.parentElement
+                                                      }
                                                     />
                                                   </FormItem>
                                                 </Condition>
@@ -774,6 +810,9 @@ const RuleConfig = (props: any) => {
                                                         '请选择开始日期',
                                                       ]}
                                                       size="small"
+                                                      getPopupContainer={(trigger: any) =>
+                                                        trigger.parentElement
+                                                      }
                                                     />
                                                   </FormItem>
                                                 </Condition>

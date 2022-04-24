@@ -71,6 +71,7 @@ const ActionConfig = (props: any) => {
             label: item.label,
           };
         }),
+        disabled: !globalVarList.length,
       },
       {
         value: 2,
@@ -81,6 +82,7 @@ const ActionConfig = (props: any) => {
             label: item.label,
           };
         }),
+        disabled: !wordSlotList.length,
       },
     ];
     return options;
@@ -167,6 +169,7 @@ const ActionConfig = (props: any) => {
               onChange={change}
               style={{ width: '220px' }}
               disabled={canEdit}
+              getPopupContainer={(trigger) => trigger.parentElement}
             >
               {ACTION_LIST.map((item: any, index: number) => {
                 return (
@@ -185,6 +188,7 @@ const ActionConfig = (props: any) => {
                 showSearch
                 style={{ width: '220px' }}
                 disabled={canEdit}
+                getPopupContainer={(trigger) => trigger.parentElement}
               >
                 {flowList.map((item: any, index: number) => {
                   return (
@@ -282,6 +286,7 @@ const ActionConfig = (props: any) => {
                                     changeItem(opt, index);
                                   }}
                                   disabled={canEdit}
+                                  getPopupContainer={(trigger) => trigger.parentElement}
                                 >
                                   {messageList.map((item: any, index: number) => {
                                     return (
@@ -308,6 +313,7 @@ const ActionConfig = (props: any) => {
                                   }}
                                   style={{ width: '200px' }}
                                   disabled={canEdit}
+                                  getPopupContainer={(trigger: any) => trigger.parentElement}
                                 />
                               </Form.Item>
                             </Space>

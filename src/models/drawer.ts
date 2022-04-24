@@ -14,6 +14,8 @@ export default function useGundamModel() {
 
   const idFc = useRef<any>({});
 
+  const selectBody = useRef<any>({});
+
   const [_wishList, _setWishList] = useState<any>([]); // 意图列表
 
   const [_globalNodeList, _setGlobalNodeList] = useState<any>([]); // 机器人的全局节点
@@ -155,6 +157,9 @@ export default function useGundamModel() {
         .filter?.((item: any) => {
           return item.flowType != 3;
         })
+        .filter?.((item: any) => {
+          return item.headIntent;
+        })
         ?.map?.((item: any, index: number) => {
           return {
             ...item,
@@ -216,5 +221,6 @@ export default function useGundamModel() {
     getFlowList, // 业务流程
     getLabelList, // 话术标签
     getGlobalConfig, //高级配置 节点
+    selectBody,
   };
 }

@@ -19,11 +19,14 @@ const { Option } = Select;
 const HighConfig = (props: any) => {
   const { form, wishList, bussinessList, type, config } = props;
 
-  const { nodeConfig } = useModel('drawer' as any, (model: any) => ({
+  const { nodeConfig, flowList } = useModel('drawer' as any, (model: any) => ({
     nodeConfig: model._globalNodeList,
+    flowList: model._flowList,
   }));
-  const { info } = useModel('gundam' as any, (model: any) => ({
+  const { info, drawType, businessFlowId } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
+    businessFlowId: model.businessFlowId,
+    drawType: model.drawType, // 画布类型
   }));
 
   const [flag, setFlag] = useState<boolean>(false);
@@ -54,6 +57,8 @@ const HighConfig = (props: any) => {
       form.setFieldsValue(res);
     }
   }, []);
+
+  const _flowdisabled = drawType === 'business';
 
   return (
     <>
@@ -93,10 +98,20 @@ const HighConfig = (props: any) => {
             </Condition>
           </Space>
           <FormItem name="allowFlows" label="允许跳转至业务流程" style={{ width: '400px' }}>
-            <Select placeholder="请选择允许跳转至业务流程" mode="multiple" disabled={disabled}>
+            <Select
+              placeholder="请选择允许跳转至业务流程"
+              mode="multiple"
+              disabled={disabled}
+              getPopupContainer={(trigger) => trigger.parentElement}
+            >
               {bussinessList.map((item: any, index: number) => {
                 return (
-                  <Option key={index} value={item.name} opt={item}>
+                  <Option
+                    key={index}
+                    value={item.name}
+                    opt={item}
+                    disabled={_flowdisabled && item.name === businessFlowId}
+                  >
                     {item.label}
                   </Option>
                 );
