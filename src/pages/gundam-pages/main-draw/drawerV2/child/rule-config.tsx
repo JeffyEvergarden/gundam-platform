@@ -556,7 +556,7 @@ const RuleConfig = (props: any) => {
                                                 >
                                                   <Input
                                                     placeholder="请输入"
-                                                    maxLength={150}
+                                                    maxLength={200}
                                                     autoComplete="off"
                                                     size="small"
                                                   />
@@ -723,7 +723,7 @@ const RuleConfig = (props: any) => {
                                                   >
                                                     <Input
                                                       placeholder="请输入"
-                                                      maxLength={150}
+                                                      maxLength={200}
                                                       autoComplete="off"
                                                       size="small"
                                                     />
