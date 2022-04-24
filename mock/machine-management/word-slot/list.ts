@@ -101,6 +101,18 @@ const getzzReal = (req: any, res: any) => {
   });
 };
 
+const configList = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    resultDesc: '成功',
+    occurTime: '2022-0221-18:16',
+    data: [
+      { id: '1', configName: '变量1' },
+      { id: '2', configName: '变量2' },
+    ],
+  });
+};
+
 const interFace = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
@@ -132,9 +144,9 @@ const slotInfoList = (req: any, res: any) => {
     resultDesc: '成功',
     occurTime: '2022-0221-18:16',
     data: [
-      { id: '1', paramName: '入参值1', paramValue: 1 },
-      { id: '2', paramName: '入参值2', paramValue: 2 },
-      { id: '3', paramName: '入参值3', paramValue: 3 },
+      { id: '1', slotName: '槽值1', paramValue: 1 },
+      { id: '2', slotName: '槽值2', paramValue: 2 },
+      { id: '3', slotName: '槽值', paramValue: 3 },
     ],
   });
 };
@@ -157,5 +169,6 @@ export default {
   'GET /aichat/robot/entity/list': getzzReal, // 获取实体列表
   'GET /aichat/robot/interface/list': interFace, // 获取接口列表
   'GET /aichat/robot/interface/param': paramList, // 获取入参值列表
+  'GET /aichat/robot/config/list': configList, // 获取变量列表
   'POST /aichat/robot/slot/slotInfo': slotInfoList, // 获取入参值-下级列表
 };

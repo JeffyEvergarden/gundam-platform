@@ -8,6 +8,7 @@ import {
   editWordSlotItem,
   deleteWordSlotItem,
   zzReal,
+  configData,
   interFace,
   paramList,
   slotInfo,
@@ -58,6 +59,12 @@ export const useKeyWordModel = () => {
     return res;
   };
 
+  const configList = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await configData(params);
+    return res;
+  };
+
   const interFaceList = async (params?: any) => {
     setTableLoading(true);
     let res: any = await interFace(params);
@@ -83,6 +90,7 @@ export const useKeyWordModel = () => {
     editWordSlot,
     deleteWordSlot,
     getzzReal,
+    configList,
     interFaceList,
     getparamList,
     getslotInfo,
