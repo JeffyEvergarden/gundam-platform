@@ -215,6 +215,7 @@ export default function useGundamModel() {
     _setWordSlotList,
     _messageList,
     _setMessageList,
+    _originFlowList,
     getMessageList, // 短信模版
     getWishList, // 意图
     getWordSlotList, // 词槽

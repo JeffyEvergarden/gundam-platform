@@ -240,13 +240,11 @@ const RuleConfig = (props: any) => {
                                                 <FormItem
                                                   name={[field.name, 'ruleType']}
                                                   fieldKey={[field.fieldKey, 'ruleType']}
-                                                  rules={[
-                                                    { required: true, message: '请选择规则类型' },
-                                                  ]}
+                                                  rules={[{ required: true, message: '请选择' }]}
                                                   style={{ width: '180px' }}
                                                 >
                                                   <Select
-                                                    placeholder="请选择规则类型"
+                                                    placeholder="请选择"
                                                     size="small"
                                                     optionFilterProp="children"
                                                     showSearch

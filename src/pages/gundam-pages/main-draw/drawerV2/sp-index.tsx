@@ -33,7 +33,7 @@ const DrawerForm = (props: any) => {
   }));
 
   const { flowList, wishList } = useModel('drawer' as any, (model: any) => ({
-    flowList: model._flowList, // 业务流程列表
+    flowList: model._originFlowList, // 业务流程列表
     wishList: model._wishList,
   }));
 

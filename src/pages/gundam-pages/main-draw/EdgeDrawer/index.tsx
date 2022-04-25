@@ -77,10 +77,12 @@ const EdgeDrawerForm = (props: any) => {
         targetType: recordInfo.current.info?.targetType,
         sourceType: recordInfo.current.info?.sourceType,
       });
-      let label = `${res.priority}.${res?.name}`;
-      if (label.length > 10) {
-        label = label.slice(0, 10) + '...';
+      let label;
+      if (res?.name?.length > 10) {
+        label = res?.name.slice(0, 10) + '...';
       }
+      label = `${res.priority}.${label || res?.name}`;
+
       if (result !== false) {
         recordInfo.current?.callback?.(
           {

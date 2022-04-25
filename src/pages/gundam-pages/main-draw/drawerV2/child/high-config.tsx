@@ -19,9 +19,10 @@ const { Option } = Select;
 const HighConfig = (props: any) => {
   const { form, wishList, bussinessList, type, config } = props;
 
-  const { nodeConfig, flowList } = useModel('drawer' as any, (model: any) => ({
+  const { nodeConfig, flowList, originFlowList } = useModel('drawer' as any, (model: any) => ({
     nodeConfig: model._globalNodeList,
     flowList: model._flowList,
+    originFlowList: model._originFlowList,
   }));
   const { info, drawType, businessFlowId } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -104,18 +105,22 @@ const HighConfig = (props: any) => {
               disabled={disabled}
               getPopupContainer={(trigger) => trigger.parentElement}
             >
-              {bussinessList.map((item: any, index: number) => {
-                return (
-                  <Option
-                    key={index}
-                    value={item.name}
-                    opt={item}
-                    disabled={_flowdisabled && item.name === businessFlowId}
-                  >
-                    {item.label}
-                  </Option>
-                );
-              })}
+              {originFlowList
+                .filter?.((item: any) => {
+                  return item.headIntent;
+                })
+                .map((item: any, index: number) => {
+                  return (
+                    <Option
+                      key={index}
+                      value={item.name}
+                      opt={item}
+                      disabled={_flowdisabled && item.name === businessFlowId}
+                    >
+                      {item.label}
+                    </Option>
+                  );
+                })}
             </Select>
           </FormItem>
         </div>

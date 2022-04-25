@@ -184,10 +184,11 @@ export const useNodeOpsModel = () => {
       .map((item: any, index: number) => {
         let label = item.label || item.lineName || item.nodeName || item.name || '';
         let level = isNaN(item.priority) ? 1 : Number(item.priority);
-        let _label = `${level ? level + '.' : ''}${label}`;
-        if (_label.length > 10) {
-          _label = _label.slice(0, 10) + '...';
+        let _label;
+        if (label.length > 10) {
+          _label = label.slice(0, 10) + '...';
         }
+        _label = `${level ? level + '.' : ''}${_label || label}`;
 
         return {
           id: item.frontId ? String(item.frontId) : String(item.id),
