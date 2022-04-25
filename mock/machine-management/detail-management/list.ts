@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
+import config from '@/config';
 
-const successCode = '0000';
+const successCode = config.successCode;
 const editConfig = (req: any, res: any) => {
   console.log(req.query);
   res.json({

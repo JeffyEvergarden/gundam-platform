@@ -6,6 +6,7 @@ import { Button, Space, Popconfirm, message, Table } from 'antd';
 import { wordSlotTableList } from './comps/config';
 import OperateSlotModal from './comps/operateSlotModal';
 import { useKeyWordModel } from './model';
+import config from '@/config';
 
 // 机器人列表
 const DetailPages: React.FC = (props: any) => {
@@ -70,7 +71,7 @@ const DetailPages: React.FC = (props: any) => {
 
   const deleteSlot = async (data: any) => {
     const res: any = await deleteWordSlot({ robotId: info.id, id: data.id });
-    if (res?.resultCode == '0000') {
+    if (res?.resultCode == config.successCode) {
       message.success(res?.resultDesc);
       refreshTable();
     } else {

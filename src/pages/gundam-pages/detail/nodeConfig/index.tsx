@@ -6,6 +6,7 @@ import { useModel } from 'umi';
 import { useNodeModel } from '../model';
 import { _saveNode } from '../model/api';
 import { processForm } from '../../main-draw/drawerV2/formate';
+import config from '@/config';
 
 const { Option } = Select;
 const { Item: FormItem, List: FormList } = Form;
@@ -14,7 +15,7 @@ const NodeConfig: React.FC = (props: any) => {
   const [form] = Form.useForm();
   const [form2] = Form.useForm();
 
-  const [config, setConfig] = useState<any>();
+  const [Nconfig, setNConfig] = useState<any>();
 
   const { getNodeConfig, saveNode, configLoading } = useNodeModel();
 
@@ -41,7 +42,7 @@ const NodeConfig: React.FC = (props: any) => {
       message.warning('存在未填写项目');
     });
     let res1: any = await form2.validateFields();
-    let _res = config.map((item: any) => {
+    let _res = Nconfig.map((item: any) => {
       Object.keys(res1.systemConfigList).forEach((v) => {
         console.log(item.configKey, v);
         if (item?.configKey == v) {
@@ -58,7 +59,7 @@ const NodeConfig: React.FC = (props: any) => {
     };
     if (res && res1) {
       await _saveNode(params).then((res) => {
-        if (res.resultCode == '0000') {
+        if (res.resultCode == config.successCode) {
           message.success(res.resultDesc);
           _getNodesConfig();
         } else {
@@ -73,7 +74,7 @@ const NodeConfig: React.FC = (props: any) => {
   const _getNodesConfig = async () => {
     await getNodeConfig({ robotId: info.id }).then((res) => {
       console.log(res);
-      setConfig(res?.systemConfigList);
+      setNConfig(res?.systemConfigList);
       let obj: any = {};
       res?.systemConfigList?.forEach((item: any) => {
         obj[item.configKey] = item.configValue;
@@ -102,7 +103,7 @@ const NodeConfig: React.FC = (props: any) => {
             form={form}
             bussinessList={flowList}
             type={'config'}
-            config={config}
+            config={Nconfig}
           ></HighConfig>
         </Form>
 
@@ -117,7 +118,7 @@ const NodeConfig: React.FC = (props: any) => {
               </div>
             </Space>
 
-            {config?.map((item: any) => {
+            {Nconfig?.map((item: any) => {
               return (
                 <FormItem
                   // {...col}

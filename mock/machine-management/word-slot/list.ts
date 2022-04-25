@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 
-const successCode = '0000';
+import config from '@/config';
+
+const successCode = config.successCode;
 
 const getWordSlotList = (req: any, res: any) => {
   res.json({

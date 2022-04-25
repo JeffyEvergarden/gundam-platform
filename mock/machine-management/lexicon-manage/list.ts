@@ -1,4 +1,6 @@
-const successCode = '0000';
+import config from '@/config';
+
+const successCode = config.successCode;
 
 const getLexiconList = (req: any, res: any) => {
   res.json({

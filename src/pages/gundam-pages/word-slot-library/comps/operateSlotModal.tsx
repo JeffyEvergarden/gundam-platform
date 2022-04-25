@@ -6,6 +6,7 @@ import { QuestionCircleFilled } from '@ant-design/icons';
 import { useKeyWordModel } from '../model';
 import { useIntentModel } from '../../wish/model';
 import styles from './../../style.less';
+import config from '@/config';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -128,27 +129,27 @@ export default (props: any) => {
 
   const getRealList = async () => {
     const res = await getzzReal({ robotId: info.id, entityType: 1 });
-    if (res.resultCode === '0000') {
+    if (res.resultCode === config.successCode) {
       setRealList(res?.data);
     }
   };
 
   const getInterFaceList = async () => {
     const res = await interFaceList();
-    if (res.resultCode === '0000') {
+    if (res.resultCode === config.successCode) {
       setInterfaceList(res?.data);
     }
   };
 
   const paramListIn = async (datas: any) => {
     const resIn = await getparamList(datas); //入参枚举
-    if (resIn.resultCode === '0000') {
+    if (resIn.resultCode === config.successCode) {
       setInparams(resIn?.data);
     }
   };
   const paramListOut = async (datas: any) => {
     const resOut = await getparamList(datas); //出参枚举
-    if (resOut.resultCode === '0000') {
+    if (resOut.resultCode === config.successCode) {
       setOutVal(resOut?.data);
     }
   };
@@ -169,7 +170,7 @@ export default (props: any) => {
 
   const getConfigList = async () => {
     const invalChild = await configList({ robotId: info.id, configType: 1 }); //入参值
-    if (invalChild.resultCode === '0000') {
+    if (invalChild.resultCode === config.successCode) {
       setinValList(invalChild?.data);
     } else {
       message.warning(invalChild.resultDesc);
@@ -179,7 +180,7 @@ export default (props: any) => {
 
   const slotInfoList = async () => {
     const invalChild = await getslotInfo({ robotId: info.id }); //入参值
-    if (invalChild.resultCode === '0000') {
+    if (invalChild.resultCode === config.successCode) {
       setinValList(invalChild?.data);
     } else {
       message.warning(invalChild.resultDesc);
@@ -232,7 +233,7 @@ export default (props: any) => {
       res = await addWordSlot(params);
     }
     console.log('res', res);
-    if (res?.resultCode == '0000') {
+    if (res?.resultCode == config.successCode) {
       message.success(res?.resultDesc);
       onSubmit();
     } else {

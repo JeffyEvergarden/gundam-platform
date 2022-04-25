@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Form, Row, Col, Input, Button, Select, Radio, Space, message, Spin } from 'antd';
 import { operateFormList } from './config';
 import { useIntentModel } from '../model';
+import config from '@/config';
 const { Option } = Select;
 
 const layout = {
@@ -41,7 +42,7 @@ export default (props: any) => {
       res = await addIntentItem({ robotId: modalData.robotId, ...values });
     }
 
-    if (res?.resultCode == '0000') {
+    if (res?.resultCode == config.successCode) {
       message.success(res?.resultDesc);
       submit();
     } else {

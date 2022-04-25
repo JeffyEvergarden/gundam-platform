@@ -8,6 +8,7 @@ import { Button, message, Space, Popconfirm } from 'antd';
 import { useTableModel } from './model';
 import OperateFlowModal from './comps/operateFlowModal';
 import { InfoCircleFilled } from '@ant-design/icons';
+import config from '@/config';
 
 // 机器人列表
 const DetailPages: React.FC = (props: any) => {
@@ -135,7 +136,7 @@ const DetailPages: React.FC = (props: any) => {
     };
     const res: any = await deleteFlowData(params);
     message.info(res?.resultDesc || '失败');
-    if (res?.resultCode == '0000') {
+    if (res?.resultCode == config.successCode) {
       refreshTable();
     }
   };

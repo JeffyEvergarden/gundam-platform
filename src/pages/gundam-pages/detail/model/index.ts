@@ -7,7 +7,9 @@ import { getConfigCurrentList, addNewGlobal, editNewGlobal, deleteGlobal } from 
 //节点配置
 import { _getNodeConfig, _saveNode } from './api';
 
-export const successCode = '0000';
+import config from '@/config';
+
+export const successCode = config.successCode;
 
 // 机器人配置
 export const useConfigModel = () => {

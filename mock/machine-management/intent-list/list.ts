@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
+import config from '@/config';
 
-const successCode = '0000';
+const successCode = config.successCode;
 
 const getIntentList = (req: any, res: any) => {
   const datas = [

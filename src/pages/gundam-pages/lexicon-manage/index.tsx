@@ -4,6 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { useLexiconModel } from './model';
 import { Space, Button, Tabs, Popconfirm, message } from 'antd';
 import OperateModal from './components/modalCompo';
+import config from '@/config';
 const { TabPane } = Tabs;
 
 const LexiconManage: React.FC = (props: any) => {
@@ -47,7 +48,7 @@ const LexiconManage: React.FC = (props: any) => {
   const deleteRow = async (record: any) => {
     let datas = { id: record.id, robotId: record.robotId };
     const res: any = await deleteLexicon(datas);
-    if (res.resultCode === '0000') {
+    if (res.resultCode === config.successCode) {
       message.success(res.resultDesc);
       actionRef.current.reloadAndRest();
     } else {
@@ -71,7 +72,7 @@ const LexiconManage: React.FC = (props: any) => {
       params.id = editObj.id;
       res = await editLexicon({ ...params });
     }
-    if (res.resultCode === '0000') {
+    if (res.resultCode === config.successCode) {
       message.success(res.resultDesc);
       actionRef.current.reloadAndRest();
       cancel();

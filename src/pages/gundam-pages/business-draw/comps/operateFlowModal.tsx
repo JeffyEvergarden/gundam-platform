@@ -4,6 +4,7 @@ import { operateFlowFormList } from '../config';
 import { useTableModel } from '../model';
 import style from './style.less';
 import { useModel } from 'umi';
+import config from '@/config';
 
 const { Option } = Select;
 const selectOptList = [
@@ -68,7 +69,7 @@ export default (props: any) => {
     } else {
       res = await addFlowData({ ...params, flowType: 1 });
     }
-    if (res?.resultCode == '0000') {
+    if (res?.resultCode == config.successCode) {
       message.info(res?.resultDesc);
       operateFunc();
       form.resetFields();

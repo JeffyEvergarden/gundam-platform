@@ -11,6 +11,7 @@ import type { ActionType } from '@ant-design/pro-table';
 
 import { Button, Space, Popconfirm, message } from 'antd';
 import { tableList } from './comps/config';
+import config from '@/config';
 
 export type TableListItem = {
   id: string;
@@ -89,7 +90,7 @@ const DetailPages: React.FC = (props: any) => {
   // 删除意图
   const deleteIntent = async (data: any) => {
     const res: any = await deleteIntentItem({ robotId: info.id, id: data.id });
-    if (res?.resultCode == '100') {
+    if (res?.resultCode == config.successCode) {
       message.success(res?.resultDesc);
       refreshTable();
     } else {

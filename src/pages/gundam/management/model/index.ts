@@ -13,8 +13,9 @@ import {
   getPublishStatus,
   _getGlobalValConfig,
 } from './api';
+import config from '@/config';
 
-export const successCode = '0000';
+export const successCode = config.successCode;
 
 // 菜单管理的表格数据
 export const useTableModel = () => {
