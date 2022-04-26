@@ -27,6 +27,8 @@ def generateStage(projectEnv) {
             // 得到服务器定义对象
             // 根据凭据获取112服务器
             def remote = GetRemoteServer('11.113.1.50', '11.113.1.50', 'jeffy-liang-50')
+
+            def uatRemote = GetRemoteServer('11.112.0.98', '11.112.0.98', 'jeffy-liang-98')
             
             // 打包
             if (projectEnv == 'default') {
@@ -49,19 +51,38 @@ def generateStage(projectEnv) {
                 
             println "发布"
             // linux 脚本
-            sshCommand remote: remote, command: """
-                if [ ! -d "/home/appuser/cooperation-${projectEnv}" ];then
-                    mkdir -p /home/appuser/cooperation-${projectEnv}
-                fi
-                """
-            sshPut remote: remote, from: "./gundam-${projectEnv}.tar.gz", into: "/home/appuser/cooperation-${projectEnv}/"
-            sshCommand remote: remote, command: """
-                cd /home/appuser/cooperation-${projectEnv}
-                tar -xvf gundam-${projectEnv}.tar.gz
-                rm -rf gundam-${projectEnv}.tar.gz
-                rm -rf  /data/robot/robot_chatWeb/static/*
-                mv ./*  /data/robot/robot_chatWeb/static/
-                """
+            if (packageOnEnv == 'SIT') {
+              println "操作地址: ${remote.host} /data/robot/robot_chatWeb/static/"
+              sshCommand remote: remote, command: """
+                  if [ ! -d "/home/appuser/cooperation-${projectEnv}" ];then
+                      mkdir -p /home/appuser/cooperation-${projectEnv}
+                  fi
+                  """
+              sshPut remote: remote, from: "./gundam-${projectEnv}.tar.gz", into: "/home/appuser/cooperation-${projectEnv}/"
+              sshCommand remote: remote, command: """
+                  cd /home/appuser/cooperation-${projectEnv}
+                  tar -xvf gundam-${projectEnv}.tar.gz
+                  rm -rf gundam-${projectEnv}.tar.gz
+                  rm -rf  /data/robot/robot_chatWeb/static/*
+                  mv ./*  /data/robot/robot_chatWeb/static/
+                  """
+            } else if (packageOnEnv == 'UAT') {
+              println "操作地址: ${uatRemote.host} /data/robot/airobot/youcash-aip-robot-admin/static"
+              sshCommand remote: uatRemote, command: """
+                  if [ ! -d "/home/appuser/cooperation-${projectEnv}" ];then
+                      mkdir -p /home/appuser/cooperation-${projectEnv}
+                  fi
+                  """
+              sshPut remote: uatRemote, from: "./gundam-${projectEnv}.tar.gz", into: "/home/appuser/cooperation-${projectEnv}/"
+              sshCommand remote: uatRemote, command: """
+                  cd /home/appuser/cooperation-${projectEnv}
+                  tar -xvf gundam-${projectEnv}.tar.gz
+                  rm -rf gundam-${projectEnv}.tar.gz
+                  rm -rf  /data/robot/airobot/youcash-aip-robot-admin/static/*
+                  mv ./*  /data/robot/airobot/youcash-aip-robot-admin/static/
+                  """
+            }
+            
         }
     // }
 }
@@ -79,8 +100,9 @@ pipeline {
     }
 
     parameters{
-        choice(name: 'projectEnv', choices: ['default'], description: '请选择部署环境')
+        choice(name: 'projectEnv', choices: ['default'], defaultValue: 'default', description: '请选择前端打包环境 npm run build方式')
         gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'branch', type: 'PT_BRANCH'
+        choice(name: 'packageOnEnv', choices: ['SIT', 'UAT'], description: '请选择部署环境')
     }
 
     stages {
