@@ -101,7 +101,7 @@ export default (props: any) => {
             label={'正则实体'}
             rules={[{ required: true, message: '请输入正则实体名称' }]}
           >
-            <Input placeholder={'请输入正则实体名称'} maxLength={150} readOnly={type === 'edit'} />
+            <Input placeholder={'请输入正则实体名称'} maxLength={150} />
           </Form.Item>
           <Form.Item name={'entityDesc'} label={'说明'}>
             <TextArea placeholder={'请输入正则实体说明'} rows={4} />
@@ -115,7 +115,14 @@ export default (props: any) => {
               <div className={styles.listBox}>
                 {ruleList?.map((item: any, index: any) => {
                   return (
-                    <Tag closable key={index} onClose={() => handleClose(item?.entityValueName)}>
+                    <Tag
+                      closable
+                      key={index}
+                      onClose={(e) => {
+                        e.preventDefault();
+                        handleClose(item?.entityValueName);
+                      }}
+                    >
                       <span onDoubleClick={() => editRule(item)}>{item?.entityValueName}</span>
                     </Tag>
                   );
