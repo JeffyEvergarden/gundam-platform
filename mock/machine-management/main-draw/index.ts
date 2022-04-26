@@ -173,7 +173,7 @@ const getLineConfig = (req: any, res: any) => {
               ruleType: 1,
               ruleKey: '013',
               ruleKeyType: 2,
-              condition: '!==',
+              condition: '!=',
               valueType: 3,
               ruleValue: '2022-04-01 04:42:41',
             },

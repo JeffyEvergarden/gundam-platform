@@ -46,7 +46,7 @@ export const RUlE_LIST: any[] = [
         label: '等于',
       },
       {
-        name: '!==',
+        name: '!=',
         label: '不等于',
       },
       {
@@ -171,7 +171,7 @@ export const conditionFilter = (valueType: any) => {
         label: '等于',
       },
       {
-        name: '!==',
+        name: '!=',
         label: '不等于',
       },
       {
@@ -204,7 +204,7 @@ export const conditionFilter = (valueType: any) => {
         label: '等于',
       },
       {
-        name: '!==',
+        name: '!=',
         label: '不等于',
       },
       {
