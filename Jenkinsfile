@@ -50,7 +50,7 @@ def generateStage(projectEnv) {
             println "发布"
             // linux 脚本
             sshCommand remote: remote, command: """
-                if [ ! -d "/home/appuser/cooperation-${projectEnv}"  ];then
+                if [ ! -d "/home/appuser/cooperation-${projectEnv}" ];then
                     mkdir -p /home/appuser/cooperation-${projectEnv}
                 fi
                 """
@@ -108,10 +108,10 @@ pipeline {
                     sh "node --version;npm --version"
                     // sh "rm -rf ./node_modules"
                     sh """
-                        if [ ! -d "./node_modules"  ];then
-                          echo '不存在node_modules目录'
+                        if [ ! -d "./node_modules" ];then
+                          echo 'has node_modules dir'
                         else 
-                          echo '存在node_modules目录'
+                          echo 'not has node_modules dir'
                         fi
                     """
                     echo "npm install"
