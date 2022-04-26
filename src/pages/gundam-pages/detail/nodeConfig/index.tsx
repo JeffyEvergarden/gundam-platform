@@ -41,6 +41,9 @@ const NodeConfig: React.FC = (props: any) => {
     let res: any = await form.validateFields().catch(() => {
       message.warning('存在未填写项目');
     });
+    if (!res) {
+      return;
+    }
     let res1: any = await form2.validateFields();
     let _res = Nconfig.map((item: any) => {
       Object.keys(res1.systemConfigList).forEach((v) => {

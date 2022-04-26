@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Form, Input, Select, Button, Space, DatePicker, InputNumber, Cascader } from 'antd';
 import { MinusCircleOutlined, AppstoreAddOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import Condition from '@/components/Condition';
@@ -116,8 +116,12 @@ const ActionConfig = (props: any) => {
     const item = getItem();
     if (deep) {
       item.action.toFlowId = undefined;
+      item.action.actionText = undefined;
+      item.action.textLabels = [];
     } else {
       item.toFlowId = undefined;
+      item.actionText = undefined;
+      item.textLabels = [];
     }
 
     const list = form.getFieldValue(key);
@@ -159,7 +163,7 @@ const ActionConfig = (props: any) => {
       </div>
 
       <div>
-        <Space>
+        <Space align="baseline">
           <FormItem name={getFormName(['action', 'actionType'])} label="跳转动作">
             <Select
               placeholder="请选择跳转动作"
@@ -181,7 +185,10 @@ const ActionConfig = (props: any) => {
             </Select>
           </FormItem>
           <Condition r-if={_actionType === 2}>
-            <FormItem name={getFormName(['action', 'toFlowId'])}>
+            <FormItem
+              name={getFormName(['action', 'toFlowId'])}
+              rules={[{ required: true, message: '请选择' }]}
+            >
               <Select
                 placeholder="请选择跳转业务流程"
                 optionFilterProp="children"
@@ -206,25 +213,29 @@ const ActionConfig = (props: any) => {
             </FormItem>
           </Condition>
         </Space>
-        <FormItem name={getFormName(['action', 'actionText'])} label="话术">
-          <CvsInput
-            placeholder="请输入话术内容"
-            type="textarea"
-            style={{ width: '100%' }}
-            autoComplete="off"
-            rows={3}
-            maxlength={maxlength}
-            canEdit={canEdit}
-          />
+        <Condition r-if={_actionType}>
+          <FormItem name={getFormName(['action', 'actionText'])} label="话术">
+            <CvsInput
+              placeholder="请输入话术内容"
+              type="textarea"
+              style={{ width: '100%' }}
+              autoComplete="off"
+              rows={3}
+              maxlength={maxlength}
+              canEdit={canEdit}
+            />
+          </FormItem>
+        </Condition>
+        <Condition r-if={_actionType}>
+          <FormItem name={getFormName(['action', 'textLabels'])} label="选择标签">
+            <LabelSelect color="magenta" canEdit={canEdit}></LabelSelect>
+          </FormItem>
+        </Condition>
+        <FormItem>
+          <div className={'ant-form-item-label'}>
+            <label>短信发送</label>
+          </div>
         </FormItem>
-
-        <FormItem name={getFormName(['action', 'textLabels'])} label="选择标签">
-          <LabelSelect color="magenta" canEdit={canEdit}></LabelSelect>
-        </FormItem>
-
-        <div className={'ant-form-item-label'}>
-          <label>短信发送</label>
-        </div>
 
         <div className={styles['action-box']}>
           <FormList name={getFormName(['messageList'])}>
