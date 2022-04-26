@@ -26,7 +26,7 @@ def generateStage(projectEnv) {
             // 远程服务器配置
             // 得到服务器定义对象
             // 根据凭据获取112服务器
-            def remote = GetRemoteServer('11.113.1.50', '11.113.1.50', '0da36bce-f1cc-4c06-8dba-29683060ea08')
+            def remote = GetRemoteServer('11.113.1.50', '11.113.1.50', 'jeffy-liang-50')
             
             // 打包
             if (projectEnv == 'default') {
