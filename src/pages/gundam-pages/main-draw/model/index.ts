@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { message } from 'antd';
-import config from '@/config';
+import config from '@/config/index';
 import {
   normalNode,
   startNode,

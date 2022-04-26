@@ -7,7 +7,7 @@ import ProTable from '@ant-design/pro-table';
 import { PlusOutlined } from '@ant-design/icons';
 import InfoModal from './components/infoModal';
 import { useGlobalModel } from '../model';
-import config from '@/config';
+import config from '@/config/index';
 
 const InterfaceConfig: React.FC = (props: any) => {
   const { _deleteLabel, addGlobal, editGlobal, getTableList, configLoading } = useGlobalModel();

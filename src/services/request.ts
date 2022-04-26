@@ -2,7 +2,7 @@ import { history } from 'umi';
 import { extend } from 'umi-request';
 import { message } from 'antd';
 
-import config from '@/config';
+import config from '@/config/index';
 
 const request = extend({
   timeout: 10000,

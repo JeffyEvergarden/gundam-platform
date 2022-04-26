@@ -9,7 +9,7 @@ import RulesConfig from '../drawerV2/child/rule-config';
 
 const { Item: FormItem } = Form;
 const { TextArea } = Input;
-import config from '@/config';
+import config from '@/config/index';
 import { processRequest, parserBody } from './formate';
 
 const EdgeDrawerForm = (props: any) => {

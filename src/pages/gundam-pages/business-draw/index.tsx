@@ -8,7 +8,7 @@ import { Button, message, Space, Popconfirm } from 'antd';
 import { useTableModel } from './model';
 import OperateFlowModal from './comps/operateFlowModal';
 import { InfoCircleFilled } from '@ant-design/icons';
-import config from '@/config';
+import config from '@/config/index';
 
 // 机器人列表
 const DetailPages: React.FC = (props: any) => {

@@ -6,7 +6,7 @@ import { Button, Space, Popconfirm, message, Table } from 'antd';
 import { wordSlotTableList } from './comps/config';
 import OperateSlotModal from './comps/operateSlotModal';
 import { useKeyWordModel } from './model';
-import config from '@/config';
+import config from '@/config/index';
 
 // 机器人列表
 const DetailPages: React.FC = (props: any) => {

@@ -13,7 +13,7 @@ import Condition from '@/components/Condition';
 
 import LabelSelect from './components/label-select';
 import GlobalVarButton from './components/global-var-button';
-import config from '@/config';
+import config from '@/config/index';
 
 const { Item: FormItem, List: FormList } = Form;
 const { TextArea } = Input;

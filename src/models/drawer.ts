@@ -7,7 +7,7 @@ import {
   queryWishList,
   queryNodeConfig,
 } from '@/services/api';
-import config from '@/config';
+import config from '@/config/index';
 
 export default function useGundamModel() {
   const timeFc = useRef<any>({});

@@ -6,7 +6,7 @@ import { useModel } from 'umi';
 import { useNodeModel } from '../model';
 import { _saveNode } from '../model/api';
 import { processForm } from '../../main-draw/drawerV2/formate';
-import config from '@/config';
+import config from '@/config/index';
 
 const { Option } = Select;
 const { Item: FormItem, List: FormList } = Form;

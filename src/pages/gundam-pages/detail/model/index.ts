@@ -7,7 +7,7 @@ import { getConfigCurrentList, addNewGlobal, editNewGlobal, deleteGlobal } from 
 //节点配置
 import { _getNodeConfig, _saveNode } from './api';
 
-import config from '@/config';
+import config from '@/config/index';
 
 export const successCode = config.successCode;
 

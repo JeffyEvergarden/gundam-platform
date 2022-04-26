@@ -8,7 +8,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import style from './style.less';
 import Condition from '@/components/Condition';
 import InfoModal from './components/info-modal';
-import config from '@/config';
+import config from '@/config/index';
 import { BUSSINESS_CODE, listToMap } from './model/const';
 
 enum MACHINE_STATUS {

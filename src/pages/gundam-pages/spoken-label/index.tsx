@@ -7,7 +7,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import Condition from '@/components/Condition';
 import InfoModal from './components/info-modal';
 import { useOpModel, useLabelModel } from './model';
-import config from '@/config';
+import config from '@/config/index';
 
 // 话术标签列表
 const DetailPages: React.FC = (props: any) => {

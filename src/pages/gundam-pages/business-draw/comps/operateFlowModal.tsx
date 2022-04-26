@@ -4,7 +4,7 @@ import { operateFlowFormList } from '../config';
 import { useTableModel } from '../model';
 import style from './style.less';
 import { useModel } from 'umi';
-import config from '@/config';
+import config from '@/config/index';
 
 const { Option } = Select;
 const selectOptList = [

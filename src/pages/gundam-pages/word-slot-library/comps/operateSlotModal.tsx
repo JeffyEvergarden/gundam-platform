@@ -6,7 +6,7 @@ import { QuestionCircleFilled } from '@ant-design/icons';
 import { useKeyWordModel } from '../model';
 import { useIntentModel } from '../../wish/model';
 import styles from './../../style.less';
-import config from '@/config';
+import config from '@/config/index';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -91,10 +91,10 @@ export default (props: any) => {
           paramListIn({ interfaceId: modalData?.slotInfo?.id, paramType: 0 });
           paramListOut({ interfaceId: modalData?.slotInfo?.id, paramType: 1 });
         }
-        if (modalData?.sourceType == 1) {
+        if (modalData?.slotInfo?.inputParamList[0]?.sourceType == 1) {
           setInval_val('变量');
           getConfigList();
-        } else if (modalData?.sourceType == 0) {
+        } else if (modalData?.slotInfo?.inputParamList[0]?.sourceType == 0) {
           setInval_val('词槽');
           slotInfoList();
         }

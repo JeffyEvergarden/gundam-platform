@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { queryLabelList, queryFlowList, queryGlobalValConfig } from '@/services/api';
-import config from '@/config';
+import config from '@/config/index';
 
 export default function useGundamModel() {
   const localBusinessFlowId =

@@ -13,7 +13,7 @@ import {
   getPublishStatus,
   _getGlobalValConfig,
 } from './api';
-import config from '@/config';
+import config from '@/config/index';
 
 export const successCode = config.successCode;
 

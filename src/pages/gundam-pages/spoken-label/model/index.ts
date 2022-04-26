@@ -3,7 +3,7 @@ import { message } from 'antd';
 
 import { getLabelList, deleteLabel, addNewLabel, editLabel } from './api';
 
-import config from '@/config';
+import config from '@/config/index';
 
 export const successCode = config.successCode;
 

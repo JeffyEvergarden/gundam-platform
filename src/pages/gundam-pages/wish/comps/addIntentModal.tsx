@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Form, Row, Col, Input, Button, Select, Radio, Space, message, Spin } from 'antd';
 import { operateFormList } from './config';
 import { useIntentModel } from '../model';
-import config from '@/config';
+import config from '@/config/index';
 const { Option } = Select;
 
 const layout = {

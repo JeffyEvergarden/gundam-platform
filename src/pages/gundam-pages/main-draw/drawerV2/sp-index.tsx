@@ -7,7 +7,7 @@ import { useModel } from 'umi';
 import { useNodeOpsModel } from '../model';
 import { useEffect } from 'react';
 import Condition from '@/components/Condition';
-import config from '@/config';
+import config from '@/config/index';
 
 const { Item: FormItem, List: FormList } = Form;
 const { TextArea } = Input;

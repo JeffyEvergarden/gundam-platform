@@ -11,7 +11,7 @@ import type { ActionType } from '@ant-design/pro-table';
 
 import { Button, Space, Popconfirm, message } from 'antd';
 import { tableList } from './comps/config';
-import config from '@/config';
+import config from '@/config/index';
 
 export type TableListItem = {
   id: string;
