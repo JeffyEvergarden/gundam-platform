@@ -2,6 +2,7 @@
 import moment from 'moment';
 
 const reg = /\d{4}-\d{2}-\d{2}/;
+const reg2 = /\d{2}:\d{2}:\d{2}/;
 
 export const parserBody = (info: any) => {
   info.name = info.name || info.nodeName;
@@ -26,6 +27,13 @@ export const parserBody = (info: any) => {
               } catch (e) {
                 item.ruleValue = undefined;
               }
+            } else if (item.ruleValue && reg2.test(item.ruleValue)) {
+              //时分秒
+              try {
+                item.ruleValue = moment(item.ruleValue);
+              } catch (e) {
+                item.ruleValue = undefined;
+              }
             } else {
               item.ruleValue = undefined;
             }
@@ -40,6 +48,8 @@ export const parserBody = (info: any) => {
 
 // 节点信息 解析传回参数
 export const processRequest = (form1: any, form2: any) => {
+  console.log(form1, form2);
+
   // 日期格式 moment转化
   form1 = deepClone(form1);
   const strategyList: any = form1?.strategyList || [];
@@ -48,7 +58,11 @@ export const processRequest = (form1: any, form2: any) => {
     _item?.ruleList?.forEach((obj: any) => {
       obj?.rules?.forEach((item: any) => {
         if (item?.ruleValue instanceof moment) {
-          item.ruleValue = item.ruleValue.format('YYYY-MM-DD HH:mm:ss');
+          if (item?.ruleKeyType === 2) {
+            item.ruleValue = item.ruleValue.format('YYYY-MM-DD HH:mm:ss');
+          } else if (item?.ruleKeyType === 3) {
+            item.ruleValue = item.ruleValue.format('HH:mm:ss');
+          }
         } else if (Array.isArray(item?.ruleValue)) {
           try {
             item.ruleValue[0] = item.ruleValue[0]?.format('YYYY-MM-DD HH:mm:ss');

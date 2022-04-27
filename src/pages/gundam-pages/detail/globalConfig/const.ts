@@ -25,4 +25,8 @@ export const dataTypeList: any = [
     name: 2,
     label: '时间',
   },
+  {
+    name: 3,
+    label: '时间(时分秒)',
+  },
 ];

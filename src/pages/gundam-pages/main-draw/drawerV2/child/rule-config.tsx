@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Form, Input, Select, Button, Space, DatePicker, InputNumber } from 'antd';
+import { Form, Input, Select, Button, Space, DatePicker, InputNumber, TimePicker } from 'antd';
 import { MinusCircleOutlined, AppstoreAddOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import Condition from '@/components/Condition';
 import { useModel } from 'umi';
@@ -807,6 +807,29 @@ const RuleConfig = (props: any) => {
                                                         '请选择开始日期',
                                                         '请选择开始日期',
                                                       ]}
+                                                      size="small"
+                                                      getPopupContainer={(trigger: any) =>
+                                                        trigger.parentElement
+                                                      }
+                                                    />
+                                                  </FormItem>
+                                                </Condition>
+                                                <Condition
+                                                  r-if={
+                                                    valueType === VALUE_TYPE_MAP['自定义'] &&
+                                                    ruleKeyType === RULE_KEY_TYPE_MAP['time']
+                                                  }
+                                                >
+                                                  <FormItem
+                                                    name={[field.name, 'ruleValue']}
+                                                    fieldKey={[field.fieldKey, 'ruleValue']}
+                                                    style={{ width: '300px' }}
+                                                    rules={[
+                                                      { required: true, message: '请选择日期' },
+                                                    ]}
+                                                  >
+                                                    <TimePicker
+                                                      placeholder="请选择时间"
                                                       size="small"
                                                       getPopupContainer={(trigger: any) =>
                                                         trigger.parentElement

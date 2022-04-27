@@ -159,12 +159,17 @@ export const RULE_KEY_TYPE_MAP = {
   text: 0,
   number: 1,
   date: 2,
+  time: 3,
 };
 
 // 条件过滤
 export const conditionFilter = (valueType: any) => {
   let list: any[] = [];
-  if (valueType === RULE_KEY_TYPE_MAP['number'] || valueType === RULE_KEY_TYPE_MAP['date']) {
+  if (
+    valueType === RULE_KEY_TYPE_MAP['number'] ||
+    valueType === RULE_KEY_TYPE_MAP['date'] ||
+    valueType === RULE_KEY_TYPE_MAP['time']
+  ) {
     list = [
       {
         name: '==',

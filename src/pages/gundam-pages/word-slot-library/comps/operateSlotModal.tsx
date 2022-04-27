@@ -27,6 +27,10 @@ const typeData = [
   { value: 0, intentName: '文本' },
   { value: 1, intentName: '数值' },
   { value: 2, intentName: '时间' },
+  {
+    value: 3,
+    intentName: '时间(时分秒)',
+  },
 ];
 
 const slotPro = [
