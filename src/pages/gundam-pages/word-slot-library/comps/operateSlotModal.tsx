@@ -323,7 +323,7 @@ export default (props: any) => {
                 { required: true, message: '请输入名称' },
                 { max: 50, min: 1 },
                 {
-                  pattern: /^[A-zA-Z0-9_\-]+$/g,
+                  pattern: /^[A-zA-Z0-9_]+$/g,
                   message: '仅支持英文大小写、数字与下划线"_"',
                 },
               ]}

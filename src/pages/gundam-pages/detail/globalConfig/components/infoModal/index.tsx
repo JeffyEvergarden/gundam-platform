@@ -97,7 +97,7 @@ const InfoModal: React.FC<any> = (props: any) => {
             rules={[
               { required: true, message: '请填写变量ID' },
               {
-                pattern: /^[A-Za-z0-9_\-]+$/g,
+                pattern: /^[A-Za-z0-9_]+$/g,
                 message: '请输入字母、下划线、数字',
               },
             ]}
