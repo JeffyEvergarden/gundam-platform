@@ -11,7 +11,7 @@ export const parserBody = (info: any) => {
     _item?.ruleList?.forEach((obj: any) => {
       obj?.rules?.forEach((item: any) => {
         // 日期格式且是自定义
-        if (item?.ruleKeyType === 2 && item.valueType === 3) {
+        if ((item?.ruleKeyType === 2 || item?.ruleKeyType === 3) && item.valueType === 3) {
           // 日期格式
           if (Array.isArray(item.ruleValue)) {
             try {
