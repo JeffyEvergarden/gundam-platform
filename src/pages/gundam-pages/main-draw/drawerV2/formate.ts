@@ -30,7 +30,8 @@ export const parserBody = (info: any) => {
             } else if (item.ruleValue && reg2.test(item.ruleValue)) {
               //时分秒
               try {
-                item.ruleValue = moment(item.ruleValue);
+                let str = moment().format('YYYY-MM-DD');
+                item.ruleValue = moment(str + ' ' + item.ruleValue);
               } catch (e) {
                 item.ruleValue = undefined;
               }
