@@ -6,7 +6,7 @@ import { Result, Button, Space, Badge, Tooltip, Breadcrumb } from 'antd';
 import { PageContainer, ProBreadcrumb } from '@ant-design/pro-layout';
 
 const SubDrawPages: React.FC<any> = (props: any) => {
-  const { businessFlowId } = useModel('gundam' as any, (model: any) => ({
+  const { info, businessFlowId } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     businessFlowId: model.businessFlowId,
   }));
@@ -16,7 +16,7 @@ const SubDrawPages: React.FC<any> = (props: any) => {
   }));
 
   useEffect(() => {
-    getFlowList();
+    getFlowList(info.id);
   }, []);
 
   if (businessFlowId) {

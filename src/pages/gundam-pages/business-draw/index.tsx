@@ -144,7 +144,7 @@ const DetailPages: React.FC = (props: any) => {
     }
   };
   useEffect(() => {
-    getFlowList();
+    getFlowList(info.id);
   }, []);
 
   return (
