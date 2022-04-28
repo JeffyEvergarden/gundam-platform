@@ -39,16 +39,16 @@ const InterfaceConfig: React.FC = (props: any) => {
         return val;
       },
     },
-    {
-      title: '变量类型',
-      dataIndex: 'configType',
-      search: false,
-      width: 200,
-      valueEnum: {
-        0: { text: '系统配置' },
-        1: { text: '变量配置' },
-      },
-    },
+    // {
+    //   title: '变量类型',
+    //   dataIndex: 'configType',
+    //   search: false,
+    //   width: 200,
+    //   valueEnum: {
+    //     0: { text: '系统配置' },
+    //     1: { text: '变量配置' },
+    //   },
+    // },
     {
       title: '变量说明',
       dataIndex: 'configDesc',
