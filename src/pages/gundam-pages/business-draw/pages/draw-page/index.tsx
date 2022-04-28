@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useModel, Link } from 'umi';
 import MainDraw from '@/pages/gundam-pages/main-draw';
 import { Result, Button, Space, Badge, Tooltip, Breadcrumb } from 'antd';
@@ -10,6 +10,14 @@ const SubDrawPages: React.FC<any> = (props: any) => {
     info: model.info,
     businessFlowId: model.businessFlowId,
   }));
+  const { getFlowList, originFlowList } = useModel('drawer' as any, (model: any) => ({
+    originFlowList: model._originFlowList,
+    getFlowList: model.getFlowList,
+  }));
+
+  useEffect(() => {
+    getFlowList();
+  }, []);
 
   if (businessFlowId) {
     return (
@@ -21,7 +29,9 @@ const SubDrawPages: React.FC<any> = (props: any) => {
                 <Link to={'/gundamPages/businessDraw'}>业务流程管理-详情配置</Link>
               </Breadcrumb.Item>
               <Breadcrumb.Item>
-                <Link to={'/gundamPages/businessDraw/detail'}>业务流程管理-详情配置</Link>
+                <Link to={'/gundamPages/businessDraw/detail'}>
+                  {originFlowList?.find((item: any) => item?.id == businessFlowId)?.flowName}
+                </Link>
               </Breadcrumb.Item>
             </Breadcrumb>
           ),

@@ -25,6 +25,9 @@ const DetailPages: React.FC = (props: any) => {
     info: model.info,
     setBusinessFlowId: model.setBusinessFlowId,
   }));
+  const { getFlowList } = useModel('drawer' as any, (model: any) => ({
+    getFlowList: model.getFlowList,
+  }));
 
   const getTables = async (p?: any) => {
     console.log(p);
@@ -140,6 +143,9 @@ const DetailPages: React.FC = (props: any) => {
       refreshTable();
     }
   };
+  useEffect(() => {
+    getFlowList();
+  }, []);
 
   return (
     <React.Fragment>
