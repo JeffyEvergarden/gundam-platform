@@ -113,6 +113,9 @@ const MachinePagesHome: React.FC = (props: any) => {
       route={{ routes }}
       menuHeaderRender={() => <MenuHeader />}
       rightContentRender={() => <RightContent />}
+      onPageChange={() => {
+        handleChatVisible(false);
+      }}
       menuItemRender={(item: any, dom: any) => (
         <a
           onClick={() => {
