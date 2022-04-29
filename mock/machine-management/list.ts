@@ -118,7 +118,7 @@ const addNewMachine = (req: any, res: any) => {
 const publishProd = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
-    datas: {
+    data: {
       publishTime: '2022-03-01 17:51',
       desc: 'aaa',
       status: 0,
@@ -129,7 +129,7 @@ const publishProd = (req: any, res: any) => {
 const publishTest = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
-    datas: {
+    data: {
       publishTime: '2022-03-02 17:51',
       desc: 'aaa',
       status: 1,
@@ -140,7 +140,7 @@ const publishTest = (req: any, res: any) => {
 const getPublishStatus = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
-    datas: {
+    data: {
       prodTime: '2022-03-02 17:51',
       prodDesc: '哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
       prodStatus: 1,
