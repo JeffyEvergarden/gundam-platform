@@ -265,6 +265,7 @@ const MachineManagement: React.FC = (props: any) => {
 
               <Button
                 type="link"
+                className={style['btn-success']}
                 onClick={() => {
                   goToNewSystem(row);
                 }}
