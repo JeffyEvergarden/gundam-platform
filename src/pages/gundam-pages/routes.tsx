@@ -64,4 +64,9 @@ export default [
     path: '/gundamPages/businessDraw/detail',
     name: '业务流程管理-详情配置',
   },
+  {
+    icon: <CrownOutlined />,
+    path: '/gundamPages/faq/main',
+    name: 'FAQ管理',
+  },
 ];

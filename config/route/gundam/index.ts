@@ -97,6 +97,19 @@ export default [
         component: './gundam-pages/ai-simulation',
         name: '机器人模拟',
       },
+      {
+        path: '/gundamPages/faq',
+        component: './gundam-pages/FAQ/home',
+        name: 'FAQ',
+        routes: [
+          {
+            path: '/gundamPages/faq/main',
+            component: './gundam-pages/FAQ/FAQ-manage',
+            name: 'FAQ管理',
+          },
+          { redirect: '/gundamPages/faq/main' },
+        ],
+      },
       { redirect: '/gundamPages/mainDraw' },
       { component: './404' },
     ],
