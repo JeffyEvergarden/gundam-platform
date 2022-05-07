@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import { Button, Input, Select, Space, Tree, Collapse, List, Divider } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Button, Input, Select, Space, Tree, Collapse, List, Divider, Skeleton } from 'antd';
 import { DownOutlined, SettingOutlined } from '@ant-design/icons';
+import { history } from 'umi';
 import HighConfigSelect from './components/high-select';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { useFaqModal } from './model';
 import style from './style.less';
 import { treeData } from './test';
 
@@ -23,27 +26,39 @@ const FAQPage: React.FC<any> = (props: any) => {
   const changeHighConfig = (val: any) => {
     setValue(val);
   };
+  const [pageNo, setPageNo] = useState<number>(1);
 
-  const list: any[] = [
-    {
-      name: '阿斯拉大',
-      email: 'ljk15916807596@qq.com',
-      content: '冲啊，旋风冲锋',
-      time: '2022-04-01 14:00:00',
-      channel: ['微信', 'API', 'APP'],
-      creator: '伟大的教团',
-      times: 100,
-    },
-  ];
+  const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
+
+  useEffect(() => {
+    getFaqList({ pageNo: 1 });
+  }, []);
+
+  const _getMoreFaqList = async () => {
+    console.log(faqList.length, totalSize, faqList.length < totalSize);
+    if (loading) {
+      return;
+    }
+    let res = await getMoreFaqList({ pageNo: pageNo + 1 });
+    if (res) {
+      setPageNo(pageNo + 1);
+    }
+  };
 
   const extraBtnHtml = <SettingOutlined />;
+
+  const goToAddQuestion = () => {
+    history.push('/gundamPages/faq/board');
+  };
 
   return (
     <div className={style['FAQ-page']}>
       <div className={style['page_top']}>
         <div className={style['page_top__left']}>
           <Space>
-            <Button type="primary">添加问题</Button>
+            <Button type="primary" onClick={goToAddQuestion}>
+              添加问题
+            </Button>
 
             <Button type="primary">分类管理</Button>
 
@@ -84,42 +99,50 @@ const FAQPage: React.FC<any> = (props: any) => {
               </Panel>
             </Collapse>
           </div>
-          <div className={style['content']}>
-            <List
-              itemLayout="vertical"
-              dataSource={list}
-              renderItem={(item: any, index: number) => {
-                const channel: any = item.channel || [];
+          <div id="scrollContent" className={style['content']}>
+            <InfiniteScroll
+              dataLength={faqList.length}
+              hasMore={faqList.length < totalSize}
+              next={_getMoreFaqList}
+              loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
+              scrollableTarget="scrollContent"
+            >
+              <List
+                itemLayout="vertical"
+                dataSource={faqList}
+                renderItem={(item: any, index: number) => {
+                  const channel: any = item.channel || [];
 
-                return (
-                  <List.Item key={index}>
-                    <div className={style['list-item']}>
-                      <div className={style['box-top']}>
-                        <div className={style['title']}>{item.name}</div>
-                        <div className={style['extra']}>{item.time}</div>
-                      </div>
-                      <div className={style['box-desc']}>补充信息</div>
-                      <div
-                        className={style['box-content']}
-                        dangerouslySetInnerHTML={{ __html: item.content }}
-                      ></div>
-                      <div className={style['box-footer']}>
-                        <div>
-                          <span>作者: {item.creator}</span>
-                          <Divider type="vertical" />
-                          <span>
-                            生效渠道: <span className={style['blue']}>{channel.join(',')}</span>
-                          </span>
-                          <Divider type="vertical" />
-                          <span>浏览次数: {item.times}</span>
+                  return (
+                    <List.Item key={index}>
+                      <div className={style['list-item']}>
+                        <div className={style['box-top']}>
+                          <div className={style['title']}>{item.name}</div>
+                          <div className={style['extra']}>{item.time}</div>
                         </div>
-                        <div></div>
+                        <div className={style['box-desc']}>补充信息</div>
+                        <div
+                          className={style['box-content']}
+                          dangerouslySetInnerHTML={{ __html: item.content }}
+                        ></div>
+                        <div className={style['box-footer']}>
+                          <div>
+                            <span>作者: {item.creator}</span>
+                            <Divider type="vertical" />
+                            <span>
+                              生效渠道: <span className={style['blue']}>{channel.join(',')}</span>
+                            </span>
+                            <Divider type="vertical" />
+                            <span>浏览次数: {item.times}</span>
+                          </div>
+                          <div></div>
+                        </div>
                       </div>
-                    </div>
-                  </List.Item>
-                );
-              }}
-            ></List>
+                    </List.Item>
+                  );
+                }}
+              ></List>
+            </InfiniteScroll>
           </div>
         </div>
       </div>

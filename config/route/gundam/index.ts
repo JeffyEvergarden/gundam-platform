@@ -107,6 +107,11 @@ export default [
             component: './gundam-pages/FAQ/FAQ-manage',
             name: 'FAQ管理',
           },
+          {
+            path: '/gundamPages/faq/board',
+            component: './gundam-pages/FAQ/question-board/layout',
+            name: '编辑面板',
+          },
           { redirect: '/gundamPages/faq/main' },
         ],
       },
