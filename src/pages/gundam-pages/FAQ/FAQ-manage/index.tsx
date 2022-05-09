@@ -4,9 +4,9 @@ import { DownOutlined, SettingOutlined } from '@ant-design/icons';
 import { history } from 'umi';
 import HighConfigSelect from './components/high-select';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { useFaqModal } from './model';
+import MyTree from './components/my-tree';
+import { useFaqModal, useTreeModal } from './model';
 import style from './style.less';
-import { treeData } from './test';
 
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -30,7 +30,10 @@ const FAQPage: React.FC<any> = (props: any) => {
 
   const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
 
+  const { treeData, getTreeData } = useTreeModal();
+
   useEffect(() => {
+    getTreeData();
     getFaqList({ pageNo: 1 });
   }, []);
 
@@ -84,12 +87,7 @@ const FAQPage: React.FC<any> = (props: any) => {
 
       <div className={style['page_content']}>
         <div className={style['main-content_left']}>
-          <Tree
-            showLine
-            switcherIcon={<DownOutlined />}
-            onSelect={onSelect}
-            treeData={treeData}
-          ></Tree>
+          <MyTree onChange={onSelect} data={treeData}></MyTree>
         </div>
         <div className={style['main-content']}>
           <div className={style['high-config-select']}>
