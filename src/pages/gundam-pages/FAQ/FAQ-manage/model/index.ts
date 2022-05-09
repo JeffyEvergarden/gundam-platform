@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { getQuestionList } from './api';
+import { getQuestionList, getTreeList } from './api';
 import config from '@/config/index';
 import { message } from 'antd';
+import { processForm } from '@/pages/gundam-pages/main-draw/drawerV2/formate';
 
 const successCode = config.successCode;
 
@@ -50,5 +51,44 @@ export const useFaqModal = () => {
     setFaqList,
     getFaqList,
     getMoreFaqList,
+  };
+};
+
+export const useTreeModal = () => {
+  const [treeData, setTreeData] = useState<any[]>([]);
+
+  const processTreeData = (data: any[], parent?: any) => {
+    if (!Array.isArray(data)) {
+      return null;
+    }
+
+    let _data = data.map((item: any) => {
+      let obj: any = {
+        title: item.title,
+        key: item.key,
+        parent: parent,
+      };
+      let children: any = processTreeData(item.children, obj);
+      obj.children = children;
+      return obj;
+    });
+    return _data;
+  };
+
+  const getTreeData = async () => {
+    let res: any = await getTreeList();
+    if (res.resultCode === successCode) {
+      let data: any = Array.isArray(res.data) ? res.data : [];
+      // 数据加工
+      data = processTreeData(data);
+      setTreeData(data || []);
+    } else {
+      setTreeData([]);
+    }
+  };
+
+  return {
+    treeData,
+    getTreeData,
   };
 };

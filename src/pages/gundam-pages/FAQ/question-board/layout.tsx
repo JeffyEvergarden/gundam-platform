@@ -59,6 +59,7 @@ const Board: React.FC<any> = (props: any) => {
               <DatePicker.RangePicker showTime placeholder={['请选择开始时间', '请选择结束时间']} />
             </Form.Item>
           </Condition>
+
           <Form.Item
             name="channal"
             label="推荐设置"
