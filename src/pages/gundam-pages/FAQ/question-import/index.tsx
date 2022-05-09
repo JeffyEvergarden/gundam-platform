@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useModel, history, useLocation } from 'umi';
 import { Table, Button, Popconfirm, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import style from './style.less';
 import { CloseOutlined, DeleteOutlined, DownloadOutlined, PlusOutlined } from '@ant-design/icons';
 import Condition from '@/components/Condition';
 
