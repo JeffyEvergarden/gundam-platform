@@ -11,3 +11,10 @@ export async function getQuestionList(params?: Record<string, any>) {
     params,
   });
 }
+
+export async function getTreeList(params?: Record<string, any>) {
+  return request(`${baseUrl}/faq/tree`, {
+    method: 'GET',
+    params,
+  });
+}

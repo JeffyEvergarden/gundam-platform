@@ -41,6 +41,51 @@ const getFaqList = (req: any, res: any) => {
   });
 };
 
+const getTreeList = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    resultDesc: '成功',
+    success: true,
+    data: [
+      {
+        title: '全部分类',
+        key: '0',
+        children: [
+          {
+            title: '贷款产品分类',
+            key: '0-0',
+            children: [
+              {
+                title: '循环贷',
+                key: '0-0-1',
+              },
+              {
+                title: '极速贷',
+                key: '0-0-2',
+              },
+            ],
+          },
+          {
+            title: '产品操作',
+            key: '0-1',
+            children: [
+              {
+                title: '神奇流程',
+                key: '0-1-0',
+              },
+              {
+                title: '神奇流程',
+                key: '0-1-1',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  });
+};
+
 export default {
   'GET /aichat/faq/list': getFaqList, // 获取问答列表
+  'GET /aichat/faq/tree': getTreeList,
 };
