@@ -41,6 +41,42 @@ const getFaqList = (req: any, res: any) => {
   });
 };
 
+const getImportList = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    resultDesc: '成功',
+    success: true,
+    data: {
+      pageSize: 10,
+      totalPage: 2,
+      page: 1,
+      list: [
+        {
+          question: '测试',
+          similarQuestion: '-',
+          answer: '我是faq机器人',
+          channel: ['微信', 'API', 'APP'],
+          inportType: '导入已有问题答案',
+          classify: '测试',
+          importTime: '2022-02-02 22:22:22',
+          importResult: '成功！',
+        },
+        {
+          question: '你们叫什么',
+          similarQuestion: '你们的名字是什么',
+          answer: '-',
+          channel: ['微信', 'API', 'APP'],
+          inportType: '导入相似问法',
+          classify: '测试2',
+          importTime: '2022-02-02 22:22:22',
+          importResult: '成功！',
+        },
+      ],
+    },
+  });
+};
+
 export default {
   'GET /aichat/faq/list': getFaqList, // 获取问答列表
+  'GET /aichat/faq/importList': getImportList, // 获取批量导入列表
 };

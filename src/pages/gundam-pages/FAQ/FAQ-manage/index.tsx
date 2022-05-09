@@ -6,6 +6,7 @@ import HighConfigSelect from './components/high-select';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useFaqModal } from './model';
 import style from './style.less';
+import QuestionList from '../components/question-list';
 import { treeData } from './test';
 
 const { Panel } = Collapse;
@@ -62,7 +63,14 @@ const FAQPage: React.FC<any> = (props: any) => {
 
             <Button type="primary">分类管理</Button>
 
-            <Button type="primary">批量倒入</Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                history.push('/gundamPages/faq/import');
+              }}
+            >
+              批量导入
+            </Button>
           </Space>
         </div>
 
@@ -77,7 +85,14 @@ const FAQPage: React.FC<any> = (props: any) => {
               </Select>
             </Input.Group>
 
-            <Button type="primary">问题回收站</Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                history.push('/gundamPages/faq/recycle');
+              }}
+            >
+              问题回收站
+            </Button>
           </Space>
         </div>
       </div>
@@ -99,7 +114,9 @@ const FAQPage: React.FC<any> = (props: any) => {
               </Panel>
             </Collapse>
           </div>
-          <div id="scrollContent" className={style['content']}>
+
+          <QuestionList hasCheckbox={false}></QuestionList>
+          {/* <div id="scrollContent" className={style['content']}>
             <InfiniteScroll
               dataLength={faqList.length}
               hasMore={faqList.length < totalSize}
@@ -143,7 +160,7 @@ const FAQPage: React.FC<any> = (props: any) => {
                 }}
               ></List>
             </InfiniteScroll>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
