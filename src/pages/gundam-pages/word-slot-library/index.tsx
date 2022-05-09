@@ -109,11 +109,11 @@ const DetailPages: React.FC = (props: any) => {
   return (
     <React.Fragment>
       <ProTable
-        headerTitle={
-          <Space>
-            <Button onClick={() => operate({}, 'add')}>新增词槽</Button>
-          </Space>
-        }
+        toolBarRender={() => [
+          <Button key="0" type="primary" onClick={() => operate({}, 'add')}>
+            新增词槽
+          </Button>,
+        ]}
         actionRef={actionRef}
         pagination={{
           pageSize: 10,
@@ -121,7 +121,7 @@ const DetailPages: React.FC = (props: any) => {
         scroll={{ x: wordSlotTableList.length * 200 }}
         rowKey={(record) => Math.random()}
         columns={[...wordSlotTableList, operationList]}
-        options={false}
+        // options={false}
         search={false}
         request={async (...params) => {
           return getInitTable(params);

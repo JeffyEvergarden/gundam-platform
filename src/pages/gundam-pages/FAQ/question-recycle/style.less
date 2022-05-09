@@ -24,10 +24,6 @@
   }
 }
 
-.high-config-select {
-  margin-bottom: 16px;
-}
-
 .scrollbar(@width, @color: #f5f5f5) {
   ::-webkit-scrollbar {
     width: @width * 4;
@@ -63,8 +59,6 @@
 .main-content_left {
   width: 260px;
   min-height: 500px;
-  margin-right: 16px;
-  background-color: #fff;
   border: 1px solid #f3f3f3;
 }
 
@@ -79,13 +73,18 @@
 }
 
 .content {
-  padding: 0 8px;
+  // padding: 0 8px 0 0;
   overflow: auto;
+  border-left: 1px solid #f0f0f0;
+}
+
+.high-config-select {
+  margin-bottom: 16px;
 }
 
 .list-item {
-  padding: 12px 16px;
-  border: 1px solid #d3d3d3;
+  padding: 0 16px 12px 0;
+  // border: 1px solid #d3d3d3;
   border-radius: 10px;
 }
 
@@ -120,4 +119,13 @@
   flex-wrap: wrap;
   align-items: center;
   font-size: 12px;
+}
+
+:global {
+  .ant-pro-card-body {
+    padding: 0 !important;
+  }
+  .ant-pro-list-row-header-title {
+    display: block !important;
+  }
 }
