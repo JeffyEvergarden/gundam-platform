@@ -4,6 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { useLexiconModel } from './model';
 import { Space, Button, Tabs, Popconfirm, message } from 'antd';
 import OperateModal from './components/modalCompo';
+import EnumModal from './components/enumModal';
 import config from '@/config/index';
 const { TabPane } = Tabs;
 
@@ -13,6 +14,10 @@ const LexiconManage: React.FC = (props: any) => {
   const [visible, setVisible] = useState<boolean>(false);
   const [pageType, setPagetype] = useState<string>('');
   const [editObj, setEditObj] = useState<any>({});
+
+  const [visibleEnum, setVisibleEnum] = useState<boolean>(false);
+  const [enumType, setEnumType] = useState<string>('');
+  const [enumData, setEnumData] = useState<any>({});
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -81,6 +86,30 @@ const LexiconManage: React.FC = (props: any) => {
     }
   };
 
+  const addEnum = () => {
+    setVisibleEnum(true);
+    setEnumType('add');
+    setEnumData({});
+  };
+
+  const editEnum = (record: any) => {
+    setVisibleEnum(true);
+    setEnumType('edit');
+    setEnumData(record);
+  };
+
+  const deleteEnum = (record: any) => {
+    actionRef.current.reloadAndRest();
+  };
+
+  const closeEnum = () => {
+    setVisibleEnum(false);
+  };
+
+  const saveEnum = () => {
+    actionRef.current.reloadAndRest();
+  };
+
   const tableList: any = [
     {
       dataIndex: 'entityName',
@@ -123,16 +152,98 @@ const LexiconManage: React.FC = (props: any) => {
       },
     },
   ];
+
+  const tableListEnum: any = [
+    {
+      dataIndex: 'entityName',
+      title: '实体名称',
+      ellipsis: true,
+      fixed: 'left',
+      width: 200,
+    },
+    {
+      dataIndex: 'entityName',
+      title: '实体值',
+      ellipsis: true,
+      fixed: 'left',
+      width: 300,
+    },
+    {
+      dataIndex: 'creator',
+      title: '更新人',
+      search: false,
+      ellipsis: true,
+      width: 120,
+    },
+    {
+      dataIndex: 'createTime',
+      title: '更新时间',
+      search: false,
+      ellipsis: true,
+      width: 120,
+    },
+    {
+      dataIndex: 'entityDesc',
+      title: '词汇量',
+      ellipsis: true,
+      fixed: 'left',
+      width: 100,
+    },
+    {
+      title: '操作',
+      key: 'option',
+      width: 120,
+      fixed: 'right',
+      valueType: 'option',
+      render: (text: any, record: any) => {
+        return (
+          <Space>
+            <a onClick={() => editEnum(record)}>编辑</a>
+            <Popconfirm
+              title="确认删除该条词槽吗?"
+              okText="是"
+              cancelText="否"
+              onCancel={() => {}}
+              onConfirm={() => deleteEnum(record)}
+            >
+              <a style={{ color: 'red' }}>删除</a>
+            </Popconfirm>
+          </Space>
+        );
+      },
+    },
+  ];
   return (
     <Fragment>
       <Tabs type="card" defaultActiveKey="1" size={'small'} style={{ marginBottom: 32 }}>
-        <TabPane tab="正则实体" key="1">
+        <TabPane tab="枚举实体" key="1">
           <ProTable
-            headerTitle={
-              <Space>
-                <Button onClick={() => add()}>新增正则实体</Button>
-              </Space>
-            }
+            toolBarRender={() => [
+              <Button key="0" type="primary" onClick={() => addEnum()}>
+                新增枚举实体
+              </Button>,
+            ]}
+            rowKey={(record) => record?.id}
+            scroll={{ x: tableListEnum.length * 200 }}
+            actionRef={actionRef}
+            columns={tableListEnum}
+            pagination={{
+              pageSize: 10,
+            }}
+            search={false}
+            // options={false}
+            request={async (params = {}) => {
+              return getInitTable({ page: params.current, ...params });
+            }}
+          />
+        </TabPane>
+        <TabPane tab="正则实体" key="2">
+          <ProTable
+            toolBarRender={() => [
+              <Button key="0" type="primary" onClick={() => add()}>
+                新增正则实体
+              </Button>,
+            ]}
             rowKey={(record) => record?.id}
             scroll={{ x: tableList.length * 200 }}
             actionRef={actionRef}
@@ -141,13 +252,20 @@ const LexiconManage: React.FC = (props: any) => {
               pageSize: 10,
             }}
             search={false}
-            options={false}
+            // options={false}
             request={async (params = {}) => {
               return getInitTable({ page: params.current, ...params });
             }}
           />
         </TabPane>
       </Tabs>
+      <EnumModal
+        visible={visibleEnum}
+        enumData={enumData}
+        closeEnum={closeEnum}
+        type={enumType}
+        save={saveEnum}
+      />
       <OperateModal
         visible={visible}
         type={pageType}

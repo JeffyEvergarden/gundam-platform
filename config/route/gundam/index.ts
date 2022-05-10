@@ -112,6 +112,16 @@ export default [
             component: './gundam-pages/FAQ/question-board/layout',
             name: '编辑面板',
           },
+          {
+            path: '/gundamPages/faq/recycle',
+            component: './gundam-pages/FAQ/question-recycle',
+            name: '问题回收站',
+          },
+          {
+            path: '/gundamPages/faq/import',
+            component: './gundam-pages/FAQ/question-import',
+            name: '问题批量导入',
+          },
           { redirect: '/gundamPages/faq/main' },
         ],
       },

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button, Input, Select, Space, Tree, Collapse, List, Divider, Skeleton } from 'antd';
 import { DownOutlined, SettingOutlined } from '@ant-design/icons';
 import { history } from 'umi';
@@ -7,8 +7,9 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import MyTree from './components/my-tree';
 import TypeModal from './components/type-modal';
 import { useFaqModal, useTreeModal } from './model';
+import QuestionList from '../components/question-list';
 import style from './style.less';
-import { useRef } from 'react';
+import { treeData } from './test';
 
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -87,7 +88,14 @@ const FAQPage: React.FC<any> = (props: any) => {
 
             <Button type="primary">分类管理</Button>
 
-            <Button type="primary">批量倒入</Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                history.push('/gundamPages/faq/import');
+              }}
+            >
+              批量导入
+            </Button>
           </Space>
         </div>
 
@@ -102,7 +110,14 @@ const FAQPage: React.FC<any> = (props: any) => {
               </Select>
             </Input.Group>
 
-            <Button type="primary">问题回收站</Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                history.push('/gundamPages/faq/recycle');
+              }}
+            >
+              问题回收站
+            </Button>
           </Space>
         </div>
       </div>
@@ -127,7 +142,9 @@ const FAQPage: React.FC<any> = (props: any) => {
               </Panel>
             </Collapse>
           </div>
-          <div id="scrollContent" className={style['content']}>
+
+          <QuestionList hasCheckbox={false}></QuestionList>
+          {/* <div id="scrollContent" className={style['content']}>
             <InfiniteScroll
               dataLength={faqList.length}
               hasMore={faqList.length < totalSize}
@@ -171,7 +188,7 @@ const FAQPage: React.FC<any> = (props: any) => {
                 }}
               ></List>
             </InfiniteScroll>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
