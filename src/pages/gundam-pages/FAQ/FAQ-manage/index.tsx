@@ -5,14 +5,16 @@ import { history } from 'umi';
 import HighConfigSelect from './components/high-select';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import MyTree from './components/my-tree';
+import TypeModal from './components/type-modal';
 import { useFaqModal, useTreeModal } from './model';
 import style from './style.less';
+import { useRef } from 'react';
 
 const { Panel } = Collapse;
 const { Option } = Select;
 
 const FAQPage: React.FC<any> = (props: any) => {
-  const onSelect = (val: any) => {
+  const onSelect = (val: any, opt: any) => {
     console.log('选择树形组件:' + val);
   };
 
@@ -31,6 +33,26 @@ const FAQPage: React.FC<any> = (props: any) => {
   const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
 
   const { treeData, getTreeData } = useTreeModal();
+
+  const typeModalRef = useRef<any>({});
+
+  // 打开新增弹窗
+  const openAddModal = (obj: any, callback: any) => {
+    (typeModalRef.current as any).openModal({
+      type: 'create',
+      node: obj,
+      callback,
+    });
+  };
+
+  // 打开编辑弹窗
+  const openEditModal = (obj: any, callback: any) => {
+    (typeModalRef.current as any).openModal({
+      type: 'edit',
+      node: obj,
+      callback,
+    });
+  };
 
   useEffect(() => {
     getTreeData();
@@ -87,7 +109,15 @@ const FAQPage: React.FC<any> = (props: any) => {
 
       <div className={style['page_content']}>
         <div className={style['main-content_left']}>
-          <MyTree onChange={onSelect} data={treeData}></MyTree>
+          <MyTree
+            draggable={false}
+            onChange={onSelect}
+            data={treeData}
+            openAddModal={openAddModal}
+            openEditModal={openEditModal}
+          ></MyTree>
+
+          <TypeModal cref={typeModalRef}></TypeModal>
         </div>
         <div className={style['main-content']}>
           <div className={style['high-config-select']}>

@@ -74,7 +74,7 @@ const getTreeList = (req: any, res: any) => {
                 key: '0-1-0',
               },
               {
-                title: '神奇流程',
+                title: '神奇流程2',
                 key: '0-1-1',
               },
             ],
@@ -88,4 +88,7 @@ const getTreeList = (req: any, res: any) => {
 export default {
   'GET /aichat/faq/list': getFaqList, // 获取问答列表
   'GET /aichat/faq/tree': getTreeList,
+  'POST /aichat/faq/tree/add': normalDeal, // 添加分类节点
+  'POST /aichat/faq/tree/edit': normalDeal, // 编辑分类节点
+  'POST /aichat/faq/tree/delete': normalDeal, // 删除分类节点
 };

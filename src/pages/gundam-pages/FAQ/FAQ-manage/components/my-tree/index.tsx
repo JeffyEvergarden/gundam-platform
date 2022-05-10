@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Tree, Modal, Button } from 'antd';
 import { useLocation } from 'react-router';
 import {
@@ -6,6 +6,7 @@ import {
   DeleteOutlined,
   ExclamationCircleOutlined,
   PlusOutlined,
+  DownOutlined,
 } from '@ant-design/icons';
 import Condition from '@/components/Condition';
 import style from './style.less';
@@ -15,6 +16,7 @@ interface TreeProps {
   onChange?: (...args: any) => void;
   touchChangeParent?: (...args: any) => void;
   deleteApi?: any;
+  draggable: boolean;
   openEditModal?: (...args: any) => void;
   openAddModal?: (...args: any) => void;
 }
@@ -23,17 +25,22 @@ const { DirectoryTree } = Tree;
 // tree 组件属性解释
 // blockNode 是否节点占据一行
 
-const { confirm } = Modal;
-
 // 获取父节点
 const getParentNode = (obj: any, arr: any) => {
+  // console.log(obj);
+  // 位置 第一个没用 和最后一个自己
   let newArr: any = [...arr];
   newArr.shift();
+  newArr.shift();
   newArr.pop();
+  let tmp = obj[0];
   console.log(newArr);
-  let tmp = obj;
   newArr.forEach((it: any) => {
-    tmp = tmp[it];
+    // console.log(tmp);
+    if (tmp.children) {
+      tmp = tmp.children;
+    }
+    tmp = tmp?.[it];
   });
   if (tmp !== obj) {
     return tmp;
@@ -43,7 +50,7 @@ const getParentNode = (obj: any, arr: any) => {
 };
 
 const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
-  const { data, onChange, touchChangeParent, deleteApi = () => true } = props;
+  const { data, onChange, touchChangeParent, draggable, deleteApi = () => true } = props;
 
   const [dataSource, setDataSource] = useState<any[]>([]);
 
@@ -57,11 +64,14 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
 
   // 选择节点
   const onSelect = (key: any, opt: any) => {
-    // console.log(key, opt);
-    // 只有level2级的才会触发加载
-    if (opt?.node?.level === 2) {
+    let node = opt.node;
+    if (!node.children || node.children?.length === 0) {
       onChange?.(key, opt);
     }
+    // 只有level2级的才会触发加载
+    // if (opt?.node?.level === 2) {
+    //   onChange?.(key, opt);
+    // }
   };
   // ----
   // 复制节点
@@ -70,7 +80,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
       // key: node.key,
       // title: node.title,
       // children: node.children,
-      isLeaf: true,
+      // isLeaf: true,
     };
     Object.keys(node).forEach((name: any) => {
       newNode[name] = node[name];
@@ -83,67 +93,72 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
     console.log(info);
     // info.dragNode - 拖动节点
     // info.node 目标节点
-    // dropPosition    1-插到子节点  3-插到目标节点后面
+    // dropPosition 1-插到子节点  3-插到目标节点后面
     // 获取拖动节点位置
     let dragPos: any[] = info.dragNode.pos.split('-'); // 拖动节点
     // 获取目标节点位置
     let nodePos: any = info.node.pos.split('-'); // 目标节点
     // dropToGap = true ===> 表示可以直接在同级
     let dropToGap: any = info.dropToGap;
-    let dropPosition: any = info.dropPosition;
+    let dropPosition: any = info.dropPosition; // 位置
+    console.log(dropToGap, dropPosition, info.dragNode.title, info.node.title);
 
     info.node.children = info.node.children || [];
-    // 如果 拖拽节点层级 < 目标节点层级
-    if (dragPos.length < nodePos.length) {
-      // 同层的节点变成目标节点的子节点
-      return false;
-    }
-    // 这种情况在目标节点首插入
+    // // 如果 拖拽节点层级 < 目标节点层级
+    // if (dragPos.length < nodePos.length) {
+    //   // 同层的节点变成目标节点的子节点
+    //   return false;
+    // }
+    // 这种情况在目标节点首插入, dropToGap 为 false 在某节点子节点最前或最后位置插入
     if (!dropToGap) {
-      //dragPos
-      if (dragPos.length === nodePos.length) {
-        // 同层的节点变成目标节点的子节点
-        return false;
-      }
-      // 跨级变动
-      // 取父节点
-      let parentDragNode = getParentNode(dataSource, dragPos);
-      console.log(parentDragNode?.title);
-      // 删除节点
-      console.log(dragPos[dragPos.length - 1]);
-      parentDragNode?.children?.splice(dragPos[dragPos.length - 1], 1);
-      // 插入节点
+      let parentDragNode: any = getParentNode(dataSource, dragPos);
+      const deleteIndex = dragPos[dragPos.length - 1];
+      // 进行节点删除
+      parentDragNode?.children?.splice(deleteIndex, 1);
+      // 进行节点插入
       info.node.children.unshift(copyNode(info.dragNode));
       // 触发父节点变更 需要调接口
-      if (parentDragNode && info.node && parentDragNode.key !== info.node.key) {
-        //
-        touchChangeParent?.(info.dragNode, parentDragNode.key);
-      }
+      // if (parentDragNode && info.node && parentDragNode.key !== info.node.key) {
+      //   //
+      //   touchChangeParent?.(info.dragNode, parentDragNode.key); // 触发接口
+      // }
     }
+    // 在该节点位置下前后位置插入
     if (dropToGap) {
-      console.log('-----', dragPos.length === nodePos.length, info.dragNode.isLeaf);
-      //dragPos
-      if (dragPos.length === nodePos.length && info.dragNode.isLeaf) {
-        // 表示同层的节点
-        console.log('同层的节点');
-        console.log(dropPosition);
-        // 找父节点
-        let parentDragNode = getParentNode(dataSource, dragPos);
-        // 删除该节点
-        parentDragNode?.children?.splice(dragPos[dragPos.length - 1], 1);
-        let parentTargetNode = getParentNode(dataSource, nodePos);
-        let children = (parentTargetNode.children = parentTargetNode.children || []);
-        // console.log('children:', JSON.parse(JSON.stringify(children)));
-        let index = children.findIndex((item: any) => {
-          return item.key === info.node.key;
-        });
-        console.log(index);
-        children.splice(index + 1, 0, copyNode(info.dragNode));
-        if (parentDragNode && parentTargetNode && parentDragNode.key !== parentTargetNode.key) {
-          //
-          touchChangeParent?.(info.dragNode, parentTargetNode.key);
-        }
+      // 表示同层的节点
+      console.log('插入位置:', dropPosition);
+      // 找父节点
+      let parentDragNode = getParentNode(dataSource, dragPos);
+      console.log('移动节点的父节点： （进行删除操作）');
+      console.log(parentDragNode);
+      // 目标节点位置
+      let parentTargetNode = getParentNode(dataSource, nodePos);
+      console.log('目标节点的父节点： （进行新增节点操作）');
+      console.log(parentTargetNode);
+
+      // 针对移动至全部分类的不进行操作
+      if (parentTargetNode === dataSource[0] && dropPosition === -1) {
+        console.log('操作终止');
+        return;
       }
+
+      let children = (parentTargetNode.children = parentTargetNode.children || []);
+      // 进行删除
+      const deleteIndex = dragPos[dragPos.length - 1];
+      // 删除该节点
+      parentDragNode?.children?.splice(deleteIndex, 1);
+      // 找到节点的index值
+      let index = children.findIndex((item: any) => {
+        return item.key === info.node.key;
+      });
+      console.log('找目标节点索引下标index:' + index);
+      // 新增节点
+      children.splice(index + 1, 0, copyNode(info.dragNode));
+
+      // if (parentDragNode && parentTargetNode && parentDragNode.key !== parentTargetNode.key) {
+      //   //
+      //   touchChangeParent?.(info.dragNode, parentTargetNode.key);
+      // }
     }
     // 更新节点
     setDataSource([...dataSource]);
@@ -156,7 +171,9 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
     e.stopPropagation();
     const addCallback = (obj: any) => {
       if (obj.title) {
+        obj.parent = nodeData;
         let newNode: any = copyNode(obj);
+        nodeData.children = nodeData.children || [];
         nodeData.children?.push(newNode);
         setDataSource([...dataSource]);
       }
@@ -172,10 +189,9 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
     console.log('打开编辑事件');
     // 编辑回调
     const editCallback = (obj: any) => {
-      console.log(obj);
       if (obj.title) {
         nodeData.title = obj.title;
-        nodeData.sort = obj.sort;
+        nodeData.key = obj.title;
       }
       setDataSource([...dataSource]);
     };
@@ -220,10 +236,10 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
   // 自定义渲染
   const diyRender = (nodeData: any) => {
     let extra = null;
-    if (nodeData.level === 1) {
+    if (nodeData) {
       extra = (
         <PlusOutlined
-          style={{ marginRight: '8px' }}
+          style={{ marginRight: '4px', fontSize: '12px' }}
           onClick={(e: any) => {
             openAddModal(e, nodeData);
           }}
@@ -237,12 +253,13 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
         <div className={style['edit-layout']}>
           {extra}
           <EditOutlined
-            style={{ marginRight: '8px' }}
+            style={{ marginRight: '4px', fontSize: '12px' }}
             onClick={(e) => {
               openEditModal(e, nodeData);
             }}
           />
           <DeleteOutlined
+            style={{ fontSize: '12px' }}
             onClick={(e) => {
               openDeleteModal(e, nodeData);
             }}
@@ -269,10 +286,12 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
 
       <Tree
         treeData={dataSource}
+        switcherIcon={<DownOutlined />}
+        showLine
         onSelect={onSelect}
         titleRender={diyRender}
         blockNode
-        draggable
+        draggable={draggable}
         onDrop={onDrop}
       ></Tree>
     </div>

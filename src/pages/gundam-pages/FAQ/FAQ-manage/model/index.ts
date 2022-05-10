@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { getQuestionList, getTreeList } from './api';
+import { getQuestionList, getTreeList, addNodeLeaf, editNodeLeaf, deleteNodeLeaf } from './api';
 import config from '@/config/index';
 import { message } from 'antd';
-import { processForm } from '@/pages/gundam-pages/main-draw/drawerV2/formate';
 
 const successCode = config.successCode;
 
@@ -87,8 +86,46 @@ export const useTreeModal = () => {
     }
   };
 
+  // 添加叶子节点
+  const addLeaf = async (data: any) => {
+    let res: any = await addNodeLeaf(data);
+
+    if (res.resultCode === successCode) {
+      return true;
+    } else {
+      message.error(res.resultDesc || '网络异常');
+      return false;
+    }
+  };
+
+  // 编辑叶子节点
+  const editLeaf = async (data: any) => {
+    let res: any = await editNodeLeaf(data);
+
+    if (res.resultCode === successCode) {
+      return true;
+    } else {
+      message.error(res.resultDesc || '网络异常');
+      return false;
+    }
+  };
+  // 删除叶子节点
+  const deleteLeaf = async (data: any) => {
+    let res: any = await deleteNodeLeaf(data);
+
+    if (res.resultCode === successCode) {
+      return true;
+    } else {
+      message.error(res.resultDesc || '网络异常');
+      return false;
+    }
+  };
+
   return {
     treeData,
     getTreeData,
+    addLeaf,
+    editLeaf,
+    deleteLeaf,
   };
 };
