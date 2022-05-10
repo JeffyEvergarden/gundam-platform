@@ -49,7 +49,8 @@ const similarList = (req: any, res: any) => {
       listCurrent: [
         {
           id: '011',
-          actionLabel: '相似语料1',
+          actionLabel:
+            '相似语料1相似语料1相似语料1相似语料1相似语料1相似语料1相似语料1相似语料1相似语料1相似语料1相似语料1相似语料1',
         },
         {
           id: '012',
@@ -58,24 +59,24 @@ const similarList = (req: any, res: any) => {
       ],
       listOther: [
         {
-          id: '011',
+          id: '01134',
           intentName: '重置密码',
           yuliao: '语料文本1',
         },
         {
-          id: '012',
+          id: '01235',
           intentName: '还款渠道',
           yuliao: '语料文本12',
         },
       ],
       listFAQ: [
         {
-          id: '012',
+          id: '012565',
           bzw: '开具证明',
           yuliao: '语料文本12',
         },
         {
-          id: '0134',
+          id: '013457',
           bzw: '协商还款',
           yuliao: '语料文本12344546',
         },

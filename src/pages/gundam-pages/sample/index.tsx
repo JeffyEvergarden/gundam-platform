@@ -5,6 +5,7 @@ import { useModel, history } from 'umi';
 import { useSampleModel } from './model';
 import SimilarCom from './components/similarCom';
 import RemoveCom from './components/removeCom';
+import SameModal from './components/sameModal';
 import styles from './index.less';
 
 const { Search } = Input;
@@ -77,10 +78,17 @@ export default () => {
     setVisible(false);
   };
 
+  const closeSame = () => {
+    setSimmilar(false);
+  };
+
   const save = () => {
     actionRef?.current?.reloadAndRest();
   };
 
+  const saveSame = () => {
+    setSimmilar(false);
+  };
   const removeFAQ = (record: any) => {};
 
   const deleteRow = (record: any) => {};
@@ -205,53 +213,56 @@ export default () => {
 
   return (
     <div className={styles.sample}>
-      <div className={styles.title}>意图名称</div>
-      <Row className={styles.search_box}>
-        <Col span={14}>
-          <Input placeholder="输入语料意图" allowClear />
-        </Col>
-        <Col span={3}>
-          <Space>
-            {!similar && (
-              <Button type="primary" onClick={add}>
-                添加
-              </Button>
-            )}
-            {similar && (
-              <Button type="primary" onClick={stillAdd}>
-                仍然添加
-              </Button>
-            )}
-            {similar && <Button onClick={cancelAdd}>取消</Button>}
-          </Space>
-        </Col>
-        <Col span={6}>{!similar && <Search placeholder="搜索相似语料" onSearch={onSearch} />}</Col>
-      </Row>
-      {!similar && (
-        <ProTable
-          rowKey={(record) => record?.id}
-          scroll={{ x: columns.length * 200 }}
-          actionRef={actionRef}
-          columns={columns}
-          pagination={{
-            pageSize: 10,
-          }}
-          search={false}
-          options={false}
-          editable={{
-            type: 'single',
-            actionRender: (row, config, dom) => [dom.save, dom.cancel],
-            onSave: (key: any, row: any, originRow: any, newLine?: any) => {
-              return saveRow(row);
-            },
-          }}
-          request={async (params = {}) => {
-            return getInitTable(params);
-          }}
-        />
-      )}
-      {similar && <SimilarCom />}
+      <div className={styles.sample_flex}>
+        <div className={styles.left_box}>
+          <div className={styles.title}>意图名称</div>
+          <Row className={styles.search_box}>
+            <Col span={14}>
+              <Input placeholder="输入语料意图" allowClear maxLength={200} />
+            </Col>
+            <Col span={3}>
+              <Space>
+                <Button type="primary" onClick={add}>
+                  添加
+                </Button>
+                {/* {similar && (
+                  <Button type="primary" onClick={stillAdd}>
+                    仍然添加
+                  </Button>
+                )}
+                {similar && <Button onClick={cancelAdd}>取消</Button>} */}
+              </Space>
+            </Col>
+            <Col span={6}>
+              {!similar && <Search placeholder="搜索相似语料" onSearch={onSearch} />}
+            </Col>
+          </Row>
+          <ProTable
+            rowKey={(record) => record?.id}
+            scroll={{ x: columns.length * 200 }}
+            actionRef={actionRef}
+            columns={columns}
+            pagination={{
+              pageSize: 10,
+            }}
+            search={false}
+            options={false}
+            editable={{
+              type: 'single',
+              actionRender: (row, config, dom) => [dom.save, dom.cancel],
+              onSave: (key: any, row: any, originRow: any, newLine?: any) => {
+                return saveRow(row);
+              },
+            }}
+            request={async (params = {}) => {
+              return getInitTable(params);
+            }}
+          />
+        </div>
+        {similar && <SimilarCom />}
+      </div>
       <RemoveCom visible={visible} modalData={modalData} close={close} save={save} />
+      <SameModal visible={similar} cancel={closeSame} saveSame={saveSame} />
     </div>
   );
 };
