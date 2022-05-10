@@ -4,6 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { useModel, history } from 'umi';
 import { useSampleModel } from './model';
 import SimilarCom from './components/similarCom';
+import RemoveCom from './components/removeCom';
 import styles from './index.less';
 
 const { Search } = Input;
@@ -12,8 +13,9 @@ export default () => {
   const actionRef = useRef<any>();
 
   const [similar, setSimmilar] = useState<boolean>(false);
-
   const [columns, setcolumns] = useState<any>([]);
+  const [visible, setVisible] = useState<boolean>(false);
+  const [modalData, setModalData] = useState<any>({});
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -66,7 +68,20 @@ export default () => {
     action?.startEditable?.(record.id);
   };
 
-  const remove = (record: any) => {};
+  const removeWish = (record: any) => {
+    setVisible(true);
+    setModalData(record);
+  };
+
+  const close = () => {
+    setVisible(false);
+  };
+
+  const save = () => {
+    actionRef?.current?.reloadAndRest();
+  };
+
+  const removeFAQ = (record: any) => {};
 
   const deleteRow = (record: any) => {};
 
@@ -112,7 +127,7 @@ export default () => {
             <a key="editable" onClick={() => edit(action, record)}>
               编辑
             </a>
-            <a key="editable" onClick={() => remove(record)}>
+            <a key="editable" onClick={() => removeWish(record)}>
               转移
             </a>
             <Popconfirm
@@ -170,7 +185,7 @@ export default () => {
             <a key="editable" onClick={() => edit(action, record)}>
               编辑
             </a>
-            <a key="editable" onClick={() => remove(record)}>
+            <a key="editable" onClick={() => removeFAQ(record)}>
               转移
             </a>
             <Popconfirm
@@ -236,6 +251,7 @@ export default () => {
         />
       )}
       {similar && <SimilarCom />}
+      <RemoveCom visible={visible} modalData={modalData} close={close} save={save} />
     </div>
   );
 };
