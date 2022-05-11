@@ -55,6 +55,11 @@ export default [
         name: '意图管理',
       },
       {
+        path: '/gundamPages/sample',
+        component: './gundam-pages/sample',
+        name: '样本',
+      },
+      {
         path: '/gundamPages/wordSlotLibrary',
         component: './gundam-pages/word-slot-library',
         name: '词槽管理',
