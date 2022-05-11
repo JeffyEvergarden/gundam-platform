@@ -59,12 +59,6 @@ export default () => {
     setSimmilar(true);
   };
 
-  const stillAdd = () => {};
-
-  const cancelAdd = () => {
-    setSimmilar(false);
-  };
-
   const edit = (action: any, record: any) => {
     action?.startEditable?.(record.id);
   };
@@ -83,12 +77,14 @@ export default () => {
   };
 
   const save = () => {
+    setVisible(false);
     actionRef?.current?.reloadAndRest();
   };
 
   const saveSame = () => {
     setSimmilar(false);
   };
+
   const removeFAQ = (record: any) => {};
 
   const deleteRow = (record: any) => {};
@@ -212,10 +208,11 @@ export default () => {
   ];
 
   return (
-    <div className={styles.sample}>
-      <div className={styles.title}>意图名称</div>
-      <div className={styles.sample_flex}>
+    <Fragment>
+      <div className={styles.sample}>
+        {/* <div className={styles.sample_flex}> */}
         <div className={styles.left_box}>
+          <div className={styles.title}>意图名称</div>
           <Row className={styles.search_box}>
             <Col span={14}>
               <Input placeholder="输入语料意图" allowClear maxLength={200} />
@@ -263,6 +260,6 @@ export default () => {
       </div>
       <RemoveCom visible={visible} modalData={modalData} close={close} save={save} />
       <SameModal visible={similar} cancel={closeSame} saveSame={saveSame} />
-    </div>
+    </Fragment>
   );
 };

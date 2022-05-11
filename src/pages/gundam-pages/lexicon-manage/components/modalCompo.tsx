@@ -5,9 +5,7 @@ import RuleDecriModal from './ruleModal';
 import styles from './index.less';
 
 const { TextArea } = Input;
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 12 },
-};
+
 const layout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 18 },
@@ -91,7 +89,8 @@ export default (props: any) => {
       <Modal
         visible={visible}
         title={type === 'edit' ? '编辑正则实体' : '新增正则实体'}
-        footer={null}
+        okText={'提交'}
+        onOk={submit}
         onCancel={cancelZZ}
         destroyOnClose={true}
       >
@@ -132,14 +131,6 @@ export default (props: any) => {
                 新建规则
               </Button>
             </div>
-          </Form.Item>
-          <Form.Item {...tailLayout}>
-            <Space>
-              <Button onClick={cancelZZ}>取消</Button>
-              <Button type="primary" onClick={submit}>
-                保存
-              </Button>
-            </Space>
           </Form.Item>
         </Form>
       </Modal>

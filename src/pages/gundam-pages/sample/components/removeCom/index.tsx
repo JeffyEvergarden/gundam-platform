@@ -14,16 +14,21 @@ export default (props: any) => {
   const { visible, modalData, close, save } = props;
   const [form] = Form.useForm();
 
-  const cancel = () => {
-    cancel();
+  const onCancel = () => {
+    close();
+  };
+
+  const submit = async () => {
+    const values = await form.validateFields();
+    save(values);
   };
 
   return (
     <Modal
       visible={visible}
       title={'转移到其他意图'}
-      footer={null}
-      onCancel={cancel}
+      onCancel={onCancel}
+      onOk={submit}
       destroyOnClose={true}
     >
       <Form form={form} {...layout}>

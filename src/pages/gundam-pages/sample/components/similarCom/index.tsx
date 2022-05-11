@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { useSampleModel } from './../../model/index';
-import styles from './index.less';
+import styles from './../index.less';
 
 export default (props: any) => {
   const { getsimilarList } = useSampleModel();
@@ -55,6 +55,9 @@ export default (props: any) => {
       fixed: 'left',
       ellipsis: true,
       width: 100,
+      render: (t: any, r: any, i: any) => {
+        return <a style={{ color: '#1890FF' }}>{r.intentName}</a>;
+      },
     },
     {
       title: '语料文本',
@@ -72,6 +75,9 @@ export default (props: any) => {
       fixed: 'left',
       ellipsis: true,
       width: 100,
+      render: (t: any, r: any, i: any) => {
+        return <a style={{ color: '#1890FF' }}>{r.bzw}</a>;
+      },
     },
     {
       title: '相似问',
@@ -94,6 +100,7 @@ export default (props: any) => {
         request={async (params) => {
           return getCurrentData(params);
         }}
+        // scroll={{ y: 200 }}
       />
       <ProTable
         headerTitle={'其他意图下相似语料'}
@@ -105,6 +112,7 @@ export default (props: any) => {
         request={async (params = {}) => {
           return getOtherData(params);
         }}
+        // scroll={{ y: 200 }}
       />
       <ProTable
         headerTitle={'FAQ标准问/相似问'}
@@ -116,6 +124,7 @@ export default (props: any) => {
         request={async (params = {}) => {
           return getFAQData({ params });
         }}
+        // scroll={{ y: 200 }}
       />
     </div>
   );
