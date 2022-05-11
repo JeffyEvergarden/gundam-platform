@@ -7,6 +7,7 @@ import SimilarCom from './components/similarCom';
 import RemoveCom from './components/removeCom';
 import SameModal from './components/sameModal';
 import styles from './index.less';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 
 const { Search } = Input;
 
@@ -17,6 +18,7 @@ export default () => {
   const [columns, setcolumns] = useState<any>([]);
   const [visible, setVisible] = useState<boolean>(false);
   const [modalData, setModalData] = useState<any>({});
+  const [pageType, setPageType] = useState<string>('');
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -27,6 +29,9 @@ export default () => {
   useEffect(() => {
     let historyData = history?.location || {};
     let pageType = historyData?.state?.pageType || '';
+    console.log(history);
+    setPageType(pageType);
+
     if (pageType === 'wish') {
       setcolumns(tableListWish);
     }
@@ -213,7 +218,15 @@ export default () => {
 
   return (
     <div className={styles.sample}>
-      <div className={styles.title}>意图名称</div>
+      <div className={styles.title}>
+        <ArrowLeftOutlined
+          style={{ marginRight: '6px' }}
+          onClick={() => {
+            history?.goBack();
+          }}
+        />
+        {pageType === 'wish' ? '意图名称' : '问题名称'}
+      </div>
       <div className={styles.sample_flex}>
         <div className={styles.left_box}>
           <Row className={styles.search_box}>

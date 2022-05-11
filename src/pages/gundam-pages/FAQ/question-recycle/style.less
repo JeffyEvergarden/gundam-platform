@@ -76,6 +76,15 @@
   // padding: 0 8px 0 0;
   overflow: auto;
   border-left: 1px solid #f0f0f0;
+
+  :global {
+    .ant-pro-card-body {
+      padding: 0 !important;
+    }
+    .ant-pro-list-row-header-title {
+      display: block !important;
+    }
+  }
 }
 
 .high-config-select {
@@ -119,13 +128,4 @@
   flex-wrap: wrap;
   align-items: center;
   font-size: 12px;
-}
-
-:global {
-  .ant-pro-card-body {
-    padding: 0 !important;
-  }
-  .ant-pro-list-row-header-title {
-    display: block !important;
-  }
 }

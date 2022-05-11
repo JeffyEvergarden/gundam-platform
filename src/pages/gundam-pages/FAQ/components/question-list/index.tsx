@@ -1,10 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { List, Divider, Skeleton, Select, message, Popconfirm } from 'antd';
+import { List, Divider, Skeleton, Select, message, Popconfirm, Button, Badge } from 'antd';
 import { useFaqModal } from '../../FAQ-manage/model';
 import style from './style.less';
 import ProList from '@ant-design/pro-list';
-import { DeleteOutlined, DislikeOutlined, EyeOutlined, LikeOutlined } from '@ant-design/icons';
-import { useModel } from 'umi';
+import {
+  DeleteOutlined,
+  DislikeOutlined,
+  EditOutlined,
+  EyeOutlined,
+  LikeOutlined,
+} from '@ant-design/icons';
+import { useModel, history } from 'umi';
 import { deleteQuestion } from '../../FAQ-manage/model/api';
 import config from '@/config';
 
@@ -64,6 +70,42 @@ const QuestionList: React.FC<any> = (props: any) => {
     });
   };
 
+  const toSample = (item: any) => {
+    history.push({
+      pathname: '/gundamPages/sample',
+      state: {
+        info: item,
+        pageType: 'FAQ',
+      },
+    });
+  };
+
+  const status = {
+    1: 'processing',
+    2: 'warning',
+    3: 'error',
+    4: 'success',
+  };
+
+  const statusList = [
+    {
+      name: '等待审批',
+      value: 1,
+    },
+    {
+      name: '被退回',
+      value: 2,
+    },
+    {
+      name: '已过期',
+      value: 3,
+    },
+    {
+      name: '已发布',
+      value: 4,
+    },
+  ];
+
   return (
     <div id="scrollContent" className={style['content']}>
       {/* <InfiniteScroll
@@ -109,37 +151,52 @@ const QuestionList: React.FC<any> = (props: any) => {
                             deleteList(item);
                           }}
                         >
-                          <DeleteOutlined style={{ color: 'red' }} />
+                          <DeleteOutlined style={{ color: 'rgba(0,0,0,0.45)' }} />
                         </Popconfirm>
                       </div>
                     </div>
                     <div className={style['box-desc']}>
                       <div>
-                        <span>作者: {item.creator}</span>
+                        <span>作者：{item.creator}</span>
                         <Divider type="vertical" />
                         <span>
-                          分类: <span className={style['blue']}>{item.faqTypeId}</span>
+                          分类：
+                          <Button type="link">{item.faqTypeId}</Button>
                         </span>
                         <Divider type="vertical" />
-                        <span>浏览次数: {item.viewNum}</span>
-                        {!hasCheckbox && <Divider type="vertical" />}
-                        {!hasCheckbox && (
-                          <Select
-                            size="small"
-                            defaultValue={item.approvalStatus}
-                            style={{ width: 100 }}
-                          >
-                            <Option value={1}>等待审批</Option>
-                            <Option value={2}>被退回</Option>
-                            <Option value={3}>过期</Option>
-                            <Option value={4}>已发布</Option>
-                          </Select>
-                        )}
+                        <span>浏览次数：{item.viewNum}</span>
+                        <Divider type="vertical" />
+                        <Badge
+                          status={status[item.approvalStatus]}
+                          text={
+                            hasCheckbox ? (
+                              statusList?.find((val: any) => val.value == item.approvalStatus)?.name
+                            ) : (
+                              <Select
+                                size="small"
+                                defaultValue={item.approvalStatus}
+                                style={{ width: 100, padding: 0 }}
+                                bordered={false}
+                              >
+                                {statusList.map((val: any) => {
+                                  return <Option value={val.value}>{val.name}</Option>;
+                                })}
+                              </Select>
+                            )
+                          }
+                        />
                       </div>
                       <div>
-                        <span className={style['blue']}>2个相似问法</span>
+                        <Button
+                          type="link"
+                          onClick={() => {
+                            toSample(item);
+                          }}
+                        >
+                          2个相似问法
+                        </Button>
                         <Divider type="vertical" />
-                        <span className={style['blue']}>推荐问设置</span>
+                        <Button type="link">推荐问设置</Button>
                       </div>
                     </div>
                     <div
@@ -150,20 +207,65 @@ const QuestionList: React.FC<any> = (props: any) => {
                       }}
                     >
                       {/* 答案列表 */}
-                      {item.answerList.map((v: any) => {
+                      {item.answerList.map((v: any, idx: any) => {
                         return (
-                          <div className={style['box-answer']}>
+                          <div className={style['box-answer']} key={idx}>
+                            <div className={style['box-top']}>
+                              <Badge
+                                status={status[item.approvalStatus]}
+                                text={
+                                  hasCheckbox ? (
+                                    statusList?.find((val: any) => val.value == item.approvalStatus)
+                                      ?.name
+                                  ) : (
+                                    <Select
+                                      size="small"
+                                      defaultValue={item.approvalStatus}
+                                      style={{ width: 100, padding: 0 }}
+                                      bordered={false}
+                                    >
+                                      {statusList.map((val: any) => {
+                                        return <Option value={val.value}>{val.name}</Option>;
+                                      })}
+                                    </Select>
+                                  )
+                                }
+                              />
+                              <div>
+                                <EditOutlined
+                                  style={{ marginRight: '18px', color: 'rgba(0,0,0,0.45)' }}
+                                />
+                                <Popconfirm
+                                  title={() => {
+                                    return (
+                                      <div style={{ maxWidth: '180px' }}>
+                                        删除答案将会一并删除与之相关的浏览数据、渠道配置等，且无法找回，点击确认将删除该答案
+                                      </div>
+                                    );
+                                  }}
+                                  getPopupContainer={(trigger: any) => trigger.parentElement}
+                                  okText="确定"
+                                  placement="topRight"
+                                  cancelText="取消"
+                                  onConfirm={() => {
+                                    // deleteList(item);
+                                  }}
+                                >
+                                  <DeleteOutlined style={{ color: 'rgba(0,0,0,0.45)' }} />
+                                </Popconfirm>
+                              </div>
+                            </div>
                             <div
                               className={style['box-content']}
                               dangerouslySetInnerHTML={{ __html: v.answer }}
                             ></div>
                             <div className={style['box-footer']}>
                               <div>
-                                <span>作者: {v.creator}</span>
+                                <span>作者：{v.creator}</span>
                                 <Divider type="vertical" />
                                 <span>
-                                  生效渠道:
-                                  <span className={style['blue']}>{item.faqTypeId}</span>
+                                  生效渠道：
+                                  <Button type="link">{item.faqTypeId}</Button>
                                 </span>
                               </div>
                               <div>
@@ -208,6 +310,7 @@ const QuestionList: React.FC<any> = (props: any) => {
           pageSize: 10,
         }}
         rowKey={'id'}
+        key={'id'}
       />
       {/* </InfiniteScroll> */}
     </div>

@@ -73,12 +73,55 @@
   overflow: auto;
   // background-color: #fff;
   border-left: 1px solid #f0f0f0;
+
+  :global {
+    .ant-pro-card {
+      background-color: #f0f2f5 !important;
+    }
+    .ant-pro-card-body {
+      padding: 0 !important;
+    }
+    .ant-pro-list-row-header-title {
+      display: block !important;
+    }
+    .ant-pro-list-row-selected {
+      background-color: #fff !important;
+    }
+    .ant-pro-list-row-title {
+      &:hover {
+        color: #000 !important;
+        cursor: default !important;
+      }
+    }
+    .ant-list-item {
+      margin: 5px;
+      // border: 1px solid #d3d3d3 !important;
+      // border-radius: 10px;
+      background-color: #fff;
+      cursor: default !important;
+    }
+    .ant-pro-list-row {
+      margin: 0;
+      margin-bottom: 16px;
+      padding: 24px !important;
+
+      &:hover {
+        background-color: #fff !important;
+      }
+    }
+  }
 }
 
 .list-item {
   padding: 0 0;
   // border: 1px solid #d3d3d3;
   border-radius: 10px;
+
+  :global {
+    .ant-btn {
+      padding: 0 !important;
+    }
+  }
 }
 
 .blue {
@@ -132,42 +175,5 @@
     margin-left: 16px !important;
     font-weight: 400;
     font-size: 14px;
-  }
-}
-
-:global {
-  .ant-pro-card {
-    background-color: #f0f2f5 !important;
-  }
-  .ant-pro-card-body {
-    padding: 0 !important;
-  }
-  .ant-pro-list-row-header-title {
-    display: block !important;
-  }
-  .ant-pro-list-row-selected {
-    background-color: #fff !important;
-  }
-  .ant-pro-list-row-title {
-    &:hover {
-      color: #000 !important;
-      cursor: default !important;
-    }
-  }
-  .ant-list-item {
-    margin: 5px;
-    // border: 1px solid #d3d3d3 !important;
-    // border-radius: 10px;
-    background-color: #fff;
-    cursor: default !important;
-  }
-  .ant-pro-list-row {
-    margin: 0;
-    margin-bottom: 16px;
-    padding: 24px !important;
-
-    &:hover {
-      background-color: #fff !important;
-    }
   }
 }
