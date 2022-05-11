@@ -213,9 +213,9 @@ export default () => {
 
   return (
     <div className={styles.sample}>
+      <div className={styles.title}>意图名称</div>
       <div className={styles.sample_flex}>
         <div className={styles.left_box}>
-          <div className={styles.title}>意图名称</div>
           <Row className={styles.search_box}>
             <Col span={14}>
               <Input placeholder="输入语料意图" allowClear maxLength={200} />
@@ -234,7 +234,7 @@ export default () => {
               </Space>
             </Col>
             <Col span={6}>
-              {!similar && <Search placeholder="搜索相似语料" onSearch={onSearch} />}
+              <Search placeholder="搜索相似语料" onSearch={onSearch} />
             </Col>
           </Row>
           <ProTable
