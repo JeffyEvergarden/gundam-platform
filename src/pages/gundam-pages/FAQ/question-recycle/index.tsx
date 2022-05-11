@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Input, Select, Collapse, Divider, Skeleton } from 'antd';
-import { DownOutlined, SettingOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, DownOutlined, LeftOutlined, SettingOutlined } from '@ant-design/icons';
 import HighConfigSelect from '../FAQ-manage/components/high-select';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import style from './style.less';
@@ -27,7 +27,7 @@ const RecyclePage: React.FC<any> = (props: any) => {
   const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
 
   useEffect(() => {
-    getFaqList({ pageNo: 1 });
+    // getFaqList({ pageNo: 1 });
   }, []);
 
   const _getMoreFaqList = async () => {
@@ -54,7 +54,16 @@ const RecyclePage: React.FC<any> = (props: any) => {
   return (
     <div className={style['FAQ-page']}>
       <div className={style['page_top']}>
-        <div className={style['page_top__left']}>问题回收站</div>
+        <div className={style['page_top__left']}>
+          <ArrowLeftOutlined
+            className={style['blue']}
+            style={{ marginRight: '6px' }}
+            onClick={() => {
+              history.back();
+            }}
+          />
+          问题回收站
+        </div>
 
         <div className={style['page_top__right']}>
           <Input.Search style={{ marginRight: '16px', width: '280px' }}></Input.Search>

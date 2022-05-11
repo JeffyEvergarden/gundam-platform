@@ -18,8 +18,8 @@ export const useFaqModal = () => {
     if (res.resultCode === successCode) {
       let data = res?.data?.list || [];
       setFaqList(data);
-      setTotalSize(res?.data?.totalSize || 0);
-      return true;
+      setTotalSize(res?.data?.totalPage || 0);
+      return { data, total: res?.data?.totalPage };
     } else {
       setFaqList([]);
       message.warning('获取FAQ列表失败');
@@ -34,7 +34,7 @@ export const useFaqModal = () => {
     console.log();
     if (res.resultCode === successCode) {
       let data = res?.data?.list || [];
-      setTotalSize(res?.data?.totalSize || 0);
+      setTotalSize(res?.data?.totalPage || 0);
       setFaqList([...faqList, ...data]);
       return true;
     } else {

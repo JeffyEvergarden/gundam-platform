@@ -1,9 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useModel, history, useLocation } from 'umi';
-import { Table, Button, Popconfirm, message } from 'antd';
+import { useModel, useLocation } from 'umi';
+import { Table, Button, Upload } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import style from './style.less';
-import { CloseOutlined, DeleteOutlined, DownloadOutlined, PlusOutlined } from '@ant-design/icons';
+import {
+  ArrowLeftOutlined,
+  CloseOutlined,
+  DeleteOutlined,
+  DownloadOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
 import Condition from '@/components/Condition';
 import config from '@/config/index';
 import { useImportModal } from './model';
@@ -19,87 +25,100 @@ const ImportPages: React.FC = (props: any) => {
     setInfo: model.setInfo,
   }));
 
-  const deleteRow = async (row: any) => {
-    // let params: any = {
-    //   robotId: info.id,
-    //   id: row.id,
-    // };
-    // let res: any = await deleteLabel(params);
-    // if (res) {
-    //   console.log('删除接口');
-    //   // message.success('删除成功');
-    //   labelTableRef.current.reload();
-    // } else {
-    //   message.error(res);
-    // }
-  };
-
   const columns: any[] = [
     {
-      title: '问题',
-      dataIndex: 'question',
+      title: '文件名称',
+      dataIndex: 'importFileName',
       fixed: 'left',
       search: false,
       ellipsis: true,
       width: 180,
     },
     {
-      title: '相似问法',
-      dataIndex: 'similarQuestion',
+      title: '上传时间',
+      dataIndex: 'createTime',
       search: false,
       width: 200,
       ellipsis: true,
     },
     {
-      title: '答案',
-      dataIndex: 'answer',
-      search: false,
-      width: 200,
+      title: '答案导入统计',
+      children: [
+        {
+          title: '上传数量',
+          dataIndex: 'answerNum',
+          key: 'answerNum',
+          search: false,
+          width: 100,
+        },
+        // {
+        //   title: '成功数量',
+        //   dataIndex: 'answer',
+        //   key: '',
+        //   search: false,
+        //   width: 200,
+        // },
+        {
+          title: '失败数量',
+          dataIndex: 'failAnswerNum',
+          key: 'failAnswerNum',
+          search: false,
+          width: 100,
+        },
+      ],
     },
     {
-      title: '生效渠道',
-      dataIndex: 'channel',
+      title: '相似问导入统计',
+      children: [
+        {
+          title: '上传数量',
+          dataIndex: 'similarQuestionNum',
+          key: 'similarQuestionNum',
+          search: false,
+          width: 100,
+        },
+        // {
+        //   title: '成功数量',
+        //   dataIndex: 'answer',
+        //   key: '',
+        //   search: false,
+        //   width: 200,
+        // },
+        {
+          title: '失败数量',
+          dataIndex: 'failSimilarQuestionNum',
+          key: 'failSimilarQuestionNum',
+          search: false,
+          width: 100,
+        },
+      ],
+    },
+    {
+      title: '操作',
+      key: 'op',
+      dataIndex: 'op',
       search: false,
-      width: 200,
-      render: (arr: any) => {
-        return arr.join(',');
+      fixed: 'right',
+      width: 80,
+      render: (val: any, row: any, index: number) => {
+        return (
+          <>
+            <div style={{ display: 'flex' }}>
+              <Button
+                type="link"
+                onClick={() => {
+                  // _changeStatus(row);
+                }}
+              >
+                结果下载
+              </Button>
+            </div>
+          </>
+        );
       },
-    },
-    {
-      title: '导入类型',
-      dataIndex: 'inportType',
-      search: false,
-      width: 200,
-    },
-    {
-      title: '分类',
-      dataIndex: 'classify',
-      search: false,
-      width: 200,
-    },
-    {
-      title: '导入时间',
-      dataIndex: 'importTime',
-      search: false,
-      width: 200,
-    },
-    {
-      title: '导入结果',
-      dataIndex: 'importResult',
-      search: false,
-      width: 200,
     },
   ];
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (keys: any[], obj: any) => {
-      console.log(keys);
-      console.log(obj);
-
-      return setSelectedRowKeys(keys);
-    },
-  };
   useEffect(() => {
     _getImportList({
       robotId: info.id,
@@ -122,7 +141,6 @@ const ImportPages: React.FC = (props: any) => {
           return {};
         }}
         tableAlertRender={false}
-        rowSelection={rowSelection}
         editable={{
           type: 'multiple',
         }}
@@ -130,7 +148,7 @@ const ImportPages: React.FC = (props: any) => {
           persistenceKey: 'pro-table-machine-list',
           persistenceType: 'localStorage',
         }}
-        rowKey="question"
+        rowKey="id"
         search={false}
         form={{
           // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
@@ -148,49 +166,71 @@ const ImportPages: React.FC = (props: any) => {
           pageSize: 10,
         }}
         dateFormatter="string"
-        headerTitle="批量导入"
-        toolBarRender={() => [
-          <Button
-            key="button"
-            icon={<PlusOutlined />}
-            type="primary"
-            // onClick={() => {
-            //   labelModalRef.current?.open?.();
-            // }}
-          >
-            问题导入
-          </Button>,
-          <Button
-            key="button"
-            icon={<CloseOutlined />}
-            type="primary"
-            // onClick={() => {
-            //   labelModalRef.current?.open?.();
-            // }}
-          >
-            清空列表
-          </Button>,
-          <Button
-            key="button"
-            icon={<DownloadOutlined />}
-            type="primary"
-            // onClick={() => {
-            //   labelModalRef.current?.open?.();
-            // }}
-          >
-            下载模板
-          </Button>,
-          <Button
-            key="button"
-            icon={<DeleteOutlined />}
-            type="primary"
-            // onClick={() => {
-            //   labelModalRef.current?.open?.();
-            // }}
-          >
-            删除记录
-          </Button>,
-        ]}
+        headerTitle={
+          <div>
+            <div style={{ marginBottom: '24px', fontSize: '24px', fontWeight: '400' }}>
+              <ArrowLeftOutlined
+                className={style['blue']}
+                style={{ marginRight: '6px' }}
+                onClick={() => {
+                  history?.back();
+                }}
+              />
+              批量导入
+            </div>
+            <div style={{ display: 'flex' }}>
+              <Upload
+                name="file"
+                action={`${config.basePath}/robot/faqImport/upload`}
+                showUploadList={false}
+                data={{ robotId: info.id }}
+              >
+                <Button
+                  icon={<PlusOutlined />}
+                  style={{ marginRight: '8px' }}
+                  type="primary"
+                  // onClick={() => {
+                  //   labelModalRef.current?.open?.();
+                  // }}
+                >
+                  问题导入
+                </Button>
+              </Upload>
+
+              <Button
+                icon={<DownloadOutlined />}
+                type="primary"
+                // onClick={() => {
+                //   labelModalRef.current?.open?.();
+                // }}
+              >
+                下载模板
+              </Button>
+            </div>
+          </div>
+        }
+        // toolBarRender={() => [
+        //   <Button
+        //     key="button"
+        //     icon={<PlusOutlined />}
+        //     type="primary"
+        //     // onClick={() => {
+        //     //   labelModalRef.current?.open?.();
+        //     // }}
+        //   >
+        //     问题导入
+        //   </Button>,
+        //   <Button
+        //     key="button"
+        //     icon={<DownloadOutlined />}
+        //     type="primary"
+        //     // onClick={() => {
+        //     //   labelModalRef.current?.open?.();
+        //     // }}
+        //   >
+        //     下载模板
+        //   </Button>,
+        // ]}
       />
 
       {/* <InfoModal
