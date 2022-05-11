@@ -88,3 +88,10 @@ export async function queryNodeConfig(params?: { [key: string]: any }) {
     params,
   });
 }
+
+export async function queryTreeList(params?: Record<string, any>) {
+  return request(`${baseUrl}/faq/tree`, {
+    method: 'GET',
+    params,
+  });
+}

@@ -144,51 +144,6 @@ const FAQPage: React.FC<any> = (props: any) => {
           </div>
 
           <QuestionList hasCheckbox={false}></QuestionList>
-          {/* <div id="scrollContent" className={style['content']}>
-            <InfiniteScroll
-              dataLength={faqList.length}
-              hasMore={faqList.length < totalSize}
-              next={_getMoreFaqList}
-              loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-              scrollableTarget="scrollContent"
-            >
-              <List
-                itemLayout="vertical"
-                dataSource={faqList}
-                renderItem={(item: any, index: number) => {
-                  const channel: any = item.channel || [];
-
-                  return (
-                    <List.Item key={index}>
-                      <div className={style['list-item']}>
-                        <div className={style['box-top']}>
-                          <div className={style['title']}>{item.name}</div>
-                          <div className={style['extra']}>{item.time}</div>
-                        </div>
-                        <div className={style['box-desc']}>补充信息</div>
-                        <div
-                          className={style['box-content']}
-                          dangerouslySetInnerHTML={{ __html: item.content }}
-                        ></div>
-                        <div className={style['box-footer']}>
-                          <div>
-                            <span>作者: {item.creator}</span>
-                            <Divider type="vertical" />
-                            <span>
-                              生效渠道: <span className={style['blue']}>{channel.join(',')}</span>
-                            </span>
-                            <Divider type="vertical" />
-                            <span>浏览次数: {item.times}</span>
-                          </div>
-                          <div></div>
-                        </div>
-                      </div>
-                    </List.Item>
-                  );
-                }}
-              ></List>
-            </InfiniteScroll>
-          </div> */}
         </div>
       </div>
     </div>

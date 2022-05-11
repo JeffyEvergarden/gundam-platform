@@ -1,59 +1,41 @@
-import { useState, useImperativeHandle } from 'react';
+import { useState, useImperativeHandle, useRef, useEffect } from 'react';
 import { Drawer, Form, Input, Select, Button } from 'antd';
 import { PlusCircleOutlined, AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import styles from './style.less';
 import { getFileInfo } from 'prettier';
 import { add } from 'lodash';
+import SelectorModal from '../gundam-pages/FAQ/question-board/components/selector-modal';
+import { useModel } from 'umi';
 
 const { TextArea } = Input;
 const { Option } = Select;
 
-const reg = /(\$|#)\{\w+\}/g;
+const Demo = (props: any) => {
+  const selectModalRef = useRef<any>({});
+  const onClick = () => {
+    console.log('---');
+    (selectModalRef.current as any).open([]);
+  };
 
-const formatHtml = (str: any) => {
-  if (!str) {
-    return ['无内容展示'];
-  }
-  // 正则列表匹配出来的
-  const list: any[] = str.match(reg);
-  console.log(list);
-  if (list) {
-    let strList = [];
-    while (list.length > 0) {
-      let key = list.shift();
-      let _list: any[] = str.split(key);
-      if (_list.length > 1) {
-        let val = _list.shift();
-        strList.push(val, {
-          type: key[0] === '$' ? '变量' : '词槽',
-          value: key.substring(2, key.length - 1),
-        });
-        str = _list.join(key);
-      }
-    }
-    return strList;
-  } else {
-    return [str];
-  }
-};
+  const { getFlowList, getTreeData } = useModel('drawer' as any, (model: any) => ({
+    getFlowList: model.getFlowList,
+    getTreeData: model.getTreeData,
+  }));
 
-const DrawerForm = (props: any) => {
-  const strList: any[] = formatHtml('asfasfafa${fa${fuck00}ke}d#{fuck}adadas${fake2}');
-
-  const [focus, setFocus] = useState<boolean>(true);
+  useEffect(() => {
+    getFlowList('fake');
+    getTreeData('fake');
+  }, []);
 
   return (
     <div className={`${styles['div-content']}`}>
-      {strList?.map((item: any) => {
-        if (typeof item === 'string') {
-          return item;
-        } else if (typeof item === 'object') {
-          return <span className={styles['sp-text']}>{item.value}</span>;
-        }
-      })}
-      {focus && <span className={styles['focus']}></span>}
+      <Button type="primary" onClick={onClick}>
+        手动推荐触发
+      </Button>
+
+      <SelectorModal cref={selectModalRef} />
     </div>
   );
 };
 
-export default DrawerForm;
+export default Demo;
