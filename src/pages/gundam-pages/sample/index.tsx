@@ -1,24 +1,30 @@
-import { Input, Button, Row, Col, Space, Popconfirm } from 'antd';
+import { Input, Button, Row, Col, Space, Popconfirm, message } from 'antd';
 import React, { Fragment, useState, useEffect, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { useModel, history } from 'umi';
-import { useSampleModel } from './model';
+import { useSampleModel, useSimilarModel } from './model';
 import SimilarCom from './components/similarCom';
 import RemoveCom from './components/removeCom';
 import SameModal from './components/sameModal';
 import styles from './index.less';
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import config from '@/config';
 
 const { Search } = Input;
 
 export default () => {
   const actionRef = useRef<any>();
+  const input = useRef<any>();
 
   const [similar, setSimmilar] = useState<boolean>(false);
   const [columns, setcolumns] = useState<any>([]);
   const [visible, setVisible] = useState<boolean>(false);
   const [modalData, setModalData] = useState<any>({});
-  const [pageType, setPageType] = useState<string>('');
+
+  const [pageType, setPageType] = useState<any>();
+  const [tableInfo, setTableInfo] = useState<any>();
+
+  const [inputValue, setInputValue] = useState<string>('');
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -26,11 +32,14 @@ export default () => {
 
   const { getList } = useSampleModel();
 
+  const { getSimilarList, editSimilar, deleteSimilar, addSimilar } = useSimilarModel();
+
   useEffect(() => {
     let historyData = history?.location || {};
     let pageType = historyData?.state?.pageType || '';
     console.log(history);
     setPageType(pageType);
+    setTableInfo(historyData?.state?.info);
 
     if (pageType === 'wish') {
       setcolumns(tableListWish);
@@ -41,12 +50,25 @@ export default () => {
   }, []);
 
   const getInitTable = async (payload: any) => {
-    let params = {
-      page: payload.current,
-      pageSize: payload.pageSize,
-      robotId: info.id,
-    };
-    let res: any = await getList(params);
+    let res: any;
+    if (pageType === 'wish') {
+      let params: any = {
+        page: payload.current,
+        pageSize: payload.pageSize,
+        robotId: info.id,
+      };
+      res = await getList(params);
+    }
+
+    if (pageType === 'FAQ') {
+      let params = {
+        page: payload.current,
+        pageSize: payload.pageSize,
+        similarText: tableInfo?.question,
+      };
+      res = await getSimilarList(params);
+    }
+
     return {
       data: res?.data?.list || [],
       total: res?.data.totalPage || res?.data?.list?.length,
@@ -61,6 +83,9 @@ export default () => {
   };
 
   const add = () => {
+    console.log(input?.current?.state?.value);
+
+    setInputValue(input?.current?.state?.value);
     setSimmilar(true);
   };
 
@@ -86,15 +111,59 @@ export default () => {
     actionRef?.current?.reloadAndRest();
   };
 
-  const saveSame = () => {
+  const saveSame = async (record: any) => {
+    if (pageType === 'FAQ') {
+      let reqData: any = {
+        faqId: tableInfo.id,
+        similarText: inputValue,
+        robotId: info.id,
+      };
+      await addSimilar(reqData).then((res) => {
+        if (res.resultCode == config.successCode) {
+          message.success(res.resultDesc);
+          actionRef.current.reload();
+        } else {
+          message.error(res.resultDesc);
+        }
+      });
+    }
+
     setSimmilar(false);
   };
 
   const removeFAQ = (record: any) => {};
 
-  const deleteRow = (record: any) => {};
+  const deleteRow = async (record: any) => {
+    if (pageType === 'FAQ' || history?.location?.state?.pageType === 'FAQ') {
+      let reqData: any = {
+        id: record.id,
+      };
+      await deleteSimilar(reqData).then((res) => {
+        if (res.resultCode == config.successCode) {
+          message.success(res.resultDesc);
+          actionRef.current.reload();
+        } else {
+          message.error(res.resultDesc);
+        }
+      });
+    }
+  };
 
-  const saveRow = async (record: any) => {};
+  const saveRow = async (record: any) => {
+    if (pageType === 'FAQ') {
+      let reqData: any = {
+        id: record.id,
+        similarText: record.similarText,
+        viewNum: record.viewNum,
+      };
+      await editSimilar(reqData).then((res) => {
+        if (res.resultCode == config.successCode) {
+          message.success(res?.resultDesc || '成功');
+          actionRef.current.reload();
+        }
+      });
+    }
+  };
 
   const tableListWish: any = [
     {
@@ -144,26 +213,30 @@ export default () => {
               okText="是"
               cancelText="否"
               onCancel={() => {}}
-              onConfirm={() => deleteRow(record)}
+              onConfirm={() => {
+                deleteRow(record);
+              }}
             >
-              <a style={{ color: 'red' }}>删除</a>
+              <Button type="link" style={{ color: 'red' }}>
+                删除
+              </Button>
             </Popconfirm>
           </Space>
         );
       },
     },
   ];
-
+  //相似问
   const tableListFAQ: any = [
     {
-      dataIndex: 'entityName',
+      dataIndex: 'similarText',
       title: '相似问法',
       ellipsis: true,
       fixed: 'left',
       width: 400,
     },
     {
-      dataIndex: 'creator',
+      dataIndex: 'viewNum',
       title: '浏览次数',
       search: false,
       ellipsis: true,
@@ -173,8 +246,8 @@ export default () => {
       },
     },
     {
-      dataIndex: 'createTime',
-      title: '添加时间',
+      dataIndex: 'updateTime',
+      title: '更新时间',
       search: false,
       ellipsis: true,
       width: 120,
@@ -198,7 +271,7 @@ export default () => {
               转移
             </a>
             <Popconfirm
-              title="确认删除该条词槽吗?"
+              title="确认删除该条相似问吗?"
               okText="是"
               cancelText="否"
               onCancel={() => {}}
@@ -219,7 +292,7 @@ export default () => {
         <div className={styles.left_box}>
           <div className={styles.title}>
             <ArrowLeftOutlined
-              style={{ marginRight: '6px' }}
+              style={{ marginRight: '6px', color: '#1890ff' }}
               onClick={() => {
                 history?.goBack();
               }}
@@ -228,7 +301,7 @@ export default () => {
           </div>
           <Row className={styles.search_box}>
             <Col span={14}>
-              <Input placeholder="输入语料意图" allowClear maxLength={200} />
+              <Input ref={input} placeholder="输入语料意图" allowClear maxLength={200} />
             </Col>
             <Col span={3}>
               <Space>
@@ -261,6 +334,10 @@ export default () => {
               type: 'single',
               actionRender: (row, config, dom) => [dom.save, dom.cancel],
               onSave: (key: any, row: any, originRow: any, newLine?: any) => {
+                if (row.similarText == originRow.similarText) {
+                  console.log(row, originRow);
+                  return;
+                }
                 return saveRow(row);
               },
             }}

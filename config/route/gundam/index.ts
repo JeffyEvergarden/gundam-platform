@@ -127,6 +127,11 @@ export default [
             component: './gundam-pages/FAQ/question-import',
             name: '问题批量导入',
           },
+          {
+            path: '/gundamPages/faq/recommend',
+            component: './gundam-pages/FAQ/question-recommend',
+            name: '推荐问',
+          },
           { redirect: '/gundamPages/faq/main' },
         ],
       },

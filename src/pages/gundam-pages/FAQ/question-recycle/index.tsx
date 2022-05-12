@@ -7,6 +7,7 @@ import style from './style.less';
 import { useFaqModal } from '../FAQ-manage/model';
 import ProList from '@ant-design/pro-list';
 import QuestionList from '../components/question-list';
+import { history } from 'umi';
 
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -59,7 +60,7 @@ const RecyclePage: React.FC<any> = (props: any) => {
             className={style['blue']}
             style={{ marginRight: '6px' }}
             onClick={() => {
-              history.back();
+              history.goBack();
             }}
           />
           问题回收站

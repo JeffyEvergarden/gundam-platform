@@ -133,7 +133,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                 <div key={index}>
                   <div className={style['list-item']}>
                     <div className={style['box-top']}>
-                      <div className={style['title']}>{item.name}</div>
+                      <div className={style['title']}>{item.question}</div>
                       <div className={style['box-top']}>
                         <Popconfirm
                           title={() => {
@@ -179,7 +179,11 @@ const QuestionList: React.FC<any> = (props: any) => {
                                 bordered={false}
                               >
                                 {statusList.map((val: any) => {
-                                  return <Option value={val.value}>{val.name}</Option>;
+                                  return (
+                                    <Option value={val.value} key={val.value}>
+                                      {val.name}
+                                    </Option>
+                                  );
                                 })}
                               </Select>
                             )
@@ -196,7 +200,14 @@ const QuestionList: React.FC<any> = (props: any) => {
                           2个相似问法
                         </Button>
                         <Divider type="vertical" />
-                        <Button type="link">推荐问设置</Button>
+                        <Button
+                          type="link"
+                          onClick={() => {
+                            history.push('/gundamPages/faq/recommend');
+                          }}
+                        >
+                          推荐问设置
+                        </Button>
                       </div>
                     </div>
                     <div
@@ -225,7 +236,11 @@ const QuestionList: React.FC<any> = (props: any) => {
                                       bordered={false}
                                     >
                                       {statusList.map((val: any) => {
-                                        return <Option value={val.value}>{val.name}</Option>;
+                                        return (
+                                          <Option value={val.value} key={val.value}>
+                                            {val.name}
+                                          </Option>
+                                        );
                                       })}
                                     </Select>
                                   )

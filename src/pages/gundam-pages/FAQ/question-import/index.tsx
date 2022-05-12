@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useModel, useLocation } from 'umi';
+import { useModel, useLocation, history } from 'umi';
 import { Table, Button, Upload } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import style from './style.less';
@@ -173,7 +173,7 @@ const ImportPages: React.FC = (props: any) => {
                 className={style['blue']}
                 style={{ marginRight: '6px' }}
                 onClick={() => {
-                  history?.back();
+                  history?.goBack();
                 }}
               />
               批量导入
