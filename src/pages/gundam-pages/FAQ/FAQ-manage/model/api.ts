@@ -21,7 +21,7 @@ export async function deleteQuestion(data?: Record<string, any>) {
 }
 
 export async function getTreeList(params?: Record<string, any>) {
-  return request(`${baseUrl}/faq/tree`, {
+  return request(`${baseUrl}/faq/typeList`, {
     method: 'GET',
     params,
   });

@@ -154,7 +154,8 @@ export default {
   'GET /aichat/faq/robotFaqPageList': getFaqList, // 获取问答列表
   'POST /aichat/faq/robotFaqDelete': normalDeal, // 删除问题
   'GET /aichat/faqImport/listPage': getImportList, // 获取批量导入列表
-  'GET /aichat/faq/tree': getTreeList,
+
+  'GET /aichat/faq/typeList': getTreeList, //获取树
   'POST /aichat/faq/tree/add': normalDeal, // 添加分类节点
   'POST /aichat/faq/tree/edit': normalDeal, // 编辑分类节点
   'POST /aichat/faq/tree/delete': normalDeal, // 删除分类节点

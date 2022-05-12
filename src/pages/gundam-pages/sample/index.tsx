@@ -7,7 +7,7 @@ import SimilarCom from './components/similarCom';
 import RemoveCom from './components/removeCom';
 import SameModal from './components/sameModal';
 import styles from './index.less';
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, EyeOutlined } from '@ant-design/icons';
 import config from '@/config';
 
 const { Search } = Input;
@@ -291,13 +291,20 @@ export default () => {
         {/* <div className={styles.sample_flex}> */}
         <div className={styles.left_box}>
           <div className={styles.title}>
-            <ArrowLeftOutlined
-              style={{ marginRight: '6px', color: '#1890ff' }}
-              onClick={() => {
-                history?.goBack();
-              }}
-            />
-            {pageType === 'wish' ? '意图名称' : '问题名称'}
+            <div>
+              <ArrowLeftOutlined
+                style={{ marginRight: '6px', color: '#1890ff' }}
+                onClick={() => {
+                  history?.goBack();
+                }}
+              />
+              {pageType === 'wish' ? '意图名称' : '问题名称'}
+            </div>
+            {pageType == 'FAQ' && (
+              <div style={{ fontSize: '14px' }}>
+                <EyeOutlined /> 123132
+              </div>
+            )}
           </div>
           <Row className={styles.search_box}>
             <Col span={14}>

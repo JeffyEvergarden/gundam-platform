@@ -1,5 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { List, Divider, Skeleton, Select, message, Popconfirm, Button, Badge } from 'antd';
+import React, { useState, useEffect, useRef, useImperativeHandle } from 'react';
+import {
+  List,
+  Divider,
+  Skeleton,
+  Select,
+  message,
+  Popconfirm,
+  Button,
+  Badge,
+  Checkbox,
+} from 'antd';
 import { useFaqModal } from '../../FAQ-manage/model';
 import style from './style.less';
 import ProList from '@ant-design/pro-list';
@@ -17,7 +27,7 @@ import config from '@/config';
 const { Option } = Select;
 
 const QuestionList: React.FC<any> = (props: any) => {
-  const { hasCheckbox } = props;
+  const { cref, hasCheckbox } = props;
   const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
 
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
@@ -41,9 +51,22 @@ const QuestionList: React.FC<any> = (props: any) => {
     return true;
   };
 
+  useImperativeHandle(cref, () => ({
+    selectAll(flag: any) {
+      console.log(flag);
+      let all = faqList?.map((item) => item.id);
+      if (flag) {
+        setSelectedRowKeys(all);
+      } else {
+        setSelectedRowKeys([]);
+      }
+    },
+  }));
+
   useEffect(() => {
     // getFaqList({ pageNo: 1 });
     listRef.current.reload();
+    console.log(listRef);
   }, []);
 
   const rowSelection = () => {
@@ -106,15 +129,19 @@ const QuestionList: React.FC<any> = (props: any) => {
     },
   ];
 
+  const checkboxChange = (val: any) => {
+    let flag = val.target.checked;
+
+    let all = faqList?.map((item) => item.id);
+    if (flag) {
+      setSelectedRowKeys(all);
+    } else {
+      setSelectedRowKeys([]);
+    }
+  };
+
   return (
-    <div id="scrollContent" className={style['content']}>
-      {/* <InfiniteScroll
-        dataLength={faqList.length}
-        hasMore={faqList.length < totalSize}
-        next={_getMoreFaqList}
-        loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-        scrollableTarget="scrollContent"
-      > */}
+    <div id="scrollContent" className={style['content-list']}>
       <ProList
         // itemLayout="vertical"
         actionRef={listRef}
@@ -127,7 +154,7 @@ const QuestionList: React.FC<any> = (props: any) => {
         metas={{
           title: {
             render: (title: any, item: any, index: number) => {
-              console.log(item, index);
+              // console.log(item, index);
               const channel: any = item.channel || [];
               return (
                 <div key={index}>
@@ -163,15 +190,13 @@ const QuestionList: React.FC<any> = (props: any) => {
                           分类：
                           <Button type="link">{item.faqTypeId}</Button>
                         </span>
-                        <Divider type="vertical" />
-                        <span>浏览次数：{item.viewNum}</span>
-                        <Divider type="vertical" />
-                        <Badge
-                          status={status[item.approvalStatus]}
-                          text={
-                            hasCheckbox ? (
-                              statusList?.find((val: any) => val.value == item.approvalStatus)?.name
-                            ) : (
+                        {/* <Divider type="vertical" />
+                        <span>浏览次数：{item.viewNum}</span> */}
+                        {!hasCheckbox && <Divider type="vertical" />}
+                        {!hasCheckbox && (
+                          <Badge
+                            status={status[item.approvalStatus]}
+                            text={
                               <Select
                                 size="small"
                                 defaultValue={item.approvalStatus}
@@ -186,11 +211,10 @@ const QuestionList: React.FC<any> = (props: any) => {
                                   );
                                 })}
                               </Select>
-                            )
-                          }
-                        />
-                      </div>
-                      <div>
+                            }
+                          />
+                        )}
+                        <Divider type="vertical" />
                         <Button
                           type="link"
                           onClick={() => {
@@ -209,6 +233,21 @@ const QuestionList: React.FC<any> = (props: any) => {
                           推荐问设置
                         </Button>
                       </div>
+                      <div>
+                        <span>
+                          <EyeOutlined /> {item.times}
+                        </span>
+                        <Divider type="vertical" />
+                        <span>
+                          <LikeOutlined />
+                          {item.times}
+                        </span>
+
+                        <Divider type="vertical" />
+                        <span>
+                          <DislikeOutlined /> {item.times}
+                        </span>
+                      </div>
                     </div>
                     <div
                       style={{
@@ -222,13 +261,10 @@ const QuestionList: React.FC<any> = (props: any) => {
                         return (
                           <div className={style['box-answer']} key={idx}>
                             <div className={style['box-top']}>
-                              <Badge
-                                status={status[item.approvalStatus]}
-                                text={
-                                  hasCheckbox ? (
-                                    statusList?.find((val: any) => val.value == item.approvalStatus)
-                                      ?.name
-                                  ) : (
+                              {!hasCheckbox && (
+                                <Badge
+                                  status={status[item.approvalStatus]}
+                                  text={
                                     <Select
                                       size="small"
                                       defaultValue={item.approvalStatus}
@@ -243,32 +279,34 @@ const QuestionList: React.FC<any> = (props: any) => {
                                         );
                                       })}
                                     </Select>
-                                  )
-                                }
-                              />
-                              <div>
-                                <EditOutlined
-                                  style={{ marginRight: '18px', color: 'rgba(0,0,0,0.45)' }}
+                                  }
                                 />
-                                <Popconfirm
-                                  title={() => {
-                                    return (
-                                      <div style={{ maxWidth: '180px' }}>
-                                        删除答案将会一并删除与之相关的浏览数据、渠道配置等，且无法找回，点击确认将删除该答案
-                                      </div>
-                                    );
-                                  }}
-                                  getPopupContainer={(trigger: any) => trigger.parentElement}
-                                  okText="确定"
-                                  placement="topRight"
-                                  cancelText="取消"
-                                  onConfirm={() => {
-                                    // deleteList(item);
-                                  }}
-                                >
-                                  <DeleteOutlined style={{ color: 'rgba(0,0,0,0.45)' }} />
-                                </Popconfirm>
-                              </div>
+                              )}
+                              {!hasCheckbox && (
+                                <div>
+                                  <EditOutlined
+                                    style={{ marginRight: '18px', color: 'rgba(0,0,0,0.45)' }}
+                                  />
+                                  <Popconfirm
+                                    title={() => {
+                                      return (
+                                        <div style={{ maxWidth: '180px' }}>
+                                          删除答案将会一并删除与之相关的浏览数据、渠道配置等，且无法找回，点击确认将删除该答案
+                                        </div>
+                                      );
+                                    }}
+                                    getPopupContainer={(trigger: any) => trigger.parentElement}
+                                    okText="确定"
+                                    placement="topRight"
+                                    cancelText="取消"
+                                    onConfirm={() => {
+                                      // deleteList(item);
+                                    }}
+                                  >
+                                    <DeleteOutlined style={{ color: 'rgba(0,0,0,0.45)' }} />
+                                  </Popconfirm>
+                                </div>
+                              )}
                             </div>
                             <div
                               className={style['box-content']}

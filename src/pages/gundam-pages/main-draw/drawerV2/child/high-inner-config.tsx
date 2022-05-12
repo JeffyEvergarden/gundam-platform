@@ -25,6 +25,9 @@ const HightformTemplate: any = (props: any) => {
     nodeConfig: model._globalNodeList,
     wishList: model._wishList,
   }));
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
 
   const isDisabled = false;
 
@@ -64,6 +67,7 @@ const HightformTemplate: any = (props: any) => {
     }
     console.log(res);
   };
+
   useEffect(() => {
     let res = form.getFieldsValue();
     if (res[name].configType == 1) {
@@ -200,30 +204,33 @@ const HightformTemplate: any = (props: any) => {
         </FormItem>
       </Condition>
 
-      {/* 次数 */}
-      <FormItem name={[name, 'times']} label={title + '次数'} style={{ marginTop: '8px' }}>
-        <InputNumber
-          max={100000}
-          min={1}
-          step="1"
-          precision={0}
-          style={{ width: '200px' }}
-          placeholder={'请输入' + title + '次数'}
-          disabled={disabled}
-        />
-      </FormItem>
+      {/*文本不需要这个  0文本 1语音 */}
+      <Condition r-if={!(info?.soundType == 0)}>
+        {/* 次数 */}
+        <FormItem name={[name, 'times']} label={title + '次数'} style={{ marginTop: '8px' }}>
+          <InputNumber
+            max={100000}
+            min={1}
+            step="1"
+            precision={0}
+            style={{ width: '200px' }}
+            placeholder={'请输入' + title + '次数'}
+            disabled={disabled}
+          />
+        </FormItem>
 
-      {/* 超限动作 */}
-      <div className={'label_sp'} style={{ marginTop: '8px' }}>
-        <ActionConfig
-          form={form}
-          title={title + '执行动作'}
-          formName={[name]}
-          name={[name]}
-          titleType={2}
-          canEdit={disabled}
-        />
-      </div>
+        {/* 超限动作 */}
+        <div className={'label_sp'} style={{ marginTop: '8px' }}>
+          <ActionConfig
+            form={form}
+            title={title + '执行动作'}
+            formName={[name]}
+            name={[name]}
+            titleType={2}
+            canEdit={disabled}
+          />
+        </div>
+      </Condition>
     </div>
   );
 };

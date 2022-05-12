@@ -107,14 +107,20 @@ const deepClone = (obj: any) => {
 
 export const processForm = (form: any) => {
   const _form = deepClone(form);
+  console.log(_form);
+
   const list: any[] = ['silenceAction', 'rejectAction', 'clearAction', 'unclearAction'];
 
   list.forEach((key: any) => {
-    const action = _form[key]?.action || {};
+    const action = (_form[key] && _form[key]?.action) || {};
     // 遍历键值
     let _list = Object.keys(action);
     if (_list.length === 0) {
-      _form[key].action = undefined;
+      if (_form[key]) {
+        _form[key].action = undefined;
+      } else {
+        _form[key] = undefined;
+      }
     } else if (_list.length > 0) {
       const _item: any = _list.find((_key: any) => {
         // 数组长度必须大于0
@@ -126,7 +132,11 @@ export const processForm = (form: any) => {
       });
 
       if (!_item) {
-        _form[key].action = undefined;
+        if (_form[key]) {
+          _form[key].action = undefined;
+        } else {
+          _form[key] = undefined;
+        }
       }
     }
   });
