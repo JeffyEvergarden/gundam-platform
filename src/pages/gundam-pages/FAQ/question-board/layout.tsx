@@ -5,6 +5,7 @@ import { PlusOutlined, MinusCircleOutlined, PlusCircleOutlined } from '@ant-desi
 import SpCheckbox from './components/sp-checkbox';
 import Selector from './components/selector';
 import SelectorModal from './components/selector-modal';
+import EditBoard from './index';
 import { useModel } from 'umi';
 import style from './style.less';
 import { CHANNAL_LIST } from './test';
@@ -183,6 +184,13 @@ const Board: React.FC<any> = (props: any) => {
                           </div>
 
                           {/* <div>富文本编辑待定</div> */}
+                          <Form.Item
+                            name={[field.name, 'content']}
+                            fieldKey={[field.fieldKey, 'content']}
+                          >
+                            <EditBoard />
+                          </Form.Item>
+
                           <Form.Item
                             name={[field.name, 'channel']}
                             fieldKey={[field.fieldKey, 'channel']}
