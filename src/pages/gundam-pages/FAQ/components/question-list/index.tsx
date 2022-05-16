@@ -16,13 +16,16 @@ import ProList from '@ant-design/pro-list';
 import {
   DeleteOutlined,
   DislikeOutlined,
+  DownOutlined,
   EditOutlined,
   EyeOutlined,
   LikeOutlined,
+  UpOutlined,
 } from '@ant-design/icons';
 import { useModel, history } from 'umi';
 import { deleteQuestion } from '../../FAQ-manage/model/api';
 import config from '@/config';
+import Condition from '@/pages/gundam-pages/main-draw/flow/common/Condition';
 
 const { Option } = Select;
 
@@ -35,6 +38,7 @@ const QuestionList: React.FC<any> = (props: any) => {
     setInfo: model.setInfo,
   }));
   const [pageNo, setPageNo] = useState<number>(1);
+  const [more, setMore] = useState<any>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
 
   const listRef = useRef<any>({});
@@ -154,8 +158,6 @@ const QuestionList: React.FC<any> = (props: any) => {
         metas={{
           title: {
             render: (title: any, item: any, index: number) => {
-              // console.log(item, index);
-              const channel: any = item.channel || [];
               return (
                 <div key={index}>
                   <div className={style['list-item']}>
@@ -259,93 +261,105 @@ const QuestionList: React.FC<any> = (props: any) => {
                       {/* 答案列表 */}
                       {item.answerList.map((v: any, idx: any) => {
                         return (
-                          <div className={style['box-answer']} key={idx}>
-                            <div className={style['box-top']}>
-                              {!hasCheckbox && (
-                                <Badge
-                                  status={status[item.approvalStatus]}
-                                  text={
-                                    <Select
-                                      size="small"
-                                      defaultValue={item.approvalStatus}
-                                      style={{ width: 100, padding: 0 }}
-                                      bordered={false}
-                                    >
-                                      {statusList.map((val: any) => {
-                                        return (
-                                          <Option value={val.value} key={val.value}>
-                                            {val.name}
-                                          </Option>
-                                        );
-                                      })}
-                                    </Select>
-                                  }
-                                />
-                              )}
-                              <div></div>
-
-                              <div>
-                                <EditOutlined
-                                  style={{ marginRight: '18px', color: 'rgba(0,0,0,0.45)' }}
-                                />
+                          <Condition r-if={more[index] || idx == 0} key={idx}>
+                            <div className={style['box-answer']}>
+                              <div className={style['box-top']}>
                                 {!hasCheckbox && (
-                                  <Popconfirm
-                                    title={() => {
-                                      return (
-                                        <div style={{ maxWidth: '180px' }}>
-                                          删除答案将会一并删除与之相关的浏览数据、渠道配置等，且无法找回，点击确认将删除该答案
-                                        </div>
-                                      );
-                                    }}
-                                    getPopupContainer={(trigger: any) => trigger.parentElement}
-                                    okText="确定"
-                                    placement="topRight"
-                                    cancelText="取消"
-                                    onConfirm={() => {
-                                      // deleteList(item);
-                                    }}
-                                  >
-                                    <DeleteOutlined style={{ color: 'rgba(0,0,0,0.45)' }} />
-                                  </Popconfirm>
+                                  <Badge
+                                    status={status[item.approvalStatus]}
+                                    text={
+                                      <Select
+                                        size="small"
+                                        defaultValue={item.approvalStatus}
+                                        style={{ width: 100, padding: 0 }}
+                                        bordered={false}
+                                      >
+                                        {statusList.map((val: any) => {
+                                          return (
+                                            <Option value={val.value} key={val.value}>
+                                              {val.name}
+                                            </Option>
+                                          );
+                                        })}
+                                      </Select>
+                                    }
+                                  />
                                 )}
-                              </div>
-                            </div>
-                            <div
-                              className={style['box-content']}
-                              dangerouslySetInnerHTML={{ __html: v.answer }}
-                            ></div>
-                            <div className={style['box-footer']}>
-                              <div>
-                                <span>作者：{v.creator}</span>
-                                <Divider type="vertical" />
-                                <span>
-                                  生效渠道：
-                                  <Button type="link">{item.faqTypeId}</Button>
-                                </span>
-                              </div>
-                              <div>
-                                <span>
-                                  <EyeOutlined /> {v.viewNum}
-                                </span>
-                                <Divider type="vertical" />
-                                <span>
-                                  <LikeOutlined />
-                                  {item.times}
-                                </span>
+                                <div></div>
 
-                                <Divider type="vertical" />
-                                <span>
-                                  <DislikeOutlined /> {item.times}
-                                </span>
+                                <div>
+                                  <EditOutlined
+                                    style={{ marginRight: '18px', color: 'rgba(0,0,0,0.45)' }}
+                                  />
+                                  {!hasCheckbox && (
+                                    <Popconfirm
+                                      title={() => {
+                                        return (
+                                          <div style={{ maxWidth: '180px' }}>
+                                            删除答案将会一并删除与之相关的浏览数据、渠道配置等，且无法找回，点击确认将删除该答案
+                                          </div>
+                                        );
+                                      }}
+                                      getPopupContainer={(trigger: any) => trigger.parentElement}
+                                      okText="确定"
+                                      placement="topRight"
+                                      cancelText="取消"
+                                      onConfirm={() => {
+                                        // deleteList(item);
+                                      }}
+                                    >
+                                      <DeleteOutlined style={{ color: 'rgba(0,0,0,0.45)' }} />
+                                    </Popconfirm>
+                                  )}
+                                </div>
+                              </div>
+                              <div
+                                className={style['box-content']}
+                                dangerouslySetInnerHTML={{ __html: v.answer }}
+                              ></div>
+                              <div className={style['box-footer']}>
+                                <div>
+                                  <span>作者：{v.creator}</span>
+                                  <Divider type="vertical" />
+                                  <span>
+                                    生效渠道：
+                                    <Button type="link">{item.faqTypeId}</Button>
+                                  </span>
+                                </div>
+                                <div>
+                                  <span>
+                                    <EyeOutlined /> {v.viewNum}
+                                  </span>
+                                  <Divider type="vertical" />
+                                  <span>
+                                    <LikeOutlined />
+                                    {item.times}
+                                  </span>
+
+                                  <Divider type="vertical" />
+                                  <span>
+                                    <DislikeOutlined /> {item.times}
+                                  </span>
+                                </div>
                               </div>
                             </div>
-                          </div>
+                          </Condition>
                         );
                       })}
                     </div>
 
                     <div className={style['box-footer']}>
-                      <div className={style['blue']}>更多答案</div>
+                      <Button
+                        key={index}
+                        type="link"
+                        onClick={() => {
+                          let arr: any = JSON.parse(JSON.stringify(more));
+                          arr[index] = !arr[index];
+                          setMore(arr);
+                        }}
+                      >
+                        更多答案{more[index] ? <UpOutlined /> : <DownOutlined />}
+                      </Button>
                       <div style={{ display: 'flex', color: 'rgba(0,0,0,0.45)' }}>
                         {hasCheckbox && (
                           <div className={style['extra']}>删除操作人：{item.name}</div>
