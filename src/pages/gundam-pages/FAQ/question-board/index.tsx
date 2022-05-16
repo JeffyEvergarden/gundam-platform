@@ -88,7 +88,6 @@ const EditBoard: React.FC<any> = (prop: any) => {
   };
 
   const selectModalRef = useRef<any>();
-  const opRecordRef = useRef<any>({});
   // 打开弹窗
   const openModal = () => {
     (selectModalRef.current as any).open({

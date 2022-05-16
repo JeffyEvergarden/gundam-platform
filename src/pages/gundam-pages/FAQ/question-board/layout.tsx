@@ -1,12 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Form, Input, Button, Select, Space, DatePicker, Switch, Checkbox } from 'antd';
 import Condition from '@/components/Condition';
-import { PlusOutlined, MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import {
+  PlusOutlined,
+  MinusCircleOutlined,
+  PlusCircleOutlined,
+  LoginOutlined,
+} from '@ant-design/icons';
 import SpCheckbox from './components/sp-checkbox';
 import Selector from './components/selector';
 import SelectorModal from './components/selector-modal';
 import EditBoard from './index';
-import { useModel } from 'umi';
+import Testmodel from './components/test';
+import { history, useModel } from 'umi';
 import style from './style.less';
 import { CHANNAL_LIST } from './test';
 
@@ -40,6 +46,9 @@ const Board: React.FC<any> = (props: any) => {
   }));
 
   useEffect(() => {
+    console.log('初始化调用机器人ID:');
+    console.log(info.id);
+    console.log('调接口:');
     getFlowList(info.id);
     getTreeData(info.id);
   }, []);
@@ -94,9 +103,21 @@ const Board: React.FC<any> = (props: any) => {
   // 打开弹窗
   const openModal = (index: number) => {
     const _list = getRecommendItem();
+    const disabledQuestionKeys = _list
+      .filter((item: any) => {
+        return item.questionType === '1' && item.questionId;
+      })
+      .map((item: any) => item.questionId);
+    const disabledFlowKeys = _list
+      .filter((item: any) => {
+        return item.questionType === '2' && item.questionId;
+      })
+      .map((item: any) => item.questionId);
     (selectModalRef.current as any).open({
       showFlow: true,
       info: _list[index],
+      disabledQuestionKeys,
+      disabledFlowKeys,
     });
     opRecordRef.current.callback = (obj: any) => {
       const _list = getRecommendItem();
@@ -114,7 +135,16 @@ const Board: React.FC<any> = (props: any) => {
 
   return (
     <div className={style['board-page']}>
-      <div className={style['board-title']}>{title}</div>
+      <div className={style['board-title']}>
+        <Button
+          icon={<LoginOutlined style={{ fontSize: '20px' }} />}
+          type="link"
+          onClick={() => {
+            history.push('/gundamPages/faq/main');
+          }}
+        ></Button>
+        {title}
+      </div>
 
       <div className={style['board-form']}>
         <Form form={form}>
@@ -187,12 +217,12 @@ const Board: React.FC<any> = (props: any) => {
                           </div>
 
                           {/* <div>富文本编辑待定</div> */}
-                          <Form.Item
+                          {/* <Form.Item
                             name={[field.name, 'content']}
                             fieldKey={[field.fieldKey, 'content']}
                           >
                             <EditBoard />
-                          </Form.Item>
+                          </Form.Item> */}
 
                           <Form.Item
                             name={[field.name, 'channel']}
@@ -265,7 +295,7 @@ const Board: React.FC<any> = (props: any) => {
                   // console.log(length);
                   add(
                     {
-                      qustionType: null,
+                      questionType: null,
                       questionId: null,
                       question: null,
                       intelligenceFlag: false,
@@ -326,6 +356,7 @@ const Board: React.FC<any> = (props: any) => {
         </Form>
       </div>
 
+      {/* <Testmodel /> */}
       <SelectorModal cref={selectModalRef} confirm={confirm} />
     </div>
   );
