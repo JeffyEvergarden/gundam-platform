@@ -322,17 +322,10 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
           </Button>
         </div>
       </Condition>
-      <div
-        className={style['title_sp']}
-        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-      >
-        问答列表
-        <Button type="link" icon={<UploadOutlined />} onClick={importList}></Button>
-      </div>
 
       <Tree
-        checkable
-        onCheck={onCheck}
+        // checkable
+        // onCheck={onCheck}
         treeData={dataSource}
         // switcherIcon={<PlusSquareOutlined />}
         showLine

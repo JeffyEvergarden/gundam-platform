@@ -123,6 +123,13 @@ const FAQPage: React.FC<any> = (props: any) => {
 
       <div className={style['page_content']}>
         <div className={style['main-content_left']}>
+          <div
+            className={style['tree_title']}
+            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+          >
+            问答列表
+            {/* <Button type="link" icon={<UploadOutlined />} onClick={importList}></Button> */}
+          </div>
           <MyTree
             draggable={false}
             onChange={onSelect}

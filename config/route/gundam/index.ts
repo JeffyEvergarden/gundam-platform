@@ -34,17 +34,22 @@ export default [
           {
             path: '/gundamPages/detail/nodeConfig',
             component: './gundam-pages/detail/nodeConfig',
-            name: '业务流程管理',
+            name: '节点配置',
           },
           {
             path: '/gundamPages/detail/globalConfig',
             component: './gundam-pages/detail/globalConfig',
-            name: '业务流程管理-详情配置',
+            name: '变量配置',
           },
           {
             path: '/gundamPages/detail/interfaceConfig',
             component: './gundam-pages/detail/interfaceConfig',
-            name: '业务流程管理',
+            name: '接口配置',
+          },
+          {
+            path: '/gundamPages/detail/FAQConfig',
+            component: './gundam-pages/detail/FAQConfig',
+            name: 'FAQ配置',
           },
           { redirect: '/gundamPages/detail' },
         ],
