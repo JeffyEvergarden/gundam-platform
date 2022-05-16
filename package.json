@@ -73,6 +73,7 @@
     "react-helmet-async": "^1.0.4",
     "react-infinite-scroll-component": "^6.1.0",
     "react-sortablejs": "^6.0.0",
+    "slate": "^0.78.0",
     "sortablejs": "^1.14.0",
     "umi": "^3.5.0",
     "umi-serve": "^1.9.10"

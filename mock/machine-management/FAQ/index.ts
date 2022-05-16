@@ -10,7 +10,7 @@ const normalDeal = (req: any, res: any) => {
   });
 };
 
-const getFaqList = (req: any, res: any) => {
+const getFaqList = (req: any, res: any, next: any) => {
   const jsonObj: any = {
     id: '1',
     robotId: '100',
@@ -150,7 +150,7 @@ const getTreeList = (req: any, res: any) => {
                 key: '0-1-0',
               },
               {
-                title: '神奇流程2',
+                title: '神奇流程',
                 key: '0-1-1',
               },
             ],
@@ -162,6 +162,8 @@ const getTreeList = (req: any, res: any) => {
 };
 
 export default {
+  'GET /aichat/faq/list': getFaqList, // 获取问答列表
+
   'GET /aichat/faq/robotFaqPageList': getFaqList, // 获取问答列表
   'POST /aichat/faq/robotFaqDelete': normalDeal, // 删除问题
   'GET /aichat/faqImport/listPage': getImportList, // 获取批量导入列表

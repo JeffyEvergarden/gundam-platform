@@ -4,36 +4,39 @@ import config from '../../../src/config';
 const successCode = config.successCode;
 
 const getBusinessTableData = (req: any, res: any) => {
+  let arr = new Array(20).fill(1);
+  const obj = {
+    flowName: '前端mock-流程',
+    id: 'front_mock_id_',
+    flowDesc: '前端mock-描述',
+    headIntent: 1,
+    creator: 'yyb',
+    createTime: '2022-02-23 17:36:00',
+    flowType: 1,
+  };
+  arr = arr.map((item: any, i: number) => {
+    return {
+      flowName: '前端mock-流程' + i,
+      id: 'front_mock_id_' + i,
+      flowDesc: '前端mock-描述' + i,
+      headIntent: 100 + i,
+      creator: 'yyb',
+      createTime: '2022-02-23 17:36:00',
+      flowType: (1 + i) % 4,
+    };
+  });
+
   res.json({
     resultCode: successCode,
     data: {
       pageSize: 20,
       totalSize: 200,
       page: 10,
-      list: [
-        {
-          flowName: '前端mock-流程1',
-          id: 'front_mock_id_1',
-          flowDesc: '前端mock-描述1',
-          headIntent: 100,
-          creator: 'yyb',
-          createTime: '2022-02-23 17:36:00',
-          flowType: 1,
-        },
-        {
-          flowName: '前端mock-流程2',
-          id: 'front_mock_id_2',
-          flowDesc: '前端mock-描述2',
-          headIntent: 100,
-          creator: 'yyb',
-          createTime: '2022-02-23 17:36:00',
-          flowType: 3,
-        },
-      ],
+      list: arr,
     },
-    page: 1,
-    pageSize: 10,
-    totalSize: 3,
+    pageSize: 20,
+    totalSize: 200,
+    page: 10,
   });
 };
 

@@ -6,6 +6,7 @@ import {
   queryWordSlotTableList,
   queryWishList,
   queryNodeConfig,
+  queryTreeList,
 } from '@/services/api';
 import config from '@/config/index';
 
@@ -31,6 +32,9 @@ export default function useGundamModel() {
   const [_wordSlotList, _setWordSlotList] = useState<any[]>([]); // 词槽列表
 
   const [_messageList, _setMessageList] = useState<any[]>([]); // 信息列表
+
+  // faq 问题树形结构
+  const [_treeData, setTreeData] = useState<any[]>([]);
 
   const allowRequest = (str: any, id?: any, t?: number) => {
     if (id) {
@@ -174,6 +178,7 @@ export default function useGundamModel() {
     _setOriginFlowList(originData);
   };
 
+  // 话术标签
   const getLabelList = async (id?: any) => {
     if (!allowRequest('label', id)) {
       return;
@@ -186,6 +191,7 @@ export default function useGundamModel() {
     let data: any[] = res?.data?.list || [];
     _setLabelList(data);
   };
+
   //高级配置信息
   const getGlobalConfig = async (id?: any) => {
     if (!allowRequest('high', id, 8)) {
@@ -202,6 +208,43 @@ export default function useGundamModel() {
     _setGlobalNodeList(data);
   };
 
+  const processTreeData = (data: any[], parent?: any) => {
+    if (!Array.isArray(data)) {
+      return null;
+    }
+
+    let _data = data.map((item: any) => {
+      let obj: any = {
+        title: item.title,
+        key: item.key,
+        parent: parent,
+      };
+      let children: any = processTreeData(item.children, obj);
+      obj.children = children;
+      return obj;
+    });
+    return _data;
+  };
+
+  const getTreeData = async (id?: any) => {
+    if (!allowRequest('questiontree', id)) {
+      return;
+    }
+    if (!id) {
+      console.log('问题分类接口获取不到机器人id');
+      return;
+    }
+    let res: any = await queryTreeList();
+    if (res.resultCode === config.successCode) {
+      let data: any = Array.isArray(res.data) ? res.data : [];
+      // 数据加工
+      data = processTreeData(data);
+      setTreeData(data || []);
+    } else {
+      setTreeData([]);
+    }
+  };
+
   return {
     _wishList,
     _setWishList,
@@ -216,12 +259,14 @@ export default function useGundamModel() {
     _messageList,
     _setMessageList,
     _originFlowList,
+    _treeData,
     getMessageList, // 短信模版
     getWishList, // 意图
     getWordSlotList, // 词槽
     getFlowList, // 业务流程
     getLabelList, // 话术标签
     getGlobalConfig, //高级配置 节点
+    getTreeData, // 获取faq问题分类树形结构
     selectBody,
   };
 }

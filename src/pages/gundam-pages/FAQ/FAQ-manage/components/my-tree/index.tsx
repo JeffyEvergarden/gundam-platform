@@ -18,6 +18,7 @@ interface TreeProps {
   touchChangeParent?: (...args: any) => void;
   deleteApi?: any;
   draggable: boolean;
+  edit?: boolean;
   openEditModal?: (...args: any) => void;
   openAddModal?: (...args: any) => void;
 }
@@ -51,7 +52,14 @@ const getParentNode = (obj: any, arr: any) => {
 };
 
 const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
-  const { data, onChange, touchChangeParent, draggable, deleteApi = () => true } = props;
+  const {
+    data,
+    onChange,
+    touchChangeParent,
+    draggable,
+    deleteApi = () => true,
+    edit = true,
+  } = props;
 
   const { deleteLeaf } = useTreeModal();
 
@@ -264,25 +272,27 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
     return (
       <div className={style['tree-node']}>
         <div className={style['label']}>{nodeData.title}</div>
-        <div className={style['edit-layout']} style={def()}>
-          {extra}
-          {nodeData.parent && (
-            <EditOutlined
-              style={{ marginRight: '8px', fontSize: '12px' }}
-              onClick={(e) => {
-                openEditModal(e, nodeData);
-              }}
-            />
-          )}
-          {nodeData.parent && (
-            <DeleteOutlined
-              style={{ fontSize: '12px' }}
-              onClick={(e) => {
-                openDeleteModal(e, nodeData);
-              }}
-            />
-          )}
-        </div>
+        <Condition r-if={edit}>
+          <div className={style['edit-layout']} style={def()}>
+            {extra}
+            {nodeData.parent && (
+              <EditOutlined
+                style={{ marginRight: '8px', fontSize: '12px' }}
+                onClick={(e) => {
+                  openEditModal(e, nodeData);
+                }}
+              />
+            )}
+            {nodeData.parent && (
+              <DeleteOutlined
+                style={{ fontSize: '12px' }}
+                onClick={(e) => {
+                  openDeleteModal(e, nodeData);
+                }}
+              />
+            )}
+          </div>
+        </Condition>
       </div>
     );
   };
