@@ -4,6 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import MyTree from '../../../FAQ-manage/components/my-tree';
 import { useModel } from 'umi';
 import style from './style.less';
+import Condition from '@/components/Condition';
 
 const { TabPane } = Tabs;
 
@@ -32,8 +33,9 @@ const columns2: any[] = [
 ];
 
 const SelectorModal: React.FC<any> = (props: any) => {
-  const { cref, confirm, type = 'radio' } = props;
+  const { cref, confirm, type = 'radio', showFlow = true } = props;
 
+  const [showFlowKey, setShowFlowKey] = useState<boolean>(true);
   // tabs 操作
   const [activeKey, setActivekey] = useState<string>('1');
 
@@ -43,8 +45,8 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   // 业务流程列表
   const { flowList, treeData } = useModel('drawer' as any, (model: any) => ({
-    flowList: model._flowList,
-    treeData: model._treeData,
+    flowList: model?._flowList || [],
+    treeData: model?._treeData || [],
   }));
 
   const [visible, setVisible] = useState<boolean>(false);
@@ -88,7 +90,14 @@ const SelectorModal: React.FC<any> = (props: any) => {
   };
 
   useImperativeHandle(cref, () => ({
-    open: (val: any[]) => {
+    open: (obj: any) => {
+      console.log(obj);
+      if (obj.showFlow === false) {
+        setShowFlowKey(false);
+        setActivekey('1');
+      } else {
+        setShowFlowKey(true);
+      }
       setCurrent1(1);
       setCurrent2(1);
       setSelectedRowKeys([]);
@@ -103,7 +112,6 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   const submit = () => {
     console.log(selectedRowKeys);
-    console.log(tableFlowList);
     let list: any = tableFlowList
       .filter((item: any) => {
         return selectedRowKeys.includes(item.name);
@@ -157,7 +165,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
           </div>
         </TabPane>
 
-        <TabPane tab="业务流程" key="2">
+        <TabPane tab="业务流程" key="2" disabled={!showFlowKey}>
           <div className={style['table-box']}>
             <Table
               rowSelection={{

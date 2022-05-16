@@ -1,9 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { message, Button } from 'antd';
+import React, { useState, useEffect, useRef } from 'react';
+import { message, Button, Tooltip } from 'antd';
 import { Editor, Toolbar } from '@wangeditor/editor-for-react';
 import { IDomEditor, IEditorConfig } from '@wangeditor/editor';
 import config from './const';
+import { FilePptOutlined, DeploymentUnitOutlined } from '@ant-design/icons';
+import { insertLink } from './model/utils';
 import '@wangeditor/editor/dist/css/style.css'; // 引入 css
+import style from './style.less';
+import UploadFile from './components/upload-modal';
+import SelectorModal from './components/selector-modal';
 
 const EditBoard: React.FC<any> = (prop: any) => {
   const { value, onChange } = prop;
@@ -15,9 +20,15 @@ const EditBoard: React.FC<any> = (prop: any) => {
     onChange(content);
   };
 
+  const bt = useRef<any>({});
+
   // 编辑器配置
   const toolbarConfig = {
     excludeKeys: ['fullScreen'], // 去除全屏
+    insertKeys: {
+      index: 24,
+      keys: ['uploadOursFile'], //自定义
+    },
   };
 
   const editorConfig: Partial<IEditorConfig> = {
@@ -32,7 +43,7 @@ const EditBoard: React.FC<any> = (prop: any) => {
     // 单个文件的最大体积限制，默认为 2M
     maxFileSize: 4 * 1024 * 1024, // 4M
     // 上传地址
-    server: '/aichat/robot/file/uploadFile',
+    server: config.UPLOAD_FILE,
     customInsert(res: any, insertFn: any) {
       // res 即服务端的返回结果
       let urlId = res?.data;
@@ -55,7 +66,7 @@ const EditBoard: React.FC<any> = (prop: any) => {
     // 单个文件的最大体积限制，默认为 2M
     maxFileSize: 50 * 1024 * 1024, // 4M
     // 上传地址
-    server: '/aichat/robot/file/uploadFile',
+    server: config.UPLOAD_FILE,
     timeout: 60 * 1000,
     customInsert(res: any, insertFn: any) {
       // res 即服务端的返回结果
@@ -70,8 +81,36 @@ const EditBoard: React.FC<any> = (prop: any) => {
     },
   };
 
+  (editorConfig.MENU_CONF as any)['uploadOursFile'] = {
+    onClick: () => {
+      (bt.current as any)?.click?.();
+    },
+  };
+
+  const selectModalRef = useRef<any>();
+  const opRecordRef = useRef<any>({});
+  // 打开弹窗
+  const openModal = () => {
+    (selectModalRef.current as any).open({
+      showFlow: false,
+      info: {},
+    });
+  };
+  // 选择标准问弹窗
+  const confirm = (obj: any) => {
+    console.log(obj);
+  };
+
+  (editorConfig.MENU_CONF as any)['openRelationModal'] = {
+    onClick: () => {
+      openModal?.();
+    },
+  };
+
   // 插入超链接
-  const insertLink = () => {};
+  const _insertLink = (info: any) => {
+    insertLink(editor, info.fileName, info.path);
+  };
 
   useEffect(() => {
     console.log(editor);
@@ -92,10 +131,6 @@ const EditBoard: React.FC<any> = (prop: any) => {
         mode="default"
         style={{ borderBottom: '1px solid #ccc' }}
       ></Toolbar>
-      <div>
-        {' '}
-        <Button type="link">插入超链接</Button>
-      </div>
       <Editor
         defaultConfig={editorConfig}
         value={value}
@@ -104,6 +139,14 @@ const EditBoard: React.FC<any> = (prop: any) => {
         mode="default"
         style={{ height: '300px' }}
       />
+
+      <div className={style['toolbar']}>
+        <UploadFile submit={_insertLink}>
+          <span ref={bt}></span>
+        </UploadFile>
+
+        <SelectorModal cref={selectModalRef} confirm={confirm} />
+      </div>
     </div>
   );
 };

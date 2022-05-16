@@ -94,7 +94,10 @@ const Board: React.FC<any> = (props: any) => {
   // 打开弹窗
   const openModal = (index: number) => {
     const _list = getRecommendItem();
-    (selectModalRef.current as any).open(_list[index]);
+    (selectModalRef.current as any).open({
+      showFlow: true,
+      info: _list[index],
+    });
     opRecordRef.current.callback = (obj: any) => {
       const _list = getRecommendItem();
       _list[index] = { ...obj };
