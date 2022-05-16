@@ -28,6 +28,7 @@ const FAQPage: React.FC<any> = (props: any) => {
 
   const changeHighConfig = (val: any) => {
     setValue(val);
+    //重新获取列表
   };
   const [pageNo, setPageNo] = useState<number>(1);
 

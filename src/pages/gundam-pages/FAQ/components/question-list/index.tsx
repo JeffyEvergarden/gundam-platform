@@ -282,11 +282,13 @@ const QuestionList: React.FC<any> = (props: any) => {
                                   }
                                 />
                               )}
-                              {!hasCheckbox && (
-                                <div>
-                                  <EditOutlined
-                                    style={{ marginRight: '18px', color: 'rgba(0,0,0,0.45)' }}
-                                  />
+                              <div></div>
+
+                              <div>
+                                <EditOutlined
+                                  style={{ marginRight: '18px', color: 'rgba(0,0,0,0.45)' }}
+                                />
+                                {!hasCheckbox && (
                                   <Popconfirm
                                     title={() => {
                                       return (
@@ -305,8 +307,8 @@ const QuestionList: React.FC<any> = (props: any) => {
                                   >
                                     <DeleteOutlined style={{ color: 'rgba(0,0,0,0.45)' }} />
                                   </Popconfirm>
-                                </div>
-                              )}
+                                )}
+                              </div>
                             </div>
                             <div
                               className={style['box-content']}

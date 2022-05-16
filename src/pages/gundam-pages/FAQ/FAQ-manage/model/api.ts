@@ -28,21 +28,21 @@ export async function getTreeList(params?: Record<string, any>) {
 }
 
 export async function addNodeLeaf(data?: Record<string, any>) {
-  return request(`${baseUrl}/faq/tree/add`, {
+  return request(`${baseUrl}/faq/tree/typeAdd`, {
     method: 'POST',
     data,
   });
 }
 
 export async function editNodeLeaf(data?: Record<string, any>) {
-  return request(`${baseUrl}/faq/tree/edit`, {
+  return request(`${baseUrl}/faq/tree/typeEdit`, {
     method: 'POST',
     data,
   });
 }
 
 export async function deleteNodeLeaf(data?: Record<string, any>) {
-  return request(`${baseUrl}/faq/tree/delete`, {
+  return request(`${baseUrl}/faq/tree/typeDelete`, {
     method: 'POST',
     data,
   });

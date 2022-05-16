@@ -156,7 +156,7 @@ export default {
   'GET /aichat/faqImport/listPage': getImportList, // 获取批量导入列表
 
   'GET /aichat/faq/typeList': getTreeList, //获取树
-  'POST /aichat/faq/tree/add': normalDeal, // 添加分类节点
-  'POST /aichat/faq/tree/edit': normalDeal, // 编辑分类节点
-  'POST /aichat/faq/tree/delete': normalDeal, // 删除分类节点
+  'POST /aichat/faq/tree/typeAdd': normalDeal, // 添加分类节点
+  'POST /aichat/faq/tree/typeEdit': normalDeal, // 编辑分类节点
+  'POST /aichat/faq/tree/typeDelete': normalDeal, // 删除分类节点
 };
