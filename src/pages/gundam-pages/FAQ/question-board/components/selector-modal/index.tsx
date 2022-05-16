@@ -39,15 +39,20 @@ const SelectorModal: React.FC<any> = (props: any) => {
   // tabs 操作
   const [activeKey, setActivekey] = useState<string>('1');
 
+  const [disabledQuestionKeys, setDisabledQuestionKeys] = useState<any[]>([]);
+  const [disabledFlowKeys, setDisabledFlowKeys] = useState<any[]>([]);
+
   const changeActiveKey = (val: any) => {
     setActivekey(val);
   };
 
   // 业务流程列表
-  const { flowList, treeData } = useModel('drawer' as any, (model: any) => ({
-    flowList: model?._flowList || [],
-    treeData: model?._treeData || [],
-  }));
+  const { flowList, treeData } = useModel('drawer' as any, (model: any) => {
+    return {
+      flowList: model?._originFlowList || [],
+      treeData: model?.treeData || [],
+    };
+  });
 
   const [visible, setVisible] = useState<boolean>(false);
   // 页码, 分页相关
@@ -69,6 +74,11 @@ const SelectorModal: React.FC<any> = (props: any) => {
     console.log(val);
   };
 
+  useEffect(() => {
+    console.log('flowList');
+    console.log(flowList);
+  }, [flowList]);
+
   const tableFlowList: any[] = useMemo(() => {
     return flowList.map((item: any, index: number) => {
       return {
@@ -83,15 +93,32 @@ const SelectorModal: React.FC<any> = (props: any) => {
       // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
       setSelectedRowKeys(selectedRowKeys);
     },
-    getCheckboxProps: (record: any) => ({
-      disabled: false,
-      name: record.name,
-    }),
+    getCheckboxProps: (record: any) => {
+      return {
+        disabled: disabledQuestionKeys.includes(record.name),
+        name: record.name,
+      };
+    },
+  };
+
+  const rowFlowSelection = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
+      // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      setSelectedRowKeys(selectedRowKeys);
+    },
+    getCheckboxProps: (record: any) => {
+      return {
+        disabled: disabledFlowKeys.includes(record.name),
+        name: record.name,
+      };
+    },
   };
 
   useImperativeHandle(cref, () => ({
     open: (obj: any) => {
       console.log(obj);
+      setDisabledFlowKeys(obj.disabledFlowKeys || []);
+      setDisabledQuestionKeys(obj.disabledQuestionKeys || []);
       if (obj.showFlow === false) {
         setShowFlowKey(false);
         setActivekey('1');
@@ -127,11 +154,6 @@ const SelectorModal: React.FC<any> = (props: any) => {
     }
     setVisible(false);
   };
-
-  useEffect(() => {
-    console.log('flowList');
-    console.log(flowList);
-  }, [flowList]);
 
   return (
     <Modal
@@ -175,7 +197,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
             <Table
               rowSelection={{
                 type: type === 'radio' ? 'radio' : 'checkbox',
-                ...rowSelection,
+                ...rowFlowSelection,
                 selectedRowKeys,
               }}
               size="small"
