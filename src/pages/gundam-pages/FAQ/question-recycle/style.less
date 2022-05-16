@@ -70,16 +70,30 @@
   border: 1px solid #f3f3f3;
   border-left: none;
   .scrollbar(1.5px, rgba(0, 0, 0, 0.3));
+  :global {
+    .ant-collapse-header {
+      align-items: center !important;
+    }
+  }
 }
 
 .content {
   // padding: 0 8px 0 0;
   overflow: auto;
   border-left: 1px solid #f0f0f0;
+
+  :global {
+    .ant-pro-card-body {
+      padding: 0 !important;
+    }
+    .ant-pro-list-row-header-title {
+      display: block !important;
+    }
+  }
 }
 
 .high-config-select {
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .list-item {
@@ -121,11 +135,20 @@
   font-size: 12px;
 }
 
-:global {
-  .ant-pro-card-body {
-    padding: 0 !important;
-  }
-  .ant-pro-list-row-header-title {
-    display: block !important;
+.title_sp {
+  position: relative;
+  padding-left: 24px;
+  font-weight: 700;
+  font-size: 16px;
+
+  &::before {
+    position: absolute;
+    top: 4px;
+    left: 12px;
+    display: block;
+    width: 4px;
+    height: 16px;
+    background: #1890ff;
+    content: '';
   }
 }

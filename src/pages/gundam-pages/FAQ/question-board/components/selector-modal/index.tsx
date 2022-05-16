@@ -128,6 +128,11 @@ const SelectorModal: React.FC<any> = (props: any) => {
     setVisible(false);
   };
 
+  useEffect(() => {
+    console.log('flowList');
+    console.log(flowList);
+  }, [flowList]);
+
   return (
     <Modal
       className={style['modal-bg']}

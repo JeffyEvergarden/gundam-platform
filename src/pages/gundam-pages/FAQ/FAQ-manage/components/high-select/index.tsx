@@ -1,3 +1,4 @@
+import { Button } from 'antd';
 import { HIGH_CONFIG_SELECT } from '../../const';
 import style from './style.less';
 
@@ -30,6 +31,8 @@ const HighConfigSelect = (props: HighConfigProps) => {
         const type = listItem.type || 'single';
 
         const onClick = (name: any, key: string, type: string) => {
+          console.log(name, key, type);
+
           let _val = value?.[key];
           if (type === 'single') {
             _val = name;
@@ -78,6 +81,21 @@ const HighConfigSelect = (props: HighConfigProps) => {
           </div>
         );
       })}
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Button
+          type="link"
+          onClick={() => {
+            onChange({
+              channel: 0,
+              status: 0,
+              sort: 0,
+              creator: [0],
+            });
+          }}
+        >
+          重置
+        </Button>
+      </div>
     </div>
   );
 };

@@ -55,6 +55,11 @@ export default [
         name: '意图管理',
       },
       {
+        path: '/gundamPages/sample',
+        component: './gundam-pages/sample',
+        name: '样本',
+      },
+      {
         path: '/gundamPages/wordSlotLibrary',
         component: './gundam-pages/word-slot-library',
         name: '词槽管理',
@@ -121,6 +126,11 @@ export default [
             path: '/gundamPages/faq/import',
             component: './gundam-pages/FAQ/question-import',
             name: '问题批量导入',
+          },
+          {
+            path: '/gundamPages/faq/recommend',
+            component: './gundam-pages/FAQ/question-recommend',
+            name: '推荐问',
           },
           { redirect: '/gundamPages/faq/main' },
         ],

@@ -90,7 +90,7 @@ export async function queryNodeConfig(params?: { [key: string]: any }) {
 }
 
 export async function queryTreeList(params?: Record<string, any>) {
-  return request(`${baseUrl}/faq/tree`, {
+  return request(`${baseUrl}/faq/typeList`, {
     method: 'GET',
     params,
   });

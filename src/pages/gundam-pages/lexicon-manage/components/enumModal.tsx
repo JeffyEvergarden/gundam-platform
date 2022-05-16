@@ -1,14 +1,11 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Modal, Form, Input, Button, Space, message } from 'antd';
+import { Modal, Form, Input, Button, Space } from 'antd';
 
 const { TextArea } = Input;
 
 const layout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 18 },
-};
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 12 },
 };
 
 export default (props: any) => {
@@ -31,9 +28,10 @@ export default (props: any) => {
     <Modal
       visible={visible}
       title={type === 'edit' ? '编辑枚举实体' : '新增枚举实体'}
-      footer={null}
+      okText={'提交'}
       onCancel={cancel}
       destroyOnClose={true}
+      onOk={submit}
     >
       <Form form={form} {...layout}>
         <Form.Item
@@ -49,14 +47,6 @@ export default (props: any) => {
           rules={[{ required: true, message: '请输入实体值' }]}
         >
           <TextArea placeholder={'请输入实体值'} maxLength={1000} rows={6} />
-        </Form.Item>
-        <Form.Item {...tailLayout}>
-          <Space>
-            <Button onClick={cancel}>取消</Button>
-            <Button type="primary" onClick={submit}>
-              提交
-            </Button>
-          </Space>
         </Form.Item>
       </Form>
     </Modal>

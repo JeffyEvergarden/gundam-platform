@@ -40,9 +40,10 @@ const MachineManagement: React.FC = (props: any) => {
   // 分页相关 ---
   // const [current, setCurrent] = useState<number>(1);
 
-  // const onChange = (val: number) => {
-  //   setCurrent(val);
-  // };
+  const onChange = (val: number) => {
+    // setCurrent(val);、
+    console.log(val);
+  };
 
   // 改变状态
   const _changeStatus = async (row: any) => {

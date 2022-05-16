@@ -56,8 +56,8 @@ export default (props: any) => {
       <Modal
         title={title == 'add' ? '新增' : '编辑'}
         visible={visible}
-        footer={null}
         onCancel={operCancel}
+        onOk={operSubmit}
       >
         <Spin spinning={spinning}>
           <Form form={form} {...layout}>
@@ -81,14 +81,6 @@ export default (props: any) => {
                 </React.Fragment>
               );
             })}
-            <Form.Item {...tailLayout}>
-              <Space>
-                <Button onClick={operCancel}>取消</Button>
-                <Button type="primary" onClick={operSubmit}>
-                  确定
-                </Button>
-              </Space>
-            </Form.Item>
           </Form>
         </Spin>
       </Modal>

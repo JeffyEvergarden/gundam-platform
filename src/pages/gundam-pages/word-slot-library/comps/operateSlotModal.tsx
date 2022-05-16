@@ -14,9 +14,6 @@ const layout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 14 },
 };
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 12 },
-};
 
 const slotSourceData = [
   { value: 4, intentName: '正则实体' },
@@ -316,7 +313,7 @@ export default (props: any) => {
         visible={visible}
         title={title == 'add' ? '新增' : '编辑'}
         onCancel={cancel}
-        footer={null}
+        onOk={submit}
       >
         <Spin spinning={spinning}>
           <Form form={form} {...layout}>
@@ -483,14 +480,6 @@ export default (props: any) => {
                 </Form.Item>
               </Fragment>
             )}
-            <Form.Item {...tailLayout}>
-              <Space>
-                <Button onClick={cancel}>取消</Button>
-                <Button type="primary" onClick={submit}>
-                  确认
-                </Button>
-              </Space>
-            </Form.Item>
           </Form>
         </Spin>
       </Modal>

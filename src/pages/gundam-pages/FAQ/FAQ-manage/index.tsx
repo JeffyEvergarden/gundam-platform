@@ -28,6 +28,7 @@ const FAQPage: React.FC<any> = (props: any) => {
 
   const changeHighConfig = (val: any) => {
     setValue(val);
+    //重新获取列表
   };
   const [pageNo, setPageNo] = useState<number>(1);
 
@@ -86,7 +87,14 @@ const FAQPage: React.FC<any> = (props: any) => {
               添加问题
             </Button>
 
-            <Button type="primary">分类管理</Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                history.push('/gundamPages/faq/recycle');
+              }}
+            >
+              问题回收站
+            </Button>
 
             <Button
               type="primary"
@@ -109,15 +117,6 @@ const FAQPage: React.FC<any> = (props: any) => {
                 <Option value={3}>标签</Option>
               </Select>
             </Input.Group>
-
-            <Button
-              type="primary"
-              onClick={() => {
-                history.push('/gundamPages/faq/recycle');
-              }}
-            >
-              问题回收站
-            </Button>
           </Space>
         </div>
       </div>
@@ -136,8 +135,12 @@ const FAQPage: React.FC<any> = (props: any) => {
         </div>
         <div className={style['main-content']}>
           <div className={style['high-config-select']}>
-            <Collapse>
-              <Panel header="问答列表" key="1" extra={extraBtnHtml}>
+            <Collapse expandIconPosition="right">
+              <Panel
+                header={<div className={style['title_sp']}>问答列表</div>}
+                key="1"
+                extra={'高级筛选'}
+              >
                 <HighConfigSelect value={value} onChange={changeHighConfig} />
               </Panel>
             </Collapse>

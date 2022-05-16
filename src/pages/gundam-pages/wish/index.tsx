@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useModel } from 'umi';
+import { useModel, history } from 'umi';
 
 import IntentOperModal from './comps/addIntentModal';
 // import RulesSampleModal from './comps/rulesAndsamples';
@@ -77,7 +77,14 @@ const DetailPages: React.FC = (props: any) => {
 
   // 样板
   const samples = (data: any) => {
-    handleRulesSampleVisible(true);
+    // handleRulesSampleVisible(true);
+    history.push({
+      pathname: '/gundamPages/sample',
+      state: {
+        id: data.id,
+        pageType: 'wish',
+      },
+    });
   };
 
   // 操作意图 新增、编辑
