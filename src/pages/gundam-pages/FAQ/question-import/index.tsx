@@ -168,7 +168,7 @@ const ImportPages: React.FC = (props: any) => {
         dateFormatter="string"
         headerTitle={
           <div>
-            <div style={{ marginBottom: '24px', fontSize: '24px', fontWeight: '400' }}>
+            <div style={{ marginBottom: '24px', fontSize: '20px', fontWeight: '400' }}>
               <ArrowLeftOutlined
                 className={style['blue']}
                 style={{ marginRight: '6px' }}

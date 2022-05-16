@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Tree, Modal, Button } from 'antd';
+import { Tree, Modal, Button, message } from 'antd';
 import { useLocation } from 'react-router';
 import {
   EditOutlined,
   DeleteOutlined,
   ExclamationCircleOutlined,
-  PlusOutlined,
-  DownOutlined,
+  PlusCircleOutlined,
+  UploadOutlined,
 } from '@ant-design/icons';
 import Condition from '@/components/Condition';
 import style from './style.less';
+import { useTreeModal } from '../../model';
 
 interface TreeProps {
   data: any[];
@@ -52,7 +53,10 @@ const getParentNode = (obj: any, arr: any) => {
 const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
   const { data, onChange, touchChangeParent, draggable, deleteApi = () => true } = props;
 
+  const { deleteLeaf } = useTreeModal();
+
   const [dataSource, setDataSource] = useState<any[]>([]);
+  const [treeSelect, setTreeSelect] = useState<any[]>([]);
 
   const location: any = useLocation();
 
@@ -212,8 +216,9 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
       content: '是否删除当前分类？',
       onOk: async () => {
         console.log('删除');
-        let res: any = await deleteApi(nodeData);
+        let res: any = await deleteLeaf({ id: nodeData?.key });
         if (res) {
+          message.success('删除成功');
           if (parent) {
             let arr: any[] = parent.children || [];
             let index: number = arr.findIndex((item: any) => item.key === nodeData.key);
@@ -238,8 +243,8 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
     let extra = null;
     if (nodeData) {
       extra = (
-        <PlusOutlined
-          style={{ marginRight: '4px', fontSize: '12px' }}
+        <PlusCircleOutlined
+          style={{ marginRight: '8px', fontSize: '12px' }}
           onClick={(e: any) => {
             openAddModal(e, nodeData);
           }}
@@ -247,23 +252,36 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
       );
     }
 
+    const def = () => {
+      if (!nodeData.parent) {
+        return {
+          display: 'block',
+        };
+      }
+      return {};
+    };
+
     return (
       <div className={style['tree-node']}>
         <div className={style['label']}>{nodeData.title}</div>
-        <div className={style['edit-layout']}>
+        <div className={style['edit-layout']} style={def()}>
           {extra}
-          <EditOutlined
-            style={{ marginRight: '4px', fontSize: '12px' }}
-            onClick={(e) => {
-              openEditModal(e, nodeData);
-            }}
-          />
-          <DeleteOutlined
-            style={{ fontSize: '12px' }}
-            onClick={(e) => {
-              openDeleteModal(e, nodeData);
-            }}
-          />
+          {nodeData.parent && (
+            <EditOutlined
+              style={{ marginRight: '8px', fontSize: '12px' }}
+              onClick={(e) => {
+                openEditModal(e, nodeData);
+              }}
+            />
+          )}
+          {nodeData.parent && (
+            <DeleteOutlined
+              style={{ fontSize: '12px' }}
+              onClick={(e) => {
+                openDeleteModal(e, nodeData);
+              }}
+            />
+          )}
         </div>
       </div>
     );
@@ -272,6 +290,17 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
   // ----
   const onClick = () => {
     console.log(dataSource);
+  };
+
+  //树选择
+  const onCheck = (val: any) => {
+    console.log(val);
+    setTreeSelect(val);
+  };
+
+  //导出
+  const importList = () => {
+    console.log(treeSelect);
   };
 
   return (
@@ -283,11 +312,21 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
           </Button>
         </div>
       </Condition>
+      <div
+        className={style['title_sp']}
+        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+      >
+        问答列表
+        <Button type="link" icon={<UploadOutlined />} onClick={importList}></Button>
+      </div>
 
       <Tree
+        checkable
+        onCheck={onCheck}
         treeData={dataSource}
-        switcherIcon={<DownOutlined />}
+        // switcherIcon={<PlusSquareOutlined />}
         showLine
+        showIcon={false}
         onSelect={onSelect}
         titleRender={diyRender}
         blockNode

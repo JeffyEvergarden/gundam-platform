@@ -35,6 +35,17 @@ const getFaqList = (req: any, res: any) => {
         updateTime: '2022-05-10 15:55:55',
         updateBy: '',
       },
+      {
+        viewNum: 4,
+        answer: 'gaga', //回复
+        enable: 0, //是否启用 0否 1是
+        enableStartTime: '2022-05-10 15:55:55',
+        enableEndTime: '2022-05-10 15:55:55',
+        creator: 'jiangjiahao',
+        createTime: '2022-05-10 15:55:55',
+        updateTime: '2022-05-10 15:55:55',
+        updateBy: '',
+      },
     ],
 
     // name: '阿斯拉大',
