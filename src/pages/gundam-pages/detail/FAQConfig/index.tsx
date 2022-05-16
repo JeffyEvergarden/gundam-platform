@@ -47,35 +47,37 @@ const FAQConfig: React.FC = (props: any) => {
 
   return (
     <div className={style['machine-page']}>
-      <Form form={form}>
-        <div className={style['antd-form']}>
-          <Space align="baseline">
-            <div
-              className={style['title_sp']}
-              style={{ marginRight: '16px', marginBottom: '20px' }}
-            >
-              FAQ配置
-            </div>
-          </Space>
-
-          {Nconfig?.map((item: any) => {
-            return (
-              <FormItem
-                // {...col}
-                label={item.configName}
-                name={['systemConfigList', item.configKey]}
-                key={'systemConfigList' + item.configKey}
-                rules={[{ required: true }]}
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <Form form={form}>
+          <div className={style['antd-form']}>
+            <Space align="baseline">
+              <div
+                className={style['title_sp']}
+                style={{ marginRight: '16px', marginBottom: '20px' }}
               >
-                <InputNumber style={{ width: 200 }} min={0} max={1} step="0.01" precision={2} />
-              </FormItem>
-            );
-          })}
-        </div>
-      </Form>
-      <Button type="primary" onClick={submit} style={{ alignSelf: 'flex-end' }}>
-        保存
-      </Button>
+                FAQ配置
+              </div>
+            </Space>
+
+            {Nconfig?.map((item: any) => {
+              return (
+                <FormItem
+                  // {...col}
+                  label={item.configName}
+                  name={['systemConfigList', item.configKey]}
+                  key={'systemConfigList' + item.configKey}
+                  rules={[{ required: true }]}
+                >
+                  <InputNumber style={{ width: 200 }} min={0} max={1} step="0.01" precision={2} />
+                </FormItem>
+              );
+            })}
+          </div>
+        </Form>
+        <Button type="primary" onClick={submit} style={{ alignSelf: 'flex-end' }}>
+          保存
+        </Button>
+      </div>
     </div>
   );
 };
