@@ -1,5 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Form, Input, Button, Select, Space, DatePicker, Switch, Checkbox } from 'antd';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import {
+  Form,
+  Input,
+  Button,
+  Select,
+  Space,
+  DatePicker,
+  Switch,
+  Checkbox,
+  TreeSelect,
+  message,
+} from 'antd';
 import Condition from '@/components/Condition';
 import {
   PlusOutlined,
@@ -11,60 +22,106 @@ import SpCheckbox from './components/sp-checkbox';
 import Selector from './components/selector';
 import SelectorModal from './components/selector-modal';
 import EditBoard from './index';
-import Testmodel from './components/test';
 import { history, useModel } from 'umi';
 import style from './style.less';
 import { CHANNAL_LIST } from './test';
+import { useQuestionModel } from './model';
+import { processRequest, processBody } from './model/utils';
 
 const { Option } = Select;
 
 const { List: FormList } = Form;
 
+// 树形结构加工
+const processTreeData = (data: any[], parent?: any) => {
+  if (!Array.isArray(data)) {
+    return [];
+  }
+
+  let _data = data.map((item: any) => {
+    let obj: any = {
+      title: item?.title,
+      value: item?.key,
+      // parent: parent,
+    };
+    let children: any = processTreeData(item?.children, obj);
+    obj.children = children;
+    if (obj.children && obj.children.length > 0) {
+      obj.selectable = false;
+    }
+    return obj;
+  });
+  return _data;
+};
+
 const Board: React.FC<any> = (props: any) => {
-  const { title = ' 添加问题' } = props;
+  const query: any = history.location.query;
+
+  const questionId = query.questionId || '';
+  const pageType = query.type === 'edit' && query.questionId ? 'edit' : 'create';
 
   const [form] = Form.useForm();
-
-  const typeList: any[] = [
-    {
-      value: 'fake1',
-      label: 'fake1',
-    },
-    {
-      value: 'fake2',
-      label: 'fake2',
-    },
-  ];
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
 
-  const { getFlowList, getTreeData } = useModel('drawer' as any, (model: any) => ({
+  const { getFlowList, getTreeData, treeData } = useModel('drawer' as any, (model: any) => ({
     getFlowList: model.getFlowList,
     getTreeData: model.getTreeData,
+    treeData: model.treeData,
   }));
 
+  const { addNewQuestion, updateQuestion, getQuestionInfo } = useQuestionModel();
+
+  // 分类列表
+  const typeList = useMemo(() => {
+    let _data = processTreeData(treeData);
+    return _data;
+  }, [treeData]);
+
+  // 树形默认展开key数组
+  const defaultExpend = useMemo(() => {
+    let _data = treeData[0] ? [treeData[0]?.key] : [];
+    return _data;
+  }, [treeData]);
+
+  const getInfo = async (id: any) => {
+    let res: any = await getQuestionInfo({
+      robotId: id, // 机器人id
+      questionId, // 问题id
+    });
+    if (res) {
+      res = processBody(res);
+      if (res.questionRecommend) {
+        setShowAdvise(true);
+      }
+      form.setFieldsValue(res);
+    }
+  };
+
+  // 初始化调用
   useEffect(() => {
-    console.log('初始化调用机器人ID:');
-    console.log(info.id);
-    console.log('调接口:');
     getFlowList(info.id);
     getTreeData(info.id);
+    if (pageType === 'edit') {
+      getInfo(info.id);
+    }
   }, []);
 
+  // 获取回答列表
   const getItem = () => {
     const _item = form.getFieldsValue();
     return _item?.['answerList'];
   };
-
+  // 更新函数
   const updateFn = () => {
     const _item = form.getFieldsValue()?.['answerList'] || [];
     form.setFieldsValue({
       answerList: [..._item],
     });
   };
-
+  // 渠道筛选联动
   const changeCheckbox = (index: number, val: any) => {
     const _list = form.getFieldsValue()?.['answerList'] || [];
 
@@ -73,9 +130,9 @@ const Board: React.FC<any> = (props: any) => {
         return;
       }
       if (val.includes(0)) {
-        item.channel = [];
+        item.channelList = [];
       } else {
-        item.channel = item.channel.filter((subitem: any) => {
+        item.channelList = item.channelList.filter((subitem: any) => {
           return !val.includes(subitem);
         });
       }
@@ -86,7 +143,7 @@ const Board: React.FC<any> = (props: any) => {
   };
 
   // 推荐启用按钮
-  const [showAdvise, setShowAdvise] = useState<boolean>(true);
+  const [showAdvise, setShowAdvise] = useState<boolean>(false);
 
   const changeAdvise = (e: any) => {
     setShowAdvise(e.target.checked);
@@ -104,21 +161,29 @@ const Board: React.FC<any> = (props: any) => {
   const openModal = (index: number) => {
     const _list = getRecommendItem();
     const disabledQuestionKeys = _list
-      .filter((item: any) => {
-        return item.questionType === '1' && item.questionId;
+      .filter((item: any, i: number) => {
+        return item.recommendBizType === '1' && item.recommendId && i !== index;
       })
-      .map((item: any) => item.questionId);
+      .map((item: any) => item.recommendId);
     const disabledFlowKeys = _list
-      .filter((item: any) => {
-        return item.questionType === '2' && item.questionId;
+      .filter((item: any, i: number) => {
+        return item.recommendBizType === '2' && item.recommendId && i !== index;
       })
-      .map((item: any) => item.questionId);
-    (selectModalRef.current as any).open({
+      .map((item: any) => item.recommendId);
+    let openInfo: any = {
       showFlow: true,
       info: _list[index],
       disabledQuestionKeys,
       disabledFlowKeys,
-    });
+      selectedQuestionKeys: [],
+      selectedFlowKeys: [],
+    };
+    if (_list[index]?.questionType === '2') {
+      openInfo.selectedFlowKeys = [_list[index].recommendId];
+    } else if (_list[index]?.questionType === '1') {
+      openInfo.selectedQuestionKeys = [_list[index].recommendId];
+    }
+    (selectModalRef.current as any).open(openInfo);
     opRecordRef.current.callback = (obj: any) => {
       const _list = getRecommendItem();
       _list[index] = { ...obj };
@@ -133,6 +198,38 @@ const Board: React.FC<any> = (props: any) => {
     opRecordRef.current?.callback?.(obj);
   };
 
+  const save = async () => {
+    console.log('触发保存');
+    let res: any = await form.validateFields().catch(() => {
+      message.warning('存在未填写完全的配置');
+      return false;
+    });
+    if (!res) {
+      return;
+    }
+    res = processRequest(res);
+    if (pageType === 'create') {
+      let data: any = {
+        ...res,
+      };
+      let response = await addNewQuestion(data);
+      if (response === true) {
+        // 回到主页
+        history.push('/gundamPages/faq/main');
+      }
+    } else {
+      let data: any = {
+        ...res,
+        id: questionId,
+      };
+      let response = await updateQuestion(data);
+      if (response === true) {
+        // 回到主页
+        history.push('/gundamPages/faq/main');
+      }
+    }
+  };
+
   return (
     <div className={style['board-page']}>
       <div className={style['board-title']}>
@@ -143,7 +240,7 @@ const Board: React.FC<any> = (props: any) => {
             history.push('/gundamPages/faq/main');
           }}
         ></Button>
-        {title}
+        {pageType === 'edit' ? '编辑答案' : '添加问题'}
       </div>
 
       <div className={style['board-form']}>
@@ -152,27 +249,25 @@ const Board: React.FC<any> = (props: any) => {
             <Form.Item
               name="questionName"
               label="问题名称"
-              rules={[{ required: true }]}
+              rules={[{ message: '请输入问题名称', required: true }]}
               style={{ width: '600px' }}
             >
-              <Input placeholder={'请输入问题名称'} />
+              <Input placeholder={'请输入问题名称'} autoComplete="off" />
             </Form.Item>
 
             <Form.Item
-              name="questionType"
+              name="faqTypeId"
               label="问题分类"
-              rules={[{ required: true }]}
+              rules={[{ message: '请输入问题分类', required: true }]}
               style={{ width: '300px' }}
             >
-              <Select placeholder={'请选择问题分类'}>
-                {typeList.map((item: any, index: number) => {
-                  return (
-                    <Option key={index} value={item.value} opt={item}>
-                      {item.label}
-                    </Option>
-                  );
-                })}
-              </Select>
+              <TreeSelect
+                placeholder={'请选择问题分类'}
+                showSearch
+                allowClear
+                treeData={typeList}
+                treeDefaultExpandedKeys={defaultExpend}
+              ></TreeSelect>
             </Form.Item>
           </div>
           <FormList name="answerList">
@@ -183,9 +278,9 @@ const Board: React.FC<any> = (props: any) => {
                 add(
                   {
                     answer: '',
-                    channel: [],
-                    timeFlag: false,
-                    time: null,
+                    channelList: [],
+                    enable: false,
+                    enableTime: null,
                   },
                   length,
                 );
@@ -197,7 +292,7 @@ const Board: React.FC<any> = (props: any) => {
                     {fields.map((field: any, index: number) => {
                       const currentItem = getItem();
 
-                      const _showTime = currentItem?.[index]?.timeFlag;
+                      const _showTime = currentItem?.[index]?.enable;
 
                       return (
                         <div key={field.key} className={style['diy-row']}>
@@ -210,24 +305,25 @@ const Board: React.FC<any> = (props: any) => {
                             >
                               <MinusCircleOutlined />
                             </span>
+                            <div className={style['circle-num']}>{index + 1}</div>
                             <span className={'ant-form-item-label'}>
-                              <span>{index + 1}</span>
                               <label className={'ant-form-item-required'}>答案内容</label>
                             </span>
                           </div>
 
                           {/* <div>富文本编辑待定</div> */}
-                          {/* <Form.Item
-                            name={[field.name, 'content']}
-                            fieldKey={[field.fieldKey, 'content']}
+                          <Form.Item
+                            name={[field.name, 'answer']}
+                            fieldKey={[field.fieldKey, 'answer']}
                           >
                             <EditBoard />
-                          </Form.Item> */}
+                          </Form.Item>
 
                           <Form.Item
-                            name={[field.name, 'channel']}
-                            fieldKey={[field.fieldKey, 'channel']}
+                            name={[field.name, 'channelList']}
+                            fieldKey={[field.fieldKey, 'channelList']}
                             label="生效渠道"
+                            rules={[{ message: '请选择生效渠道', required: true }]}
                           >
                             <SpCheckbox
                               list={CHANNAL_LIST}
@@ -239,8 +335,8 @@ const Board: React.FC<any> = (props: any) => {
 
                           <Space>
                             <Form.Item
-                              name={[field.name, 'timeFlag']}
-                              fieldKey={[field.fieldKey, 'timeFlag']}
+                              name={[field.name, 'enable']}
+                              fieldKey={[field.fieldKey, 'enable']}
                               label="生效时间"
                               valuePropName="checked"
                               style={{ width: '180px' }}
@@ -250,7 +346,8 @@ const Board: React.FC<any> = (props: any) => {
 
                             <Condition r-if={_showTime}>
                               <Form.Item
-                                name="time"
+                                name={[field.name, 'enableTime']}
+                                fieldKey={[field.fieldKey, 'enableTime']}
                                 rules={[{ required: true }]}
                                 style={{ width: '600px' }}
                               >
@@ -277,9 +374,10 @@ const Board: React.FC<any> = (props: any) => {
             }}
           </FormList>
           <div className={style['diy-row']}>
+            {/* questionRecommend  1 0 */}
             <Form.Item
-              name={'adveriseFlag'}
-              fieldKey={'adveriseFlag'}
+              name={'questionRecommend'}
+              fieldKey={'questionRecommend'}
               label="推荐设置"
               valuePropName="checked"
               style={{ width: '180px' }}
@@ -295,10 +393,10 @@ const Board: React.FC<any> = (props: any) => {
                   // console.log(length);
                   add(
                     {
-                      questionType: null,
-                      questionId: null,
-                      question: null,
-                      intelligenceFlag: false,
+                      recommendBizType: null,
+                      recommendId: null,
+                      recommend: null,
+                      recommendType: 1,
                     },
                     length,
                   );
@@ -324,8 +422,8 @@ const Board: React.FC<any> = (props: any) => {
                             </span>
 
                             <Form.Item
-                              name={[field.name, 'question']}
-                              fieldKey={[field.fieldKey, 'question']}
+                              name={[field.name, 'recommend']}
+                              fieldKey={[field.fieldKey, 'recommend']}
                             >
                               <Selector
                                 openModal={() => {
@@ -356,6 +454,11 @@ const Board: React.FC<any> = (props: any) => {
         </Form>
       </div>
 
+      <div className={style['board-btn']}>
+        <Button type="primary" onClick={save}>
+          确定
+        </Button>
+      </div>
       {/* <Testmodel /> */}
       <SelectorModal cref={selectModalRef} confirm={confirm} />
     </div>
