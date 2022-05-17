@@ -39,7 +39,33 @@ const getFile = (req: any, res: any, next: any) => {
   });
 };
 
+const getInfo = (req: any, res: any) => {
+  console.log('获取信息');
+  res.json({
+    resultCode: successCode,
+    data: {
+      questionName: '123',
+      faqTypeId: '0-0-1',
+      answerList: [
+        {
+          answer: '<p>12222</p>',
+          channelList: ['APP'],
+          enable: 1,
+          enableTime: ['2022-05-01 16:28:20', '2022-05-28 16:28:23'],
+        },
+      ],
+      questionRecommend: 1,
+      recommendList: [
+        { recommendBizType: '2', recommendId: 'front_mock_id_0', recommend: '前端mock-流程0' },
+      ],
+    },
+  });
+};
+
 export default {
   'POST /aichat/robot/file/uploadFile': uploadFile, // 获取问答列表
   'GET /aichat/robot/file/getFile': getFile,
+  'POST /aichat/robot/faq/robotFaqAdd': normalDeal,
+  'POST /aichat/robot/faq/robotFaqEdit': normalDeal,
+  'GET /aichat/robot/faq/robotFaqInfo': getInfo,
 };
