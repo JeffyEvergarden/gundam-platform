@@ -56,8 +56,21 @@ export default [
       },
       {
         path: '/gundamPages/wish',
-        component: './gundam-pages/wish',
+        component: './gundam-pages/wish/home',
         name: '意图管理',
+        routes: [
+          {
+            path: '/gundamPages/wish/wishList',
+            component: './gundam-pages/wish/wishList',
+            name: '意图管理',
+          },
+          {
+            path: '/gundamPages/wish/ruleMould',
+            component: './gundam-pages/wish/ruleMould',
+            name: '规则模版',
+          },
+          { redirect: '/gundamPages/wish/wishList' },
+        ],
       },
       {
         path: '/gundamPages/sample',

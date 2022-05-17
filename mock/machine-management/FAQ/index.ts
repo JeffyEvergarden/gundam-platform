@@ -16,6 +16,8 @@ const getFaqList = (req: any, res: any, next: any) => {
     robotId: '100',
     question: '问题',
     viewNum: 5, //浏览次数
+    likeNum: 555,
+    unlikeNum: 22,
     faqTypeId: '循环贷', //问题类型
     approvalStatus: 1,
     qunestionRecommend: 1,

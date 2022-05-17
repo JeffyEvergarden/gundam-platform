@@ -72,7 +72,8 @@ const DetailPages: React.FC = (props: any) => {
 
   // 规则模版
   const ruleTemplate = (data: any) => {
-    handleRulesSampleVisible(true);
+    // handleRulesSampleVisible(true);
+    history.push({ pathname: '/gundamPages/wish/ruleMould' });
   };
 
   // 样板
