@@ -7,6 +7,7 @@ import {
   ExclamationCircleOutlined,
   PlusCircleOutlined,
   UploadOutlined,
+  CaretDownOutlined,
 } from '@ant-design/icons';
 import Condition from '@/components/Condition';
 import style from './style.less';
@@ -327,7 +328,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
         // checkable
         // onCheck={onCheck}
         treeData={dataSource}
-        // switcherIcon={<PlusSquareOutlined />}
+        switcherIcon={<CaretDownOutlined />}
         showLine
         showIcon={false}
         onSelect={onSelect}
