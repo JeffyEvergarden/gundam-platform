@@ -6,10 +6,29 @@ import {
   queryWordSlotTableList,
   queryWishList,
   queryNodeConfig,
+  queryTreeList,
 } from '@/services/api';
 import config from '@/config/index';
 
-export default function useGundamModel() {
+const processTreeData = (data: any[], parent?: any) => {
+  if (!Array.isArray(data)) {
+    return [];
+  }
+
+  let _data = data.map((item: any) => {
+    let obj: any = {
+      title: item?.title,
+      key: item?.key,
+      // parent: parent,
+    };
+    let children: any = processTreeData(item?.children, obj);
+    obj.children = children;
+    return obj;
+  });
+  return _data;
+};
+
+export default function useDrawerModel() {
   const timeFc = useRef<any>({});
 
   const idFc = useRef<any>({});
@@ -32,27 +51,37 @@ export default function useGundamModel() {
 
   const [_messageList, _setMessageList] = useState<any[]>([]); // 信息列表
 
+  // faq 问题树形结构
+  const [treeData, setTreeData] = useState<any[]>([]);
+
   const allowRequest = (str: any, id?: any, t?: number) => {
+    const timeObj: any = timeFc.current;
+    const _time = timeObj[str]; // 上次调用时间
+    let now = Date.now();
+
     if (id) {
       const idFcObj = idFc.current;
-      const _idFc: any = idFcObj[str];
+      const _idFc: any = idFcObj[str]; // 记录上次查询Id
+
       if (_idFc !== id) {
         // 如果查询id 不等于上次查询id
         idFcObj[str] = id; // 进行记录
+        timeObj[str] = now;
         return true; // 可以查询
       }
     }
 
-    const timeObj: any = timeFc.current;
-    const _time = timeObj[str];
-    let now = Date.now();
     if (!_time) {
       // 没有调过该接口
       timeObj[str] = now;
+      console.log(str + '第一次调用');
       return true;
     }
+
+    const s = _time && now - _time;
+    console.log(str + ':' + (s / 1000).toFixed(0));
     // 15秒内不允许重新调
-    if (_time && now - _time > (t ? t : 15) * 1000) {
+    if (_time && s > (t ? t : 15) * 1000) {
       timeObj[str] = now;
       return true;
     }
@@ -136,7 +165,10 @@ export default function useGundamModel() {
   // 获取流程列表
   const getFlowList = async (id?: any) => {
     if (!allowRequest('flow', id)) {
+      console.log('短时间重复调用__进行中断');
       return;
+    } else {
+      console.log('可以调用获取flow');
     }
     let res: any = await queryFlowList({
       robotId: id,
@@ -174,6 +206,7 @@ export default function useGundamModel() {
     _setOriginFlowList(originData);
   };
 
+  // 话术标签
   const getLabelList = async (id?: any) => {
     if (!allowRequest('label', id)) {
       return;
@@ -186,6 +219,7 @@ export default function useGundamModel() {
     let data: any[] = res?.data?.list || [];
     _setLabelList(data);
   };
+
   //高级配置信息
   const getGlobalConfig = async (id?: any) => {
     if (!allowRequest('high', id, 8)) {
@@ -202,6 +236,27 @@ export default function useGundamModel() {
     _setGlobalNodeList(data);
   };
 
+  const getTreeData = async (id?: any) => {
+    console.log('questiontree:------');
+    if (!allowRequest('questiontree', id)) {
+      console.log('短时间调用获取问题分类树结构_中断');
+      return;
+    } else {
+      console.log('可以调用获取问题分类树结构');
+    }
+    if (!id) {
+      console.log('问题分类接口获取不到机器人id');
+      return;
+    }
+    let res: any = await queryTreeList({ robotId: id });
+    if (res.resultCode === config.successCode) {
+      let data: any = Array.isArray(res.data) ? res.data : [];
+      // 数据加工
+      let _data = processTreeData(data); // 设置了parents会造成model层报错， 这里的数据不能进行delete操作
+      setTreeData(_data);
+    }
+  };
+
   return {
     _wishList,
     _setWishList,
@@ -216,12 +271,14 @@ export default function useGundamModel() {
     _messageList,
     _setMessageList,
     _originFlowList,
+    treeData,
     getMessageList, // 短信模版
     getWishList, // 意图
     getWordSlotList, // 词槽
     getFlowList, // 业务流程
     getLabelList, // 话术标签
     getGlobalConfig, //高级配置 节点
+    getTreeData, // 获取faq问题分类树形结构
     selectBody,
   };
 }

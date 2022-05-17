@@ -15,6 +15,11 @@
       font-size: 14px;
       line-height: 22px;
       text-align: left;
+      &:hover {
+        div[class^='edit-layout'] {
+          display: block;
+        }
+      }
     }
 
     .ant-tree-node-selected {
@@ -48,6 +53,7 @@
     }
 
     .edit-layout {
+      display: none;
       flex-shrink: 0;
     }
   }

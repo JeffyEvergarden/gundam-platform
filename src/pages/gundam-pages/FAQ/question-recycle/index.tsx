@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Input, Select, Collapse, Divider, Skeleton } from 'antd';
+import React, { useState, useEffect, useRef } from 'react';
+import { Button, Input, Select, Collapse, Divider, Skeleton, Checkbox } from 'antd';
 import { ArrowLeftOutlined, DownOutlined, LeftOutlined, SettingOutlined } from '@ant-design/icons';
 import HighConfigSelect from '../FAQ-manage/components/high-select';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -7,11 +7,14 @@ import style from './style.less';
 import { useFaqModal } from '../FAQ-manage/model';
 import ProList from '@ant-design/pro-list';
 import QuestionList from '../components/question-list';
+import { history } from 'umi';
 
 const { Panel } = Collapse;
 const { Option } = Select;
 
 const RecyclePage: React.FC<any> = (props: any) => {
+  const QuestionRef = useRef(null);
+
   const [value, setValue] = useState<any>({
     channel: 0,
     status: 0,
@@ -41,14 +44,9 @@ const RecyclePage: React.FC<any> = (props: any) => {
     }
   };
 
-  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
-
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (keys: any[]) => {
-      console.log(keys);
-      return setSelectedRowKeys(keys);
-    },
+  const checkboxChange = (val: any) => {
+    let flag = val.target.checked;
+    (QuestionRef?.current as any)?.selectAll(flag);
   };
 
   return (
@@ -59,7 +57,7 @@ const RecyclePage: React.FC<any> = (props: any) => {
             className={style['blue']}
             style={{ marginRight: '6px' }}
             onClick={() => {
-              history.back();
+              history.goBack();
             }}
           />
           问题回收站
@@ -67,20 +65,31 @@ const RecyclePage: React.FC<any> = (props: any) => {
 
         <div className={style['page_top__right']}>
           <Input.Search style={{ marginRight: '16px', width: '280px' }}></Input.Search>
-          <Button>批量删除</Button>
         </div>
       </div>
 
       <div className={style['page_content']}>
         <div className={style['main-content']}>
           <div className={style['high-config-select']}>
-            <Collapse>
-              <Panel header="问答列表" key="1" extra={<SettingOutlined />}>
+            <Collapse expandIconPosition="right">
+              <Panel
+                style={{ alignItems: 'center' }}
+                header={<div className={style['title_sp']}>问答列表</div>}
+                key="1"
+                extra={<div>高级筛选</div>}
+              >
                 <HighConfigSelect value={value} onChange={changeHighConfig} />
               </Panel>
             </Collapse>
           </div>
-          <QuestionList hasCheckbox={true}></QuestionList>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'initial' }}>
+            <div style={{ paddingTop: '4px' }}>
+              <Checkbox onChange={checkboxChange} style={{ marginBottom: '24px' }}></Checkbox>
+              <span style={{ marginLeft: '8px' }}>全选</span>
+            </div>
+            <Button>批量删除</Button>
+          </div>
+          <QuestionList cref={QuestionRef} hasCheckbox={true}></QuestionList>
         </div>
       </div>
     </div>

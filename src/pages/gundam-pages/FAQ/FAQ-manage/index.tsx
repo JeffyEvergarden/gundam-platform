@@ -28,6 +28,7 @@ const FAQPage: React.FC<any> = (props: any) => {
 
   const changeHighConfig = (val: any) => {
     setValue(val);
+    //重新获取列表
   };
   const [pageNo, setPageNo] = useState<number>(1);
 
@@ -122,6 +123,13 @@ const FAQPage: React.FC<any> = (props: any) => {
 
       <div className={style['page_content']}>
         <div className={style['main-content_left']}>
+          <div
+            className={style['tree_title']}
+            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+          >
+            问答列表
+            {/* <Button type="link" icon={<UploadOutlined />} onClick={importList}></Button> */}
+          </div>
           <MyTree
             draggable={false}
             onChange={onSelect}
@@ -134,8 +142,12 @@ const FAQPage: React.FC<any> = (props: any) => {
         </div>
         <div className={style['main-content']}>
           <div className={style['high-config-select']}>
-            <Collapse>
-              <Panel header="问答列表" key="1" extra={extraBtnHtml}>
+            <Collapse expandIconPosition="right">
+              <Panel
+                header={<div className={style['title_sp']}>问答列表</div>}
+                key="1"
+                extra={'高级筛选'}
+              >
                 <HighConfigSelect value={value} onChange={changeHighConfig} />
               </Panel>
             </Collapse>

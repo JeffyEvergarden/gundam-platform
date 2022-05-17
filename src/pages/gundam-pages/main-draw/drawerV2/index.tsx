@@ -39,6 +39,11 @@ const DrawerForm = (props: any) => {
     selectBody: model.selectBody,
   }));
 
+  useEffect(() => {
+    console.log('flowList:');
+    console.log(flowList);
+  }, []);
+
   // 前置参数
   const preParams: any = {
     robotId: info.id, // 机器人id,

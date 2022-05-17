@@ -1,0 +1,60 @@
+.FAQ-page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: calc(100vh - 90px);
+  padding: 24px;
+  overflow: hidden;
+  background-color: #fff;
+
+  .page_top {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+
+    &__left {
+      font-weight: 400;
+      font-size: 20px;
+    }
+
+    &__right {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+  }
+}
+
+.scrollbar(@width, @color: #f5f5f5) {
+  ::-webkit-scrollbar {
+    width: @width * 4;
+    background: transparent;
+    visibility: hidden;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    width: @width * 4;
+    background: @color;
+    border-radius: 30px;
+    // visibility: hidden;
+  }
+
+  :hover {
+    ::-webkit-scrollbar {
+      visibility: visible;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      visibility: visible;
+    }
+  }
+}
+
+.blue {
+  color: #1890ff;
+}
+
+.label {
+  font-weight: 400;
+  font-size: 14px;
+}

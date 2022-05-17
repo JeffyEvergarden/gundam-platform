@@ -70,6 +70,11 @@
   border: 1px solid #f3f3f3;
   border-left: none;
   .scrollbar(1.5px, rgba(0, 0, 0, 0.3));
+  :global {
+    .ant-collapse-header {
+      align-items: center !important;
+    }
+  }
 }
 
 .content {
@@ -88,7 +93,7 @@
 }
 
 .high-config-select {
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .list-item {
@@ -128,4 +133,22 @@
   flex-wrap: wrap;
   align-items: center;
   font-size: 12px;
+}
+
+.title_sp {
+  position: relative;
+  padding-left: 24px;
+  font-weight: 700;
+  font-size: 16px;
+
+  &::before {
+    position: absolute;
+    top: 4px;
+    left: 12px;
+    display: block;
+    width: 4px;
+    height: 16px;
+    background: #1890ff;
+    content: '';
+  }
 }

@@ -3,9 +3,15 @@ import { Form, Input, Button, Modal, message } from 'antd';
 import { useTreeModal } from '../../model';
 import { useRef } from 'react';
 import style from './style.less';
+import { useModel } from 'umi';
 
 const TypeModal = (props: any) => {
   const { cref, confirm } = props;
+
+  const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+    setInfo: model.setInfo,
+  }));
 
   const [visible, setVisible] = useState<boolean>(false);
   const [type, setType] = useState<string>('create');
@@ -22,10 +28,12 @@ const TypeModal = (props: any) => {
     console.log(callback);
     // 校验成功
     if (res) {
+      console.log(tmpObj);
       // 如果是新增分类节点
       if (type === 'create') {
         let data: any = {
-          parent: tmpObj.current.node?.title,
+          robotId: info.id,
+          parentId: tmpObj.current.node?.parent?.key,
           title: res.typeName,
         };
         let _res = await addLeaf(data);
@@ -40,7 +48,8 @@ const TypeModal = (props: any) => {
         }
       } else if (type === 'edit') {
         let data: any = {
-          id: tmpObj.current.node?.title,
+          parentId: tmpObj.current.node?.parent?.key,
+          id: tmpObj.current.node?.key,
           title: res.typeName,
         };
         let _res = await editLeaf(data);

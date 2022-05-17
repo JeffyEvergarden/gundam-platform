@@ -17,6 +17,11 @@ export const useFaqModal = () => {
     setLoading(false);
     if (res.resultCode === successCode) {
       let data = res?.data?.list || [];
+      data?.map((item: any) => {
+        item.more = false;
+        return item;
+      });
+
       setFaqList(data);
       setTotalSize(res?.data?.totalPage || 0);
       return { data, total: res?.data?.totalPage };

@@ -2,27 +2,41 @@ import { Item, ItemPanel } from 'gg-editor';
 import { Card } from 'antd';
 import styles from './index.less';
 import Condition from '@/components/Condition';
+import { useModel } from 'umi';
+import { useEffect } from 'react';
 interface PanelProps {
   type?: any;
 }
 
 const FlowItemPanel = (props: PanelProps) => {
   const { type } = props;
+
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
+
+  useEffect(() => {
+    console.log(type);
+  }, []);
+
   return (
     <ItemPanel className={styles.itemPanel}>
-      <Item
-        type="node"
-        size="140*45"
-        shape="flow-rect"
-        model={{
-          color: '#2890F3',
-          label: '新节点',
-          _nodetype: 'normal',
-        }}
-        src={''}
-      >
-        <div className={styles['blue-node']}>普通节点</div>
-      </Item>
+      {/*文本不需要这个  0文本 1语音 */}
+      <Condition r-if={info?.soundType == 1 || (info?.soundType == 0 && type == 'business')}>
+        <Item
+          type="node"
+          size="140*45"
+          shape="flow-rect"
+          model={{
+            color: '#2890F3',
+            label: '新节点',
+            _nodetype: 'normal',
+          }}
+          src={''}
+        >
+          <div className={styles['blue-node']}>普通节点</div>
+        </Item>
+      </Condition>
 
       <Item
         type="node"

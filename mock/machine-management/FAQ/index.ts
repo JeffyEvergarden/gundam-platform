@@ -10,7 +10,7 @@ const normalDeal = (req: any, res: any) => {
   });
 };
 
-const getFaqList = (req: any, res: any) => {
+const getFaqList = (req: any, res: any, next: any) => {
   const jsonObj: any = {
     id: '1',
     robotId: '100',
@@ -27,6 +27,17 @@ const getFaqList = (req: any, res: any) => {
       {
         viewNum: 2,
         answer: 'dadada', //回复
+        enable: 0, //是否启用 0否 1是
+        enableStartTime: '2022-05-10 15:55:55',
+        enableEndTime: '2022-05-10 15:55:55',
+        creator: 'jiangjiahao',
+        createTime: '2022-05-10 15:55:55',
+        updateTime: '2022-05-10 15:55:55',
+        updateBy: '',
+      },
+      {
+        viewNum: 4,
+        answer: 'gaga', //回复
         enable: 0, //是否启用 0否 1是
         enableStartTime: '2022-05-10 15:55:55',
         enableEndTime: '2022-05-10 15:55:55',
@@ -139,7 +150,7 @@ const getTreeList = (req: any, res: any) => {
                 key: '0-1-0',
               },
               {
-                title: '神奇流程2',
+                title: '神奇流程',
                 key: '0-1-1',
               },
             ],
@@ -151,11 +162,14 @@ const getTreeList = (req: any, res: any) => {
 };
 
 export default {
+  'GET /aichat/faq/list': getFaqList, // 获取问答列表
+
   'GET /aichat/faq/robotFaqPageList': getFaqList, // 获取问答列表
   'POST /aichat/faq/robotFaqDelete': normalDeal, // 删除问题
   'GET /aichat/faqImport/listPage': getImportList, // 获取批量导入列表
-  'GET /aichat/faq/tree': getTreeList,
-  'POST /aichat/faq/tree/add': normalDeal, // 添加分类节点
-  'POST /aichat/faq/tree/edit': normalDeal, // 编辑分类节点
-  'POST /aichat/faq/tree/delete': normalDeal, // 删除分类节点
+
+  'GET /aichat/faq/typeList': getTreeList, //获取树
+  'POST /aichat/faq/tree/typeAdd': normalDeal, // 添加分类节点
+  'POST /aichat/faq/tree/typeEdit': normalDeal, // 编辑分类节点
+  'POST /aichat/faq/tree/typeDelete': normalDeal, // 删除分类节点
 };

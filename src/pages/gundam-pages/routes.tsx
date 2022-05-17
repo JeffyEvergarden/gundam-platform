@@ -29,6 +29,12 @@ export default [
         // component: './gundam-pages/detail/interfaceConfig',
         name: '接口配置',
       },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/detail/FAQConfig',
+        // component: './gundam-pages/detail/interfaceConfig',
+        name: 'FAQ配置',
+      },
     ],
   },
   {
@@ -66,7 +72,7 @@ export default [
   },
   {
     icon: <CrownOutlined />,
-    path: '/gundamPages/faq/main',
+    path: '/gundamPages/faq',
     name: 'FAQ管理',
   },
 ];
