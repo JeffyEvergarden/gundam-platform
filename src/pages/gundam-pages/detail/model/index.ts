@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { message } from 'antd';
 
-import { getConfig, editConfig, getInterfaceCurrentList } from './api';
+import { getConfig, editConfig, getInterfaceCurrentList, getFAQList } from './api';
 //变量配置接口
 import { getConfigCurrentList, addNewGlobal, editNewGlobal, deleteGlobal } from './api';
 //节点配置
@@ -160,12 +160,12 @@ export const useFAQModel = () => {
 
   const getTableList = async (params: any) => {
     setConfigLoading(true);
-    let res: any = await getConfigCurrentList(params);
+    let res: any = await getFAQList(params);
     console.log(res);
 
     setConfigLoading(false);
 
-    return { data: res.data.list, total: res.data.totalPage };
+    return { data: res.data };
   };
 
   const editGlobal = async (data: any) => {
