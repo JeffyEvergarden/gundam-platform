@@ -4,7 +4,7 @@ import { Modal, Form, Input, Select, Space, Button, message, Spin, Tooltip } fro
 import { operateSlotFormList, slotSourceFormList } from './config';
 import { QuestionCircleFilled } from '@ant-design/icons';
 import { useKeyWordModel } from '../model';
-import { useIntentModel } from '../../wish/model';
+import { useIntentModel } from '../../wish/wishList/model';
 import styles from './../../style.less';
 import config from '@/config/index';
 
