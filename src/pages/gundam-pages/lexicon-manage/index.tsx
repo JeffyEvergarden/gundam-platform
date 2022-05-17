@@ -215,7 +215,11 @@ const LexiconManage: React.FC = (props: any) => {
   ];
   return (
     <Fragment>
-      <Tabs type="card" defaultActiveKey="1" size={'small'} style={{ marginBottom: 32 }}>
+      <Tabs
+        defaultActiveKey="1"
+        size={'large'}
+        style={{ width: '100%', backgroundColor: '#fff', paddingLeft: '10px', marginBottom: 0 }}
+      >
         <TabPane tab="枚举实体" key="1">
           <ProTable
             toolBarRender={() => [
