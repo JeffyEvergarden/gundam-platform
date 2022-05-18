@@ -266,7 +266,7 @@ const Board: React.FC<any> = (props: any) => {
             history.push('/gundamPages/faq/main');
           }}
         ></Button>
-        {pageType === 'edit' ? '编辑答案' : '添加问题'}
+        {pageType === 'edit' ? '编辑问题' : '添加问题'}
       </div>
 
       <div className={style['board-form']}>
