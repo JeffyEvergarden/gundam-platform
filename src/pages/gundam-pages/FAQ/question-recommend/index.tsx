@@ -3,7 +3,7 @@ import { Button, Input, Select, Collapse, Row, Col, Form } from 'antd';
 import { ArrowLeftOutlined, SettingOutlined } from '@ant-design/icons';
 import style from './style.less';
 import Recommend from '../question-board/components/recommend-modal';
-import { history } from 'umi';
+import { history, useModel } from 'umi';
 
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -14,6 +14,21 @@ const RecommendPage: React.FC<any> = (props: any) => {
     labelCol: { span: 2 },
     wrapperCol: { span: 12 },
   };
+
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
+
+  const { getFlowList, getTreeData, treeData } = useModel('drawer' as any, (model: any) => ({
+    getFlowList: model.getFlowList,
+    getTreeData: model.getTreeData,
+    treeData: model.treeData,
+  }));
+
+  useEffect(() => {
+    getFlowList(info.id);
+    getTreeData(info.id);
+  }, []);
   return (
     <div className={style['FAQ-page']}>
       <div className={style['page_top']}>

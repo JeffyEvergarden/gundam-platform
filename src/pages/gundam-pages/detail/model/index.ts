@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { message } from 'antd';
 
-import { getConfig, editConfig, getInterfaceCurrentList, getFAQList } from './api';
+import { getConfig, editConfig, getInterfaceCurrentList, getFAQList, _editFAQ } from './api';
 //变量配置接口
 import { getConfigCurrentList, addNewGlobal, editNewGlobal, deleteGlobal } from './api';
 //节点配置
@@ -168,20 +168,21 @@ export const useFAQModel = () => {
     return { data: res.data };
   };
 
-  const editGlobal = async (data: any) => {
+  const editFAQ = async (data: any) => {
     setConfigLoading(true);
-    let res: any = await editNewGlobal(data);
+    let res: any = await _editFAQ(data);
     setConfigLoading(false);
     if (res.resultCode === successCode) {
-      message.success(res?.resultDesc || '修改标签信息成功');
+      message.success(res?.resultDesc);
       return true;
     } else {
-      return res?.resultDesc || '未知系统异常';
+      message.error(res?.resultDesc || '未知系统异常');
+      return false;
     }
   };
 
   return {
-    editGlobal,
+    editFAQ,
     getTableList,
     configLoading,
   };

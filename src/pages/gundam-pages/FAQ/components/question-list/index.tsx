@@ -9,6 +9,9 @@ import {
   Button,
   Badge,
   Checkbox,
+  TreeSelect,
+  Form,
+  Input,
 } from 'antd';
 import { useFaqModal } from '../../FAQ-manage/model';
 import style from './style.less';
@@ -20,6 +23,7 @@ import {
   EditOutlined,
   EyeOutlined,
   LikeOutlined,
+  QuestionCircleFilled,
   UpOutlined,
 } from '@ant-design/icons';
 import { useModel, history } from 'umi';
@@ -27,19 +31,21 @@ import { deleteQuestion } from '../../FAQ-manage/model/api';
 import config from '@/config';
 import Condition from '@/pages/gundam-pages/main-draw/flow/common/Condition';
 import ClassifyModal from '../classify-modal';
+import { deleteAnswer } from '../../question-board/model/api';
 
 const { Option } = Select;
 
 const QuestionList: React.FC<any> = (props: any) => {
   const { cref, hasCheckbox, openClassify, openChannel } = props;
   const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
-
+  const [form] = Form.useForm();
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     setInfo: model.setInfo,
   }));
   const [pageNo, setPageNo] = useState<number>(1);
-  const [more, setMore] = useState<any>([]);
+  const [more, setMore] = useState<any>([]); //更多答案
+  const [edit, setEdit] = useState<any>([]); //编辑名字
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
 
   const listRef = useRef<any>({});
@@ -145,6 +151,35 @@ const QuestionList: React.FC<any> = (props: any) => {
     }
   };
 
+  const changeEdit = (name: any, index: any) => {
+    if (edit[index]) {
+      console.log(form.getFieldsValue());
+    } else {
+      form.setFieldsValue({ question: name });
+    }
+
+    let arr: any = JSON.parse(JSON.stringify(edit));
+    arr[index] = !arr[index];
+    setEdit(arr);
+  };
+
+  const addAnswer = (item: any) => {
+    console.log(item);
+    history.push({ pathname: '/gundamPages/faq/answer', state: { item } });
+  };
+
+  const editAnswer = (Q: any, A: any) => {
+    console.log(Q);
+    console.log(A);
+    history.push(`/gundamPages/faq/answer?faqId=${Q.id}&answerId=${A.id}`);
+  };
+
+  const _deleteAnswer = (A: any) => {
+    console.log(A);
+
+    deleteAnswer({ id: A.id });
+  };
+
   return (
     <div id="scrollContent" className={style['content-list']}>
       <ProList
@@ -163,7 +198,32 @@ const QuestionList: React.FC<any> = (props: any) => {
                 <div key={index}>
                   <div className={style['list-item']}>
                     <div className={style['box-top']}>
-                      <div className={style['title']}>{item.question}</div>
+                      <div className={style['title']}>
+                        {!hasCheckbox && (
+                          <QuestionCircleFilled
+                            className={style['blue']}
+                            style={{ marginRight: '8px' }}
+                          />
+                        )}
+                        {!edit[index] && item.question}
+                        {edit[index] && (
+                          <Form form={form}>
+                            <Form.Item name="question">
+                              <Input size="small"></Input>
+                            </Form.Item>
+                          </Form>
+                        )}
+                        {!hasCheckbox && (
+                          <Button
+                            type="link"
+                            icon={<EditOutlined />}
+                            onClick={() => {
+                              changeEdit(item.question, index);
+                            }}
+                          ></Button>
+                        )}
+                      </div>
+                      {/* 问题删除 */}
                       <div className={style['box-top']}>
                         <Popconfirm
                           title={() => {
@@ -185,15 +245,29 @@ const QuestionList: React.FC<any> = (props: any) => {
                         </Popconfirm>
                       </div>
                     </div>
+                    {/* 作者... */}
                     <div className={style['box-desc']}>
                       <div>
                         <span>作者：{item.creator}</span>
                         <Divider type="vertical" />
                         <span>
                           分类：
-                          <Button type="link" onClick={openClassify}>
+                          {/* <Popconfirm
+                            placement="bottom"
+                            onConfirm={() => {}}
+                            okText="确定"
+                            cancelText="取消"
+                            icon={<></>}
+                          > */}
+                          <Button
+                            type="link"
+                            onClick={() => {
+                              openClassify(item);
+                            }}
+                          >
                             {item.faqTypeId}
                           </Button>
+                          {/* </Popconfirm> */}
                         </span>
                         {/* <Divider type="vertical" />
                         <span>浏览次数：{item.viewNum}</span> */}
@@ -253,6 +327,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                         </span>
                       </div>
                     </div>
+                    {/* 答案 */}
                     <div
                       style={{
                         display: 'flex',
@@ -290,9 +365,15 @@ const QuestionList: React.FC<any> = (props: any) => {
                                 <div></div>
 
                                 <div>
-                                  <EditOutlined
-                                    style={{ marginRight: '18px', color: 'rgba(0,0,0,0.45)' }}
-                                  />
+                                  <Button
+                                    icon={<EditOutlined />}
+                                    type="link"
+                                    style={{ marginRight: '10px', color: 'rgba(0,0,0,0.45)' }}
+                                    onClick={() => {
+                                      editAnswer(item, v);
+                                    }}
+                                  ></Button>
+
                                   {!hasCheckbox && (
                                     <Popconfirm
                                       title={() => {
@@ -307,7 +388,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                                       placement="topRight"
                                       cancelText="取消"
                                       onConfirm={() => {
-                                        // deleteList(item);
+                                        _deleteAnswer(v);
                                       }}
                                     >
                                       <DeleteOutlined style={{ color: 'rgba(0,0,0,0.45)' }} />
@@ -367,7 +448,12 @@ const QuestionList: React.FC<any> = (props: any) => {
                         </Button>
                         {!hasCheckbox && <Divider type="vertical"></Divider>}
                         {!hasCheckbox && (
-                          <Button type="link" onClick={() => {}}>
+                          <Button
+                            type="link"
+                            onClick={() => {
+                              addAnswer(item);
+                            }}
+                          >
                             新增答案
                           </Button>
                         )}
@@ -390,6 +476,7 @@ const QuestionList: React.FC<any> = (props: any) => {
         }}
         pagination={{
           pageSize: 10,
+          // position: ['bottomRight'],
         }}
         rowKey={'id'}
         key={'id'}

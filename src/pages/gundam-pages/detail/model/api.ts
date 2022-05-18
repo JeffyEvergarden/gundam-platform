@@ -98,3 +98,11 @@ export async function getFAQList(params?: { [key: string]: any }) {
     params,
   });
 }
+
+// 获取faq配置
+export async function _editFAQ(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/config/updateList`, {
+    method: 'POST',
+    data,
+  });
+}

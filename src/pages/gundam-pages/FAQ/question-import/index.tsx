@@ -110,7 +110,7 @@ const ImportPages: React.FC = (props: any) => {
                   // _changeStatus(row);
                   console.log(`${config.basePath}/robot/file/getFile?path=${row.failFilePath}`);
 
-                  // window.open(`${config.basePath}/robot/file/getFile?${row.failFilePath}`);
+                  window.open(`${config.basePath}/robot/file/getFile?path=${row.failFilePath}`);
                 }}
               >
                 结果下载

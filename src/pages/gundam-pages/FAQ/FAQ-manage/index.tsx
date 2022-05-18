@@ -82,7 +82,7 @@ const FAQPage: React.FC<any> = (props: any) => {
     history.push('/gundamPages/faq/board');
   };
 
-  const openClassify = () => {
+  const openClassify = (item: any) => {
     classifyRef.current?.open();
   };
   const openChannel = () => {

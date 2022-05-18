@@ -8,7 +8,7 @@ const FAQConfig: React.FC = (props: any) => {
   const [form] = Form.useForm();
   const { Item: FormItem, List: FormList } = Form;
 
-  const { getTableList } = useFAQModel();
+  const { getTableList, editFAQ } = useFAQModel();
 
   const { info, businessFlowId, getGlobalValConfig } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -38,7 +38,20 @@ const FAQConfig: React.FC = (props: any) => {
     if (!res) {
       return;
     }
-    console.log(res);
+    let _res = Nconfig.map((item: any) => {
+      Object.keys(res.systemConfigList).forEach((v) => {
+        console.log(item.configKey, v);
+        if (item?.configKey == v) {
+          item.configValue = res.systemConfigList[v];
+        }
+      });
+      return item;
+    });
+
+    await editFAQ(_res).then((res) => {
+      getList();
+    });
+    console.log(_res);
   };
 
   useEffect(() => {
@@ -68,7 +81,7 @@ const FAQConfig: React.FC = (props: any) => {
                   key={'systemConfigList' + item.configKey}
                   rules={[{ required: true }]}
                 >
-                  <InputNumber style={{ width: 200 }} min={0} max={1} step="0.01" precision={2} />
+                  <InputNumber style={{ width: 200 }} min={0} step="1" precision={0} stringMode />
                 </FormItem>
               );
             })}

@@ -1,7 +1,6 @@
 import { Modal, Tree } from 'antd';
 import style from './style.less';
-import React, { useImperativeHandle, useState } from 'react';
-import MyTree from '../../FAQ-manage/components/my-tree';
+import React, { useImperativeHandle, useMemo, useState } from 'react';
 
 const ClassifyModal: React.FC<any> = (props: any) => {
   const { cref, treeData } = props;
@@ -10,11 +9,35 @@ const ClassifyModal: React.FC<any> = (props: any) => {
 
   const submit = () => {
     console.log(treeSelect);
-    setTreeSelect([]);
+    // setTreeSelect([]);
+  };
+
+  // 树形结构加工
+  const processTreeData = (data: any[], parent?: any) => {
+    if (!Array.isArray(data)) {
+      return [];
+    }
+
+    let _data = data.map((item: any) => {
+      let obj: any = {
+        title: item?.title,
+        key: item?.key,
+        // parent: parent,
+      };
+      let children: any = processTreeData(item?.children, obj);
+      obj.children = children;
+      if (obj.children && obj.children.length > 0) {
+        obj.selectable = false;
+      }
+      return obj;
+    });
+    return _data;
   };
 
   useImperativeHandle(cref, () => ({
     open: (row: any) => {
+      setTreeSelect(['0-0-1']);
+
       setVisible(true);
     },
     close: () => {
@@ -24,7 +47,7 @@ const ClassifyModal: React.FC<any> = (props: any) => {
   }));
 
   //树选择
-  const onCheck = (val: any) => {
+  const onSelect = (val: any) => {
     console.log(val);
     setTreeSelect(val);
   };
@@ -38,12 +61,18 @@ const ClassifyModal: React.FC<any> = (props: any) => {
         setVisible(false);
         setTreeSelect([]);
       }}
+      destroyOnClose={true} //关闭销毁
       okText={'确定'}
       onOk={submit}
       // confirmLoading={loading}
     >
       <div className={style['modal_bg']}>
-        <Tree showLine checkable onCheck={onCheck} treeData={treeData} />
+        <Tree
+          onSelect={onSelect}
+          treeData={processTreeData(treeData)}
+          defaultSelectedKeys={treeSelect}
+          defaultExpandedKeys={treeSelect}
+        />
       </div>
     </Modal>
   );

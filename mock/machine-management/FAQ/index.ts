@@ -29,9 +29,19 @@ const getFaqList = (req: any, res: any, next: any) => {
       {
         viewNum: 2,
         answer: 'dadada', //回复
+        selectChannel: 'all',
         enable: 0, //是否启用 0否 1是
         enableStartTime: '2022-05-10 15:55:55',
         enableEndTime: '2022-05-10 15:55:55',
+        id: '1',
+        answerChannelList: [
+          {
+            creator: 'jiangjiahao',
+            createTime: '2022-05-10 15:55:55',
+            updateTime: '2022-05-10 15:55:55',
+            updateBy: '',
+          },
+        ],
         creator: 'jiangjiahao',
         createTime: '2022-05-10 15:55:55',
         updateTime: '2022-05-10 15:55:55',
@@ -40,9 +50,19 @@ const getFaqList = (req: any, res: any, next: any) => {
       {
         viewNum: 4,
         answer: 'gaga', //回复
+        selectChannel: 'all',
         enable: 0, //是否启用 0否 1是
         enableStartTime: '2022-05-10 15:55:55',
         enableEndTime: '2022-05-10 15:55:55',
+        id: '2',
+        answerChannelList: [
+          {
+            creator: 'jiangjiahao',
+            createTime: '2022-05-10 15:55:55',
+            updateTime: '2022-05-10 15:55:55',
+            updateBy: '',
+          },
+        ],
         creator: 'jiangjiahao',
         createTime: '2022-05-10 15:55:55',
         updateTime: '2022-05-10 15:55:55',

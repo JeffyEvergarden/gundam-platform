@@ -39,6 +39,13 @@ export async function editAnswer(data?: Record<string, any>) {
   });
 }
 
+export async function deleteAnswer(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/answerDelete`, {
+    method: 'POST',
+    data,
+  });
+}
+
 export async function getAnswerInfo(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/faq/answerInfo`, {
     method: 'GET',
