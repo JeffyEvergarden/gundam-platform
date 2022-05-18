@@ -17,6 +17,7 @@ export default () => {
   const input = useRef<any>();
 
   const [similar, setSimmilar] = useState<boolean>(false);
+  const [similarVisible, setSimilarVisible] = useState<boolean>(false);
   const [columns, setcolumns] = useState<any>([]);
   const [visible, setVisible] = useState<boolean>(false);
   const [modalData, setModalData] = useState<any>({});
@@ -26,11 +27,15 @@ export default () => {
 
   const [inputValue, setInputValue] = useState<string>('');
 
+  const [corpusText, setCorpusText] = useState<string>('');
+
+  const [similarTableData, setSimilarTableData] = useState<any>({});
+
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
 
-  const { getList } = useSampleModel();
+  const { getList, intentEdit, deleteIntentFeature, checkIntent, intentAdd } = useSampleModel();
 
   const { getSimilarList, editSimilar, deleteSimilar, addSimilar } = useSimilarModel();
 
@@ -55,7 +60,8 @@ export default () => {
       let params: any = {
         page: payload.current,
         pageSize: payload.pageSize,
-        robotId: info.id,
+        intentId: tableInfo.id,
+        corpusText: payload.corpusText,
       };
       res = await getList(params);
     }
@@ -71,22 +77,59 @@ export default () => {
 
     return {
       data: res?.data?.list || [],
-      total: res?.data.totalPage || res?.data?.list?.length,
+      total: res?.data?.totalPage || res?.data?.list?.length,
       current: payload.current,
       pageSize: payload.pageSize,
     };
   };
 
   const onSearch = (value: string) => {
-    let params = {};
-    getInitTable(params);
+    actionRef.current.reload();
   };
 
-  const add = () => {
-    console.log(input?.current?.state?.value);
+  const changeCorpusText = (e: any) => {
+    setInputValue(e.target.value);
+  };
 
-    setInputValue(input?.current?.state?.value);
-    setSimmilar(true);
+  const add = async () => {
+    // console.log(input?.current?.state?.value);
+
+    // setInputValue(input?.current?.state?.value);
+    if (inputValue) {
+      let params = {
+        robotId: tableInfo.robotId,
+        corpusText: inputValue,
+      };
+      let res = await checkIntent(params);
+      if (res.resultCode === config.successCode) {
+        //检测通过新增
+        intentCorpusAdd();
+      } else if (res.resultCode === '0001') {
+        //不通过有相似
+        setSimmilar(true);
+        setSimilarVisible(true);
+        setSimilarTableData(res?.data);
+      }
+    } else {
+      message.warning('请先输入语料文本');
+    }
+  };
+
+  const intentCorpusAdd = async () => {
+    let addParams = {
+      robotId: tableInfo.robotId,
+      intendId: tableInfo.id,
+      corpusText: inputValue,
+    };
+    let resAdd = await intentAdd(addParams);
+    if (resAdd.resultCode === config.successCode) {
+      setSimmilar(false);
+      setSimilarVisible(false);
+      message.success(resAdd.resultDesc || '添加成功');
+      actionRef.current.reload();
+    } else {
+      message.error(resAdd.resultDesc || '添加失败');
+    }
   };
 
   const edit = (action: any, record: any) => {
@@ -103,12 +146,23 @@ export default () => {
   };
 
   const closeSame = () => {
-    setSimmilar(false);
+    setSimilarVisible(false);
   };
 
-  const save = () => {
-    setVisible(false);
-    actionRef?.current?.reloadAndRest();
+  const save = async (value: any) => {
+    let params: any = {
+      id: modalData.id,
+      intentId: value.preIntent,
+      corpusText: value.corpusText,
+    };
+    let res = await intentEdit(params);
+    if (res.resultCode == config.successCode) {
+      message.success(res?.resultDesc || '成功');
+      setVisible(false);
+      actionRef?.current?.reloadAndRest();
+    } else {
+      message.error(res?.resultDesc);
+    }
   };
 
   const saveSame = async (record: any) => {
@@ -128,12 +182,16 @@ export default () => {
       });
     }
 
-    setSimmilar(false);
+    if (pageType === 'wish') {
+      intentCorpusAdd();
+    }
   };
 
   const removeFAQ = (record: any) => {};
 
   const deleteRow = async (record: any) => {
+    console.log('pageType', pageType);
+    debugger;
     if (pageType === 'FAQ' || history?.location?.state?.pageType === 'FAQ') {
       let reqData: any = {
         id: record.id,
@@ -146,6 +204,16 @@ export default () => {
           message.error(res.resultDesc);
         }
       });
+    }
+
+    if (pageType === 'wish') {
+      let res = await deleteIntentFeature({ id: record.id });
+      if (res.resultCode == config.successCode) {
+        message.success(res.resultDesc);
+        actionRef.current.reload();
+      } else {
+        message.error(res.resultDesc);
+      }
     }
   };
 
@@ -163,11 +231,27 @@ export default () => {
         }
       });
     }
+    if (pageType === 'wish') {
+      let params: any = {
+        id: record.id,
+        intentId: record.intentId,
+        corpusText: record.corpusText,
+      };
+      let res = await intentEdit(params);
+      if (res.resultCode == config.successCode) {
+        message.success(res?.resultDesc || '成功');
+        actionRef.current.reload();
+      }
+    }
+  };
+
+  const onChange = (e: any) => {
+    setCorpusText(e.target.value);
   };
 
   const tableListWish: any = [
     {
-      dataIndex: 'entityName',
+      dataIndex: 'corpusText',
       title: '语料文本',
       ellipsis: true,
       fixed: 'left',
@@ -209,13 +293,11 @@ export default () => {
               转移
             </a>
             <Popconfirm
-              title="确认删除该条词槽吗?"
+              title="确认删除该语料文本吗?"
               okText="是"
               cancelText="否"
               onCancel={() => {}}
-              onConfirm={() => {
-                deleteRow(record);
-              }}
+              onConfirm={() => deleteRow(record)}
             >
               <Button type="link" style={{ color: 'red' }}>
                 删除
@@ -298,7 +380,7 @@ export default () => {
                   history?.goBack();
                 }}
               />
-              {pageType === 'wish' ? '意图名称' : '问题名称'}
+              {pageType === 'wish' ? tableInfo?.intentName : '问题名称'}
             </div>
             {pageType == 'FAQ' && (
               <div style={{ fontSize: '14px' }}>
@@ -308,7 +390,13 @@ export default () => {
           </div>
           <Row className={styles.search_box}>
             <Col span={14}>
-              <Input ref={input} placeholder="输入语料意图" allowClear maxLength={200} />
+              <Input
+                ref={input}
+                placeholder="输入语料意图"
+                allowClear
+                maxLength={200}
+                onChange={changeCorpusText}
+              />
             </Col>
             <Col span={3}>
               <Space>
@@ -324,7 +412,12 @@ export default () => {
               </Space>
             </Col>
             <Col span={6}>
-              <Search placeholder="搜索相似语料" onSearch={onSearch} />
+              <Search
+                placeholder="搜索相似语料"
+                onSearch={onSearch}
+                onChange={onChange}
+                allowClear
+              />
             </Col>
           </Row>
           <ProTable
@@ -341,22 +434,31 @@ export default () => {
               type: 'single',
               actionRender: (row, config, dom) => [dom.save, dom.cancel],
               onSave: (key: any, row: any, originRow: any, newLine?: any) => {
-                if (row.similarText == originRow.similarText) {
+                if (row.similarText && row.similarText == originRow.similarText) {
                   console.log(row, originRow);
+                  return;
+                }
+                if (row.corpusText && row.corpusText == originRow.corpusText) {
                   return;
                 }
                 return saveRow(row);
               },
             }}
-            request={async (params = {}) => {
-              return getInitTable(params);
+            request={async (params) => {
+              return getInitTable({ corpusText: corpusText, ...params });
             }}
           />
         </div>
-        {similar && <SimilarCom />}
+        {similar && (
+          <SimilarCom
+            tableInfo={tableInfo}
+            inputValue={inputValue}
+            similarTableData={similarTableData}
+          />
+        )}
       </div>
       <RemoveCom visible={visible} modalData={modalData} close={close} save={save} />
-      <SameModal visible={similar} cancel={closeSame} saveSame={saveSame} />
+      <SameModal visible={similarVisible} cancel={closeSame} saveSame={saveSame} />
     </Fragment>
   );
 };

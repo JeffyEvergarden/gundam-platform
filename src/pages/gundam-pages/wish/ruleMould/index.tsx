@@ -2,9 +2,10 @@ import React, { useState, useEffect, useRef, Fragment } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { Space, Button, Tooltip, Popconfirm, message, Card, Divider } from 'antd';
 import { useRuleModule } from './model';
+import { useModel, history } from 'umi';
 import FeatureModal from './components/featureModal';
 import RuleDrawer from './components/ruleDrawer';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { QuestionCircleOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 
 import styles from './index.less';
 
@@ -21,6 +22,12 @@ export default (props: any) => {
   const [ruleData, setRuleData] = useState<any>({});
 
   const [tableData, setTableData] = useState<any>([]);
+  const [tableProps, setTableProps] = useState<any>({});
+
+  useEffect(() => {
+    let historyData = history?.location || {};
+    setTableProps(historyData?.state);
+  }, []);
 
   const ruleList = async (payload: any) => {
     let res = await getRuleList(payload);
@@ -227,7 +234,15 @@ export default (props: any) => {
 
   return (
     <Card>
-      <div className={styles.title}>意图名称</div>
+      <div className={styles.title}>
+        <ArrowLeftOutlined
+          style={{ marginRight: '6px', color: '#1890ff' }}
+          onClick={() => {
+            history?.goBack();
+          }}
+        />
+        {tableProps.intentName}
+      </div>
       <ProTable
         headerTitle={
           <Fragment>

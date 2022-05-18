@@ -31,7 +31,7 @@ import ClassifyModal from '../classify-modal';
 const { Option } = Select;
 
 const QuestionList: React.FC<any> = (props: any) => {
-  const { cref, hasCheckbox, openClassify } = props;
+  const { cref, hasCheckbox, openClassify, openChannel } = props;
   const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
 
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
@@ -244,8 +244,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                         </span>
                         <Divider type="vertical" />
                         <span>
-                          <LikeOutlined />
-                          {item.likeNum}
+                          <LikeOutlined /> {item.likeNum}
                         </span>
 
                         <Divider type="vertical" />
@@ -326,7 +325,9 @@ const QuestionList: React.FC<any> = (props: any) => {
                                   <Divider type="vertical" />
                                   <span>
                                     生效渠道：
-                                    <Button type="link">{item.faqTypeId}</Button>
+                                    <Button type="link" onClick={openChannel}>
+                                      {item.faqTypeId}
+                                    </Button>
                                   </span>
                                 </div>
                                 <div>
@@ -364,10 +365,12 @@ const QuestionList: React.FC<any> = (props: any) => {
                         >
                           更多答案{more[index] ? <UpOutlined /> : <DownOutlined />}
                         </Button>
-                        <Divider type="vertical"></Divider>
-                        <Button type="link" onClick={() => {}}>
-                          新增答案
-                        </Button>
+                        {!hasCheckbox && <Divider type="vertical"></Divider>}
+                        {!hasCheckbox && (
+                          <Button type="link" onClick={() => {}}>
+                            新增答案
+                          </Button>
+                        )}
                       </div>
 
                       <div style={{ display: 'flex', color: 'rgba(0,0,0,0.45)' }}>

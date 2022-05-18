@@ -16,8 +16,6 @@ const LexiconManage: React.FC = (props: any) => {
   const [editObj, setEditObj] = useState<any>({});
 
   const [visibleEnum, setVisibleEnum] = useState<boolean>(false);
-  const [enumType, setEnumType] = useState<string>('');
-  const [enumData, setEnumData] = useState<any>({});
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -25,10 +23,10 @@ const LexiconManage: React.FC = (props: any) => {
 
   const getInitTable = async (payload: any) => {
     let params = {
-      page: payload.current,
-      pageSize: payload.pageSize,
+      ...payload,
       robotId: info.id,
     };
+    delete params.current;
     let res: any = await getLexiconList(params);
     return {
       data: res?.data?.list || [],
@@ -63,17 +61,18 @@ const LexiconManage: React.FC = (props: any) => {
 
   const cancel = () => {
     setVisible(false);
+    setVisibleEnum(false);
   };
 
-  const save = async (para: any, operateType: string) => {
+  const save = async (para: any, entityType: string, operateType: string) => {
     let res: any;
     let params = {
       ...para,
-      entityType: 1, //0-枚举实体  1-正则实体
+      entityType: entityType, //0-枚举实体  1-正则实体
     };
-    if (pageType === 'add') {
+    if (operateType === 'add') {
       res = await addLexicon({ ...params });
-    } else if (pageType === 'edit') {
+    } else if (operateType === 'edit') {
       params.id = editObj.id;
       res = await editLexicon({ ...params });
     }
@@ -88,26 +87,14 @@ const LexiconManage: React.FC = (props: any) => {
 
   const addEnum = () => {
     setVisibleEnum(true);
-    setEnumType('add');
-    setEnumData({});
+    setPagetype('add');
+    setEditObj({});
   };
 
   const editEnum = (record: any) => {
     setVisibleEnum(true);
-    setEnumType('edit');
-    setEnumData(record);
-  };
-
-  const deleteEnum = (record: any) => {
-    actionRef.current.reloadAndRest();
-  };
-
-  const closeEnum = () => {
-    setVisibleEnum(false);
-  };
-
-  const saveEnum = () => {
-    actionRef.current.reloadAndRest();
+    setPagetype('edit');
+    setEditObj(record);
   };
 
   const tableList: any = [
@@ -124,8 +111,16 @@ const LexiconManage: React.FC = (props: any) => {
       ellipsis: true,
       fixed: 'left',
       width: 200,
+      search: false,
     },
-    { dataIndex: 'entityDesc', title: '说明', ellipsis: true, fixed: 'left', width: 260 },
+    {
+      dataIndex: 'entityDesc',
+      title: '说明',
+      ellipsis: true,
+      fixed: 'left',
+      width: 260,
+      search: false,
+    },
     { dataIndex: 'creator', title: '创建人', search: false, ellipsis: true, width: 120 },
     { dataIndex: 'createTime', title: '创建时间', search: false, ellipsis: true, width: 120 },
     {
@@ -160,13 +155,15 @@ const LexiconManage: React.FC = (props: any) => {
       ellipsis: true,
       fixed: 'left',
       width: 200,
+      search: true,
     },
     {
-      dataIndex: 'entityName',
+      dataIndex: 'entityValue',
       title: '实体值',
       ellipsis: true,
       fixed: 'left',
       width: 300,
+      search: false,
     },
     {
       dataIndex: 'creator',
@@ -183,11 +180,12 @@ const LexiconManage: React.FC = (props: any) => {
       width: 120,
     },
     {
-      dataIndex: 'entityDesc',
+      dataIndex: 'wordSet',
       title: '词汇量',
       ellipsis: true,
       fixed: 'left',
       width: 100,
+      search: false,
     },
     {
       title: '操作',
@@ -204,7 +202,7 @@ const LexiconManage: React.FC = (props: any) => {
               okText="是"
               cancelText="否"
               onCancel={() => {}}
-              onConfirm={() => deleteEnum(record)}
+              onConfirm={() => deleteRow(record)}
             >
               <a style={{ color: 'red' }}>删除</a>
             </Popconfirm>
@@ -234,10 +232,10 @@ const LexiconManage: React.FC = (props: any) => {
             pagination={{
               pageSize: 10,
             }}
-            search={false}
+            // search={false}
             // options={false}
             request={async (params = {}) => {
-              return getInitTable({ page: params.current, ...params });
+              return getInitTable({ page: params.current, entityList: 1, ...params });
             }}
           />
         </TabPane>
@@ -258,17 +256,17 @@ const LexiconManage: React.FC = (props: any) => {
             search={false}
             // options={false}
             request={async (params = {}) => {
-              return getInitTable({ page: params.current, ...params });
+              return getInitTable({ page: params.current, entityList: 0, ...params });
             }}
           />
         </TabPane>
       </Tabs>
       <EnumModal
         visible={visibleEnum}
-        enumData={enumData}
-        closeEnum={closeEnum}
-        type={enumType}
-        save={saveEnum}
+        enumData={editObj}
+        closeEnum={cancel}
+        type={pageType}
+        save={save}
       />
       <OperateModal
         visible={visible}

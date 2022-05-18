@@ -9,8 +9,9 @@ const intentList = (req: any, res: any) => {
       page: 1,
       list: [
         {
-          id: '100',
+          id: '10',
           intentName: '意图名称',
+          robotId: '100',
           headIntent: 0,
           inquiryText: '澄清名称',
           flowInfoName: '业务流程', // 0：文本   1：语音

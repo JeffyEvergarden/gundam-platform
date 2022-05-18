@@ -14,6 +14,8 @@ const getLexiconList = (req: any, res: any) => {
           id: '011',
           robotId: '121313',
           entityName: '实体名称1',
+          entityValue: '实体值',
+          wordSet: 23,
           entityType: 1,
           entityDesc: '描述1\n描述',
           rule: '规则1',

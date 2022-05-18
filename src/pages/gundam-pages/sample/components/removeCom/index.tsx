@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Form, Input, Button, Space, Row, Col, Select } from 'antd';
+import { useModel } from 'umi';
 
 const { Option } = Select;
 const layout = {
@@ -13,6 +14,21 @@ const tailLayout = {
 export default (props: any) => {
   const { visible, modalData, close, save } = props;
   const [form] = Form.useForm();
+
+  const { _wishList, getWishList } = useModel('drawer' as any, (model: any) => ({
+    _wishList: model._wishList || [],
+    getWishList: model.getWishList, // 业务流程列表
+  }));
+
+  useEffect(() => {
+    visible && getWishList(modalData?.robotId);
+    visible &&
+      form.setFieldsValue({
+        corpusText: modalData?.corpusText,
+        preIntent: modalData?.intentId,
+        nextIntent: null,
+      });
+  }, [visible]);
 
   const onCancel = () => {
     close();
@@ -34,50 +50,45 @@ export default (props: any) => {
       <Form form={form} {...layout}>
         <Row>
           <Col span={24}>
-            <Form.Item name={'entityName'} label={'样本内容'}>
+            <Form.Item name={'corpusText'} label={'样本内容'}>
               <Input disabled />
             </Form.Item>
           </Col>
         </Row>
         <Row>
           <Col span={12}>
-            <Form.Item name={'from'} label={'从'} labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+            <Form.Item
+              name={'preIntent'}
+              label={'从'}
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 16 }}
+            >
               <Select disabled>
-                <Option key="查询额度" value="查询额度">
-                  查询额度
-                </Option>
-                <Option key="从账户绑定到手动捐款" value="从账户绑定到手动捐款">
-                  从账户绑定到手动捐款
-                </Option>
-                <Option key="临时冻结额度" value="临时冻结额度">
-                  临时冻结额度
-                </Option>
-                <Option key="停催" value="停催">
-                  停催
-                </Option>
+                {_wishList?.map((itex: any, index: number) => {
+                  return (
+                    <Option key={itex.name} value={itex.name} opt={itex}>
+                      {itex.label}
+                    </Option>
+                  );
+                })}
               </Select>
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              name={'to'}
+              name={'nextIntent'}
               label={'转移到'}
               labelCol={{ span: 6 }}
               wrapperCol={{ span: 14 }}
             >
               <Select>
-                <Option key="查询额度" value="查询额度">
-                  查询额度
-                </Option>
-                <Option key="从账户绑定到手动捐款" value="从账户绑定到手动捐款">
-                  从账户绑定到手动捐款
-                </Option>
-                <Option key="临时冻结额度" value="临时冻结额度">
-                  临时冻结额度
-                </Option>
-                <Option key="停催" value="停催">
-                  停催
-                </Option>
+                {_wishList?.map((itex: any, index: number) => {
+                  return (
+                    <Option key={itex.name} value={itex.name} opt={itex}>
+                      {itex.label}
+                    </Option>
+                  );
+                })}
               </Select>
             </Form.Item>
           </Col>
