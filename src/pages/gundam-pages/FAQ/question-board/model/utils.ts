@@ -34,7 +34,7 @@ export async function insertLink(editor: any, text: string, url: string, info?: 
 }
 
 // --------------------------------
-// 数据加工
+// 数据加工   答案看板
 export const processRequest = (data: any) => {
   data = deepClone(data); // 深克隆
   let answerList = data.answerList;
@@ -74,6 +74,39 @@ export const processBody = (data: any) => {
     });
   });
   data.questionRecommend = data.questionRecommend ? true : false;
+  return data;
+};
+
+export const processAnswerRequest = (data: any) => {
+  data = deepClone(data); // 深克隆
+
+  let enableTime = data.enableTime;
+  // 生效时间
+  data.enable = data.enable ? 1 : 0;
+  // 时间格式化
+  data.enableTime = enableTime.map((subitem: any) => {
+    if (subitem instanceof moment) {
+      console.log((subitem as any).format?.('YYYY-MM-DD HH:mm:ss'));
+      return (subitem as any).format?.('YYYY-MM-DD HH:mm:ss');
+    }
+    return subitem;
+  });
+
+  return data;
+};
+
+export const processAnswerBody = (data: any) => {
+  let enableTime = data.enableTime || [];
+  // 生效时间
+  data.enable = data.enable ? true : false;
+  // 时间格式化
+  data.enableTime = enableTime.map((subitem: any) => {
+    if (subitem && reg.test(subitem)) {
+      return moment(subitem);
+    }
+    return subitem;
+  });
+
   return data;
 };
 
