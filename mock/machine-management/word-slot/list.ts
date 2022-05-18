@@ -129,15 +129,58 @@ const getzzReal = (req: any, res: any) => {
 };
 
 const configList = (req: any, res: any) => {
-  res.json({
-    resultCode: successCode,
-    resultDesc: '成功',
-    occurTime: '2022-0221-18:16',
-    data: [
-      { id: '1', configName: '变量1' },
-      { id: '2', configName: '变量2' },
-    ],
-  });
+  if (req.query.configType == 2) {
+    res.json({
+      resultCode: successCode,
+      requestId: 'xx',
+      resultDesc: '成功',
+      success: true,
+      data: [
+        {
+          id: '1',
+          configType: 0,
+          configName: 'thresholdGap',
+          configValue: '1.0',
+          configDesc: 'var1',
+          configKey: 'THRESHOLD_GAP',
+          robotId: '00000',
+          creator: 'ujiangjiahao',
+          createTime: '2022-04-11 17:16:00',
+          updateTime: '2022-04-11 17:16:00',
+          dataStatus: 0, //
+          uppdateBy: 'x',
+          dataType: 1,
+          updateType: 0,
+        },
+        {
+          id: '2',
+          configType: 0,
+          configName: 'threshold',
+          configValue: '1.0',
+          configDesc: 'var1',
+          configKey: 'THRESHOLD',
+          robotId: '00000',
+          creator: 'ujiangjiahao',
+          createTime: '2022-04-11 17:16:00',
+          updateTime: '2022-04-11 17:16:00',
+          dataStatus: 0, //
+          uppdateBy: 'x',
+          dataType: 0,
+          updateType: 0,
+        },
+      ],
+    });
+  } else {
+    res.json({
+      resultCode: successCode,
+      resultDesc: '成功',
+      occurTime: '2022-0221-18:16',
+      data: [
+        { id: '1', configName: '变量1' },
+        { id: '2', configName: '变量2' },
+      ],
+    });
+  }
 };
 
 const interFace = (req: any, res: any) => {
@@ -196,6 +239,6 @@ export default {
   'GET /aichat/robot/entity/list': getzzReal, // 获取实体列表
   'GET /aichat/robot/interface/list': interFace, // 获取接口列表
   'GET /aichat/robot/interface/param': paramList, // 获取入参值列表
-  'GET /aichat/robot/config/list': configList, // 获取变量列表
+  'GET /aichat/robot/config/list': configList, // 获取变量列表  detail里有
   'POST /aichat/robot/slot/slotInfo': slotInfoList, // 获取入参值-下级列表
 };

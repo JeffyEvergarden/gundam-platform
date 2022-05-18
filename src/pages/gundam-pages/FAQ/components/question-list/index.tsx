@@ -26,11 +26,12 @@ import { useModel, history } from 'umi';
 import { deleteQuestion } from '../../FAQ-manage/model/api';
 import config from '@/config';
 import Condition from '@/pages/gundam-pages/main-draw/flow/common/Condition';
+import ClassifyModal from '../classify-modal';
 
 const { Option } = Select;
 
 const QuestionList: React.FC<any> = (props: any) => {
-  const { cref, hasCheckbox } = props;
+  const { cref, hasCheckbox, openClassify, openChannel } = props;
   const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
 
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
@@ -190,7 +191,9 @@ const QuestionList: React.FC<any> = (props: any) => {
                         <Divider type="vertical" />
                         <span>
                           分类：
-                          <Button type="link">{item.faqTypeId}</Button>
+                          <Button type="link" onClick={openClassify}>
+                            {item.faqTypeId}
+                          </Button>
                         </span>
                         {/* <Divider type="vertical" />
                         <span>浏览次数：{item.viewNum}</span> */}
@@ -237,17 +240,16 @@ const QuestionList: React.FC<any> = (props: any) => {
                       </div>
                       <div>
                         <span>
-                          <EyeOutlined /> {item.times}
+                          <EyeOutlined /> {item.viewNum}
                         </span>
                         <Divider type="vertical" />
                         <span>
-                          <LikeOutlined />
-                          {item.times}
+                          <LikeOutlined /> {item.likeNum}
                         </span>
 
                         <Divider type="vertical" />
                         <span>
-                          <DislikeOutlined /> {item.times}
+                          <DislikeOutlined /> {item.unlikeNum}
                         </span>
                       </div>
                     </div>
@@ -323,7 +325,9 @@ const QuestionList: React.FC<any> = (props: any) => {
                                   <Divider type="vertical" />
                                   <span>
                                     生效渠道：
-                                    <Button type="link">{item.faqTypeId}</Button>
+                                    <Button type="link" onClick={openChannel}>
+                                      {item.faqTypeId}
+                                    </Button>
                                   </span>
                                 </div>
                                 <div>
@@ -349,17 +353,26 @@ const QuestionList: React.FC<any> = (props: any) => {
                     </div>
 
                     <div className={style['box-footer']}>
-                      <Button
-                        key={index}
-                        type="link"
-                        onClick={() => {
-                          let arr: any = JSON.parse(JSON.stringify(more));
-                          arr[index] = !arr[index];
-                          setMore(arr);
-                        }}
-                      >
-                        更多答案{more[index] ? <UpOutlined /> : <DownOutlined />}
-                      </Button>
+                      <div>
+                        <Button
+                          key={index}
+                          type="link"
+                          onClick={() => {
+                            let arr: any = JSON.parse(JSON.stringify(more));
+                            arr[index] = !arr[index];
+                            setMore(arr);
+                          }}
+                        >
+                          更多答案{more[index] ? <UpOutlined /> : <DownOutlined />}
+                        </Button>
+                        {!hasCheckbox && <Divider type="vertical"></Divider>}
+                        {!hasCheckbox && (
+                          <Button type="link" onClick={() => {}}>
+                            新增答案
+                          </Button>
+                        )}
+                      </div>
+
                       <div style={{ display: 'flex', color: 'rgba(0,0,0,0.45)' }}>
                         {hasCheckbox && (
                           <div className={style['extra']}>删除操作人：{item.name}</div>
@@ -381,7 +394,6 @@ const QuestionList: React.FC<any> = (props: any) => {
         rowKey={'id'}
         key={'id'}
       />
-      {/* </InfiniteScroll> */}
     </div>
   );
 };

@@ -10,6 +10,8 @@ import { useFaqModal, useTreeModal } from './model';
 import QuestionList from '../components/question-list';
 import style from './style.less';
 import { treeData } from './test';
+import ClassifyModal from '../components/classify-modal';
+import ChannelModal from '../components/channel-modal';
 
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -37,6 +39,8 @@ const FAQPage: React.FC<any> = (props: any) => {
   const { treeData, getTreeData } = useTreeModal();
 
   const typeModalRef = useRef<any>({});
+  const classifyRef = useRef<any>({});
+  const channelRef = useRef<any>({});
 
   // 打开新增弹窗
   const openAddModal = (obj: any, callback: any) => {
@@ -76,6 +80,13 @@ const FAQPage: React.FC<any> = (props: any) => {
 
   const goToAddQuestion = () => {
     history.push('/gundamPages/faq/board');
+  };
+
+  const openClassify = () => {
+    classifyRef.current?.open();
+  };
+  const openChannel = () => {
+    channelRef.current?.open();
   };
 
   return (
@@ -153,9 +164,16 @@ const FAQPage: React.FC<any> = (props: any) => {
             </Collapse>
           </div>
 
-          <QuestionList hasCheckbox={false}></QuestionList>
+          <QuestionList
+            hasCheckbox={false}
+            openClassify={openClassify}
+            openChannel={openChannel}
+          ></QuestionList>
         </div>
       </div>
+
+      <ClassifyModal cref={classifyRef} treeData={treeData}></ClassifyModal>
+      <ChannelModal cref={channelRef}></ChannelModal>
     </div>
   );
 };

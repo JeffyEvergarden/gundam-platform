@@ -3,7 +3,7 @@ import { message, Button, Tooltip } from 'antd';
 import { Editor, Toolbar } from '@wangeditor/editor-for-react';
 import { IDomEditor, IEditorConfig } from '@wangeditor/editor';
 import config from './const';
-import { FilePptOutlined, DeploymentUnitOutlined } from '@ant-design/icons';
+import { FilePptOutlined, DeploymentUnitOutlined, AimOutlined } from '@ant-design/icons';
 import { insertLink } from './model/utils';
 import '@wangeditor/editor/dist/css/style.css'; // 引入 css
 import style from './style.less';
@@ -27,7 +27,7 @@ const EditBoard: React.FC<any> = (prop: any) => {
     excludeKeys: ['fullScreen'], // 去除全屏
     insertKeys: {
       index: 24,
-      keys: ['uploadOursFile'], //自定义
+      keys: ['uploadOursFile', 'openRelationModal'], //自定义
     },
   };
 
@@ -98,6 +98,15 @@ const EditBoard: React.FC<any> = (prop: any) => {
   // 选择标准问弹窗
   const confirm = (obj: any) => {
     console.log(obj);
+    insertLink(editor, obj.question, '##' + obj.questionId, {
+      questionId: obj.questionId,
+      target: '_self',
+    });
+  };
+
+  const test = () => {
+    console.log(value);
+    console.log(editor?.children);
   };
 
   (editorConfig.MENU_CONF as any)['openRelationModal'] = {

@@ -1,14 +1,14 @@
 import { Button, Form, InputNumber, message, Space } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useModel } from 'umi';
-import { useGlobalModel, useNodeModel } from '../model';
+import { useGlobalModel, useFAQModel } from '../model';
 import style from './style.less';
 
 const FAQConfig: React.FC = (props: any) => {
   const [form] = Form.useForm();
   const { Item: FormItem, List: FormList } = Form;
 
-  const { getTableList } = useGlobalModel();
+  const { getTableList } = useFAQModel();
 
   const { info, businessFlowId, getGlobalValConfig } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -19,7 +19,7 @@ const FAQConfig: React.FC = (props: any) => {
   const [Nconfig, setNConfig] = useState<any>();
 
   const getList = async () => {
-    await getTableList({ robotId: info.id }).then((res: any) => {
+    await getTableList({ robotId: info.id, configType: 2 }).then((res: any) => {
       console.log(res);
       setNConfig(res?.data);
       let obj: any = {};

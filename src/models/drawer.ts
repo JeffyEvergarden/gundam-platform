@@ -10,24 +10,6 @@ import {
 } from '@/services/api';
 import config from '@/config/index';
 
-const processTreeData = (data: any[], parent?: any) => {
-  if (!Array.isArray(data)) {
-    return [];
-  }
-
-  let _data = data.map((item: any) => {
-    let obj: any = {
-      title: item?.title,
-      key: item?.key,
-      // parent: parent,
-    };
-    let children: any = processTreeData(item?.children, obj);
-    obj.children = children;
-    return obj;
-  });
-  return _data;
-};
-
 export default function useDrawerModel() {
   const timeFc = useRef<any>({});
 
@@ -234,6 +216,24 @@ export default function useDrawerModel() {
     console.log(data);
 
     _setGlobalNodeList(data);
+  };
+
+  const processTreeData = (data: any[], parent?: any) => {
+    if (!Array.isArray(data)) {
+      return [];
+    }
+
+    let _data = data.map((item: any) => {
+      let obj: any = {
+        title: item?.title,
+        key: item?.key,
+        // parent: parent,
+      };
+      let children: any = processTreeData(item?.children, obj);
+      obj.children = children;
+      return obj;
+    });
+    return _data;
   };
 
   const getTreeData = async (id?: any) => {

@@ -3,6 +3,7 @@ import { Modal, Button, Table, Tooltip, Tabs } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import MyTree from '../../../FAQ-manage/components/my-tree';
 import { useModel } from 'umi';
+import { useFaqModal } from '../../../FAQ-manage/model';
 import style from './style.less';
 import Condition from '@/components/Condition';
 
@@ -12,7 +13,7 @@ const columns1: any[] = [
   // 问题列表-列
   {
     title: '问题名称',
-    dataIndex: 'label',
+    dataIndex: 'question',
   },
 ];
 
@@ -44,7 +45,16 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   const changeActiveKey = (val: any) => {
     setActivekey(val);
+    if (activeKey === '1') {
+      onChange1(1);
+    }
   };
+
+  const { info } = useModel('gundam' as any, (model: any) => {
+    return {
+      info: model.info,
+    };
+  });
 
   // 业务流程列表
   const { flowList, treeData } = useModel('drawer' as any, (model: any) => {
@@ -54,30 +64,39 @@ const SelectorModal: React.FC<any> = (props: any) => {
     };
   });
 
+  const [classType, setClassType] = useState<string>('');
+  const { loading, faqList, getFaqList, totalSize, setFaqList } = useFaqModal();
+
   const [visible, setVisible] = useState<boolean>(false);
   // 页码, 分页相关
   const [current1, setCurrent1] = useState<number>(1);
   const [current2, setCurrent2] = useState<number>(1);
 
   const onChange1 = (val: any) => {
+    if (loading) {
+      return;
+    }
     setCurrent1(val);
+    if (classType) {
+      getFaqList({ page: val, pageSize: 10, robotId: info.id, type: classType });
+    } else {
+      setFaqList([]);
+    }
   };
   const onChange2 = (val: any) => {
     setCurrent2(val);
   };
 
   // 选中key值
-  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
+  const [selectedQuestionKeys, setSelectedQuestionKeys] = useState<any[]>([]);
+  const [selectedFlowKeys, setSelectedFlowKeys] = useState<any[]>([]);
 
   // 选中
   const onSelect = (val: any) => {
-    console.log(val);
+    setClassType(val[0]);
+    setCurrent1(1);
+    getFaqList({ page: 1, pageSize: 10, robotId: info.id, type: val[0] });
   };
-
-  useEffect(() => {
-    console.log('flowList');
-    console.log(flowList);
-  }, [flowList]);
 
   const tableFlowList: any[] = useMemo(() => {
     return flowList.map((item: any, index: number) => {
@@ -91,7 +110,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
       // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-      setSelectedRowKeys(selectedRowKeys);
+      setSelectedQuestionKeys(selectedRowKeys);
     },
     getCheckboxProps: (record: any) => {
       return {
@@ -104,7 +123,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
   const rowFlowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
       // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-      setSelectedRowKeys(selectedRowKeys);
+      setSelectedFlowKeys(selectedRowKeys);
     },
     getCheckboxProps: (record: any) => {
       return {
@@ -117,17 +136,23 @@ const SelectorModal: React.FC<any> = (props: any) => {
   useImperativeHandle(cref, () => ({
     open: (obj: any) => {
       console.log(obj);
-      setDisabledFlowKeys(obj.disabledFlowKeys || []);
-      setDisabledQuestionKeys(obj.disabledQuestionKeys || []);
-      if (obj.showFlow === false) {
+      setDisabledFlowKeys(obj?.disabledFlowKeys || []);
+      setDisabledQuestionKeys(obj?.disabledQuestionKeys || []);
+      // 设置默认选中
+      setSelectedQuestionKeys(obj?.selectedQuestionKeys || []);
+      setSelectedFlowKeys(obj?.selectedFlowKeys || []);
+
+      if (obj?.showFlow === false) {
         setShowFlowKey(false);
         setActivekey('1');
+        onChange1(1);
       } else {
+        if (activeKey === '1') {
+          onChange1(1);
+        }
         setShowFlowKey(true);
       }
-      setCurrent1(1);
       setCurrent2(1);
-      setSelectedRowKeys([]);
 
       // 显示
       setVisible(true);
@@ -138,19 +163,33 @@ const SelectorModal: React.FC<any> = (props: any) => {
   }));
 
   const submit = () => {
-    console.log(selectedRowKeys);
-    let list: any = tableFlowList
-      .filter((item: any) => {
-        return selectedRowKeys.includes(item.name);
-      })
-      .map((item: any) => item.label);
-    console.log(list);
-    if (list.length > 0) {
-      confirm?.({
-        questionType: activeKey,
-        questionId: selectedRowKeys[0],
-        question: list[0],
-      });
+    let list: any = [];
+    if (activeKey === '2') {
+      list = tableFlowList
+        .filter((item: any) => {
+          return selectedFlowKeys.includes(item.name);
+        })
+        .map((item: any) => item.label);
+      if (list.length > 0) {
+        confirm?.({
+          recommendBizType: activeKey,
+          recommendId: selectedFlowKeys[0],
+          recommend: list[0],
+        });
+      }
+    } else if (activeKey === '1') {
+      list = faqList
+        .filter((item: any) => {
+          return selectedQuestionKeys.includes(item.id);
+        })
+        .map((item: any) => item.question);
+      if (list.length > 0) {
+        confirm?.({
+          recommendBizType: activeKey,
+          ecommendId: selectedQuestionKeys[0],
+          recommend: list[0],
+        });
+      }
     }
     setVisible(false);
   };
@@ -178,14 +217,14 @@ const SelectorModal: React.FC<any> = (props: any) => {
                   rowSelection={{
                     type: type === 'radio' ? 'radio' : 'checkbox',
                     ...rowSelection,
-                    selectedRowKeys,
+                    selectedRowKeys: selectedQuestionKeys,
                   }}
                   size="small"
-                  pagination={{ current: current1, onChange: onChange1 }}
-                  dataSource={tableFlowList}
+                  pagination={{ current: current1, onChange: onChange1, total: totalSize }}
+                  dataSource={faqList}
                   columns={columns1}
                   rowKey="id"
-                  // loading={tableLoading}
+                  loading={loading}
                 />
               </div>
             </div>
@@ -198,7 +237,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
               rowSelection={{
                 type: type === 'radio' ? 'radio' : 'checkbox',
                 ...rowFlowSelection,
-                selectedRowKeys,
+                selectedRowKeys: selectedFlowKeys,
               }}
               size="small"
               pagination={{ current: current2, onChange: onChange2 }}

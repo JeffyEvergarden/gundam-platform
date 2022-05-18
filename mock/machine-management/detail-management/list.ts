@@ -12,16 +12,14 @@ const editConfig = (req: any, res: any) => {
 
 const getConfig = (req: any, res: any) => {
   console.log(req.query);
-  res.json({
-    resultCode: successCode,
-    requestId: 'xx',
-    resultDesc: '成功',
-    success: true,
-    data: {
-      pageSize: 10,
-      totalPage: 1,
-      page: 1,
-      list: [
+
+  if (req.query.configType == 2) {
+    res.json({
+      resultCode: successCode,
+      requestId: 'xx',
+      resultDesc: '成功',
+      success: true,
+      data: [
         {
           id: '1',
           configType: 0,
@@ -54,79 +52,124 @@ const getConfig = (req: any, res: any) => {
           dataType: 0,
           updateType: 0,
         },
-        {
-          id: '3',
-          configType: 0,
-          configName: 'silenceToDeal',
-          configValue: '静默',
-          configDesc: 'var1',
-          configKey: 'SILENCE_TO_DEAL',
-          robotId: '00000',
-          creator: 'ujiangjiahao',
-          createTime: '2022-04-11 17:16:00',
-          updateTime: '2022-04-11 17:16:00',
-          dataStatus: 0, //
-          uppdateBy: 'x',
-          dataType: 0,
-          updateType: 0,
-        },
-        {
-          id: '4',
-          configType: 0,
-          configName: 'refuseToDeal',
-          configValue: '拒识',
-          configDesc: 'var1',
-          configKey: 'REFUSE_TO_DEAL',
-          robotId: '00000',
-          creator: 'ujiangjiahao',
-          createTime: '2022-04-11 17:16:00',
-          updateTime: '2022-04-11 17:16:00',
-          dataStatus: 0, //
-          uppdateBy: 'x',
-          dataType: 0,
-          updateType: 0,
-        },
-        {
-          id: '5',
-          configType: 0,
-          configName: 'clearToDeal',
-          configValue: '澄清',
-          configDesc: 'var1',
-          configKey: 'CLEAR_TO_DEAL',
-          robotId: '00000',
-          creator: 'ujiangjiahao',
-          createTime: '2022-04-11 17:16:00',
-          updateTime: '2022-04-11 17:16:00',
-          dataStatus: 0, //
-          uppdateBy: 'x',
-          dataType: 0,
-          updateType: 0,
-        },
-        {
-          id: '6',
-          configType: 1,
-          configName: 'test',
-          configValue: '1.0',
-          configDesc: 'var1',
-          configKey: 'test',
-          robotId: '00000',
-          creator: 'ujiangjiahao',
-          createTime: '2022-04-11 17:16:00',
-          updateTime: '2022-04-11 17:16:00',
-          dataStatus: 0, //
-          uppdateBy: 'x',
-          dataType: 0,
-          updateType: 1,
-        },
       ],
-    },
-  });
+    });
+  } else {
+    res.json({
+      resultCode: successCode,
+      requestId: 'xx',
+      resultDesc: '成功',
+      success: true,
+      data: {
+        pageSize: 10,
+        totalPage: 1,
+        page: 1,
+        list: [
+          {
+            id: '1',
+            configType: 0,
+            configName: 'thresholdGap',
+            configValue: '1.0',
+            configDesc: 'var1',
+            configKey: 'THRESHOLD_GAP',
+            robotId: '00000',
+            creator: 'ujiangjiahao',
+            createTime: '2022-04-11 17:16:00',
+            updateTime: '2022-04-11 17:16:00',
+            dataStatus: 0, //
+            uppdateBy: 'x',
+            dataType: 1,
+            updateType: 0,
+          },
+          {
+            id: '2',
+            configType: 0,
+            configName: 'threshold',
+            configValue: '1.0',
+            configDesc: 'var1',
+            configKey: 'THRESHOLD',
+            robotId: '00000',
+            creator: 'ujiangjiahao',
+            createTime: '2022-04-11 17:16:00',
+            updateTime: '2022-04-11 17:16:00',
+            dataStatus: 0, //
+            uppdateBy: 'x',
+            dataType: 0,
+            updateType: 0,
+          },
+          {
+            id: '3',
+            configType: 0,
+            configName: 'silenceToDeal',
+            configValue: '静默',
+            configDesc: 'var1',
+            configKey: 'SILENCE_TO_DEAL',
+            robotId: '00000',
+            creator: 'ujiangjiahao',
+            createTime: '2022-04-11 17:16:00',
+            updateTime: '2022-04-11 17:16:00',
+            dataStatus: 0, //
+            uppdateBy: 'x',
+            dataType: 0,
+            updateType: 0,
+          },
+          {
+            id: '4',
+            configType: 0,
+            configName: 'refuseToDeal',
+            configValue: '拒识',
+            configDesc: 'var1',
+            configKey: 'REFUSE_TO_DEAL',
+            robotId: '00000',
+            creator: 'ujiangjiahao',
+            createTime: '2022-04-11 17:16:00',
+            updateTime: '2022-04-11 17:16:00',
+            dataStatus: 0, //
+            uppdateBy: 'x',
+            dataType: 0,
+            updateType: 0,
+          },
+          {
+            id: '5',
+            configType: 0,
+            configName: 'clearToDeal',
+            configValue: '澄清',
+            configDesc: 'var1',
+            configKey: 'CLEAR_TO_DEAL',
+            robotId: '00000',
+            creator: 'ujiangjiahao',
+            createTime: '2022-04-11 17:16:00',
+            updateTime: '2022-04-11 17:16:00',
+            dataStatus: 0, //
+            uppdateBy: 'x',
+            dataType: 0,
+            updateType: 0,
+          },
+          {
+            id: '6',
+            configType: 1,
+            configName: 'test',
+            configValue: '1.0',
+            configDesc: 'var1',
+            configKey: 'test',
+            robotId: '00000',
+            creator: 'ujiangjiahao',
+            createTime: '2022-04-11 17:16:00',
+            updateTime: '2022-04-11 17:16:00',
+            dataStatus: 0, //
+            uppdateBy: 'x',
+            dataType: 0,
+            updateType: 1,
+          },
+        ],
+      },
+    });
+  }
 };
 
 //接口配置
 const getInterface = (req: any, res: any) => {
   console.log(req.query);
-
   res.json({
     resultCode: successCode,
     requestId: 'xx',

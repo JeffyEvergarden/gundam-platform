@@ -90,3 +90,11 @@ export async function _saveNode(data?: { [key: string]: any }) {
     data,
   });
 }
+
+// 获取faq配置
+export async function getFAQList(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/config/list`, {
+    method: 'GET',
+    params,
+  });
+}
