@@ -1,5 +1,16 @@
 import { useState } from 'react';
-import { intentRulePageList } from './api';
+import {
+  intentRulePageList,
+  slotList,
+  intentFeaturePageList,
+  addRule,
+  intentRuleEdit,
+  ruledelete,
+  intentMoveRule,
+  addFeature,
+  editFeature,
+  deleteFeatures,
+} from './api';
 
 export const changeData = (data: any, field: any) => {
   let count = 0; //重复项的第一项
@@ -33,6 +44,8 @@ export const useRuleModule = () => {
       item?.robotIntentRuleDetailList?.map((el: any) => {
         tempArr.push({
           id: item.id + '-' + el.id,
+          idFather: item.id,
+          idChid: el.id,
           robotId: item.robotId,
           intentRuleName: item.intentRuleName,
           threshold: item.threshold,
@@ -63,8 +76,80 @@ export const useRuleModule = () => {
     return pageInfo;
   };
 
+  const slotInfo = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await slotList(params);
+    setTableLoading(false);
+    return res;
+  };
+
+  const getFeatureList = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await intentFeaturePageList(params);
+    setTableLoading(false);
+    return res;
+  };
+
+  const ruleAdd = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await addRule(params);
+    setTableLoading(false);
+    return res;
+  };
+
+  const ruleEdit = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await intentRuleEdit(params);
+    setTableLoading(false);
+    return res;
+  };
+
+  const deleteRule = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await ruledelete(params);
+    setTableLoading(false);
+    return res;
+  };
+
+  const moveRule = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await intentMoveRule(params);
+    setTableLoading(false);
+    return res;
+  };
+
+  const featuresAdd = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await addFeature(params);
+    setTableLoading(false);
+    return res;
+  };
+
+  const featureEdit = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await editFeature(params);
+    setTableLoading(false);
+    return res;
+  };
+
+  const delFeatures = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await deleteFeatures(params);
+    setTableLoading(false);
+    return res;
+  };
+
   return {
     getRuleList,
+    slotInfo,
+    ruleAdd,
+    ruleEdit,
+    deleteRule,
+    moveRule,
+    getFeatureList,
+    delFeatures,
+    featuresAdd,
+    featureEdit,
     tableLoading,
   };
 };

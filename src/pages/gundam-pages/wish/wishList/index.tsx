@@ -75,7 +75,9 @@ const DetailPages: React.FC = (props: any) => {
     // handleRulesSampleVisible(true);
     history.push({
       pathname: '/gundamPages/wish/ruleMould',
-      state: data,
+      state: {
+        info: data,
+      },
     });
   };
 

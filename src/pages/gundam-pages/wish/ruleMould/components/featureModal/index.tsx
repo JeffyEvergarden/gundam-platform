@@ -14,7 +14,12 @@ export default (props: any) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    visible && form.setFieldsValue({});
+    visible &&
+      form.setFieldsValue({
+        key: modalData?.key,
+        name: modalData?.name,
+        wordSet: modalData?.wordSet,
+      });
   }, [visible]);
 
   const onCancel = () => {
@@ -36,7 +41,7 @@ export default (props: any) => {
     >
       <Form form={form} {...layout}>
         <Form.Item
-          name={'特征ID'}
+          name={'key'}
           label={'特征ID'}
           rules={[
             { required: true, message: '请输入特征ID' },
@@ -50,18 +55,18 @@ export default (props: any) => {
           />
         </Form.Item>
         <Form.Item
-          name={'特征名称1'}
+          name={'name'}
           label={'特征名称'}
           rules={[{ required: true, message: '请输入特征名称' }]}
         >
           <Input placeholder={'请输入特征名称'} maxLength={150} />
         </Form.Item>
         <Form.Item
-          name={'特征语集1'}
-          label={'特征语集'}
-          rules={[{ required: true, message: '请输入特征语集' }]}
+          name={'wordSet'}
+          label={'特征词集'}
+          rules={[{ required: true, message: '请输入特征词集' }]}
         >
-          <TextArea placeholder={'请输入特征语集'} maxLength={200} rows={4} />
+          <TextArea placeholder={'请输入特征词集'} maxLength={200} rows={4} />
         </Form.Item>
       </Form>
     </Modal>

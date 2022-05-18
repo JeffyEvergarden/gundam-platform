@@ -2,6 +2,7 @@ import React, { useState, Fragment, useEffect } from 'react';
 import { Drawer, Button, Space, Form, Input, InputNumber, Select, message, Tooltip } from 'antd';
 import { MinusCircleOutlined, PlusCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import styles from './../index.less';
+import { useRuleModule } from './../../model';
 
 const { Option } = Select;
 
@@ -11,21 +12,13 @@ const layout = {
 };
 
 export default (props: any) => {
-  const { visible, type, cancel, save, modalData } = props;
+  const { visible, type, tableProps, cancel, save, modalData } = props;
   const [form] = Form.useForm();
 
-  const [slotList, setSlotList] = useState<any>([
-    { name: 'user_bill_mouth1', key: 'user_bill_mouth1' },
-    { name: 'user_bill_mouth2', key: 'user_bill_mouth2' },
-    { name: 'user_bill_mouth3', key: 'user_bill_mouth3' },
-    { name: 'user_bill_mouth4', key: 'user_bill_mouth4' },
-    { name: 'user_bill_mouth5', key: 'user_bill_mouth5' },
-  ]);
-  const [featureList, setFeatureList] = useState<any>([
-    { name: 'feature_1', key: 'feature_1' },
-    { name: 'feature_2', key: 'feature_2' },
-    { name: 'feature_3', key: 'feature_3' },
-  ]);
+  const { slotInfo, getFeatureList } = useRuleModule();
+
+  const [slotList, setSlotList] = useState<any>([]);
+  const [featureList, setFeatureList] = useState<any>([]);
 
   const [currTempClipsIndex, setCurrTempClipsIndex] = useState<number>(0);
   const [startPos, setStartPos] = useState<number>(-1);
@@ -37,8 +30,25 @@ export default (props: any) => {
         threshold: modalData?.threshold,
         ruleClips: modalData.robotIntentRuleDetailList,
       });
+    visible && getSlotList();
+    visible && getFeature();
   }, [visible]);
 
+  const getSlotList = async () => {
+    let res = await slotInfo({ robotId: tableProps?.robotId });
+    setSlotList(res?.data);
+  };
+
+  const getFeature = async () => {
+    let params = {
+      intentId: tableProps.id,
+      page: 1,
+      pageSize: 99999,
+    };
+    let res = await getFeatureList(params);
+    setFeatureList(res?.data?.list);
+    debugger;
+  };
   const templateFocus = (key: any, name: any) => {
     let data = form.getFieldValue('ruleClips');
     if (!data?.[key]) {
@@ -81,10 +91,6 @@ export default (props: any) => {
           ruleClips: [...data],
         });
       } else if (type === 'slot') {
-        // data[currTempClipsIndex].fragment = newValue;
-        // form.setFieldsValue({
-        //   ruleClips: [...data],
-        // });
         let formval = form.getFieldValue('ruleClips');
         let currentVal = formval?.[currTempClipsIndex]?.fragment || '';
         if (!currentVal.includes(content)) {
@@ -234,8 +240,8 @@ export default (props: any) => {
           <div className={styles.slotList}>
             {slotList?.map((item: any) => {
               return (
-                <span key={item.key} onClick={() => insetWordTemp(item.name, 'slot')}>
-                  {item.name}
+                <span key={item.id} onClick={() => insetWordTemp(item.slotName, 'slot')}>
+                  {item.slotName}
                 </span>
               );
             })}

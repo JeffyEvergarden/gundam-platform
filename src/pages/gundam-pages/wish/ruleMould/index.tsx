@@ -6,13 +6,24 @@ import { useModel, history } from 'umi';
 import FeatureModal from './components/featureModal';
 import RuleDrawer from './components/ruleDrawer';
 import { QuestionCircleOutlined, ArrowLeftOutlined } from '@ant-design/icons';
-
+import config from '@/config';
 import styles from './index.less';
 
 export default (props: any) => {
   const actionRef = useRef<any>();
+  const actionRefFeature = useRef<any>();
 
-  const { getRuleList } = useRuleModule();
+  const {
+    getRuleList,
+    getFeatureList,
+    ruleAdd,
+    ruleEdit,
+    deleteRule,
+    moveRule,
+    delFeatures,
+    featuresAdd,
+    featureEdit,
+  } = useRuleModule();
   const [visibleFeatures, setFeaturesVisible] = useState<boolean>(false);
   const [pageTypeFeature, setPageTypeFeature] = useState<string>('');
   const [featureData, setFeatureData] = useState<any>({});
@@ -26,15 +37,35 @@ export default (props: any) => {
 
   useEffect(() => {
     let historyData = history?.location || {};
-    setTableProps(historyData?.state);
+    setTableProps(historyData?.state?.info);
   }, []);
 
   const ruleList = async (payload: any) => {
-    let res = await getRuleList(payload);
+    let oparams = {
+      page: payload.current,
+      pageSize: payload.pageSize,
+      intentId: tableProps?.id,
+    };
+    let res = await getRuleList(oparams);
     setTableData(res?.res?.data?.list);
     return {
       data: res?.dataTableData || [],
       total: res?.totalPage,
+      current: payload.current,
+      pageSize: payload.pageSize,
+    };
+  };
+
+  const featureList = async (payload: any) => {
+    let oparams = {
+      page: payload.current,
+      pageSize: payload.pageSize,
+      intentId: tableProps?.id,
+    };
+    let res = await getFeatureList(oparams);
+    return {
+      data: res?.data?.list || [],
+      total: res?.data?.totalPage,
       current: payload.current,
       pageSize: payload.pageSize,
     };
@@ -51,15 +82,13 @@ export default (props: any) => {
   };
 
   const editRule = (row: any) => {
-    let idStr = row.id;
-    let idArr = idStr.split('-');
+    debugger;
     let temRuleDataItem = {};
     tableData.map((item: any) => {
-      if (item.id === idArr[0]) {
+      if (item.id === row.idFather) {
         temRuleDataItem = item;
       }
     });
-    debugger;
     setVisibleRule(true);
     setPageTypeRule('edit');
     setRuleData(temRuleDataItem);
@@ -69,8 +98,57 @@ export default (props: any) => {
     setVisibleRule(false);
   };
 
-  const saveRule = () => {
-    setVisibleRule(false);
+  const saveRule = async (values: any) => {
+    let params = {
+      id: ruleData?.id,
+      robotId: tableProps?.robotId,
+      intentId: tableProps?.id,
+      intentRuleName: values?.intentRuleName,
+      threshold: values?.threshold,
+      robotIntentRuleDetailAddRequests: values?.ruleClips,
+    };
+    let res;
+    if (pageTypeRule === 'add') {
+      res = await ruleAdd(params);
+    }
+    if (pageTypeRule === 'edit') {
+      res = await ruleEdit(params);
+    }
+
+    if (res.resultCode === config.successCode) {
+      message.success(res?.resultDesc || '成功');
+      setVisibleRule(false);
+      actionRef?.current?.reload();
+    } else {
+      message.error(res?.resultDesc || '失败');
+    }
+  };
+
+  const delRule = async (row: any) => {
+    let res = await deleteRule({ id: row.idFather });
+    if (res?.resultCode === config.successCode) {
+      message.success(res?.resultDesc || '成功');
+      actionRef?.current?.reload();
+    } else {
+      message.error(res?.resultDesc || '失败');
+    }
+  };
+
+  const move = async (row: any, type: boolean) => {
+    let params = {
+      id: row?.intentRuleId,
+      intentId: tableProps?.id,
+      robotId: row?.robotId,
+      orderNumber: row?.orderNumber,
+      move: type,
+    };
+    let res = await moveRule(params);
+    if (res?.resultCode === config.successCode) {
+      message.success(res?.resultDesc || '成功');
+      actionRef?.current?.reload();
+    } else {
+      message.error(res?.resultDesc || '失败');
+    }
   };
 
   const addFeatures = () => {
@@ -88,28 +166,50 @@ export default (props: any) => {
     setFeaturesVisible(false);
   };
 
-  const saveFeature = () => {
+  const saveFeature = async (values: any) => {
+    let res;
+    if (pageTypeFeature === 'add') {
+      let params = {
+        intentId: tableProps?.id,
+        ...values,
+      };
+      res = await featuresAdd(params);
+    }
+    if (pageTypeFeature === 'edit') {
+      let params = {
+        name: values.name,
+        wordSet: values.wordSet,
+        id: featureData?.id,
+      };
+      res = await featureEdit(params);
+    }
+
+    if (res.resultCode === config.successCode) {
+      message.success(res?.resultDesc || '成功');
+      actionRefFeature?.current?.reload();
+    } else {
+      message.error(res?.resultDesc || '失败');
+    }
+
     setFeaturesVisible(false);
   };
 
-  const upper = (row: any) => {
-    debugger;
+  const deleteFeatures = async (payload: any) => {
+    let res = await delFeatures({ id: payload.id });
+    if (res.resultCode === config.successCode) {
+      message.success(res?.resultDesc || '成功');
+      actionRef?.current?.reload();
+    } else {
+      message.error(res?.resultDesc || '失败');
+    }
   };
-
-  const downer = (row: any) => {
-    debugger;
-  };
-
-  const delRule = (row: any) => {};
-
-  const deleteFeatures = (payload: any) => {};
 
   const ruleColumns: any = [
     {
       dataIndex: 'intentRuleName',
       title: '规则名称',
       ellipsis: true,
-      fixed: 'left',
+      // fixed: 'left',
       width: 200,
       render(_: any, row: any) {
         return {
@@ -124,22 +224,22 @@ export default (props: any) => {
       dataIndex: 'fragment',
       title: '规则内容',
       ellipsis: true,
-      fixed: 'left',
+      // fixed: 'left',
       width: 400,
     },
     {
       dataIndex: 'orderNumber',
       title: '片段排序',
       ellipsis: true,
-      fixed: 'left',
-      width: 50,
+      // fixed: 'left',
+      width: 100,
     },
     {
       dataIndex: 'required',
       title: '必须匹配',
       ellipsis: true,
-      fixed: 'left',
-      width: 50,
+      // fixed: 'left',
+      width: 100,
       valueEnum: {
         1: '是',
         0: '否',
@@ -156,10 +256,18 @@ export default (props: any) => {
           children: (
             <div className={styles.optionSty}>
               <Space>
-                <span onClick={() => upper(row)}>上移</span>
-                <span onClick={() => downer(row)}>下移</span>
+                <span onClick={() => move(row, true)}>上移</span>
+                <span onClick={() => move(row, false)}>下移</span>
                 <span onClick={() => editRule(row)}>编辑</span>
-                <span onClick={() => delRule(row)}>删除</span>
+                <Popconfirm
+                  title="确认删除该条规则吗?"
+                  okText="是"
+                  cancelText="否"
+                  onCancel={() => {}}
+                  onConfirm={() => delRule(row)}
+                >
+                  <a style={{ color: 'red' }}>删除</a>
+                </Popconfirm>
               </Space>
             </div>
           ),
@@ -173,39 +281,38 @@ export default (props: any) => {
 
   const featuresColumns: any = [
     {
-      dataIndex: 'intentRuleName1',
+      dataIndex: 'name',
       title: '特征',
       ellipsis: true,
-      fixed: 'left',
+      // fixed: 'left',
       width: 200,
     },
     {
-      dataIndex: 'intentRuleName2',
+      dataIndex: 'wordSet',
       title: '特征词集',
       ellipsis: true,
-      fixed: 'left',
+      // fixed: 'left',
       width: 400,
     },
     {
-      dataIndex: 'creator',
+      dataIndex: 'updataBy',
       title: '更新人',
       ellipsis: true,
-      fixed: 'left',
+      // fixed: 'left',
       width: 120,
     },
     {
-      dataIndex: 'creatTime',
+      dataIndex: 'updateTime',
       title: '更新时间',
       ellipsis: true,
-      fixed: 'left',
       width: 200,
     },
     {
-      dataIndex: 'creatTime2',
+      dataIndex: 'wordCount',
       title: '词汇量',
       ellipsis: true,
-      fixed: 'left',
-      width: 50,
+      // fixed: 'left',
+      width: 150,
     },
     {
       title: '操作',
@@ -218,7 +325,7 @@ export default (props: any) => {
           <Space>
             <a onClick={() => editFeatures(record)}>编辑</a>
             <Popconfirm
-              title="确认删除该条词槽吗?"
+              title="确认删除该条特征吗?"
               okText="是"
               cancelText="否"
               onCancel={() => {}}
@@ -241,7 +348,7 @@ export default (props: any) => {
             history?.goBack();
           }}
         />
-        {tableProps.intentName}
+        {tableProps?.intentName}
       </div>
       <ProTable
         headerTitle={
@@ -294,7 +401,7 @@ export default (props: any) => {
         ]}
         rowKey={(record) => record?.id}
         scroll={{ x: featuresColumns.length * 200 }}
-        actionRef={actionRef}
+        actionRef={actionRefFeature}
         columns={featuresColumns}
         pagination={{
           pageSize: 10,
@@ -302,7 +409,7 @@ export default (props: any) => {
         search={false}
         // options={false}
         request={async (params = {}) => {
-          return ruleList(params);
+          return featureList(params);
         }}
       />
       <FeatureModal
@@ -318,6 +425,7 @@ export default (props: any) => {
         modalData={ruleData}
         cancel={cancelRule}
         save={saveRule}
+        tableProps={tableProps}
       />
     </Card>
   );
