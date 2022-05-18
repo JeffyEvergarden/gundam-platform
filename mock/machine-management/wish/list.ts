@@ -98,9 +98,74 @@ const intentRulePageList = (req: any, res: any) => {
     },
   });
 };
+const intentFeaturePageList = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    requestId: '1323',
+    data: {
+      totalPage: 7,
+      pageSize: 10,
+      page: 1,
+      list: [
+        {
+          id: '1013',
+          intentId: '132435',
+          key: 'wrw',
+          name: '特征词名称',
+          wordCount: '词汇量1',
+          wordSet: '特征词集,特征词集',
+          dataStatus: 1,
+          creator: '折木奉太郎',
+          createTime: '2022-01-15 20:00:00',
+          updateBy: '折木奉太郎',
+          updateTime: '2022-01-15 20:00:00',
+        },
+        {
+          id: '1013',
+          intentId: '1324354546',
+          key: 'qwqe',
+          name: '特征词名称2',
+          field_2: '特征词集,特征词集',
+          dataStatus: 1,
+          wordSet: 2,
+          field_1: '词汇量2',
+          creator: '折木奉太郎',
+          createTime: '2022-01-15 20:00:00',
+        },
+        {
+          id: '1013',
+          intentId: '132435343',
+          key: 'qwqqwqw',
+          name: '特征词名称254',
+          field_2: '特征词集,特征词集',
+          dataStatus: 1,
+          field_1: '词汇量2',
+          wordSet: 2,
+          creator: '折木奉太郎',
+          createTime: '2022-01-15 20:00:00',
+        },
+      ],
+    },
+  });
+};
+
+const normalDeal = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    resultDesc: '成功',
+  });
+};
 
 export default {
   // 机器人管理相关
   'GET /aichat/robot/intent/intentList': intentList,
-  'GET /aichat/robot/entity/intentRulePageList': intentRulePageList,
+  'GET /aichat/robot/intent/intentRulePageList': intentRulePageList,
+  'GET /aichat/robot/intent/intentFeaturePageList': intentFeaturePageList,
+  'POST /aichat/robot/intent/intentRuleAdd': normalDeal,
+  'POST /aichat/robot/intent/intentRuleEdit': normalDeal,
+  'POST /aichat/robot/intent/intentRuleMove': normalDeal,
+  'POST /aichat/robot/intent/intentRuleDelete': normalDeal,
+  'POST /aichat/robot/intent/intentFeatureAdd': normalDeal,
+  'POST /aichat/robot/intent/intentFeatureEdit': normalDeal,
+  'POST /aichat/robot/intent/intentFeatureDelete': normalDeal,
 };

@@ -214,7 +214,26 @@ const slotInfoList = (req: any, res: any) => {
     resultDesc: '成功',
     occurTime: '2022-0221-18:16',
     data: [
-      { id: '1', slotName: '槽值1', paramValue: 1 },
+      {
+        id: '1',
+        slotName: '槽值1',
+        robotId: '100',
+        slotSource: 1,
+        slotInfo: [
+          {
+            id: '12',
+            outputParamId: '13',
+            inputParamList: [{ id: '13', value: '槽值或者变量', sourceType: 2 }],
+          },
+        ],
+        slotDesc: '词槽描述',
+        slot: '词槽',
+        slotSouceId: '1',
+        creator: '创建者',
+        createTime: '2022-02-02',
+        dataType: '2',
+        datastutus: 3,
+      },
       { id: '2', slotName: '槽值2', paramValue: 2 },
       { id: '3', slotName: '槽值', paramValue: 3 },
     ],

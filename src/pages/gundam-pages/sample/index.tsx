@@ -89,6 +89,7 @@ export default () => {
 
   const changeCorpusText = (e: any) => {
     setInputValue(e.target.value);
+    setSimmilar(false);
   };
 
   const add = async () => {
