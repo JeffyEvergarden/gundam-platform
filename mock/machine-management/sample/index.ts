@@ -9,6 +9,59 @@ const normalDeal = (req: any, res: any) => {
   });
 };
 
+const intentCorpusCheck = (req: any, res: any) => {
+  res.json({
+    resultCode: '0001',
+    resultDesc: '失败',
+    data: {
+      robotId: '100',
+      corpusText: '语料文本',
+      currentIntentList: [
+        {
+          intenId: '10',
+          intentName: '意图名称',
+          corpusText: '语料文本',
+          score: 3,
+        },
+        {
+          intenId: '10',
+          intentName: '意图名称',
+          corpusText: '语料文本2',
+          score: 3,
+        },
+      ],
+      otherIntentList: [
+        {
+          intenId: '10',
+          intentName: '意图名称3',
+          corpusText: '语料文本3',
+          score: 3,
+        },
+        {
+          intenId: '10',
+          intentName: '意图名称33',
+          corpusText: '语料文本33',
+          score: 3,
+        },
+      ],
+      similarQueryList: [
+        {
+          stdQueryId: '1313',
+          stdQuery: '标准问',
+          similarQueryId: '134',
+          similarQuery: '相似问',
+        },
+        {
+          stdQueryId: '1313',
+          stdQuery: '标准问2',
+          similarQueryId: '134',
+          similarQuery: '相似问2',
+        },
+      ],
+    },
+  });
+};
+
 const getSample = (req: any, res: any) => {
   res.json({
     data: {
@@ -19,6 +72,8 @@ const getSample = (req: any, res: any) => {
         {
           id: '011',
           robotId: '121313',
+          intentId: '100',
+          corpusText: '语料文本',
           entityName: '实体名称1',
           entityType: 1,
           entityDesc: '描述1\n描述',
@@ -32,8 +87,9 @@ const getSample = (req: any, res: any) => {
         {
           id: '012',
           robotId: '121313',
+          intentId: '123',
+          corpusText: '语料文本2',
           entityName: '实体名称1',
-          entityType: 1,
           entityDesc: '描述1\n描述',
           rule: '规则1',
           decri: '说明1/n说明',
@@ -100,36 +156,17 @@ const getSimilarList = (req: any, res: any) => {
       pageSize: 10,
       totalPage: 2,
       page: 1,
-      list: [
-        {
-          id: '111',
-          robotId: '100',
-          faqId: '123',
-          similarText: '相似问1',
-          viewNum: 10,
-          creator: 'jiangjiahao',
-          createTime: '2022-05-11 16:50:50',
-          updateTime: '2022-05-11 16:50:50',
-          updateBy: '',
-        },
-        {
-          id: '222',
-          robotId: '100',
-          faqId: '123',
-          similarText: '相似问2',
-          viewNum: 11,
-          creator: 'jiangjiahao',
-          createTime: '2022-05-11 16:50:50',
-          updateTime: '2022-05-11 16:50:50',
-          updateBy: '',
-        },
-      ],
+      list: [],
     },
   });
 };
 
 export default {
-  'GET /aichat/robot/entity/listPageSample': getSample,
+  'GET /aichat/robot/intent/intentCorpusPageList': getSample,
+  'POST /aichat/robot/intent/intentCorpusEdit': normalDeal,
+  'POST /aichat/robot/intent/intentFeatureDelete': normalDeal,
+  'POST /aichat/robot/intent/intentCorpusCheck': intentCorpusCheck,
+  'POST /aichat/robot/intent/intentCorpusAdd': normalDeal,
   'GET /aichat/robot/entity/similarList': similarList,
   'GET /aichat/robot/faq/similarPageList': getSimilarList,
   'POST /aichat/robot/faq/faqSimilarEdit': normalDeal,

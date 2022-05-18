@@ -26,6 +26,7 @@ export default (props: any) => {
     setRulist(editObj?.entityValueList || []);
     form.setFieldsValue({ entityName: editObj?.entityName, entityDesc: editObj?.entityDesc });
   }, [visible]);
+
   const addRule = () => {
     setRuleEditData({});
     setRuleVisible(true);
@@ -81,7 +82,7 @@ export default (props: any) => {
       ...values,
       entityValueList: [...ruleList],
     };
-    save(para, operate);
+    save(para, 1, type);
   };
 
   return (

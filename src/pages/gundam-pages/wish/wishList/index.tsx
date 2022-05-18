@@ -73,10 +73,13 @@ const DetailPages: React.FC = (props: any) => {
   // 规则模版
   const ruleTemplate = (data: any) => {
     // handleRulesSampleVisible(true);
-    history.push({ pathname: '/gundamPages/wish/ruleMould' });
+    history.push({
+      pathname: '/gundamPages/wish/ruleMould',
+      state: data,
+    });
   };
 
-  // 样板
+  // 样本
   const samples = (data: any) => {
     // handleRulesSampleVisible(true);
     history.push({
@@ -84,6 +87,7 @@ const DetailPages: React.FC = (props: any) => {
       state: {
         id: data.id,
         pageType: 'wish',
+        info: data,
       },
     });
   };

@@ -1,5 +1,12 @@
 import { useState } from 'react';
-import { listSample, similarList } from './api';
+import {
+  listSample,
+  similarList,
+  intentCorpusEdit,
+  delIntentFeature,
+  intentSame,
+  intentAddList,
+} from './api';
 
 //相似问接口
 import { _getSimilarList, _editSimilar, _deleteSimilar, _addSimilar } from './api';
@@ -14,6 +21,34 @@ export const useSampleModel = () => {
     return res;
   };
 
+  const intentEdit = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await intentCorpusEdit(params);
+    setTableLoading(false);
+    return res;
+  };
+
+  const deleteIntentFeature = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await delIntentFeature(params);
+    setTableLoading(false);
+    return res;
+  };
+
+  const checkIntent = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await intentSame(params);
+    setTableLoading(false);
+    return res;
+  };
+
+  const intentAdd = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await intentAddList(params);
+    setTableLoading(false);
+    return res;
+  };
+
   const getsimilarList = async (params?: any) => {
     setTableLoading(true);
     let res: any = await similarList(params);
@@ -23,6 +58,10 @@ export const useSampleModel = () => {
 
   return {
     getList,
+    intentEdit,
+    deleteIntentFeature,
+    checkIntent,
+    intentAdd,
     getsimilarList,
     tableLoading,
   };

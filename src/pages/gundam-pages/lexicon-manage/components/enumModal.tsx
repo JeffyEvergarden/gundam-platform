@@ -9,11 +9,15 @@ const layout = {
 };
 
 export default (props: any) => {
-  const { visible, type, closeEnum, save } = props;
+  const { visible, type, enumData, closeEnum, save } = props;
   const [form] = Form.useForm();
 
   useEffect(() => {
-    visible && form.setFieldsValue({});
+    visible &&
+      form.setFieldsValue({
+        entityName: enumData?.entityName,
+        entityValue: enumData?.entityValue,
+      });
   }, [visible]);
 
   const cancel = () => {
@@ -22,7 +26,7 @@ export default (props: any) => {
 
   const submit = async () => {
     const values = await form.validateFields();
-    save(values);
+    save(values, 0, type);
   };
   return (
     <Modal
@@ -42,7 +46,7 @@ export default (props: any) => {
           <Input placeholder={'请输入实体名称'} maxLength={150} />
         </Form.Item>
         <Form.Item
-          name={'entityval'}
+          name={'entityValue'}
           label={'实体值'}
           rules={[{ required: true, message: '请输入实体值' }]}
         >

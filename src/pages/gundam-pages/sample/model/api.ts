@@ -3,11 +3,40 @@ import config from '@/config/index';
 const baseUrl: string = config.basePath;
 
 export async function listSample(params?: Record<string, any>) {
-  return request(`${baseUrl}/robot/entity/listPageSample`, {
+  return request(`${baseUrl}/robot/intent/intentCorpusPageList`, {
     method: 'GET',
     params,
   });
 }
+
+export async function intentCorpusEdit(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/intent/intentCorpusEdit`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function delIntentFeature(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/intent/intentFeatureDelete`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function intentSame(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/intent/intentCorpusCheck`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function intentAddList(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/intent/intentCorpusAdd`, {
+    method: 'POST',
+    data,
+  });
+}
+
 export async function similarList(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/entity/similarList`, {
     method: 'GET',
