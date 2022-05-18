@@ -23,11 +23,11 @@ const Checkbox: React.FC<any> = (props: any) => {
     if (i < 0) {
       //不存在这个值
       _value.push(item.value);
-      if (item.value === 0) {
+      if (item.value === 'all') {
         // 选择全部 情况其他值
-        _value = [0];
+        _value = ['all'];
       } else {
-        _value = _value.filter((subitem) => subitem !== 0);
+        _value = _value.filter((subitem) => subitem !== 'all');
       }
     } else {
       _value.splice(i, 1);
@@ -38,10 +38,10 @@ const Checkbox: React.FC<any> = (props: any) => {
   return (
     <div className={style['checkbox-box']}>
       <div
-        className={includes(0) ? style['box-item_selected'] : style['box-item']}
+        className={includes('all') ? style['box-item_selected'] : style['box-item']}
         onClick={() => {
           onClick({
-            value: 0,
+            value: 'all',
           });
         }}
       >

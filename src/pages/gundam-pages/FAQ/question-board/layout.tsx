@@ -124,19 +124,45 @@ const Board: React.FC<any> = (props: any) => {
   // 渠道筛选联动
   const changeCheckbox = (index: number, val: any) => {
     const _list = form.getFieldsValue()?.['answerList'] || [];
-
+    let newSet = new Set();
+    let selectAllObj: any[] = [];
     _list.forEach((item: any, i: number) => {
       if (index === i) {
+        val.forEach((subitem: any) => {
+          if (subitem !== 'all') {
+            newSet.add(subitem);
+          }
+        });
+        // '匹配到了自己'
         return;
       }
-      if (val.includes(0)) {
+      if (val.includes('all')) {
+        // 选择包含全部，清空别人
         item.channelList = [];
       } else {
-        item.channelList = item.channelList.filter((subitem: any) => {
-          return !val.includes(subitem);
-        });
+        // 如果自己选了值，别人选了全部 ，清空选了全部的项
+        if (val.length > 0 && item.channelList && item.channelList.includes('all')) {
+          selectAllObj.push(item);
+          item.channelList = [];
+        } else {
+          // 过滤掉选了重复值
+          item.channelList = item.channelList.filter((subitem: any) => {
+            return !val.includes(subitem);
+          });
+          item.channelList.forEach((subitem: any) => {
+            newSet.add(subitem);
+          });
+        }
       }
     });
+    if (selectAllObj.length === 1) {
+      let arr: any[] = [...newSet];
+      selectAllObj[0].channelList = CHANNAL_LIST.filter((subitem: any) => {
+        return !arr.includes(subitem.value);
+      }).map((subitem: any) => {
+        return subitem.value;
+      });
+    }
     form.setFieldsValue({
       answerList: [..._list],
     });
