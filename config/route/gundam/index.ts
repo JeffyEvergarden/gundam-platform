@@ -136,6 +136,11 @@ export default [
             name: '编辑面板',
           },
           {
+            path: '/gundamPages/faq/answer',
+            component: './gundam-pages/FAQ/question-board/single',
+            name: '编辑面板',
+          },
+          {
             path: '/gundamPages/faq/recycle',
             component: './gundam-pages/FAQ/question-recycle',
             name: '问题回收站',

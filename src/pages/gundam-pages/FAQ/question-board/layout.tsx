@@ -57,8 +57,8 @@ const processTreeData = (data: any[], parent?: any) => {
 const Board: React.FC<any> = (props: any) => {
   const query: any = history.location.query;
 
-  const questionId = query.questionId || '';
-  const pageType = query.type === 'edit' && query.questionId ? 'edit' : 'create';
+  const questionId = query.faqId || '';
+  const pageType = questionId ? 'edit' : 'create';
 
   const [form] = Form.useForm();
 
@@ -89,7 +89,7 @@ const Board: React.FC<any> = (props: any) => {
   const getInfo = async (id: any) => {
     let res: any = await getQuestionInfo({
       robotId: id, // 机器人id
-      questionId, // 问题id
+      faqId: questionId, // 问题id
     });
     if (res) {
       res = processBody(res);
@@ -220,7 +220,7 @@ const Board: React.FC<any> = (props: any) => {
     } else {
       let data: any = {
         ...res,
-        id: questionId,
+        faqId: questionId,
       };
       let response = await updateQuestion(data);
       if (response === true) {

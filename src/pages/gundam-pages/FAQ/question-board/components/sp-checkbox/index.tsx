@@ -19,7 +19,7 @@ const Checkbox: React.FC<any> = (props: any) => {
 
   const onClick = (item: any) => {
     let _value = Array.isArray(value) ? [...value] : [];
-    const i = value.indexOf(item.value);
+    const i = _value.indexOf(item.value);
     if (i < 0) {
       //不存在这个值
       _value.push(item.value);

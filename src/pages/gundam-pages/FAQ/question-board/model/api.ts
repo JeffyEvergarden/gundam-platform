@@ -24,3 +24,24 @@ export async function getQuestionInfo(params?: Record<string, any>) {
     params,
   });
 }
+
+export async function addAnswer(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/answerAdd`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function editAnswer(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/answerEdit`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function getAnswerInfo(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/answerInfo`, {
+    method: 'GET',
+    params,
+  });
+}
