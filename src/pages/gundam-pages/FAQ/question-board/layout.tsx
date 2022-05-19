@@ -49,6 +49,10 @@ const processTreeData = (data: any[], parent?: any) => {
     if (obj.children && obj.children.length > 0) {
       obj.selectable = false;
     }
+    if (obj.value === '0') {
+      // 第一级也不能选
+      obj.selectable = false;
+    }
     return obj;
   });
   return _data;

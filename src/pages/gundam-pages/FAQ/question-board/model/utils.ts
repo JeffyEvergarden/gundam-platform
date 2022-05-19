@@ -9,7 +9,7 @@ function genLinkNode(url: string, text?: string, info?: any): any {
   const linkNode: any = {
     type: 'link',
     url: replaceSymbols(url),
-    target: info.target || '__blank',
+    target: info?.target || '__blank',
     children: text ? [{ text }] : [],
   };
   return linkNode;
@@ -39,7 +39,7 @@ export const processRequest = (data: any) => {
   data = deepClone(data); // 深克隆
   let answerList = data.answerList;
   answerList.forEach((item: any) => {
-    let enableTime = item.enableTime;
+    let enableTime = item.enableTime || [];
     // 生效时间
     item.enable = item.enable ? 1 : 0;
     // 时间格式化
