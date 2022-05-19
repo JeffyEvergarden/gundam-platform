@@ -75,8 +75,8 @@ const Board: React.FC<any> = (props: any) => {
   // 推荐启用按钮
   const [showTime, setShowTime] = useState<boolean>(false);
 
-  const updateFn = (val: any) => {
-    setShowTime(val);
+  const updateFn = (e: any) => {
+    setShowTime(e.target.checked);
   };
 
   const { addNewAnswer, updateAnswer, getAnswerInfo } = useAnswerModel();

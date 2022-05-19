@@ -51,6 +51,8 @@ const getInfo = (req: any, res: any) => {
           answer: '<p>12222</p>',
           channelList: ['APP'],
           enable: 1,
+          enableStartTime: '2022-05-01 16:28:20',
+          enableEndTime: '2022-05-28 16:28:23',
           enableTime: ['2022-05-01 16:28:20', '2022-05-28 16:28:23'],
         },
       ],
@@ -72,6 +74,8 @@ const getAnswer = (req: any, res: any) => {
       answer: '<p>12222</p>',
       channelList: ['APP'],
       enable: 1,
+      enableStartTime: '2022-05-01 16:28:20',
+      enableEndTime: '2022-05-28 16:28:23',
       enableTime: ['2022-05-01 16:28:20', '2022-05-28 16:28:23'],
     },
   });

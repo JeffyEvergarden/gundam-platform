@@ -74,8 +74,8 @@ export const processBody = (data: any) => {
     //   }
     //   return subitem;
     // });
-    item.enableStartTime = moment?.(item?.enableStartTime);
-    item.enableEndTime = moment?.(item?.enableEndTime);
+    item.enableStartTime = item?.enableStartTime ? moment(item?.enableStartTime) : undefined;
+    item.enableEndTime = item?.enableEndTime ? moment(item?.enableEndTime) : undefined;
   });
   data.questionRecommend = data.questionRecommend ? true : false;
   return data;
@@ -112,8 +112,8 @@ export const processAnswerBody = (data: any) => {
   //   }
   //   return subitem;
   // });
-  data.enableStartTime = moment?.(data?.enableStartTime);
-  data.enableEndTime = moment?.(data?.enableEndTime);
+  data.enableStartTime = data?.enableStartTime ? moment(data?.enableStartTime) : undefined;
+  data.enableEndTime = data?.enableEndTime ? moment(data?.enableEndTime) : undefined;
 
   return data;
 };
