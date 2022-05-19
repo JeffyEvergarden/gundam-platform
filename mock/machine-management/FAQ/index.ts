@@ -165,14 +165,14 @@ const getTreeList = (req: any, res: any) => {
 };
 
 export default {
-  'GET /aichat/faq/list': getFaqList, // 获取问答列表
+  'GET /aichat/robot/faq/list': getFaqList, // 获取问答列表
 
-  'GET /aichat/faq/robotFaqPageList': getFaqList, // 获取问答列表
-  'POST /aichat/faq/robotFaqDelete': normalDeal, // 删除问题
+  'GET /aichat/robot/faq/robotFaqPageList': getFaqList, // 获取问答列表
+  'POST /aichat/robot/faq/robotFaqDelete': normalDeal, // 删除问题
   'GET /aichat/robot/faqImport/listPage': getImportList, // 获取批量导入列表
 
-  'GET /aichat/faq/typeList': getTreeList, //获取树
-  'POST /aichat/faq/tree/typeAdd': normalDeal, // 添加分类节点
-  'POST /aichat/faq/tree/typeEdit': normalDeal, // 编辑分类节点
-  'POST /aichat/faq/tree/typeDelete': normalDeal, // 删除分类节点
+  'GET /aichat/robot/faq/typeList': getTreeList, //获取树
+  'POST /aichat/robot/faq/tree/typeAdd': normalDeal, // 添加分类节点
+  'POST /aichat/robot/faq/tree/typeEdit': normalDeal, // 编辑分类节点
+  'POST /aichat/robot/faq/tree/typeDelete': normalDeal, // 删除分类节点
 };

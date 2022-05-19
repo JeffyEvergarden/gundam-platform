@@ -74,6 +74,7 @@ const QuestionList: React.FC<any> = (props: any) => {
         setSelectedRowKeys([]);
       }
     },
+    CurrentPage,
   }));
 
   useEffect(() => {
