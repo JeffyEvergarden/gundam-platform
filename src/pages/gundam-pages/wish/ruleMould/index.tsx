@@ -82,7 +82,6 @@ export default (props: any) => {
   };
 
   const editRule = (row: any) => {
-    debugger;
     let temRuleDataItem = {};
     tableData.map((item: any) => {
       if (item.id === row.idFather) {

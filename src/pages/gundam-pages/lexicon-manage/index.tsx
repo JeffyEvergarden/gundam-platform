@@ -21,10 +21,11 @@ const LexiconManage: React.FC = (props: any) => {
     info: model.info,
   }));
 
-  const getInitTable = async (payload: any) => {
+  const getInitTable = async (payload: any, type: number) => {
     let params = {
       ...payload,
       robotId: info.id,
+      entityType: type,
     };
     delete params.current;
     let res: any = await getLexiconList(params);
@@ -68,6 +69,7 @@ const LexiconManage: React.FC = (props: any) => {
     let res: any;
     let params = {
       ...para,
+      robotId: info.id,
       entityType: entityType, //0-枚举实体  1-正则实体
     };
     if (operateType === 'add') {
@@ -235,7 +237,7 @@ const LexiconManage: React.FC = (props: any) => {
             // search={false}
             // options={false}
             request={async (params = {}) => {
-              return getInitTable({ page: params.current, entityList: 1, ...params });
+              return getInitTable({ page: params.current, ...params }, 0);
             }}
           />
         </TabPane>
@@ -256,7 +258,7 @@ const LexiconManage: React.FC = (props: any) => {
             search={false}
             // options={false}
             request={async (params = {}) => {
-              return getInitTable({ page: params.current, entityList: 0, ...params });
+              return getInitTable({ page: params.current, ...params }, 1);
             }}
           />
         </TabPane>
