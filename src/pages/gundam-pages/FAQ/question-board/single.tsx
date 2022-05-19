@@ -165,7 +165,7 @@ const Board: React.FC<any> = (props: any) => {
         <Form form={form}>
           <div className={'ant-form-vertical'}>
             <Form.Item
-              name="questionName"
+              name="question"
               label="问题名称"
               rules={[{ message: '请输入问题名称', required: true }]}
               style={{ width: '600px' }}
