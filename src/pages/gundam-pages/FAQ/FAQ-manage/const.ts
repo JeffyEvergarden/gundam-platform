@@ -5,24 +5,36 @@ export const HIGH_CONFIG_SELECT = [
     type: 'single',
     children: [
       {
-        name: 0,
+        name: 'all',
         label: '全部',
       },
       {
-        name: 1,
+        name: 'wechat',
         label: '微信',
       },
       {
-        name: 2,
-        label: 'API',
+        name: 'app',
+        label: 'APP',
       },
       {
-        name: 3,
+        name: 'alipay',
         label: '支付宝',
       },
       {
-        name: 4,
+        name: 'zsyh',
         label: '招商银行',
+      },
+      {
+        name: 'jtyw',
+        label: '集团邮务',
+      },
+      {
+        name: 'zygw',
+        label: '中邮官网',
+      },
+      {
+        name: 'ycsjyh',
+        label: '邮储手机银行',
       },
     ],
   },

@@ -15,68 +15,49 @@ const getFaqList = (req: any, res: any, next: any) => {
     id: '1',
     robotId: '100',
     question: '问题',
+    similarQuestionNum: 5, //相似数
+    sumViewNum: 10, //总浏览次数
     viewNum: 5, //浏览次数
     likeNum: 555,
     unlikeNum: 22,
     faqTypeId: '循环贷', //问题类型
-    approvalStatus: 1,
-    qunestionRecommend: 1,
+    approvalStatus: 1, //审批状态
+    qunestionRecommend: 1, //推荐 0关  1开
+    recyle: 0, //是否在回收站
     creator: 'jiangjiahao',
     createTime: '2022-05-10 15:55:55',
     updateTime: '2022-05-10 15:55:55',
     updateBy: '',
     answerList: [
       {
-        viewNum: 2,
+        answerViewNum: 2, //浏览
         answer: 'dadada', //回复
-        selectChannel: 'all',
         enable: 0, //是否启用 0否 1是
         enableStartTime: '2022-05-10 15:55:55',
         enableEndTime: '2022-05-10 15:55:55',
-        id: '1',
-        answerChannelList: [
-          {
-            creator: 'jiangjiahao',
-            createTime: '2022-05-10 15:55:55',
-            updateTime: '2022-05-10 15:55:55',
-            updateBy: '',
-          },
-        ],
+        answerId: '1',
+        channelList: [],
+        answerLikeNum: 10,
+        answerUnlikeNum: 1,
         creator: 'jiangjiahao',
         createTime: '2022-05-10 15:55:55',
         updateTime: '2022-05-10 15:55:55',
-        updateBy: '',
       },
       {
-        viewNum: 4,
-        answer: 'gaga', //回复
-        selectChannel: 'all',
-        enable: 0, //是否启用 0否 1是
+        answerViewNum: 3, //浏览
+        answer: 'gagaga', //回复
+        enable: 1, //是否启用 0否 1是
         enableStartTime: '2022-05-10 15:55:55',
         enableEndTime: '2022-05-10 15:55:55',
-        id: '2',
-        answerChannelList: [
-          {
-            creator: 'jiangjiahao',
-            createTime: '2022-05-10 15:55:55',
-            updateTime: '2022-05-10 15:55:55',
-            updateBy: '',
-          },
-        ],
+        answerId: '2',
+        channelCode: '渠道2',
+        answerLikeNum: 102,
+        answerUnlikeNum: 11,
         creator: 'jiangjiahao',
         createTime: '2022-05-10 15:55:55',
         updateTime: '2022-05-10 15:55:55',
-        updateBy: '',
       },
     ],
-
-    // name: '阿斯拉大',
-    // email: 'ljk15916807596@qq.com',
-    // content: '冲啊，旋风冲锋',
-    // time: '2022-04-01 14:00:00',
-    // channel: ['微信', 'API', 'APP'],
-    // creator: '伟大的教团',
-    // times: 100,
   };
   let list = new Array(10).fill(1).map((item: any, index: number) => {
     return {
@@ -188,7 +169,7 @@ export default {
 
   'GET /aichat/faq/robotFaqPageList': getFaqList, // 获取问答列表
   'POST /aichat/faq/robotFaqDelete': normalDeal, // 删除问题
-  'GET /aichat/faqImport/listPage': getImportList, // 获取批量导入列表
+  'GET /aichat/robot/faqImport/listPage': getImportList, // 获取批量导入列表
 
   'GET /aichat/faq/typeList': getTreeList, //获取树
   'POST /aichat/faq/tree/typeAdd': normalDeal, // 添加分类节点

@@ -22,7 +22,7 @@ const FAQPage: React.FC<any> = (props: any) => {
   };
 
   const [value, setValue] = useState<any>({
-    channel: 0,
+    channel: 'all',
     status: 0,
     sort: 0,
     creator: [0],
