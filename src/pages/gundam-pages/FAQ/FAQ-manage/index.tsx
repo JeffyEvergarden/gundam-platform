@@ -62,7 +62,7 @@ const FAQPage: React.FC<any> = (props: any) => {
 
   useEffect(() => {
     getTreeData();
-    getFaqList({ pageNo: 1 });
+    // getFaqList({ pageNo: 1 });
   }, []);
 
   const _getMoreFaqList = async () => {
@@ -121,7 +121,11 @@ const FAQPage: React.FC<any> = (props: any) => {
         <div className={style['page_top__right']}>
           <Space>
             <Input.Group compact>
-              <Input style={{ width: '280px' }} defaultValue="钢铁是怎么炼成的" />
+              <Input
+                style={{ width: '280px' }}
+                onPressEnter={() => {}}
+                defaultValue="钢铁是怎么炼成的"
+              />
               <Select defaultValue={1}>
                 <Option value={1}>问题</Option>
                 <Option value={2}>答案</Option>

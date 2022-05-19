@@ -6,7 +6,7 @@ const baseUrl: string = config.basePath;
 
 /** 获取所有问答列表 **/
 export async function getQuestionList(params?: Record<string, any>) {
-  return request(`${baseUrl}/faq/robotFaqPageList`, {
+  return request(`${baseUrl}/robot/faq/robotFaqPageList`, {
     method: 'GET',
     params,
   });
@@ -14,7 +14,7 @@ export async function getQuestionList(params?: Record<string, any>) {
 
 //删除问题
 export async function deleteQuestion(data?: Record<string, any>) {
-  return request(`${baseUrl}/faq/robotFaqDelete`, {
+  return request(`${baseUrl}/robot/faq/robotFaqDelete`, {
     method: 'POST',
     data,
   });

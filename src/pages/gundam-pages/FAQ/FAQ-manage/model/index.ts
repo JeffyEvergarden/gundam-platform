@@ -27,7 +27,7 @@ export const useFaqModal = () => {
       return { data, total: res?.data?.totalPage };
     } else {
       setFaqList([]);
-      message.warning('获取FAQ列表失败');
+      message.warning(res?.resultDesc);
       return false;
     }
   };
