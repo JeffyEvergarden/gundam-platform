@@ -24,7 +24,7 @@ const Selector = (props: any) => {
     <div onClick={onClick}>
       <Input
         value={value}
-        placeholder={'请选择问题'}
+        placeholder={'请选择问题/业务流程'}
         size="small"
         style={{ width: '248px', pointerEvents: 'none' }}
       />
