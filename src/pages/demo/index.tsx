@@ -2,38 +2,25 @@ import { useState, useImperativeHandle, useRef, useEffect } from 'react';
 import { Drawer, Form, Input, Select, Button } from 'antd';
 import { PlusCircleOutlined, AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import styles from './style.less';
-import { getFileInfo } from 'prettier';
-import { add } from 'lodash';
-import SelectorModal from '../gundam-pages/FAQ/question-board/components/selector-modal';
-import { useModel } from 'umi';
+import { history } from 'umi';
+import Route from './components/Route';
+import A from './a';
+import B from './b';
+import C from './c';
 
 const { TextArea } = Input;
 const { Option } = Select;
 
 const Demo = (props: any) => {
-  const selectModalRef = useRef<any>({});
-  const onClick = () => {
-    console.log('---');
-    (selectModalRef.current as any).open([]);
-  };
-
-  const { getFlowList, getTreeData } = useModel('drawer' as any, (model: any) => ({
-    getFlowList: model.getFlowList,
-    getTreeData: model.getTreeData,
-  }));
-
-  useEffect(() => {
-    getFlowList('fake');
-    getTreeData('fake');
-  }, []);
+  const path = history.location.pathname;
 
   return (
     <div className={`${styles['div-content']}`}>
-      <Button type="primary" onClick={onClick}>
-        手动推荐触发
-      </Button>
+      <div>父页面 路径：{path}</div>
 
-      <SelectorModal cref={selectModalRef} />
+      <Route path="/demo/a" component={A}></Route>
+      <Route path="/demo/b" component={B}></Route>
+      <Route path="/demo/c" component={C}></Route>
     </div>
   );
 };

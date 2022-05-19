@@ -9,19 +9,29 @@ export default [
   },
   ...routes,
   {
-    path: '/demo',
+    path: '/demo*',
     layout: false,
     hideInMenu: true,
     name: 'demo事例',
     component: './demo',
-    noAuth: true,
-  },
-  {
-    path: '/demo2',
-    layout: false,
-    hideInMenu: true,
-    name: 'demo事例2',
-    component: './demo/demo',
+    routes: [
+      // {
+      //   path: '/demo/a',
+      //   component: './demo/a',
+      //   name: 'demo1',
+      // },
+      // {
+      //   path: '/demo/b',
+      //   component: './demo/b',
+      //   name: 'demo2',
+      // },
+      // {
+      //   path: '/demo/c',
+      //   component: './demo/c',
+      //   name: 'demo3',
+      // },
+      // { redirect: '/demo/a' },
+    ],
     noAuth: true,
   },
   {
