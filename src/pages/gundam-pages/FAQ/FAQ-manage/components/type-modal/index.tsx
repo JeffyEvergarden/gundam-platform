@@ -6,7 +6,7 @@ import style from './style.less';
 import { useModel } from 'umi';
 
 const TypeModal = (props: any) => {
-  const { cref, confirm } = props;
+  const { cref, confirm, getTree } = props;
 
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -33,8 +33,8 @@ const TypeModal = (props: any) => {
       if (type === 'create') {
         let data: any = {
           robotId: info.id,
-          parentId: tmpObj.current.node?.parent?.key,
-          title: res.typeName,
+          parentId: tmpObj.current.node?.key, //当前节点id
+          name: res.typeName,
         };
         let _res = await addLeaf(data);
         if (_res) {
@@ -48,9 +48,9 @@ const TypeModal = (props: any) => {
         }
       } else if (type === 'edit') {
         let data: any = {
-          parentId: tmpObj.current.node?.parent?.key,
+          parentId: tmpObj.current.node?.parent,
           id: tmpObj.current.node?.key,
-          title: res.typeName,
+          name: res.typeName,
         };
         let _res = await editLeaf(data);
         if (_res) {
@@ -62,6 +62,7 @@ const TypeModal = (props: any) => {
           message.success('修改成功');
         }
       }
+      getTree();
     }
   };
 

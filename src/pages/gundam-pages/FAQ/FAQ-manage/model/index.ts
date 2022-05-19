@@ -70,7 +70,7 @@ export const useTreeModal = () => {
       let obj: any = {
         title: item.title,
         key: item.key,
-        parent: parent,
+        parent: parent || item.parent || '0',
       };
       let children: any = processTreeData(item.children, obj);
       obj.children = children;
@@ -79,8 +79,8 @@ export const useTreeModal = () => {
     return _data;
   };
 
-  const getTreeData = async () => {
-    let res: any = await getTreeList();
+  const getTreeData = async (data: any) => {
+    let res: any = await getTreeList(data);
     if (res.resultCode === successCode) {
       let data: any = Array.isArray(res.data) ? res.data : [];
       // 数据加工

@@ -284,7 +284,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
                 }}
               />
             )}
-            {nodeData.parent && (
+            {nodeData.parent && !nodeData?.children?.length && (
               <DeleteOutlined
                 style={{ fontSize: '12px' }}
                 onClick={(e) => {

@@ -106,6 +106,7 @@ const ImportPages: React.FC = (props: any) => {
             <div style={{ display: 'flex' }}>
               <Button
                 type="link"
+                disabled={!row.failFilePath}
                 onClick={() => {
                   // _changeStatus(row);
                   console.log(`${config.basePath}/robot/file/getFile?path=${row.failFilePath}`);

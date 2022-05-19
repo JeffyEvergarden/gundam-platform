@@ -109,7 +109,7 @@ const getImportList = (req: any, res: any) => {
           robotId: '100',
           importFilePath: '/',
           importFileName: '测试',
-          failFilePath: '/',
+          failFilePath: null,
           answerNum: 10,
           failAnswerNum: 0,
           similarQuestionNum: 10,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Input, Select, Space, Tree, Collapse, List, Divider, Skeleton } from 'antd';
 import { DownOutlined, SettingOutlined } from '@ant-design/icons';
-import { history } from 'umi';
+import { history, useModel } from 'umi';
 import HighConfigSelect from './components/high-select';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import MyTree from './components/my-tree';
@@ -20,6 +20,11 @@ const FAQPage: React.FC<any> = (props: any) => {
   const onSelect = (val: any, opt: any) => {
     console.log('选择树形组件:' + val);
   };
+
+  const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+    setInfo: model.setInfo,
+  }));
 
   const [value, setValue] = useState<any>({
     channel: 'all',
@@ -60,8 +65,12 @@ const FAQPage: React.FC<any> = (props: any) => {
     });
   };
 
+  const getTree = () => {
+    getTreeData({ robotId: info.id });
+  };
+
   useEffect(() => {
-    getTreeData();
+    getTree();
     // getFaqList({ pageNo: 1 });
   }, []);
 
@@ -153,7 +162,7 @@ const FAQPage: React.FC<any> = (props: any) => {
             openEditModal={openEditModal}
           ></MyTree>
 
-          <TypeModal cref={typeModalRef}></TypeModal>
+          <TypeModal cref={typeModalRef} getTree={getTree}></TypeModal>
         </div>
         <div className={style['main-content']}>
           <div className={style['high-config-select']}>
