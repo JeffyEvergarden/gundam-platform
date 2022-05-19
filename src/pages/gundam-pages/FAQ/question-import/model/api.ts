@@ -6,7 +6,7 @@ const baseUrl: string = config.basePath;
 
 /** 获取所有问答列表 **/
 export async function getImportList(params?: Record<string, any>) {
-  return request(`${baseUrl}/faqImport/listPage`, {
+  return request(`${baseUrl}/robot/faqImport/listPage`, {
     method: 'GET',
     params,
   });
