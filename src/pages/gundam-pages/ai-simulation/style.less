@@ -44,12 +44,24 @@
   display: flex;
   flex-direction: row-reverse;
   margin: 10px 20px;
+  .words-type {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 333px;
+    margin-top: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+    background-color: #ccc;
+    border-radius: 6px;
+  }
 }
 
 .customer-part .words {
   max-width: 333px;
   padding: 10px;
-  background-color: goldenrod;
+  color: #fff;
+  background-color: #1890ff;
   border-radius: 6px;
 }
 
@@ -83,7 +95,8 @@
 .robot-part .words {
   max-width: 333px;
   padding: 10px;
-  background-color: goldenrod;
+  color: rgba(0, 0, 0, 0.85);
+  background-color: #fff;
   border-radius: 6px;
 }
 
@@ -112,6 +125,20 @@
   align-items: center;
   justify-content: center;
   width: 50px;
+  height: 30px;
+  color: white;
+  text-align: center;
+  background-color: #1890ff;
+  border-radius: 5px;
+}
+.send-btn-quiet {
+  position: absolute;
+  right: 80px;
+  bottom: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
   height: 30px;
   color: white;
   text-align: center;

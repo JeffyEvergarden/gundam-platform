@@ -123,9 +123,9 @@ const ImportPages: React.FC = (props: any) => {
   ];
 
   useEffect(() => {
-    _getImportList({
-      robotId: info.id,
-    });
+    // _getImportList({
+    //   robotId: info.id,
+    // });
   }, []);
 
   return (
@@ -204,9 +204,11 @@ const ImportPages: React.FC = (props: any) => {
               <Button
                 icon={<DownloadOutlined />}
                 type="primary"
-                // onClick={() => {
-                //   labelModalRef.current?.open?.();
-                // }}
+                onClick={() => {
+                  window.open(
+                    `${config.basePath}/robot/file/getLocalFile?fileName=模板_问题导入.xlsx`,
+                  );
+                }}
               >
                 下载模板
               </Button>
