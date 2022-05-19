@@ -62,7 +62,6 @@ export default (props: any) => {
   // 机器人回复内容
   const robotResponse = async (data?: any) => {
     console.log('info', info);
-    debugger;
     console.log('textMessage', textMessage);
     let newDay = new Date().toLocaleDateString();
     let occurDay = newDay.replace(/\//g, '-');
