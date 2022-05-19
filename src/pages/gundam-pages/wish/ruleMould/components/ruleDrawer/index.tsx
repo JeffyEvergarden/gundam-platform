@@ -47,7 +47,6 @@ export default (props: any) => {
     };
     let res = await getFeatureList(params);
     setFeatureList(res?.data?.list);
-    debugger;
   };
   const templateFocus = (key: any, name: any) => {
     let data = form.getFieldValue('ruleClips');

@@ -192,7 +192,6 @@ export default () => {
 
   const deleteRow = async (record: any) => {
     console.log('pageType', pageType);
-    debugger;
     if (pageType === 'FAQ' || history?.location?.state?.pageType === 'FAQ') {
       let reqData: any = {
         id: record.id,

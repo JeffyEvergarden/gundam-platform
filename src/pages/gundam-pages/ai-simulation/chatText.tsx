@@ -27,7 +27,7 @@ export default (props: any) => {
   const [nluInfo, setNluInfo] = useState<string>('');
   const [visible, setVisible] = useState<boolean>(false);
 
-  const { getDialogData } = useChatModel();
+  const { textRobotDialogueText, soundRobotDialogue } = useChatModel();
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -62,7 +62,6 @@ export default (props: any) => {
   // 机器人回复内容
   const robotResponse = async (data?: any) => {
     console.log('info', info);
-    debugger;
     console.log('textMessage', textMessage);
     let newDay = new Date().toLocaleDateString();
     let occurDay = newDay.replace(/\//g, '-');
@@ -74,10 +73,19 @@ export default (props: any) => {
       sessionId: modalData.sessionId,
       message: textMessage,
       event: chatEvent, // 事件类型
+      actionType: '',
     };
+    let res: any;
     if (info.robotType === 0) {
+      //文本机器人
+      res = await textRobotDialogueText(params);
     }
-    const res: any = await getDialogData(params);
+    if (info.robotType === 1) {
+      //语音机器人
+      params.actionType = 'sound';
+      res = await soundRobotDialogue(params);
+    }
+
     if (res?.resultCode == '100') {
       let newData = [...dialogList];
       newData.push({
@@ -122,7 +130,16 @@ export default (props: any) => {
       event: chatEvent, // 事件类型
       actionType: 'text',
     };
-    const res: any = await getDialogData(params);
+    let res: any;
+    if (info.robotType === 0) {
+      //文本机器人
+      res = await textRobotDialogueText(params);
+    }
+    if (info.robotType === 1) {
+      //语音机器人
+      params.actionType = 'sound';
+      res = await soundRobotDialogue(params);
+    }
     data.push({
       type: 'customer',
       message: textMessage,

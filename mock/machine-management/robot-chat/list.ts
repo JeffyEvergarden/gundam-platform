@@ -11,7 +11,7 @@ const getChatInitData = (req: any, res: any) => {
   });
 };
 
-const getTextDialogData = (req: any, res: any) => {
+const textRobotDialogueText = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
     resultDesc: '成功',
@@ -20,7 +20,7 @@ const getTextDialogData = (req: any, res: any) => {
     // actionEvent: 'talking',
     // actionSound: '',
     data: {
-      actionMessage: '你好，请问是XX先生吗？',
+      actionMessage: '你好，这里是文本机器人为您服务',
       actionEvent: 'talking',
       askType: 'faq',
       askText: '111111',
@@ -39,8 +39,30 @@ const getTextDialogData = (req: any, res: any) => {
   });
 };
 
+const soundRobotDialogueText = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    resultDesc: '成功',
+    // requestId: '001002003requestId',
+    // actionMessage: '我接收到了信息',
+    // actionEvent: 'talking',
+    // actionSound: '',
+    data: {
+      actionMessage: '你好，这是语音机器人为您服务',
+      actionEvent: 'talking',
+      askType: 'faq',
+      actionSound: '11111111',
+      askText: '111111',
+      askKey: '意图类型',
+      askTextSound: '111111',
+      nluInfo:
+        '{"resultCode":"0000","data":{"nodes":[{"frontId":"01","id":"01","nodeType":2,"label":"开始","x":100,"y":100},{"frontId":"02","id":"02","nodeType":0,"label":"普通节点1","x":500,"y":500},{"frontId":"03","id":"03","nodeType":1,"label":"业务节点1","x":700,"y":200},{"frontId":"04","id":"04","nodeType":3,"label":"特殊业务节点","x":100,"y":300}],"edges":[{"frontId":"001","id":"001","frontSource":"01","frontTarget":"03","sourceAnchor":1,"targetAnchor":3,"source":"01","target":"01","priority":10}]}}',
+    },
+  });
+};
 // 机器人模拟对话
 export default {
   'POST /aichat/robot/dialogueUrl': getChatInitData, // 对话初始化接口
-  'POST /aichat/robot/dialogueText': getTextDialogData, // 文本接口
+  'POST /aichat/robot/textRobotDialogueText': textRobotDialogueText, // 文本接口
+  'POST /aichat/robot/soundRobotDialogueText': soundRobotDialogueText, // 文本接口
 };

@@ -312,7 +312,8 @@ const Board: React.FC<any> = (props: any) => {
                     answer: '',
                     channelList: [],
                     enable: false,
-                    enableTime: null,
+                    enableStartTime: null,
+                    enableEndTime: null,
                   },
                   length,
                 );
