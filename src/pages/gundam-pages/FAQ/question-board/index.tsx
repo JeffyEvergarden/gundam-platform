@@ -44,6 +44,7 @@ const EditBoard: React.FC<any> = (prop: any) => {
     maxFileSize: 4 * 1024 * 1024, // 4M
     // 上传地址
     server: config.UPLOAD_FILE,
+    fieldName: 'file',
     customInsert(res: any, insertFn: any) {
       // res 即服务端的返回结果
       let urlId = res?.data;
@@ -67,6 +68,7 @@ const EditBoard: React.FC<any> = (prop: any) => {
     maxFileSize: 50 * 1024 * 1024, // 4M
     // 上传地址
     server: config.UPLOAD_FILE,
+    fieldName: 'file',
     timeout: 60 * 1000,
     customInsert(res: any, insertFn: any) {
       // res 即服务端的返回结果
@@ -139,6 +141,7 @@ const EditBoard: React.FC<any> = (prop: any) => {
         mode="default"
         style={{ borderBottom: '1px solid #ccc' }}
       ></Toolbar>
+
       <Editor
         defaultConfig={editorConfig}
         value={value}

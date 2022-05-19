@@ -49,6 +49,10 @@ const processTreeData = (data: any[], parent?: any) => {
     if (obj.children && obj.children.length > 0) {
       obj.selectable = false;
     }
+    if (obj.value === '0') {
+      // 第一级也不能选
+      obj.selectable = false;
+    }
     return obj;
   });
   return _data;
@@ -236,6 +240,7 @@ const Board: React.FC<any> = (props: any) => {
     res = processRequest(res);
     if (pageType === 'create') {
       let data: any = {
+        robotId: info.id,
         ...res,
       };
       let response = await addNewQuestion(data);
@@ -247,6 +252,7 @@ const Board: React.FC<any> = (props: any) => {
       let data: any = {
         ...res,
         faqId: questionId,
+        robotId: info.id,
       };
       let response = await updateQuestion(data);
       if (response === true) {
@@ -273,7 +279,7 @@ const Board: React.FC<any> = (props: any) => {
         <Form form={form}>
           <div className={'ant-form-vertical'}>
             <Form.Item
-              name="questionName"
+              name="question"
               label="问题名称"
               rules={[{ message: '请输入问题名称', required: true }]}
               style={{ width: '600px' }}

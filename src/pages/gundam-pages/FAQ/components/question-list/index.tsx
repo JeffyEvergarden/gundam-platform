@@ -46,6 +46,7 @@ const QuestionList: React.FC<any> = (props: any) => {
   }));
   const [total, setTotal] = useState<any>(0);
   const [current, setCurrent] = useState<any>(1);
+  const [pageSize, setPageSize] = useState<any>(10);
   const [more, setMore] = useState<any>([]); //更多答案
   const [edit, setEdit] = useState<any>([]); //编辑名字
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
@@ -74,6 +75,7 @@ const QuestionList: React.FC<any> = (props: any) => {
         setSelectedRowKeys([]);
       }
     },
+    CurrentPage,
   }));
 
   useEffect(() => {
@@ -183,6 +185,8 @@ const QuestionList: React.FC<any> = (props: any) => {
   };
 
   const CurrentPage = async (params: any) => {
+    console.log(params);
+
     let res: any = await getFaqList(params);
     console.log(res);
 
@@ -192,6 +196,7 @@ const QuestionList: React.FC<any> = (props: any) => {
   const pageChange = (page: any, size: any) => {
     console.log(page, size);
     setCurrent(page);
+    setPageSize(size);
     CurrentPage({ page, pageSize: size, robotId: info.id });
   };
 
@@ -203,7 +208,9 @@ const QuestionList: React.FC<any> = (props: any) => {
           actionRef={listRef}
           dataSource={faqList}
           request={async (params = {}, sort, filter) => {
-            return CurrentPage({ page: params.current, ...params, robotId: info.id });
+            console.log(params);
+
+            return CurrentPage({ page: current, pageSize, robotId: info.id });
           }}
           rowSelection={rowSelection()}
           tableAlertRender={false}

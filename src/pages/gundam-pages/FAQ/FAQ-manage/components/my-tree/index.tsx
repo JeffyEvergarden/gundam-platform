@@ -78,6 +78,9 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
   // 选择节点
   const onSelect = (key: any, opt: any) => {
     let node = opt.node;
+    if (node.key === '0') {
+      return;
+    }
     if (!node.children || node.children?.length === 0) {
       onChange?.(key, opt);
     }
@@ -284,7 +287,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
                 }}
               />
             )}
-            {nodeData.parent && (
+            {nodeData.parent && !nodeData?.children?.length && (
               <DeleteOutlined
                 style={{ fontSize: '12px' }}
                 onClick={(e) => {
