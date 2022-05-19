@@ -128,6 +128,7 @@ const Board: React.FC<any> = (props: any) => {
     res = processAnswerRequest(res);
     if (pageType === 'create') {
       let data: any = {
+        robotId: info.id,
         ...res,
       };
       let response = await addNewAnswer(data);
@@ -139,6 +140,7 @@ const Board: React.FC<any> = (props: any) => {
       let data: any = {
         ...res,
         faqId: questionId,
+        robotId: info.id,
       };
       let response = await updateAnswer(data);
       if (response === true) {
@@ -229,18 +231,14 @@ const Board: React.FC<any> = (props: any) => {
                   </Form.Item>
 
                   <Condition r-if={showTime}>
-                    <Form.Item
-                      name={'enableTime'}
-                      fieldKey={'enableTime'}
-                      rules={[{ required: true }]}
-                      style={{ width: '600px' }}
-                    >
-                      <DatePicker.RangePicker
-                        size="small"
-                        showTime
-                        placeholder={['请选择开始时间', '请选择结束时间']}
-                      />
-                    </Form.Item>
+                    <Space>
+                      <Form.Item name={'enableStartTime'} fieldKey={'enableStartTime'}>
+                        <DatePicker size="small" showTime placeholder={'请选择开始时间'} />
+                      </Form.Item>
+                      <Form.Item name={'enableEndTime'} fieldKey={'enableEndTime'}>
+                        <DatePicker size="small" showTime placeholder={'请选择结束时间'} />
+                      </Form.Item>
+                    </Space>
                   </Condition>
                 </Space>
               </div>
