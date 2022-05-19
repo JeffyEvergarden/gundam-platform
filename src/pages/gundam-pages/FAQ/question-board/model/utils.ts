@@ -9,7 +9,7 @@ function genLinkNode(url: string, text?: string, info?: any): any {
   const linkNode: any = {
     type: 'link',
     url: replaceSymbols(url),
-    target: info.target || '__blank',
+    target: info?.target || '__blank',
     children: text ? [{ text }] : [],
   };
   return linkNode;
