@@ -253,7 +253,15 @@ export default function useDrawerModel() {
       let data: any = Array.isArray(res.data) ? res.data : [];
       // 数据加工
       let _data = processTreeData(data); // 设置了parents会造成model层报错， 这里的数据不能进行delete操作
-      setTreeData(_data);
+      let root: any[] = [
+        {
+          title: '全部分类',
+          key: '0',
+          parent: undefined,
+          children: _data,
+        },
+      ];
+      setTreeData(root);
     }
   };
 

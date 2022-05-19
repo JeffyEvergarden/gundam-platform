@@ -139,6 +139,7 @@ const EditBoard: React.FC<any> = (prop: any) => {
         mode="default"
         style={{ borderBottom: '1px solid #ccc' }}
       ></Toolbar>
+
       <Editor
         defaultConfig={editorConfig}
         value={value}

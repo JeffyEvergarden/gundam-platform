@@ -85,7 +85,15 @@ export const useTreeModal = () => {
       let data: any = Array.isArray(res.data) ? res.data : [];
       // 数据加工
       data = processTreeData(data);
-      setTreeData(data || []);
+      let root: any[] = [
+        {
+          title: '全部分类',
+          key: '0',
+          parent: undefined,
+          children: data,
+        },
+      ];
+      setTreeData(root || []);
     } else {
       setTreeData([]);
     }
