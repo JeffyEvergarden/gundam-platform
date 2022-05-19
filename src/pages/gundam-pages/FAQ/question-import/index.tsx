@@ -133,6 +133,7 @@ const ImportPages: React.FC = (props: any) => {
       <ProTable<any>
         columns={columns}
         actionRef={labelTableRef}
+        bordered
         scroll={{ x: columns.length * 200 }}
         request={async (params = {}, sort, filter) => {
           // console.log(sort, filter);
