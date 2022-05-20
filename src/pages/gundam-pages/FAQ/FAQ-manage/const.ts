@@ -5,7 +5,7 @@ export const HIGH_CONFIG_SELECT = [
     type: 'single',
     children: [
       {
-        name: 'all',
+        name: null,
         label: '全部',
       },
       {
@@ -44,7 +44,7 @@ export const HIGH_CONFIG_SELECT = [
     type: 'single',
     children: [
       {
-        name: 0,
+        name: null,
         label: '全部',
       },
       {
@@ -71,7 +71,7 @@ export const HIGH_CONFIG_SELECT = [
     type: 'single',
     children: [
       {
-        name: 0,
+        name: null,
         label: '默认',
       },
       {

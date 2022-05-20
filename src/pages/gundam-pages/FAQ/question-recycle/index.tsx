@@ -16,10 +16,10 @@ const RecyclePage: React.FC<any> = (props: any) => {
   const QuestionRef = useRef(null);
 
   const [value, setValue] = useState<any>({
-    channelList: ['all'],
-    approvalStatusList: [0],
-    orderType: 0,
-    creatorList: [0],
+    channelList: null,
+    approvalStatusList: null,
+    orderType: null,
+    creatorList: null,
   });
 
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
