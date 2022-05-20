@@ -37,7 +37,7 @@ export async function insertLink(editor: any, text: string, url: string, info?: 
 // 数据加工   答案看板
 export const processRequest = (data: any) => {
   data = deepClone(data); // 深克隆
-  let answerList = data.answerList;
+  let answerList = data.answerList || [];
   answerList.forEach((item: any) => {
     let enableTime = item.enableTime || [];
     // 生效时间

@@ -110,6 +110,18 @@ const Board: React.FC<any> = (props: any) => {
     getTreeData(info.id);
     if (pageType === 'edit') {
       getInfo(info.id);
+    } else {
+      form.setFieldsValue({
+        answerList: [
+          {
+            answer: '',
+            channelList: [],
+            enable: false,
+            enableStartTime: null,
+            enableEndTime: null,
+          },
+        ],
+      });
     }
   }, []);
 
