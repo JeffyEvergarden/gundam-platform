@@ -118,8 +118,8 @@ const QuestionList: React.FC<any> = (props: any) => {
 
       if (res.resultCode == config.successCode) {
         message.success(res?.resultDesc || '');
-        CurrentPage();
       }
+      CurrentPage();
     });
   };
 
