@@ -4,10 +4,10 @@ import { ArrowLeftOutlined, DownOutlined, LeftOutlined, SettingOutlined } from '
 import HighConfigSelect from '../FAQ-manage/components/high-select';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import style from './style.less';
-import { useFaqModal } from '../FAQ-manage/model';
+import { useFaqModal, useTreeModal } from '../FAQ-manage/model';
 import ProList from '@ant-design/pro-list';
 import QuestionList from '../components/question-list';
-import { history } from 'umi';
+import { history, useModel } from 'umi';
 
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -16,11 +16,16 @@ const RecyclePage: React.FC<any> = (props: any) => {
   const QuestionRef = useRef(null);
 
   const [value, setValue] = useState<any>({
-    channel: 0,
+    channel: 'all',
     status: 0,
     sort: 0,
     creator: [0],
   });
+
+  const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+    setInfo: model.setInfo,
+  }));
 
   const changeHighConfig = (val: any) => {
     setValue(val);
@@ -28,9 +33,11 @@ const RecyclePage: React.FC<any> = (props: any) => {
   const [pageNo, setPageNo] = useState<number>(1);
 
   const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
+  const { treeData, childList, getTreeData } = useTreeModal();
 
   useEffect(() => {
     // getFaqList({ pageNo: 1 });
+    getTreeData({ robotId: info.id });
   }, []);
 
   const _getMoreFaqList = async () => {
@@ -89,7 +96,7 @@ const RecyclePage: React.FC<any> = (props: any) => {
             </div>
             <Button>批量删除</Button>
           </div>
-          <QuestionList cref={QuestionRef} hasCheckbox={true}></QuestionList>
+          <QuestionList cref={QuestionRef} hasCheckbox={true} childList={childList}></QuestionList>
         </div>
       </div>
     </div>
