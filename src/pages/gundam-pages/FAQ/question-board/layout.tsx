@@ -228,6 +228,18 @@ const Board: React.FC<any> = (props: any) => {
     (selectModalRef.current as any).open(openInfo);
     opRecordRef.current.callback = (obj: any) => {
       const _list = getRecommendItem();
+      const repeatFlag = _list.findIndex((item: any, i: number) => {
+        return (
+          i !== index &&
+          item.recommendId === obj.recommendId &&
+          item.recommendBizType === obj.recommendBizType
+        );
+      });
+      if (repeatFlag > -1) {
+        message.warning('已添加过重复');
+        return;
+      }
+
       _list[index] = { ...obj };
       form.setFieldsValue({
         recommendList: [..._list],
