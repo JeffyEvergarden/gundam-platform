@@ -110,6 +110,18 @@ const Board: React.FC<any> = (props: any) => {
     getTreeData(info.id);
     if (pageType === 'edit') {
       getInfo(info.id);
+    } else {
+      form.setFieldsValue({
+        answerList: [
+          {
+            answer: '',
+            channelList: [],
+            enable: false,
+            enableStartTime: null,
+            enableEndTime: null,
+          },
+        ],
+      });
     }
   }, []);
 
@@ -284,7 +296,7 @@ const Board: React.FC<any> = (props: any) => {
               rules={[{ message: '请输入问题名称', required: true }]}
               style={{ width: '600px' }}
             >
-              <Input placeholder={'请输入问题名称'} autoComplete="off" />
+              <Input placeholder={'请输入问题名称'} autoComplete="off" maxLength={200} />
             </Form.Item>
 
             <Form.Item
@@ -312,7 +324,8 @@ const Board: React.FC<any> = (props: any) => {
                     answer: '',
                     channelList: [],
                     enable: false,
-                    enableTime: null,
+                    enableStartTime: null,
+                    enableEndTime: null,
                   },
                   length,
                 );
@@ -377,18 +390,28 @@ const Board: React.FC<any> = (props: any) => {
                             </Form.Item>
 
                             <Condition r-if={_showTime}>
-                              <Form.Item
-                                name={[field.name, 'enableTime']}
-                                fieldKey={[field.fieldKey, 'enableTime']}
-                                rules={[{ required: true }]}
-                                style={{ width: '600px' }}
-                              >
-                                <DatePicker.RangePicker
-                                  size="small"
-                                  showTime
-                                  placeholder={['请选择开始时间', '请选择结束时间']}
-                                />
-                              </Form.Item>
+                              <Space>
+                                <Form.Item
+                                  name={[field.name, 'enableStartTime']}
+                                  fieldKey={[field.fieldKey, 'enableStartTime']}
+                                >
+                                  <DatePicker
+                                    size="small"
+                                    showTime
+                                    placeholder={'请选择开始时间'}
+                                  />
+                                </Form.Item>
+                                <Form.Item
+                                  name={[field.name, 'enableEndTime']}
+                                  fieldKey={[field.fieldKey, 'enableEndTime']}
+                                >
+                                  <DatePicker
+                                    size="small"
+                                    showTime
+                                    placeholder={'请选择结束时间'}
+                                  />
+                                </Form.Item>
+                              </Space>
                             </Condition>
                           </Space>
                         </div>

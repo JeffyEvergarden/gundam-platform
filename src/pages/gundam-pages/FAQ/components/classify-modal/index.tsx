@@ -36,7 +36,7 @@ const ClassifyModal: React.FC<any> = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     open: (row: any) => {
-      setTreeSelect(['0-0-1']);
+      setTreeSelect([row.faqTypeId]);
 
       setVisible(true);
     },

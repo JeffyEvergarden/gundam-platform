@@ -41,7 +41,7 @@ const FAQPage: React.FC<any> = (props: any) => {
 
   const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
 
-  const { treeData, getTreeData } = useTreeModal();
+  const { treeData, childList, getTreeData } = useTreeModal();
 
   const typeModalRef = useRef<any>({});
   const classifyRef = useRef<any>({});
@@ -71,6 +71,7 @@ const FAQPage: React.FC<any> = (props: any) => {
 
   useEffect(() => {
     getTree();
+
     // getFaqList({ pageNo: 1 });
   }, []);
 
@@ -92,7 +93,7 @@ const FAQPage: React.FC<any> = (props: any) => {
   };
 
   const openClassify = (item: any) => {
-    classifyRef.current?.open();
+    classifyRef.current?.open(item);
   };
   const openChannel = () => {
     channelRef.current?.open();
@@ -181,6 +182,7 @@ const FAQPage: React.FC<any> = (props: any) => {
             hasCheckbox={false}
             openClassify={openClassify}
             openChannel={openChannel}
+            childList={childList}
           ></QuestionList>
         </div>
       </div>

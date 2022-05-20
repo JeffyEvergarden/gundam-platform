@@ -60,7 +60,8 @@ export const useFaqModal = () => {
 
 export const useTreeModal = () => {
   const [treeData, setTreeData] = useState<any[]>([]);
-
+  const [childList, setChildList] = useState<any>([]);
+  let arr: any = [];
   const processTreeData = (data: any[], parent?: any) => {
     if (!Array.isArray(data)) {
       return null;
@@ -73,9 +74,16 @@ export const useTreeModal = () => {
         parent: parent || item.parent || '0',
       };
       let children: any = processTreeData(item.children, obj);
+      if (!children?.length) {
+        arr.push(obj);
+      }
       obj.children = children;
+
       return obj;
     });
+    console.log(arr);
+
+    setChildList(arr);
     return _data;
   };
 
@@ -136,6 +144,7 @@ export const useTreeModal = () => {
 
   return {
     treeData,
+    childList,
     getTreeData,
     addLeaf,
     editLeaf,
