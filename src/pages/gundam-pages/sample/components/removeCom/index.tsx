@@ -83,7 +83,6 @@ export default (props: any) => {
             >
               <Select>
                 {_wishList?.map((itex: any, index: number) => {
-                  debugger;
                   return (
                     <Option key={itex.name} value={itex.name} opt={itex}>
                       {itex.label}
