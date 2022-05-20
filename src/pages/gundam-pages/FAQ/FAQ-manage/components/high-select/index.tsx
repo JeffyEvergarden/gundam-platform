@@ -56,7 +56,7 @@ const HighConfigSelect = (props: HighConfigProps) => {
             } else {
               _val = [name];
             }
-            if (name) {
+            if (!name) {
               _val = null;
             }
           } else if (type === 'multi') {
