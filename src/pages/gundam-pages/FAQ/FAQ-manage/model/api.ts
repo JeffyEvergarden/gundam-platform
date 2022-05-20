@@ -12,6 +12,20 @@ export async function getQuestionList(data?: Record<string, any>) {
   });
 }
 
+export async function editQuestion(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/robotFaqEdit`, {
+    method: 'POST',
+    data,
+  });
+}
+//删除回收站
+export async function deleteRecycle(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/robotFaqRecycleDelete`, {
+    method: 'POST',
+    data,
+  });
+}
+
 //删除问题
 export async function deleteQuestion(data?: Record<string, any>) {
   return request(`${baseUrl}/robot/faq/robotFaqDelete`, {

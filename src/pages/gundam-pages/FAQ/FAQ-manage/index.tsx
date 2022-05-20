@@ -218,7 +218,11 @@ const FAQPage: React.FC<any> = (props: any) => {
         </div>
       </div>
 
-      <ClassifyModal cref={classifyRef} treeData={treeData}></ClassifyModal>
+      <ClassifyModal
+        cref={classifyRef}
+        treeData={treeData}
+        editQ={QuestionRef?.current?.editQ}
+      ></ClassifyModal>
       <ChannelModal cref={channelRef}></ChannelModal>
     </div>
   );

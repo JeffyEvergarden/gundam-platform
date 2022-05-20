@@ -32,7 +32,7 @@ import { deleteQuestion } from '../../FAQ-manage/model/api';
 import config from '@/config';
 import Condition from '@/pages/gundam-pages/main-draw/flow/common/Condition';
 import ClassifyModal from '../classify-modal';
-import { deleteAnswer } from '../../question-board/model/api';
+import { deleteAnswer, editQuestion } from '../../question-board/model/api';
 import { CHANNAL_LIST } from '../../question-board/test';
 import { HIGH_CONFIG_SELECT } from '../../FAQ-manage/const';
 
@@ -88,6 +88,11 @@ const QuestionList: React.FC<any> = (props: any) => {
       }
     },
     CurrentPage,
+    editQ,
+    deleteRecycle() {
+      console.log(selectedRowKeys);
+      return selectedRowKeys;
+    },
   }));
 
   useEffect(() => {
@@ -170,11 +175,12 @@ const QuestionList: React.FC<any> = (props: any) => {
     }
   };
 
-  const changeEdit = (name: any, index: any) => {
+  const changeEdit = (item: any, index: any) => {
     if (edit[index]) {
       console.log(form.getFieldsValue());
+      editQ({ id: item.id, ...form.getFieldsValue() });
     } else {
-      form.setFieldsValue({ question: name });
+      form.setFieldsValue({ question: item.question });
     }
 
     let arr: any = JSON.parse(JSON.stringify(edit));
@@ -199,6 +205,7 @@ const QuestionList: React.FC<any> = (props: any) => {
     deleteAnswer({ id: A.id });
   };
 
+  //获取问题列表
   const CurrentPage = async (obj?: any) => {
     console.log(obj);
     let params = {
@@ -224,6 +231,25 @@ const QuestionList: React.FC<any> = (props: any) => {
     setCurrent(page);
     setPageSize(size);
     CurrentPage({ page, pageSize: size, robotId: info.id });
+  };
+
+  //编辑问题
+  const editQ = async (params: any) => {
+    let reqData = {
+      robotId: info.id,
+      ...params,
+    };
+    await editQuestion(reqData).then((res) => {
+      if (res.resultCode == config.successCode) {
+        message.success(res.resultDesc);
+        CurrentPage();
+        return true;
+      } else {
+        message.error(res.resultDesc);
+        CurrentPage();
+        return false;
+      }
+    });
   };
 
   return (
@@ -261,7 +287,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                                 <Input
                                   size="small"
                                   onPressEnter={() => {
-                                    changeEdit(item.question, index);
+                                    changeEdit(item, index);
                                   }}
                                 ></Input>
                               </Form.Item>
@@ -272,7 +298,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                               type="link"
                               icon={<EditOutlined />}
                               onClick={() => {
-                                changeEdit(item.question, index);
+                                changeEdit(item, index);
                               }}
                             ></Button>
                           )}
@@ -309,7 +335,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                             <Button
                               type="link"
                               onClick={() => {
-                                openClassify(item);
+                                openClassify?.(item);
                               }}
                             >
                               {childList?.find((c: any) => c.key == item.faqTypeId)?.title}
@@ -326,6 +352,10 @@ const QuestionList: React.FC<any> = (props: any) => {
                                   defaultValue={item.approvalStatus}
                                   style={{ width: 100, padding: 0 }}
                                   bordered={false}
+                                  onChange={(val) => {
+                                    console.log(val);
+                                    editQ({ id: item.id, approvalStatus: val });
+                                  }}
                                 >
                                   {statusList.map((val: any) => {
                                     return (
