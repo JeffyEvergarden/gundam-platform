@@ -36,7 +36,7 @@ const getFaqList = (req: any, res: any, next: any) => {
         enableStartTime: '2022-05-10 15:55:55',
         enableEndTime: '2022-05-10 15:55:55',
         answerId: '1',
-        channelList: null,
+        channelList: ['all'],
         answerLikeNum: 10,
         answerUnlikeNum: 1,
         creator: 'jiangjiahao',

@@ -118,6 +118,7 @@ const QuestionList: React.FC<any> = (props: any) => {
 
       if (res.resultCode == config.successCode) {
         message.success(res?.resultDesc || '');
+        CurrentPage();
       }
     });
   };
@@ -450,7 +451,12 @@ const QuestionList: React.FC<any> = (props: any) => {
                                     <Divider type="vertical" />
                                     <span>
                                       生效渠道：
-                                      <Button type="link" onClick={openChannel}>
+                                      <Button
+                                        type="link"
+                                        onClick={() => {
+                                          editAnswer(item, v);
+                                        }}
+                                      >
                                         {v?.channelList &&
                                           v?.channelList
                                             ?.map((cl: any) => {
@@ -459,7 +465,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                                               )?.label;
                                             })
                                             ?.join(' , ')}
-                                        {!v?.channelList && '全部'}
+                                        {/* {!v?.channelList && '全部'} */}
                                       </Button>
                                     </span>
                                   </div>
