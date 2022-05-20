@@ -15,7 +15,7 @@ export default (props: any) => {
   const { visible, type, tableProps, cancel, save, modalData } = props;
   const [form] = Form.useForm();
 
-  const { slotInfo, getFeatureList } = useRuleModule();
+  const { slotInfo, getFeatureListAll } = useRuleModule();
 
   const [slotList, setSlotList] = useState<any>([]);
   const [featureList, setFeatureList] = useState<any>([]);
@@ -40,12 +40,7 @@ export default (props: any) => {
   };
 
   const getFeature = async () => {
-    let params = {
-      intentId: tableProps.id,
-      page: 1,
-      pageSize: 99999,
-    };
-    let res = await getFeatureList(params);
+    let res = await getFeatureListAll({ intentId: tableProps?.id });
     setFeatureList(res?.data?.list);
   };
   const templateFocus = (key: any, name: any) => {

@@ -161,6 +161,7 @@ export default {
   'GET /aichat/robot/intent/intentList': intentList,
   'GET /aichat/robot/intent/intentRulePageList': intentRulePageList,
   'GET /aichat/robot/intent/intentFeaturePageList': intentFeaturePageList,
+  'GET /aichat/robot/intent/intentFeatureList': intentFeaturePageList,
   'POST /aichat/robot/intent/intentRuleAdd': normalDeal,
   'POST /aichat/robot/intent/intentRuleEdit': normalDeal,
   'POST /aichat/robot/intent/intentRuleMove': normalDeal,
