@@ -20,7 +20,7 @@ const getFaqList = (req: any, res: any, next: any) => {
     viewNum: 5, //浏览次数
     likeNum: 555,
     unlikeNum: 22,
-    faqTypeId: '循环贷', //问题类型
+    faqTypeId: '0-0-1', //问题类型
     approvalStatus: 1, //审批状态
     qunestionRecommend: 1, //推荐 0关  1开
     recyle: 0, //是否在回收站
@@ -36,7 +36,7 @@ const getFaqList = (req: any, res: any, next: any) => {
         enableStartTime: '2022-05-10 15:55:55',
         enableEndTime: '2022-05-10 15:55:55',
         answerId: '1',
-        channelList: [],
+        channelList: ['all', 'app'],
         answerLikeNum: 10,
         answerUnlikeNum: 1,
         creator: 'jiangjiahao',
@@ -50,7 +50,7 @@ const getFaqList = (req: any, res: any, next: any) => {
         enableStartTime: '2022-05-10 15:55:55',
         enableEndTime: '2022-05-10 15:55:55',
         answerId: '2',
-        channelCode: '渠道2',
+        channelList: ['app'],
         answerLikeNum: 102,
         answerUnlikeNum: 11,
         creator: 'jiangjiahao',

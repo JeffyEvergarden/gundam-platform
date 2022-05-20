@@ -33,11 +33,13 @@ import config from '@/config';
 import Condition from '@/pages/gundam-pages/main-draw/flow/common/Condition';
 import ClassifyModal from '../classify-modal';
 import { deleteAnswer } from '../../question-board/model/api';
+import { CHANNAL_LIST } from '../../question-board/test';
+import { HIGH_CONFIG_SELECT } from '../../FAQ-manage/const';
 
 const { Option } = Select;
 
 const QuestionList: React.FC<any> = (props: any) => {
-  const { cref, hasCheckbox, openClassify, openChannel } = props;
+  const { cref, hasCheckbox, openClassify, openChannel, childList } = props;
   const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
   const [form] = Form.useForm();
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
@@ -80,9 +82,11 @@ const QuestionList: React.FC<any> = (props: any) => {
 
   useEffect(() => {
     // getFaqList({ pageNo: 1 });
+    console.log(childList);
+
     listRef.current.reload();
     console.log(listRef);
-  }, []);
+  }, [childList]);
 
   const rowSelection = () => {
     if (!hasCheckbox) {
@@ -286,7 +290,8 @@ const QuestionList: React.FC<any> = (props: any) => {
                                 openClassify(item);
                               }}
                             >
-                              {item.faqTypeId}
+                              {childList?.find((c: any) => c.key == item.faqTypeId)?.title}
+                              {/* {item.faqTypeId} */}
                             </Button>
                           </span>
                           {!hasCheckbox && <Divider type="vertical" />}
@@ -425,7 +430,13 @@ const QuestionList: React.FC<any> = (props: any) => {
                                     <span>
                                       生效渠道：
                                       <Button type="link" onClick={openChannel}>
-                                        {item.faqTypeId}
+                                        {v?.channelList
+                                          ?.map((cl: any) => {
+                                            return HIGH_CONFIG_SELECT?.[0]?.children?.find(
+                                              (c) => c.name == cl,
+                                            )?.label;
+                                          })
+                                          ?.join(' , ')}
                                       </Button>
                                     </span>
                                   </div>
