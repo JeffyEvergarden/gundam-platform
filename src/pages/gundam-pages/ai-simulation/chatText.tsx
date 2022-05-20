@@ -46,7 +46,7 @@ export default (props: any) => {
 
   const onKeyDown = (e: any) => {
     if ((e?.keyCode == '13' || e?.which == '13') && !e?.shiftKey) {
-      sendMessage();
+      sendMessage('dialogue');
       // 禁止换行
       e.cancelBubble = true;
       e.preventDefault();
@@ -104,12 +104,12 @@ export default (props: any) => {
   };
 
   // 发送按钮
-  const sendMessage = async () => {
+  const sendMessage = async (type: string) => {
     if (!talkingFlag) {
       message.warning('请点击‘开始对话’按钮启动对话');
       return;
     }
-    if (textMessage?.length == 0 || textMessage.trim().length == 0) {
+    if (type === 'dialogue' && (textMessage?.length == 0 || textMessage.trim().length == 0)) {
       message.warning('不能发送空白文字');
       return;
     }
@@ -121,14 +121,15 @@ export default (props: any) => {
     let newDay = new Date().toLocaleDateString();
     let occurDay = newDay.replace(/\//g, '-');
     let newTime = new Date().toLocaleTimeString('en-GB');
+    let eventStr = type === 'silence' ? 'silence' : chatEvent;
     let params = {
       requestId: modalData.requestId,
       occurTime: occurDay + ' ' + newTime,
       systemCode: modalData.systemCode,
       sessionId: modalData.sessionId,
       message: textMessage,
-      event: chatEvent, // 事件类型
-      actionType: 'text',
+      event: eventStr, // 事件类型
+      actionType: '',
     };
     let res: any;
     if (info.robotType === 0) {
@@ -137,7 +138,7 @@ export default (props: any) => {
     }
     if (info.robotType === 1) {
       //语音机器人
-      params.actionType = 'sound';
+      params.actionType = 'text';
       res = await soundRobotDialogue(params);
     }
     data.push({
@@ -147,7 +148,7 @@ export default (props: any) => {
       nluInfo: res?.data?.nluInfo,
     });
     setDialogList(data);
-
+    setChatEvent(type);
     let a = number;
     a++;
     setNumber(a);
@@ -170,7 +171,9 @@ export default (props: any) => {
     setDialogList([]); // 清空会话内容
   };
 
-  const sendQuiet = () => {};
+  const sendQuiet = (type: string) => {
+    sendMessage(type);
+  };
 
   //  只负责清空
   useEffect(() => {
@@ -284,10 +287,18 @@ export default (props: any) => {
               // showCount
             />
 
-            <Button className={styles['send-btn']} type="primary" onClick={sendMessage}>
+            <Button
+              className={styles['send-btn']}
+              type="primary"
+              onClick={() => sendMessage('dialogue')}
+            >
               发送
             </Button>
-            <Button className={styles['send-btn-quiet']} type="primary" onClick={sendQuiet}>
+            <Button
+              className={styles['send-btn-quiet']}
+              type="primary"
+              onClick={() => sendQuiet('silence')}
+            >
               发送静默
             </Button>
           </div>

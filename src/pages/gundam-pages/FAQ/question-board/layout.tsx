@@ -76,7 +76,8 @@ const Board: React.FC<any> = (props: any) => {
     treeData: model.treeData,
   }));
 
-  const { addNewQuestion, updateQuestion, getQuestionInfo } = useQuestionModel();
+  const { maxRecommendLength, addNewQuestion, updateQuestion, getQuestionInfo, getFaqConfig } =
+    useQuestionModel();
 
   // 分类列表
   const typeList = useMemo(() => {
@@ -108,6 +109,7 @@ const Board: React.FC<any> = (props: any) => {
   useEffect(() => {
     getFlowList(info.id);
     getTreeData(info.id);
+    getFaqConfig(info.id);
     if (pageType === 'edit') {
       getInfo(info.id);
     } else {
@@ -228,6 +230,18 @@ const Board: React.FC<any> = (props: any) => {
     (selectModalRef.current as any).open(openInfo);
     opRecordRef.current.callback = (obj: any) => {
       const _list = getRecommendItem();
+      const repeatFlag = _list.findIndex((item: any, i: number) => {
+        return (
+          i !== index &&
+          item.recommendId === obj.recommendId &&
+          item.recommendBizType === obj.recommendBizType
+        );
+      });
+      if (repeatFlag > -1) {
+        message.warning('已添加过重复');
+        return;
+      }
+
       _list[index] = { ...obj };
       form.setFieldsValue({
         recommendList: [..._list],
@@ -296,7 +310,7 @@ const Board: React.FC<any> = (props: any) => {
               rules={[{ message: '请输入问题名称', required: true }]}
               style={{ width: '600px' }}
             >
-              <Input placeholder={'请输入问题名称'} autoComplete="off" />
+              <Input placeholder={'请输入问题名称'} autoComplete="off" maxLength={200} />
             </Form.Item>
 
             <Form.Item
@@ -446,6 +460,10 @@ const Board: React.FC<any> = (props: any) => {
                 const addNew = () => {
                   let length = fields.length;
                   // console.log(length);
+                  if (length >= maxRecommendLength) {
+                    message.warning('推荐设置不能超过faq全局配置限制数量');
+                    return;
+                  }
                   add(
                     {
                       recommendBizType: null,

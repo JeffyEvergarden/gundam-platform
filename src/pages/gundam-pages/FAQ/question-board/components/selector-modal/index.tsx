@@ -1,5 +1,5 @@
 import { useState, useImperativeHandle, useEffect, useMemo } from 'react';
-import { Modal, Button, Table, Tooltip, Tabs } from 'antd';
+import { Modal, Button, Table, Tooltip, Tabs, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import MyTree from '../../../FAQ-manage/components/my-tree';
 import { useModel } from 'umi';
@@ -33,6 +33,8 @@ const columns2: any[] = [
   },
 ];
 
+const { Search } = Input;
+
 const SelectorModal: React.FC<any> = (props: any) => {
   const { cref, confirm, type = 'radio', showFlow = true } = props;
 
@@ -59,7 +61,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
   // 业务流程列表
   const { flowList, treeData } = useModel('drawer' as any, (model: any) => {
     return {
-      flowList: model?._originFlowList || [],
+      flowList: model?._flowList || [],
       treeData: model?.treeData || [],
     };
   });
@@ -78,13 +80,66 @@ const SelectorModal: React.FC<any> = (props: any) => {
     }
     setCurrent1(val);
     if (classType) {
-      getFaqList({ page: val, pageSize: 10, robotId: info.id, type: classType });
+      getFaqList({
+        page: val,
+        pageSize: 10,
+        robotId: info.id,
+        type: classType,
+        searchText: searchText1,
+      });
     } else {
       setFaqList([]);
     }
   };
   const onChange2 = (val: any) => {
     setCurrent2(val);
+  };
+
+  const [searchText1, setSearchText1] = useState<any>('');
+  const [searchText2, setSearchText2] = useState<any>('');
+
+  const [searchFlowList, setSearchFlowList] = useState<any>([]);
+
+  const onSearchChange1 = (e: any) => {
+    setSearchText1(e.target.value);
+  };
+
+  const onSearchChange2 = (e: any) => {
+    setSearchText2(e.target.value);
+  };
+
+  const onSearch1 = () => {
+    if (!classType) {
+      return;
+    }
+    getFaqList({
+      page: 1,
+      pageSize: 10,
+      robotId: info.id,
+      type: classType,
+      searchText: searchText1,
+    });
+  };
+
+  const tableFlowList: any[] = useMemo(() => {
+    return flowList.map((item: any, index: number) => {
+      return {
+        ...item,
+        index: index,
+      };
+    });
+  }, [flowList]);
+
+  useEffect(() => {
+    setSearchFlowList(tableFlowList);
+  }, [tableFlowList]);
+
+  const onSearch2 = () => {
+    const list = tableFlowList.filter((item: any) => {
+      return item.flowName.includes(searchText2);
+    });
+    console.log(list);
+    setSearchFlowList([...list]);
   };
 
   // 选中key值
@@ -97,15 +152,6 @@ const SelectorModal: React.FC<any> = (props: any) => {
     setCurrent1(1);
     getFaqList({ page: 1, pageSize: 10, robotId: info.id, type: val[0] });
   };
-
-  const tableFlowList: any[] = useMemo(() => {
-    return flowList.map((item: any, index: number) => {
-      return {
-        ...item,
-        index: index,
-      };
-    });
-  }, [flowList]);
 
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
@@ -212,6 +258,18 @@ const SelectorModal: React.FC<any> = (props: any) => {
             </div>
 
             <div className={style['page_content']}>
+              <div className={style['zy-row_end']}>
+                <Search
+                  placeholder="输入标准问进行搜索"
+                  value={searchText1}
+                  onSearch={onSearch1}
+                  onPressEnter={onSearch1}
+                  onChange={onSearchChange1}
+                  allowClear
+                  style={{ width: 200 }}
+                />
+              </div>
+
               <div className={style['table-box']}>
                 <Table
                   rowSelection={{
@@ -232,20 +290,34 @@ const SelectorModal: React.FC<any> = (props: any) => {
         </TabPane>
 
         <TabPane tab="业务流程" key="2" disabled={!showFlowKey}>
-          <div className={style['table-box']}>
-            <Table
-              rowSelection={{
-                type: type === 'radio' ? 'radio' : 'checkbox',
-                ...rowFlowSelection,
-                selectedRowKeys: selectedFlowKeys,
-              }}
-              size="small"
-              pagination={{ current: current2, onChange: onChange2 }}
-              dataSource={tableFlowList}
-              columns={columns2}
-              rowKey="id"
-              // loading={tableLoading}
-            />
+          <div className={style['page_content']}>
+            <div className={style['zy-row_end']}>
+              <Search
+                placeholder="输入业务流程进行搜索"
+                value={searchText2}
+                onSearch={onSearch2}
+                onPressEnter={onSearch2}
+                onChange={onSearchChange2}
+                allowClear
+                style={{ width: 300 }}
+              />
+            </div>
+
+            <div className={style['table-box']}>
+              <Table
+                rowSelection={{
+                  type: type === 'radio' ? 'radio' : 'checkbox',
+                  ...rowFlowSelection,
+                  selectedRowKeys: selectedFlowKeys,
+                }}
+                size="small"
+                pagination={{ current: current2, onChange: onChange2 }}
+                dataSource={searchFlowList}
+                columns={columns2}
+                rowKey="id"
+                // loading={tableLoading}
+              />
+            </div>
           </div>
         </TabPane>
       </Tabs>

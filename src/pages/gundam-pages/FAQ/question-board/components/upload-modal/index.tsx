@@ -22,6 +22,7 @@ const UploadFile = (props: any) => {
     const isLt10M = file.size / 1024 / 1024 < Options.maxSize;
     if (!isLt10M) {
       message.warning(`上传的文件限制${Options.maxSize}MB以内!`);
+      return false;
     }
     return true;
   };
