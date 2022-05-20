@@ -39,7 +39,17 @@ import { HIGH_CONFIG_SELECT } from '../../FAQ-manage/const';
 const { Option } = Select;
 
 const QuestionList: React.FC<any> = (props: any) => {
-  const { cref, hasCheckbox, openClassify, openChannel, childList } = props;
+  const {
+    cref,
+    hasCheckbox,
+    openClassify,
+    openChannel,
+    childList,
+    queryType = 0,
+    searchText = '',
+    heightSelect,
+    isRecycle,
+  } = props;
   const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
   const [form] = Form.useForm();
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
@@ -108,6 +118,7 @@ const QuestionList: React.FC<any> = (props: any) => {
 
       if (res.resultCode == config.successCode) {
         message.success(res?.resultDesc || '');
+        CurrentPage();
       }
     });
   };
@@ -173,7 +184,7 @@ const QuestionList: React.FC<any> = (props: any) => {
 
   const addAnswer = (item: any) => {
     console.log(item);
-    history.push({ pathname: '/gundamPages/faq/answer', state: { item } });
+    history.push(`/gundamPages/faq/answer?faqId=${item.id}`);
   };
 
   const editAnswer = (Q: any, A: any) => {
@@ -188,7 +199,18 @@ const QuestionList: React.FC<any> = (props: any) => {
     deleteAnswer({ id: A.id });
   };
 
-  const CurrentPage = async (params: any) => {
+  const CurrentPage = async (obj?: any) => {
+    console.log(obj);
+    let params = {
+      page: 1,
+      pageSize: 10,
+      robotId: info.id,
+      queryType: queryType,
+      searchText: searchText,
+      recycle: isRecycle,
+      ...heightSelect,
+      ...obj,
+    };
     console.log(params);
 
     let res: any = await getFaqList(params);
@@ -429,14 +451,21 @@ const QuestionList: React.FC<any> = (props: any) => {
                                     <Divider type="vertical" />
                                     <span>
                                       生效渠道：
-                                      <Button type="link" onClick={openChannel}>
-                                        {v?.channelList
-                                          ?.map((cl: any) => {
-                                            return HIGH_CONFIG_SELECT?.[0]?.children?.find(
-                                              (c) => c.name == cl,
-                                            )?.label;
-                                          })
-                                          ?.join(' , ')}
+                                      <Button
+                                        type="link"
+                                        onClick={() => {
+                                          editAnswer(item, v);
+                                        }}
+                                      >
+                                        {v?.channelList &&
+                                          v?.channelList
+                                            ?.map((cl: any) => {
+                                              return HIGH_CONFIG_SELECT?.[0]?.children?.find(
+                                                (c: any) => c.name == cl,
+                                              )?.label;
+                                            })
+                                            ?.join(' , ')}
+                                        {/* {!v?.channelList && '全部'} */}
                                       </Button>
                                     </span>
                                   </div>

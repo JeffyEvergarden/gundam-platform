@@ -26,16 +26,28 @@ const FAQPage: React.FC<any> = (props: any) => {
     setInfo: model.setInfo,
   }));
 
+  const { userList, getCreateUser } = useModel('drawer' as any, (model: any) => ({
+    userList: model.userList,
+    getCreateUser: model.getCreateUser,
+  }));
+
   const [value, setValue] = useState<any>({
-    channel: 'all',
-    status: 0,
-    sort: 0,
-    creator: [0],
+    channelList: ['all'],
+    approvalStatusList: [0],
+    orderType: 0,
+    creatorList: null,
   });
+  const [queryType, setQueryType] = useState<any>(0);
+  const [searchText, setSearchText] = useState<any>('');
 
   const changeHighConfig = (val: any) => {
+    console.log(val);
+
     setValue(val);
     //重新获取列表
+    setTimeout(() => {
+      QuestionRef?.current?.CurrentPage({});
+    }, 1);
   };
   const [pageNo, setPageNo] = useState<number>(1);
 
@@ -46,6 +58,7 @@ const FAQPage: React.FC<any> = (props: any) => {
   const typeModalRef = useRef<any>({});
   const classifyRef = useRef<any>({});
   const channelRef = useRef<any>({});
+  const QuestionRef = useRef<any>(null);
 
   // 打开新增弹窗
   const openAddModal = (obj: any, callback: any) => {
@@ -71,9 +84,12 @@ const FAQPage: React.FC<any> = (props: any) => {
 
   useEffect(() => {
     getTree();
-
+    getCreateUser(info.id);
     // getFaqList({ pageNo: 1 });
   }, []);
+  useEffect(() => {
+    console.log(userList);
+  }, [userList]);
 
   const _getMoreFaqList = async () => {
     console.log(faqList.length, totalSize, faqList.length < totalSize);
@@ -97,6 +113,13 @@ const FAQPage: React.FC<any> = (props: any) => {
   };
   const openChannel = () => {
     channelRef.current?.open();
+  };
+
+  const onEnter = (e: any) => {
+    console.log(e.target.value);
+    console.log(queryType);
+
+    QuestionRef?.current?.CurrentPage({});
   };
 
   return (
@@ -133,13 +156,16 @@ const FAQPage: React.FC<any> = (props: any) => {
             <Input.Group compact>
               <Input
                 style={{ width: '280px' }}
-                onPressEnter={() => {}}
-                defaultValue="钢铁是怎么炼成的"
+                onChange={(e: any) => {
+                  setSearchText(e.target.value);
+                }}
+                onPressEnter={onEnter}
+                placeholder={'请输入'}
               />
-              <Select defaultValue={1}>
-                <Option value={1}>问题</Option>
-                <Option value={2}>答案</Option>
-                <Option value={3}>标签</Option>
+              <Select defaultValue={0} onChange={setQueryType}>
+                <Option value={0}>问题</Option>
+                <Option value={1}>答案</Option>
+                <Option value={2}>标签</Option>
               </Select>
             </Input.Group>
           </Space>
@@ -179,10 +205,15 @@ const FAQPage: React.FC<any> = (props: any) => {
           </div>
 
           <QuestionList
+            cref={QuestionRef}
             hasCheckbox={false}
             openClassify={openClassify}
             openChannel={openChannel}
             childList={childList}
+            searchText={searchText}
+            queryType={queryType}
+            heightSelect={value}
+            isRecycle={0}
           ></QuestionList>
         </div>
       </div>

@@ -76,7 +76,8 @@ const Board: React.FC<any> = (props: any) => {
     treeData: model.treeData,
   }));
 
-  const { addNewQuestion, updateQuestion, getQuestionInfo } = useQuestionModel();
+  const { maxRecommendLength, addNewQuestion, updateQuestion, getQuestionInfo, getFaqConfig } =
+    useQuestionModel();
 
   // 分类列表
   const typeList = useMemo(() => {
@@ -108,6 +109,7 @@ const Board: React.FC<any> = (props: any) => {
   useEffect(() => {
     getFlowList(info.id);
     getTreeData(info.id);
+    getFaqConfig(info.id);
     if (pageType === 'edit') {
       getInfo(info.id);
     } else {
@@ -212,6 +214,11 @@ const Board: React.FC<any> = (props: any) => {
         return item.recommendBizType === '2' && item.recommendId && i !== index;
       })
       .map((item: any) => item.recommendId);
+
+    console.log(disabledQuestionKeys, disabledFlowKeys);
+    if (questionId) {
+      disabledQuestionKeys.push(questionId);
+    }
     let openInfo: any = {
       showFlow: true,
       info: _list[index],
@@ -228,6 +235,19 @@ const Board: React.FC<any> = (props: any) => {
     (selectModalRef.current as any).open(openInfo);
     opRecordRef.current.callback = (obj: any) => {
       const _list = getRecommendItem();
+      const repeatFlag = _list.findIndex((item: any, i: number) => {
+        return (
+          i !== index &&
+          item.recommendId === obj.recommendId &&
+          item.recommendBizType === obj.recommendBizType
+        );
+      });
+      console.log(repeatFlag, index, obj, _list[repeatFlag]);
+      if (repeatFlag > -1) {
+        message.warning('已添加过重复');
+        return;
+      }
+
       _list[index] = { ...obj };
       form.setFieldsValue({
         recommendList: [..._list],
@@ -445,7 +465,11 @@ const Board: React.FC<any> = (props: any) => {
               {(fields, { add, remove }) => {
                 const addNew = () => {
                   let length = fields.length;
-                  // console.log(length);
+                  console.log(length);
+                  if (length >= maxRecommendLength) {
+                    message.warning('推荐设置不能超过faq全局配置限制数量');
+                    return;
+                  }
                   add(
                     {
                       recommendBizType: null,

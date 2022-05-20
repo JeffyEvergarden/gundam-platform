@@ -16,10 +16,10 @@ const RecyclePage: React.FC<any> = (props: any) => {
   const QuestionRef = useRef(null);
 
   const [value, setValue] = useState<any>({
-    channel: 'all',
-    status: 0,
-    sort: 0,
-    creator: [0],
+    channelList: ['all'],
+    approvalStatusList: [0],
+    orderType: 0,
+    creatorList: null,
   });
 
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
@@ -29,8 +29,10 @@ const RecyclePage: React.FC<any> = (props: any) => {
 
   const changeHighConfig = (val: any) => {
     setValue(val);
+    QuestionRef?.current?.CurrentPage({});
   };
   const [pageNo, setPageNo] = useState<number>(1);
+  const [searchText, setSearchText] = useState<any>('');
 
   const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
   const { treeData, childList, getTreeData } = useTreeModal();
@@ -71,7 +73,12 @@ const RecyclePage: React.FC<any> = (props: any) => {
         </div>
 
         <div className={style['page_top__right']}>
-          <Input.Search style={{ marginRight: '16px', width: '280px' }}></Input.Search>
+          <Input.Search
+            style={{ marginRight: '16px', width: '280px' }}
+            onChange={(e: any) => {
+              setSearchText(e.target.value);
+            }}
+          ></Input.Search>
         </div>
       </div>
 
@@ -96,7 +103,14 @@ const RecyclePage: React.FC<any> = (props: any) => {
             </div>
             <Button>批量删除</Button>
           </div>
-          <QuestionList cref={QuestionRef} hasCheckbox={true} childList={childList}></QuestionList>
+          <QuestionList
+            cref={QuestionRef}
+            hasCheckbox={true}
+            childList={childList}
+            searchText={searchText}
+            heightSelect={value}
+            isRecycle={1}
+          ></QuestionList>
         </div>
       </div>
     </div>

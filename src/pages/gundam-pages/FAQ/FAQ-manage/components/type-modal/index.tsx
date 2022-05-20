@@ -48,7 +48,7 @@ const TypeModal = (props: any) => {
         }
       } else if (type === 'edit') {
         let data: any = {
-          parentId: tmpObj.current.node?.parent,
+          parentId: tmpObj.current.node?.parent?.key || tmpObj.current.node?.parent,
           id: tmpObj.current.node?.key,
           name: res.typeName,
         };
@@ -72,6 +72,8 @@ const TypeModal = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     openModal: (obj: any) => {
+      console.log(obj);
+
       tmpObj.current.node = obj.node;
       tmpObj.current.callback = obj.callback;
       setType(obj.type || 'create');
