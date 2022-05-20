@@ -32,8 +32,9 @@ const EditBoard: React.FC<any> = (prop: any) => {
   };
 
   const editorConfig: Partial<IEditorConfig> = {
-    placeholder: '请输入内容...',
+    placeholder: '请输入内容...  限制2000字',
     MENU_CONF: {},
+    maxLength: 2000,
   };
   // 上传图片的配置
   (editorConfig.MENU_CONF as any)['uploadImage'] = {

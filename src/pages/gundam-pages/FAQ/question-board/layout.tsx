@@ -296,7 +296,7 @@ const Board: React.FC<any> = (props: any) => {
               rules={[{ message: '请输入问题名称', required: true }]}
               style={{ width: '600px' }}
             >
-              <Input placeholder={'请输入问题名称'} autoComplete="off" />
+              <Input placeholder={'请输入问题名称'} autoComplete="off" maxLength={200} />
             </Form.Item>
 
             <Form.Item

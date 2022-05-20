@@ -178,6 +178,7 @@ const Board: React.FC<any> = (props: any) => {
               <Input
                 placeholder={'请输入问题名称'}
                 autoComplete="off"
+                maxLength={200}
                 disabled={pageType === 'edit'}
               />
             </Form.Item>
