@@ -42,7 +42,7 @@ const EditBoard: React.FC<any> = (prop: any) => {
     // 最多可上传几个文件，默认为 100
     maxNumberOfFiles: 1,
     // 单个文件的最大体积限制，默认为 2M
-    maxFileSize: 4 * 1024 * 1024, // 4M
+    maxFileSize: 5 * 1024 * 1024, // 5M
     // 上传地址
     server: config.UPLOAD_FILE,
     fieldName: 'file',
@@ -57,6 +57,16 @@ const EditBoard: React.FC<any> = (prop: any) => {
 
       // 从 res 中找到 url alt href ，然后插图图片
       insertFn?.(path, urlId, '');
+    },
+    // 单个文件上传失败
+    onFailed(file: File, res: any) {
+      message.warning(`${file.name} 上传失败`);
+      console.log(`${file.name} 上传失败`, res);
+    },
+    // 上传错误，或者触发 timeout 超时
+    onError(file: File, err: any, res: any) {
+      message.warning(`${file.name} 上传出错, 限制大小为5MB的图片`);
+      console.log(`${file.name} 上传出错`, err, res);
     },
   };
 
@@ -81,6 +91,16 @@ const EditBoard: React.FC<any> = (prop: any) => {
       let path = config.GET_VIDEO_URL + urlId + '&type=video';
       // 从 res 中找到 url alt href ，然后插图图片
       insertFn?.(path);
+    },
+    // 单个文件上传失败
+    onFailed(file: File, res: any) {
+      message.warning(`${file.name} 上传失败`);
+      console.log(`${file.name} 上传失败`, res);
+    },
+    // 上传错误，或者触发 timeout 超时
+    onError(file: File, err: any, res: any) {
+      message.warning(`${file.name} 上传出错, 限制大小为50MB的视频`);
+      console.log(`${file.name} 上传出错`, err, res);
     },
   };
 
