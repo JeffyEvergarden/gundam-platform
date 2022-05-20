@@ -18,10 +18,10 @@ export async function editQuestion(data?: Record<string, any>) {
   });
 }
 
-export async function getQuestionInfo(params?: Record<string, any>) {
+export async function getQuestionInfo(data?: Record<string, any>) {
   return request(`${baseUrl}/robot/faq/robotFaqInfo`, {
-    method: 'GET',
-    params,
+    method: 'POST',
+    data,
   });
 }
 
