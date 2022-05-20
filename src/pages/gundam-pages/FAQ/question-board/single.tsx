@@ -97,6 +97,7 @@ const Board: React.FC<any> = (props: any) => {
     let res: any = await getAnswerInfo({
       robotId: id, // 机器人id
       faqId: questionId, // 问题id
+      answerId: answerId,
     });
     if (res) {
       res = processAnswerBody(res);
