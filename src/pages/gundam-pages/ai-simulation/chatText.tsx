@@ -82,7 +82,7 @@ export default (props: any) => {
     }
     if (info.robotType === 1) {
       //语音机器人
-      params.actionType = 'sound';
+      params.actionType = 'text';
       res = await soundRobotDialogue(params);
     }
 

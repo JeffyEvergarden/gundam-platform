@@ -100,6 +100,8 @@ export default () => {
       let params = {
         robotId: tableInfo.robotId,
         corpusText: inputValue,
+        intentId: tableInfo.id,
+        intentName: tableInfo.intentName,
       };
       let res = await checkIntent(params);
       if (res.resultCode === config.successCode) {
@@ -121,7 +123,7 @@ export default () => {
   const intentCorpusAdd = async () => {
     let addParams = {
       robotId: tableInfo.robotId,
-      intendId: tableInfo.id,
+      intentId: tableInfo.id,
       corpusText: inputValue,
     };
     let resAdd = await intentAdd(addParams);

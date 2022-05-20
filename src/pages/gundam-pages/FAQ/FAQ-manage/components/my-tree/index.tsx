@@ -22,6 +22,7 @@ interface TreeProps {
   edit?: boolean;
   openEditModal?: (...args: any) => void;
   openAddModal?: (...args: any) => void;
+  size?: string;
 }
 
 const { DirectoryTree } = Tree;
@@ -60,6 +61,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
     draggable,
     deleteApi = () => true,
     edit = true,
+    size,
   } = props;
 
   const { deleteLeaf } = useTreeModal();
@@ -318,7 +320,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
   };
 
   return (
-    <div className={style['faq-tree']}>
+    <div className={`${style['faq-tree']} ${size === 'sm' ? style['faq-tree_sm'] : ''}`}>
       <Condition r-if={query?.test}>
         <div className={style['test-box']}>
           <Button type="primary" onClick={onClick}>

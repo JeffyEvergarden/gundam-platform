@@ -254,7 +254,13 @@ const SelectorModal: React.FC<any> = (props: any) => {
         <TabPane tab="问题" key="1">
           <div className={style['zy-row']}>
             <div className={style['page_left']}>
-              <MyTree draggable={false} onChange={onSelect} data={treeData} edit={false} />
+              <MyTree
+                draggable={false}
+                onChange={onSelect}
+                data={treeData}
+                edit={false}
+                size="sm"
+              />
             </div>
 
             <div className={style['page_content']}>

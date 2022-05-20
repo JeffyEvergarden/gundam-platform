@@ -2,6 +2,7 @@ import { useState } from 'react';
 import {
   intentRulePageList,
   slotList,
+  featureListAll,
   intentFeaturePageList,
   addRule,
   intentRuleEdit,
@@ -83,6 +84,13 @@ export const useRuleModule = () => {
     return res;
   };
 
+  const getFeatureListAll = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await featureListAll(params);
+    setTableLoading(false);
+    return res;
+  };
+
   const getFeatureList = async (params?: any) => {
     setTableLoading(true);
     let res: any = await intentFeaturePageList(params);
@@ -147,6 +155,7 @@ export const useRuleModule = () => {
     deleteRule,
     moveRule,
     getFeatureList,
+    getFeatureListAll,
     delFeatures,
     featuresAdd,
     featureEdit,
