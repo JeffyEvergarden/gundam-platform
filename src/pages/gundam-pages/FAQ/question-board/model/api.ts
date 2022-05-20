@@ -52,3 +52,10 @@ export async function getAnswerInfo(params?: Record<string, any>) {
     params,
   });
 }
+
+export async function getFaqConfig(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/config/list`, {
+    method: 'GET',
+    params,
+  });
+}

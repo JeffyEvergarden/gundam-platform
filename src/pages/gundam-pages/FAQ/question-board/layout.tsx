@@ -76,7 +76,8 @@ const Board: React.FC<any> = (props: any) => {
     treeData: model.treeData,
   }));
 
-  const { addNewQuestion, updateQuestion, getQuestionInfo } = useQuestionModel();
+  const { maxRecommendLength, addNewQuestion, updateQuestion, getQuestionInfo, getFaqConfig } =
+    useQuestionModel();
 
   // 分类列表
   const typeList = useMemo(() => {
@@ -108,6 +109,7 @@ const Board: React.FC<any> = (props: any) => {
   useEffect(() => {
     getFlowList(info.id);
     getTreeData(info.id);
+    getFaqConfig(info.id);
     if (pageType === 'edit') {
       getInfo(info.id);
     } else {
@@ -458,6 +460,10 @@ const Board: React.FC<any> = (props: any) => {
                 const addNew = () => {
                   let length = fields.length;
                   // console.log(length);
+                  if (length >= maxRecommendLength) {
+                    message.warning('推荐设置不能超过faq全局配置限制数量');
+                    return;
+                  }
                   add(
                     {
                       recommendBizType: null,
