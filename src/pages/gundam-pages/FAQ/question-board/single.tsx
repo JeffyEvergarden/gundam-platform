@@ -130,6 +130,7 @@ const Board: React.FC<any> = (props: any) => {
     if (pageType === 'create') {
       let data: any = {
         robotId: info.id,
+        faqId: questionId,
         ...res,
       };
       let response = await addNewAnswer(data);
@@ -142,6 +143,7 @@ const Board: React.FC<any> = (props: any) => {
         ...res,
         faqId: questionId,
         robotId: info.id,
+        answerId: answerId,
       };
       let response = await updateAnswer(data);
       if (response === true) {
