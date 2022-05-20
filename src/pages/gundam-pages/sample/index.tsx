@@ -157,7 +157,7 @@ export default () => {
   const save = async (value: any) => {
     let params: any = {
       id: modalData.id,
-      intentId: value.preIntent,
+      intentId: value.nextIntent,
       corpusText: value.corpusText,
     };
     let res = await intentEdit(params);
