@@ -35,6 +35,10 @@ export default (props: any) => {
   const [tableData, setTableData] = useState<any>([]);
   const [tableProps, setTableProps] = useState<any>({});
 
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
+
   useEffect(() => {
     let historyData = history?.location || {};
     setTableProps(historyData?.state?.info);
@@ -77,7 +81,7 @@ export default (props: any) => {
     setRuleData({
       intentRuleName: '',
       threshold: 0.7,
-      robotIntentRuleDetailList: [{ fragment: '', orderNumber: null, required: '是' }],
+      robotIntentRuleDetailList: [{ fragment: '', orderNumber: null, required: 1 }],
     });
   };
 
@@ -170,6 +174,7 @@ export default (props: any) => {
     if (pageTypeFeature === 'add') {
       let params = {
         intentId: tableProps?.id,
+        robotId: info?.id,
         ...values,
       };
       res = await featuresAdd(params);
@@ -194,10 +199,10 @@ export default (props: any) => {
   };
 
   const deleteFeatures = async (payload: any) => {
-    let res = await delFeatures({ id: payload.id });
+    let res = await delFeatures({ id: payload.id, intentId: payload.id, key: payload.key });
     if (res.resultCode === config.successCode) {
       message.success(res?.resultDesc || '成功');
-      actionRef?.current?.reload();
+      actionRefFeature?.current?.reload();
     } else {
       message.error(res?.resultDesc || '失败');
     }

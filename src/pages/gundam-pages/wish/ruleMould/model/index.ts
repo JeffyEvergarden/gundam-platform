@@ -38,6 +38,7 @@ export const useRuleModule = () => {
   const getRuleList = async (params?: any) => {
     setTableLoading(true);
     let res: any = await intentRulePageList(params);
+    debugger;
     let tempArr: any = [];
 
     res?.data?.list?.map((item: any, index: any) => {

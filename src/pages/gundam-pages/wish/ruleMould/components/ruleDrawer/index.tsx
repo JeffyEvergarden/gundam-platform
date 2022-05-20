@@ -173,12 +173,17 @@ export default (props: any) => {
                     <MinusCircleOutlined onClick={() => remove(field.name)} />
                   </span>
                   <span className={styles.isNeed}>
-                    <Form.Item label={''} name={[field.name, 'required']} initialValue={'是'}>
+                    <Form.Item
+                      label={''}
+                      name={[field.name, 'required']}
+                      initialValue={'是'}
+                      rules={[{ required: true, message: '请选择是否匹配' }]}
+                    >
                       <Select>
-                        <Option key={'是'} value={'是'}>
+                        <Option key={1} value={1}>
                           是
                         </Option>
-                        <Option key={'否'} value={'否'}>
+                        <Option key={0} value={0}>
                           否
                         </Option>
                       </Select>
@@ -206,7 +211,7 @@ export default (props: any) => {
                     <Form.Item
                       label=""
                       name={[field.name, 'orderNumber']}
-                      // rules={[{ required: false, message: '请输入规则片段' }]}
+                      rules={[{ required: true, message: '请输入排序' }]}
                     >
                       <InputNumber min={0} step={1} precision={0} />
                     </Form.Item>
