@@ -451,13 +451,15 @@ const QuestionList: React.FC<any> = (props: any) => {
                                     <span>
                                       生效渠道：
                                       <Button type="link" onClick={openChannel}>
-                                        {v?.channelList
-                                          ?.map((cl: any) => {
-                                            return HIGH_CONFIG_SELECT?.[0]?.children?.find(
-                                              (c) => c.name == cl,
-                                            )?.label;
-                                          })
-                                          ?.join(' , ')}
+                                        {v?.channelList &&
+                                          v?.channelList
+                                            ?.map((cl: any) => {
+                                              return HIGH_CONFIG_SELECT?.[0]?.children?.find(
+                                                (c: any) => c.name == cl,
+                                              )?.label;
+                                            })
+                                            ?.join(' , ')}
+                                        {!v?.channelList && '全部'}
                                       </Button>
                                     </span>
                                   </div>
