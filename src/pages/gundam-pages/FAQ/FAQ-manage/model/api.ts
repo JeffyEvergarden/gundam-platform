@@ -5,10 +5,10 @@ import config from '@/config/index';
 const baseUrl: string = config.basePath;
 
 /** 获取所有问答列表 **/
-export async function getQuestionList(params?: Record<string, any>) {
+export async function getQuestionList(data?: Record<string, any>) {
   return request(`${baseUrl}/robot/faq/robotFaqPageList`, {
-    method: 'GET',
-    params,
+    method: 'POST',
+    data,
   });
 }
 

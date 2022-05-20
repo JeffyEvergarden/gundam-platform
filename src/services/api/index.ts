@@ -95,3 +95,11 @@ export async function queryTreeList(params?: Record<string, any>) {
     params,
   });
 }
+
+//faq用户信息
+export async function queryCreateUser(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/listCreateUser`, {
+    method: 'GET',
+    params,
+  });
+}

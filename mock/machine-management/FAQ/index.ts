@@ -158,10 +158,19 @@ const getTreeList = (req: any, res: any) => {
   });
 };
 
+const getCreateUser = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    resultDesc: '成功',
+    success: true,
+    data: ['jiangjiahao', 'laingjianhui', 'duanjianguo'],
+  });
+};
+
 export default {
   'GET /aichat/robot/faq/list': getFaqList, // 获取问答列表
 
-  'GET /aichat/robot/faq/robotFaqPageList': getFaqList, // 获取问答列表
+  'POST /aichat/robot/faq/robotFaqPageList': getFaqList, // 获取问答列表
   'POST /aichat/robot/faq/robotFaqDelete': normalDeal, // 删除问题
   'GET /aichat/robot/faqImport/listPage': getImportList, // 获取批量导入列表
 
@@ -169,4 +178,6 @@ export default {
   'POST /aichat/robot/faq/typeAdd': normalDeal, // 添加分类节点
   'POST /aichat/robot/faq/typeEdit': normalDeal, // 编辑分类节点
   'POST /aichat/robot/faq/typeDelete': normalDeal, // 删除分类节点
+
+  'GET /aichat/robot/faq/listCreateUser': getCreateUser, //获取用户
 };
