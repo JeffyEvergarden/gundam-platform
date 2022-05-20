@@ -160,7 +160,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     },
     getCheckboxProps: (record: any) => {
       return {
-        disabled: disabledQuestionKeys.includes(record.name),
+        disabled: disabledQuestionKeys.includes(record.id),
         name: record.name,
       };
     },
@@ -232,7 +232,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       if (list.length > 0) {
         confirm?.({
           recommendBizType: activeKey,
-          ecommendId: selectedQuestionKeys[0],
+          recommendId: selectedQuestionKeys[0],
           recommend: list[0],
         });
       }

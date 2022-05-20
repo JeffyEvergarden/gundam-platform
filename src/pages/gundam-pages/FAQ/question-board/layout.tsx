@@ -214,6 +214,11 @@ const Board: React.FC<any> = (props: any) => {
         return item.recommendBizType === '2' && item.recommendId && i !== index;
       })
       .map((item: any) => item.recommendId);
+
+    console.log(disabledQuestionKeys, disabledFlowKeys);
+    if (questionId) {
+      disabledQuestionKeys.push(questionId);
+    }
     let openInfo: any = {
       showFlow: true,
       info: _list[index],
@@ -237,6 +242,7 @@ const Board: React.FC<any> = (props: any) => {
           item.recommendBizType === obj.recommendBizType
         );
       });
+      console.log(repeatFlag, index, obj, _list[repeatFlag]);
       if (repeatFlag > -1) {
         message.warning('已添加过重复');
         return;
@@ -459,7 +465,7 @@ const Board: React.FC<any> = (props: any) => {
               {(fields, { add, remove }) => {
                 const addNew = () => {
                   let length = fields.length;
-                  // console.log(length);
+                  console.log(length);
                   if (length >= maxRecommendLength) {
                     message.warning('推荐设置不能超过faq全局配置限制数量');
                     return;

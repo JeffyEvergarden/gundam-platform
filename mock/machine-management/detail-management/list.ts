@@ -12,8 +12,8 @@ const editConfig = (req: any, res: any) => {
 
 const getConfig = (req: any, res: any) => {
   console.log(req.query);
-
-  if (req.query.configType == 2) {
+  console.log('---------');
+  if (req.query.configType == '2') {
     res.json({
       resultCode: successCode,
       requestId: 'xx',
@@ -23,12 +23,12 @@ const getConfig = (req: any, res: any) => {
         {
           id: '1',
           configType: 0,
-          configName: 'thresholdGap',
-          configValue: '1.0',
+          configName: 'FAQ_RECOMMEND_LIMIT',
+          configValue: '3',
           configDesc: 'var1',
-          configKey: 'THRESHOLD_GAP',
+          configKey: 'FAQ_RECOMMEND_LIMIT',
           robotId: '00000',
-          creator: 'ujiangjiahao',
+          creator: 'jeffy',
           createTime: '2022-04-11 17:16:00',
           updateTime: '2022-04-11 17:16:00',
           dataStatus: 0, //
