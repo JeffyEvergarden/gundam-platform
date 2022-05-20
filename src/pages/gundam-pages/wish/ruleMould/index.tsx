@@ -108,7 +108,7 @@ export default (props: any) => {
       intentId: tableProps?.id,
       intentRuleName: values?.intentRuleName,
       threshold: values?.threshold,
-      robotIntentRuleDetailAddRequests: values?.ruleClips,
+      robotIntentRuleDetailRequests: values?.ruleClips,
     };
     let res;
     if (pageTypeRule === 'add') {
@@ -138,11 +138,17 @@ export default (props: any) => {
   };
 
   const move = async (row: any, type: boolean) => {
+    let num = null;
+    tableData.map((item: any) => {
+      if (item.id === row.idFather) {
+        num = item.orderNumber;
+      }
+    });
     let params = {
       id: row?.intentRuleId,
       intentId: tableProps?.id,
       robotId: row?.robotId,
-      orderNumber: row?.orderNumber,
+      orderNumber: num,
       move: type,
     };
     let res = await moveRule(params);
