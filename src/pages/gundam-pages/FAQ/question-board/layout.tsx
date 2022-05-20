@@ -466,10 +466,10 @@ const Board: React.FC<any> = (props: any) => {
                 const addNew = () => {
                   let length = fields.length;
                   console.log(length);
-                  // if (length >= maxRecommendLength) {
-                  //   message.warning('推荐设置不能超过faq全局配置限制数量');
-                  //   return;
-                  // }
+                  if (length >= maxRecommendLength) {
+                    message.warning('推荐设置不能超过faq全局配置限制数量');
+                    return;
+                  }
                   add(
                     {
                       recommendBizType: null,
