@@ -179,7 +179,7 @@ const QuestionList: React.FC<any> = (props: any) => {
   const editAnswer = (Q: any, A: any) => {
     console.log(Q);
     console.log(A);
-    history.push(`/gundamPages/faq/answer?faqId=${Q.id}&answerId=${A.id}`);
+    history.push(`/gundamPages/faq/answer?faqId=${Q.id}&answerId=${A.answerId}`);
   };
 
   const _deleteAnswer = (A: any) => {
