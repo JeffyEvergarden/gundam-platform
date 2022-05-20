@@ -56,9 +56,6 @@ const HighConfigSelect = (props: HighConfigProps) => {
             } else {
               _val = [name];
             }
-            if (!name) {
-              _val = null;
-            }
           } else if (type === 'multi') {
             _val = Array.isArray(_val) ? _val : [];
 
@@ -128,9 +125,9 @@ const HighConfigSelect = (props: HighConfigProps) => {
           type="link"
           onClick={() => {
             onChange({
-              channelList: null,
-              approvalStatusList: null,
-              orderType: null,
+              channelList: ['all'],
+              approvalStatusList: [0],
+              orderType: 0,
               creatorList: null,
             });
           }}

@@ -32,9 +32,9 @@ const FAQPage: React.FC<any> = (props: any) => {
   }));
 
   const [value, setValue] = useState<any>({
-    channelList: null,
-    approvalStatusList: null,
-    orderType: null,
+    channelList: ['all'],
+    approvalStatusList: [0],
+    orderType: 0,
     creatorList: null,
   });
   const [queryType, setQueryType] = useState<any>(0);
