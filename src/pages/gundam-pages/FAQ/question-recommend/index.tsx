@@ -11,6 +11,7 @@ const { Panel } = Collapse;
 const { Option } = Select;
 
 const RecommendPage: React.FC<any> = (props: any) => {
+  const query: any = history.location.query;
   const [form] = Form.useForm();
   const layout = {
     labelCol: { span: 2 },
@@ -37,6 +38,7 @@ const RecommendPage: React.FC<any> = (props: any) => {
   const editRecommend = async (params: any) => {
     let reqData = {
       robotId: info.id,
+      faqTypeId: query?.faqId,
       ...params,
     };
     await editQuestion(reqData).then((res) => {
@@ -72,9 +74,9 @@ const RecommendPage: React.FC<any> = (props: any) => {
       <div className={style['label']}>
         <Form form={form} labelAlign={'right'} labelCol={{ span: 2 }} wrapperCol={{ span: 20 }}>
           <Form.Item label="标准问:" style={{ marginTop: '24px' }}>
-            xxxx
+            {query?.question}
           </Form.Item>
-          <Recommend form={form} />
+          <Recommend form={form} faqTypeId={query?.faqId} />
         </Form>
         <div className={style['board-btn']}>
           <Button type="primary" onClick={save}>
