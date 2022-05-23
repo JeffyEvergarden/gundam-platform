@@ -46,10 +46,10 @@ export async function deleteAnswer(data?: Record<string, any>) {
   });
 }
 
-export async function getAnswerInfo(params?: Record<string, any>) {
+export async function getAnswerInfo(data?: Record<string, any>) {
   return request(`${baseUrl}/robot/faq/answerInfo`, {
-    method: 'GET',
-    params,
+    method: 'POST',
+    data,
   });
 }
 
