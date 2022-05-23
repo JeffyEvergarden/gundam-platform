@@ -81,8 +81,6 @@ export const useTreeModal = () => {
 
       return obj;
     });
-    console.log(arr);
-
     setChildList(arr);
     return _data;
   };

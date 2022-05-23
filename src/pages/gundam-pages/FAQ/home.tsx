@@ -1,29 +1,68 @@
-import MyButtonMenu from './components/div-editor-button/uploadButton';
-import MyModalMenu from './components/div-editor-button/modalButton';
-import { Boot } from '@wangeditor/editor';
-export const menu1Conf = {
-  key: 'uploadOursFile', // menu key ，唯一。注册之后，可配置到工具栏
-  factory() {
-    return new MyButtonMenu('uploadOursFile');
-  },
+import Switch from '@/components/Route/Switch';
+import Route from '@/components/Route';
+import FAQManage from './FAQ-manage';
+import QuestionBoardLayout from './question-board/layout';
+import QuestionBoardSingle from './question-board/single';
+import QuestionRecycle from './question-recycle';
+import QuestionImport from './question-import';
+import QuestionRecommend from './question-recommend';
+import KeepAlive, { AliveScope } from 'react-activation';
+import { history, useLocation } from 'umi';
+
+const KeepAliveFAQManage = () => {
+  return (
+    <KeepAlive>
+      <FAQManage />
+    </KeepAlive>
+  );
 };
 
-export const menu2Conf = {
-  key: 'openRelationModal', // menu key ，唯一。注册之后，可配置到工具栏
-  factory() {
-    return new MyModalMenu('openRelationModal');
+const pathList = [
+  {
+    path: '/gundamPages/faq/main',
+    component: KeepAliveFAQManage,
+    name: 'FAQ管理',
   },
-};
-
-if (!(window as any).hadRegisterMenu) {
-  console.log('执行注册');
-  Boot.registerMenu(menu1Conf);
-  Boot.registerMenu(menu2Conf);
-  (window as any).hadRegisterMenu = true;
-}
+  {
+    path: '/gundamPages/faq/board',
+    component: QuestionBoardLayout,
+    name: '编辑面板',
+  },
+  {
+    path: '/gundamPages/faq/answer',
+    component: QuestionBoardSingle,
+    name: '编辑面板',
+  },
+  {
+    path: '/gundamPages/faq/recycle',
+    component: QuestionRecycle,
+    name: '问题回收站',
+  },
+  {
+    path: '/gundamPages/faq/import',
+    component: QuestionImport,
+    name: '问题批量导入',
+  },
+  {
+    path: '/gundamPages/faq/recommend',
+    component: QuestionRecommend,
+    name: '推荐问',
+  },
+];
 
 const FAQPagesHome = (props: any) => {
-  return <div style={{ width: '100%', height: '100%' }}>{props.children}</div>;
+  const location = useLocation();
+
+  return (
+    <AliveScope>
+      <div style={{ width: '100%', height: '100%' }}>
+        {pathList &&
+          pathList.map((item: any) => {
+            return <Route path={item.path} component={item.component} />;
+          })}
+      </div>
+    </AliveScope>
+  );
 };
 
 export default FAQPagesHome;

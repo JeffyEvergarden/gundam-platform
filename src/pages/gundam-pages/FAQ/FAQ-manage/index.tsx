@@ -88,9 +88,6 @@ const FAQPage: React.FC<any> = (props: any) => {
     getCreateUser(info.id);
     // getFaqList({ pageNo: 1 });
   }, []);
-  useEffect(() => {
-    console.log(userList);
-  }, [userList]);
 
   const _getMoreFaqList = async () => {
     console.log(faqList.length, totalSize, faqList.length < totalSize);
@@ -117,9 +114,6 @@ const FAQPage: React.FC<any> = (props: any) => {
   };
 
   const onEnter = (e: any) => {
-    console.log(e.target.value);
-    console.log(queryType);
-
     QuestionRef?.current?.CurrentPage({});
   };
 
