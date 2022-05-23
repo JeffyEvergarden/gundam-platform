@@ -239,7 +239,7 @@ export default (props: any) => {
           <div className={styles.slotList}>
             {slotList?.map((item: any) => {
               return (
-                <span key={item.id} onClick={() => insetWordTemp(item.slotName, 'slot')}>
+                <span key={item.id} onClick={() => insetWordTemp(item.slot, 'slot')}>
                   {item.slotName}
                 </span>
               );
@@ -251,7 +251,7 @@ export default (props: any) => {
           <div className={styles.slotList}>
             {featureList?.map((item: any) => {
               return (
-                <span key={item.key} onClick={() => insetWordTemp(item.name, 'feature')}>
+                <span key={item.key} onClick={() => insetWordTemp(item.key, 'feature')}>
                   {item.name}
                 </span>
               );
