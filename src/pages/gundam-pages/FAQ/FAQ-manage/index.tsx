@@ -35,7 +35,7 @@ const FAQPage: React.FC<any> = (props: any) => {
   });
   const [queryType, setQueryType] = useState<any>(0);
   const [searchText, setSearchText] = useState<any>('');
-  const [selectTree, setSelectTree] = useState<any>(sessionStorage.getItem('selectTree'));
+  const [selectTree, setSelectTree] = useState<any>(sessionStorage.getItem('selectTree') || '');
 
   const onSelect = (val: any, opt: any) => {
     console.log('选择树形组件:' + val);
@@ -89,21 +89,9 @@ const FAQPage: React.FC<any> = (props: any) => {
   };
 
   useEffect(() => {
-    let st: any = sessionStorage.getItem('selectTree');
     getTree();
     getCreateUser(info.id);
-    if (st) {
-      setSelectTree(st);
-    } else {
-      setSelectTree('');
-    }
-    console.log(st);
-
-    // getFaqList({ pageNo: 1 });
   }, []);
-  useEffect(() => {
-    console.log(userList);
-  }, [userList]);
 
   const _getMoreFaqList = async () => {
     console.log(faqList.length, totalSize, faqList.length < totalSize);
