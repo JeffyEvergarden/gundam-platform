@@ -31,7 +31,7 @@ export async function intentSame(data?: Record<string, any>) {
 }
 
 export async function similarSame(data?: Record<string, any>) {
-  return request(`${baseUrl}/robot/intent/faqSimilarCheck`, {
+  return request(`${baseUrl}/robot/faq/faqSimilarCheck`, {
     method: 'POST',
     data,
   });
