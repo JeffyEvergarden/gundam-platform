@@ -3,6 +3,8 @@
   :global {
     .ant-tree-node-content-wrapper {
       display: flex;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .ant-tree-title {
@@ -45,7 +47,8 @@
 
   .tree-node {
     display: flex;
-    flex: 1;
+    flex: 1 1 auto;
+    flex-wrap: nowrap;
 
     .label {
       flex: 1 1 auto;
@@ -61,6 +64,7 @@
     .edit-layout {
       display: none;
       flex-shrink: 0;
+      width: auto;
     }
   }
 }

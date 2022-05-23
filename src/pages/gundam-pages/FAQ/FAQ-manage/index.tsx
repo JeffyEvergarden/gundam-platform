@@ -131,21 +131,22 @@ const FAQPage: React.FC<any> = (props: any) => {
             </Button>
 
             <Button
-              type="primary"
-              onClick={() => {
-                history.push('/gundamPages/faq/recycle');
-              }}
-            >
-              问题回收站
-            </Button>
-
-            <Button
-              type="primary"
+              // type="primary"
+              style={{ border: 0 }}
               onClick={() => {
                 history.push('/gundamPages/faq/import');
               }}
             >
               批量导入
+            </Button>
+            <Button
+              // type="primary"
+              style={{ border: 0 }}
+              onClick={() => {
+                history.push('/gundamPages/faq/recycle');
+              }}
+            >
+              问题回收站
             </Button>
           </Space>
         </div>
@@ -153,19 +154,26 @@ const FAQPage: React.FC<any> = (props: any) => {
         <div className={style['page_top__right']}>
           <Space>
             <Input.Group compact>
-              <Input
-                style={{ width: '280px' }}
+              <Select
+                // size="small"
+                defaultValue={0}
+                onChange={setQueryType}
+                style={{ backgroundColor: '#fff' }}
+                bordered={false}
+              >
+                <Option value={0}>问题</Option>
+                <Option value={1}>答案</Option>
+                <Option value={2}>标签</Option>
+              </Select>
+              <Input.Search
+                bordered={false}
+                style={{ width: '280px', backgroundColor: '#fff', borderColor: '#fff' }}
                 onChange={(e: any) => {
                   setSearchText(e.target.value);
                 }}
                 onPressEnter={onEnter}
                 placeholder={'请输入'}
               />
-              <Select defaultValue={0} onChange={setQueryType}>
-                <Option value={0}>问题</Option>
-                <Option value={1}>答案</Option>
-                <Option value={2}>标签</Option>
-              </Select>
             </Input.Group>
           </Space>
         </div>
@@ -193,11 +201,7 @@ const FAQPage: React.FC<any> = (props: any) => {
         <div className={style['main-content']}>
           <div className={style['high-config-select']}>
             <Collapse expandIconPosition="right">
-              <Panel
-                header={<div className={style['title_sp']}>问答列表</div>}
-                key="1"
-                extra={'高级筛选'}
-              >
+              <Panel header={<div>问答列表</div>} key="1" extra={'高级筛选'} style={{ border: 0 }}>
                 <HighConfigSelect value={value} onChange={changeHighConfig} />
               </Panel>
             </Collapse>

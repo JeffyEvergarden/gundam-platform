@@ -32,7 +32,7 @@ import { deleteQuestion } from '../../FAQ-manage/model/api';
 import config from '@/config';
 import Condition from '@/pages/gundam-pages/main-draw/flow/common/Condition';
 import ClassifyModal from '../classify-modal';
-import { deleteAnswer, editQuestion } from '../../question-board/model/api';
+import { deleteAnswer, editQuestion, editAnswer } from '../../question-board/model/api';
 import { CHANNAL_LIST } from '../../question-board/test';
 import { HIGH_CONFIG_SELECT } from '../../FAQ-manage/const';
 import KeepAlive, { useActivate, useUnactivate } from 'react-activation';
@@ -207,16 +207,23 @@ const QuestionList: React.FC<any> = (props: any) => {
     history.push(`/gundamPages/faq/answer?faqId=${item.id}`);
   };
 
-  const editAnswer = (Q: any, A: any) => {
+  const _editAnswer = (Q: any, A: any) => {
     // console.log(Q);
     // console.log(A);
     history.push(`/gundamPages/faq/answer?faqId=${Q.id}&answerId=${A.answerId}`);
   };
 
-  const _deleteAnswer = (A: any) => {
+  const _deleteAnswer = async (A: any) => {
     // console.log(A);
 
-    deleteAnswer({ id: A.id });
+    await deleteAnswer({ id: A.answerId }).then((res) => {
+      if (res.resultCode == config.successCode) {
+        message.success(res.resultDesc);
+      } else {
+        message.error(res.resultDesc);
+      }
+      CurrentPage();
+    });
   };
 
   //获取问题列表
@@ -261,6 +268,25 @@ const QuestionList: React.FC<any> = (props: any) => {
       ...params,
     };
     await editQuestion(reqData).then((res) => {
+      if (res.resultCode == config.successCode) {
+        message.success(res.resultDesc);
+        CurrentPage();
+        return true;
+      } else {
+        message.error(res.resultDesc);
+        CurrentPage();
+        return false;
+      }
+    });
+  };
+
+  const editA = async (params: any) => {
+    let reqData = {
+      robotId: info.id,
+      ...params,
+    };
+    console.log(reqData);
+    await editAnswer(reqData).then((res) => {
       if (res.resultCode == config.successCode) {
         message.success(res.resultDesc);
         CurrentPage();
@@ -450,13 +476,20 @@ const QuestionList: React.FC<any> = (props: any) => {
                                 <div className={style['box-top']}>
                                   {!hasCheckbox && (
                                     <Badge
-                                      status={status[item.approvalStatus]}
+                                      status={status[v.approvalStatus]}
                                       text={
                                         <Select
                                           size="small"
-                                          defaultValue={item.approvalStatus}
+                                          defaultValue={v.approvalStatus}
                                           style={{ width: 100, padding: 0 }}
                                           bordered={false}
+                                          onChange={(val: any) => {
+                                            editA({
+                                              answerId: v.answerId,
+                                              approvalStatus: val,
+                                              faqId: item.id,
+                                            });
+                                          }}
                                         >
                                           {statusList.map((val: any) => {
                                             return (
@@ -477,7 +510,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                                       type="link"
                                       style={{ marginRight: '10px', color: 'rgba(0,0,0,0.45)' }}
                                       onClick={() => {
-                                        editAnswer(item, v);
+                                        _editAnswer(item, v);
                                       }}
                                     ></Button>
 
@@ -516,7 +549,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                                       <Button
                                         type="link"
                                         onClick={() => {
-                                          editAnswer(item, v);
+                                          _editAnswer(item, v);
                                         }}
                                       >
                                         {v?.channelList &&
