@@ -70,7 +70,7 @@ export default () => {
       let params = {
         page: payload.current,
         pageSize: payload.pageSize,
-        similarText: tableInfo?.question,
+        // similarText: tableInfo?.question,
         faqId: tableInfo?.id,
         robotId: info.id,
       };
