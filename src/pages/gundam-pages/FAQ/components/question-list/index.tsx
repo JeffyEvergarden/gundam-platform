@@ -35,6 +35,7 @@ import ClassifyModal from '../classify-modal';
 import { deleteAnswer, editQuestion } from '../../question-board/model/api';
 import { CHANNAL_LIST } from '../../question-board/test';
 import { HIGH_CONFIG_SELECT } from '../../FAQ-manage/const';
+import KeepAlive, { useActivate, useUnactivate } from 'react-activation';
 
 const { Option } = Select;
 
@@ -220,7 +221,7 @@ const QuestionList: React.FC<any> = (props: any) => {
 
   //获取问题列表
   const CurrentPage = async (obj?: any) => {
-    let selectTree = sessionStorage.getItem('selectTree');
+    // let selectTree = sessionStorage.getItem('selectTree');
     // console.log(obj);
     let params = {
       page: 1,
@@ -273,9 +274,13 @@ const QuestionList: React.FC<any> = (props: any) => {
   };
 
   useEffect(() => {
-    CurrentPage({ faqTypeList: selectTree });
+    CurrentPage();
     // console.log(selectTree);
   }, [selectTree]);
+
+  useActivate(() => {
+    CurrentPage();
+  });
 
   return (
     <div className={style['box']}>
@@ -406,7 +411,9 @@ const QuestionList: React.FC<any> = (props: any) => {
                           <Button
                             type="link"
                             onClick={() => {
-                              history.push('/gundamPages/faq/recommend');
+                              history.push(
+                                `/gundamPages/faq/recommend?faqId=${item.id}&question=${item.question}`,
+                              );
                             }}
                           >
                             推荐问设置

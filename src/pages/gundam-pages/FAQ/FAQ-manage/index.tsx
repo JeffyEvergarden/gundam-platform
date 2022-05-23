@@ -41,7 +41,7 @@ const FAQPage: React.FC<any> = (props: any) => {
     // console.log('选择树形组件:' + val);
     if (val[0]) {
       setSelectTree(val[0]);
-      sessionStorage.setItem('selectTree', val[0]);
+      // sessionStorage.setItem('selectTree', val[0]);
     }
     // QuestionRef?.current?.CurrentPage({ faqTypeId: val });
   };
