@@ -82,8 +82,10 @@ const Board: React.FC<any> = (props: any) => {
   // 分类列表
   const typeList = useMemo(() => {
     let _data: any = processTreeData(treeData);
+    // console.log('typeList: --------------');
+    // console.log(_data);
     const firstChildren: any = _data?.[0]?.children;
-    if (firstChildren?.children === 0) {
+    if (firstChildren?.length === 0) {
       return [];
     }
     return _data;
