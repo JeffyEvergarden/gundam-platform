@@ -37,8 +37,9 @@ const RecommendPage: React.FC<any> = (props: any) => {
 
   const editRecommend = async (params: any) => {
     let reqData = {
+      id: query?.faqId,
       robotId: info.id,
-      faqTypeId: query?.faqId,
+      faqTypeId: query?.treeId,
       ...params,
     };
     await editQuestion(reqData).then((res) => {
