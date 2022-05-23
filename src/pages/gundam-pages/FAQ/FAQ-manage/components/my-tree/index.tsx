@@ -277,7 +277,9 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
 
     return (
       <div className={style['tree-node']}>
-        <div className={style['label']}>{nodeData.title}</div>
+        <div className={style['label']}>
+          <div>{nodeData.title}</div>
+        </div>
         <Condition r-if={edit}>
           <div className={style['edit-layout']} style={def()}>
             {extra}
