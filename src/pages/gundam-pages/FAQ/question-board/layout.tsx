@@ -81,7 +81,11 @@ const Board: React.FC<any> = (props: any) => {
 
   // 分类列表
   const typeList = useMemo(() => {
-    let _data = processTreeData(treeData);
+    let _data: any = processTreeData(treeData);
+    const firstChildren: any = _data?.[0]?.children;
+    if (firstChildren?.children === 0) {
+      return [];
+    }
     return _data;
   }, [treeData]);
 
@@ -331,6 +335,7 @@ const Board: React.FC<any> = (props: any) => {
                 allowClear
                 treeData={typeList}
                 treeDefaultExpandedKeys={defaultExpend}
+                getPopupContainer={(trigger) => trigger.parentElement}
               ></TreeSelect>
             </Form.Item>
           </div>
