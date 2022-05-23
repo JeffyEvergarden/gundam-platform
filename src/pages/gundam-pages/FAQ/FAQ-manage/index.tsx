@@ -19,6 +19,7 @@ const { Option } = Select;
 const FAQPage: React.FC<any> = (props: any) => {
   const onSelect = (val: any, opt: any) => {
     console.log('选择树形组件:' + val);
+    QuestionRef.current.CurrentPage({ faqTypeId: val });
   };
 
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({

@@ -100,8 +100,8 @@ const QuestionList: React.FC<any> = (props: any) => {
     // getFaqList({ pageNo: 1 });
     console.log(childList);
 
-    listRef.current.reload();
-    console.log(listRef);
+    // listRef.current.reload();
+    // console.log(listRef);
   }, [childList]);
 
   const rowSelection = () => {
@@ -231,6 +231,9 @@ const QuestionList: React.FC<any> = (props: any) => {
       ...obj,
     };
     console.log(params);
+    if (isRecycle == 0 && !params.faqTypeId) {
+      return;
+    }
 
     let res: any = await getFaqList(params);
     console.log(res);
@@ -273,8 +276,8 @@ const QuestionList: React.FC<any> = (props: any) => {
           dataSource={faqList}
           request={async (params = {}, sort, filter) => {
             console.log(params);
-
-            return CurrentPage({ page: current, pageSize, robotId: info.id });
+            return {};
+            // return CurrentPage({ page: current, pageSize, robotId: info.id });
           }}
           rowSelection={rowSelection()}
           tableAlertRender={false}
