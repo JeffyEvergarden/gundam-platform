@@ -121,42 +121,9 @@ export default [
         name: '机器人模拟',
       },
       {
-        path: '/gundamPages/faq/*',
+        path: '/gundamPages/faq*', // faq相关页面都整合到这里
         component: './gundam-pages/FAQ/home',
         name: 'FAQ',
-        // routes: [
-        //   {
-        //     path: '/gundamPages/faq/main',
-        //     component: './gundam-pages/FAQ/FAQ-manage',
-        //     name: 'FAQ管理',
-        //   },
-        //   {
-        //     path: '/gundamPages/faq/board',
-        //     component: './gundam-pages/FAQ/question-board/layout',
-        //     name: '编辑面板',
-        //   },
-        //   {
-        //     path: '/gundamPages/faq/answer',
-        //     component: './gundam-pages/FAQ/question-board/single',
-        //     name: '编辑面板',
-        //   },
-        //   {
-        //     path: '/gundamPages/faq/recycle',
-        //     component: './gundam-pages/FAQ/question-recycle',
-        //     name: '问题回收站',
-        //   },
-        //   {
-        //     path: '/gundamPages/faq/import',
-        //     component: './gundam-pages/FAQ/question-import',
-        //     name: '问题批量导入',
-        //   },
-        //   {
-        //     path: '/gundamPages/faq/recommend',
-        //     component: './gundam-pages/FAQ/question-recommend',
-        //     name: '推荐问',
-        //   },
-        //   { redirect: '/gundamPages/faq/main' },
-        // ],
       },
       { redirect: '/gundamPages/mainDraw' },
       { component: './404' },

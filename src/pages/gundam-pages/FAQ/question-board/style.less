@@ -2,6 +2,18 @@
   height: 100%;
   padding: 16px;
   background: #fff;
+
+  :global {
+    .ant-select-tree-title {
+      color: rgba(0, 0, 0, 0.3);
+    }
+
+    .ant-select-tree-switcher-noop + span {
+      .ant-select-tree-title {
+        color: #333 !important;
+      }
+    }
+  }
 }
 
 .board-title {
