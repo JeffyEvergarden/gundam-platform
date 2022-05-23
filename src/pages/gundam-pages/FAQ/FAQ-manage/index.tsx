@@ -38,7 +38,7 @@ const FAQPage: React.FC<any> = (props: any) => {
   const [selectTree, setSelectTree] = useState<any>(sessionStorage.getItem('selectTree') || '');
 
   const onSelect = (val: any, opt: any) => {
-    console.log('选择树形组件:' + val);
+    // console.log('选择树形组件:' + val);
     if (val[0]) {
       setSelectTree(val[0]);
       sessionStorage.setItem('selectTree', val[0]);
@@ -47,7 +47,7 @@ const FAQPage: React.FC<any> = (props: any) => {
   };
 
   const changeHighConfig = (val: any) => {
-    console.log(val);
+    // console.log(val);
 
     setValue(val);
     //重新获取列表
@@ -118,8 +118,8 @@ const FAQPage: React.FC<any> = (props: any) => {
   };
 
   const onEnter = (e: any) => {
-    console.log(e.target.value);
-    console.log(queryType);
+    // console.log(e.target.value);
+    // console.log(queryType);
 
     QuestionRef?.current?.CurrentPage({});
   };
