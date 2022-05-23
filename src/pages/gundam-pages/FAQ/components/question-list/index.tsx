@@ -313,6 +313,7 @@ const QuestionList: React.FC<any> = (props: any) => {
       <div id="scrollContent" className={style['content-list']}>
         <ProList
           // itemLayout="vertical"
+          loading={loading}
           actionRef={listRef}
           dataSource={faqList}
           request={async (params = {}, sort, filter) => {

@@ -62,7 +62,16 @@ export const useTreeModal = () => {
   const [treeData, setTreeData] = useState<any[]>([]);
   const [childList, setChildList] = useState<any>([]);
   let arr: any = [];
-  let deep: any = 0;
+
+  const findparent: any = (obj: any, idx: any) => {
+    let index: any = idx++ || 1;
+    if (obj?.parent) {
+      findparent(obj?.parent, index);
+
+      return index;
+    }
+  };
+
   const processTreeData = (data: any[], parent?: any) => {
     if (!Array.isArray(data)) {
       return null;
@@ -72,7 +81,7 @@ export const useTreeModal = () => {
         title: item.title,
         key: item.key,
         parent: parent || item.parent || '0',
-        deep,
+        deep: parent?.deep + 1 || 1,
       };
       let children: any = processTreeData(item.children, obj);
 
@@ -83,6 +92,8 @@ export const useTreeModal = () => {
       obj.children = children;
       return obj;
     });
+    console.log(arr);
+
     setChildList(arr);
     return _data;
   };

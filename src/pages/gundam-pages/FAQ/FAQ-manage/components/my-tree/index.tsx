@@ -254,8 +254,10 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
 
   // 自定义渲染
   const diyRender = (nodeData: any) => {
+    console.log(nodeData);
+
     let extra = null;
-    if (nodeData && nodeData.deep < 3) {
+    if (nodeData && nodeData?.deep < 5) {
       extra = (
         <PlusCircleOutlined
           style={{ marginRight: '8px', fontSize: '12px' }}
@@ -277,7 +279,9 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
 
     return (
       <div className={style['tree-node']}>
-        <div className={style['label']}>{nodeData.title}</div>
+        <div className={style['label']}>
+          <div>{nodeData.title}</div>
+        </div>
         <Condition r-if={edit}>
           <div className={style['edit-layout']} style={def()}>
             {extra}
