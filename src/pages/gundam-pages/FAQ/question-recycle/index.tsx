@@ -126,6 +126,7 @@ const RecyclePage: React.FC<any> = (props: any) => {
             searchText={searchText}
             heightSelect={value}
             isRecycle={1}
+            deleteRecycle={deleteRecycle}
           ></QuestionList>
         </div>
       </div>

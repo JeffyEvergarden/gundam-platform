@@ -49,6 +49,7 @@ const QuestionList: React.FC<any> = (props: any) => {
     searchText = '',
     heightSelect,
     isRecycle,
+    deleteRecycle,
   } = props;
   const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
   const [form] = Form.useForm();
@@ -118,14 +119,25 @@ const QuestionList: React.FC<any> = (props: any) => {
 
   const deleteList = async (val: any) => {
     console.log(val);
-    await deleteQuestion({ id: val?.id }).then((res) => {
-      console.log(res, config);
+    if (isRecycle == 1) {
+      await deleteRecycle({ faqIds: [val.id] }).then((res: any) => {
+        if (res.resultCode == config.successCode) {
+          message.success(res.resultDesc);
+        } else {
+          message.error(res.resultDesc);
+        }
+        CurrentPage();
+      });
+    } else if (isRecycle == 0) {
+      await deleteQuestion({ id: val?.id }).then((res) => {
+        console.log(res, config);
 
-      if (res.resultCode == config.successCode) {
-        message.success(res?.resultDesc || '');
-      }
-      CurrentPage();
-    });
+        if (res.resultCode == config.successCode) {
+          message.success(res?.resultDesc || '');
+        }
+        CurrentPage();
+      });
+    }
   };
 
   const toSample = (item: any) => {
