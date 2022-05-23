@@ -61,7 +61,7 @@ export default () => {
       let params: any = {
         page: payload.current,
         pageSize: payload.pageSize,
-        intentId: tableInfo.id,
+        intentId: tableInfo.id || tableInfo.intentId,
         corpusText: payload.corpusText,
       };
       res = await getList(params);
@@ -266,6 +266,13 @@ export default () => {
 
   const onChange = (e: any) => {
     setCorpusText(e.target.value);
+  };
+
+  const refresh = (r: any, pageType: any) => {
+    setTableInfo(r);
+    setPageType(pageType);
+    setSimmilar(false);
+    actionRef?.current?.reload();
   };
 
   const tableListWish: any = [
@@ -492,6 +499,7 @@ export default () => {
             tableInfo={tableInfo}
             inputValue={inputValue}
             similarTableData={similarTableData}
+            refresh={refresh}
           />
         )}
       </div>

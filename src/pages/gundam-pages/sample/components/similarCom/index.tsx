@@ -1,10 +1,15 @@
 import React, { Fragment } from 'react';
 import ProTable from '@ant-design/pro-table';
+import { history } from 'umi';
 import { Table } from 'antd';
 import styles from './../index.less';
 
 export default (props: any) => {
-  const { tableInfo, inputValue, similarTableData } = props;
+  const { tableInfo, inputValue, similarTableData, refresh } = props;
+
+  const toSample = (r: any) => {
+    refresh(r, 'wish');
+  };
 
   const columnsCurrent: any = [
     {
@@ -23,7 +28,11 @@ export default (props: any) => {
       ellipsis: true,
       width: 100,
       render: (t: any, r: any, i: any) => {
-        return <a style={{ color: '#1890FF' }}>{r.intentName}</a>;
+        return (
+          <a style={{ color: '#1890FF' }} onClick={() => toSample(r)}>
+            {r.intentName}
+          </a>
+        );
       },
     },
     {
