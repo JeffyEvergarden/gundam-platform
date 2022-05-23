@@ -221,7 +221,7 @@ export default (props: any) => {
       },
     );
     setDialogList(data);
-    setChatEvent('silence');
+    // setChatEvent('silence');
     // let a = number;
     // a++;
     // setNumber(a);
@@ -342,9 +342,15 @@ export default (props: any) => {
             <Button className={styles['send-btn']} type="primary" onClick={() => sendMessage()}>
               发送
             </Button>
-            <Button className={styles['send-btn-quiet']} type="primary" onClick={() => sendQuiet()}>
-              发送静默
-            </Button>
+            {info.robotType === 1 && (
+              <Button
+                className={styles['send-btn-quiet']}
+                type="primary"
+                onClick={() => sendQuiet()}
+              >
+                发送静默
+              </Button>
+            )}
           </div>
         </div>
       )}

@@ -41,7 +41,7 @@ export default (props: any) => {
 
   const getFeature = async () => {
     let res = await getFeatureListAll({ intentId: tableProps?.id });
-    setFeatureList(res?.data);
+    setFeatureList(res?.data?.list);
   };
   const templateFocus = (key: any, name: any) => {
     let data = form.getFieldValue('ruleClips');
