@@ -6,6 +6,7 @@ import {
   delIntentFeature,
   intentSame,
   intentAddList,
+  similarSame,
 } from './api';
 
 //相似问接口
@@ -76,6 +77,12 @@ export const useSimilarModel = () => {
     setTableLoading(false);
     return res;
   };
+  const checkSimilar = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await similarSame(params);
+    setTableLoading(false);
+    return res;
+  };
 
   const editSimilar = async (params?: any) => {
     return await _editSimilar(params);
@@ -91,6 +98,7 @@ export const useSimilarModel = () => {
 
   return {
     getSimilarList,
+    checkSimilar,
     editSimilar,
     deleteSimilar,
     addSimilar,
