@@ -8,15 +8,20 @@ const Switch = (props: any) => {
 
   let match: any;
   let element: any;
+  let page404: any;
 
   React.Children.forEach(props.children, (child: any) => {
     if (match == null && React.isValidElement(child)) {
       element = child;
-      match = currentPath === (child?.props as any)?.path ? currentPath : null; // 匹配出来的
+      const _path = (child?.props as any)?.path;
+      match = currentPath === _path ? currentPath : null; // 匹配出来的
+      if (!_path) {
+        page404 = child;
+      }
     }
   });
 
-  return <>{match ? React.cloneElement(element, { computedMatch: match }) : null}</>;
+  return match ? React.cloneElement(element, { computedMatch: match }) : page404 || null;
 };
 
 export default Switch;
