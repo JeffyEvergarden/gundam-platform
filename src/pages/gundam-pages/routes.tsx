@@ -72,7 +72,7 @@ export default [
   },
   {
     icon: <CrownOutlined />,
-    path: '/gundamPages/faq',
+    path: '/gundamPages/faq/main',
     name: 'FAQ管理',
   },
 ];

@@ -10,7 +10,7 @@ import { useModel } from 'umi';
 
 const { List: FormList } = Form;
 const Recommend: React.FC<any> = (props: any) => {
-  const { form } = props;
+  const { form, faqTypeId } = props;
 
   // 推荐启用按钮
   const [showAdvise, setShowAdvise] = useState<boolean>(true);
@@ -37,17 +37,60 @@ const Recommend: React.FC<any> = (props: any) => {
   // 打开弹窗
   const openModal = (index: number) => {
     const _list = getRecommendItem();
-    (selectModalRef.current as any).open({
+    const disabledQuestionKeys = _list
+      .filter((item: any, i: number) => {
+        return item.recommendBizType === '1' && item.recommendId && i !== index;
+      })
+      .map((item: any) => item.recommendId);
+    const disabledFlowKeys = _list
+      .filter((item: any, i: number) => {
+        return item.recommendBizType === '2' && item.recommendId && i !== index;
+      })
+      .map((item: any) => item.recommendId);
+
+    console.log(disabledQuestionKeys, disabledFlowKeys);
+    if (faqTypeId) {
+      disabledQuestionKeys.push(faqTypeId);
+    }
+    let openInfo: any = {
       showFlow: true,
       info: _list[index],
-    });
+      disabledQuestionKeys,
+      disabledFlowKeys,
+      selectedQuestionKeys: [],
+      selectedFlowKeys: [],
+    };
+    if (_list[index]?.questionType === '2') {
+      openInfo.selectedFlowKeys = [_list[index].recommendId];
+    } else if (_list[index]?.questionType === '1') {
+      openInfo.selectedQuestionKeys = [_list[index].recommendId];
+    }
+    (selectModalRef.current as any).open(openInfo);
     opRecordRef.current.callback = (obj: any) => {
       const _list = getRecommendItem();
+      const repeatFlag = _list.findIndex((item: any, i: number) => {
+        return (
+          i !== index &&
+          item.recommendId === obj.recommendId &&
+          item.recommendBizType === obj.recommendBizType
+        );
+      });
+      console.log(repeatFlag, index, obj, _list[repeatFlag]);
+      if (repeatFlag > -1) {
+        message.warning('已添加过重复');
+        return;
+      }
+
       _list[index] = { ...obj };
       form.setFieldsValue({
         recommendList: [..._list],
       });
     };
+  };
+
+  const confirm = (obj: any) => {
+    console.log(obj);
+    opRecordRef.current?.callback?.(obj);
   };
 
   useEffect(() => {
