@@ -24,8 +24,8 @@ import EditBoard from './index';
 import { history, useModel } from 'umi';
 import style from './style.less';
 import { CHANNAL_LIST } from './test';
-import { useAnswerModel } from './model';
-import { processAnswerRequest, processAnswerBody } from './model/utils';
+import { useAnswerModel, useQuestionModel } from './model';
+import { processAnswerRequest, processAnswerBody, processBody } from './model/utils';
 
 const { Option } = Select;
 
@@ -79,7 +79,20 @@ const Board: React.FC<any> = (props: any) => {
     setShowTime(e.target.checked);
   };
 
+  const { getQuestionInfo } = useQuestionModel();
+
   const { addNewAnswer, updateAnswer, getAnswerInfo } = useAnswerModel();
+
+  const _getQuestionInfo = async (id: any) => {
+    let res: any = await getQuestionInfo({
+      robotId: id, // 机器人id
+      faqId: questionId, // 问题id
+    });
+    if (res) {
+      res = processBody(res);
+      form.setFieldsValue(res);
+    }
+  };
 
   // 分类列表
   const typeList = useMemo(() => {
@@ -114,6 +127,8 @@ const Board: React.FC<any> = (props: any) => {
     getTreeData(info.id);
     if (pageType === 'edit') {
       getInfo(info.id);
+    } else {
+      _getQuestionInfo(info.id);
     }
   }, []);
 
@@ -179,7 +194,7 @@ const Board: React.FC<any> = (props: any) => {
                 placeholder={'请输入问题名称'}
                 autoComplete="off"
                 maxLength={200}
-                disabled={pageType === 'edit'}
+                disabled={true}
               />
             </Form.Item>
 
@@ -195,7 +210,7 @@ const Board: React.FC<any> = (props: any) => {
                 allowClear
                 treeData={typeList}
                 treeDefaultExpandedKeys={defaultExpend}
-                disabled={pageType === 'edit'}
+                disabled={true}
               ></TreeSelect>
             </Form.Item>
           </div>

@@ -44,7 +44,7 @@ const getInfo = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
     data: {
-      questionName: '123',
+      question: '123',
       faqTypeId: '0-0-1',
       answerList: [
         {
@@ -69,7 +69,7 @@ const getAnswer = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
     data: {
-      questionName: '123',
+      question: '123',
       faqTypeId: '0-0-1',
       answer: '<p>12222</p>',
       channelList: ['APP'],
@@ -86,9 +86,9 @@ export default {
   'GET /aichat/robot/file/getFile': getFile,
   'POST /aichat/robot/faq/robotFaqAdd': normalDeal,
   'POST /aichat/robot/faq/robotFaqEdit': normalDeal,
-  'GET /aichat/robot/faq/robotFaqInfo': getInfo,
+  'POST /aichat/robot/faq/robotFaqInfo': getInfo,
   'POST /aichat/robot/faq/answerAdd': normalDeal,
   'POST /aichat/robot/faq/answerEdit': normalDeal,
   'POST /aichat/robot/faq/answerDelete': normalDeal,
-  'GET /aichat/robot/faq/answerInfo': getAnswer,
+  'POST /aichat/robot/faq/answerInfo': getAnswer,
 };

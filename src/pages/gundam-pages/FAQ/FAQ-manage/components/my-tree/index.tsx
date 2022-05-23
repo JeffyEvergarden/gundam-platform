@@ -254,6 +254,8 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
 
   // 自定义渲染
   const diyRender = (nodeData: any) => {
+    console.log(nodeData);
+
     let extra = null;
     if (nodeData) {
       extra = (
