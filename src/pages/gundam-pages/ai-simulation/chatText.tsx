@@ -140,22 +140,34 @@ export default (props: any) => {
       params.actionType = 'text';
       res = await soundRobotDialogue(params);
     }
-    data.push(
-      {
+    if (res?.resultCode == '100') {
+      data.push(
+        {
+          type: 'customer',
+          message: textMessage,
+          askKey: res?.data?.askKey,
+          nluInfo: res?.data?.nluInfo,
+        },
+        {
+          type: 'robot',
+          askText: res?.data?.askText,
+          message: res?.data?.actionMessage,
+          recommendQuestion: res?.data?.recommendQuestion,
+        },
+      );
+      setTextMessage('');
+      setChatEvent('dialogue');
+    } else {
+      data.push({
         type: 'customer',
         message: textMessage,
         askKey: res?.data?.askKey,
         nluInfo: res?.data?.nluInfo,
-      },
-      {
-        type: 'robot',
-        askText: res?.data?.askText,
-        message: res?.data?.actionMessage,
-        recommendQuestion: res?.data?.recommendQuestion,
-      },
-    );
+      });
+      message.error(res?.resultDesc);
+    }
     setDialogList(data);
-    setChatEvent('dialogue');
+
     // let a = number;
     // a++;
     // setNumber(a);

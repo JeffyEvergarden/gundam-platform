@@ -41,7 +41,7 @@ export default (props: any) => {
 
   const getFeature = async () => {
     let res = await getFeatureListAll({ intentId: tableProps?.id });
-    setFeatureList(res?.data?.list);
+    setFeatureList(res?.data);
   };
   const templateFocus = (key: any, name: any) => {
     let data = form.getFieldValue('ruleClips');
@@ -171,7 +171,7 @@ export default (props: any) => {
                     <Form.Item
                       label={''}
                       name={[field.name, 'required']}
-                      initialValue={'是'}
+                      initialValue={1}
                       rules={[{ required: true, message: '请选择是否匹配' }]}
                     >
                       <Select>
