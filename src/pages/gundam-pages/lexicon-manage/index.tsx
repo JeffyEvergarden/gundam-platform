@@ -164,7 +164,7 @@ const LexiconManage: React.FC = (props: any) => {
       title: '实体值',
       ellipsis: true,
       fixed: 'left',
-      width: 300,
+      width: 223,
       search: false,
     },
     {
