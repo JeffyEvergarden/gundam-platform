@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { message } from 'antd';
 
-import { getChatInitData, getTextDialogData } from './api';
+import { getChatInitData, textDialogData, soundRobotDialogueText } from './api';
 
 import config from '@/config/index';
 
@@ -14,13 +14,18 @@ export const useChatModel = () => {
     return res;
   };
 
-  const getDialogData = async (params?: any) => {
-    let res: any = await getTextDialogData(params);
+  const textRobotDialogueText = async (params?: any) => {
+    let res: any = await textDialogData(params);
+    return res;
+  };
+  const soundRobotDialogue = async (params?: any) => {
+    let res: any = await soundRobotDialogueText(params);
     return res;
   };
 
   return {
     getRobotChatData,
-    getDialogData,
+    textRobotDialogueText,
+    soundRobotDialogue,
   };
 };

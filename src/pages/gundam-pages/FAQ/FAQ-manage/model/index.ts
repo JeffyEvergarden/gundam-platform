@@ -27,7 +27,7 @@ export const useFaqModal = () => {
       return { data, total: res?.data?.totalPage };
     } else {
       setFaqList([]);
-      message.warning('获取FAQ列表失败');
+      message.warning(res?.resultDesc);
       return false;
     }
   };
@@ -60,7 +60,8 @@ export const useFaqModal = () => {
 
 export const useTreeModal = () => {
   const [treeData, setTreeData] = useState<any[]>([]);
-
+  const [childList, setChildList] = useState<any>([]);
+  let arr: any = [];
   const processTreeData = (data: any[], parent?: any) => {
     if (!Array.isArray(data)) {
       return null;
@@ -70,22 +71,37 @@ export const useTreeModal = () => {
       let obj: any = {
         title: item.title,
         key: item.key,
-        parent: parent,
+        parent: parent || item.parent || '0',
       };
       let children: any = processTreeData(item.children, obj);
+      if (!children?.length) {
+        arr.push(obj);
+      }
       obj.children = children;
+
       return obj;
     });
+    console.log(arr);
+
+    setChildList(arr);
     return _data;
   };
 
-  const getTreeData = async () => {
-    let res: any = await getTreeList();
+  const getTreeData = async (data: any) => {
+    let res: any = await getTreeList(data);
     if (res.resultCode === successCode) {
       let data: any = Array.isArray(res.data) ? res.data : [];
       // 数据加工
       data = processTreeData(data);
-      setTreeData(data || []);
+      let root: any[] = [
+        {
+          title: '全部分类',
+          key: '0',
+          parent: undefined,
+          children: data,
+        },
+      ];
+      setTreeData(root || []);
     } else {
       setTreeData([]);
     }
@@ -128,6 +144,7 @@ export const useTreeModal = () => {
 
   return {
     treeData,
+    childList,
     getTreeData,
     addLeaf,
     editLeaf,

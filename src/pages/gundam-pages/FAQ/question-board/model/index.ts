@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   addQuestion,
   editQuestion,
@@ -5,12 +6,35 @@ import {
   addAnswer,
   editAnswer,
   getAnswerInfo,
+  getFaqConfig,
 } from './api';
 import { message } from 'antd';
 import config from '@/config';
 const successCode = config.successCode;
 
 export const useQuestionModel = () => {
+  const [maxRecommendLength, setMaxRecommendLength] = useState<any>(0);
+
+  const _getFaqConfig = async (id: any) => {
+    let res = await getFaqConfig({
+      robotId: id,
+      configType: 2,
+    });
+    if (res.resultCode === successCode) {
+      let data = res.data || [];
+      let _item = data.find((item: any) => {
+        return item.configKey === 'FAQ_RECOMMEND_LIMIT';
+      });
+      let val = _item?.configValue || 0;
+      val = !isNaN(val) ? Number(val) : 0;
+      setMaxRecommendLength(val);
+      return true;
+    } else {
+      message.error(res.resultDesc || '获取faq配置失败');
+      return false;
+    }
+  };
+
   const addNewQuestion = async (data: any) => {
     let res: any = await addQuestion(data);
     if (res.resultCode === successCode) {
@@ -42,9 +66,11 @@ export const useQuestionModel = () => {
   };
 
   return {
+    maxRecommendLength,
     addNewQuestion,
     updateQuestion,
     getQuestionInfo: _getQuestionInfo,
+    getFaqConfig: _getFaqConfig,
   };
 };
 

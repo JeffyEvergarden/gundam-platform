@@ -49,6 +49,10 @@ const processTreeData = (data: any[], parent?: any) => {
     if (obj.children && obj.children.length > 0) {
       obj.selectable = false;
     }
+    if (obj.value === '0') {
+      // 第一级也不能选
+      obj.selectable = false;
+    }
     return obj;
   });
   return _data;
@@ -72,7 +76,8 @@ const Board: React.FC<any> = (props: any) => {
     treeData: model.treeData,
   }));
 
-  const { addNewQuestion, updateQuestion, getQuestionInfo } = useQuestionModel();
+  const { maxRecommendLength, addNewQuestion, updateQuestion, getQuestionInfo, getFaqConfig } =
+    useQuestionModel();
 
   // 分类列表
   const typeList = useMemo(() => {
@@ -104,8 +109,21 @@ const Board: React.FC<any> = (props: any) => {
   useEffect(() => {
     getFlowList(info.id);
     getTreeData(info.id);
+    getFaqConfig(info.id);
     if (pageType === 'edit') {
       getInfo(info.id);
+    } else {
+      form.setFieldsValue({
+        answerList: [
+          {
+            answer: '',
+            channelList: [],
+            enable: false,
+            enableStartTime: null,
+            enableEndTime: null,
+          },
+        ],
+      });
     }
   }, []);
 
@@ -196,6 +214,11 @@ const Board: React.FC<any> = (props: any) => {
         return item.recommendBizType === '2' && item.recommendId && i !== index;
       })
       .map((item: any) => item.recommendId);
+
+    console.log(disabledQuestionKeys, disabledFlowKeys);
+    if (questionId) {
+      disabledQuestionKeys.push(questionId);
+    }
     let openInfo: any = {
       showFlow: true,
       info: _list[index],
@@ -212,6 +235,19 @@ const Board: React.FC<any> = (props: any) => {
     (selectModalRef.current as any).open(openInfo);
     opRecordRef.current.callback = (obj: any) => {
       const _list = getRecommendItem();
+      const repeatFlag = _list.findIndex((item: any, i: number) => {
+        return (
+          i !== index &&
+          item.recommendId === obj.recommendId &&
+          item.recommendBizType === obj.recommendBizType
+        );
+      });
+      console.log(repeatFlag, index, obj, _list[repeatFlag]);
+      if (repeatFlag > -1) {
+        message.warning('已添加过重复');
+        return;
+      }
+
       _list[index] = { ...obj };
       form.setFieldsValue({
         recommendList: [..._list],
@@ -236,6 +272,7 @@ const Board: React.FC<any> = (props: any) => {
     res = processRequest(res);
     if (pageType === 'create') {
       let data: any = {
+        robotId: info.id,
         ...res,
       };
       let response = await addNewQuestion(data);
@@ -247,6 +284,7 @@ const Board: React.FC<any> = (props: any) => {
       let data: any = {
         ...res,
         faqId: questionId,
+        robotId: info.id,
       };
       let response = await updateQuestion(data);
       if (response === true) {
@@ -273,12 +311,12 @@ const Board: React.FC<any> = (props: any) => {
         <Form form={form}>
           <div className={'ant-form-vertical'}>
             <Form.Item
-              name="questionName"
+              name="question"
               label="问题名称"
               rules={[{ message: '请输入问题名称', required: true }]}
               style={{ width: '600px' }}
             >
-              <Input placeholder={'请输入问题名称'} autoComplete="off" />
+              <Input placeholder={'请输入问题名称'} autoComplete="off" maxLength={200} />
             </Form.Item>
 
             <Form.Item
@@ -306,7 +344,8 @@ const Board: React.FC<any> = (props: any) => {
                     answer: '',
                     channelList: [],
                     enable: false,
-                    enableTime: null,
+                    enableStartTime: null,
+                    enableEndTime: null,
                   },
                   length,
                 );
@@ -371,18 +410,28 @@ const Board: React.FC<any> = (props: any) => {
                             </Form.Item>
 
                             <Condition r-if={_showTime}>
-                              <Form.Item
-                                name={[field.name, 'enableTime']}
-                                fieldKey={[field.fieldKey, 'enableTime']}
-                                rules={[{ required: true }]}
-                                style={{ width: '600px' }}
-                              >
-                                <DatePicker.RangePicker
-                                  size="small"
-                                  showTime
-                                  placeholder={['请选择开始时间', '请选择结束时间']}
-                                />
-                              </Form.Item>
+                              <Space>
+                                <Form.Item
+                                  name={[field.name, 'enableStartTime']}
+                                  fieldKey={[field.fieldKey, 'enableStartTime']}
+                                >
+                                  <DatePicker
+                                    size="small"
+                                    showTime
+                                    placeholder={'请选择开始时间'}
+                                  />
+                                </Form.Item>
+                                <Form.Item
+                                  name={[field.name, 'enableEndTime']}
+                                  fieldKey={[field.fieldKey, 'enableEndTime']}
+                                >
+                                  <DatePicker
+                                    size="small"
+                                    showTime
+                                    placeholder={'请选择结束时间'}
+                                  />
+                                </Form.Item>
+                              </Space>
                             </Condition>
                           </Space>
                         </div>
@@ -416,7 +465,11 @@ const Board: React.FC<any> = (props: any) => {
               {(fields, { add, remove }) => {
                 const addNew = () => {
                   let length = fields.length;
-                  // console.log(length);
+                  console.log(length);
+                  if (length >= maxRecommendLength) {
+                    message.warning('推荐设置不能超过faq全局配置限制数量');
+                    return;
+                  }
                   add(
                     {
                       recommendBizType: null,

@@ -24,8 +24,8 @@ import EditBoard from './index';
 import { history, useModel } from 'umi';
 import style from './style.less';
 import { CHANNAL_LIST } from './test';
-import { useAnswerModel } from './model';
-import { processAnswerRequest, processAnswerBody } from './model/utils';
+import { useAnswerModel, useQuestionModel } from './model';
+import { processAnswerRequest, processAnswerBody, processBody } from './model/utils';
 
 const { Option } = Select;
 
@@ -75,11 +75,24 @@ const Board: React.FC<any> = (props: any) => {
   // 推荐启用按钮
   const [showTime, setShowTime] = useState<boolean>(false);
 
-  const updateFn = (val: any) => {
-    setShowTime(val);
+  const updateFn = (e: any) => {
+    setShowTime(e.target.checked);
   };
 
+  const { getQuestionInfo } = useQuestionModel();
+
   const { addNewAnswer, updateAnswer, getAnswerInfo } = useAnswerModel();
+
+  const _getQuestionInfo = async (id: any) => {
+    let res: any = await getQuestionInfo({
+      robotId: id, // 机器人id
+      faqId: questionId, // 问题id
+    });
+    if (res) {
+      res = processBody(res);
+      form.setFieldsValue(res);
+    }
+  };
 
   // 分类列表
   const typeList = useMemo(() => {
@@ -97,6 +110,7 @@ const Board: React.FC<any> = (props: any) => {
     let res: any = await getAnswerInfo({
       robotId: id, // 机器人id
       faqId: questionId, // 问题id
+      answerId: answerId,
     });
     if (res) {
       res = processAnswerBody(res);
@@ -113,6 +127,8 @@ const Board: React.FC<any> = (props: any) => {
     getTreeData(info.id);
     if (pageType === 'edit') {
       getInfo(info.id);
+    } else {
+      _getQuestionInfo(info.id);
     }
   }, []);
 
@@ -128,6 +144,8 @@ const Board: React.FC<any> = (props: any) => {
     res = processAnswerRequest(res);
     if (pageType === 'create') {
       let data: any = {
+        robotId: info.id,
+        faqId: questionId,
         ...res,
       };
       let response = await addNewAnswer(data);
@@ -139,6 +157,8 @@ const Board: React.FC<any> = (props: any) => {
       let data: any = {
         ...res,
         faqId: questionId,
+        robotId: info.id,
+        answerId: answerId,
       };
       let response = await updateAnswer(data);
       if (response === true) {
@@ -165,7 +185,7 @@ const Board: React.FC<any> = (props: any) => {
         <Form form={form}>
           <div className={'ant-form-vertical'}>
             <Form.Item
-              name="questionName"
+              name="question"
               label="问题名称"
               rules={[{ message: '请输入问题名称', required: true }]}
               style={{ width: '600px' }}
@@ -173,7 +193,8 @@ const Board: React.FC<any> = (props: any) => {
               <Input
                 placeholder={'请输入问题名称'}
                 autoComplete="off"
-                disabled={pageType === 'edit'}
+                maxLength={200}
+                disabled={true}
               />
             </Form.Item>
 
@@ -189,7 +210,7 @@ const Board: React.FC<any> = (props: any) => {
                 allowClear
                 treeData={typeList}
                 treeDefaultExpandedKeys={defaultExpend}
-                disabled={pageType === 'edit'}
+                disabled={true}
               ></TreeSelect>
             </Form.Item>
           </div>
@@ -229,18 +250,14 @@ const Board: React.FC<any> = (props: any) => {
                   </Form.Item>
 
                   <Condition r-if={showTime}>
-                    <Form.Item
-                      name={'enableTime'}
-                      fieldKey={'enableTime'}
-                      rules={[{ required: true }]}
-                      style={{ width: '600px' }}
-                    >
-                      <DatePicker.RangePicker
-                        size="small"
-                        showTime
-                        placeholder={['请选择开始时间', '请选择结束时间']}
-                      />
-                    </Form.Item>
+                    <Space>
+                      <Form.Item name={'enableStartTime'} fieldKey={'enableStartTime'}>
+                        <DatePicker size="small" showTime placeholder={'请选择开始时间'} />
+                      </Form.Item>
+                      <Form.Item name={'enableEndTime'} fieldKey={'enableEndTime'}>
+                        <DatePicker size="small" showTime placeholder={'请选择结束时间'} />
+                      </Form.Item>
+                    </Space>
                   </Condition>
                 </Space>
               </div>

@@ -35,6 +35,10 @@ export default (props: any) => {
   const [tableData, setTableData] = useState<any>([]);
   const [tableProps, setTableProps] = useState<any>({});
 
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
+
   useEffect(() => {
     let historyData = history?.location || {};
     setTableProps(historyData?.state?.info);
@@ -77,12 +81,11 @@ export default (props: any) => {
     setRuleData({
       intentRuleName: '',
       threshold: 0.7,
-      robotIntentRuleDetailList: [{ fragment: '', orderNumber: null, required: '是' }],
+      robotIntentRuleDetailList: [{ fragment: '', orderNumber: null, required: 1 }],
     });
   };
 
   const editRule = (row: any) => {
-    debugger;
     let temRuleDataItem = {};
     tableData.map((item: any) => {
       if (item.id === row.idFather) {
@@ -105,7 +108,7 @@ export default (props: any) => {
       intentId: tableProps?.id,
       intentRuleName: values?.intentRuleName,
       threshold: values?.threshold,
-      robotIntentRuleDetailAddRequests: values?.ruleClips,
+      robotIntentRuleDetailRequests: values?.ruleClips,
     };
     let res;
     if (pageTypeRule === 'add') {
@@ -135,11 +138,17 @@ export default (props: any) => {
   };
 
   const move = async (row: any, type: boolean) => {
+    let num = null;
+    tableData.map((item: any) => {
+      if (item.id === row.idFather) {
+        num = item.orderNumber;
+      }
+    });
     let params = {
       id: row?.intentRuleId,
       intentId: tableProps?.id,
       robotId: row?.robotId,
-      orderNumber: row?.orderNumber,
+      orderNumber: num,
       move: type,
     };
     let res = await moveRule(params);
@@ -171,6 +180,7 @@ export default (props: any) => {
     if (pageTypeFeature === 'add') {
       let params = {
         intentId: tableProps?.id,
+        robotId: info?.id,
         ...values,
       };
       res = await featuresAdd(params);
@@ -195,10 +205,10 @@ export default (props: any) => {
   };
 
   const deleteFeatures = async (payload: any) => {
-    let res = await delFeatures({ id: payload.id });
+    let res = await delFeatures({ id: payload.id, intentId: payload.id, key: payload.key });
     if (res.resultCode === config.successCode) {
       message.success(res?.resultDesc || '成功');
-      actionRef?.current?.reload();
+      actionRefFeature?.current?.reload();
     } else {
       message.error(res?.resultDesc || '失败');
     }

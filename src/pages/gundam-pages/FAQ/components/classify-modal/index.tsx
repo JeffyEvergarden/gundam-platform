@@ -3,12 +3,15 @@ import style from './style.less';
 import React, { useImperativeHandle, useMemo, useState } from 'react';
 
 const ClassifyModal: React.FC<any> = (props: any) => {
-  const { cref, treeData } = props;
+  const { cref, treeData, editQ } = props;
   const [visible, setVisible] = useState<boolean>(false);
   const [treeSelect, setTreeSelect] = useState<any[]>([]);
+  const [QInfo, setQInfo] = useState<any>([]);
 
   const submit = () => {
     console.log(treeSelect);
+    editQ({ id: QInfo?.id, faqTypeId: treeSelect?.[0] });
+    setVisible(false);
     // setTreeSelect([]);
   };
 
@@ -36,8 +39,8 @@ const ClassifyModal: React.FC<any> = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     open: (row: any) => {
-      setTreeSelect(['0-0-1']);
-
+      setTreeSelect([row.faqTypeId]);
+      setQInfo(row);
       setVisible(true);
     },
     close: () => {

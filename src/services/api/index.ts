@@ -90,7 +90,15 @@ export async function queryNodeConfig(params?: { [key: string]: any }) {
 }
 
 export async function queryTreeList(params?: Record<string, any>) {
-  return request(`${baseUrl}/faq/typeList`, {
+  return request(`${baseUrl}/robot/faq/typeList`, {
+    method: 'GET',
+    params,
+  });
+}
+
+//faq用户信息
+export async function queryCreateUser(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/listCreateUser`, {
     method: 'GET',
     params,
   });

@@ -7,8 +7,10 @@ import {
   queryWishList,
   queryNodeConfig,
   queryTreeList,
+  queryCreateUser,
 } from '@/services/api';
 import config from '@/config/index';
+import { message } from 'antd';
 
 export default function useDrawerModel() {
   const timeFc = useRef<any>({});
@@ -35,6 +37,7 @@ export default function useDrawerModel() {
 
   // faq 问题树形结构
   const [treeData, setTreeData] = useState<any[]>([]);
+  const [userList, setUserList] = useState<any[]>([]);
 
   const allowRequest = (str: any, id?: any, t?: number) => {
     const timeObj: any = timeFc.current;
@@ -253,7 +256,24 @@ export default function useDrawerModel() {
       let data: any = Array.isArray(res.data) ? res.data : [];
       // 数据加工
       let _data = processTreeData(data); // 设置了parents会造成model层报错， 这里的数据不能进行delete操作
-      setTreeData(_data);
+      let root: any[] = [
+        {
+          title: '全部分类',
+          key: '0',
+          parent: undefined,
+          children: _data,
+        },
+      ];
+      setTreeData(root);
+    }
+  };
+
+  const getCreateUser = async (id?: any) => {
+    let res: any = await queryCreateUser({ robotId: id });
+    if (res.resultCode === config.successCode) {
+      setUserList(['全部', ...res?.data]);
+    } else {
+      message.error(res.resultDesc);
     }
   };
 
@@ -272,6 +292,7 @@ export default function useDrawerModel() {
     _setMessageList,
     _originFlowList,
     treeData,
+    userList,
     getMessageList, // 短信模版
     getWishList, // 意图
     getWordSlotList, // 词槽
@@ -279,6 +300,7 @@ export default function useDrawerModel() {
     getLabelList, // 话术标签
     getGlobalConfig, //高级配置 节点
     getTreeData, // 获取faq问题分类树形结构
+    getCreateUser,
     selectBody,
   };
 }

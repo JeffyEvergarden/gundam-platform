@@ -15,68 +15,49 @@ const getFaqList = (req: any, res: any, next: any) => {
     id: '1',
     robotId: '100',
     question: '问题',
+    similarQuestionNum: 5, //相似数
+    sumViewNum: 10, //总浏览次数
     viewNum: 5, //浏览次数
     likeNum: 555,
     unlikeNum: 22,
-    faqTypeId: '循环贷', //问题类型
-    approvalStatus: 1,
-    qunestionRecommend: 1,
+    faqTypeId: '0-0-1', //问题类型
+    approvalStatus: 1, //审批状态
+    qunestionRecommend: 1, //推荐 0关  1开
+    recyle: 0, //是否在回收站
     creator: 'jiangjiahao',
     createTime: '2022-05-10 15:55:55',
     updateTime: '2022-05-10 15:55:55',
     updateBy: '',
     answerList: [
       {
-        viewNum: 2,
+        answerViewNum: 2, //浏览
         answer: 'dadada', //回复
-        selectChannel: 'all',
         enable: 0, //是否启用 0否 1是
         enableStartTime: '2022-05-10 15:55:55',
         enableEndTime: '2022-05-10 15:55:55',
-        id: '1',
-        answerChannelList: [
-          {
-            creator: 'jiangjiahao',
-            createTime: '2022-05-10 15:55:55',
-            updateTime: '2022-05-10 15:55:55',
-            updateBy: '',
-          },
-        ],
+        answerId: '1',
+        channelList: ['all'],
+        answerLikeNum: 10,
+        answerUnlikeNum: 1,
         creator: 'jiangjiahao',
         createTime: '2022-05-10 15:55:55',
         updateTime: '2022-05-10 15:55:55',
-        updateBy: '',
       },
       {
-        viewNum: 4,
-        answer: 'gaga', //回复
-        selectChannel: 'all',
-        enable: 0, //是否启用 0否 1是
+        answerViewNum: 3, //浏览
+        answer: 'gagaga', //回复
+        enable: 1, //是否启用 0否 1是
         enableStartTime: '2022-05-10 15:55:55',
         enableEndTime: '2022-05-10 15:55:55',
-        id: '2',
-        answerChannelList: [
-          {
-            creator: 'jiangjiahao',
-            createTime: '2022-05-10 15:55:55',
-            updateTime: '2022-05-10 15:55:55',
-            updateBy: '',
-          },
-        ],
+        answerId: '2',
+        channelList: ['app'],
+        answerLikeNum: 102,
+        answerUnlikeNum: 11,
         creator: 'jiangjiahao',
         createTime: '2022-05-10 15:55:55',
         updateTime: '2022-05-10 15:55:55',
-        updateBy: '',
       },
     ],
-
-    // name: '阿斯拉大',
-    // email: 'ljk15916807596@qq.com',
-    // content: '冲啊，旋风冲锋',
-    // time: '2022-04-01 14:00:00',
-    // channel: ['微信', 'API', 'APP'],
-    // creator: '伟大的教团',
-    // times: 100,
   };
   let list = new Array(10).fill(1).map((item: any, index: number) => {
     return {
@@ -128,7 +109,7 @@ const getImportList = (req: any, res: any) => {
           robotId: '100',
           importFilePath: '/',
           importFileName: '测试',
-          failFilePath: '/',
+          failFilePath: null,
           answerNum: 10,
           failAnswerNum: 0,
           similarQuestionNum: 10,
@@ -146,36 +127,30 @@ const getTreeList = (req: any, res: any) => {
     success: true,
     data: [
       {
-        title: '全部分类',
-        key: '0',
+        title: '贷款产品分类',
+        key: '0-0',
         children: [
           {
-            title: '贷款产品分类',
-            key: '0-0',
-            children: [
-              {
-                title: '循环贷',
-                key: '0-0-1',
-              },
-              {
-                title: '极速贷',
-                key: '0-0-2',
-              },
-            ],
+            title: '循环贷',
+            key: '0-0-1',
           },
           {
-            title: '产品操作',
-            key: '0-1',
-            children: [
-              {
-                title: '神奇流程',
-                key: '0-1-0',
-              },
-              {
-                title: '神奇流程',
-                key: '0-1-1',
-              },
-            ],
+            title: '极速贷',
+            key: '0-0-2',
+          },
+        ],
+      },
+      {
+        title: '产品操作',
+        key: '0-1',
+        children: [
+          {
+            title: '神奇流程',
+            key: '0-1-0',
+          },
+          {
+            title: '神奇流程',
+            key: '0-1-1',
           },
         ],
       },
@@ -183,15 +158,26 @@ const getTreeList = (req: any, res: any) => {
   });
 };
 
+const getCreateUser = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    resultDesc: '成功',
+    success: true,
+    data: ['jiangjiahao', 'laingjianhui', 'duanjianguo'],
+  });
+};
+
 export default {
-  'GET /aichat/faq/list': getFaqList, // 获取问答列表
+  'GET /aichat/robot/faq/list': getFaqList, // 获取问答列表
 
-  'GET /aichat/faq/robotFaqPageList': getFaqList, // 获取问答列表
-  'POST /aichat/faq/robotFaqDelete': normalDeal, // 删除问题
-  'GET /aichat/faqImport/listPage': getImportList, // 获取批量导入列表
+  'POST /aichat/robot/faq/robotFaqPageList': getFaqList, // 获取问答列表
+  'POST /aichat/robot/faq/robotFaqDelete': normalDeal, // 删除问题
+  'GET /aichat/robot/faqImport/listPage': getImportList, // 获取批量导入列表
 
-  'GET /aichat/faq/typeList': getTreeList, //获取树
-  'POST /aichat/faq/tree/typeAdd': normalDeal, // 添加分类节点
-  'POST /aichat/faq/tree/typeEdit': normalDeal, // 编辑分类节点
-  'POST /aichat/faq/tree/typeDelete': normalDeal, // 删除分类节点
+  'GET /aichat/robot/faq/typeList': getTreeList, //获取树
+  'POST /aichat/robot/faq/typeAdd': normalDeal, // 添加分类节点
+  'POST /aichat/robot/faq/typeEdit': normalDeal, // 编辑分类节点
+  'POST /aichat/robot/faq/typeDelete': normalDeal, // 删除分类节点
+
+  'GET /aichat/robot/faq/listCreateUser': getCreateUser, //获取用户
 };

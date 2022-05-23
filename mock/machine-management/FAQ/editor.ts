@@ -44,13 +44,15 @@ const getInfo = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
     data: {
-      questionName: '123',
+      question: '123',
       faqTypeId: '0-0-1',
       answerList: [
         {
           answer: '<p>12222</p>',
           channelList: ['APP'],
           enable: 1,
+          enableStartTime: '2022-05-01 16:28:20',
+          enableEndTime: '2022-05-28 16:28:23',
           enableTime: ['2022-05-01 16:28:20', '2022-05-28 16:28:23'],
         },
       ],
@@ -67,11 +69,13 @@ const getAnswer = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
     data: {
-      questionName: '123',
+      question: '123',
       faqTypeId: '0-0-1',
       answer: '<p>12222</p>',
       channelList: ['APP'],
       enable: 1,
+      enableStartTime: '2022-05-01 16:28:20',
+      enableEndTime: '2022-05-28 16:28:23',
       enableTime: ['2022-05-01 16:28:20', '2022-05-28 16:28:23'],
     },
   });
@@ -82,9 +86,9 @@ export default {
   'GET /aichat/robot/file/getFile': getFile,
   'POST /aichat/robot/faq/robotFaqAdd': normalDeal,
   'POST /aichat/robot/faq/robotFaqEdit': normalDeal,
-  'GET /aichat/robot/faq/robotFaqInfo': getInfo,
+  'POST /aichat/robot/faq/robotFaqInfo': getInfo,
   'POST /aichat/robot/faq/answerAdd': normalDeal,
   'POST /aichat/robot/faq/answerEdit': normalDeal,
   'POST /aichat/robot/faq/answerDelete': normalDeal,
-  'GET /aichat/robot/faq/answerInfo': getAnswer,
+  'POST /aichat/robot/faq/answerInfo': getAnswer,
 };

@@ -15,7 +15,7 @@ export default (props: any) => {
   const { visible, type, tableProps, cancel, save, modalData } = props;
   const [form] = Form.useForm();
 
-  const { slotInfo, getFeatureList } = useRuleModule();
+  const { slotInfo, getFeatureListAll } = useRuleModule();
 
   const [slotList, setSlotList] = useState<any>([]);
   const [featureList, setFeatureList] = useState<any>([]);
@@ -40,14 +40,8 @@ export default (props: any) => {
   };
 
   const getFeature = async () => {
-    let params = {
-      intentId: tableProps.id,
-      page: 1,
-      pageSize: 99999,
-    };
-    let res = await getFeatureList(params);
-    setFeatureList(res?.data?.list);
-    debugger;
+    let res = await getFeatureListAll({ intentId: tableProps?.id });
+    setFeatureList(res?.data);
   };
   const templateFocus = (key: any, name: any) => {
     let data = form.getFieldValue('ruleClips');
@@ -174,12 +168,17 @@ export default (props: any) => {
                     <MinusCircleOutlined onClick={() => remove(field.name)} />
                   </span>
                   <span className={styles.isNeed}>
-                    <Form.Item label={''} name={[field.name, 'required']} initialValue={'是'}>
+                    <Form.Item
+                      label={''}
+                      name={[field.name, 'required']}
+                      initialValue={'是'}
+                      rules={[{ required: true, message: '请选择是否匹配' }]}
+                    >
                       <Select>
-                        <Option key={'是'} value={'是'}>
+                        <Option key={1} value={1}>
                           是
                         </Option>
-                        <Option key={'否'} value={'否'}>
+                        <Option key={0} value={0}>
                           否
                         </Option>
                       </Select>
@@ -207,7 +206,7 @@ export default (props: any) => {
                     <Form.Item
                       label=""
                       name={[field.name, 'orderNumber']}
-                      // rules={[{ required: false, message: '请输入规则片段' }]}
+                      rules={[{ required: true, message: '请输入排序' }]}
                     >
                       <InputNumber min={0} step={1} precision={0} />
                     </Form.Item>

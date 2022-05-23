@@ -45,6 +45,25 @@
   }
 }
 
+.box {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.Pagination {
+  position: absolute;
+  right: 0;
+  padding: 24px 12px 8px;
+  :global {
+    .ant-pagination {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
+
 .page_content {
   display: flex;
   flex: 1 1 auto;
@@ -70,7 +89,8 @@
 
 .content-list {
   // padding: 0 8px 0 0;
-  overflow: auto;
+  flex: 1;
+  overflow: auto !important;
   // background-color: #fff;
   border-left: 1px solid #f0f0f0;
 

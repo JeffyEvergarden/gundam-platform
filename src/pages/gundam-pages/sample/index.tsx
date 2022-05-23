@@ -22,7 +22,7 @@ export default () => {
   const [visible, setVisible] = useState<boolean>(false);
   const [modalData, setModalData] = useState<any>({});
 
-  const [pageType, setPageType] = useState<any>();
+  const [pageType, setPageType] = useState<string>('');
   const [tableInfo, setTableInfo] = useState<any>();
 
   const [inputValue, setInputValue] = useState<string>('');
@@ -52,7 +52,7 @@ export default () => {
     if (pageType === 'FAQ') {
       setcolumns(tableListFAQ);
     }
-  }, []);
+  }, [history]);
 
   const getInitTable = async (payload: any) => {
     let res: any;
@@ -100,6 +100,8 @@ export default () => {
       let params = {
         robotId: tableInfo.robotId,
         corpusText: inputValue,
+        intentId: tableInfo.id,
+        intentName: tableInfo.intentName,
       };
       let res = await checkIntent(params);
       if (res.resultCode === config.successCode) {
@@ -110,6 +112,8 @@ export default () => {
         setSimmilar(true);
         setSimilarVisible(true);
         setSimilarTableData(res?.data);
+      } else {
+        message.error(res.resultCode);
       }
     } else {
       message.warning('请先输入语料文本');
@@ -119,7 +123,7 @@ export default () => {
   const intentCorpusAdd = async () => {
     let addParams = {
       robotId: tableInfo.robotId,
-      intendId: tableInfo.id,
+      intentId: tableInfo.id,
       corpusText: inputValue,
     };
     let resAdd = await intentAdd(addParams);
@@ -153,7 +157,7 @@ export default () => {
   const save = async (value: any) => {
     let params: any = {
       id: modalData.id,
-      intentId: value.preIntent,
+      intentId: value.nextIntent,
       corpusText: value.corpusText,
     };
     let res = await intentEdit(params);
@@ -192,7 +196,6 @@ export default () => {
 
   const deleteRow = async (record: any) => {
     console.log('pageType', pageType);
-    debugger;
     if (pageType === 'FAQ' || history?.location?.state?.pageType === 'FAQ') {
       let reqData: any = {
         id: record.id,
@@ -207,7 +210,7 @@ export default () => {
       });
     }
 
-    if (pageType === 'wish') {
+    if (pageType === 'wish' || history?.location?.state?.pageType === 'wish') {
       let res = await deleteIntentFeature({ id: record.id });
       if (res.resultCode == config.successCode) {
         message.success(res.resultDesc);
@@ -298,7 +301,9 @@ export default () => {
               okText="是"
               cancelText="否"
               onCancel={() => {}}
-              onConfirm={() => deleteRow(record)}
+              onConfirm={() => {
+                deleteRow(record);
+              }}
             >
               <Button type="link" style={{ color: 'red' }}>
                 删除

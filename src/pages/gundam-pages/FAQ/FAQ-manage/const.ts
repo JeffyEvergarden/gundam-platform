@@ -1,64 +1,72 @@
 export const HIGH_CONFIG_SELECT = [
   {
-    name: 'channel',
+    name: 'channelList',
     label: '渠道',
     type: 'single',
     children: [
       {
-        name: 0,
+        name: 'all',
         label: '全部',
       },
       {
-        name: 1,
+        name: 'wechat',
         label: '微信',
       },
       {
-        name: 2,
-        label: 'API',
+        name: 'app',
+        label: 'APP',
       },
       {
-        name: 3,
+        name: 'alipay',
         label: '支付宝',
       },
       {
-        name: 4,
+        name: 'zsyh',
         label: '招商银行',
+      },
+      {
+        name: 'jtyw',
+        label: '集团邮务',
+      },
+      {
+        name: 'zygw',
+        label: '中邮官网',
+      },
+      {
+        name: 'ycsjyh',
+        label: '邮储手机银行',
       },
     ],
   },
   {
-    name: 'status',
+    name: 'approvalStatusList',
     label: '状态',
     type: 'single',
     children: [
       {
-        name: 0,
+        name: null,
         label: '全部',
       },
       {
         name: 1,
-        label: '发布',
+        label: '等待审批',
       },
       {
         name: 2,
-        label: '等待审核',
-      },
-      {
-        name: 3,
-        label: '过期',
-      },
-      {
-        name: 4,
         label: '被退回',
       },
       {
-        name: 5,
-        label: '等待生效',
+        name: 3,
+        label: '已过期',
+      },
+      {
+        name: 4,
+        label: '已发布',
       },
     ],
   },
   {
-    name: 'sort',
+    name: 'orderType',
     label: '排序',
     type: 'single',
     children: [
@@ -68,21 +76,45 @@ export const HIGH_CONFIG_SELECT = [
       },
       {
         name: 1,
-        label: '时间排序',
+        label: '时间倒序',
       },
       {
         name: 2,
-        label: '时间倒序',
+        label: '时间正序',
+      },
+      {
+        name: 3,
+        label: '浏览量正序',
+      },
+      {
+        name: 4,
+        label: '浏览量倒序',
+      },
+      {
+        name: 5,
+        label: '满意倒序',
+      },
+      {
+        name: 6,
+        label: '满意正序',
+      },
+      {
+        name: 7,
+        label: '不满意倒序',
+      },
+      {
+        name: 8,
+        label: '不满意正序',
       },
     ],
   },
   {
-    name: 'creator',
+    name: 'creatorList',
     label: '创建人',
     type: 'multi',
     children: [
       {
-        name: 0,
+        name: null,
         label: '全部',
       },
       {

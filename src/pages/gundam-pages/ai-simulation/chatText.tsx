@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Input, Button, message, Space, Radio } from 'antd';
+import React, { useState, useEffect, useRef, Fragment } from 'react';
+import { Input, Button, message, Space, Radio, Modal } from 'antd';
 import styles from './style.less';
+import { useModel } from 'umi';
 import { useChatModel } from './model';
 import robotPhoto from '@/asset/image/headMan.png';
 import customerPhoto from '@/asset/image/headWoman.png';
@@ -23,7 +24,14 @@ export default (props: any) => {
 
   const [chatEvent, setChatEvent] = useState<string>('begin'); // 会话事件类型
 
-  const { getDialogData } = useChatModel();
+  const [nluInfo, setNluInfo] = useState<string>('');
+  const [visible, setVisible] = useState<boolean>(false);
+
+  const { textRobotDialogueText, soundRobotDialogue } = useChatModel();
+
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
 
   const boxRef: any = useRef<any>(null);
 
@@ -38,7 +46,7 @@ export default (props: any) => {
 
   const onKeyDown = (e: any) => {
     if ((e?.keyCode == '13' || e?.which == '13') && !e?.shiftKey) {
-      sendMessage();
+      sendMessage('dialogue');
       // 禁止换行
       e.cancelBubble = true;
       e.preventDefault();
@@ -46,8 +54,14 @@ export default (props: any) => {
     }
   };
 
+  const detail = (nluInfo: string) => {
+    setNluInfo(nluInfo);
+    setVisible(true);
+  };
+
   // 机器人回复内容
   const robotResponse = async (data?: any) => {
+    console.log('info', info);
     console.log('textMessage', textMessage);
     let newDay = new Date().toLocaleDateString();
     let occurDay = newDay.replace(/\//g, '-');
@@ -59,14 +73,26 @@ export default (props: any) => {
       sessionId: modalData.sessionId,
       message: textMessage,
       event: chatEvent, // 事件类型
-      actionType: 'text',
+      actionType: '',
     };
-    const res: any = await getDialogData(params);
+    let res: any;
+    if (info.robotType === 0) {
+      //文本机器人
+      res = await textRobotDialogueText(params);
+    }
+    if (info.robotType === 1) {
+      //语音机器人
+      params.actionType = 'text';
+      res = await soundRobotDialogue(params);
+    }
+
     if (res?.resultCode == '100') {
       let newData = [...dialogList];
       newData.push({
         type: 'robot',
-        message: res?.actionMessage,
+        askText: res?.data?.askText,
+        message: res?.data?.actionMessage,
+        recommendQuestion: res?.data?.recommendQuestion,
       });
       setTimeout(() => {
         setDialogList(newData);
@@ -78,7 +104,7 @@ export default (props: any) => {
   };
 
   // 发送按钮
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (!talkingFlag) {
       message.warning('请点击‘开始对话’按钮启动对话');
       return;
@@ -91,15 +117,48 @@ export default (props: any) => {
       message.warning('最多发送200字');
       return;
     }
-    let a = number;
-    a++;
-    setNumber(a);
     let data = [...dialogList];
-    data.push({
-      type: 'customer',
+    let newDay = new Date().toLocaleDateString();
+    let occurDay = newDay.replace(/\//g, '-');
+    let newTime = new Date().toLocaleTimeString('en-GB');
+    let params = {
+      requestId: modalData.requestId,
+      occurTime: occurDay + ' ' + newTime,
+      systemCode: modalData.systemCode,
+      sessionId: modalData.sessionId,
       message: textMessage,
-    });
+      event: chatEvent, // 事件类型
+      actionType: '',
+    };
+    let res: any;
+    if (info.robotType === 0) {
+      //文本机器人
+      res = await textRobotDialogueText(params);
+    }
+    if (info.robotType === 1) {
+      //语音机器人
+      params.actionType = 'text';
+      res = await soundRobotDialogue(params);
+    }
+    data.push(
+      {
+        type: 'customer',
+        message: textMessage,
+        askKey: res?.data?.askKey,
+        nluInfo: res?.data?.nluInfo,
+      },
+      {
+        type: 'robot',
+        askText: res?.data?.askText,
+        message: res?.data?.actionMessage,
+        recommendQuestion: res?.data?.recommendQuestion,
+      },
+    );
     setDialogList(data);
+    setChatEvent('dialogue');
+    // let a = number;
+    // a++;
+    // setNumber(a);
   };
 
   const resetDialog = () => {
@@ -117,6 +176,55 @@ export default (props: any) => {
     setChatEvent('begin'); // 更换环境、会话重新开始
     resetTalking(); // 环境切换后重置对话
     setDialogList([]); // 清空会话内容
+  };
+
+  const sendQuiet = async () => {
+    if (!talkingFlag) {
+      message.warning('请点击‘开始对话’按钮启动对话');
+      return;
+    }
+    let data = [...dialogList];
+    let newDay = new Date().toLocaleDateString();
+    let occurDay = newDay.replace(/\//g, '-');
+    let newTime = new Date().toLocaleTimeString('en-GB');
+    let params = {
+      requestId: modalData.requestId,
+      occurTime: occurDay + ' ' + newTime,
+      systemCode: modalData.systemCode,
+      sessionId: modalData.sessionId,
+      message: textMessage,
+      event: 'silence', // 事件类型
+      actionType: '',
+    };
+    let res: any;
+    if (info.robotType === 0) {
+      //文本机器人
+      res = await textRobotDialogueText(params);
+    }
+    if (info.robotType === 1) {
+      //语音机器人
+      params.actionType = 'text';
+      res = await soundRobotDialogue(params);
+    }
+    data.push(
+      {
+        type: 'customer',
+        message: '静默',
+        askKey: res?.data?.askKey,
+        nluInfo: res?.data?.nluInfo,
+      },
+      {
+        type: 'robot',
+        askText: res?.data?.askText,
+        message: res?.data?.actionMessage,
+        recommendQuestion: res?.data?.recommendQuestion,
+      },
+    );
+    setDialogList(data);
+    setChatEvent('silence');
+    // let a = number;
+    // a++;
+    // setNumber(a);
   };
 
   //  只负责清空
@@ -172,17 +280,46 @@ export default (props: any) => {
                       <img className={styles['head-customer']} alt="customer" src={customerPhoto} />
                       <div>
                         <div className={styles['words']}>{item.message}</div>
-                        {/* <div className={styles['words-type']}>肯定意图</div> */}
+                        <div className={styles['words-type']}>
+                          <Space>
+                            <span>{item.askKey}</span>
+                            <a onClick={() => detail(item?.nluInfo)}>详情</a>
+                          </Space>
+                        </div>
                       </div>
                     </div>
                   )}
                   {item.type == 'robot' && (
-                    <div className={styles['robot-part']}>
-                      <img className={styles['head-robot']} alt="robot" src={robotPhoto} />
-                      <div>
-                        <div className={styles['words']}>{item?.message}</div>
-                      </div>
-                    </div>
+                    <Fragment>
+                      {item.askText && (
+                        <div className={styles['robot-part']}>
+                          <img className={styles['head-robot']} alt="robot" src={robotPhoto} />
+                          <div>
+                            <div className={styles['words']}>{item?.askText}</div>
+                          </div>
+                        </div>
+                      )}
+                      {item.message && (
+                        <div className={styles['robot-part']}>
+                          <img className={styles['head-robot']} alt="robot" src={robotPhoto} />
+                          <div>
+                            <div className={styles['words']}>{item?.message}</div>
+                          </div>
+                        </div>
+                      )}
+                      {item.recommendQuestion && item.recommendQuestion.length > 0 && (
+                        <div className={styles['robot-part']}>
+                          <img className={styles['head-robot']} alt="robot" src={robotPhoto} />
+                          <div>
+                            <div className={styles['words']}>
+                              {item.recommendQuestion.map((el: any) => {
+                                return el.number + ':' + el.askText;
+                              })}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </Fragment>
                   )}
                 </React.Fragment>
               );
@@ -202,12 +339,24 @@ export default (props: any) => {
               // showCount
             />
 
-            <Button className={styles['send-btn']} type="primary" onClick={sendMessage}>
+            <Button className={styles['send-btn']} type="primary" onClick={() => sendMessage()}>
               发送
+            </Button>
+            <Button className={styles['send-btn-quiet']} type="primary" onClick={() => sendQuiet()}>
+              发送静默
             </Button>
           </div>
         </div>
       )}
+      <Modal
+        title={'详情'}
+        visible={visible}
+        onCancel={() => setVisible(false)}
+        footer={null}
+        bodyStyle={{ maxHeight: 400, overflowY: 'auto' }}
+      >
+        {nluInfo}
+      </Modal>
     </div>
   );
 };

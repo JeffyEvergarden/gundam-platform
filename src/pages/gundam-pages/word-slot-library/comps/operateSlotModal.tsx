@@ -16,6 +16,7 @@ const layout = {
 };
 
 const slotSourceData = [
+  { value: 0, intentName: '枚举实体' },
   { value: 4, intentName: '正则实体' },
   { value: 2, intentName: '用户文本' },
   { value: 7, intentName: '接口' },
@@ -30,11 +31,6 @@ const typeData = [
   },
 ];
 
-const slotPro = [
-  { value: 1, intentName: '贷款产品' },
-  { value: 2, intentName: '词库管理的所有枚举实体' },
-];
-
 const inVal = [
   { value: 0, intentName: '词槽' },
   { value: 1, intentName: '变量' },
@@ -47,7 +43,7 @@ export default (props: any) => {
   const [fieldSelectData, setFieldSelectData] = useState<any>({
     slotSource: slotSourceFormList,
   });
-  const [slotSource, setSource] = useState<number>(0);
+  const [slotSource, setSource] = useState<number>(-1);
   const [form] = Form.useForm();
   const {
     addWordSlot,
@@ -61,6 +57,7 @@ export default (props: any) => {
   } = useKeyWordModel();
   const { getIntentInfoList, getIntentTableList } = useIntentModel();
   const [realList, setRealList] = useState<any>([]);
+  const [enumList, setEnumList] = useState<any>([]);
   const [interfaceListInfo, setInterfaceList] = useState<any>([]);
   const [inValList, setinValList] = useState<any>([]);
   const [inval_val, setInval_val] = useState<string>('');
@@ -74,6 +71,7 @@ export default (props: any) => {
 
   useEffect(() => {
     getRealList();
+    getEnumList();
     getInterFaceList();
   }, [visible]);
 
@@ -124,7 +122,7 @@ export default (props: any) => {
       }
     }
     if (title == 'add') {
-      setSource(0);
+      setSource(-1);
     }
   }, [visible]);
 
@@ -132,6 +130,13 @@ export default (props: any) => {
     const res = await getzzReal({ robotId: info.id, entityType: 1 });
     if (res.resultCode === config.successCode) {
       setRealList(res?.data);
+    }
+  };
+
+  const getEnumList = async () => {
+    const res = await getzzReal({ robotId: info.id, entityType: 0 });
+    if (res.resultCode === config.successCode) {
+      setEnumList(res?.data);
     }
   };
 
@@ -374,22 +379,19 @@ export default (props: any) => {
                 })}
               </Select>
             </Form.Item>
-            {/* {slotSource === 1 && (
+            {slotSource === 0 && (
               <Form.Item name={'slotSourceId'} label={'枚举实体'} rules={[{ required: true }]}>
                 <Select placeholder={''}>
-                  {slotPro.map((itex: any) => {
+                  {enumList.map((itex: any) => {
                     return (
-                      <Option
-                        key={itex?.value || itex?.intentName}
-                        value={itex?.value || itex?.intentName}
-                      >
-                        {itex?.name || itex?.intentName}
+                      <Option key={itex?.id} value={itex?.id}>
+                        {itex?.entityName}
                       </Option>
                     );
                   })}
                 </Select>
               </Form.Item>
-            )} */}
+            )}
             {slotSource === 4 && (
               <Form.Item name={'slotSourceId'} label={'正则实体'} rules={[{ required: true }]}>
                 <Select placeholder={'请选择正则实体'} disabled={title == 'edit'}>

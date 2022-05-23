@@ -9,7 +9,7 @@ function genLinkNode(url: string, text?: string, info?: any): any {
   const linkNode: any = {
     type: 'link',
     url: replaceSymbols(url),
-    target: info.target || '__blank',
+    target: info?.target || '__blank',
     children: text ? [{ text }] : [],
   };
   return linkNode;
@@ -37,19 +37,21 @@ export async function insertLink(editor: any, text: string, url: string, info?: 
 // 数据加工   答案看板
 export const processRequest = (data: any) => {
   data = deepClone(data); // 深克隆
-  let answerList = data.answerList;
+  let answerList = data.answerList || [];
   answerList.forEach((item: any) => {
-    let enableTime = item.enableTime;
+    let enableTime = item.enableTime || [];
     // 生效时间
     item.enable = item.enable ? 1 : 0;
     // 时间格式化
-    item.enableTime = enableTime.map((subitem: any) => {
-      if (subitem instanceof moment) {
-        console.log((subitem as any).format?.('YYYY-MM-DD HH:mm:ss'));
-        return (subitem as any).format?.('YYYY-MM-DD HH:mm:ss');
-      }
-      return subitem;
-    });
+    // item.enableTime = enableTime.map((subitem: any) => {
+    //   if (subitem instanceof moment) {
+    //     console.log((subitem as any).format?.('YYYY-MM-DD HH:mm:ss'));
+    //     return (subitem as any).format?.('YYYY-MM-DD HH:mm:ss');
+    //   }
+    //   return subitem;
+    // });
+    item.enableStartTime = item?.enableStartTime?.format?.('YYYY-MM-DD HH:mm:ss');
+    item.enableEndTime = item?.enableEndTime?.format?.('YYYY-MM-DD HH:mm:ss');
   });
   // 推荐问题启用
   data.questionRecommend = data.questionRecommend ? 1 : 0;
@@ -66,12 +68,14 @@ export const processBody = (data: any) => {
     // 生效时间
     item.enable = item.enable ? true : false;
     // 时间格式化
-    item.enableTime = enableTime.map((subitem: any) => {
-      if (subitem && reg.test(subitem)) {
-        return moment(subitem);
-      }
-      return subitem;
-    });
+    // item.enableTime = enableTime.map((subitem: any) => {
+    //   if (subitem && reg.test(subitem)) {
+    //     return moment(subitem);
+    //   }
+    //   return subitem;
+    // });
+    item.enableStartTime = item?.enableStartTime ? moment(item?.enableStartTime) : undefined;
+    item.enableEndTime = item?.enableEndTime ? moment(item?.enableEndTime) : undefined;
   });
   data.questionRecommend = data.questionRecommend ? true : false;
   return data;
@@ -84,13 +88,15 @@ export const processAnswerRequest = (data: any) => {
   // 生效时间
   data.enable = data.enable ? 1 : 0;
   // 时间格式化
-  data.enableTime = enableTime.map((subitem: any) => {
-    if (subitem instanceof moment) {
-      console.log((subitem as any).format?.('YYYY-MM-DD HH:mm:ss'));
-      return (subitem as any).format?.('YYYY-MM-DD HH:mm:ss');
-    }
-    return subitem;
-  });
+  // data.enableTime = enableTime.map((subitem: any) => {
+  //   if (subitem instanceof moment) {
+  //     console.log((subitem as any).format?.('YYYY-MM-DD HH:mm:ss'));
+  //     return (subitem as any).format?.('YYYY-MM-DD HH:mm:ss');
+  //   }
+  //   return subitem;
+  // });
+  data.enableStartTime = data?.enableStartTime?.format?.('YYYY-MM-DD HH:mm:ss');
+  data.enableEndTime = data?.enableEndTime?.format?.('YYYY-MM-DD HH:mm:ss');
 
   return data;
 };
@@ -100,12 +106,14 @@ export const processAnswerBody = (data: any) => {
   // 生效时间
   data.enable = data.enable ? true : false;
   // 时间格式化
-  data.enableTime = enableTime.map((subitem: any) => {
-    if (subitem && reg.test(subitem)) {
-      return moment(subitem);
-    }
-    return subitem;
-  });
+  // data.enableTime = enableTime.map((subitem: any) => {
+  //   if (subitem && reg.test(subitem)) {
+  //     return moment(subitem);
+  //   }
+  //   return subitem;
+  // });
+  data.enableStartTime = data?.enableStartTime ? moment(data?.enableStartTime) : undefined;
+  data.enableEndTime = data?.enableEndTime ? moment(data?.enableEndTime) : undefined;
 
   return data;
 };

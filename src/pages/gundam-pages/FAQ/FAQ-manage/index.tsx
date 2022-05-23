@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Input, Select, Space, Tree, Collapse, List, Divider, Skeleton } from 'antd';
 import { DownOutlined, SettingOutlined } from '@ant-design/icons';
-import { history } from 'umi';
+import { history, useModel } from 'umi';
 import HighConfigSelect from './components/high-select';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import MyTree from './components/my-tree';
@@ -19,28 +19,47 @@ const { Option } = Select;
 const FAQPage: React.FC<any> = (props: any) => {
   const onSelect = (val: any, opt: any) => {
     console.log('选择树形组件:' + val);
+    QuestionRef.current.CurrentPage({ faqTypeId: val[0] });
   };
 
+  const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+    setInfo: model.setInfo,
+  }));
+
+  const { userList, getCreateUser } = useModel('drawer' as any, (model: any) => ({
+    userList: model.userList,
+    getCreateUser: model.getCreateUser,
+  }));
+
   const [value, setValue] = useState<any>({
-    channel: 0,
-    status: 0,
-    sort: 0,
-    creator: [0],
+    channelList: ['all'],
+    approvalStatusList: null,
+    orderType: 0,
+    creatorList: null,
   });
+  const [queryType, setQueryType] = useState<any>(0);
+  const [searchText, setSearchText] = useState<any>('');
 
   const changeHighConfig = (val: any) => {
+    console.log(val);
+
     setValue(val);
     //重新获取列表
+    setTimeout(() => {
+      QuestionRef?.current?.CurrentPage({});
+    }, 1);
   };
   const [pageNo, setPageNo] = useState<number>(1);
 
   const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
 
-  const { treeData, getTreeData } = useTreeModal();
+  const { treeData, childList, getTreeData } = useTreeModal();
 
   const typeModalRef = useRef<any>({});
   const classifyRef = useRef<any>({});
   const channelRef = useRef<any>({});
+  const QuestionRef = useRef<any>(null);
 
   // 打开新增弹窗
   const openAddModal = (obj: any, callback: any) => {
@@ -60,10 +79,18 @@ const FAQPage: React.FC<any> = (props: any) => {
     });
   };
 
+  const getTree = () => {
+    getTreeData({ robotId: info.id });
+  };
+
   useEffect(() => {
-    getTreeData();
-    getFaqList({ pageNo: 1 });
+    getTree();
+    getCreateUser(info.id);
+    // getFaqList({ pageNo: 1 });
   }, []);
+  useEffect(() => {
+    console.log(userList);
+  }, [userList]);
 
   const _getMoreFaqList = async () => {
     console.log(faqList.length, totalSize, faqList.length < totalSize);
@@ -83,10 +110,17 @@ const FAQPage: React.FC<any> = (props: any) => {
   };
 
   const openClassify = (item: any) => {
-    classifyRef.current?.open();
+    classifyRef.current?.open(item);
   };
   const openChannel = () => {
     channelRef.current?.open();
+  };
+
+  const onEnter = (e: any) => {
+    console.log(e.target.value);
+    console.log(queryType);
+
+    QuestionRef?.current?.CurrentPage({});
   };
 
   return (
@@ -121,11 +155,18 @@ const FAQPage: React.FC<any> = (props: any) => {
         <div className={style['page_top__right']}>
           <Space>
             <Input.Group compact>
-              <Input style={{ width: '280px' }} defaultValue="钢铁是怎么炼成的" />
-              <Select defaultValue={1}>
-                <Option value={1}>问题</Option>
-                <Option value={2}>答案</Option>
-                <Option value={3}>标签</Option>
+              <Input
+                style={{ width: '280px' }}
+                onChange={(e: any) => {
+                  setSearchText(e.target.value);
+                }}
+                onPressEnter={onEnter}
+                placeholder={'请输入'}
+              />
+              <Select defaultValue={0} onChange={setQueryType}>
+                <Option value={0}>问题</Option>
+                <Option value={1}>答案</Option>
+                <Option value={2}>标签</Option>
               </Select>
             </Input.Group>
           </Space>
@@ -149,7 +190,7 @@ const FAQPage: React.FC<any> = (props: any) => {
             openEditModal={openEditModal}
           ></MyTree>
 
-          <TypeModal cref={typeModalRef}></TypeModal>
+          <TypeModal cref={typeModalRef} getTree={getTree}></TypeModal>
         </div>
         <div className={style['main-content']}>
           <div className={style['high-config-select']}>
@@ -165,14 +206,24 @@ const FAQPage: React.FC<any> = (props: any) => {
           </div>
 
           <QuestionList
+            cref={QuestionRef}
             hasCheckbox={false}
             openClassify={openClassify}
             openChannel={openChannel}
+            childList={childList}
+            searchText={searchText}
+            queryType={queryType}
+            heightSelect={value}
+            isRecycle={0}
           ></QuestionList>
         </div>
       </div>
 
-      <ClassifyModal cref={classifyRef} treeData={treeData}></ClassifyModal>
+      <ClassifyModal
+        cref={classifyRef}
+        treeData={treeData}
+        editQ={QuestionRef?.current?.editQ}
+      ></ClassifyModal>
       <ChannelModal cref={channelRef}></ChannelModal>
     </div>
   );

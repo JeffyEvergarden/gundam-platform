@@ -1,10 +1,12 @@
-import { Button, Checkbox, Form } from 'antd';
+import { Button, Checkbox, Form, message } from 'antd';
 import style from './style.less';
 import Condition from '@/components/Condition';
 import React, { useState, useEffect, useRef } from 'react';
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import Selector from '../selector';
 import SelectorModal from '../selector-modal';
+import { useQuestionModel } from '../../model';
+import { useModel } from 'umi';
 
 const { List: FormList } = Form;
 const Recommend: React.FC<any> = (props: any) => {
@@ -12,6 +14,13 @@ const Recommend: React.FC<any> = (props: any) => {
 
   // 推荐启用按钮
   const [showAdvise, setShowAdvise] = useState<boolean>(true);
+
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
+
+  const { maxRecommendLength, addNewQuestion, updateQuestion, getQuestionInfo, getFaqConfig } =
+    useQuestionModel();
 
   const changeAdvise = (e: any) => {
     setShowAdvise(e.target.checked);
@@ -41,12 +50,17 @@ const Recommend: React.FC<any> = (props: any) => {
     };
   };
 
+  useEffect(() => {
+    getFaqConfig({ robotId: info.id });
+  }, []);
+
   return (
     <div>
       <div className={style['diy-row']}>
+        {/* questionRecommend  1 0 */}
         <Form.Item
-          name={'adveriseFlag'}
-          fieldKey={'adveriseFlag'}
+          name={'questionRecommend'}
+          fieldKey={'questionRecommend'}
           label="推荐设置"
           valuePropName="checked"
           // style={{ width: '180px' }}
@@ -60,13 +74,17 @@ const Recommend: React.FC<any> = (props: any) => {
           {(fields, { add, remove }) => {
             const addNew = () => {
               let length = fields.length;
-              // console.log(length);
+              console.log(length);
+              // if (length >= maxRecommendLength) {
+              //   message.warning('推荐设置不能超过faq全局配置限制数量');
+              //   return;
+              // }
               add(
                 {
-                  qustionType: null,
-                  questionId: null,
-                  question: null,
-                  intelligenceFlag: false,
+                  recommendBizType: null,
+                  recommendId: null,
+                  recommend: null,
+                  recommendType: 1,
                 },
                 length,
               );
@@ -92,8 +110,8 @@ const Recommend: React.FC<any> = (props: any) => {
                         </span>
 
                         <Form.Item
-                          name={[field.name, 'question']}
-                          fieldKey={[field.fieldKey, 'question']}
+                          name={[field.name, 'recommend']}
+                          fieldKey={[field.fieldKey, 'recommend']}
                         >
                           <Selector
                             openModal={() => {
