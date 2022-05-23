@@ -7,6 +7,7 @@ import OperateModal from './components/modalCompo';
 import EnumModal from './components/enumModal';
 import config from '@/config/index';
 const { TabPane } = Tabs;
+import styles from './index.less';
 
 const LexiconManage: React.FC = (props: any) => {
   const { getLexiconList, deleteLexicon, addLexicon, editLexicon } = useLexiconModel();
@@ -214,7 +215,7 @@ const LexiconManage: React.FC = (props: any) => {
     },
   ];
   return (
-    <Fragment>
+    <div className={styles.lexiconManage}>
       <Tabs
         defaultActiveKey="1"
         size={'large'}
@@ -277,7 +278,7 @@ const LexiconManage: React.FC = (props: any) => {
         save={save}
         onCancel={cancel}
       />
-    </Fragment>
+    </div>
   );
 };
 export default LexiconManage;
