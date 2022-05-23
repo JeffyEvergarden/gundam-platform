@@ -13,7 +13,7 @@ export const wordSlotTableList: any = [
     dataIndex: 'slotSource',
     title: '词槽来源',
     valueEnum: {
-      // 0: { text: '来自实体', status: 0 },
+      0: { text: '枚举实体', status: 0 },
       // 1: { text: '来自意图', status: 1 },
       2: { text: '用户文本', status: 2 },
       // 3: { text: '规则模版', status: 3 },

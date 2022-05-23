@@ -49,6 +49,7 @@ const pathList = [
     component: QuestionRecommend,
     name: '推荐问',
   },
+  { redirect: '/gundamPages/faq/main' },
   {
     component: Page404,
     name: '404',
@@ -63,8 +64,15 @@ const FAQPagesHome = (props: any) => {
       <div style={{ width: '100%', height: '100%' }}>
         <Switch>
           {pathList &&
-            pathList.map((item: any) => {
-              return <Route path={item.path} component={item.component} />;
+            pathList.map((item: any, i: number) => {
+              return (
+                <Route
+                  path={item.path}
+                  key={i}
+                  component={item.component}
+                  redirect={item.redirect}
+                />
+              );
             })}
         </Switch>
       </div>

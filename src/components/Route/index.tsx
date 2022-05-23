@@ -16,7 +16,7 @@ const Route = (props: any) => {
 
   const currentPath = location.pathname;
 
-  const { path, component, needKeepAlive } = props;
+  const { path, component, needShow } = props;
 
   const match = currentPath === path;
 
@@ -24,8 +24,8 @@ const Route = (props: any) => {
 
   const _page = component ? (typeof component === 'function' ? component() : component) : null;
 
-  if (match || needKeepAlive) {
-    return <Condition r-show={match}>{_page}</Condition>;
+  if (match || needShow) {
+    return _page;
   } else {
     return null;
   }
