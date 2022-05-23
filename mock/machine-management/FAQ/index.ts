@@ -36,6 +36,7 @@ const getFaqList = (req: any, res: any, next: any) => {
         enableStartTime: '2022-05-10 15:55:55',
         enableEndTime: '2022-05-10 15:55:55',
         answerId: '1',
+        approvalStatus: 4, //审批状态
         channelList: ['all'],
         answerLikeNum: 10,
         answerUnlikeNum: 1,
@@ -50,6 +51,7 @@ const getFaqList = (req: any, res: any, next: any) => {
         enableStartTime: '2022-05-10 15:55:55',
         enableEndTime: '2022-05-10 15:55:55',
         answerId: '2',
+        approvalStatus: 3, //审批状态
         channelList: ['app'],
         answerLikeNum: 102,
         answerUnlikeNum: 11,
@@ -126,34 +128,34 @@ const getTreeList = (req: any, res: any) => {
     resultDesc: '成功',
     success: true,
     data: [
-      // {
-      //   title: '贷款产品分类',
-      //   key: '0-0',
-      //   children: [
-      //     {
-      //       title: '循环贷',
-      //       key: '0-0-1',
-      //     },
-      //     {
-      //       title: '极速贷',
-      //       key: '0-0-2',
-      //     },
-      //   ],
-      // },
-      // {
-      //   title: '产品操作',
-      //   key: '0-1',
-      //   children: [
-      //     {
-      //       title: '神奇流程',
-      //       key: '0-1-0',
-      //     },
-      //     {
-      //       title: '神奇流程',
-      //       key: '0-1-1',
-      //     },
-      //   ],
-      // },
+      {
+        title: '贷款产品分类',
+        key: '0-0',
+        children: [
+          {
+            title: '循环贷循环贷循环贷循环贷循环贷循环贷循环贷循环贷循环贷',
+            key: '0-0-1',
+          },
+          {
+            title: '极速贷',
+            key: '0-0-2',
+          },
+        ],
+      },
+      {
+        title: '产品操作',
+        key: '0-1',
+        children: [
+          {
+            title: '神奇流程',
+            key: '0-1-0',
+          },
+          {
+            title: '神奇流程',
+            key: '0-1-1',
+          },
+        ],
+      },
     ],
   });
 };
