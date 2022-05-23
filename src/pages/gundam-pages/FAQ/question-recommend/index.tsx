@@ -76,7 +76,7 @@ const RecommendPage: React.FC<any> = (props: any) => {
           <Form.Item label="标准问:" style={{ marginTop: '24px' }}>
             {query?.question}
           </Form.Item>
-          <Recommend form={form} />
+          <Recommend form={form} faqTypeId={query?.faqId} />
         </Form>
         <div className={style['board-btn']}>
           <Button type="primary" onClick={save}>
