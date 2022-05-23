@@ -13,6 +13,7 @@
     justify-content: space-between;
 
     &__left {
+      overflow-y: auto;
       font-weight: 400;
       font-size: 20px;
     }
@@ -20,6 +21,14 @@
     &__right {
       display: flex;
       flex-wrap: nowrap;
+      :global {
+        .ant-select-selector {
+          border-right: 1px solid rgb(241, 241, 241) !important;
+        }
+        .ant-input-search-button {
+          border: 0;
+        }
+      }
     }
   }
 }
@@ -79,6 +88,10 @@
   :global {
     .ant-collapse-header {
       align-items: center !important;
+    }
+    .ant-collapse {
+      background-color: #fff;
+      border: 0;
     }
   }
 }
