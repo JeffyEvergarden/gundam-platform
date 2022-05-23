@@ -122,6 +122,7 @@ export default () => {
       if (res.resultCode === config.successCode) {
         //检测通过新增
         intentCorpusAdd();
+        similarAdd();
       } else if (res.resultCode === '0001') {
         //不通过有相似
         setSimmilar(true);
@@ -142,6 +143,23 @@ export default () => {
       corpusText: inputValue,
     };
     let resAdd = await intentAdd(addParams);
+    if (resAdd.resultCode === config.successCode) {
+      setSimmilar(false);
+      setSimilarVisible(false);
+      message.success(resAdd.resultDesc || '添加成功');
+      actionRef.current.reload();
+    } else {
+      message.error(resAdd.resultDesc || '添加失败');
+    }
+  };
+
+  const similarAdd = async () => {
+    let addParams = {
+      faqId: tableInfo?.id,
+      similarText: inputValue,
+      robotId: info.id,
+    };
+    let resAdd = await addSimilar(addParams);
     if (resAdd.resultCode === config.successCode) {
       setSimmilar(false);
       setSimilarVisible(false);
@@ -501,6 +519,7 @@ export default () => {
             inputValue={inputValue}
             similarTableData={similarTableData}
             refresh={refresh}
+            pageType={pageType}
           />
         )}
       </div>
