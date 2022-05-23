@@ -50,6 +50,7 @@ const QuestionList: React.FC<any> = (props: any) => {
     heightSelect,
     isRecycle,
     deleteRecycle,
+    treeSelect,
   } = props;
   const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
   const [form] = Form.useForm();
@@ -227,11 +228,12 @@ const QuestionList: React.FC<any> = (props: any) => {
       queryType: queryType,
       searchText: searchText,
       recycle: isRecycle,
+      faqTypeId: treeSelect,
       ...heightSelect,
       ...obj,
     };
     console.log(params);
-    if (isRecycle == 0 && !params.faqTypeId) {
+    if (isRecycle == 0 && !params?.faqTypeId) {
       return;
     }
 
@@ -266,6 +268,10 @@ const QuestionList: React.FC<any> = (props: any) => {
       }
     });
   };
+
+  useEffect(() => {
+    CurrentPage();
+  }, [treeSelect]);
 
   return (
     <div className={style['box']}>
