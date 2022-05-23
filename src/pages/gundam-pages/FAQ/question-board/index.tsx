@@ -192,6 +192,13 @@ const EditBoard: React.FC<any> = (prop: any) => {
         style={{ borderBottom: '1px solid #ccc' }}
       ></Toolbar>
 
+      <div className={style['toolbar']}>
+        <UploadFile submit={_insertLink}>
+          <span ref={bt}></span>
+        </UploadFile>
+
+        <SelectorModal cref={selectModalRef} confirm={confirm} />
+      </div>
       <Editor
         defaultConfig={editorConfig}
         value={value}
@@ -200,14 +207,6 @@ const EditBoard: React.FC<any> = (prop: any) => {
         mode="default"
         style={{ height: '300px' }}
       />
-
-      <div className={style['toolbar']}>
-        <UploadFile submit={_insertLink}>
-          <span ref={bt}></span>
-        </UploadFile>
-
-        <SelectorModal cref={selectModalRef} confirm={confirm} />
-      </div>
     </div>
   );
 };

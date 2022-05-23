@@ -129,11 +129,11 @@ const getTreeList = (req: any, res: any) => {
     success: true,
     data: [
       {
-        title: '贷款产品分类11111111111111222222',
+        title: '贷款产品分类',
         key: '0-0',
         children: [
           {
-            title: '循环贷',
+            title: '循环贷循环贷循环贷循环贷循环贷循环贷循环贷循环贷循环贷',
             key: '0-0-1',
           },
           {

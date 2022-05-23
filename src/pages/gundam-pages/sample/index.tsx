@@ -255,6 +255,7 @@ export default () => {
         id: record.id,
         intentId: record.intentId,
         corpusText: record.corpusText,
+        robotId: info.id,
       };
       let res = await intentEdit(params);
       if (res.resultCode == config.successCode) {
