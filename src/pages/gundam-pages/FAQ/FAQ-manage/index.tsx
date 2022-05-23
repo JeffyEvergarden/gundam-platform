@@ -17,11 +17,6 @@ const { Panel } = Collapse;
 const { Option } = Select;
 
 const FAQPage: React.FC<any> = (props: any) => {
-  const onSelect = (val: any, opt: any) => {
-    console.log('选择树形组件:' + val);
-    QuestionRef.current.CurrentPage({ faqTypeId: val[0] });
-  };
-
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     setInfo: model.setInfo,
@@ -40,6 +35,15 @@ const FAQPage: React.FC<any> = (props: any) => {
   });
   const [queryType, setQueryType] = useState<any>(0);
   const [searchText, setSearchText] = useState<any>('');
+  const [treeSelect, setTreeSelect] = useState<any>('');
+
+  const onSelect = (val: any, opt: any) => {
+    console.log('选择树形组件:' + val);
+    if (val) {
+      setTreeSelect(val[0]);
+    }
+    // QuestionRef?.current?.CurrentPage({ faqTypeId: val });
+  };
 
   const changeHighConfig = (val: any) => {
     console.log(val);
@@ -215,6 +219,7 @@ const FAQPage: React.FC<any> = (props: any) => {
             queryType={queryType}
             heightSelect={value}
             isRecycle={0}
+            treeSelect={treeSelect}
           ></QuestionList>
         </div>
       </div>
