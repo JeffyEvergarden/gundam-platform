@@ -82,7 +82,7 @@ export default (props: any) => {
     }
     if (info.robotType === 1) {
       //语音机器人
-      params.actionType = 'sound';
+      params.actionType = 'text';
       res = await soundRobotDialogue(params);
     }
 
@@ -104,12 +104,12 @@ export default (props: any) => {
   };
 
   // 发送按钮
-  const sendMessage = async (type: string) => {
+  const sendMessage = async () => {
     if (!talkingFlag) {
       message.warning('请点击‘开始对话’按钮启动对话');
       return;
     }
-    if (type === 'dialogue' && (textMessage?.length == 0 || textMessage.trim().length == 0)) {
+    if (textMessage?.length == 0 || textMessage.trim().length == 0) {
       message.warning('不能发送空白文字');
       return;
     }
@@ -121,14 +121,13 @@ export default (props: any) => {
     let newDay = new Date().toLocaleDateString();
     let occurDay = newDay.replace(/\//g, '-');
     let newTime = new Date().toLocaleTimeString('en-GB');
-    let eventStr = type === 'silence' ? 'silence' : chatEvent;
     let params = {
       requestId: modalData.requestId,
       occurTime: occurDay + ' ' + newTime,
       systemCode: modalData.systemCode,
       sessionId: modalData.sessionId,
       message: textMessage,
-      event: eventStr, // 事件类型
+      event: chatEvent, // 事件类型
       actionType: '',
     };
     let res: any;
@@ -141,17 +140,25 @@ export default (props: any) => {
       params.actionType = 'text';
       res = await soundRobotDialogue(params);
     }
-    data.push({
-      type: 'customer',
-      message: textMessage,
-      askKey: res?.data?.askKey,
-      nluInfo: res?.data?.nluInfo,
-    });
+    data.push(
+      {
+        type: 'customer',
+        message: textMessage,
+        askKey: res?.data?.askKey,
+        nluInfo: res?.data?.nluInfo,
+      },
+      {
+        type: 'robot',
+        askText: res?.data?.askText,
+        message: res?.data?.actionMessage,
+        recommendQuestion: res?.data?.recommendQuestion,
+      },
+    );
     setDialogList(data);
-    setChatEvent(type);
-    let a = number;
-    a++;
-    setNumber(a);
+    setChatEvent('dialogue');
+    // let a = number;
+    // a++;
+    // setNumber(a);
   };
 
   const resetDialog = () => {
@@ -171,8 +178,53 @@ export default (props: any) => {
     setDialogList([]); // 清空会话内容
   };
 
-  const sendQuiet = (type: string) => {
-    sendMessage(type);
+  const sendQuiet = async () => {
+    if (!talkingFlag) {
+      message.warning('请点击‘开始对话’按钮启动对话');
+      return;
+    }
+    let data = [...dialogList];
+    let newDay = new Date().toLocaleDateString();
+    let occurDay = newDay.replace(/\//g, '-');
+    let newTime = new Date().toLocaleTimeString('en-GB');
+    let params = {
+      requestId: modalData.requestId,
+      occurTime: occurDay + ' ' + newTime,
+      systemCode: modalData.systemCode,
+      sessionId: modalData.sessionId,
+      message: textMessage,
+      event: 'silence', // 事件类型
+      actionType: '',
+    };
+    let res: any;
+    if (info.robotType === 0) {
+      //文本机器人
+      res = await textRobotDialogueText(params);
+    }
+    if (info.robotType === 1) {
+      //语音机器人
+      params.actionType = 'text';
+      res = await soundRobotDialogue(params);
+    }
+    data.push(
+      {
+        type: 'customer',
+        message: '静默',
+        askKey: res?.data?.askKey,
+        nluInfo: res?.data?.nluInfo,
+      },
+      {
+        type: 'robot',
+        askText: res?.data?.askText,
+        message: res?.data?.actionMessage,
+        recommendQuestion: res?.data?.recommendQuestion,
+      },
+    );
+    setDialogList(data);
+    setChatEvent('silence');
+    // let a = number;
+    // a++;
+    // setNumber(a);
   };
 
   //  只负责清空
@@ -287,18 +339,10 @@ export default (props: any) => {
               // showCount
             />
 
-            <Button
-              className={styles['send-btn']}
-              type="primary"
-              onClick={() => sendMessage('dialogue')}
-            >
+            <Button className={styles['send-btn']} type="primary" onClick={() => sendMessage()}>
               发送
             </Button>
-            <Button
-              className={styles['send-btn-quiet']}
-              type="primary"
-              onClick={() => sendQuiet('silence')}
-            >
+            <Button className={styles['send-btn-quiet']} type="primary" onClick={() => sendQuiet()}>
               发送静默
             </Button>
           </div>

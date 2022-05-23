@@ -16,6 +16,13 @@ export async function slotList(params?: Record<string, any>) {
   });
 }
 
+export async function featureListAll(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/intent/intentFeatureList`, {
+    method: 'GET',
+    params,
+  });
+}
+
 export async function intentFeaturePageList(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/intent/intentFeaturePageList`, {
     method: 'GET',

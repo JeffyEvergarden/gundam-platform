@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useModel, useLocation, history } from 'umi';
-import { Table, Button, Upload } from 'antd';
+import { Table, Button, Upload, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import style from './style.less';
 import {
@@ -14,9 +14,9 @@ import Condition from '@/components/Condition';
 import config from '@/config/index';
 import { useImportModal } from './model';
 
-// 话术标签列表
+// 导入列表
 const ImportPages: React.FC = (props: any) => {
-  const labelTableRef = useRef<any>({});
+  const importTableRef = useRef<any>({});
   const { loading, importList, totalPage, _getImportList } = useImportModal();
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
 
@@ -133,7 +133,7 @@ const ImportPages: React.FC = (props: any) => {
     <div className={style['machine-page']}>
       <ProTable<any>
         columns={columns}
-        actionRef={labelTableRef}
+        actionRef={importTableRef}
         bordered
         scroll={{ x: columns.length * 200 }}
         request={async (params = {}, sort, filter) => {
@@ -186,6 +186,19 @@ const ImportPages: React.FC = (props: any) => {
             <div style={{ display: 'flex' }}>
               <Upload
                 name="file"
+                onChange={(res: any) => {
+                  if (res.file.status !== 'uploading') {
+                    console.log(res.file, res.fileList);
+                  }
+                  if (res.file.status === 'done') {
+                    if (res.file.response.resultCode == config.successCode) {
+                      message.success(res?.file?.response?.resultDesc);
+                      importTableRef?.current?.reload();
+                    } else {
+                      message.error(res?.file?.response?.resultDesc);
+                    }
+                  }
+                }}
                 action={`${config.basePath}/robot/faqImport/upload`}
                 showUploadList={false}
                 data={{ robotId: info.id }}

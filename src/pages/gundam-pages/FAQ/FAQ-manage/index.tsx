@@ -19,6 +19,7 @@ const { Option } = Select;
 const FAQPage: React.FC<any> = (props: any) => {
   const onSelect = (val: any, opt: any) => {
     console.log('选择树形组件:' + val);
+    QuestionRef.current.CurrentPage({ faqTypeId: val[0] });
   };
 
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
@@ -33,7 +34,7 @@ const FAQPage: React.FC<any> = (props: any) => {
 
   const [value, setValue] = useState<any>({
     channelList: ['all'],
-    approvalStatusList: [0],
+    approvalStatusList: null,
     orderType: 0,
     creatorList: null,
   });
@@ -218,7 +219,11 @@ const FAQPage: React.FC<any> = (props: any) => {
         </div>
       </div>
 
-      <ClassifyModal cref={classifyRef} treeData={treeData}></ClassifyModal>
+      <ClassifyModal
+        cref={classifyRef}
+        treeData={treeData}
+        editQ={QuestionRef?.current?.editQ}
+      ></ClassifyModal>
       <ChannelModal cref={channelRef}></ChannelModal>
     </div>
   );

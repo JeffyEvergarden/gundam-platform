@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Input, Select, Collapse, Divider, Skeleton, Checkbox } from 'antd';
+import { Button, Input, Select, Collapse, Divider, Skeleton, Checkbox, message } from 'antd';
 import { ArrowLeftOutlined, DownOutlined, LeftOutlined, SettingOutlined } from '@ant-design/icons';
 import HighConfigSelect from '../FAQ-manage/components/high-select';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -8,6 +8,8 @@ import { useFaqModal, useTreeModal } from '../FAQ-manage/model';
 import ProList from '@ant-design/pro-list';
 import QuestionList from '../components/question-list';
 import { history, useModel } from 'umi';
+import { deleteRecycle } from '../FAQ-manage/model/api';
+import config from '@/config';
 
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -17,7 +19,7 @@ const RecyclePage: React.FC<any> = (props: any) => {
 
   const [value, setValue] = useState<any>({
     channelList: ['all'],
-    approvalStatusList: [0],
+    approvalStatusList: null,
     orderType: 0,
     creatorList: null,
   });
@@ -56,6 +58,20 @@ const RecyclePage: React.FC<any> = (props: any) => {
   const checkboxChange = (val: any) => {
     let flag = val.target.checked;
     (QuestionRef?.current as any)?.selectAll(flag);
+  };
+
+  const _deleteRecycle = async (params: any) => {
+    let data = (QuestionRef?.current as any)?.deleteRecycle();
+    console.log(data);
+
+    await deleteRecycle({ faqIds: data }).then((res) => {
+      if (res.resultCode == config.successCode) {
+        message.success(res.resultDesc);
+      } else {
+        message.error(res.resultDesc);
+      }
+      (QuestionRef?.current as any)?.CurrentPage();
+    });
   };
 
   return (
@@ -101,7 +117,7 @@ const RecyclePage: React.FC<any> = (props: any) => {
               <Checkbox onChange={checkboxChange} style={{ marginBottom: '24px' }}></Checkbox>
               <span style={{ marginLeft: '8px' }}>全选</span>
             </div>
-            <Button>批量删除</Button>
+            <Button onClick={_deleteRecycle}>批量删除</Button>
           </div>
           <QuestionList
             cref={QuestionRef}
@@ -110,6 +126,7 @@ const RecyclePage: React.FC<any> = (props: any) => {
             searchText={searchText}
             heightSelect={value}
             isRecycle={1}
+            deleteRecycle={deleteRecycle}
           ></QuestionList>
         </div>
       </div>
