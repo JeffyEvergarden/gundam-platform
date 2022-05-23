@@ -17,11 +17,6 @@ const { Panel } = Collapse;
 const { Option } = Select;
 
 const FAQPage: React.FC<any> = (props: any) => {
-  const onSelect = (val: any, opt: any) => {
-    console.log('选择树形组件:' + val);
-    QuestionRef.current.CurrentPage({ faqTypeId: val[0] });
-  };
-
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     setInfo: model.setInfo,
@@ -40,9 +35,19 @@ const FAQPage: React.FC<any> = (props: any) => {
   });
   const [queryType, setQueryType] = useState<any>(0);
   const [searchText, setSearchText] = useState<any>('');
+  const [selectTree, setSelectTree] = useState<any>(sessionStorage.getItem('selectTree') || '');
+
+  const onSelect = (val: any, opt: any) => {
+    // console.log('选择树形组件:' + val);
+    if (val[0]) {
+      setSelectTree(val[0]);
+      sessionStorage.setItem('selectTree', val[0]);
+    }
+    // QuestionRef?.current?.CurrentPage({ faqTypeId: val });
+  };
 
   const changeHighConfig = (val: any) => {
-    console.log(val);
+    // console.log(val);
 
     setValue(val);
     //重新获取列表
@@ -86,7 +91,6 @@ const FAQPage: React.FC<any> = (props: any) => {
   useEffect(() => {
     getTree();
     getCreateUser(info.id);
-    // getFaqList({ pageNo: 1 });
   }, []);
 
   const _getMoreFaqList = async () => {
@@ -209,6 +213,7 @@ const FAQPage: React.FC<any> = (props: any) => {
             queryType={queryType}
             heightSelect={value}
             isRecycle={0}
+            selectTree={selectTree}
           ></QuestionList>
         </div>
       </div>

@@ -30,6 +30,13 @@ export async function intentSame(data?: Record<string, any>) {
   });
 }
 
+export async function similarSame(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/intent/faqSimilarCheck`, {
+    method: 'POST',
+    data,
+  });
+}
+
 export async function intentAddList(data?: Record<string, any>) {
   return request(`${baseUrl}/robot/intent/intentCorpusAdd`, {
     method: 'POST',

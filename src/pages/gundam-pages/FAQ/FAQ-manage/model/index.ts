@@ -62,23 +62,25 @@ export const useTreeModal = () => {
   const [treeData, setTreeData] = useState<any[]>([]);
   const [childList, setChildList] = useState<any>([]);
   let arr: any = [];
+  let deep: any = 0;
   const processTreeData = (data: any[], parent?: any) => {
     if (!Array.isArray(data)) {
       return null;
     }
-
     let _data = data.map((item: any) => {
       let obj: any = {
         title: item.title,
         key: item.key,
         parent: parent || item.parent || '0',
+        deep,
       };
       let children: any = processTreeData(item.children, obj);
+
+      //所有子
       if (!children?.length) {
         arr.push(obj);
       }
       obj.children = children;
-
       return obj;
     });
     setChildList(arr);
@@ -97,6 +99,7 @@ export const useTreeModal = () => {
           key: '0',
           parent: undefined,
           children: data,
+          deep: 0,
         },
       ];
       setTreeData(root || []);

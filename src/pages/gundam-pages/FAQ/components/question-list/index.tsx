@@ -50,6 +50,7 @@ const QuestionList: React.FC<any> = (props: any) => {
     heightSelect,
     isRecycle,
     deleteRecycle,
+    selectTree,
   } = props;
   const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
   const [form] = Form.useForm();
@@ -91,7 +92,7 @@ const QuestionList: React.FC<any> = (props: any) => {
     CurrentPage,
     editQ,
     deleteRecycle() {
-      console.log(selectedRowKeys);
+      // console.log(selectedRowKeys);
       return selectedRowKeys;
     },
   }));
@@ -111,14 +112,14 @@ const QuestionList: React.FC<any> = (props: any) => {
     return {
       selectedRowKeys,
       onChange: (keys: any[]) => {
-        console.log(keys);
+        // console.log(keys);
         return setSelectedRowKeys(keys);
       },
     };
   };
 
   const deleteList = async (val: any) => {
-    console.log(val);
+    // console.log(val);
     if (isRecycle == 1) {
       await deleteRecycle({ faqIds: [val.id] }).then((res: any) => {
         if (res.resultCode == config.successCode) {
@@ -130,7 +131,7 @@ const QuestionList: React.FC<any> = (props: any) => {
       });
     } else if (isRecycle == 0) {
       await deleteQuestion({ id: val?.id }).then((res) => {
-        console.log(res, config);
+        // console.log(res, config);
 
         if (res.resultCode == config.successCode) {
           message.success(res?.resultDesc || '');
@@ -189,7 +190,7 @@ const QuestionList: React.FC<any> = (props: any) => {
 
   const changeEdit = (item: any, index: any) => {
     if (edit[index]) {
-      console.log(form.getFieldsValue());
+      // console.log(form.getFieldsValue());
       editQ({ id: item.id, ...form.getFieldsValue() });
     } else {
       form.setFieldsValue({ question: item.question });
@@ -201,25 +202,26 @@ const QuestionList: React.FC<any> = (props: any) => {
   };
 
   const addAnswer = (item: any) => {
-    console.log(item);
+    // console.log(item);
     history.push(`/gundamPages/faq/answer?faqId=${item.id}`);
   };
 
   const editAnswer = (Q: any, A: any) => {
-    console.log(Q);
-    console.log(A);
+    // console.log(Q);
+    // console.log(A);
     history.push(`/gundamPages/faq/answer?faqId=${Q.id}&answerId=${A.answerId}`);
   };
 
   const _deleteAnswer = (A: any) => {
-    console.log(A);
+    // console.log(A);
 
     deleteAnswer({ id: A.id });
   };
 
   //获取问题列表
   const CurrentPage = async (obj?: any) => {
-    console.log(obj);
+    let selectTree = sessionStorage.getItem('selectTree');
+    // console.log(obj);
     let params = {
       page: 1,
       pageSize: 10,
@@ -227,22 +229,25 @@ const QuestionList: React.FC<any> = (props: any) => {
       queryType: queryType,
       searchText: searchText,
       recycle: isRecycle,
+      faqTypeId: selectTree,
       ...heightSelect,
       ...obj,
     };
-    console.log(params);
+    // console.log(selectTree);
+
+    // console.log(params);
     if (isRecycle == 0 && !params.faqTypeId) {
       return;
     }
 
     let res: any = await getFaqList(params);
-    console.log(res);
+    // console.log(res);
 
     setTotal(res?.total || 0);
     return res;
   };
   const pageChange = (page: any, size: any) => {
-    console.log(page, size);
+    // console.log(page, size);
     setCurrent(page);
     setPageSize(size);
     CurrentPage({ page, pageSize: size, robotId: info.id });
@@ -267,6 +272,11 @@ const QuestionList: React.FC<any> = (props: any) => {
     });
   };
 
+  useEffect(() => {
+    CurrentPage({ faqTypeList: selectTree });
+    // console.log(selectTree);
+  }, [selectTree]);
+
   return (
     <div className={style['box']}>
       <div id="scrollContent" className={style['content-list']}>
@@ -275,7 +285,7 @@ const QuestionList: React.FC<any> = (props: any) => {
           actionRef={listRef}
           dataSource={faqList}
           request={async (params = {}, sort, filter) => {
-            console.log(params);
+            // console.log(params);
             return {};
             // return CurrentPage({ page: current, pageSize, robotId: info.id });
           }}
@@ -368,7 +378,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                                   style={{ width: 100, padding: 0 }}
                                   bordered={false}
                                   onChange={(val) => {
-                                    console.log(val);
+                                    // console.log(val);
                                     editQ({ id: item.id, approvalStatus: val });
                                   }}
                                 >
@@ -390,7 +400,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                               toSample(item);
                             }}
                           >
-                            {item?.similarQuestionNum || 0}个相似问法
+                            {item?.similarNum || 0}个相似问法
                           </Button>
                           <Divider type="vertical" />
                           <Button

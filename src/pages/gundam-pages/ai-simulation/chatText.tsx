@@ -140,22 +140,34 @@ export default (props: any) => {
       params.actionType = 'text';
       res = await soundRobotDialogue(params);
     }
-    data.push(
-      {
+    if (res?.resultCode == '100') {
+      data.push(
+        {
+          type: 'customer',
+          message: textMessage,
+          askKey: res?.data?.askKey,
+          nluInfo: res?.data?.nluInfo,
+        },
+        {
+          type: 'robot',
+          askText: res?.data?.askText,
+          message: res?.data?.actionMessage,
+          recommendQuestion: res?.data?.recommendQuestion,
+        },
+      );
+      setTextMessage('');
+      setChatEvent('dialogue');
+    } else {
+      data.push({
         type: 'customer',
         message: textMessage,
         askKey: res?.data?.askKey,
         nluInfo: res?.data?.nluInfo,
-      },
-      {
-        type: 'robot',
-        askText: res?.data?.askText,
-        message: res?.data?.actionMessage,
-        recommendQuestion: res?.data?.recommendQuestion,
-      },
-    );
+      });
+      message.error(res?.resultDesc);
+    }
     setDialogList(data);
-    setChatEvent('dialogue');
+
     // let a = number;
     // a++;
     // setNumber(a);
@@ -221,7 +233,7 @@ export default (props: any) => {
       },
     );
     setDialogList(data);
-    setChatEvent('silence');
+    // setChatEvent('silence');
     // let a = number;
     // a++;
     // setNumber(a);
@@ -342,9 +354,15 @@ export default (props: any) => {
             <Button className={styles['send-btn']} type="primary" onClick={() => sendMessage()}>
               发送
             </Button>
-            <Button className={styles['send-btn-quiet']} type="primary" onClick={() => sendQuiet()}>
-              发送静默
-            </Button>
+            {info.robotType === 1 && (
+              <Button
+                className={styles['send-btn-quiet']}
+                type="primary"
+                onClick={() => sendQuiet()}
+              >
+                发送静默
+              </Button>
+            )}
           </div>
         </div>
       )}

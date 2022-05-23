@@ -164,7 +164,7 @@ const LexiconManage: React.FC = (props: any) => {
       title: '实体值',
       ellipsis: true,
       fixed: 'left',
-      width: 300,
+      width: 223,
       search: false,
     },
     {
@@ -185,7 +185,7 @@ const LexiconManage: React.FC = (props: any) => {
       dataIndex: 'wordSet',
       title: '词汇量',
       ellipsis: true,
-      fixed: 'left',
+      // fixed: 'left',
       width: 100,
       search: false,
     },

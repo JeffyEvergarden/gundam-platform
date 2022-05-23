@@ -171,7 +171,7 @@ export default (props: any) => {
                     <Form.Item
                       label={''}
                       name={[field.name, 'required']}
-                      initialValue={'是'}
+                      initialValue={1}
                       rules={[{ required: true, message: '请选择是否匹配' }]}
                     >
                       <Select>

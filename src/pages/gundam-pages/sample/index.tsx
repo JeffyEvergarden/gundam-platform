@@ -37,7 +37,8 @@ export default () => {
 
   const { getList, intentEdit, deleteIntentFeature, checkIntent, intentAdd } = useSampleModel();
 
-  const { getSimilarList, editSimilar, deleteSimilar, addSimilar } = useSimilarModel();
+  const { getSimilarList, checkSimilar, editSimilar, deleteSimilar, addSimilar } =
+    useSimilarModel();
 
   useEffect(() => {
     let historyData = history?.location || {};
@@ -60,7 +61,7 @@ export default () => {
       let params: any = {
         page: payload.current,
         pageSize: payload.pageSize,
-        intentId: tableInfo.id,
+        intentId: tableInfo.id || tableInfo.intentId,
         corpusText: payload.corpusText,
       };
       res = await getList(params);
@@ -70,7 +71,9 @@ export default () => {
       let params = {
         page: payload.current,
         pageSize: payload.pageSize,
-        similarText: tableInfo?.question,
+        similarText: payload?.corpusText || '',
+        faqId: tableInfo?.id,
+        robotId: info.id,
       };
       res = await getSimilarList(params);
     }
@@ -97,13 +100,25 @@ export default () => {
 
     // setInputValue(input?.current?.state?.value);
     if (inputValue) {
-      let params = {
-        robotId: tableInfo.robotId,
-        corpusText: inputValue,
-        intentId: tableInfo.id,
-        intentName: tableInfo.intentName,
-      };
-      let res = await checkIntent(params);
+      let res: any;
+      if (pageType === 'wish') {
+        let params = {
+          robotId: tableInfo.robotId,
+          corpusText: inputValue,
+          intentId: tableInfo.id,
+          intentName: tableInfo.intentName,
+        };
+        res = await checkIntent(params);
+      }
+      if (pageType === 'FAQ') {
+        let params = {
+          robotId: tableInfo.robotId,
+          similarText: inputValue || '',
+          faqId: tableInfo?.id,
+        };
+        res = await checkSimilar(params);
+      }
+
       if (res.resultCode === config.successCode) {
         //检测通过新增
         intentCorpusAdd();
@@ -253,6 +268,13 @@ export default () => {
     setCorpusText(e.target.value);
   };
 
+  const refresh = (r: any, pageType: any) => {
+    setTableInfo(r);
+    setPageType(pageType);
+    setSimmilar(false);
+    actionRef?.current?.reload();
+  };
+
   const tableListWish: any = [
     {
       dataIndex: 'corpusText',
@@ -386,11 +408,15 @@ export default () => {
                   history?.goBack();
                 }}
               />
-              {pageType === 'wish' ? tableInfo?.intentName : '问题名称'}
+              {pageType === 'wish'
+                ? tableInfo?.intentName
+                : pageType === 'FAQ'
+                ? tableInfo?.question
+                : '问题名称'}
             </div>
             {pageType == 'FAQ' && (
               <div style={{ fontSize: '14px' }}>
-                <EyeOutlined /> 123132
+                <EyeOutlined /> {tableInfo?.viewNum || '-'}
               </div>
             )}
           </div>
@@ -398,7 +424,14 @@ export default () => {
             <Col span={14}>
               <Input
                 ref={input}
-                placeholder="输入语料意图"
+                placeholder={
+                  // "输入语料意图"
+                  pageType === 'wish'
+                    ? '输入语料意图'
+                    : pageType === 'FAQ'
+                    ? '输入相似问法'
+                    : '请输入'
+                }
                 allowClear
                 maxLength={200}
                 onChange={changeCorpusText}
@@ -419,7 +452,13 @@ export default () => {
             </Col>
             <Col span={6}>
               <Search
-                placeholder="搜索相似语料"
+                placeholder={
+                  pageType === 'wish'
+                    ? '搜索语料意图'
+                    : pageType === 'FAQ'
+                    ? '搜索相似问法'
+                    : '请输入'
+                }
                 onSearch={onSearch}
                 onChange={onChange}
                 allowClear
@@ -460,6 +499,7 @@ export default () => {
             tableInfo={tableInfo}
             inputValue={inputValue}
             similarTableData={similarTableData}
+            refresh={refresh}
           />
         )}
       </div>
