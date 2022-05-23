@@ -353,7 +353,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                                 openClassify?.(item);
                               }}
                             >
-                              {childList?.find((c: any) => c.key == item.faqTypeId)?.title}
+                              {childList?.find((c: any) => c.key == item.faqTypeId)?.title || '-'}
                               {/* {item.faqTypeId} */}
                             </Button>
                           </span>
