@@ -8,6 +8,7 @@ import QuestionImport from './question-import';
 import QuestionRecommend from './question-recommend';
 import KeepAlive, { AliveScope } from 'react-activation';
 import { history, useLocation } from 'umi';
+import Page404 from '@/pages/404';
 
 const KeepAliveFAQManage = () => {
   return (
@@ -48,6 +49,10 @@ const pathList = [
     component: QuestionRecommend,
     name: '推荐问',
   },
+  {
+    component: Page404,
+    name: '404',
+  },
 ];
 
 const FAQPagesHome = (props: any) => {
@@ -56,10 +61,12 @@ const FAQPagesHome = (props: any) => {
   return (
     <AliveScope>
       <div style={{ width: '100%', height: '100%' }}>
-        {pathList &&
-          pathList.map((item: any) => {
-            return <Route path={item.path} component={item.component} />;
-          })}
+        <Switch>
+          {pathList &&
+            pathList.map((item: any) => {
+              return <Route path={item.path} component={item.component} />;
+            })}
+        </Switch>
       </div>
     </AliveScope>
   );
