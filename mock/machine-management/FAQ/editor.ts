@@ -44,7 +44,7 @@ const getInfo = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
     data: {
-      questionName: '123',
+      question: '123',
       faqTypeId: '0-0-1',
       answerList: [
         {
@@ -69,7 +69,7 @@ const getAnswer = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
     data: {
-      questionName: '123',
+      question: '123',
       faqTypeId: '0-0-1',
       answer: '<p>12222</p>',
       channelList: ['APP'],
