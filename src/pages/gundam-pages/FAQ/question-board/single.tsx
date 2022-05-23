@@ -16,10 +16,9 @@ import {
   MinusCircleOutlined,
   PlusCircleOutlined,
   LoginOutlined,
+  ArrowLeftOutlined,
 } from '@ant-design/icons';
 import SpCheckbox from './components/sp-checkbox';
-import Selector from './components/selector';
-import SelectorModal from './components/selector-modal';
 import EditBoard from './index';
 import { history, useModel } from 'umi';
 import style from './style.less';
@@ -172,7 +171,8 @@ const Board: React.FC<any> = (props: any) => {
     <div className={style['board-page']}>
       <div className={style['board-title']}>
         <Button
-          icon={<LoginOutlined style={{ fontSize: '20px' }} />}
+          icon={<ArrowLeftOutlined style={{ fontSize: '20px' }} />}
+          style={{ padding: 0 }}
           type="link"
           onClick={() => {
             history.push('/gundamPages/faq/main');
