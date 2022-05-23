@@ -71,6 +71,8 @@ export default () => {
         page: payload.current,
         pageSize: payload.pageSize,
         similarText: tableInfo?.question,
+        faqId: tableInfo?.id,
+        robotId: info.id,
       };
       res = await getSimilarList(params);
     }

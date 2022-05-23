@@ -23,6 +23,7 @@ interface TreeProps {
   openEditModal?: (...args: any) => void;
   openAddModal?: (...args: any) => void;
   size?: string;
+  selectTree: any;
 }
 
 const { DirectoryTree } = Tree;
@@ -67,7 +68,6 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
   const { deleteLeaf } = useTreeModal();
 
   const [dataSource, setDataSource] = useState<any[]>([]);
-  const [treeSelect, setTreeSelect] = useState<any[]>([]);
 
   const location: any = useLocation();
 
@@ -308,17 +308,6 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
   // ----
   const onClick = () => {
     console.log(dataSource);
-  };
-
-  //树选择
-  const onCheck = (val: any) => {
-    console.log(val);
-    setTreeSelect(val);
-  };
-
-  //导出
-  const importList = () => {
-    console.log(treeSelect);
   };
 
   return (

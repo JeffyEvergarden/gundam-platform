@@ -15,7 +15,7 @@ const getFaqList = (req: any, res: any, next: any) => {
     id: '1',
     robotId: '100',
     question: '问题',
-    similarQuestionNum: 5, //相似数
+    similarNum: 5, //相似数
     sumViewNum: 10, //总浏览次数
     viewNum: 5, //浏览次数
     likeNum: 555,

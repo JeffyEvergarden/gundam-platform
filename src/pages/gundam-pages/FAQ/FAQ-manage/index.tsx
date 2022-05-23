@@ -35,18 +35,19 @@ const FAQPage: React.FC<any> = (props: any) => {
   });
   const [queryType, setQueryType] = useState<any>(0);
   const [searchText, setSearchText] = useState<any>('');
-  const [treeSelect, setTreeSelect] = useState<any>('');
+  const [selectTree, setSelectTree] = useState<any>(sessionStorage.getItem('selectTree') || '');
 
   const onSelect = (val: any, opt: any) => {
-    console.log('选择树形组件:' + val);
-    if (val) {
-      setTreeSelect(val[0]);
+    // console.log('选择树形组件:' + val);
+    if (val[0]) {
+      setSelectTree(val[0]);
+      sessionStorage.setItem('selectTree', val[0]);
     }
     // QuestionRef?.current?.CurrentPage({ faqTypeId: val });
   };
 
   const changeHighConfig = (val: any) => {
-    console.log(val);
+    // console.log(val);
 
     setValue(val);
     //重新获取列表
@@ -90,11 +91,7 @@ const FAQPage: React.FC<any> = (props: any) => {
   useEffect(() => {
     getTree();
     getCreateUser(info.id);
-    // getFaqList({ pageNo: 1 });
   }, []);
-  useEffect(() => {
-    console.log(userList);
-  }, [userList]);
 
   const _getMoreFaqList = async () => {
     console.log(faqList.length, totalSize, faqList.length < totalSize);
@@ -121,8 +118,8 @@ const FAQPage: React.FC<any> = (props: any) => {
   };
 
   const onEnter = (e: any) => {
-    console.log(e.target.value);
-    console.log(queryType);
+    // console.log(e.target.value);
+    // console.log(queryType);
 
     QuestionRef?.current?.CurrentPage({});
   };
@@ -192,6 +189,7 @@ const FAQPage: React.FC<any> = (props: any) => {
             data={treeData}
             openAddModal={openAddModal}
             openEditModal={openEditModal}
+            selectTree={selectTree}
           ></MyTree>
 
           <TypeModal cref={typeModalRef} getTree={getTree}></TypeModal>
@@ -219,7 +217,7 @@ const FAQPage: React.FC<any> = (props: any) => {
             queryType={queryType}
             heightSelect={value}
             isRecycle={0}
-            treeSelect={treeSelect}
+            selectTree={selectTree}
           ></QuestionList>
         </div>
       </div>
