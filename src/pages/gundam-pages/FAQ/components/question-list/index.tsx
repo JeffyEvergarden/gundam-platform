@@ -50,7 +50,7 @@ const QuestionList: React.FC<any> = (props: any) => {
     heightSelect,
     isRecycle,
     deleteRecycle,
-    treeSelect,
+    selectTree,
   } = props;
   const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
   const [form] = Form.useForm();
@@ -220,6 +220,7 @@ const QuestionList: React.FC<any> = (props: any) => {
 
   //获取问题列表
   const CurrentPage = async (obj?: any) => {
+    let selectTree = sessionStorage.getItem('selectTree');
     console.log(obj);
     let params = {
       page: 1,
@@ -228,12 +229,14 @@ const QuestionList: React.FC<any> = (props: any) => {
       queryType: queryType,
       searchText: searchText,
       recycle: isRecycle,
-      faqTypeId: treeSelect,
+      faqTypeId: selectTree,
       ...heightSelect,
       ...obj,
     };
+    console.log(selectTree);
+
     console.log(params);
-    if (isRecycle == 0 && !params?.faqTypeId) {
+    if (isRecycle == 0 && !params.faqTypeId) {
       return;
     }
 
@@ -270,8 +273,9 @@ const QuestionList: React.FC<any> = (props: any) => {
   };
 
   useEffect(() => {
-    CurrentPage();
-  }, [treeSelect]);
+    CurrentPage({ faqTypeList: selectTree });
+    console.log(selectTree);
+  }, [selectTree]);
 
   return (
     <div className={style['box']}>
@@ -396,7 +400,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                               toSample(item);
                             }}
                           >
-                            {item?.similarQuestionNum || 0}个相似问法
+                            {item?.similarNum || 0}个相似问法
                           </Button>
                           <Divider type="vertical" />
                           <Button

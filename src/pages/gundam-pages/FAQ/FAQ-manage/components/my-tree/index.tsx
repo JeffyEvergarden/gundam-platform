@@ -23,6 +23,7 @@ interface TreeProps {
   openEditModal?: (...args: any) => void;
   openAddModal?: (...args: any) => void;
   size?: string;
+  selectTree: any;
 }
 
 const { DirectoryTree } = Tree;
@@ -62,6 +63,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
     deleteApi = () => true,
     edit = true,
     size,
+    selectTree,
   } = props;
 
   const { deleteLeaf } = useTreeModal();
@@ -321,6 +323,13 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
     console.log(treeSelect);
   };
 
+  useEffect(() => {
+    let st = JSON.parse(JSON.stringify([selectTree]));
+    console.log(st);
+
+    setTreeSelect(st);
+  }, [selectTree]);
+
   return (
     <div className={`${style['faq-tree']} ${size === 'sm' ? style['faq-tree_sm'] : ''}`}>
       <Condition r-if={query?.test}>
@@ -343,6 +352,8 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
         blockNode
         draggable={draggable}
         onDrop={onDrop}
+        defaultSelectedKeys={treeSelect}
+        defaultExpandedKeys={treeSelect}
       ></Tree>
     </div>
   );

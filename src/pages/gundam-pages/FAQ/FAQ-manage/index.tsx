@@ -35,12 +35,13 @@ const FAQPage: React.FC<any> = (props: any) => {
   });
   const [queryType, setQueryType] = useState<any>(0);
   const [searchText, setSearchText] = useState<any>('');
-  const [treeSelect, setTreeSelect] = useState<any>('');
+  const [selectTree, setSelectTree] = useState<any>(sessionStorage.getItem('selectTree'));
 
   const onSelect = (val: any, opt: any) => {
     console.log('选择树形组件:' + val);
-    if (val) {
-      setTreeSelect(val[0]);
+    if (val[0]) {
+      setSelectTree(val[0]);
+      sessionStorage.setItem('selectTree', val[0]);
     }
     // QuestionRef?.current?.CurrentPage({ faqTypeId: val });
   };
@@ -88,8 +89,16 @@ const FAQPage: React.FC<any> = (props: any) => {
   };
 
   useEffect(() => {
+    let st: any = sessionStorage.getItem('selectTree');
     getTree();
     getCreateUser(info.id);
+    if (st) {
+      setSelectTree(st);
+    } else {
+      setSelectTree('');
+    }
+    console.log(st);
+
     // getFaqList({ pageNo: 1 });
   }, []);
   useEffect(() => {
@@ -192,6 +201,7 @@ const FAQPage: React.FC<any> = (props: any) => {
             data={treeData}
             openAddModal={openAddModal}
             openEditModal={openEditModal}
+            selectTree={selectTree}
           ></MyTree>
 
           <TypeModal cref={typeModalRef} getTree={getTree}></TypeModal>
@@ -219,7 +229,7 @@ const FAQPage: React.FC<any> = (props: any) => {
             queryType={queryType}
             heightSelect={value}
             isRecycle={0}
-            treeSelect={treeSelect}
+            selectTree={selectTree}
           ></QuestionList>
         </div>
       </div>
