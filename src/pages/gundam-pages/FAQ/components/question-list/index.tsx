@@ -484,7 +484,11 @@ const QuestionList: React.FC<any> = (props: any) => {
                                           style={{ width: 100, padding: 0 }}
                                           bordered={false}
                                           onChange={(val: any) => {
-                                            editA({ answerId: v.answerId, approvalStatus: val });
+                                            editA({
+                                              answerId: v.answerId,
+                                              approvalStatus: val,
+                                              faqId: item.id,
+                                            });
                                           }}
                                         >
                                           {statusList.map((val: any) => {
