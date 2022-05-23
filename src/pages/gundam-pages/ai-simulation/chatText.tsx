@@ -221,7 +221,7 @@ export default (props: any) => {
       },
     );
     setDialogList(data);
-    setChatEvent('silence');
+    // setChatEvent('silence');
     // let a = number;
     // a++;
     // setNumber(a);
