@@ -185,7 +185,7 @@ const LexiconManage: React.FC = (props: any) => {
       dataIndex: 'wordSet',
       title: '词汇量',
       ellipsis: true,
-      fixed: 'left',
+      // fixed: 'left',
       width: 100,
       search: false,
     },
