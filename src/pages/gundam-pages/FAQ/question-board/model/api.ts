@@ -18,10 +18,10 @@ export async function editQuestion(data?: Record<string, any>) {
   });
 }
 
-export async function getQuestionInfo(data?: Record<string, any>) {
+export async function getQuestionInfo(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/faq/robotFaqInfo`, {
-    method: 'POST',
-    data,
+    method: 'GET',
+    params,
   });
 }
 
@@ -46,10 +46,10 @@ export async function deleteAnswer(data?: Record<string, any>) {
   });
 }
 
-export async function getAnswerInfo(data?: Record<string, any>) {
+export async function getAnswerInfo(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/faq/answerInfo`, {
-    method: 'POST',
-    data,
+    method: 'GET',
+    params,
   });
 }
 
