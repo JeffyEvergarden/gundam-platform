@@ -121,8 +121,11 @@ export default () => {
 
       if (res.resultCode === config.successCode) {
         //检测通过新增
-        intentCorpusAdd();
-        similarAdd();
+        if (pageType === 'wish') {
+          intentCorpusAdd();
+        } else {
+          similarAdd();
+        }
       } else if (res.resultCode === '0001') {
         //不通过有相似
         setSimmilar(true);
@@ -265,6 +268,8 @@ export default () => {
         if (res.resultCode == config.successCode) {
           message.success(res?.resultDesc || '成功');
           actionRef.current.reload();
+        } else {
+          message.error(res?.resultDesc);
         }
       });
     }
