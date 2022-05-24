@@ -70,6 +70,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
   const { deleteLeaf } = useTreeModal();
 
   const [dataSource, setDataSource] = useState<any[]>([]);
+  const [defaultOpenTree, setDefaultOpenTree] = useState<any[]>([]);
 
   const location: any = useLocation();
 
@@ -191,6 +192,8 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
   // 打开新增弹窗
 
   const openAddModal = (e: any, nodeData: any) => {
+    setDefaultOpenTree([nodeData?.key]);
+
     // 阻止冒泡
     e.stopPropagation();
     const addCallback = (obj: any) => {
@@ -340,6 +343,8 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
         blockNode
         draggable={draggable}
         onDrop={onDrop}
+        expandedKeys={defaultOpenTree}
+        onExpand={setDefaultOpenTree}
       ></Tree>
     </div>
   );

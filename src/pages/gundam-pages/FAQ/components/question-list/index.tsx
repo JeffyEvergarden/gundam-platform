@@ -460,7 +460,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                             type="link"
                             onClick={() => {
                               history.push(
-                                `/gundamPages/faq/recommend?faqId=${item.id}&question=${item.question}&treeId=${selectTree}`,
+                                `/gundamPages/faq/recommend?faqId=${item.id}&question=${item.question}&treeId=${selectTree}&recommend=${item.questionRecommend}`,
                               );
                             }}
                           >
