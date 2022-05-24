@@ -192,7 +192,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
   // 打开新增弹窗
 
   const openAddModal = (e: any, nodeData: any) => {
-    setDefaultOpenTree([nodeData?.key]);
+    setDefaultOpenTree([...defaultOpenTree, nodeData?.key]);
     console.log(nodeData.key);
 
     // 阻止冒泡
