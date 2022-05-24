@@ -195,6 +195,7 @@ export default () => {
       id: modalData.id,
       intentId: value.nextIntent,
       corpusText: value.corpusText,
+      robotId: info.id,
     };
     let res = await intentEdit(params);
     if (res.resultCode == config.successCode) {
