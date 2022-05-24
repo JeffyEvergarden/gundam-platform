@@ -338,9 +338,6 @@ const getNodeConfig = (req: any, res: any) => {
 };
 
 export default {
-  // 'POST /aichat/robot/config/configInfo': getConfig, //
-  // 'POST /aichat/robot/config/configUpdate': editConfig, //
-
   'GET /aichat/robot/interface/listPage': getInterface, // 接口配置分页列表
   'GET /aichat/robot/interface/param': getInterfaceDetail, // 接口配置详情
 

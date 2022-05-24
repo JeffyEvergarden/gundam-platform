@@ -402,6 +402,13 @@ const Board: React.FC<any> = (props: any) => {
                             <Form.Item
                               name={[field.name, 'answer']}
                               fieldKey={[field.fieldKey, 'answer']}
+                              rules={[
+                                {
+                                  message: '请输入答案',
+                                  required: true,
+                                  validateTrigger: 'onBlur',
+                                },
+                              ]}
                             >
                               <EditBoard />
                             </Form.Item>
@@ -411,6 +418,7 @@ const Board: React.FC<any> = (props: any) => {
                             <Form.Item
                               name={[field.name, 'answer']}
                               fieldKey={[field.fieldKey, 'answer']}
+                              rules={[{ message: '请输入答案', required: true }]}
                             >
                               <TextArea
                                 maxLength={2000}
@@ -425,7 +433,12 @@ const Board: React.FC<any> = (props: any) => {
                             name={[field.name, 'channelList']}
                             fieldKey={[field.fieldKey, 'channelList']}
                             label="生效渠道"
-                            rules={[{ message: '请选择生效渠道', required: true }]}
+                            rules={[
+                              {
+                                message: '请选择生效渠道',
+                                required: true,
+                              },
+                            ]}
                           >
                             <SpCheckbox
                               list={CHANNAL_LIST}
