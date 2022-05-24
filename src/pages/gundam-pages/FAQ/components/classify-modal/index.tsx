@@ -1,4 +1,4 @@
-import { Modal, Tree } from 'antd';
+import { message, Modal, Tree } from 'antd';
 import style from './style.less';
 import React, { useImperativeHandle, useMemo, useState } from 'react';
 
@@ -8,9 +8,13 @@ const ClassifyModal: React.FC<any> = (props: any) => {
   const [treeSelect, setTreeSelect] = useState<any[]>([]);
   const [QInfo, setQInfo] = useState<any>([]);
 
-  const submit = () => {
+  const submit = async () => {
     console.log(treeSelect);
-    editQ({ id: QInfo?.id, faqTypeId: treeSelect?.[0] });
+    if (!treeSelect?.[0]) {
+      message.warning('请选择分类');
+      return;
+    }
+    let res = await editQ({ id: QInfo?.id, faqTypeId: treeSelect?.[0] });
     setVisible(false);
     // setTreeSelect([]);
   };

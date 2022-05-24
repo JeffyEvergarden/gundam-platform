@@ -243,7 +243,7 @@ const QuestionList: React.FC<any> = (props: any) => {
     };
     // console.log(selectTree);
 
-    // console.log(params);
+    console.log(params);
     if (isRecycle == 0 && !params.faqTypeId) {
       return;
     }
@@ -299,14 +299,12 @@ const QuestionList: React.FC<any> = (props: any) => {
     });
   };
 
-  useEffect(() => {
-    CurrentPage();
-    // console.log(selectTree);
-  }, [selectTree]);
-
   useActivate(() => {
     CurrentPage();
   });
+  useEffect(() => {
+    CurrentPage();
+  }, [selectTree]);
 
   return (
     <div className={style['box']}>
