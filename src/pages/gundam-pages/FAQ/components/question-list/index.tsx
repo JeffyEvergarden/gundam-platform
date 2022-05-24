@@ -406,7 +406,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                       {/* 作者... */}
                       <div className={style['box-desc']}>
                         <div>
-                          <span>作者：{item.creator}</span>
+                          <span>作者：{item.updateBy || item.creator}</span>
                           <Divider type="vertical" />
                           <span>
                             分类：
@@ -564,7 +564,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                                 ></div>
                                 <div className={style['box-footer']}>
                                   <div>
-                                    <span>作者：{v.creator}</span>
+                                    <span>作者：{v.updateBy || v.creator}</span>
                                     <Divider type="vertical" />
                                     <span>
                                       生效渠道：
