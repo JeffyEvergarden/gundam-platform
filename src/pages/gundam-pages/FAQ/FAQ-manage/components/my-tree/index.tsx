@@ -193,6 +193,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
 
   const openAddModal = (e: any, nodeData: any) => {
     setDefaultOpenTree([nodeData?.key]);
+    console.log(nodeData.key);
 
     // 阻止冒泡
     e.stopPropagation();
@@ -345,6 +346,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
         onDrop={onDrop}
         expandedKeys={defaultOpenTree}
         onExpand={setDefaultOpenTree}
+        autoExpandParent={true}
       ></Tree>
     </div>
   );

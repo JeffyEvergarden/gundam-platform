@@ -39,7 +39,7 @@ const FAQPage: React.FC<any> = (props: any) => {
   const [selectTree, setSelectTree] = useState<any>('');
 
   const onSelect = (val: any, opt: any) => {
-    // console.log('选择树形组件:' + val);
+    console.log('选择树形组件:' + val);
     if (val[0]) {
       setSelectTree(val[0]);
       // sessionStorage.setItem('selectTree', val[0]);

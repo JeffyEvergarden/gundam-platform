@@ -100,7 +100,10 @@ const TypeModal = (props: any) => {
             <Form.Item
               label="分类名称"
               name="typeName"
-              rules={[{ required: true, message: '请输入分类名称' }]}
+              rules={[
+                { required: true, message: '请输入分类名称' },
+                { max: 30, message: '不能超过30个字符' },
+              ]}
             >
               <Input placeholder={'请输入分类名称'} />
             </Form.Item>
