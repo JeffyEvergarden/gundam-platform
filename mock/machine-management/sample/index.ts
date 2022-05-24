@@ -156,7 +156,18 @@ const getSimilarList = (req: any, res: any) => {
       pageSize: 10,
       totalPage: 2,
       page: 1,
-      list: [],
+      list: [
+        {
+          dataStatus: 0,
+          faqId: 'xx',
+          id: '123',
+          question: '问题',
+          robotId: '100',
+          similarText: '148',
+          viewNum: 0,
+          updateTime: '2022-05-20 13:14:15',
+        },
+      ],
     },
   });
 };

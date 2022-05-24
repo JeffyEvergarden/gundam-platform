@@ -22,9 +22,10 @@ const FAQPage: React.FC<any> = (props: any) => {
     setInfo: model.setInfo,
   }));
 
-  const { userList, getCreateUser } = useModel('drawer' as any, (model: any) => ({
+  const { userList, getCreateUser, _getTreeData } = useModel('drawer' as any, (model: any) => ({
     userList: model.userList,
     getCreateUser: model.getCreateUser,
+    _getTreeData: model.getTreeData,
   }));
 
   const [value, setValue] = useState<any>({
@@ -89,6 +90,7 @@ const FAQPage: React.FC<any> = (props: any) => {
   };
 
   useEffect(() => {
+    _getTreeData(info.id);
     getTree();
     getCreateUser(info.id);
   }, []);
