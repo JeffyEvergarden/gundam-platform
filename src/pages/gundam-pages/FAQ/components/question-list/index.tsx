@@ -18,6 +18,8 @@ import { useFaqModal } from '../../FAQ-manage/model';
 import style from './style.less';
 import ProList from '@ant-design/pro-list';
 import {
+  CheckOutlined,
+  CloseOutlined,
   DeleteOutlined,
   DislikeOutlined,
   DownOutlined,
@@ -329,6 +331,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                     <div className={style['list-item']}>
                       <div className={style['box-top']}>
                         <div className={style['title']}>
+                          {/* 问题名字编辑 */}
                           {!hasCheckbox && (
                             <QuestionCircleFilled
                               className={style['blue']}
@@ -348,7 +351,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                               </Form.Item>
                             </Form>
                           )}
-                          {!hasCheckbox && (
+                          {!hasCheckbox && !edit[index] && (
                             <Button
                               type="link"
                               icon={<EditOutlined />}
@@ -356,6 +359,26 @@ const QuestionList: React.FC<any> = (props: any) => {
                                 changeEdit(item, index);
                               }}
                             ></Button>
+                          )}
+                          {!hasCheckbox && edit[index] && (
+                            <>
+                              <Button
+                                type="link"
+                                icon={<CheckOutlined />}
+                                onClick={() => {
+                                  changeEdit(item, index);
+                                }}
+                              ></Button>
+                              <Button
+                                type="link"
+                                icon={<CloseOutlined />}
+                                onClick={() => {
+                                  let arr: any = JSON.parse(JSON.stringify(edit));
+                                  arr[index] = !arr[index];
+                                  setEdit(arr);
+                                }}
+                              ></Button>
+                            </>
                           )}
                         </div>
                         {/* 问题删除 */}
