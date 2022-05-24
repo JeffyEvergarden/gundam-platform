@@ -12,7 +12,16 @@ const { Option } = Select;
 const RuleConfig = (props: any) => {
   const { wishList, wordSlotList, form, type = 'node', title, style } = props;
 
-  const CURRENT_RULE_LIST = type === 'node' ? RUlE_LIST : [...RUlE_LIST, ...EDGE_RULE_LIST];
+  const { info, globalVarList } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+    globalVarList: model.globalVarList || [],
+  }));
+
+  let CURRENT_RULE_LIST = type === 'node' ? RUlE_LIST : [...RUlE_LIST, ...EDGE_RULE_LIST];
+
+  if (info.robotType == 0) {
+    CURRENT_RULE_LIST = RUlE_LIST;
+  }
 
   // 监听数组变化
   const onValuesChange = (obj: any, curObj: any) => {
@@ -88,10 +97,6 @@ const RuleConfig = (props: any) => {
     // setNum(num + 1); // 刷新
     return;
   };
-
-  const { globalVarList } = useModel('gundam' as any, (model: any) => ({
-    globalVarList: model.globalVarList || [],
-  }));
 
   const tableList: any[] = useMemo(() => {
     return globalVarList.map((item: any, index: number) => {

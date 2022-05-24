@@ -18,6 +18,8 @@ import { useFaqModal } from '../../FAQ-manage/model';
 import style from './style.less';
 import ProList from '@ant-design/pro-list';
 import {
+  CheckOutlined,
+  CloseOutlined,
   DeleteOutlined,
   DislikeOutlined,
   DownOutlined,
@@ -243,7 +245,7 @@ const QuestionList: React.FC<any> = (props: any) => {
     };
     // console.log(selectTree);
 
-    // console.log(params);
+    console.log(params);
     if (isRecycle == 0 && !params.faqTypeId) {
       return;
     }
@@ -299,14 +301,12 @@ const QuestionList: React.FC<any> = (props: any) => {
     });
   };
 
-  useEffect(() => {
-    CurrentPage();
-    // console.log(selectTree);
-  }, [selectTree]);
-
   useActivate(() => {
     CurrentPage();
   });
+  useEffect(() => {
+    CurrentPage();
+  }, [selectTree]);
 
   return (
     <div className={style['box']}>
@@ -331,6 +331,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                     <div className={style['list-item']}>
                       <div className={style['box-top']}>
                         <div className={style['title']}>
+                          {/* 问题名字编辑 */}
                           {!hasCheckbox && (
                             <QuestionCircleFilled
                               className={style['blue']}
@@ -350,7 +351,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                               </Form.Item>
                             </Form>
                           )}
-                          {!hasCheckbox && (
+                          {!hasCheckbox && !edit[index] && (
                             <Button
                               type="link"
                               icon={<EditOutlined />}
@@ -358,6 +359,26 @@ const QuestionList: React.FC<any> = (props: any) => {
                                 changeEdit(item, index);
                               }}
                             ></Button>
+                          )}
+                          {!hasCheckbox && edit[index] && (
+                            <>
+                              <Button
+                                type="link"
+                                icon={<CheckOutlined />}
+                                onClick={() => {
+                                  changeEdit(item, index);
+                                }}
+                              ></Button>
+                              <Button
+                                type="link"
+                                icon={<CloseOutlined />}
+                                onClick={() => {
+                                  let arr: any = JSON.parse(JSON.stringify(edit));
+                                  arr[index] = !arr[index];
+                                  setEdit(arr);
+                                }}
+                              ></Button>
+                            </>
                           )}
                         </div>
                         {/* 问题删除 */}
@@ -385,7 +406,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                       {/* 作者... */}
                       <div className={style['box-desc']}>
                         <div>
-                          <span>作者：{item.creator}</span>
+                          <span>作者：{item.updateBy || item.creator}</span>
                           <Divider type="vertical" />
                           <span>
                             分类：
@@ -439,7 +460,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                             type="link"
                             onClick={() => {
                               history.push(
-                                `/gundamPages/faq/recommend?faqId=${item.id}&question=${item.question}&treeId=${selectTree}`,
+                                `/gundamPages/faq/recommend?faqId=${item.id}&question=${item.question}&treeId=${selectTree}&recommend=${item.questionRecommend}`,
                               );
                             }}
                           >
@@ -543,7 +564,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                                 ></div>
                                 <div className={style['box-footer']}>
                                   <div>
-                                    <span>作者：{v.creator}</span>
+                                    <span>作者：{v.updateBy || v.creator}</span>
                                     <Divider type="vertical" />
                                     <span>
                                       生效渠道：

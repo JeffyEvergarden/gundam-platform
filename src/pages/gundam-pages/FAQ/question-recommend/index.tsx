@@ -4,7 +4,7 @@ import { ArrowLeftOutlined, SettingOutlined } from '@ant-design/icons';
 import style from './style.less';
 import Recommend from '../question-board/components/recommend-modal';
 import { history, useModel } from 'umi';
-import { editQuestion } from '../FAQ-manage/model/api';
+import { editQuestion, getRecommend } from '../FAQ-manage/model/api';
 import config from '@/config';
 
 const { Panel } = Collapse;
@@ -54,9 +54,24 @@ const RecommendPage: React.FC<any> = (props: any) => {
     });
   };
 
+  const getRecommendList = async () => {
+    await getRecommend({ faqId: query?.faqId }).then((res) => {
+      if (res.resultCode == config.successCode) {
+        let formData = {
+          requestionRecommend: query.recommend ? true : false,
+          recommendList: res?.data || [],
+        };
+        form.setFieldsValue(formData);
+      } else {
+        message.error(res.resultDesc);
+      }
+    });
+  };
+
   useEffect(() => {
     getFlowList(info.id);
     getTreeData(info.id);
+    getRecommendList();
   }, []);
   return (
     <div className={style['FAQ-page']}>
