@@ -306,6 +306,7 @@ export default (props: any) => {
     } else {
       form?.setFieldsValue({ dataType: 0 });
     }
+    form?.setFieldsValue({ slotSourceId: null });
   };
 
   const outValChange = (value: any, option: any) => {
@@ -381,7 +382,7 @@ export default (props: any) => {
             </Form.Item>
             {slotSource === 0 && (
               <Form.Item name={'slotSourceId'} label={'枚举实体'} rules={[{ required: true }]}>
-                <Select placeholder={''}>
+                <Select placeholder={''} disabled={title == 'edit'}>
                   {enumList.map((itex: any) => {
                     return (
                       <Option key={itex?.id} value={itex?.id}>
