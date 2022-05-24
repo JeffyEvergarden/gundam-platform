@@ -38,11 +38,11 @@ const TypeModal = (props: any) => {
         };
         let _res = await addLeaf(data);
         if (_res) {
-          callback?.({
-            title: data.title,
-            key: data.title,
-            children: [],
-          });
+          // callback?.({
+          //   title: data.name,
+          //   key: data.name,
+          //   children: [],
+          // });
           setVisible(false);
           message.success('添加成功');
         }
@@ -54,10 +54,10 @@ const TypeModal = (props: any) => {
         };
         let _res = await editLeaf(data);
         if (_res) {
-          callback?.({
-            title: data.title,
-            key: data.title,
-          });
+          // callback?.({
+          //   title: data.title,
+          //   key: data.title,
+          // });
           setVisible(false);
           message.success('修改成功');
         }
