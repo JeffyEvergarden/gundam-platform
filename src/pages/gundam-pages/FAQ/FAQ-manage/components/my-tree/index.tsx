@@ -83,9 +83,8 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
     if (node.key === '0') {
       return;
     }
-    if (!node.children || node.children?.length === 0) {
-      onChange?.(key, opt);
-    }
+    // if (!node.children || node.children?.length === 0) {
+    onChange?.(key, opt);
     // 只有level2级的才会触发加载
     // if (opt?.node?.level === 2) {
     //   onChange?.(key, opt);
@@ -254,7 +253,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
 
   // 自定义渲染
   const diyRender = (nodeData: any) => {
-    console.log(nodeData);
+    // console.log(nodeData);
 
     let extra = null;
     if (nodeData && nodeData?.deep < 5) {

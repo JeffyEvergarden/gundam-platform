@@ -38,6 +38,7 @@ export async function insertLink(editor: any, text: string, url: string, info?: 
 export const processRequest = (data: any) => {
   data = deepClone(data); // 深克隆
   let answerList = data.answerList || [];
+  let reg = new RegExp('/aichat/robot/file/getFile', 'g');
   answerList.forEach((item: any) => {
     let enableTime = item.enableTime || [];
     // 生效时间
@@ -50,12 +51,14 @@ export const processRequest = (data: any) => {
     //   }
     //   return subitem;
     // });
+    item.answer = item.answer || '';
+    item.answer = item.answer.replace(reg, '${getResoureUrl}');
+
     item.enableStartTime = item?.enableStartTime?.format?.('YYYY-MM-DD HH:mm:ss');
     item.enableEndTime = item?.enableEndTime?.format?.('YYYY-MM-DD HH:mm:ss');
   });
   // 推荐问题启用
   data.questionRecommend = data.questionRecommend ? 1 : 0;
-
   return data;
 };
 
@@ -63,17 +66,15 @@ const reg = /\d{4}-\d{2}-\d{2}/;
 
 export const processBody = (data: any) => {
   let answerList = data.answerList || [];
+  let reg = new RegExp('${getResoureUrl}', 'g');
   answerList.forEach((item: any) => {
     let enableTime = item.enableTime || [];
     // 生效时间
     item.enable = item.enable ? true : false;
     // 时间格式化
-    // item.enableTime = enableTime.map((subitem: any) => {
-    //   if (subitem && reg.test(subitem)) {
-    //     return moment(subitem);
-    //   }
-    //   return subitem;
-    // });
+    item.answer = item.answer || '';
+    item.answer = item.answer.replace(reg, '/aichat/robot/file/getFile');
+
     item.enableStartTime = item?.enableStartTime ? moment(item?.enableStartTime) : undefined;
     item.enableEndTime = item?.enableEndTime ? moment(item?.enableEndTime) : undefined;
   });
@@ -83,18 +84,14 @@ export const processBody = (data: any) => {
 
 export const processAnswerRequest = (data: any) => {
   data = deepClone(data); // 深克隆
+  let reg = new RegExp('/aichat/robot/file/getFile', 'g');
+  data.answer = data.answer || '';
+  data.answer = data.answer.replace(reg, '${getResoureUrl}');
 
   let enableTime = data.enableTime;
   // 生效时间
   data.enable = data.enable ? 1 : 0;
-  // 时间格式化
-  // data.enableTime = enableTime.map((subitem: any) => {
-  //   if (subitem instanceof moment) {
-  //     console.log((subitem as any).format?.('YYYY-MM-DD HH:mm:ss'));
-  //     return (subitem as any).format?.('YYYY-MM-DD HH:mm:ss');
-  //   }
-  //   return subitem;
-  // });
+
   data.enableStartTime = data?.enableStartTime?.format?.('YYYY-MM-DD HH:mm:ss');
   data.enableEndTime = data?.enableEndTime?.format?.('YYYY-MM-DD HH:mm:ss');
 
@@ -106,12 +103,10 @@ export const processAnswerBody = (data: any) => {
   // 生效时间
   data.enable = data.enable ? true : false;
   // 时间格式化
-  // data.enableTime = enableTime.map((subitem: any) => {
-  //   if (subitem && reg.test(subitem)) {
-  //     return moment(subitem);
-  //   }
-  //   return subitem;
-  // });
+  let reg = new RegExp('${getResoureUrl}', 'g');
+  data.answer = data.answer || '';
+  data.answer = data.answer.replace(reg, '/aichat/robot/file/getFile');
+
   data.enableStartTime = data?.enableStartTime ? moment(data?.enableStartTime) : undefined;
   data.enableEndTime = data?.enableEndTime ? moment(data?.enableEndTime) : undefined;
 
