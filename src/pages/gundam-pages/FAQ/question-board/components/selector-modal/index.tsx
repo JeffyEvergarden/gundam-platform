@@ -66,7 +66,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     };
   });
 
-  const [classType, setClassType] = useState<string>('0');
+  const [classType, setClassType] = useState<string>('');
   const { loading, faqList, getFaqList, totalSize, setFaqList } = useFaqModal();
 
   const [visible, setVisible] = useState<boolean>(false);
@@ -264,7 +264,6 @@ const SelectorModal: React.FC<any> = (props: any) => {
                 onChange={onSelect}
                 data={treeData}
                 edit={false}
-                leafClickOnly={false}
                 size="sm"
               />
             </div>
