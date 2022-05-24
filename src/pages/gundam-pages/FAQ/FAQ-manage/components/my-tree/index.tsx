@@ -23,7 +23,8 @@ interface TreeProps {
   openEditModal?: (...args: any) => void;
   openAddModal?: (...args: any) => void;
   size?: string;
-  selectTree: any;
+  selectTree?: any;
+  leafClickOnly?: boolean;
 }
 
 const { DirectoryTree } = Tree;
@@ -63,6 +64,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
     deleteApi = () => true,
     edit = true,
     size,
+    leafClickOnly = true,
   } = props;
 
   const { deleteLeaf } = useTreeModal();
@@ -80,11 +82,16 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
   // 选择节点
   const onSelect = (key: any, opt: any) => {
     let node = opt.node;
-    if (node.key === '0') {
-      return;
+    if (leafClickOnly) {
+      if (node.key === '0') {
+        return;
+      }
+      if (!node.children || node.children?.length === 0) {
+        onChange?.(key, opt);
+      }
+    } else {
+      onChange?.(key, opt);
     }
-    // if (!node.children || node.children?.length === 0) {
-    onChange?.(key, opt);
     // 只有level2级的才会触发加载
     // if (opt?.node?.level === 2) {
     //   onChange?.(key, opt);
