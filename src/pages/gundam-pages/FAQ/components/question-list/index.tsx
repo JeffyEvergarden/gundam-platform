@@ -469,7 +469,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                         </div>
                         <div>
                           <span>
-                            <EyeOutlined /> {item.viewNum}
+                            <EyeOutlined /> {item.sumViewNum}
                           </span>
                           <Divider type="vertical" />
                           <span>
