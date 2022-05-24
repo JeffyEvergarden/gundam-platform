@@ -40,12 +40,15 @@ if (!(window as any).hadRegisterMenu) {
 // --------------------------
 
 const EditBoard: React.FC<any> = (prop: any) => {
-  const { value, onChange } = prop;
+  const { value, onChange, onBlur } = prop;
 
   const [editor, setEditor] = useState<IDomEditor | null>(null); // 存储 editor 实例
   // onchange事件 内容变动
   const onChangeContent = (editor: any) => {
     let content = editor.getHtml();
+    if (content === '<p><br></p>') {
+      content = undefined;
+    }
     onChange(content);
   };
 
@@ -64,6 +67,11 @@ const EditBoard: React.FC<any> = (prop: any) => {
     placeholder: '请输入内容...  限制2000字',
     MENU_CONF: {},
     maxLength: 2000,
+    autoFocus: false,
+    onBlur: () => {
+      console.log('blur');
+      onBlur?.();
+    },
   };
   // 上传图片的配置
   (editorConfig.MENU_CONF as any)['uploadImage'] = {

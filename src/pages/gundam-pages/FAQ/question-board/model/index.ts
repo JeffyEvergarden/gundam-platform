@@ -25,8 +25,8 @@ export const useQuestionModel = () => {
       let _item = data.find((item: any) => {
         return item.configKey === 'FAQ_RECOMMEND_LIMIT';
       });
-      let val = _item?.configValue || 0;
-      val = !isNaN(val) ? Number(val) : 0;
+      let val = _item?.configValue;
+      val = !isNaN(val) ? Number(val) : 1;
       setMaxRecommendLength(val);
       return true;
     } else {

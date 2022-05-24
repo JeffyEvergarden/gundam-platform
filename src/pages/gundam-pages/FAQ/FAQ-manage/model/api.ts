@@ -61,3 +61,10 @@ export async function deleteNodeLeaf(data?: Record<string, any>) {
     data,
   });
 }
+
+export async function getRecommend(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/listFaqRecommend`, {
+    method: 'GET',
+    params,
+  });
+}

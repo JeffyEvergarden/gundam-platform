@@ -22,7 +22,7 @@ const getFaqList = (req: any, res: any, next: any) => {
     unlikeNum: 22,
     faqTypeId: '0-0-1', //问题类型
     approvalStatus: 1, //审批状态
-    qunestionRecommend: 1, //推荐 0关  1开
+    questionRecommend: 1, //推荐 0关  1开
     recyle: 0, //是否在回收站
     creator: 'jiangjiahao',
     createTime: '2022-05-10 15:55:55',
@@ -169,6 +169,24 @@ const getCreateUser = (req: any, res: any) => {
   });
 };
 
+const getRecommend = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    resultDesc: '成功',
+    success: true,
+    data: [
+      {
+        id: 100,
+        faqId: '111',
+        recommendId: '222',
+        recommendType: 1,
+        recommendBizType: 1,
+        recommend: '问题',
+      },
+    ],
+  });
+};
+
 export default {
   'GET /aichat/robot/faq/list': getFaqList, // 获取问答列表
 
@@ -182,4 +200,5 @@ export default {
   'POST /aichat/robot/faq/typeDelete': normalDeal, // 删除分类节点
 
   'GET /aichat/robot/faq/listCreateUser': getCreateUser, //获取用户
+  'GET /aichat/robot/faq/listFaqRecommend': getRecommend, //获取用户
 };

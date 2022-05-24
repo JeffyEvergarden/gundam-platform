@@ -22,9 +22,10 @@ const FAQPage: React.FC<any> = (props: any) => {
     setInfo: model.setInfo,
   }));
 
-  const { userList, getCreateUser } = useModel('drawer' as any, (model: any) => ({
+  const { userList, getCreateUser, _getTreeData } = useModel('drawer' as any, (model: any) => ({
     userList: model.userList,
     getCreateUser: model.getCreateUser,
+    _getTreeData: model.getTreeData,
   }));
 
   const [value, setValue] = useState<any>({
@@ -35,10 +36,10 @@ const FAQPage: React.FC<any> = (props: any) => {
   });
   const [queryType, setQueryType] = useState<any>(0);
   const [searchText, setSearchText] = useState<any>('');
-  const [selectTree, setSelectTree] = useState<any>(sessionStorage.getItem('selectTree') || '');
+  const [selectTree, setSelectTree] = useState<any>('');
 
   const onSelect = (val: any, opt: any) => {
-    // console.log('选择树形组件:' + val);
+    console.log('选择树形组件:' + val);
     if (val[0]) {
       setSelectTree(val[0]);
       // sessionStorage.setItem('selectTree', val[0]);
@@ -89,6 +90,7 @@ const FAQPage: React.FC<any> = (props: any) => {
   };
 
   useEffect(() => {
+    _getTreeData(info.id);
     getTree();
     getCreateUser(info.id);
   }, []);
@@ -119,6 +121,10 @@ const FAQPage: React.FC<any> = (props: any) => {
 
   const onEnter = (e: any) => {
     QuestionRef?.current?.CurrentPage({});
+  };
+
+  const changeClassify = (params: any) => {
+    QuestionRef?.current?.editQ(params);
   };
 
   return (
@@ -171,6 +177,7 @@ const FAQPage: React.FC<any> = (props: any) => {
                 onChange={(e: any) => {
                   setSearchText(e.target.value);
                 }}
+                onSearch={onEnter}
                 onPressEnter={onEnter}
                 placeholder={'请输入'}
               />
@@ -222,11 +229,7 @@ const FAQPage: React.FC<any> = (props: any) => {
         </div>
       </div>
 
-      <ClassifyModal
-        cref={classifyRef}
-        treeData={treeData}
-        editQ={QuestionRef?.current?.editQ}
-      ></ClassifyModal>
+      <ClassifyModal cref={classifyRef} treeData={treeData} editQ={changeClassify}></ClassifyModal>
       <ChannelModal cref={channelRef}></ChannelModal>
     </div>
   );

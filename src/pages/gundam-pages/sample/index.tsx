@@ -9,12 +9,14 @@ import SameModal from './components/sameModal';
 import styles from './index.less';
 import { ArrowLeftOutlined, EyeOutlined } from '@ant-design/icons';
 import config from '@/config';
+import RemoveSimilar from './components/removeSimilar';
 
 const { Search } = Input;
 
 export default () => {
   const actionRef = useRef<any>();
   const input = useRef<any>();
+  const RemoveSRef = useRef<any>();
 
   const [similar, setSimmilar] = useState<boolean>(false);
   const [similarVisible, setSimilarVisible] = useState<boolean>(false);
@@ -229,7 +231,9 @@ export default () => {
     }
   };
 
-  const removeFAQ = (record: any) => {};
+  const removeFAQ = (record: any) => {
+    RemoveSRef?.current?.open(record);
+  };
 
   const deleteRow = async (record: any) => {
     console.log('pageType', pageType);
@@ -298,6 +302,22 @@ export default () => {
     setPageType(pageType);
     setSimmilar(false);
     actionRef?.current?.reload();
+  };
+
+  const editRemove = async (id: any, faqId: any) => {
+    if (!faqId) {
+      message.warning('请选择问题');
+      return;
+    }
+    await editSimilar({ id, faqId }).then((res) => {
+      if (res.resultCode == config.successCode) {
+        message.success(res.resultDesc);
+        RemoveSRef?.current?.close();
+        actionRef?.current?.reload();
+      } else {
+        message.error(res.resultDesc);
+      }
+    });
   };
 
   const tableListWish: any = [
@@ -402,7 +422,12 @@ export default () => {
             <a key="editable" onClick={() => edit(action, record)}>
               编辑
             </a>
-            <a key="editable" onClick={() => removeFAQ(record)}>
+            <a
+              key="editable"
+              onClick={() => {
+                removeFAQ(record);
+              }}
+            >
               转移
             </a>
             <Popconfirm
@@ -531,6 +556,7 @@ export default () => {
       </div>
       <RemoveCom visible={visible} modalData={modalData} close={close} save={save} />
       <SameModal visible={similarVisible} cancel={closeSame} saveSame={saveSame} />
+      <RemoveSimilar cref={RemoveSRef} onSubmit={editRemove} />
     </Fragment>
   );
 };

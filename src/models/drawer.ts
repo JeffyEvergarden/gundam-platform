@@ -31,6 +31,8 @@ export default function useDrawerModel() {
 
   const [_originFlowList, _setOriginFlowList] = useState<any[]>([]); // 原业务流程列表
 
+  const [_flowListWithHand, _setFlowListWithHand] = useState<any[]>([]); // 原业务流程列表
+
   const [_wordSlotList, _setWordSlotList] = useState<any[]>([]); // 词槽列表
 
   const [_messageList, _setMessageList] = useState<any[]>([]); // 信息列表
@@ -169,25 +171,18 @@ export default function useDrawerModel() {
           label: item.flowName,
         };
       }) || [];
+    // 包含头部意图的
     let data: any[] =
-      res?.data?.list
-        .filter?.((item: any) => {
-          return item.flowType != 3;
-        })
-        .filter?.((item: any) => {
-          return item.headIntent;
-        })
-        ?.map?.((item: any, index: number) => {
-          return {
-            ...item,
-            index,
-            name: item.id,
-            label: item.flowName,
-          };
-        }) || [];
-    console.log(data, originData);
-
-    _setFlowList(data);
+      originData.filter?.((item: any) => {
+        return item.headIntent;
+      }) || [];
+    let data1: any[] =
+      data.filter?.((item: any) => {
+        return item.flowType != 3;
+      }) || [];
+    console.log(data);
+    _setFlowListWithHand(data);
+    _setFlowList(data1);
     _setOriginFlowList(originData);
   };
 
@@ -285,6 +280,7 @@ export default function useDrawerModel() {
     _labelList,
     _setLabelList,
     _flowList,
+    _flowListWithHand,
     _setFlowList,
     _wordSlotList,
     _setWordSlotList,
