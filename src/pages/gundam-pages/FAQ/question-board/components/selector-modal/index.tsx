@@ -83,6 +83,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       getFaqList({
         page: val,
         pageSize: 10,
+        queryType: 0,
         robotId: info.id,
         type: classType,
         searchText: searchText1,

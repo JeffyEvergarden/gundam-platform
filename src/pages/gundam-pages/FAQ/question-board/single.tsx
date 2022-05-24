@@ -16,20 +16,24 @@ import {
   MinusCircleOutlined,
   PlusCircleOutlined,
   LoginOutlined,
+  ArrowLeftOutlined,
 } from '@ant-design/icons';
 import SpCheckbox from './components/sp-checkbox';
-import Selector from './components/selector';
-import SelectorModal from './components/selector-modal';
 import EditBoard from './index';
 import { history, useModel } from 'umi';
 import style from './style.less';
 import { CHANNAL_LIST } from './test';
 import { useAnswerModel, useQuestionModel } from './model';
 import { processAnswerRequest, processAnswerBody, processBody } from './model/utils';
+import config from '@/config';
 
 const { Option } = Select;
 
 const { List: FormList } = Form;
+
+const { TextArea } = Input;
+
+const robotTypeMap = config.robotTypeMap;
 
 // 树形结构加工
 const processTreeData = (data: any[], parent?: any) => {
@@ -65,6 +69,8 @@ const Board: React.FC<any> = (props: any) => {
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
+
+  const robotType: any = robotTypeMap[info.robotType] || '语音';
 
   const { getFlowList, getTreeData, treeData } = useModel('drawer' as any, (model: any) => ({
     getFlowList: model.getFlowList,
@@ -172,7 +178,8 @@ const Board: React.FC<any> = (props: any) => {
     <div className={style['board-page']}>
       <div className={style['board-title']}>
         <Button
-          icon={<LoginOutlined style={{ fontSize: '20px' }} />}
+          icon={<ArrowLeftOutlined style={{ fontSize: '20px' }} />}
+          style={{ padding: 0 }}
           type="link"
           onClick={() => {
             history.push('/gundamPages/faq/main');
@@ -228,6 +235,19 @@ const Board: React.FC<any> = (props: any) => {
                 <Form.Item name={'answer'}>
                   <EditBoard />
                 </Form.Item>
+
+                {/* <div>富文本编辑待定</div> */}
+                <Condition r-if={robotType === '语音'}>
+                  <Form.Item name={'answer'}>
+                    <EditBoard />
+                  </Form.Item>
+                </Condition>
+
+                <Condition r-if={robotType === '文本'}>
+                  <Form.Item name={'answer'}>
+                    <TextArea maxLength={2000} rows={5} placeholder={'请输入答案'} showCount />
+                  </Form.Item>
+                </Condition>
 
                 <Form.Item
                   name={'channelList'}

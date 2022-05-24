@@ -17,6 +17,7 @@ import {
   MinusCircleOutlined,
   PlusCircleOutlined,
   LoginOutlined,
+  ArrowLeftOutlined,
 } from '@ant-design/icons';
 import SpCheckbox from './components/sp-checkbox';
 import Selector from './components/selector';
@@ -27,10 +28,15 @@ import style from './style.less';
 import { CHANNAL_LIST } from './test';
 import { useQuestionModel } from './model';
 import { processRequest, processBody } from './model/utils';
+import config from '@/config';
 
 const { Option } = Select;
 
+const { TextArea } = Input;
+
 const { List: FormList } = Form;
+
+const robotTypeMap = config.robotTypeMap;
 
 // 树形结构加工
 const processTreeData = (data: any[], parent?: any) => {
@@ -70,11 +76,17 @@ const Board: React.FC<any> = (props: any) => {
     info: model.info,
   }));
 
+  const robotType: any = robotTypeMap[info.robotType] || '语音';
+
   const { getFlowList, getTreeData, treeData } = useModel('drawer' as any, (model: any) => ({
     getFlowList: model.getFlowList,
     getTreeData: model.getTreeData,
     treeData: model.treeData,
   }));
+
+  useEffect(() => {
+    console.log(info);
+  }, [info]);
 
   const { maxRecommendLength, addNewQuestion, updateQuestion, getQuestionInfo, getFaqConfig } =
     useQuestionModel();
@@ -123,7 +135,7 @@ const Board: React.FC<any> = (props: any) => {
         answerList: [
           {
             answer: '',
-            channelList: [],
+            channelList: ['all'],
             enable: false,
             enableStartTime: null,
             enableEndTime: null,
@@ -304,7 +316,8 @@ const Board: React.FC<any> = (props: any) => {
     <div className={style['board-page']}>
       <div className={style['board-title']}>
         <Button
-          icon={<LoginOutlined style={{ fontSize: '20px' }} />}
+          icon={<ArrowLeftOutlined style={{ fontSize: '20px' }} />}
+          style={{ padding: 0 }}
           type="link"
           onClick={() => {
             history.push('/gundamPages/faq/main');
@@ -345,11 +358,12 @@ const Board: React.FC<any> = (props: any) => {
             {(fields, { add, remove }) => {
               const addNew = () => {
                 let length = fields.length;
+
                 // console.log(length);
                 add(
                   {
                     answer: '',
-                    channelList: [],
+                    channelList: length === 0 ? ['all'] : [],
                     enable: false,
                     enableStartTime: null,
                     enableEndTime: null,
@@ -384,12 +398,28 @@ const Board: React.FC<any> = (props: any) => {
                           </div>
 
                           {/* <div>富文本编辑待定</div> */}
-                          <Form.Item
-                            name={[field.name, 'answer']}
-                            fieldKey={[field.fieldKey, 'answer']}
-                          >
-                            <EditBoard />
-                          </Form.Item>
+                          <Condition r-if={robotType === '语音'}>
+                            <Form.Item
+                              name={[field.name, 'answer']}
+                              fieldKey={[field.fieldKey, 'answer']}
+                            >
+                              <EditBoard />
+                            </Form.Item>
+                          </Condition>
+
+                          <Condition r-if={robotType === '文本'}>
+                            <Form.Item
+                              name={[field.name, 'answer']}
+                              fieldKey={[field.fieldKey, 'answer']}
+                            >
+                              <TextArea
+                                maxLength={2000}
+                                rows={5}
+                                placeholder={'请输入答案'}
+                                showCount
+                              />
+                            </Form.Item>
+                          </Condition>
 
                           <Form.Item
                             name={[field.name, 'channelList']}

@@ -313,6 +313,7 @@ const QuestionList: React.FC<any> = (props: any) => {
       <div id="scrollContent" className={style['content-list']}>
         <ProList
           // itemLayout="vertical"
+          loading={loading}
           actionRef={listRef}
           dataSource={faqList}
           request={async (params = {}, sort, filter) => {
@@ -438,7 +439,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                             type="link"
                             onClick={() => {
                               history.push(
-                                `/gundamPages/faq/recommend?faqId=${item.id}&question=${item.question}`,
+                                `/gundamPages/faq/recommend?faqId=${item.id}&question=${item.question}&treeId=${selectTree}`,
                               );
                             }}
                           >
