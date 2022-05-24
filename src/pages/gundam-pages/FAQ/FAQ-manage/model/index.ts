@@ -17,8 +17,15 @@ export const useFaqModal = () => {
     setLoading(false);
     if (res.resultCode === successCode) {
       let data = res?.data?.list || [];
+      let reg = new RegExp('${getResoureUrl}', 'g');
       data?.map((item: any) => {
         item.more = false;
+        item.answerList = item.answerList || [];
+        item.answerList?.map?.((subitem: any) => {
+          subitem.answer = subitem.answer || '';
+          subitem.answer = subitem.answer.replace(reg, '/aichat/robot/file/getFile');
+          return subitem;
+        });
         return item;
       });
 
