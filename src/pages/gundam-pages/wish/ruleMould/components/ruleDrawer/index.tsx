@@ -63,7 +63,7 @@ export default (props: any) => {
       let newValue = data?.[currTempClipsIndex]?.fragment || '';
       let content = '';
       if (type === 'slot') {
-        content = '${' + value + '}';
+        content = '#{' + value + '}';
       }
       if (type === 'feature') {
         content = '%{' + value + '}';
