@@ -61,7 +61,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
   // 业务流程列表
   const { flowList, treeData } = useModel('drawer' as any, (model: any) => {
     return {
-      flowList: model?._flowList || [],
+      flowList: model?._flowListWithHand || [],
       treeData: model?.treeData || [],
     };
   });
@@ -85,7 +85,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
         pageSize: 10,
         queryType: 0,
         robotId: info.id,
-        type: classType,
+        faqTypeId: classType,
         searchText: searchText1,
       });
     } else {
@@ -117,7 +117,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       page: 1,
       pageSize: 10,
       robotId: info.id,
-      type: classType,
+      faqTypeId: classType,
       searchText: searchText1,
     });
   };
@@ -149,9 +149,13 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   // 选中
   const onSelect = (val: any) => {
+    console.log(val[0]);
+    if (!val[0]) {
+      return;
+    }
     setClassType(val[0]);
     setCurrent1(1);
-    getFaqList({ page: 1, pageSize: 10, robotId: info.id, type: val[0] });
+    getFaqList({ page: 1, pageSize: 10, robotId: info.id, faqTypeId: val[0] });
   };
 
   const rowSelection = {
