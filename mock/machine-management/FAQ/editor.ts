@@ -48,7 +48,8 @@ const getInfo = (req: any, res: any) => {
       faqTypeId: '0-0-1',
       answerList: [
         {
-          answer: '<p>12222</p>',
+          answer:
+            '<p>122<img src="${getResoureUrl}?path=fategrandorder" alt="fategrandorder" data-href="" style=""/></p>',
           channelList: ['APP'],
           enable: 1,
           enableStartTime: '2022-05-01 16:28:20',
@@ -71,7 +72,8 @@ const getAnswer = (req: any, res: any) => {
     data: {
       question: '123',
       faqTypeId: '0-0-1',
-      answer: '12222',
+      answer:
+        '<p>122<img src="${getResoureUrl}?path=fategrandorder" alt="fategrandorder" data-href="" style=""/></p>',
       channelList: ['APP'],
       enable: 1,
       enableStartTime: '2022-05-01 16:28:20',

@@ -69,7 +69,7 @@ const reg2 = /\<\/\w+\>$/;
 
 export const processBody = (data: any, robotType = '文本') => {
   let answerList = data.answerList || [];
-  let reg = new RegExp('${getResoureUrl}', 'g');
+  let reg = /\$\{getResoureUrl\}/g;
   answerList.forEach((item: any) => {
     let enableTime = item.enableTime || [];
     // 生效时间
@@ -112,7 +112,7 @@ export const processAnswerBody = (data: any, robotType = '文本') => {
   // 生效时间
   data.enable = data.enable ? true : false;
   // 时间格式化
-  let reg = new RegExp('${getResoureUrl}', 'g');
+  let reg = /\$\{getResoureUrl\}/g;
   let answer = data.answer || '';
   if (robotType === '文本') {
     if (reg1.test(answer) && reg2.test(answer)) {
@@ -124,7 +124,13 @@ export const processAnswerBody = (data: any, robotType = '文本') => {
 
   data.enableStartTime = data?.enableStartTime ? moment(data?.enableStartTime) : undefined;
   data.enableEndTime = data?.enableEndTime ? moment(data?.enableEndTime) : undefined;
-
+  console.log(
+    robotType,
+    reg1.test(answer),
+    reg2.test(answer),
+    answer.replace(reg, '/aichat/robot/file/getFile'),
+  );
+  console.log(data);
   return data;
 };
 
