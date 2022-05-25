@@ -85,15 +85,24 @@ export const useSimilarModel = () => {
   };
 
   const editSimilar = async (params?: any) => {
-    return await _editSimilar(params);
+    setTableLoading(true);
+    let res: any = await _editSimilar(params);
+    setTableLoading(false);
+    return res;
   };
 
   const deleteSimilar = async (params?: any) => {
-    return await _deleteSimilar(params);
+    setTableLoading(true);
+    let res: any = await _deleteSimilar(params);
+    setTableLoading(false);
+    return res;
   };
 
   const addSimilar = async (params?: any) => {
-    return await _addSimilar(params);
+    setTableLoading(true);
+    let res: any = await _addSimilar(params);
+    setTableLoading(false);
+    return res;
   };
 
   return {
