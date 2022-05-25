@@ -299,9 +299,11 @@ const Board: React.FC<any> = (props: any) => {
       </div>
 
       <div className={style['board-btn']}>
-        <Button type="primary" onClick={save}>
-          确定
-        </Button>
+        {query?.recycle == 0 && (
+          <Button type="primary" onClick={save}>
+            确定
+          </Button>
+        )}
       </div>
     </div>
   );
