@@ -343,6 +343,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                             <Form form={form}>
                               <Form.Item name="question">
                                 <Input
+                                  maxLength={200}
                                   size="small"
                                   onPressEnter={() => {
                                     changeEdit(item, index);
@@ -382,7 +383,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                           )}
                         </div>
                         {/* 问题删除 */}
-                        <div className={style['box-top']}>
+                        <div className={style['box-top-del']}>
                           <Popconfirm
                             title={() => {
                               return (
