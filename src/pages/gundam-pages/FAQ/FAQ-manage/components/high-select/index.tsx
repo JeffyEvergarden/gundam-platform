@@ -38,6 +38,11 @@ const HighConfigSelect = (props: HighConfigProps) => {
   return (
     <div className={style['high-config-box']}>
       {HIGH_CONFIG_SELECT.map((listItem: any, listKey: number) => {
+        if (isRecycle == 1) {
+          if (listItem.name == 'approvalStatusList') {
+            return;
+          }
+        }
         const title = listItem.label;
         const _key = listItem.name; // 对象key值
 
