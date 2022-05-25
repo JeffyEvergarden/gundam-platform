@@ -130,7 +130,7 @@ const HighConfigSelect = (props: HighConfigProps) => {
             onChange({
               channelList: ['all'],
               approvalStatusList: null,
-              orderType: 0,
+              orderType: 1,
               creatorList: null,
             });
           }}
