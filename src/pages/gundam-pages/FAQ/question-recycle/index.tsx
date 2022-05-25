@@ -20,12 +20,14 @@ import QuestionList from '../components/question-list';
 import { history, useModel } from 'umi';
 import { deleteRecycle } from '../FAQ-manage/model/api';
 import config from '@/config';
+import ClassifyModal from '../components/classify-modal';
 
 const { Panel } = Collapse;
 const { Option } = Select;
 
 const RecyclePage: React.FC<any> = (props: any) => {
   const QuestionRef = useRef(null);
+  const classifyRef = useRef<any>({});
 
   const [value, setValue] = useState<any>({
     channelList: ['all'],
@@ -90,6 +92,9 @@ const RecyclePage: React.FC<any> = (props: any) => {
       }
       (QuestionRef?.current as any)?.CurrentPage();
     });
+  };
+  const openClassify = (item: any) => {
+    classifyRef.current?.open(item);
   };
 
   return (
@@ -166,6 +171,7 @@ const RecyclePage: React.FC<any> = (props: any) => {
           <QuestionList
             cref={QuestionRef}
             hasCheckbox={true}
+            openClassify={openClassify}
             childList={childList}
             searchText={searchText}
             heightSelect={value}
@@ -174,6 +180,8 @@ const RecyclePage: React.FC<any> = (props: any) => {
           ></QuestionList>
         </div>
       </div>
+
+      <ClassifyModal cref={classifyRef} treeData={treeData}></ClassifyModal>
     </div>
   );
 };

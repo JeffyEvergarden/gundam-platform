@@ -215,7 +215,9 @@ const QuestionList: React.FC<any> = (props: any) => {
   const _editAnswer = (Q: any, A: any) => {
     // console.log(Q);
     // console.log(A);
-    history.push(`/gundamPages/faq/answer?faqId=${Q.id}&answerId=${A.answerId}`);
+    history.push(
+      `/gundamPages/faq/answer?faqId=${Q.id}&answerId=${A.answerId}&recycle=${Q.recycle}`,
+    );
   };
 
   const _deleteAnswer = async (A: any) => {
@@ -467,7 +469,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                             type="link"
                             onClick={() => {
                               history.push(
-                                `/gundamPages/faq/recommend?faqId=${item.id}&question=${item.question}&treeId=${selectTree}&recommend=${item.questionRecommend}`,
+                                `/gundamPages/faq/recommend?faqId=${item.id}&question=${item.question}&treeId=${selectTree}&recommend=${item.questionRecommend}&recycle=${item.recycle}`,
                               );
                             }}
                           >
@@ -643,7 +645,7 @@ const QuestionList: React.FC<any> = (props: any) => {
 
                         <div style={{ display: 'flex', color: 'rgba(0,0,0,0.45)' }}>
                           {hasCheckbox && (
-                            <div className={style['extra']}>删除操作人：{item.name}</div>
+                            <div className={style['extra']}>删除操作人：{item.updateBy}</div>
                           )}
                           <div className={style['extra']}>
                             {hasCheckbox ? '删除' : '更新'}时间：{item.updateTime}
