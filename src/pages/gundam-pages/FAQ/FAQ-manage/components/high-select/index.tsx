@@ -133,12 +133,20 @@ const HighConfigSelect = (props: HighConfigProps) => {
         <Button
           type="link"
           onClick={() => {
-            onChange({
-              channelList: ['all'],
-              approvalStatusList: null,
-              orderType: 1,
-              creatorList: null,
-            });
+            if (isRecycle == 1) {
+              onChange({
+                channelList: ['all'],
+                orderType: 1,
+                creatorList: null,
+              });
+            } else {
+              onChange({
+                channelList: ['all'],
+                approvalStatusList: null,
+                orderType: 1,
+                creatorList: null,
+              });
+            }
           }}
         >
           重置
