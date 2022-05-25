@@ -119,8 +119,10 @@ const FAQPage: React.FC<any> = (props: any) => {
     channelRef.current?.open();
   };
 
-  const onEnter = (e: any) => {
-    QuestionRef?.current?.CurrentPage({});
+  const onEnter = (text: any) => {
+    console.log(text);
+
+    QuestionRef?.current?.CurrentPage({ searchText: text });
   };
 
   const changeClassify = (params: any) => {
@@ -180,6 +182,7 @@ const FAQPage: React.FC<any> = (props: any) => {
                 onSearch={onEnter}
                 onPressEnter={onEnter}
                 placeholder={'请输入'}
+                allowClear
               />
             </Input.Group>
           </Space>

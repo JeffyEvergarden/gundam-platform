@@ -108,12 +108,13 @@ const RecyclePage: React.FC<any> = (props: any) => {
 
         <div className={style['page_top__right']}>
           <Input.Search
+            allowClear
             style={{ marginRight: '16px', width: '280px' }}
             onChange={(e: any) => {
               setSearchText(e.target.value);
             }}
-            onSearch={() => {
-              (QuestionRef?.current as any)?.CurrentPage();
+            onSearch={(text: any) => {
+              (QuestionRef?.current as any)?.CurrentPage({ searchText: text });
             }}
             onPressEnter={() => {
               (QuestionRef?.current as any)?.CurrentPage();
