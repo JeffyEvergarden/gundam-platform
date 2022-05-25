@@ -158,8 +158,8 @@ const EditBoard: React.FC<any> = (prop: any) => {
   // 选择标准问弹窗
   const confirm = (obj: any) => {
     console.log(obj);
-    insertLink(editor, obj.question, '##' + obj.questionId, {
-      questionId: obj.questionId,
+    insertLink(editor, obj.recommend, '##' + obj.recommendId, {
+      questionId: obj.recommendId,
       target: '_self',
     });
   };

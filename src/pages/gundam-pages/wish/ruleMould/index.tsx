@@ -205,7 +205,7 @@ export default (props: any) => {
   };
 
   const deleteFeatures = async (payload: any) => {
-    let res = await delFeatures({ id: payload.id, intentId: payload.id, key: payload.key });
+    let res = await delFeatures({ id: payload.id, intentId: payload.intentId, key: payload.key });
     if (res.resultCode === config.successCode) {
       message.success(res?.resultDesc || '成功');
       actionRefFeature?.current?.reload();

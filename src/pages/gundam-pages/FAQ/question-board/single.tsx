@@ -249,13 +249,13 @@ const Board: React.FC<any> = (props: any) => {
                 </Form.Item> */}
 
                 {/* <div>富文本编辑待定</div> */}
-                <Condition r-if={robotType === '语音'}>
+                <Condition r-if={robotType === '文本'}>
                   <Form.Item name={'answer'}>
                     <EditBoard />
                   </Form.Item>
                 </Condition>
 
-                <Condition r-if={robotType === '文本'}>
+                <Condition r-if={robotType === '语音'}>
                   <Form.Item name={'answer'}>
                     <TextArea maxLength={2000} rows={5} placeholder={'请输入答案'} showCount />
                   </Form.Item>
