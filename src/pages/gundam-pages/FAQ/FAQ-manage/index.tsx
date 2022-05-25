@@ -92,7 +92,7 @@ const FAQPage: React.FC<any> = (props: any) => {
   useEffect(() => {
     _getTreeData(info.id);
     getTree();
-    getCreateUser(info.id);
+    getCreateUser(info.id, 0);
   }, []);
 
   const _getMoreFaqList = async () => {
@@ -209,7 +209,7 @@ const FAQPage: React.FC<any> = (props: any) => {
           <div className={style['high-config-select']}>
             <Collapse expandIconPosition="right">
               <Panel header={<div>问答列表</div>} key="1" extra={'高级筛选'} style={{ border: 0 }}>
-                <HighConfigSelect value={value} onChange={changeHighConfig} />
+                <HighConfigSelect value={value} onChange={changeHighConfig} isRecycle={0} />
               </Panel>
             </Collapse>
           </div>

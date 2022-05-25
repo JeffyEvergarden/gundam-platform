@@ -255,7 +255,7 @@ const QuestionList: React.FC<any> = (props: any) => {
 
     let res: any = await getFaqList(params);
     // console.log(res);
-    getCreateUser(info.id);
+    getCreateUser(info.id, isRecycle);
 
     setTotal(res?.total || 0);
     return res;

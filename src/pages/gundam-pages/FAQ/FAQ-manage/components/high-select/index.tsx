@@ -7,10 +7,11 @@ import style from './style.less';
 interface HighConfigProps {
   value: any;
   onChange: (...args: any[]) => void;
+  isRecycle: any;
 }
 
 const HighConfigSelect = (props: HighConfigProps) => {
-  const { value, onChange } = props;
+  const { value, onChange, isRecycle } = props;
 
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -31,7 +32,7 @@ const HighConfigSelect = (props: HighConfigProps) => {
   };
 
   useEffect(() => {
-    getCreateUser(info.id);
+    getCreateUser(info.id, isRecycle);
   }, []);
 
   return (

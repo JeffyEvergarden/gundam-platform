@@ -29,6 +29,10 @@ const RecyclePage: React.FC<any> = (props: any) => {
     setInfo: model.setInfo,
   }));
 
+  const { getCreateUser } = useModel('drawer' as any, (model: any) => ({
+    getCreateUser: model.getCreateUser,
+  }));
+
   const changeHighConfig = (val: any) => {
     setValue(val);
     QuestionRef?.current?.CurrentPage({});
@@ -42,6 +46,7 @@ const RecyclePage: React.FC<any> = (props: any) => {
   useEffect(() => {
     // getFaqList({ pageNo: 1 });
     getTreeData({ robotId: info.id });
+    getCreateUser(info.id, 0);
   }, []);
 
   const _getMoreFaqList = async () => {
