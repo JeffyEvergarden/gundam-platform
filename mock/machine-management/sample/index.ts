@@ -172,6 +172,63 @@ const getSimilarList = (req: any, res: any) => {
   });
 };
 
+const faqSimilarCheck = (req: any, res: any) => {
+  res.json({
+    resultCode: '0001',
+    resultDesc: '失败',
+    data: {
+      robotId: '100',
+      corpusText: '语料文本',
+      intentList: [
+        {
+          intenId: '10',
+          intentName: '意图名称',
+          corpusText: '语料文本',
+          score: 3,
+        },
+        {
+          intenId: '10',
+          intentName: '意图名称',
+          corpusText: '语料文本2',
+          score: 3,
+        },
+      ],
+      otherStdQueryList: [
+        {
+          stdQueryId: '1313',
+          stdQuery: '标准问',
+          similarQueryId: '134',
+          similarQuery: '相似问',
+          viewNum: 1,
+        },
+        {
+          stdQueryId: '1313',
+          stdQuery: '标准问2',
+          similarQueryId: '134',
+          similarQuery: '相似问2',
+          viewNum: 1,
+        },
+      ],
+      currentStdQueryList: [
+        {
+          stdQueryId: '1313',
+          stdQuery: '标准问',
+          similarQueryId: '134',
+          similarQuery: '相似问',
+          viewNum: 1,
+        },
+        {
+          stdQueryId: '1313',
+          stdQuery: '标准问2',
+          similarQueryId: '134',
+          similarQuery: '相似问2',
+          viewNum: 1,
+        },
+      ],
+    },
+  });
+};
+
 export default {
   'GET /aichat/robot/intent/intentCorpusPageList': getSample,
   'POST /aichat/robot/intent/intentCorpusEdit': normalDeal,
@@ -183,4 +240,5 @@ export default {
   'POST /aichat/robot/faq/faqSimilarEdit': normalDeal,
   'POST /aichat/robot/faq/faqSimilarDelete': normalDeal,
   'POST /aichat/robot/faq/faqSimilarAdd': normalDeal,
+  'POST /aichat/robot/faq/faqSimilarCheck': faqSimilarCheck,
 };

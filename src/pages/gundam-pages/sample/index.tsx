@@ -217,19 +217,20 @@ export default () => {
 
   const saveSame = async (record: any) => {
     if (pageType === 'FAQ') {
-      let reqData: any = {
-        faqId: tableInfo.id,
-        similarText: inputValue,
-        robotId: info.id,
-      };
-      await addSimilar(reqData).then((res) => {
-        if (res.resultCode == config.successCode) {
-          message.success(res.resultDesc);
-          actionRef.current.reload();
-        } else {
-          message.error(res.resultDesc);
-        }
-      });
+      // let reqData: any = {
+      //   faqId: tableInfo.id,
+      //   similarText: inputValue,
+      //   robotId: info.id,
+      // };
+      // await addSimilar(reqData).then((res) => {
+      //   if (res.resultCode == config.successCode) {
+      //     message.success(res.resultDesc);
+      //     actionRef.current.reload();
+      //   } else {
+      //     message.error(res.resultDesc);
+      //   }
+      // });
+      similarAdd();
     }
 
     if (pageType === 'wish') {
