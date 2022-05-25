@@ -61,6 +61,9 @@ const QuestionList: React.FC<any> = (props: any) => {
     info: model.info,
     setInfo: model.setInfo,
   }));
+  const { getCreateUser } = useModel('drawer' as any, (model: any) => ({
+    getCreateUser: model.getCreateUser,
+  }));
   const [total, setTotal] = useState<any>(0);
   const [current, setCurrent] = useState<any>(1);
   const [pageSize, setPageSize] = useState<any>(10);
@@ -252,6 +255,7 @@ const QuestionList: React.FC<any> = (props: any) => {
 
     let res: any = await getFaqList(params);
     // console.log(res);
+    getCreateUser(info.id);
 
     setTotal(res?.total || 0);
     return res;
