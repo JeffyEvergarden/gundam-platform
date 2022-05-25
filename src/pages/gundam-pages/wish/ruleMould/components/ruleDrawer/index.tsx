@@ -35,7 +35,7 @@ export default (props: any) => {
   }, [visible]);
 
   const getSlotList = async () => {
-    let res = await slotInfo({ robotId: tableProps?.robotId });
+    let res = await slotInfo({ robotId: tableProps?.robotId, slotSources: [0, 4] });
     setSlotList(res?.data);
   };
 
@@ -44,15 +44,15 @@ export default (props: any) => {
     setFeatureList(res?.data);
   };
   const templateFocus = (key: any, name: any) => {
-    let data = form.getFieldValue('ruleClips');
-    if (!data?.[key]) {
-      data[key] = {
-        fragment: '',
-      };
-      form.setFieldsValue({
-        ...data,
-      });
-    }
+    // let data = form.getFieldValue('ruleClips');
+    // if (!data?.[key]) {
+    //   data[key] = {
+    //     fragment: '',
+    //   };
+    //   form.setFieldsValue({
+    //     ...data,
+    //   });
+    // }
     setCurrTempClipsIndex(key);
   };
 
@@ -68,7 +68,7 @@ export default (props: any) => {
       if (type === 'feature') {
         content = '%{' + value + '}';
       }
-      if (startPos >= -1) {
+      if (startPos > -1) {
         let pre = newValue.slice(0, startPos);
         let last = newValue.slice(startPos);
         newValue = pre + content + last;
@@ -162,15 +162,15 @@ export default (props: any) => {
         <Form.List name="ruleClips">
           {(fields, { add, remove }) => (
             <Fragment>
-              {fields.map((field) => (
-                <div key={field.key} className={styles.listFormBox}>
+              {fields.map(({ key, name, ...restField }) => (
+                <div key={key} className={styles.listFormBox}>
                   <span>
-                    <MinusCircleOutlined onClick={() => remove(field.name)} />
+                    <MinusCircleOutlined onClick={() => remove(key)} />
                   </span>
                   <span className={styles.isNeed}>
                     <Form.Item
                       label={''}
-                      name={[field.name, 'required']}
+                      name={[name, 'required']}
                       initialValue={1}
                       rules={[{ required: true, message: '请选择是否匹配' }]}
                     >
@@ -189,7 +189,7 @@ export default (props: any) => {
                       label=""
                       labelCol={{ span: 0 }}
                       wrapperCol={{ span: 22 }}
-                      name={[field.name, 'fragment']}
+                      name={[name, 'fragment']}
                       rules={[{ required: true, message: '请输入规则片段' }]}
                     >
                       <Input
@@ -197,7 +197,7 @@ export default (props: any) => {
                         onBlur={(e) => {
                           let num: any = e.target.selectionStart;
                           setStartPos(isNaN(num) ? -1 : num);
-                          templateFocus(field?.key, field?.name);
+                          templateFocus(key, name);
                         }}
                       />
                     </Form.Item>
@@ -205,7 +205,7 @@ export default (props: any) => {
                   <span className={styles.isNeed}>
                     <Form.Item
                       label=""
-                      name={[field.name, 'orderNumber']}
+                      name={[name, 'orderNumber']}
                       rules={[{ required: true, message: '请输入排序' }]}
                     >
                       <InputNumber min={0} step={1} precision={0} />

@@ -291,8 +291,15 @@ export default (props: any) => {
 
   const featuresColumns: any = [
     {
+      dataIndex: 'key',
+      title: '特征ID',
+      ellipsis: true,
+      // fixed: 'left',
+      width: 200,
+    },
+    {
       dataIndex: 'name',
-      title: '特征',
+      title: '特征名称',
       ellipsis: true,
       // fixed: 'left',
       width: 200,

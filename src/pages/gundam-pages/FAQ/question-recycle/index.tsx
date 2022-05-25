@@ -20,7 +20,7 @@ const RecyclePage: React.FC<any> = (props: any) => {
   const [value, setValue] = useState<any>({
     channelList: ['all'],
     approvalStatusList: null,
-    orderType: 0,
+    orderType: 1,
     creatorList: null,
   });
 

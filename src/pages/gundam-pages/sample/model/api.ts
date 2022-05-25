@@ -17,7 +17,7 @@ export async function intentCorpusEdit(data?: Record<string, any>) {
 }
 
 export async function delIntentFeature(data?: Record<string, any>) {
-  return request(`${baseUrl}/robot/intent/intentFeatureDelete`, {
+  return request(`${baseUrl}/robot/intent/intentCorpusDelete`, {
     method: 'POST',
     data,
   });

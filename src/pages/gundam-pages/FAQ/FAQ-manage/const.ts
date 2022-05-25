@@ -71,10 +71,6 @@ export const HIGH_CONFIG_SELECT = [
     type: 'single',
     children: [
       {
-        name: 0,
-        label: '默认',
-      },
-      {
         name: 1,
         label: '时间倒序',
       },

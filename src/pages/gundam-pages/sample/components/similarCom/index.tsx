@@ -1,14 +1,27 @@
 import React, { Fragment } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { history } from 'umi';
+import { history, useModel } from 'umi';
 import { Table } from 'antd';
 import styles from './../index.less';
 
 export default (props: any) => {
   const { tableInfo, inputValue, similarTableData, refresh, pageType } = props;
 
-  const toSample = (r: any) => {
-    refresh(r, pageType);
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
+
+  const toSample = (r: any, type: any) => {
+    let Info: any;
+    if (type == 'FAQ') {
+      Info = {
+        robotId: info.id,
+        id: r.stdQueryId,
+        question: r.stdQuery,
+        viewNum: r.viewNum,
+      };
+    }
+    refresh(r, type);
   };
 
   const columnsCurrent: any = [
@@ -29,7 +42,7 @@ export default (props: any) => {
       width: 100,
       render: (t: any, r: any, i: any) => {
         return (
-          <a style={{ color: '#1890FF' }} onClick={() => toSample(r)}>
+          <a style={{ color: '#1890FF' }} onClick={() => toSample(r, 'wish')}>
             {r.intentName}
           </a>
         );
@@ -52,7 +65,11 @@ export default (props: any) => {
       ellipsis: true,
       width: 100,
       render: (t: any, r: any, i: any) => {
-        return <a style={{ color: '#1890FF' }}>{r.stdQuery}</a>;
+        return (
+          <a style={{ color: '#1890FF' }} onClick={() => toSample(r, 'FAQ')}>
+            {r.stdQuery}
+          </a>
+        );
       },
     },
     {
@@ -82,7 +99,7 @@ export default (props: any) => {
       width: 100,
       render: (t: any, r: any, i: any) => {
         return (
-          <a style={{ color: '#1890FF' }} onClick={() => toSample(r)}>
+          <a style={{ color: '#1890FF' }} onClick={() => toSample(r, 'FAQ')}>
             {r.stdQuery}
           </a>
         );
@@ -105,7 +122,11 @@ export default (props: any) => {
       ellipsis: true,
       width: 100,
       render: (t: any, r: any, i: any) => {
-        return <a style={{ color: '#1890FF' }}>{r.intentName}</a>;
+        return (
+          <a style={{ color: '#1890FF' }} onClick={() => toSample(r, 'wish')}>
+            {r.intentName}
+          </a>
+        );
       },
     },
     {
