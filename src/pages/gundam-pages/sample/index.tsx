@@ -104,8 +104,8 @@ export default () => {
   };
 
   const add = async () => {
-    // console.log(input?.current?.state?.value);
-
+    console.log(input?.current);
+    input?.current?.input;
     // setInputValue(input?.current?.state?.value);
     if (inputValue) {
       let res: any;
@@ -157,6 +157,8 @@ export default () => {
     if (resAdd.resultCode === config.successCode) {
       setSimmilar(false);
       setSimilarVisible(false);
+      setInputValue('');
+
       message.success(resAdd.resultDesc || '添加成功');
       actionRef.current.reload();
     } else {
@@ -174,6 +176,7 @@ export default () => {
     if (resAdd.resultCode === config.successCode) {
       setSimmilar(false);
       setSimilarVisible(false);
+      setInputValue('');
       message.success(resAdd.resultDesc || '添加成功');
       actionRef.current.reload();
     } else {
@@ -495,6 +498,7 @@ export default () => {
               {tableInfo?.recycle != 1 && (
                 <Input
                   ref={input}
+                  value={inputValue}
                   placeholder={
                     // "输入语料意图"
                     pageType === 'wish'
