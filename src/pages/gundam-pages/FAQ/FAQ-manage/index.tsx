@@ -180,7 +180,9 @@ const FAQPage: React.FC<any> = (props: any) => {
                   setSearchText(e.target.value);
                 }}
                 onSearch={onEnter}
-                onPressEnter={onEnter}
+                onPressEnter={() => {
+                  QuestionRef?.current?.CurrentPage();
+                }}
                 placeholder={'请输入'}
                 allowClear
               />
@@ -204,6 +206,7 @@ const FAQPage: React.FC<any> = (props: any) => {
             data={treeData}
             openAddModal={openAddModal}
             openEditModal={openEditModal}
+            getTree={getTree}
           ></MyTree>
 
           <TypeModal cref={typeModalRef} getTree={getTree}></TypeModal>

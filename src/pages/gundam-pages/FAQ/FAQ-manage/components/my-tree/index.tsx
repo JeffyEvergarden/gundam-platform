@@ -25,6 +25,7 @@ interface TreeProps {
   size?: string;
   selectTree?: any;
   leafClickOnly?: boolean;
+  getTree: any;
 }
 
 const { DirectoryTree } = Tree;
@@ -65,6 +66,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
     edit = true,
     size,
     leafClickOnly = true,
+    getTree,
   } = props;
 
   const { deleteLeaf } = useTreeModal();
@@ -243,6 +245,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
         let res: any = await deleteLeaf({ id: nodeData?.key });
         if (res) {
           message.success('删除成功');
+          getTree();
           if (parent) {
             let arr: any[] = parent.children || [];
             let index: number = arr.findIndex((item: any) => item.key === nodeData.key);
