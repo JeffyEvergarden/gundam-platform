@@ -178,7 +178,7 @@ const ImportPages: React.FC = (props: any) => {
                 className={style['blue']}
                 style={{ marginRight: '6px' }}
                 onClick={() => {
-                  history?.goBack();
+                  history.push('/gundamPages/faq/main');
                 }}
               />
               批量导入

@@ -105,7 +105,7 @@ const RecyclePage: React.FC<any> = (props: any) => {
             className={style['blue']}
             style={{ marginRight: '6px' }}
             onClick={() => {
-              history.goBack();
+              history.push('/gundamPages/faq/main');
             }}
           />
           问题回收站

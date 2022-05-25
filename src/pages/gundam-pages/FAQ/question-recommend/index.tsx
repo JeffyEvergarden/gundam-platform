@@ -45,7 +45,11 @@ const RecommendPage: React.FC<any> = (props: any) => {
     await editQuestion(reqData).then((res) => {
       if (res.resultCode == config.successCode) {
         message.success(res.resultDesc);
-        history.goBack();
+        if (query?.recycle == 0) {
+          history.push('/gundamPages/faq/main');
+        } else if (query?.recycle == 1) {
+          history.push('/gundamPages/faq/recycle');
+        }
         return true;
       } else {
         message.error(res.resultDesc);
@@ -81,7 +85,11 @@ const RecommendPage: React.FC<any> = (props: any) => {
             className={style['blue']}
             style={{ marginRight: '6px' }}
             onClick={() => {
-              history.goBack();
+              if (query?.recycle == 0) {
+                history.push('/gundamPages/faq/main');
+              } else if (query?.recycle == 1) {
+                history.push('/gundamPages/faq/recycle');
+              }
             }}
           />
           推荐问设置
