@@ -215,9 +215,11 @@ const QuestionList: React.FC<any> = (props: any) => {
   const _editAnswer = (Q: any, A: any) => {
     // console.log(Q);
     // console.log(A);
-    history.push(
-      `/gundamPages/faq/answer?faqId=${Q.id}&answerId=${A.answerId}&recycle=${Q.recycle}`,
-    );
+    if (Q.recycle == 0) {
+      history.push(
+        `/gundamPages/faq/answer?faqId=${Q.id}&answerId=${A.answerId}&recycle=${Q.recycle}`,
+      );
+    }
   };
 
   const _deleteAnswer = async (A: any) => {
@@ -536,14 +538,16 @@ const QuestionList: React.FC<any> = (props: any) => {
                                   <div></div>
 
                                   <div>
-                                    <Button
-                                      icon={<EditOutlined />}
-                                      type="link"
-                                      style={{ marginRight: '10px', color: 'rgba(0,0,0,0.45)' }}
-                                      onClick={() => {
-                                        _editAnswer(item, v);
-                                      }}
-                                    ></Button>
+                                    {!hasCheckbox && (
+                                      <Button
+                                        icon={<EditOutlined />}
+                                        type="link"
+                                        style={{ marginRight: '10px', color: 'rgba(0,0,0,0.45)' }}
+                                        onClick={() => {
+                                          _editAnswer(item, v);
+                                        }}
+                                      ></Button>
+                                    )}
 
                                     {!hasCheckbox && (
                                       <Popconfirm
