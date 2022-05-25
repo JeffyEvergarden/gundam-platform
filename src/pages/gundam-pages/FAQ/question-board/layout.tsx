@@ -398,7 +398,7 @@ const Board: React.FC<any> = (props: any) => {
                           </div>
 
                           {/* <div>富文本编辑待定</div> */}
-                          <Condition r-if={robotType === '语音'}>
+                          <Condition r-if={robotType === '文本'}>
                             <Form.Item
                               name={[field.name, 'answer']}
                               fieldKey={[field.fieldKey, 'answer']}
@@ -414,7 +414,7 @@ const Board: React.FC<any> = (props: any) => {
                             </Form.Item>
                           </Condition>
 
-                          <Condition r-if={robotType === '文本'}>
+                          <Condition r-if={robotType === '语音'}>
                             <Form.Item
                               name={[field.name, 'answer']}
                               fieldKey={[field.fieldKey, 'answer']}
