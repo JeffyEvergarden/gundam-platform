@@ -115,7 +115,7 @@ const Board: React.FC<any> = (props: any) => {
       faqId: questionId, // 问题id
     });
     if (res) {
-      res = processBody(res);
+      res = processBody(res, robotType);
       if (res.questionRecommend) {
         setShowAdvise(true);
       }

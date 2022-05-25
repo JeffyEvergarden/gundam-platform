@@ -119,7 +119,7 @@ const Board: React.FC<any> = (props: any) => {
       answerId: answerId,
     });
     if (res) {
-      res = processAnswerBody(res);
+      res = processAnswerBody(res, robotType);
       if (res.enable) {
         setShowTime(true);
       }
@@ -232,9 +232,9 @@ const Board: React.FC<any> = (props: any) => {
                 </div>
 
                 {/* <div>富文本编辑待定</div> */}
-                <Form.Item name={'answer'}>
+                {/* <Form.Item name={'answer'}>
                   <EditBoard />
-                </Form.Item>
+                </Form.Item> */}
 
                 {/* <div>富文本编辑待定</div> */}
                 <Condition r-if={robotType === '语音'}>

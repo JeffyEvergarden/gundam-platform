@@ -71,7 +71,7 @@ const getAnswer = (req: any, res: any) => {
     data: {
       question: '123',
       faqTypeId: '0-0-1',
-      answer: '<p>12222</p>',
+      answer: '12222',
       channelList: ['APP'],
       enable: 1,
       enableStartTime: '2022-05-01 16:28:20',
