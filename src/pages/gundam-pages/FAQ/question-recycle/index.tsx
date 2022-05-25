@@ -112,6 +112,12 @@ const RecyclePage: React.FC<any> = (props: any) => {
             onChange={(e: any) => {
               setSearchText(e.target.value);
             }}
+            onSearch={() => {
+              (QuestionRef?.current as any)?.CurrentPage();
+            }}
+            onPressEnter={() => {
+              (QuestionRef?.current as any)?.CurrentPage();
+            }}
           ></Input.Search>
         </div>
       </div>
