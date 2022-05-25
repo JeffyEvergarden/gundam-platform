@@ -71,6 +71,7 @@ const ClassifyModal: React.FC<any> = (props: any) => {
       destroyOnClose={true} //关闭销毁
       okText={'确定'}
       onOk={submit}
+      okButtonProps={{ disabled: QInfo.recycle == 1 }}
       // confirmLoading={loading}
     >
       <div className={style['modal_bg']}>

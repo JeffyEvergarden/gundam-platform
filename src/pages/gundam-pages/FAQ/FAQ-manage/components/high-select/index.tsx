@@ -7,10 +7,11 @@ import style from './style.less';
 interface HighConfigProps {
   value: any;
   onChange: (...args: any[]) => void;
+  isRecycle: any;
 }
 
 const HighConfigSelect = (props: HighConfigProps) => {
-  const { value, onChange } = props;
+  const { value, onChange, isRecycle } = props;
 
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -31,12 +32,17 @@ const HighConfigSelect = (props: HighConfigProps) => {
   };
 
   useEffect(() => {
-    getCreateUser(info.id);
+    getCreateUser(info.id, isRecycle);
   }, []);
 
   return (
     <div className={style['high-config-box']}>
       {HIGH_CONFIG_SELECT.map((listItem: any, listKey: number) => {
+        if (isRecycle == 1) {
+          if (listItem.name == 'approvalStatusList') {
+            return;
+          }
+        }
         const title = listItem.label;
         const _key = listItem.name; // 对象key值
 
@@ -127,12 +133,20 @@ const HighConfigSelect = (props: HighConfigProps) => {
         <Button
           type="link"
           onClick={() => {
-            onChange({
-              channelList: ['all'],
-              approvalStatusList: null,
-              orderType: 0,
-              creatorList: null,
-            });
+            if (isRecycle == 1) {
+              onChange({
+                channelList: ['all'],
+                orderType: 1,
+                creatorList: null,
+              });
+            } else {
+              onChange({
+                channelList: ['all'],
+                approvalStatusList: null,
+                orderType: 1,
+                creatorList: null,
+              });
+            }
           }}
         >
           重置

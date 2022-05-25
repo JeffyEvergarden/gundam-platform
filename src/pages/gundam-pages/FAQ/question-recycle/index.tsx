@@ -1,5 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Input, Select, Collapse, Divider, Skeleton, Checkbox, message } from 'antd';
+import {
+  Button,
+  Input,
+  Select,
+  Collapse,
+  Divider,
+  Skeleton,
+  Checkbox,
+  message,
+  Popconfirm,
+} from 'antd';
 import { ArrowLeftOutlined, DownOutlined, LeftOutlined, SettingOutlined } from '@ant-design/icons';
 import HighConfigSelect from '../FAQ-manage/components/high-select';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -10,23 +20,28 @@ import QuestionList from '../components/question-list';
 import { history, useModel } from 'umi';
 import { deleteRecycle } from '../FAQ-manage/model/api';
 import config from '@/config';
+import ClassifyModal from '../components/classify-modal';
 
 const { Panel } = Collapse;
 const { Option } = Select;
 
 const RecyclePage: React.FC<any> = (props: any) => {
   const QuestionRef = useRef(null);
+  const classifyRef = useRef<any>({});
 
   const [value, setValue] = useState<any>({
     channelList: ['all'],
-    approvalStatusList: null,
-    orderType: 0,
+    orderType: 1,
     creatorList: null,
   });
 
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     setInfo: model.setInfo,
+  }));
+
+  const { getCreateUser } = useModel('drawer' as any, (model: any) => ({
+    getCreateUser: model.getCreateUser,
   }));
 
   const changeHighConfig = (val: any) => {
@@ -42,6 +57,7 @@ const RecyclePage: React.FC<any> = (props: any) => {
   useEffect(() => {
     // getFaqList({ pageNo: 1 });
     getTreeData({ robotId: info.id });
+    getCreateUser(info.id, 0);
   }, []);
 
   const _getMoreFaqList = async () => {
@@ -60,9 +76,13 @@ const RecyclePage: React.FC<any> = (props: any) => {
     (QuestionRef?.current as any)?.selectAll(flag);
   };
 
-  const _deleteRecycle = async (params: any) => {
+  const _deleteRecycle = async () => {
     let data = (QuestionRef?.current as any)?.deleteRecycle();
     console.log(data);
+    if (!data.length) {
+      message.warning('请选择问题');
+      return;
+    }
 
     await deleteRecycle({ faqIds: data }).then((res) => {
       if (res.resultCode == config.successCode) {
@@ -72,6 +92,9 @@ const RecyclePage: React.FC<any> = (props: any) => {
       }
       (QuestionRef?.current as any)?.CurrentPage();
     });
+  };
+  const openClassify = (item: any) => {
+    classifyRef.current?.open(item);
   };
 
   return (
@@ -90,9 +113,16 @@ const RecyclePage: React.FC<any> = (props: any) => {
 
         <div className={style['page_top__right']}>
           <Input.Search
+            allowClear
             style={{ marginRight: '16px', width: '280px' }}
             onChange={(e: any) => {
               setSearchText(e.target.value);
+            }}
+            onSearch={(text: any) => {
+              (QuestionRef?.current as any)?.CurrentPage({ searchText: text });
+            }}
+            onPressEnter={() => {
+              (QuestionRef?.current as any)?.CurrentPage();
             }}
           ></Input.Search>
         </div>
@@ -108,7 +138,7 @@ const RecyclePage: React.FC<any> = (props: any) => {
                 key="1"
                 extra={<div>高级筛选</div>}
               >
-                <HighConfigSelect value={value} onChange={changeHighConfig} />
+                <HighConfigSelect value={value} onChange={changeHighConfig} isRecycle={1} />
               </Panel>
             </Collapse>
           </div>
@@ -117,11 +147,31 @@ const RecyclePage: React.FC<any> = (props: any) => {
               <Checkbox onChange={checkboxChange} style={{ marginBottom: '24px' }}></Checkbox>
               <span style={{ marginLeft: '8px' }}>全选</span>
             </div>
-            <Button onClick={_deleteRecycle}>批量删除</Button>
+            <div className={style['box-top-del']}>
+              <Popconfirm
+                title={() => {
+                  return (
+                    <div style={{ maxWidth: '180px' }}>
+                      从问题回收站删除问题将彻底清除该问题所有相关记录，是否确认删除？
+                    </div>
+                  );
+                }}
+                getPopupContainer={(trigger: any) => trigger.parentElement}
+                okText="确定"
+                placement="topRight"
+                cancelText="取消"
+                onConfirm={() => {
+                  _deleteRecycle();
+                }}
+              >
+                <Button>批量删除</Button>
+              </Popconfirm>
+            </div>
           </div>
           <QuestionList
             cref={QuestionRef}
             hasCheckbox={true}
+            openClassify={openClassify}
             childList={childList}
             searchText={searchText}
             heightSelect={value}
@@ -130,6 +180,8 @@ const RecyclePage: React.FC<any> = (props: any) => {
           ></QuestionList>
         </div>
       </div>
+
+      <ClassifyModal cref={classifyRef} treeData={treeData}></ClassifyModal>
     </div>
   );
 };

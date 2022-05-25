@@ -263,8 +263,8 @@ export default function useDrawerModel() {
     }
   };
 
-  const getCreateUser = async (id?: any) => {
-    let res: any = await queryCreateUser({ robotId: id });
+  const getCreateUser = async (id?: any, isRecycle?: any) => {
+    let res: any = await queryCreateUser({ robotId: id, recycle: isRecycle });
     if (res.resultCode === config.successCode) {
       setUserList(['全部', ...res?.data]);
     } else {

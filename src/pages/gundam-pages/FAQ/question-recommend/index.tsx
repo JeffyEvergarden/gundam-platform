@@ -95,9 +95,11 @@ const RecommendPage: React.FC<any> = (props: any) => {
           <Recommend form={form} faqTypeId={query?.faqId} />
         </Form>
         <div className={style['board-btn']}>
-          <Button type="primary" onClick={save}>
-            确定
-          </Button>
+          {query?.recycle == 0 && (
+            <Button type="primary" onClick={save}>
+              确定
+            </Button>
+          )}
         </div>
       </div>
     </div>

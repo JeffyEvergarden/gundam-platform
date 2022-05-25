@@ -119,7 +119,7 @@ const Board: React.FC<any> = (props: any) => {
       answerId: answerId,
     });
     if (res) {
-      res = processAnswerBody(res);
+      res = processAnswerBody(res, robotType);
       if (res.enable) {
         setShowTime(true);
       }
@@ -157,7 +157,11 @@ const Board: React.FC<any> = (props: any) => {
       let response = await addNewAnswer(data);
       if (response === true) {
         // 回到主页
-        history.push('/gundamPages/faq/main');
+        if (query?.recycle == 0) {
+          history.push('/gundamPages/faq/main');
+        } else if (query?.recycle == 1) {
+          history.push('/gundamPages/faq/recycle');
+        }
       }
     } else {
       let data: any = {
@@ -169,7 +173,11 @@ const Board: React.FC<any> = (props: any) => {
       let response = await updateAnswer(data);
       if (response === true) {
         // 回到主页
-        history.push('/gundamPages/faq/main');
+        if (query?.recycle == 0) {
+          history.push('/gundamPages/faq/main');
+        } else if (query?.recycle == 1) {
+          history.push('/gundamPages/faq/recycle');
+        }
       }
     }
   };
@@ -182,7 +190,11 @@ const Board: React.FC<any> = (props: any) => {
           style={{ padding: 0 }}
           type="link"
           onClick={() => {
-            history.push('/gundamPages/faq/main');
+            if (query?.recycle == 0) {
+              history.push('/gundamPages/faq/main');
+            } else if (query?.recycle == 1) {
+              history.push('/gundamPages/faq/recycle');
+            }
           }}
         ></Button>
         {pageType === 'edit' ? '编辑答案' : '添加答案'}
@@ -232,18 +244,18 @@ const Board: React.FC<any> = (props: any) => {
                 </div>
 
                 {/* <div>富文本编辑待定</div> */}
-                <Form.Item name={'answer'}>
+                {/* <Form.Item name={'answer'}>
                   <EditBoard />
-                </Form.Item>
+                </Form.Item> */}
 
                 {/* <div>富文本编辑待定</div> */}
-                <Condition r-if={robotType === '语音'}>
+                <Condition r-if={robotType === '文本'}>
                   <Form.Item name={'answer'}>
                     <EditBoard />
                   </Form.Item>
                 </Condition>
 
-                <Condition r-if={robotType === '文本'}>
+                <Condition r-if={robotType === '语音'}>
                   <Form.Item name={'answer'}>
                     <TextArea maxLength={2000} rows={5} placeholder={'请输入答案'} showCount />
                   </Form.Item>

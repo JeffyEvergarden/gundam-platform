@@ -64,7 +64,10 @@ export const processRequest = (data: any) => {
 
 const reg = /\d{4}-\d{2}-\d{2}/;
 
-export const processBody = (data: any) => {
+const reg1 = /^\<\w+\>/;
+const reg2 = /\<\/\w+\>$/;
+
+export const processBody = (data: any, robotType = '文本') => {
   let answerList = data.answerList || [];
   let reg = new RegExp('${getResoureUrl}', 'g');
   answerList.forEach((item: any) => {
@@ -72,8 +75,14 @@ export const processBody = (data: any) => {
     // 生效时间
     item.enable = item.enable ? true : false;
     // 时间格式化
-    item.answer = item.answer || '';
-    item.answer = item.answer.replace(reg, '/aichat/robot/file/getFile');
+    let answer = item.answer || '';
+    if (robotType === '文本') {
+      if (reg1.test(answer) && reg2.test(answer)) {
+        item.answer = answer.replace(reg, '/aichat/robot/file/getFile');
+      } else {
+        item.answer = '';
+      }
+    }
 
     item.enableStartTime = item?.enableStartTime ? moment(item?.enableStartTime) : undefined;
     item.enableEndTime = item?.enableEndTime ? moment(item?.enableEndTime) : undefined;
@@ -98,14 +107,20 @@ export const processAnswerRequest = (data: any) => {
   return data;
 };
 
-export const processAnswerBody = (data: any) => {
+export const processAnswerBody = (data: any, robotType = '文本') => {
   let enableTime = data.enableTime || [];
   // 生效时间
   data.enable = data.enable ? true : false;
   // 时间格式化
   let reg = new RegExp('${getResoureUrl}', 'g');
-  data.answer = data.answer || '';
-  data.answer = data.answer.replace(reg, '/aichat/robot/file/getFile');
+  let answer = data.answer || '';
+  if (robotType === '文本') {
+    if (reg1.test(answer) && reg2.test(answer)) {
+      data.answer = answer.replace(reg, '/aichat/robot/file/getFile');
+    } else {
+      data.answer = '';
+    }
+  }
 
   data.enableStartTime = data?.enableStartTime ? moment(data?.enableStartTime) : undefined;
   data.enableEndTime = data?.enableEndTime ? moment(data?.enableEndTime) : undefined;

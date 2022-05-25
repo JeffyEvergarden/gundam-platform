@@ -21,6 +21,7 @@ export default () => {
   const [similar, setSimmilar] = useState<boolean>(false);
   const [similarVisible, setSimilarVisible] = useState<boolean>(false);
   const [columns, setcolumns] = useState<any>([]);
+  const [getViewNum, setGetViewNum] = useState<any>();
   const [visible, setVisible] = useState<boolean>(false);
   const [modalData, setModalData] = useState<any>({});
 
@@ -56,6 +57,11 @@ export default () => {
       setcolumns(tableListFAQ);
     }
   }, [history]);
+
+  useEffect(() => {
+    actionRef?.current?.reload();
+    console.log(tableInfo);
+  }, [tableInfo]);
 
   const getInitTable = async (payload: any) => {
     let res: any;
@@ -417,30 +423,43 @@ export default () => {
       fixed: 'right',
       valueType: 'option',
       render: (text: any, record: any, _: any, action: any) => {
-        return (
-          <Space>
-            <a key="editable" onClick={() => edit(action, record)}>
-              编辑
-            </a>
-            <a
-              key="editable"
-              onClick={() => {
-                removeFAQ(record);
-              }}
-            >
-              转移
-            </a>
-            <Popconfirm
-              title="确认删除该条相似问吗?"
-              okText="是"
-              cancelText="否"
-              onCancel={() => {}}
-              onConfirm={() => deleteRow(record)}
-            >
+        console.log(tableInfo);
+
+        if (history?.location?.state?.info?.recycle == 1) {
+          return (
+            <Space>
+              <a key="editable">编辑</a>
+              <a key="editable">转移</a>
+
               <a style={{ color: 'red' }}>删除</a>
-            </Popconfirm>
-          </Space>
-        );
+            </Space>
+          );
+        } else {
+          return (
+            <Space>
+              <a key="editable" onClick={() => edit(action, record)}>
+                编辑
+              </a>
+              <a
+                key="editable"
+                onClick={() => {
+                  removeFAQ(record);
+                }}
+              >
+                转移
+              </a>
+              <Popconfirm
+                title="确认删除该条相似问吗?"
+                okText="是"
+                cancelText="否"
+                onCancel={() => {}}
+                onConfirm={() => deleteRow(record)}
+              >
+                <a style={{ color: 'red' }}>删除</a>
+              </Popconfirm>
+            </Space>
+          );
+        }
       },
     },
   ];
@@ -472,26 +491,30 @@ export default () => {
           </div>
           <Row className={styles.search_box}>
             <Col span={14}>
-              <Input
-                ref={input}
-                placeholder={
-                  // "输入语料意图"
-                  pageType === 'wish'
-                    ? '输入语料意图'
-                    : pageType === 'FAQ'
-                    ? '输入相似问法'
-                    : '请输入'
-                }
-                allowClear
-                maxLength={200}
-                onChange={changeCorpusText}
-              />
+              {tableInfo?.recycle != 1 && (
+                <Input
+                  ref={input}
+                  placeholder={
+                    // "输入语料意图"
+                    pageType === 'wish'
+                      ? '输入语料意图'
+                      : pageType === 'FAQ'
+                      ? '输入相似问法'
+                      : '请输入'
+                  }
+                  allowClear
+                  maxLength={200}
+                  onChange={changeCorpusText}
+                />
+              )}
             </Col>
             <Col span={3}>
               <Space>
-                <Button type="primary" onClick={add}>
-                  添加
-                </Button>
+                {tableInfo?.recycle != 1 && (
+                  <Button type="primary" onClick={add}>
+                    添加
+                  </Button>
+                )}
                 {/* {similar && (
                   <Button type="primary" onClick={stillAdd}>
                     仍然添加
