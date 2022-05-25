@@ -21,7 +21,7 @@ export default (props: any) => {
         viewNum: r.viewNum,
       };
     }
-    refresh(r, type);
+    refresh(Info, type);
   };
 
   const columnsCurrent: any = [

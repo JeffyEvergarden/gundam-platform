@@ -23,7 +23,7 @@ const getFaqList = (req: any, res: any, next: any) => {
     faqTypeId: '0-0-1', //问题类型
     approvalStatus: 1, //审批状态
     questionRecommend: 1, //推荐 0关  1开
-    recyle: 0, //是否在回收站
+    recycle: 0, //是否在回收站
     creator: 'jiangjiahao',
     createTime: '2022-05-10 15:55:55',
     updateTime: '2022-05-10 15:55:55',
@@ -67,6 +67,7 @@ const getFaqList = (req: any, res: any, next: any) => {
       name: '阿斯拉大' + index,
       times: 100 + index,
       id: index + 1,
+      recycle: index % 2 == 0 ? 0 : 1,
     };
   });
 
