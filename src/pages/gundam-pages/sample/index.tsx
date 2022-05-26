@@ -38,7 +38,8 @@ export default () => {
     info: model.info,
   }));
 
-  const { getList, intentEdit, deleteIntentFeature, checkIntent, intentAdd } = useSampleModel();
+  const { getList, intentEdit, deleteIntentFeature, checkIntent, intentAdd, loadingAdd } =
+    useSampleModel();
 
   const { getSimilarList, checkSimilar, editSimilar, deleteSimilar, addSimilar, addLoading } =
     useSimilarModel();
@@ -530,7 +531,11 @@ export default () => {
             <Col span={3}>
               <Space>
                 {tableInfo?.recycle != 1 && (
-                  <Button type="primary" onClick={add} loading={addLoading}>
+                  <Button
+                    type="primary"
+                    onClick={add}
+                    loading={pageType == 'wish' ? loadingAdd : addLoading}
+                  >
                     添加
                   </Button>
                 )}
