@@ -285,6 +285,7 @@ export default () => {
         id: record.id,
         similarText: record.similarText,
         viewNum: record.viewNum,
+        faqId: tableInfo?.id,
       };
       await editSimilar(reqData).then((res) => {
         if (res.resultCode == config.successCode) {
