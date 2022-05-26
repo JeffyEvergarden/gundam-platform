@@ -84,7 +84,12 @@ export default (props: any) => {
               <Select>
                 {_wishList?.map((itex: any, index: number) => {
                   return (
-                    <Option key={itex.name} value={itex.name} opt={itex}>
+                    <Option
+                      key={itex.name}
+                      value={itex.name}
+                      opt={itex}
+                      disabled={itex.name === modalData?.intentId}
+                    >
                       {itex.label}
                     </Option>
                   );
