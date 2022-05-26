@@ -38,9 +38,10 @@ export default () => {
     info: model.info,
   }));
 
-  const { getList, intentEdit, deleteIntentFeature, checkIntent, intentAdd } = useSampleModel();
+  const { getList, intentEdit, deleteIntentFeature, checkIntent, intentAdd, loadingAdd } =
+    useSampleModel();
 
-  const { getSimilarList, checkSimilar, editSimilar, deleteSimilar, addSimilar } =
+  const { getSimilarList, checkSimilar, editSimilar, deleteSimilar, addSimilar, addLoading } =
     useSimilarModel();
 
   useEffect(() => {
@@ -503,7 +504,7 @@ export default () => {
             </div>
             {pageType == 'FAQ' && (
               <div style={{ fontSize: '14px' }}>
-                <EyeOutlined /> {tableInfo?.viewNum || '-'}
+                <EyeOutlined /> {tableInfo?.viewNum ?? '-'}
               </div>
             )}
           </div>
@@ -530,7 +531,11 @@ export default () => {
             <Col span={3}>
               <Space>
                 {tableInfo?.recycle != 1 && (
-                  <Button type="primary" onClick={add}>
+                  <Button
+                    type="primary"
+                    onClick={add}
+                    loading={pageType == 'wish' ? loadingAdd : addLoading}
+                  >
                     添加
                   </Button>
                 )}
@@ -597,7 +602,12 @@ export default () => {
         )}
       </div>
       <RemoveCom visible={visible} modalData={modalData} close={close} save={save} />
-      <SameModal visible={similarVisible} cancel={closeSame} saveSame={saveSame} />
+      <SameModal
+        visible={similarVisible}
+        cancel={closeSame}
+        saveSame={saveSame}
+        pageType={pageType}
+      />
       <RemoveSimilar cref={RemoveSRef} onSubmit={editRemove} />
     </Fragment>
   );

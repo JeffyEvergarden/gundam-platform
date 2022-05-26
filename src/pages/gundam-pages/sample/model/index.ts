@@ -14,6 +14,7 @@ import { _getSimilarList, _editSimilar, _deleteSimilar, _addSimilar } from './ap
 
 export const useSampleModel = () => {
   const [tableLoading, setTableLoading] = useState<boolean>(false);
+  const [loadingAdd, setLoadingAdd] = useState<boolean>(false);
 
   const getList = async (params?: any) => {
     setTableLoading(true);
@@ -37,16 +38,20 @@ export const useSampleModel = () => {
   };
 
   const checkIntent = async (params?: any) => {
+    setLoadingAdd(true);
     setTableLoading(true);
     let res: any = await intentSame(params);
     setTableLoading(false);
+    setLoadingAdd(false);
     return res;
   };
 
   const intentAdd = async (params?: any) => {
+    setLoadingAdd(true);
     setTableLoading(true);
     let res: any = await intentAddList(params);
     setTableLoading(false);
+    setLoadingAdd(false);
     return res;
   };
 
@@ -65,11 +70,13 @@ export const useSampleModel = () => {
     intentAdd,
     getsimilarList,
     tableLoading,
+    loadingAdd,
   };
 };
 
 export const useSimilarModel = () => {
   const [tableLoading, setTableLoading] = useState<boolean>(false);
+  const [addLoading, setAddLoading] = useState<boolean>(false);
 
   const getSimilarList = async (params?: any) => {
     setTableLoading(true);
@@ -78,9 +85,11 @@ export const useSimilarModel = () => {
     return res;
   };
   const checkSimilar = async (params?: any) => {
+    setAddLoading(true);
     setTableLoading(true);
     let res: any = await similarSame(params);
     setTableLoading(false);
+    setAddLoading(false);
     return res;
   };
 
@@ -99,9 +108,11 @@ export const useSimilarModel = () => {
   };
 
   const addSimilar = async (params?: any) => {
+    setAddLoading(true);
     setTableLoading(true);
     let res: any = await _addSimilar(params);
     setTableLoading(false);
+    setAddLoading(false);
     return res;
   };
 
@@ -111,6 +122,7 @@ export const useSimilarModel = () => {
     editSimilar,
     deleteSimilar,
     addSimilar,
+    addLoading,
     tableLoading,
   };
 };
