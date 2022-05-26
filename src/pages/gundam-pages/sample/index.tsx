@@ -504,7 +504,7 @@ export default () => {
             </div>
             {pageType == 'FAQ' && (
               <div style={{ fontSize: '14px' }}>
-                <EyeOutlined /> {tableInfo?.viewNum || '-'}
+                <EyeOutlined /> {tableInfo?.viewNum ?? '-'}
               </div>
             )}
           </div>
