@@ -59,9 +59,15 @@ export default () => {
   }, [history]);
 
   useEffect(() => {
+    if (pageType === 'wish') {
+      setcolumns(tableListWish);
+    }
+    if (pageType === 'FAQ') {
+      setcolumns(tableListFAQ);
+    }
     actionRef?.current?.reload();
-    console.log(tableInfo);
-  }, [tableInfo]);
+    console.log(tableInfo, pageType);
+  }, [tableInfo, pageType]);
 
   const getInitTable = async (payload: any) => {
     let res: any;
