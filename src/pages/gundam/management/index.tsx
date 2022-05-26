@@ -24,10 +24,10 @@ const MachineManagement: React.FC = (props: any) => {
 
   const { opLoading, changeStatus, deleteMachine, addNewMachine, editMachine } = useOpModel();
 
-  const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
-    info: model.info,
-    setInfo: model.setInfo,
-  }));
+  // const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
+  //   info: model.info,
+  //   setInfo: model.setInfo,
+  // }));
 
   const { updatePage } = useUpdateModel();
 
@@ -298,7 +298,7 @@ const MachineManagement: React.FC = (props: any) => {
   }, []);
 
   return (
-    <div className={style['machine-page']}>
+    <div className={`${style['machine-page']} list-page`}>
       <ProTable<any>
         // params={searchForm}
         columns={columns}
@@ -331,17 +331,6 @@ const MachineManagement: React.FC = (props: any) => {
             }
             return values;
           },
-          // onFieldsChange: (change, all) => {
-          //   let params: any = {};
-          //   clearTimeout(time);
-          //   all.forEach((item) => {
-          //     if (item.touched) {
-          //       params[item.name[0]] = item.value;
-          //     }
-          //   });
-          //   delete params.robotName;
-          //   setSearchForm(params);
-          // },
         }}
         pagination={{
           pageSize: 10,
@@ -361,14 +350,6 @@ const MachineManagement: React.FC = (props: any) => {
           </Button>,
         ]}
       />
-
-      {/* <Table
-        pagination={{ current, onChange }}
-        dataSource={tableList}
-        columns={columns}
-        rowKey="index"
-        loading={tableLoading}
-      /> */}
 
       <InfoModal cref={modalRef} confirm={confirmInfo} loading={opLoading} />
     </div>
