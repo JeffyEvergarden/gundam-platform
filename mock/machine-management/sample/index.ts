@@ -159,7 +159,7 @@ const getSimilarList = (req: any, res: any) => {
       list: [
         {
           dataStatus: 0,
-          faqId: 'xx',
+          faqId: '1',
           id: '123',
           question: '问题',
           robotId: '100',

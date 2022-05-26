@@ -96,7 +96,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     open: (obj: any) => {
-      setSelectedQuestionKeys([]);
+      setDisabledQuestionKeys(obj?.faqId || []);
       console.log(obj);
       getTreeData(info.id);
       setSimilarInfo(obj);
