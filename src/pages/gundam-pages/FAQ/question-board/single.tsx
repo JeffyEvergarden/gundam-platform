@@ -157,11 +157,8 @@ const Board: React.FC<any> = (props: any) => {
       let response = await addNewAnswer(data);
       if (response === true) {
         // 回到主页
-        if (query?.recycle == 0) {
-          history.push('/gundamPages/faq/main');
-        } else if (query?.recycle == 1) {
-          history.push('/gundamPages/faq/recycle');
-        }
+
+        history.push('/gundamPages/faq/main');
       }
     } else {
       let data: any = {
@@ -173,11 +170,8 @@ const Board: React.FC<any> = (props: any) => {
       let response = await updateAnswer(data);
       if (response === true) {
         // 回到主页
-        if (query?.recycle == 0) {
-          history.push('/gundamPages/faq/main');
-        } else if (query?.recycle == 1) {
-          history.push('/gundamPages/faq/recycle');
-        }
+
+        history.push('/gundamPages/faq/main');
       }
     }
   };
@@ -190,11 +184,7 @@ const Board: React.FC<any> = (props: any) => {
           style={{ padding: 0 }}
           type="link"
           onClick={() => {
-            if (query?.recycle == 0) {
-              history.push('/gundamPages/faq/main');
-            } else if (query?.recycle == 1) {
-              history.push('/gundamPages/faq/recycle');
-            }
+            history.push('/gundamPages/faq/main');
           }}
         ></Button>
         {pageType === 'edit' ? '编辑答案' : '添加答案'}
@@ -299,11 +289,9 @@ const Board: React.FC<any> = (props: any) => {
       </div>
 
       <div className={style['board-btn']}>
-        {query?.recycle == 0 && (
-          <Button type="primary" onClick={save}>
-            确定
-          </Button>
-        )}
+        <Button type="primary" onClick={save}>
+          确定
+        </Button>
       </div>
     </div>
   );
