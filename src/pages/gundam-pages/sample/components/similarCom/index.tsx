@@ -20,6 +20,8 @@ export default (props: any) => {
         question: r.stdQuery,
         viewNum: r.viewNum,
       };
+    } else {
+      Info = r;
     }
     refresh(Info, type);
   };
