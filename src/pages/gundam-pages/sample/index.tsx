@@ -478,7 +478,15 @@ export default () => {
               <ArrowLeftOutlined
                 style={{ marginRight: '6px', color: '#1890ff' }}
                 onClick={() => {
-                  history?.goBack();
+                  if (pageType === 'FAQ') {
+                    if (tableInfo?.recycle == 1) {
+                      history.push('/gundamPages/faq/recycle');
+                    } else {
+                      history.push('/gundamPages/faq/main');
+                    }
+                  } else {
+                    history?.goBack();
+                  }
                 }}
               />
               {pageType === 'wish'

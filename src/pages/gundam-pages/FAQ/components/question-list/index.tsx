@@ -149,7 +149,7 @@ const QuestionList: React.FC<any> = (props: any) => {
 
   const toSample = (item: any) => {
     history.push({
-      pathname: '/gundamPages/sample',
+      pathname: '/gundamPages/faq/similar',
       state: {
         info: item,
         pageType: 'FAQ',

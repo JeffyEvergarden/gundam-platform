@@ -6,6 +6,8 @@ import QuestionBoardSingle from './question-board/single';
 import QuestionRecycle from './question-recycle';
 import QuestionImport from './question-import';
 import QuestionRecommend from './question-recommend';
+import QuestionSimilar from './question-similar';
+
 import KeepAlive, { AliveScope } from 'react-activation';
 import { history, useLocation } from 'umi';
 import Page404 from '@/pages/404';
@@ -48,6 +50,11 @@ const pathList = [
     path: '/gundamPages/faq/recommend',
     component: QuestionRecommend,
     name: '推荐问',
+  },
+  {
+    path: '/gundamPages/faq/similar',
+    component: QuestionSimilar,
+    name: '相似问',
   },
   { redirect: '/gundamPages/faq/main' },
   {
