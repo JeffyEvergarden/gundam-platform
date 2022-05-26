@@ -48,7 +48,7 @@ const QuestionList: React.FC<any> = (props: any) => {
     openClassify,
     openChannel,
     childList,
-    queryType,
+    queryType = 0,
     searchText = '',
     heightSelect,
     isRecycle,

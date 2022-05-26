@@ -20,6 +20,12 @@
     &__right {
       display: flex;
       flex-wrap: nowrap;
+
+      :global {
+        .ant-input-search-button {
+          border: 0;
+        }
+      }
     }
   }
 }

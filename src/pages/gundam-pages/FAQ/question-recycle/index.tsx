@@ -113,8 +113,15 @@ const RecyclePage: React.FC<any> = (props: any) => {
 
         <div className={style['page_top__right']}>
           <Input.Search
+            bordered={false}
+            placeholder={'请输入'}
             allowClear
-            style={{ marginRight: '16px', width: '280px' }}
+            style={{
+              marginRight: '16px',
+              width: '280px',
+              backgroundColor: '#fff',
+              borderColor: '#fff',
+            }}
             onChange={(e: any) => {
               setSearchText(e.target.value);
             }}
