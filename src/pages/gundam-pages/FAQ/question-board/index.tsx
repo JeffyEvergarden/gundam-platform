@@ -37,7 +37,8 @@ if (!(window as any).hadRegisterMenu) {
   (window as any).hadRegisterMenu = true;
 }
 
-const reg = /^\<p\>\<br\>\<\/p\>/;
+const reg = /^(\<p\>\<br\>\<\/p\>)/;
+const regEnd = /^(\<p\>\<br\>\<\/p\>)+$/;
 
 const EditBoard: React.FC<any> = (prop: any) => {
   const { value, onChange, onBlur } = prop;
@@ -48,8 +49,8 @@ const EditBoard: React.FC<any> = (prop: any) => {
   // onchange事件 内容变动
   const onChangeContent = (editor: any) => {
     let content = editor.getHtml();
-    // console.log('content:', content);
-    if (content === '<p><br></p>') {
+    console.log('content:', content);
+    if (regEnd.test(content)) {
       onChange(undefined);
       return;
     }
@@ -195,7 +196,7 @@ const EditBoard: React.FC<any> = (prop: any) => {
   };
 
   const test = () => {
-    console.log(editor.selection);
+    console.log(editor?.selection);
   };
 
   (editorConfig.MENU_CONF as any)['openRelationModal'] = {
@@ -222,7 +223,7 @@ const EditBoard: React.FC<any> = (prop: any) => {
 
   return (
     <div style={{ border: '1px solid #D9D9D9' }}>
-      <Button onClick={test}>fuck</Button>
+      {/* <Button onClick={test}>fuck</Button> */}
       <Toolbar
         editor={editor}
         defaultConfig={toolbarConfig}
