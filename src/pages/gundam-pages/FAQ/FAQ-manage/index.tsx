@@ -171,7 +171,7 @@ const FAQPage: React.FC<any> = (props: any) => {
               >
                 <Option value={0}>问题</Option>
                 <Option value={1}>答案</Option>
-                <Option value={2}>标签</Option>
+                {/* <Option value={2}>标签</Option> */}
               </Select>
               <Input.Search
                 bordered={false}
