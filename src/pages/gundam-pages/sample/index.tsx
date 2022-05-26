@@ -117,7 +117,7 @@ export default () => {
       let res: any;
       if (pageType === 'wish') {
         let params = {
-          robotId: tableInfo.robotId,
+          robotId: tableInfo?.robotId || info?.id,
           corpusText: inputValue,
           intentId: tableInfo.id,
           intentName: tableInfo.intentName,
@@ -155,7 +155,7 @@ export default () => {
 
   const intentCorpusAdd = async () => {
     let addParams = {
-      robotId: tableInfo.robotId,
+      robotId: tableInfo.robotId || info.id,
       intentId: tableInfo.id,
       corpusText: inputValue,
     };
