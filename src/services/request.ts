@@ -5,7 +5,7 @@ import { message } from 'antd';
 import config from '@/config/index';
 
 const request = extend({
-  timeout: 10000,
+  timeout: 20000,
   // headers: {
   //   'Content-Type': 'multipart/form-data',
   // },

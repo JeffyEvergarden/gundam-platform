@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { message, Button, Tooltip } from 'antd';
 import { Editor, Toolbar } from '@wangeditor/editor-for-react';
-import { IDomEditor, IEditorConfig } from '@wangeditor/editor';
+import { IDomEditor, IEditorConfig, SlateTransforms } from '@wangeditor/editor';
 import config from './const';
 import { FilePptOutlined, DeploymentUnitOutlined, AimOutlined } from '@ant-design/icons';
 import { insertLink } from './model/utils';
@@ -37,22 +37,52 @@ if (!(window as any).hadRegisterMenu) {
   (window as any).hadRegisterMenu = true;
 }
 
-// --------------------------
+const reg = /^(\<p\>\<br\>\<\/p\>)/;
+const regEnd = /^(\<p\>\<br\>\<\/p\>)+$/;
 
 const EditBoard: React.FC<any> = (prop: any) => {
   const { value, onChange, onBlur } = prop;
 
   const [editor, setEditor] = useState<IDomEditor | null>(null); // 存储 editor 实例
+
+  const time = useRef<any>(0);
   // onchange事件 内容变动
   const onChangeContent = (editor: any) => {
     let content = editor.getHtml();
-    if (content === '<p><br></p>') {
-      content = undefined;
+    console.log('content:', content);
+    if (regEnd.test(content)) {
+      onChange(undefined);
+      return;
     }
+    if (reg.test(content) && time.current < 1) {
+      content = content.replace(reg, '');
+      console.log(content);
+      deleteFirstRow(editor);
+    }
+    time.current++;
     onChange(content);
   };
 
   const bt = useRef<any>({});
+
+  const deleteFirstRow = (editor: any) => {
+    if (!editor) {
+      return;
+    }
+    // 选中第一行
+    editor.select({
+      anchor: {
+        offset: 0,
+        path: [0, 0],
+      },
+      focus: {
+        offset: 0,
+        path: [1, 0],
+      },
+    });
+    // 删除选择区域
+    SlateTransforms.removeNodes(editor);
+  };
 
   // 编辑器配置
   const toolbarConfig = {
@@ -68,6 +98,7 @@ const EditBoard: React.FC<any> = (prop: any) => {
     MENU_CONF: {},
     maxLength: 2000,
     autoFocus: false,
+    readOnly: false,
     onBlur: () => {
       console.log('blur');
       onBlur?.();
@@ -165,8 +196,7 @@ const EditBoard: React.FC<any> = (prop: any) => {
   };
 
   const test = () => {
-    console.log(value);
-    console.log(editor?.children);
+    console.log(editor?.selection);
   };
 
   (editorConfig.MENU_CONF as any)['openRelationModal'] = {
@@ -193,6 +223,7 @@ const EditBoard: React.FC<any> = (prop: any) => {
 
   return (
     <div style={{ border: '1px solid #D9D9D9' }}>
+      {/* <Button onClick={test}>fuck</Button> */}
       <Toolbar
         editor={editor}
         defaultConfig={toolbarConfig}

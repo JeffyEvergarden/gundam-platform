@@ -95,7 +95,7 @@ const InterfaceConfig: React.FC = (props: any) => {
   ];
 
   return (
-    <div className={style['machine-page']}>
+    <div className={`${style['machine-page']} list-page`}>
       <ProTable<any>
         columns={columns}
         actionRef={interfaceTableRef}

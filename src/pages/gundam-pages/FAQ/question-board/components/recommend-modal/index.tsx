@@ -157,6 +157,7 @@ const Recommend: React.FC<any> = (props: any) => {
                         <Form.Item
                           name={[field.name, 'recommend']}
                           fieldKey={[field.fieldKey, 'recommend']}
+                          rules={[{ required: true, message: '请选择' }]}
                         >
                           <Selector
                             openModal={() => {

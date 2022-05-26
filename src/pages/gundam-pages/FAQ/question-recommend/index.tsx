@@ -28,8 +28,9 @@ const RecommendPage: React.FC<any> = (props: any) => {
     treeData: model.treeData,
   }));
 
-  const save = () => {
+  const save = async () => {
     console.log(form.getFieldsValue());
+    let res = await form.validateFields();
     let reqData = { ...form.getFieldsValue() };
     reqData.questionRecommend = reqData?.questionRecommend ? 1 : 0;
     editRecommend({ ...reqData });

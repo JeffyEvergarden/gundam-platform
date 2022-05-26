@@ -20,6 +20,8 @@ export default (props: any) => {
         question: r.stdQuery,
         viewNum: r.viewNum,
       };
+    } else {
+      Info = r;
     }
     refresh(Info, type);
   };
@@ -81,12 +83,16 @@ export default (props: any) => {
     },
   ];
 
+  //相似问
   const currentStd: any = [
     {
-      title: '语料文本',
+      title: '标准问/相似问',
       dataIndex: 'stdQuery',
       fixed: 'left',
       ellipsis: true,
+      render: (t: any, r: any, i: any) => {
+        return r.similarQuery || r.stdQuery;
+      },
     },
   ];
 

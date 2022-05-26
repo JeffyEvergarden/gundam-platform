@@ -38,9 +38,10 @@ export default () => {
     info: model.info,
   }));
 
-  const { getList, intentEdit, deleteIntentFeature, checkIntent, intentAdd } = useSampleModel();
+  const { getList, intentEdit, deleteIntentFeature, checkIntent, intentAdd, loadingAdd } =
+    useSampleModel();
 
-  const { getSimilarList, checkSimilar, editSimilar, deleteSimilar, addSimilar } =
+  const { getSimilarList, checkSimilar, editSimilar, deleteSimilar, addSimilar, addLoading } =
     useSimilarModel();
 
   useEffect(() => {
@@ -59,9 +60,15 @@ export default () => {
   }, [history]);
 
   useEffect(() => {
+    if (pageType === 'wish') {
+      setcolumns(tableListWish);
+    }
+    if (pageType === 'FAQ') {
+      setcolumns(tableListFAQ);
+    }
     actionRef?.current?.reload();
-    console.log(tableInfo);
-  }, [tableInfo]);
+    console.log(tableInfo, pageType);
+  }, [tableInfo, pageType]);
 
   const getInitTable = async (payload: any) => {
     let res: any;
@@ -111,7 +118,7 @@ export default () => {
       let res: any;
       if (pageType === 'wish') {
         let params = {
-          robotId: tableInfo.robotId,
+          robotId: tableInfo?.robotId || info?.id,
           corpusText: inputValue,
           intentId: tableInfo.id,
           intentName: tableInfo.intentName,
@@ -149,7 +156,7 @@ export default () => {
 
   const intentCorpusAdd = async () => {
     let addParams = {
-      robotId: tableInfo.robotId,
+      robotId: tableInfo.robotId || info.id,
       intentId: tableInfo.id,
       corpusText: inputValue,
     };
@@ -478,7 +485,15 @@ export default () => {
               <ArrowLeftOutlined
                 style={{ marginRight: '6px', color: '#1890ff' }}
                 onClick={() => {
-                  history?.goBack();
+                  if (pageType === 'FAQ') {
+                    if (tableInfo?.recycle == 1) {
+                      history.push('/gundamPages/faq/recycle');
+                    } else {
+                      history.push('/gundamPages/faq/main');
+                    }
+                  } else {
+                    history?.goBack();
+                  }
                 }}
               />
               {pageType === 'wish'
@@ -489,7 +504,7 @@ export default () => {
             </div>
             {pageType == 'FAQ' && (
               <div style={{ fontSize: '14px' }}>
-                <EyeOutlined /> {tableInfo?.viewNum || '-'}
+                <EyeOutlined /> {tableInfo?.viewNum ?? '-'}
               </div>
             )}
           </div>
@@ -516,7 +531,11 @@ export default () => {
             <Col span={3}>
               <Space>
                 {tableInfo?.recycle != 1 && (
-                  <Button type="primary" onClick={add}>
+                  <Button
+                    type="primary"
+                    onClick={add}
+                    loading={pageType == 'wish' ? loadingAdd : addLoading}
+                  >
                     添加
                   </Button>
                 )}
@@ -583,7 +602,12 @@ export default () => {
         )}
       </div>
       <RemoveCom visible={visible} modalData={modalData} close={close} save={save} />
-      <SameModal visible={similarVisible} cancel={closeSame} saveSame={saveSame} />
+      <SameModal
+        visible={similarVisible}
+        cancel={closeSame}
+        saveSame={saveSame}
+        pageType={pageType}
+      />
       <RemoveSimilar cref={RemoveSRef} onSubmit={editRemove} />
     </Fragment>
   );

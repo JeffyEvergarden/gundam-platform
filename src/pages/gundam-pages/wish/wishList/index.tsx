@@ -175,7 +175,7 @@ const DetailPages: React.FC = (props: any) => {
   };
 
   return (
-    <React.Fragment>
+    <div className={`list-page`}>
       <ProTable<TableListItem>
         loading={loading}
         headerTitle={'意图列表'}
@@ -214,7 +214,7 @@ const DetailPages: React.FC = (props: any) => {
         visible={rulesSamleVisible}
         onCancel={rulesSampleDrawerClose}
       /> */}
-    </React.Fragment>
+    </div>
   );
 };
 

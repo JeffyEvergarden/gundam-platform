@@ -215,7 +215,7 @@ const LexiconManage: React.FC = (props: any) => {
     },
   ];
   return (
-    <div className={styles.lexiconManage}>
+    <div className={`${styles.lexiconManage} list-page`}>
       <Tabs
         defaultActiveKey="1"
         size={'large'}
