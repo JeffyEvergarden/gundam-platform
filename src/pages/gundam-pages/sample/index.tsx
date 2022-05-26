@@ -40,7 +40,7 @@ export default () => {
 
   const { getList, intentEdit, deleteIntentFeature, checkIntent, intentAdd } = useSampleModel();
 
-  const { getSimilarList, checkSimilar, editSimilar, deleteSimilar, addSimilar } =
+  const { getSimilarList, checkSimilar, editSimilar, deleteSimilar, addSimilar, addLoading } =
     useSimilarModel();
 
   useEffect(() => {
@@ -530,7 +530,7 @@ export default () => {
             <Col span={3}>
               <Space>
                 {tableInfo?.recycle != 1 && (
-                  <Button type="primary" onClick={add}>
+                  <Button type="primary" onClick={add} loading={addLoading}>
                     添加
                   </Button>
                 )}

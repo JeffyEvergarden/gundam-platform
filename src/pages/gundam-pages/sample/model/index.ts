@@ -70,6 +70,7 @@ export const useSampleModel = () => {
 
 export const useSimilarModel = () => {
   const [tableLoading, setTableLoading] = useState<boolean>(false);
+  const [addLoading, setAddLoading] = useState<boolean>(false);
 
   const getSimilarList = async (params?: any) => {
     setTableLoading(true);
@@ -78,9 +79,11 @@ export const useSimilarModel = () => {
     return res;
   };
   const checkSimilar = async (params?: any) => {
+    setAddLoading(true);
     setTableLoading(true);
     let res: any = await similarSame(params);
     setTableLoading(false);
+    setAddLoading(false);
     return res;
   };
 
@@ -99,9 +102,11 @@ export const useSimilarModel = () => {
   };
 
   const addSimilar = async (params?: any) => {
+    setAddLoading(true);
     setTableLoading(true);
     let res: any = await _addSimilar(params);
     setTableLoading(false);
+    setAddLoading(false);
     return res;
   };
 
@@ -111,6 +116,7 @@ export const useSimilarModel = () => {
     editSimilar,
     deleteSimilar,
     addSimilar,
+    addLoading,
     tableLoading,
   };
 };
