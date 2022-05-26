@@ -86,10 +86,13 @@ export default (props: any) => {
   //相似问
   const currentStd: any = [
     {
-      title: '相似问法',
+      title: '标准问/相似问',
       dataIndex: 'stdQuery',
       fixed: 'left',
       ellipsis: true,
+      render: (t: any, r: any, i: any) => {
+        return r.similarQuery || r.stdQuery;
+      },
     },
   ];
 
