@@ -605,8 +605,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                                     </span>
                                     <Divider type="vertical" />
                                     <span>
-                                      <LikeOutlined />
-                                      {v.answerLikeNum}
+                                      <LikeOutlined /> {v.answerLikeNum}
                                     </span>
 
                                     <Divider type="vertical" />
