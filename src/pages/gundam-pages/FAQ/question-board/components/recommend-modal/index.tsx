@@ -37,14 +37,16 @@ const Recommend: React.FC<any> = (props: any) => {
   // 打开弹窗
   const openModal = (index: number) => {
     const _list = getRecommendItem();
+    console.log(_list);
+
     const disabledQuestionKeys = _list
       .filter((item: any, i: number) => {
-        return item.recommendBizType === '1' && item.recommendId && i !== index;
+        return item.recommendBizType == '1' && item.recommendId && i !== index;
       })
       .map((item: any) => item.recommendId);
     const disabledFlowKeys = _list
       .filter((item: any, i: number) => {
-        return item.recommendBizType === '2' && item.recommendId && i !== index;
+        return item.recommendBizType == '2' && item.recommendId && i !== index;
       })
       .map((item: any) => item.recommendId);
 
@@ -60,9 +62,9 @@ const Recommend: React.FC<any> = (props: any) => {
       selectedQuestionKeys: [],
       selectedFlowKeys: [],
     };
-    if (_list[index]?.questionType === '2') {
+    if (_list[index]?.questionType == '2') {
       openInfo.selectedFlowKeys = [_list[index].recommendId];
-    } else if (_list[index]?.questionType === '1') {
+    } else if (_list[index]?.questionType == '1') {
       openInfo.selectedQuestionKeys = [_list[index].recommendId];
     }
     (selectModalRef.current as any).open(openInfo);

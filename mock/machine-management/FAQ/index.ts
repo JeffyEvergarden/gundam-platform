@@ -179,7 +179,7 @@ const getRecommend = (req: any, res: any) => {
       {
         id: 100,
         faqId: '111',
-        recommendId: '222',
+        recommendId: '1',
         recommendType: 1,
         recommendBizType: 1,
         recommend: '问题',
@@ -201,5 +201,5 @@ export default {
   'POST /aichat/robot/faq/typeDelete': normalDeal, // 删除分类节点
 
   'GET /aichat/robot/faq/listCreateUser': getCreateUser, //获取用户
-  'GET /aichat/robot/faq/listFaqRecommend': getRecommend, //获取用户
+  'GET /aichat/robot/faq/listFaqRecommend': getRecommend, //获取推荐
 };
