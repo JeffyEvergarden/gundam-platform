@@ -60,7 +60,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
         page: val,
         pageSize: 10,
         robotId: info.id,
-        type: classType,
+        faqTypeId: classType,
         searchText: searchText1,
       });
     } else {
@@ -78,7 +78,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
   const onSelect = (val: any) => {
     setClassType(val[0]);
     setCurrent1(1);
-    getFaqList({ page: 1, pageSize: 10, robotId: info.id, type: val[0] });
+    getFaqList({ page: 1, pageSize: 10, robotId: info.id, faqTypeId: val[0] });
   };
 
   const rowSelection = {
