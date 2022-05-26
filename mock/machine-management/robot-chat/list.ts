@@ -26,13 +26,19 @@ const textRobotDialogueText = (req: any, res: any) => {
       askText: '111111',
       askKey: '意图类型',
       nluInfo:
-        '{"resultCode":"0000","data":{"nodes":[{"frontId":"01","id":"01","nodeType":2,"label":"开始","x":100,"y":100},{"frontId":"02","id":"02","nodeType":0,"label":"普通节点1","x":500,"y":500},{"frontId":"03","id":"03","nodeType":1,"label":"业务节点1","x":700,"y":200},{"frontId":"04","id":"04","nodeType":3,"label":"特殊业务节点","x":100,"y":300}],"edges":[{"frontId":"001","id":"001","frontSource":"01","frontTarget":"03","sourceAnchor":1,"targetAnchor":3,"source":"01","target":"01","priority":10}]}}',
+        '{"resultCode":"0000","data":{"id":"100","flowId":"100","robotName":"命运官位指定阿尔托莉亚潘多拉","robotType":0,"soundType":0}}',
       recommendQuestion: [
         {
           number: 1,
           askType: 'faq',
           askKey: '111111',
           askText: '请问你是要询问还款吗？',
+        },
+        {
+          number: 2,
+          askType: 'faq',
+          askKey: '111111',
+          askText: '循环产品利率？',
         },
       ],
     },
@@ -56,7 +62,7 @@ const soundRobotDialogueText = (req: any, res: any) => {
       askKey: '意图类型',
       askTextSound: '111111',
       nluInfo:
-        '{"resultCode":"0000","data":{"nodes":[{"frontId":"01","id":"01","nodeType":2,"label":"开始","x":100,"y":100},{"frontId":"02","id":"02","nodeType":0,"label":"普通节点1","x":500,"y":500},{"frontId":"03","id":"03","nodeType":1,"label":"业务节点1","x":700,"y":200},{"frontId":"04","id":"04","nodeType":3,"label":"特殊业务节点","x":100,"y":300}],"edges":[{"frontId":"001","id":"001","frontSource":"01","frontTarget":"03","sourceAnchor":1,"targetAnchor":3,"source":"01","target":"01","priority":10}]}}',
+        '{"resultCode":"0000","data":{"id":"100","flowId":"100","robotName":"命运官位指定阿尔托莉亚潘多拉","robotType":0,"soundType":0}}',
     },
   });
 };
