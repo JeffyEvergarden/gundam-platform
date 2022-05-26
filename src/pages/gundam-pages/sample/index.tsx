@@ -602,7 +602,12 @@ export default () => {
         )}
       </div>
       <RemoveCom visible={visible} modalData={modalData} close={close} save={save} />
-      <SameModal visible={similarVisible} cancel={closeSame} saveSame={saveSame} />
+      <SameModal
+        visible={similarVisible}
+        cancel={closeSame}
+        saveSame={saveSame}
+        pageType={pageType}
+      />
       <RemoveSimilar cref={RemoveSRef} onSubmit={editRemove} />
     </Fragment>
   );

@@ -83,9 +83,10 @@ export default (props: any) => {
     },
   ];
 
+  //相似问
   const currentStd: any = [
     {
-      title: '语料文本',
+      title: '相似问法',
       dataIndex: 'stdQuery',
       fixed: 'left',
       ellipsis: true,
