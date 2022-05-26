@@ -13,7 +13,7 @@ export const useFaqModal = () => {
 
   const getFaqList = async (params: any) => {
     setLoading(true);
-    let res: any = await getQuestionList({ ...params, queryType: 0 });
+    let res: any = await getQuestionList({ ...params });
     setLoading(false);
     if (res.resultCode === successCode) {
       let data = res?.data?.list || [];
