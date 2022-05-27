@@ -54,6 +54,7 @@ const RecyclePage: React.FC<any> = (props: any) => {
   };
   const [pageNo, setPageNo] = useState<number>(1);
   const [searchText, setSearchText] = useState<any>('');
+  const [selectAll, setSelectAll] = useState<boolean>(false);
 
   const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
   const { treeData, childList, getTreeData } = useTreeModal();
@@ -77,6 +78,7 @@ const RecyclePage: React.FC<any> = (props: any) => {
 
   const checkboxChange = (val: any) => {
     let flag = val.target.checked;
+    setSelectAll(flag);
     (QuestionRef?.current as any)?.selectAll(flag);
   };
 
@@ -91,6 +93,7 @@ const RecyclePage: React.FC<any> = (props: any) => {
     await deleteRecycle({ faqIds: data }).then((res) => {
       if (res.resultCode == config.successCode) {
         message.success(res.resultDesc);
+        setSelectAll(false);
       } else {
         message.error(res.resultDesc);
       }
@@ -155,7 +158,11 @@ const RecyclePage: React.FC<any> = (props: any) => {
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'initial' }}>
             <div style={{ paddingTop: '4px' }}>
-              <Checkbox onChange={checkboxChange} style={{ marginBottom: '24px' }}></Checkbox>
+              <Checkbox
+                onChange={checkboxChange}
+                style={{ marginBottom: '24px' }}
+                checked={selectAll}
+              ></Checkbox>
               <span style={{ marginLeft: '8px' }}>全选</span>
             </div>
             <div className={style['box-top-del']}>
