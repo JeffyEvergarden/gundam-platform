@@ -302,7 +302,7 @@ export default (props: any) => {
                   {item.type == 'customer' && (
                     <div className={styles['customer-part']}>
                       <img className={styles['head-customer']} alt="customer" src={customerPhoto} />
-                      <div>
+                      <div className={styles['wordsbox']}>
                         <div className={styles['words']}>{item.message}</div>
                         <div className={styles['words-type']}>
                           <Space>
