@@ -296,12 +296,10 @@ export default () => {
       await editSimilar(reqData).then((res) => {
         if (res.resultCode == config.successCode) {
           message.success(res?.resultDesc || '成功');
+          actionRef?.current?.cancelEditable?.(record.id);
           actionRef.current.reload();
         } else {
           message.error(res?.resultDesc);
-          // setTimeout(() => {
-          //   actionRef?.current?.startEditable?.(record.id);
-          // }, 1);
         }
       });
     }
@@ -315,12 +313,10 @@ export default () => {
       let res = await intentEdit(params);
       if (res.resultCode == config.successCode) {
         message.success(res?.resultDesc || '成功');
+        actionRef?.current?.cancelEditable?.(record.id);
         actionRef.current.reload();
       } else {
         message.error(res?.resultDesc);
-        // setTimeout(() => {
-        //   actionRef?.current?.startEditable?.(record.id);
-        // }, 1);
       }
     }
   };
@@ -589,17 +585,26 @@ export default () => {
             options={false}
             editable={{
               type: 'single',
-              actionRender: (row, config, dom) => [dom.save, dom.cancel],
-              onSave: (key: any, row: any, originRow: any, newLine?: any) => {
-                // if (row.similarText && row.similarText == originRow.similarText) {
-                //   console.log(row, originRow);
-                //   return;
-                // }
-                // if (row.corpusText && row.corpusText == originRow.corpusText) {
-                //   return;
-                // }
-                return saveRow(row);
-              },
+              actionRender: (row, config, dom) => [
+                <a
+                  onClick={() => {
+                    saveRow(row);
+                  }}
+                >
+                  保存
+                </a>,
+                dom.cancel,
+              ],
+              // onSave: (key: any, row: any, originRow: any, newLine?: any) => {
+              //   // if (row.similarText && row.similarText == originRow.similarText) {
+              //   //   console.log(row, originRow);
+              //   //   return;
+              //   // }
+              //   // if (row.corpusText && row.corpusText == originRow.corpusText) {
+              //   //   return;
+              //   // }
+              //   return saveRow(row);
+              // },
             }}
             request={async (params) => {
               return getInitTable({ corpusText: corpusText, ...params });
