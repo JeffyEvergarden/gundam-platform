@@ -18,7 +18,7 @@ import { useImportModal } from './model';
 const ImportPages: React.FC = (props: any) => {
   const importTableRef = useRef<any>({});
   const { loading, importList, totalPage, _getImportList } = useImportModal();
-  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
+  const [importLoading, setImportLoading] = useState<boolean>(false);
 
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -38,7 +38,7 @@ const ImportPages: React.FC = (props: any) => {
       title: '上传时间',
       dataIndex: 'createTime',
       search: false,
-      width: 200,
+      width: 150,
       ellipsis: true,
     },
     {
@@ -51,13 +51,16 @@ const ImportPages: React.FC = (props: any) => {
           search: false,
           width: 100,
         },
-        // {
-        //   title: '成功数量',
-        //   dataIndex: 'answer',
-        //   key: '',
-        //   search: false,
-        //   width: 200,
-        // },
+        {
+          title: '成功数量',
+          dataIndex: 'successAnswerNum',
+          key: 'successAnswerNum',
+          search: false,
+          width: 100,
+          render: (t: any, r: any) => {
+            return r.answerNum - r.failAnswerNum;
+          },
+        },
         {
           title: '失败数量',
           dataIndex: 'failAnswerNum',
@@ -77,13 +80,16 @@ const ImportPages: React.FC = (props: any) => {
           search: false,
           width: 100,
         },
-        // {
-        //   title: '成功数量',
-        //   dataIndex: 'answer',
-        //   key: '',
-        //   search: false,
-        //   width: 200,
-        // },
+        {
+          title: '成功数量',
+          dataIndex: 'successSimilarQuestionNum',
+          key: 'successSimilarQuestionNum',
+          search: false,
+          width: 100,
+          render: (t: any, r: any) => {
+            return r.similarQuestionNum - r.failSimilarQuestionNum;
+          },
+        },
         {
           title: '失败数量',
           dataIndex: 'failSimilarQuestionNum',
@@ -187,6 +193,7 @@ const ImportPages: React.FC = (props: any) => {
               <Upload
                 name="file"
                 onChange={(res: any) => {
+                  setImportLoading(true);
                   if (res.file.status !== 'uploading') {
                     console.log(res.file, res.fileList);
                   }
@@ -197,6 +204,7 @@ const ImportPages: React.FC = (props: any) => {
                     } else {
                       message.error(res?.file?.response?.resultDesc);
                     }
+                    setImportLoading(false);
                   }
                 }}
                 action={`${config.basePath}/robot/faqImport/upload`}
@@ -207,9 +215,7 @@ const ImportPages: React.FC = (props: any) => {
                   icon={<PlusOutlined />}
                   style={{ marginRight: '8px' }}
                   type="primary"
-                  // onClick={() => {
-                  //   labelModalRef.current?.open?.();
-                  // }}
+                  loading={importLoading}
                 >
                   问题导入
                 </Button>
