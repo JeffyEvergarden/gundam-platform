@@ -64,7 +64,7 @@ export const processRequest = (data: any) => {
 
 const reg = /\d{4}-\d{2}-\d{2}/;
 
-const reg1 = /^\<\w+\>/;
+const reg1 = /^\<.+\>/;
 const reg2 = /\<\/\w+\>$/;
 
 export const processBody = (data: any, robotType = '文本') => {
@@ -134,7 +134,7 @@ export const processAnswerBody = (data: any, robotType = '文本') => {
   return data;
 };
 
-const deepClone = (obj: any) => {
+export const deepClone = (obj: any) => {
   let newObj = {};
   if (Array.isArray(obj)) {
     //数组复制
@@ -143,6 +143,9 @@ const deepClone = (obj: any) => {
     });
   } else if (obj instanceof moment) {
     // 特殊对象
+    return obj;
+  } else if (typeof obj === 'function') {
+    // 对象复制
     return obj;
   } else if (obj instanceof Object) {
     // 对象复制

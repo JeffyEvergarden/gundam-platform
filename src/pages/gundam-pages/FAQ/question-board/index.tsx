@@ -37,7 +37,7 @@ if (!(window as any).hadRegisterMenu) {
   (window as any).hadRegisterMenu = true;
 }
 
-const reg = /^(\<p\>\<br\>\<\/p\>)/;
+const reg = /^(\<p\>\<br\>\<\/p\>)+/;
 const regEnd = /^(\<p\>\<br\>\<\/p\>)+$/;
 
 const EditBoard: React.FC<any> = (prop: any) => {
@@ -50,14 +50,14 @@ const EditBoard: React.FC<any> = (prop: any) => {
   const onChangeContent = (editor: any) => {
     let content = editor.getHtml();
     console.log('content:', content);
-    if (regEnd.test(content)) {
-      onChange(undefined);
-      return;
-    }
+    // if (regEnd.test(content)) {
+    //   onChange(undefined);
+    //   return;
+    // }
     if (reg.test(content) && time.current < 1) {
-      content = content.replace(reg, '');
-      console.log(content);
-      deleteFirstRow(editor);
+      if (content.length > '<p><br></p>'.length) {
+        deleteFirstRow(editor);
+      }
     }
     time.current++;
     onChange(content);
@@ -209,6 +209,10 @@ const EditBoard: React.FC<any> = (prop: any) => {
   const _insertLink = (info: any) => {
     insertLink(editor, info.fileName, info.path);
   };
+
+  useEffect(() => {
+    console.log(value);
+  }, [value]);
 
   useEffect(() => {
     console.log(editor);

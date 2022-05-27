@@ -10,7 +10,7 @@ import { useModel } from 'umi';
 
 const { List: FormList } = Form;
 const Recommend: React.FC<any> = (props: any) => {
-  const { form, faqTypeId, recycle } = props;
+  const { form, faqTypeId } = props;
 
   // 推荐启用按钮
   const [showAdvise, setShowAdvise] = useState<boolean>(true);
@@ -176,7 +176,6 @@ const Recommend: React.FC<any> = (props: any) => {
                     icon={<PlusCircleOutlined />}
                     onClick={addNew}
                     style={{ paddingLeft: 0 }}
-                    disabled={recycle ? true : false}
                   >
                     新增推荐问题
                   </Button>

@@ -27,7 +27,7 @@ import { history, useModel } from 'umi';
 import style from './style.less';
 import { CHANNAL_LIST } from './test';
 import { useQuestionModel } from './model';
-import { processRequest, processBody } from './model/utils';
+import { processRequest, processBody, deepClone } from './model/utils';
 import config from '@/config';
 
 const { Option } = Select;
@@ -37,6 +37,8 @@ const { TextArea } = Input;
 const { List: FormList } = Form;
 
 const robotTypeMap = config.robotTypeMap;
+
+const regEnd = /^(\<p\>\<br\>\<\/p\>)+$/;
 
 // 树形结构加工
 const processTreeData = (data: any[], parent?: any) => {
@@ -408,6 +410,17 @@ const Board: React.FC<any> = (props: any) => {
                                   required: true,
                                   validateTrigger: 'onBlur',
                                 },
+                                () => ({
+                                  async validator(_, value) {
+                                    if (value === undefined) {
+                                      return;
+                                    }
+                                    if (regEnd.test(value)) {
+                                      return Promise.reject(new Error('请填写答案'));
+                                    }
+                                    return Promise.resolve();
+                                  },
+                                }),
                               ]}
                             >
                               <EditBoard />
