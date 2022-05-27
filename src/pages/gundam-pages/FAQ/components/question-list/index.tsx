@@ -198,13 +198,15 @@ const QuestionList: React.FC<any> = (props: any) => {
     if (edit[index]) {
       // console.log(form.getFieldsValue());
       editQ({ id: item.id, ...form.getFieldsValue() });
+      let arr: any = JSON.parse(JSON.stringify(edit));
+      arr[index] = !arr[index];
+      setEdit(arr);
     } else {
       form.setFieldsValue({ question: item.question });
+      let arr: any = [];
+      arr[index] = !arr[index];
+      setEdit(arr);
     }
-
-    let arr: any = JSON.parse(JSON.stringify(edit));
-    arr[index] = !arr[index];
-    setEdit(arr);
   };
 
   const addAnswer = (item: any) => {
