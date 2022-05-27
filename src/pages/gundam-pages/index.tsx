@@ -63,6 +63,20 @@ const MachinePagesHome: React.FC = (props: any) => {
     }),
   );
 
+  const { getMessageList, getWishList, getWordSlotList, getLabelList, getFlowList } = useModel(
+    'drawer' as any,
+    (model: any) => ({
+      flowList: model._flowList || [],
+      wishList: model._wishList || [],
+      wordSlotList: model._wordSlotList || [],
+      getMessageList: model.getMessageList || [],
+      getWishList: model.getWishList || [],
+      getWordSlotList: model.getWordSlotList || [],
+      getLabelList: model.getLabelList || [],
+      getFlowList: model.getFlowList || [],
+    }),
+  );
+
   const _routes = useMemo(() => {
     return processRoute(info);
   }, [info]);
@@ -99,6 +113,12 @@ const MachinePagesHome: React.FC = (props: any) => {
 
   useEffect(() => {
     getLastInfo();
+    getLabelList(info.id); // 获取话术标签
+    getFlowList(info.id); // 获取业务流程列表
+    getWishList(info.id); // 意图列表
+    getWordSlotList(info.id); // 词槽列表
+    getMessageList(info.id); // 短信
+    getGlobalValConfig(info.id); // 获取全局变量列表
   }, []);
 
   const goBack = () => {
