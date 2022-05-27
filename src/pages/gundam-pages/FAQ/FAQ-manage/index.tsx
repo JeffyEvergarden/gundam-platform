@@ -122,11 +122,16 @@ const FAQPage: React.FC<any> = (props: any) => {
   const onEnter = (text: any) => {
     console.log(text);
 
-    QuestionRef?.current?.CurrentPage({ searchText: text });
+    QuestionRef?.current?.CurrentPage({ searchText: text, queryType: queryType });
   };
 
   const changeClassify = (params: any) => {
     QuestionRef?.current?.editQ(params);
+  };
+
+  const changeQueryType = (val: any) => {
+    console.log(val);
+    setQueryType(val);
   };
 
   return (
@@ -165,13 +170,13 @@ const FAQPage: React.FC<any> = (props: any) => {
               <Select
                 // size="small"
                 defaultValue={0}
-                onChange={setQueryType}
+                onChange={changeQueryType}
                 style={{ backgroundColor: '#fff' }}
                 bordered={false}
               >
                 <Option value={0}>问题</Option>
                 <Option value={1}>答案</Option>
-                <Option value={2}>标签</Option>
+                {/* <Option value={2}>标签</Option> */}
               </Select>
               <Input.Search
                 bordered={false}

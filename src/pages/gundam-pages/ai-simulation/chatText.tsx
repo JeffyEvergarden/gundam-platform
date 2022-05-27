@@ -46,7 +46,7 @@ export default (props: any) => {
 
   const onKeyDown = (e: any) => {
     if ((e?.keyCode == '13' || e?.which == '13') && !e?.shiftKey) {
-      sendMessage('dialogue');
+      sendMessage();
       // 禁止换行
       e.cancelBubble = true;
       e.preventDefault();
@@ -55,7 +55,9 @@ export default (props: any) => {
   };
 
   const detail = (nluInfo: string) => {
-    setNluInfo(nluInfo);
+    let temp = JSON.parse(nluInfo);
+    temp = JSON.stringify(temp, null, 2);
+    setNluInfo(temp);
     setVisible(true);
   };
 
@@ -218,20 +220,30 @@ export default (props: any) => {
       params.actionType = 'text';
       res = await soundRobotDialogue(params);
     }
-    data.push(
-      {
+    if (res?.resultCode == '100') {
+      data.push(
+        {
+          type: 'customer',
+          message: '静默',
+          askKey: res?.data?.askKey,
+          nluInfo: res?.data?.nluInfo,
+        },
+        {
+          type: 'robot',
+          askText: res?.data?.askText,
+          message: res?.data?.actionMessage,
+          recommendQuestion: res?.data?.recommendQuestion,
+        },
+      );
+    } else {
+      data.push({
         type: 'customer',
         message: '静默',
         askKey: res?.data?.askKey,
         nluInfo: res?.data?.nluInfo,
-      },
-      {
-        type: 'robot',
-        askText: res?.data?.askText,
-        message: res?.data?.actionMessage,
-        recommendQuestion: res?.data?.recommendQuestion,
-      },
-    );
+      });
+      message.error(res?.resultDesc);
+    }
     setDialogList(data);
     // setChatEvent('silence');
     // let a = number;
@@ -325,7 +337,7 @@ export default (props: any) => {
                           <div>
                             <div className={styles['words']}>
                               {item.recommendQuestion.map((el: any) => {
-                                return el.number + ':' + el.askText;
+                                return <div key={el.number}>{el.number + ':' + el.askText}</div>;
                               })}
                             </div>
                           </div>
@@ -373,7 +385,7 @@ export default (props: any) => {
         footer={null}
         bodyStyle={{ maxHeight: 400, overflowY: 'auto' }}
       >
-        {nluInfo}
+        <pre> {nluInfo}</pre>
       </Modal>
     </div>
   );

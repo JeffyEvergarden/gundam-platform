@@ -503,6 +503,9 @@ const QuestionList: React.FC<any> = (props: any) => {
                       >
                         {/* 答案列表 */}
                         {item.answerList.map((v: any, idx: any) => {
+                          if (!v.answerId) {
+                            return; // 一个答案都没有的时候才会没有answerId
+                          }
                           return (
                             <Condition r-if={more[index] || idx == 0} key={idx}>
                               <div className={style['box-answer']}>
@@ -605,8 +608,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                                     </span>
                                     <Divider type="vertical" />
                                     <span>
-                                      <LikeOutlined />
-                                      {v.answerLikeNum}
+                                      <LikeOutlined /> {v.answerLikeNum}
                                     </span>
 
                                     <Divider type="vertical" />
