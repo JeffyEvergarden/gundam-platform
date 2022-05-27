@@ -280,12 +280,11 @@ export default () => {
   };
 
   const saveRow = async (record: any) => {
-    if (record.similarText?.length > 200 || record.corpusText?.length > 200) {
-      message.warning('请控制字数在200字内');
-      setTimeout(() => {
-        actionRef?.current?.startEditable?.(record.id);
-      }, 1);
-      return;
+    if (record.similarText?.length > 200) {
+      record.similarText = record.similarText?.slice(0, 200);
+    }
+    if (record.corpusText?.length > 200) {
+      record.corpusText = record.corpusText?.slice(0, 200);
     }
     if (pageType === 'FAQ') {
       let reqData: any = {
@@ -300,9 +299,9 @@ export default () => {
           actionRef.current.reload();
         } else {
           message.error(res?.resultDesc);
-          setTimeout(() => {
-            actionRef?.current?.startEditable?.(record.id);
-          }, 1);
+          // setTimeout(() => {
+          //   actionRef?.current?.startEditable?.(record.id);
+          // }, 1);
         }
       });
     }
@@ -319,9 +318,9 @@ export default () => {
         actionRef.current.reload();
       } else {
         message.error(res?.resultDesc);
-        setTimeout(() => {
-          actionRef?.current?.startEditable?.(record.id);
-        }, 1);
+        // setTimeout(() => {
+        //   actionRef?.current?.startEditable?.(record.id);
+        // }, 1);
       }
     }
   };
@@ -600,9 +599,6 @@ export default () => {
                 //   return;
                 // }
                 return saveRow(row);
-              },
-              onCancel: () => {
-                actionRef?.current?.reload();
               },
             }}
             request={async (params) => {
