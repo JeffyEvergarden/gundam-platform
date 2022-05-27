@@ -35,7 +35,7 @@ const getFaqList = (req: any, res: any, next: any) => {
         enable: 0, //是否启用 0否 1是
         enableStartTime: '2022-05-10 15:55:55',
         enableEndTime: '2022-05-10 15:55:55',
-        answerId: undefined,
+        answerId: '1',
         approvalStatus: 4, //审批状态
         channelList: ['all'],
         answerLikeNum: 10,
