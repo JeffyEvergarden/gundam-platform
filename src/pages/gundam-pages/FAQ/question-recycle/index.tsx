@@ -45,8 +45,12 @@ const RecyclePage: React.FC<any> = (props: any) => {
   }));
 
   const changeHighConfig = (val: any) => {
+    console.log(val);
+
     setValue(val);
-    QuestionRef?.current?.CurrentPage({});
+    setTimeout(() => {
+      QuestionRef?.current?.CurrentPage({});
+    }, 1);
   };
   const [pageNo, setPageNo] = useState<number>(1);
   const [searchText, setSearchText] = useState<any>('');
