@@ -48,9 +48,13 @@ export default (props: any) => {
         <Form.Item
           name={'entityValue'}
           label={'实体值'}
-          rules={[{ required: true, message: '请输入实体值' }]}
+          rules={[{ required: true, message: '请输入实体值,多个枚举实体以英文逗号分隔' }]}
         >
-          <TextArea placeholder={'请输入实体值'} maxLength={1000} rows={6} />
+          <TextArea
+            placeholder={'请输入实体值,多个枚举实体以英文逗号分隔'}
+            maxLength={1000}
+            rows={6}
+          />
         </Form.Item>
       </Form>
     </Modal>
