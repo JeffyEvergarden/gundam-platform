@@ -6,11 +6,12 @@ import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import Selector from '../selector';
 import SelectorModal from '../selector-modal';
 import { useQuestionModel } from '../../model';
-import { useModel } from 'umi';
+import { history, useModel } from 'umi';
 
 const { List: FormList } = Form;
 const Recommend: React.FC<any> = (props: any) => {
   const { form, faqTypeId } = props;
+  const query: any = history.location.query;
 
   // 推荐启用按钮
   const [showAdvise, setShowAdvise] = useState<boolean>(true);
@@ -145,14 +146,16 @@ const Recommend: React.FC<any> = (props: any) => {
                   return (
                     <div key={field.key} className={style['diy-row']}>
                       <div className={style['zy-row_sp']} style={{ paddingBottom: '6px' }}>
-                        <span
-                          className={style['del-bt']}
-                          onClick={() => {
-                            remove(index);
-                          }}
-                        >
-                          <MinusCircleOutlined />
-                        </span>
+                        {query.recycle == 0 && (
+                          <span
+                            className={style['del-bt']}
+                            onClick={() => {
+                              remove(index);
+                            }}
+                          >
+                            <MinusCircleOutlined />
+                          </span>
+                        )}
 
                         <Form.Item
                           name={[field.name, 'recommend']}
@@ -171,14 +174,16 @@ const Recommend: React.FC<any> = (props: any) => {
                 })}
 
                 <div>
-                  <Button
-                    type="link"
-                    icon={<PlusCircleOutlined />}
-                    onClick={addNew}
-                    style={{ paddingLeft: 0 }}
-                  >
-                    新增推荐问题
-                  </Button>
+                  {query.recycle == 0 && (
+                    <Button
+                      type="link"
+                      icon={<PlusCircleOutlined />}
+                      onClick={addNew}
+                      style={{ paddingLeft: 0 }}
+                    >
+                      新增推荐问题
+                    </Button>
+                  )}
                 </div>
               </div>
             );
