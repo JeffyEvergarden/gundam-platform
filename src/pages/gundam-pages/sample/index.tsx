@@ -280,6 +280,13 @@ export default () => {
   };
 
   const saveRow = async (record: any) => {
+    if (record.similarText?.length > 200 || record.corpusText?.length > 200) {
+      message.warning('请控制字数在200字内');
+      setTimeout(() => {
+        actionRef?.current?.startEditable?.(record.id);
+      }, 1);
+      return;
+    }
     if (pageType === 'FAQ') {
       let reqData: any = {
         id: record.id,
