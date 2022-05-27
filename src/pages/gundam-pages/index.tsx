@@ -53,27 +53,14 @@ const MachinePagesHome: React.FC = (props: any) => {
     setPathname(location.pathname);
   }, [location]);
 
-  const { info, setInfo, globalVarList, setGlobalVarList } = useModel(
+  const { info, setInfo, globalVarList, setGlobalVarList, getGlobalValConfig } = useModel(
     'gundam' as any,
     (model: any) => ({
       info: model.info,
       setInfo: model.setInfo,
       globalVarList: model.globalVarList,
       setGlobalVarList: model.setGlobalVarList,
-    }),
-  );
-
-  const { getMessageList, getWishList, getWordSlotList, getLabelList, getFlowList } = useModel(
-    'drawer' as any,
-    (model: any) => ({
-      flowList: model._flowList || [],
-      wishList: model._wishList || [],
-      wordSlotList: model._wordSlotList || [],
-      getMessageList: model.getMessageList || [],
-      getWishList: model.getWishList || [],
-      getWordSlotList: model.getWordSlotList || [],
-      getLabelList: model.getLabelList || [],
-      getFlowList: model.getFlowList || [],
+      getGlobalValConfig: model.getGlobalValConfig,
     }),
   );
 
@@ -83,7 +70,7 @@ const MachinePagesHome: React.FC = (props: any) => {
   console.log('_routes');
   console.log(_routes);
 
-  const { getInfo, getGlobalValConfig } = useOpModel();
+  const { getInfo } = useOpModel();
 
   const _getInfo = async (params: any) => {
     // 获取机器人信息getInfo
@@ -113,12 +100,7 @@ const MachinePagesHome: React.FC = (props: any) => {
 
   useEffect(() => {
     getLastInfo();
-    getLabelList(info.id); // 获取话术标签
-    getFlowList(info.id); // 获取业务流程列表
-    getWishList(info.id); // 意图列表
-    getWordSlotList(info.id); // 词槽列表
-    getMessageList(info.id); // 短信
-    getGlobalValConfig(info.id); // 获取全局变量列表
+    getGlobalValConfig(info.id);
   }, []);
 
   const goBack = () => {
