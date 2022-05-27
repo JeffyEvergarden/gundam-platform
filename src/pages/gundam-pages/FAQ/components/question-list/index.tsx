@@ -259,6 +259,8 @@ const QuestionList: React.FC<any> = (props: any) => {
       return;
     }
 
+    setEdit([]);
+
     let res: any = await getFaqList(params);
     // console.log(res);
     getCreateUser(info.id, isRecycle);
