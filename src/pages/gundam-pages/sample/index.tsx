@@ -293,6 +293,9 @@ export default () => {
           actionRef.current.reload();
         } else {
           message.error(res?.resultDesc);
+          setTimeout(() => {
+            actionRef?.current?.startEditable?.(record.id);
+          }, 1);
         }
       });
     }
@@ -307,6 +310,11 @@ export default () => {
       if (res.resultCode == config.successCode) {
         message.success(res?.resultDesc || '成功');
         actionRef.current.reload();
+      } else {
+        message.error(res?.resultDesc);
+        setTimeout(() => {
+          actionRef?.current?.startEditable?.(record.id);
+        }, 1);
       }
     }
   };
@@ -577,13 +585,13 @@ export default () => {
               type: 'single',
               actionRender: (row, config, dom) => [dom.save, dom.cancel],
               onSave: (key: any, row: any, originRow: any, newLine?: any) => {
-                if (row.similarText && row.similarText == originRow.similarText) {
-                  console.log(row, originRow);
-                  return;
-                }
-                if (row.corpusText && row.corpusText == originRow.corpusText) {
-                  return;
-                }
+                // if (row.similarText && row.similarText == originRow.similarText) {
+                //   console.log(row, originRow);
+                //   return;
+                // }
+                // if (row.corpusText && row.corpusText == originRow.corpusText) {
+                //   return;
+                // }
                 return saveRow(row);
               },
             }}
