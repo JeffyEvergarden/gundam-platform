@@ -127,7 +127,7 @@ const HighConfig = (props: any) => {
           </FormItem>
         </div>
         {/*文本不需要这两个  0文本 1语音 */}
-        <Condition r-if={info?.soundType == 1}>
+        <Condition r-if={info?.robotType == 1}>
           <HightformTemplate form={form} name="silenceAction" title={'静默'} type={type} />
         </Condition>
 
@@ -136,7 +136,7 @@ const HighConfig = (props: any) => {
         <HightformTemplate form={form} name="clearAction" title={'澄清'} type={type} />
 
         {/*文本不需要这两个  0文本 1语音 */}
-        <Condition r-if={info?.soundType == 1}>
+        <Condition r-if={info?.robotType == 1}>
           <HightformTemplate form={form} name="unclearAction" title={'客户未听清'} type={type} />
         </Condition>
       </Condition>

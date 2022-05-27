@@ -205,7 +205,7 @@ const HightformTemplate: any = (props: any) => {
       </Condition>
 
       {/*文本不需要这个  0文本 1语音 */}
-      <Condition r-if={!(info?.soundType == 0)}>
+      <Condition r-if={!(info?.robotType == 0)}>
         {/* 次数 */}
         <FormItem name={[name, 'times']} label={title + '次数'} style={{ marginTop: '8px' }}>
           <InputNumber
