@@ -64,7 +64,7 @@ export const processRequest = (data: any) => {
 
 const reg = /\d{4}-\d{2}-\d{2}/;
 
-const reg1 = /^\<\w+\>/;
+const reg1 = /^\<.+\>/;
 const reg2 = /\<\/\w+\>$/;
 
 export const processBody = (data: any, robotType = '文本') => {

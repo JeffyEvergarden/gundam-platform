@@ -38,6 +38,8 @@ const { List: FormList } = Form;
 
 const robotTypeMap = config.robotTypeMap;
 
+const regEnd = /^(\<p\>\<br\>\<\/p\>)+$/;
+
 // 树形结构加工
 const processTreeData = (data: any[], parent?: any) => {
   if (!Array.isArray(data)) {
@@ -408,6 +410,17 @@ const Board: React.FC<any> = (props: any) => {
                                   required: true,
                                   validateTrigger: 'onBlur',
                                 },
+                                () => ({
+                                  async validator(_, value) {
+                                    if (value === undefined) {
+                                      return;
+                                    }
+                                    if (regEnd.test(value)) {
+                                      return Promise.reject(new Error('请填写答案'));
+                                    }
+                                    return Promise.resolve();
+                                  },
+                                }),
                               ]}
                             >
                               <EditBoard />

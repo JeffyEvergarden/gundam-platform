@@ -35,6 +35,8 @@ const { TextArea } = Input;
 
 const robotTypeMap = config.robotTypeMap;
 
+const regEnd = /^(\<p\>\<br\>\<\/p\>)+$/;
+
 // 树形结构加工
 const processTreeData = (data: any[], parent?: any) => {
   if (!Array.isArray(data)) {
@@ -240,13 +242,42 @@ const Board: React.FC<any> = (props: any) => {
 
                 {/* <div>富文本编辑待定</div> */}
                 <Condition r-if={robotType === '文本'}>
-                  <Form.Item name={'answer'}>
+                  <Form.Item
+                    name={'answer'}
+                    rules={[
+                      {
+                        message: '请输入答案',
+                        required: true,
+                        validateTrigger: 'onBlur',
+                      },
+                      () => ({
+                        async validator(_, value) {
+                          if (value === undefined) {
+                            return;
+                          }
+                          if (regEnd.test(value)) {
+                            return Promise.reject(new Error('请填写答案'));
+                          }
+                          return Promise.resolve();
+                        },
+                      }),
+                    ]}
+                  >
                     <EditBoard />
                   </Form.Item>
                 </Condition>
 
                 <Condition r-if={robotType === '语音'}>
-                  <Form.Item name={'answer'}>
+                  <Form.Item
+                    name={'answer'}
+                    rules={[
+                      {
+                        message: '请输入答案',
+                        required: true,
+                        validateTrigger: 'onBlur',
+                      },
+                    ]}
+                  >
                     <TextArea maxLength={2000} rows={5} placeholder={'请输入答案'} showCount />
                   </Form.Item>
                 </Condition>

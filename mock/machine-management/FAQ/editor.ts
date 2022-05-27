@@ -73,7 +73,7 @@ const getAnswer = (req: any, res: any) => {
       question: '123',
       faqTypeId: '0-0-1',
       answer:
-        '<p>122<img src="${getResoureUrl}?path=fategrandorder" alt="fategrandorder" data-href="" style=""/></p>',
+        '<li>1223</li><ul><li>2324</li><li>123123</li></ul><div data-w-e-type="todo"><input type="checkbox" disabled >1233131</div>',
       channelList: ['APP'],
       enable: 1,
       enableStartTime: '2022-05-01 16:28:20',
