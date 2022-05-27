@@ -34,6 +34,9 @@ export default [
         path: '/gundamPages/detail/FAQConfig',
         // component: './gundam-pages/detail/interfaceConfig',
         name: 'FAQ配置',
+        hideFn: (info: any) => {
+          return info?.robotType === 1; // 语音机器人
+        },
       },
     ],
   },
@@ -74,5 +77,8 @@ export default [
     icon: <CrownOutlined />,
     path: '/gundamPages/faq',
     name: 'FAQ管理',
+    hideFn: (info: any) => {
+      return info?.robotType === 1; // 语音机器人
+    },
   },
 ];

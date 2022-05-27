@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useModel, history, useLocation } from 'umi';
 import { message, Button, Space, Modal, Badge, Tooltip } from 'antd';
 import { LoginOutlined } from '@ant-design/icons';
@@ -17,6 +17,28 @@ import routes from './routes';
 import style from './style.less';
 import { useOpModel, usePublishModel } from '../gundam/management/model';
 import Condition from '@/components/Condition';
+import { deepClone } from './FAQ/question-board/model/utils';
+
+// 菜单过滤
+const processRoute = (info: any = {}) => {
+  let _route = deepClone(routes);
+  deepProcess(_route, info);
+  return _route;
+};
+
+const deepProcess = (arr: any[], info: any = {}) => {
+  arr.forEach((item: any) => {
+    if (Array.isArray(item.routes)) {
+      deepProcess(item.routes, info);
+    }
+    const hideFn = item.hideFn;
+    console.log(typeof hideFn);
+    hideFn && console.log(hideFn);
+    if (hideFn && typeof hideFn === 'function') {
+      item.hideInMenu = hideFn(info);
+    }
+  });
+};
 
 // 机器人列表
 const MachinePagesHome: React.FC = (props: any) => {
@@ -40,6 +62,12 @@ const MachinePagesHome: React.FC = (props: any) => {
       setGlobalVarList: model.setGlobalVarList,
     }),
   );
+
+  const _routes = useMemo(() => {
+    return processRoute(info);
+  }, [info]);
+  console.log('_routes');
+  console.log(_routes);
 
   const { getInfo, getGlobalValConfig } = useOpModel();
 
@@ -110,7 +138,7 @@ const MachinePagesHome: React.FC = (props: any) => {
       fixedHeader={true}
       fixSiderbar={true}
       className={style['sp-layout']}
-      route={{ routes }}
+      route={{ routes: _routes }}
       menuHeaderRender={() => <MenuHeader />}
       rightContentRender={() => <RightContent />}
       onPageChange={() => {

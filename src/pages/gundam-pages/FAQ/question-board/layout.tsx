@@ -27,7 +27,7 @@ import { history, useModel } from 'umi';
 import style from './style.less';
 import { CHANNAL_LIST } from './test';
 import { useQuestionModel } from './model';
-import { processRequest, processBody } from './model/utils';
+import { processRequest, processBody, deepClone } from './model/utils';
 import config from '@/config';
 
 const { Option } = Select;
