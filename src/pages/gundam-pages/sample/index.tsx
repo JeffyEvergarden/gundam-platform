@@ -601,6 +601,9 @@ export default () => {
                 // }
                 return saveRow(row);
               },
+              onCancel: () => {
+                actionRef?.current?.reload();
+              },
             }}
             request={async (params) => {
               return getInitTable({ corpusText: corpusText, ...params });
