@@ -110,7 +110,9 @@ const MachinePagesHome: React.FC = (props: any) => {
       fixedHeader={true}
       fixSiderbar={true}
       className={style['sp-layout']}
-      route={{ routes }}
+      route={{
+        routes,
+      }}
       menuHeaderRender={() => <MenuHeader />}
       rightContentRender={() => <RightContent />}
       onPageChange={() => {
