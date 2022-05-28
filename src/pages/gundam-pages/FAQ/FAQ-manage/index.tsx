@@ -17,9 +17,10 @@ const { Panel } = Collapse;
 const { Option } = Select;
 
 const FAQPage: React.FC<any> = (props: any) => {
-  const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
+  const { info, setInfo, getGlobalValConfig } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     setInfo: model.setInfo,
+    getGlobalValConfig: model.getGlobalValConfig,
   }));
 
   const { userList, getCreateUser, _getTreeData } = useModel('drawer' as any, (model: any) => ({
@@ -93,6 +94,7 @@ const FAQPage: React.FC<any> = (props: any) => {
     _getTreeData(info.id);
     getTree();
     getCreateUser(info.id, 0);
+    getGlobalValConfig(info.id);
   }, []);
 
   const _getMoreFaqList = async () => {

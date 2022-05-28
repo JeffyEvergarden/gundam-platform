@@ -48,11 +48,6 @@ const MachinePagesHome: React.FC = (props: any) => {
   const [pathname, setPathname] = useState(location.pathname);
 
   const [finish, setFinish] = useState<boolean>(false);
-
-  useEffect(() => {
-    setPathname(location.pathname);
-  }, [location]);
-
   const { info, setInfo, globalVarList, setGlobalVarList, getGlobalValConfig } = useModel(
     'gundam' as any,
     (model: any) => ({
@@ -63,6 +58,10 @@ const MachinePagesHome: React.FC = (props: any) => {
       getGlobalValConfig: model.getGlobalValConfig,
     }),
   );
+  useEffect(() => {
+    setPathname(location.pathname);
+    getGlobalValConfig(info.id);
+  }, [location]);
 
   const _routes = useMemo(() => {
     return processRoute(info);
@@ -100,7 +99,6 @@ const MachinePagesHome: React.FC = (props: any) => {
 
   useEffect(() => {
     getLastInfo();
-    getGlobalValConfig(info.id);
   }, []);
 
   const goBack = () => {

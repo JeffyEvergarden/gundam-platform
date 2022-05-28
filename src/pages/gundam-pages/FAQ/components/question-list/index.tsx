@@ -442,6 +442,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                               text={
                                 <Select
                                   size="small"
+                                  value={item.approvalStatus}
                                   defaultValue={item.approvalStatus}
                                   style={{ width: 100, padding: 0 }}
                                   bordered={false}
@@ -520,6 +521,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                                       text={
                                         <Select
                                           size="small"
+                                          value={v.approvalStatus}
                                           defaultValue={v.approvalStatus}
                                           style={{ width: 100, padding: 0 }}
                                           bordered={false}
