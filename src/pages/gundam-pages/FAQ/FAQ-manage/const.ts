@@ -9,31 +9,27 @@ export const HIGH_CONFIG_SELECT = [
         label: '全部',
       },
       {
-        name: 'wechat',
+        name: 'media_wx',
         label: '微信',
       },
       {
-        name: 'app',
-        label: 'APP',
+        name: 'media_zyqb',
+        label: '中邮钱包',
       },
       {
-        name: 'alipay',
+        name: 'media_zfb',
         label: '支付宝',
       },
       {
-        name: 'zsyh',
-        label: '招商银行',
-      },
-      {
-        name: 'jtyw',
+        name: 'media_jtyw',
         label: '集团邮务',
       },
       {
-        name: 'zygw',
+        name: 'media_gw',
         label: '中邮官网',
       },
       {
-        name: 'ycsjyh',
+        name: 'media_ycsjyh',
         label: '邮储手机银行',
       },
     ],

@@ -1,30 +1,26 @@
 export const CHANNAL_LIST: any[] = [
   {
-    value: 'wechat',
+    value: 'media_wx',
     label: '微信',
   },
   {
-    value: 'app',
-    label: 'APP',
+    value: 'media_zyqb',
+    label: '中邮钱包',
   },
   {
-    value: 'alipay',
+    value: 'media_zfb',
     label: '支付宝',
   },
   {
-    value: 'zsyh',
-    label: '招商银行',
-  },
-  {
-    value: 'jtyw',
+    value: 'media_jtyw',
     label: '集团邮务',
   },
   {
-    value: 'zygw',
+    value: 'media_gw',
     label: '中邮官网',
   },
   {
-    value: 'ycsjyh',
+    value: 'media_ycsjyh',
     label: '邮储手机银行',
   },
 ];
