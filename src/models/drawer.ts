@@ -180,7 +180,6 @@ export default function useDrawerModel() {
       data.filter?.((item: any) => {
         return item.flowType != 3;
       }) || [];
-    console.log(data);
     _setFlowListWithHand(data);
     _setFlowList(data1);
     _setOriginFlowList(originData);
@@ -211,7 +210,6 @@ export default function useDrawerModel() {
     }
     let res: any = await queryNodeConfig({ robotId: id });
     let data: any[] = res?.data || {};
-    console.log(data);
 
     _setGlobalNodeList(data);
   };

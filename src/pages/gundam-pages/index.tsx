@@ -32,8 +32,8 @@ const deepProcess = (arr: any[], info: any = {}) => {
       deepProcess(item.routes, info);
     }
     const hideFn = item.hideFn;
-    console.log(typeof hideFn);
-    hideFn && console.log(hideFn);
+    // console.log(typeof hideFn);
+    // hideFn && console.log(hideFn);
     if (hideFn && typeof hideFn === 'function') {
       item.hideInMenu = hideFn(info);
     }
@@ -64,8 +64,8 @@ const MachinePagesHome: React.FC = (props: any) => {
   const _routes = useMemo(() => {
     return processRoute(info);
   }, [info]);
-  console.log('_routes');
-  console.log(_routes);
+  // console.log('_routes');
+  // console.log(_routes);
 
   const { getInfo } = useOpModel();
 

@@ -79,6 +79,10 @@ export const processBody = (data: any, robotType = '文本') => {
     if (robotType === '文本') {
       if (reg1.test(answer) && reg2.test(answer)) {
         item.answer = answer.replace(reg, '/aichat/robot/file/getFile');
+      } else if (reg1.test(answer) || reg2.test(answer)) {
+        item.answer = '';
+      } else if (typeof answer === 'string') {
+        item.answer = '<p>' + answer + '</p>';
       } else {
         item.answer = '';
       }
@@ -117,6 +121,10 @@ export const processAnswerBody = (data: any, robotType = '文本') => {
   if (robotType === '文本') {
     if (reg1.test(answer) && reg2.test(answer)) {
       data.answer = answer.replace(reg, '/aichat/robot/file/getFile');
+    } else if (reg1.test(answer) || reg2.test(answer)) {
+      data.answer = '';
+    } else if (typeof answer === 'string') {
+      data.answer = '<p>' + answer + '</p>';
     } else {
       data.answer = '';
     }
