@@ -339,10 +339,12 @@ export default (props: any) => {
                           <img className={styles['head-robot']} alt="robot" src={robotPhoto} />
                           <div>
                             <div className={styles['words']}>
+                              {item.message === '' && (
+                                <div style={{ fontWeight: 'bold' }}>您是否还想咨询一下问题：</div>
+                              )}
                               {item.recommendQuestion.map((el: any) => {
                                 return (
                                   <Fragment key={el.number}>
-                                    {item.message === '' && <div>您是否还想咨询一下问题：</div>}
                                     <div>{el.number + ':' + el.askText}</div>
                                   </Fragment>
                                 );
@@ -391,7 +393,7 @@ export default (props: any) => {
         visible={visible}
         onCancel={() => setVisible(false)}
         footer={null}
-        bodyStyle={{ maxHeight: 400, overflowY: 'auto' }}
+        bodyStyle={{ maxHeight: 600, overflowY: 'auto' }}
       >
         <pre> {nluInfo}</pre>
       </Modal>
