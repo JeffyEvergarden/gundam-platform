@@ -420,7 +420,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                       </div>
                       {/* 作者... */}
                       <div className={style['box-desc']}>
-                        <div>
+                        <div style={{ marginRight: '12px' }}>
                           <span>作者：{item.updateBy || item.creator}</span>
                           <Divider type="vertical" />
                           <span>
@@ -483,7 +483,13 @@ const QuestionList: React.FC<any> = (props: any) => {
                             推荐问设置
                           </Button>
                         </div>
-                        <div>
+
+                        <div
+                          style={{
+                            lineHeight: '30px',
+                            flexShrink: 0,
+                          }}
+                        >
                           <span>
                             <EyeOutlined /> {item.sumViewNum}
                           </span>
