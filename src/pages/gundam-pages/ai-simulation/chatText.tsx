@@ -340,7 +340,7 @@ export default (props: any) => {
                           <div>
                             <div className={styles['words']}>
                               {item.message === '' && (
-                                <div style={{ fontWeight: 'bold' }}>您是否还想咨询一下问题：</div>
+                                <div style={{ fontWeight: 'bold' }}>您是否还想咨询以下问题：</div>
                               )}
                               {item.recommendQuestion.map((el: any) => {
                                 return (
