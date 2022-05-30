@@ -319,7 +319,10 @@ export default (props: any) => {
                         <div className={styles['robot-part']}>
                           <img className={styles['head-robot']} alt="robot" src={robotPhoto} />
                           <div>
-                            <div className={styles['words']}>{item?.askText}</div>
+                            <div
+                              className={styles['askText']}
+                              dangerouslySetInnerHTML={{ __html: item?.askText }}
+                            />
                           </div>
                         </div>
                       )}
@@ -337,7 +340,12 @@ export default (props: any) => {
                           <div>
                             <div className={styles['words']}>
                               {item.recommendQuestion.map((el: any) => {
-                                return <div key={el.number}>{el.number + ':' + el.askText}</div>;
+                                return (
+                                  <Fragment key={el.number}>
+                                    {item.message === '' && <div>您是否还想咨询一下问题：</div>}
+                                    <div>{el.number + ':' + el.askText}</div>
+                                  </Fragment>
+                                );
                               })}
                             </div>
                           </div>
