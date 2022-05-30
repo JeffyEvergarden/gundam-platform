@@ -48,19 +48,17 @@ const MachinePagesHome: React.FC = (props: any) => {
   const [pathname, setPathname] = useState(location.pathname);
 
   const [finish, setFinish] = useState<boolean>(false);
-  const { info, setInfo, globalVarList, setGlobalVarList, getGlobalValConfig } = useModel(
+  const { info, setInfo, globalVarList, setGlobalVarList } = useModel(
     'gundam' as any,
     (model: any) => ({
       info: model.info,
       setInfo: model.setInfo,
       globalVarList: model.globalVarList,
       setGlobalVarList: model.setGlobalVarList,
-      getGlobalValConfig: model.getGlobalValConfig,
     }),
   );
   useEffect(() => {
     setPathname(location.pathname);
-    getGlobalValConfig(info.id);
   }, [location]);
 
   const _routes = useMemo(() => {

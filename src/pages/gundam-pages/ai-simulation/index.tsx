@@ -30,9 +30,10 @@ export default (props: any) => {
 
   const { getRobotChatData } = useChatModel();
 
-  const { info, globalVarList } = useModel('gundam' as any, (model: any) => ({
+  const { info, globalVarList, getGlobalValConfig } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     globalVarList: model.globalVarList,
+    getGlobalValConfig: model.getGlobalValConfig,
   }));
 
   // 从对话框获取环境值,会话重新开始
@@ -81,9 +82,14 @@ export default (props: any) => {
     setRobotChatData({});
     console.log('globalVarList', globalVarList);
     setRobotFormList(globalVarList);
+
     // setRobotFormList(robotInfo); // 表单信息
     // showChatText(); // 初始化不开启会话功能
   }, [chatVisible, robotInfo]);
+
+  useEffect(() => {
+    getGlobalValConfig(info.id);
+  }, [chatVisible]);
 
   return (
     <React.Fragment>
