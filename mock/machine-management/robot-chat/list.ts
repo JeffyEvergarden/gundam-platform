@@ -20,7 +20,7 @@ const textRobotDialogueText = (req: any, res: any) => {
     // actionEvent: 'talking',
     // actionSound: '',
     data: {
-      actionMessage: '你好，这里是文本机器人为您服务',
+      actionMessage: '',
       actionEvent: 'talking',
       askType: 'faq',
       askText: '<p>1212123</p>',
@@ -54,7 +54,7 @@ const soundRobotDialogueText = (req: any, res: any) => {
     // actionEvent: 'talking',
     // actionSound: '',
     data: {
-      actionMessage: '你好，这是语音机器人为您服务',
+      actionMessage: '',
       actionEvent: 'talking',
       askType: 'faq',
       actionSound: '11111111',
