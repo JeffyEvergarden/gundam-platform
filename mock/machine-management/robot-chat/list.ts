@@ -23,7 +23,7 @@ const textRobotDialogueText = (req: any, res: any) => {
       actionMessage: '你好，这里是文本机器人为您服务',
       actionEvent: 'talking',
       askType: 'faq',
-      askText: '111111',
+      askText: '<p>1212123</p>',
       askKey: '意图类型',
       nluInfo:
         '{"resultCode":"0000","data":{"id":"100","flowId":"100","robotName":"命运官位指定阿尔托莉亚潘多拉","robotType":0,"soundType":0}}',
@@ -58,7 +58,7 @@ const soundRobotDialogueText = (req: any, res: any) => {
       actionEvent: 'talking',
       askType: 'faq',
       actionSound: '11111111',
-      askText: '111111',
+      askText: '<p>1212123</p>',
       askKey: '意图类型',
       askTextSound: '111111',
       nluInfo:
