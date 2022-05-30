@@ -244,6 +244,7 @@ const Board: React.FC<any> = (props: any) => {
                 <Condition r-if={robotType === '文本'}>
                   <Form.Item
                     name={'answer'}
+                    validateTrigger="onBlur"
                     rules={[
                       {
                         message: '请输入答案',

@@ -404,6 +404,7 @@ const Board: React.FC<any> = (props: any) => {
                             <Form.Item
                               name={[field.name, 'answer']}
                               fieldKey={[field.fieldKey, 'answer']}
+                              validateTrigger="onBlur"
                               rules={[
                                 {
                                   message: '请输入答案',

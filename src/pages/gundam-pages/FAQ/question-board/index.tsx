@@ -211,11 +211,11 @@ const EditBoard: React.FC<any> = (prop: any) => {
   };
 
   useEffect(() => {
-    console.log(value);
+    // console.log(value);
   }, [value]);
 
   useEffect(() => {
-    console.log(editor);
+    // console.log(editor);
 
     // 页面删除时销毁
     return () => {
