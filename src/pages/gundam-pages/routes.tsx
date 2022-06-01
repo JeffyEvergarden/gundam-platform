@@ -1,4 +1,13 @@
-import { CrownOutlined } from '@ant-design/icons';
+import {
+  CrownOutlined,
+  SettingOutlined,
+  DatabaseOutlined,
+  BuildOutlined,
+  FontColorsOutlined,
+  ShareAltOutlined,
+  MessageOutlined,
+  MonitorOutlined,
+} from '@ant-design/icons';
 
 export default [
   {
@@ -7,32 +16,25 @@ export default [
     name: '主流程配置',
   },
   {
-    icon: <CrownOutlined />,
+    icon: <SettingOutlined />,
     path: '/gundamPages/detail',
     name: '全局配置',
     routes: [
       {
         icon: <CrownOutlined />,
         path: '/gundamPages/detail/nodeConfig',
-        // component: './gundam-pages/detail',
         name: '节点配置',
       },
       {
-        icon: <CrownOutlined />,
         path: '/gundamPages/detail/globalConfig',
-        // component: './gundam-pages/detail',
         name: '全局变量配置',
       },
       {
-        icon: <CrownOutlined />,
         path: '/gundamPages/detail/interfaceConfig',
-        // component: './gundam-pages/detail/interfaceConfig',
         name: '接口配置',
       },
       {
-        icon: <CrownOutlined />,
         path: '/gundamPages/detail/FAQConfig',
-        // component: './gundam-pages/detail/interfaceConfig',
         name: 'FAQ配置',
         hideFn: (info: any) => {
           return info?.robotType === 1; // 语音机器人
@@ -41,44 +43,55 @@ export default [
     ],
   },
   {
-    icon: <CrownOutlined />,
+    icon: <MonitorOutlined />,
     path: '/gundamPages/wish',
     name: '意图管理',
   },
   {
-    icon: <CrownOutlined />,
+    icon: <DatabaseOutlined />,
     path: '/gundamPages/wordSlotLibrary',
     name: '词槽管理',
   },
   {
-    icon: <CrownOutlined />,
+    icon: <BuildOutlined />,
     path: '/gundamPages/lexiconManage',
     name: '词库管理',
   },
   {
-    icon: <CrownOutlined />,
+    icon: <FontColorsOutlined />,
     path: '/gundamPages/spokenLabel',
     name: '话术标签管理',
   },
   {
-    icon: <CrownOutlined />,
+    icon: <ShareAltOutlined />,
     path: '/gundamPages/businessDraw',
     exact: true,
     _info: { fuck: true },
     name: '业务流程管理',
   },
   {
-    icon: <CrownOutlined />,
-    hideInMenu: true,
-    path: '/gundamPages/businessDraw/detail',
-    name: '业务流程管理-详情配置',
-  },
-  {
-    icon: <CrownOutlined />,
-    path: '/gundamPages/faq',
+    icon: <MessageOutlined />,
+    path: '/gundamPages/module',
     name: 'FAQ管理',
     hideFn: (info: any) => {
       return info?.robotType === 1; // 语音机器人
     },
+    routes: [
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/faq',
+        name: 'FAQ-标准',
+      },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/module/faq/clearlist',
+        name: 'FAQ-澄清',
+      },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/module/faq/blacklist',
+        name: 'FAQ-黑名单',
+      },
+    ],
   },
 ];

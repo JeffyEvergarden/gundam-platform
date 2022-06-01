@@ -14,24 +14,6 @@ export default [
     hideInMenu: true,
     name: 'demo事例',
     component: './demo',
-    routes: [
-      // {
-      //   path: '/demo/a',
-      //   component: './demo/a',
-      //   name: 'demo1',
-      // },
-      // {
-      //   path: '/demo/b',
-      //   component: './demo/b',
-      //   name: 'demo2',
-      // },
-      // {
-      //   path: '/demo/c',
-      //   component: './demo/c',
-      //   name: 'demo3',
-      // },
-      // { redirect: '/demo/a' },
-    ],
     noAuth: true,
   },
   {

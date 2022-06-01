@@ -120,10 +120,28 @@ export default [
         component: './gundam-pages/ai-simulation',
         name: '机器人模拟',
       },
+      // FAQ相关 -------------------------------------
       {
-        path: '/gundamPages/faq*', // faq相关页面都整合到这里
-        component: './gundam-pages/FAQ/home',
-        name: 'FAQ',
+        path: '/gundamPages/faq*',
+        component: './gundam-pages/faq/home',
+        name: 'FAQ-标准',
+      },
+      {
+        path: '/gundamPages/module', // faq相关页面都整合到这里
+        component: './gundam-pages/FAQ-module/home',
+        name: 'FAQ管理',
+        routes: [
+          {
+            path: '/gundamPages/module/faq/clearlist',
+            component: './gundam-pages/FAQ-module/clearlist',
+            name: 'FAQ-澄清',
+          },
+          {
+            path: '/gundamPages/module/faq/blacklist',
+            component: './gundam-pages/FAQ-module/blacklist',
+            name: 'FAQ-黑名单',
+          },
+        ],
       },
       { redirect: '/gundamPages/mainDraw' },
       { component: './404' },
