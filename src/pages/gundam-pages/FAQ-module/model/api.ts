@@ -1,0 +1,44 @@
+import { request } from '@/services/request';
+import config from '@/config/index';
+
+const baseUrl: string = config.basePath;
+
+/** 获取所有黑名单列表 **/
+export async function getBlackList(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/faq/blacklist`, {
+    method: 'GET',
+    params,
+  });
+}
+
+export async function deleteBlackCorpus(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/faq/blacklist/delete`, {
+    method: 'POST',
+    data,
+  });
+}
+
+// ---------------
+// 获取澄清列表
+export async function getClearList(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/faq/clearlist`, {
+    method: 'GET',
+    params,
+  });
+}
+
+// 获取会话列表
+export async function getSessionList(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/faq/sessionlist`, {
+    method: 'GET',
+    params,
+  });
+}
+
+// 获取聊天列表
+export async function getRecordList(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/faq/recordlist`, {
+    method: 'GET',
+    params,
+  });
+}

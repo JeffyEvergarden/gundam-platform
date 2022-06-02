@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import config from '../../../src/config';
 
+// faq 标准模块相关
+
 const successCode = config.successCode;
 
 const normalDeal = (req: any, res: any) => {
