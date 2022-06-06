@@ -1,48 +1,19 @@
-import { useState, useImperativeHandle, useEffect, useMemo } from 'react';
+import { useState, useImperativeHandle, useEffect, useMemo, useRef } from 'react';
 import { Modal, Button, Table, Tooltip, Tabs, Input, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useModel } from 'umi';
 import style from './style.less';
 import Condition from '@/components/Condition';
+import ChatRecordModal from '../chat-record-modal';
 import { useSessionModel } from './model';
 import { formatChannel } from '../../model/util';
-
-const columns: any[] = [
-  // 业务流程列表-列
-  {
-    title: '会话ID',
-    dataIndex: 'id',
-    ellipsis: {
-      showTitle: false,
-    },
-    render: (val: any) => {
-      return <a>{val}</a>;
-    },
-  },
-  {
-    title: '渠道',
-    dataIndex: 'channel',
-    ellipsis: {
-      showTitle: false,
-    },
-    render: (val: any) => {
-      return formatChannel(val);
-    },
-  },
-  {
-    title: '对话轮次',
-    dataIndex: 'recordNum',
-  },
-  {
-    title: '访问时间',
-    dataIndex: 'recordTime',
-  },
-];
 
 const { Search } = Input;
 
 const SelectorModal: React.FC<any> = (props: any) => {
   const { cref, confirm } = props;
+
+  const chatRecordModalRef = useRef<any>({});
 
   const { info } = useModel('gundam' as any, (model: any) => {
     return {
@@ -85,6 +56,46 @@ const SelectorModal: React.FC<any> = (props: any) => {
     setVisible(false);
   };
 
+  const columns: any[] = [
+    // 业务流程列表-列
+    {
+      title: '会话ID',
+      dataIndex: 'id',
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (val: any, row: any) => {
+        return (
+          <a
+            onClick={() => {
+              chatRecordModalRef.current?.open?.(row);
+            }}
+          >
+            {val}
+          </a>
+        );
+      },
+    },
+    {
+      title: '渠道',
+      dataIndex: 'channel',
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (val: any) => {
+        return formatChannel(val);
+      },
+    },
+    {
+      title: '对话轮次',
+      dataIndex: 'recordNum',
+    },
+    {
+      title: '访问时间',
+      dataIndex: 'recordTime',
+    },
+  ];
+
   return (
     <Modal
       className={style['modal-bg']}
@@ -92,6 +103,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       title={'查看明细'}
       visible={visible}
       onCancel={() => setVisible(false)}
+      maskClosable={false}
       okText={'确定'}
       onOk={submit}
     >
@@ -109,6 +121,8 @@ const SelectorModal: React.FC<any> = (props: any) => {
           />
         </div>
       </div>
+
+      <ChatRecordModal cref={chatRecordModalRef} />
     </Modal>
   );
 };

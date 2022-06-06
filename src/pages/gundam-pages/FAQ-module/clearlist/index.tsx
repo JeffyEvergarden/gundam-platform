@@ -6,14 +6,30 @@ import Condition from '@/components/Condition';
 import { PlusOutlined } from '@ant-design/icons';
 import { useTableModel } from './model';
 import DetailModal from '../components/detail-modal';
+import SelectFaqModal from '../components/select-faq-modal';
 import style from './style.less';
 
 const FAQClearList = (props: any) => {
   const { tableList, getTableList, tableLoading } = useTableModel();
 
+  const { info } = useModel('gundam', (model: any) => {
+    return {
+      info: model.info,
+    };
+  });
+
+  const { getWishList, getTreeData } = useModel('drawer', (model: any) => {
+    return {
+      getWishList: model.getWishList,
+      getTreeData: model.getTreeData,
+    };
+  });
+
   const tableRef = useRef<any>({});
 
   const modalRef = useRef<any>({});
+
+  const selectFaqModalRef = useRef<any>({});
 
   // 删除
   const deleteRow = (row: any) => {};
@@ -21,6 +37,11 @@ const FAQClearList = (props: any) => {
   const openDetailModal = (row: any) => {
     console.log(row);
     (modalRef.current as any)?.open(row);
+  };
+
+  const openSelectFaqModal = (row: any) => {
+    // console.log(row);
+    (selectFaqModalRef.current as any)?.open(row);
   };
 
   const columns: any[] = [
@@ -31,14 +52,6 @@ const FAQClearList = (props: any) => {
       width: 300,
       fieldProps: {
         placeholder: '请输入查询内容',
-        // onPressEnter: (e: any) => {
-        //   console.log(e);
-        //   let obj = { ...searchForm, robotName: e.target.value };
-        //   // if (e.target.value == '') {
-        //   //   delete obj.robotName;
-        //   // }
-        //   setSearchForm(obj);
-        // },
       },
       ellipsis: true,
     },
@@ -50,7 +63,7 @@ const FAQClearList = (props: any) => {
       render: (arr: any) => {
         if (Array.isArray(arr)) {
           return (
-            <div className={style['question-box']} onClick={openDetailModal}>
+            <div className={style['question-box']} onClick={openSelectFaqModal}>
               {arr.map((item: any, i: number) => {
                 return (
                   <div className={style['qustion-label']} key={i}>
@@ -134,7 +147,9 @@ const FAQClearList = (props: any) => {
   ];
 
   useEffect(() => {
-    tableRef.current.reload();
+    tableRef.current.reload(); // 刷新列表
+    getWishList(info.id); // 获取意图列表
+    getTreeData(info.id); // 获取faq列表
   }, []);
 
   return (
@@ -182,6 +197,8 @@ const FAQClearList = (props: any) => {
       />
 
       <DetailModal cref={modalRef} />
+
+      <SelectFaqModal cref={selectFaqModalRef} />
     </div>
   );
 };
