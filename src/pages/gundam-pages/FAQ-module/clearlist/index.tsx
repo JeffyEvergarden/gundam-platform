@@ -29,6 +29,7 @@ const FAQClearList = (props: any) => {
 
   const modalRef = useRef<any>({});
 
+  const tmpRef = useRef<any>({});
   const selectFaqModalRef = useRef<any>({});
 
   // 删除
@@ -41,7 +42,14 @@ const FAQClearList = (props: any) => {
 
   const openSelectFaqModal = (row: any) => {
     // console.log(row);
+    tmpRef.current.row = row;
     (selectFaqModalRef.current as any)?.open(row);
+  };
+
+  const confirmUpdateSelect = (list: any[]) => {
+    // 输出列表
+    console.log(tmpRef.current.row);
+    console.log(list);
   };
 
   const columns: any[] = [
@@ -60,10 +68,15 @@ const FAQClearList = (props: any) => {
       dataIndex: 'questionTypeList',
       search: false,
       width: 300,
-      render: (arr: any) => {
+      render: (arr: any, row: any) => {
         if (Array.isArray(arr)) {
           return (
-            <div className={style['question-box']} onClick={openSelectFaqModal}>
+            <div
+              className={style['question-box']}
+              onClick={() => {
+                openSelectFaqModal(row);
+              }}
+            >
               {arr.map((item: any, i: number) => {
                 return (
                   <div className={style['qustion-label']} key={i}>
@@ -198,7 +211,7 @@ const FAQClearList = (props: any) => {
 
       <DetailModal cref={modalRef} />
 
-      <SelectFaqModal cref={selectFaqModalRef} />
+      <SelectFaqModal cref={selectFaqModalRef} confirm={confirmUpdateSelect} />
     </div>
   );
 };

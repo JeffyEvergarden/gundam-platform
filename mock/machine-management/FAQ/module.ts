@@ -52,7 +52,7 @@ const getClearList = (req: any, res: any) => {
       questionTypeList: [
         {
           recommendId: '1',
-          recommendType: 0,
+          recommendType: 1,
           recommend: '支付宝还款',
         },
         {
@@ -62,7 +62,7 @@ const getClearList = (req: any, res: any) => {
         },
         {
           recommendId: '3',
-          recommendType: 0,
+          recommendType: 2,
           recommend: '中邮钱包还款',
         },
       ],
