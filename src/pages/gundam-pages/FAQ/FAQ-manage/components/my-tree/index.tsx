@@ -25,7 +25,7 @@ interface TreeProps {
   size?: string;
   selectTree?: any;
   leafClickOnly?: boolean;
-  getTree: any;
+  getTree?: any;
 }
 
 const { DirectoryTree } = Tree;

@@ -123,7 +123,7 @@ export default [
       // FAQ相关 -------------------------------------
       {
         path: '/gundamPages/faq*',
-        component: './gundam-pages/faq/home',
+        component: './gundam-pages/FAQ/home',
         name: 'FAQ-标准',
       },
       {

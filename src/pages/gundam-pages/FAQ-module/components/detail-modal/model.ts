@@ -36,14 +36,13 @@ export const useSessionModel = () => {
     setRecordLoading(true);
     let res: any = await getRecordList(params);
     setRecordLoading(false);
-    let { list = [], totalPage, totalSize } = res.data;
+    let { list = [], totalPage, totalSize } = res.data || {};
     if (!Array.isArray(list)) {
       list = [];
     }
     list = list.map((item: any, index: number) => {
       return {
         ...item,
-        title: item.name,
         index,
       };
     });

@@ -1,0 +1,83 @@
+.my-row_center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scrollbar(@width, @color: #f5f5f5) {
+  ::-webkit-scrollbar {
+    width: @width * 4;
+    background: transparent;
+    visibility: hidden;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    width: @width * 4;
+    background: @color;
+    border-radius: 30px;
+  }
+
+  :hover {
+    ::-webkit-scrollbar {
+      visibility: visible;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      visibility: visible;
+    }
+  }
+}
+
+.record-bg {
+  height: 500px;
+  padding: 24px;
+  overflow: auto;
+  background-color: #f0f2f5;
+  border-radius: 10px;
+  scroll-behavior: smooth;
+  .scrollbar(4px);
+}
+
+.my-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.my-row_start {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.my-row_end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.avator {
+  width: 30px;
+  height: 30px;
+  background: #333;
+  border-radius: 50%;
+}
+
+.content {
+  min-width: 50px;
+  max-width: 420px;
+  margin: 4px 16px 0;
+  padding: 8px;
+  background: #fff;
+  border-radius: 6px;
+}
+
+.record-time {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.record-box {
+  margin-bottom: 12px;
+}

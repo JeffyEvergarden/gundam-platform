@@ -113,6 +113,33 @@ const getSessionList = (req: any, res: any) => {
   });
 };
 
+// ------------
+const getRecordList = (req: any, res: any) => {
+  let arr = new Array(10).fill(1);
+  let _date = Date.now();
+
+  arr = arr.map((item: any, index: number) => {
+    let obj = {
+      userName: Math.random() > 0.5 ? 'left' : 'right',
+      msg: '你在说什么呢,能说清楚吗',
+      recordTime: moment(new Date(_date + 60 * 60 * 1000 * index)).format('YYYY-MM—DD hh:mm'),
+    };
+    return obj;
+  });
+
+  res.json({
+    resultCode: successCode,
+    resultDesc: '成功',
+    success: true,
+    data: {
+      pageSize: 10,
+      totalPage: 20,
+      page: 1,
+      list: arr,
+    },
+  });
+};
+
 export default {
   // FAQ-黑名单
   'GET /aichat/robot/faq/blacklist': getBlackList, // 获取FAQ-黑名单语料列表
@@ -122,4 +149,6 @@ export default {
   'POST /aichat/robot/faq/clearlist/delete': normalDeal, // 删除澄清语料
   'GET /aichat/robot/faq/sessionlist': getSessionList, // 查看明细
   'POST /aichat/robot/faq/clearlist/update': normalDeal, // 修改标准问/意图
+  // 获取聊天记录
+  'GET /aichat/robot/faq/recordlist': getRecordList, // 获取聊天记录
 };
