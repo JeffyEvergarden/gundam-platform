@@ -92,6 +92,16 @@ export default [
         path: '/gundamPages/module/faq/blacklist',
         name: 'FAQ-黑名单',
       },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/module/faq/reviewedList',
+        name: '待审核',
+      },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/module/faq/pendingList',
+        name: '待处理',
+      },
     ],
   },
 ];

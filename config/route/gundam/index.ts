@@ -123,7 +123,7 @@ export default [
       // FAQ相关 -------------------------------------
       {
         path: '/gundamPages/faq*',
-        component: './gundam-pages/faq/home',
+        component: './gundam-pages/FAQ/home',
         name: 'FAQ-标准',
       },
       {
@@ -140,6 +140,16 @@ export default [
             path: '/gundamPages/module/faq/blacklist',
             component: './gundam-pages/FAQ-module/blacklist',
             name: 'FAQ-黑名单',
+          },
+          {
+            path: '/gundamPages/module/faq/reviewedList',
+            component: './gundam-pages/FAQ-module/reviewedList',
+            name: '待审核',
+          },
+          {
+            path: '/gundamPages/module/faq/pendingList',
+            component: './gundam-pages/FAQ-module/pendingList',
+            name: '待验证',
           },
         ],
       },
