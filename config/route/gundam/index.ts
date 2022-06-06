@@ -141,6 +141,16 @@ export default [
             component: './gundam-pages/FAQ-module/blacklist',
             name: 'FAQ-黑名单',
           },
+          {
+            path: '/gundamPages/module/faq/reviewedList',
+            component: './gundam-pages/FAQ-module/reviewedList',
+            name: '待审核',
+          },
+          {
+            path: '/gundamPages/module/faq/pendingList',
+            component: './gundam-pages/FAQ-module/pendingList',
+            name: '待验证',
+          },
         ],
       },
       { redirect: '/gundamPages/mainDraw' },
