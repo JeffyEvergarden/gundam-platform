@@ -140,6 +140,46 @@ const getRecordList = (req: any, res: any) => {
   });
 };
 
+//待审核
+const getReviewedList = (req: any, res: any) => {
+  let arr = new Array(10).fill(1);
+  let _date = Date.now();
+
+  arr = arr.map((item: any, index: number) => {
+    let obj = {
+      id: `id${index}`,
+      robotId: '100',
+      question: `问题${index + 1}`,
+      answer: `答案${index + 1}`,
+      enable: Math.ceil(Math.random() * 1), //是否启用 0n  1y
+      enableStartTime: _date,
+      enableEndTime: _date,
+      batchNumber: '222', //批次号
+      reason: `原因${index + 1}`, //原因
+      operationStatus: Math.ceil(Math.random() * 4), //1新增问题,2新增答案,3编辑答案,4删除申请
+      approvalStatus: Math.ceil(Math.random() * 3), //1待审核,2通过,3退回
+      creator: 'jiangjiahao',
+      createTime: _date,
+      updateTime: _date,
+      updateBy: 'jiangjiahao',
+      channelList: ['all'],
+    };
+    return obj;
+  });
+
+  res.json({
+    resultCode: successCode,
+    resultDesc: '成功',
+    success: true,
+    data: {
+      pageSize: 10,
+      totalPage: 20,
+      page: 1,
+      list: arr,
+    },
+  });
+};
+
 export default {
   // FAQ-黑名单
   'GET /aichat/robot/faq/blacklist': getBlackList, // 获取FAQ-黑名单语料列表
@@ -151,4 +191,6 @@ export default {
   'POST /aichat/robot/faq/clearlist/update': normalDeal, // 修改标准问/意图
   // 获取聊天记录
   'GET /aichat/robot/faq/recordlist': getRecordList, // 获取聊天记录
+  // 获取待审核列表
+  'GET /aichat/robot/faq/faqApprovalPageList': getReviewedList,
 };

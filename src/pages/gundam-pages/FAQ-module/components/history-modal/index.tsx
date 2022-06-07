@@ -142,9 +142,9 @@ const SelectorModal: React.FC<any> = (props: any) => {
                         </div>
                         <div>
                           <div>
-                            <span>申请人：张珊</span>
-                            <span style={{ marginLeft: '16px' }}>申请类型：修改答案</span>
-                            <span style={{ marginLeft: '16px' }}>申请时间：111-111-111</span>
+                            <span>操作经办：张珊</span>
+                            <span style={{ marginLeft: '16px' }}>操作类型：修改答案</span>
+                            <span style={{ marginLeft: '16px' }}>操作时间：111-111-111</span>
                           </div>
                           <div
                             style={{
@@ -158,9 +158,9 @@ const SelectorModal: React.FC<any> = (props: any) => {
                         </div>
                         <div>
                           <div>
-                            <span>申请人：张珊</span>
-                            <span style={{ marginLeft: '16px' }}>申请类型：修改答案</span>
-                            <span style={{ marginLeft: '16px' }}>申请时间：111-111-111</span>
+                            <span>审批经办：张珊</span>
+                            <span style={{ marginLeft: '16px' }}>审批结果：修改答案</span>
+                            <span style={{ marginLeft: '16px' }}>审批时间：111-111-111</span>
                           </div>
                           <div
                             style={{
