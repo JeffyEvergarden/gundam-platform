@@ -1,11 +1,12 @@
 import { useState, useImperativeHandle, useEffect, useMemo } from 'react';
 import { Modal, Button, Table, Tooltip, Tabs, Input } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import MyTree from '../../../FAQ/FAQ-manage/components/my-tree';
 import { useModel } from 'umi';
 import { useFaqModal } from '../../../FAQ/FAQ-manage/model';
 import style from './style.less';
 import Condition from '@/components/Condition';
+import { deleteBusinessItem } from '@/pages/gundam-pages/business-draw/model/api';
 
 const { TabPane } = Tabs;
 
@@ -60,15 +61,45 @@ const columns2: any[] = [
 
 const { Search } = Input;
 
-const SelectorModal: React.FC<any> = (props: any) => {
-  const { cref, confirm, type = 'radio', showFlow = true } = props;
+const expendRender = (row: any) => {
+  const answerList: any[] = row.answerList || [];
 
-  const [showFlowKey, setShowFlowKey] = useState<boolean>(true);
+  return (
+    <>
+      {answerList.map((item: any, index: number) => {
+        return (
+          <div className={style['answer-box']} key={index}>
+            <div className={style['circle-num']}>{index + 1}</div>
+            <div
+              className={style['answer-content']}
+              dangerouslySetInnerHTML={{ __html: item.answer || null }}
+            ></div>
+          </div>
+        );
+      })}
+    </>
+  );
+};
+
+// selectlist  (recommendType、recommendId、recommend)
+// disabledWishKeys    禁止选择的意图
+// disabledQuestionKeys  禁止选择的问题
+// selectedQuestionKeys  已选择的问题
+// selectedWishKeys 已选择的意图
+
+const SelectorModal: React.FC<any> = (props: any) => {
+  const { cref, confirm, type = 'checkbox' } = props;
+
+  const [showWishKey, setShowWishKey] = useState<boolean>(true);
   // tabs 操作
   const [activeKey, setActivekey] = useState<string>('1');
 
   const [disabledQuestionKeys, setDisabledQuestionKeys] = useState<any[]>([]);
-  const [disabledFlowKeys, setDisabledFlowKeys] = useState<any[]>([]);
+  const [disabledWishKeys, setDisabledWishKeys] = useState<any[]>([]);
+
+  // 对象
+  const [selectList, setSelectList] = useState<any[]>([]);
+  // const [selectWishList, setSelectWishList] = useState<any[]>([]);
 
   const changeActiveKey = (val: any) => {
     setActivekey(val);
@@ -147,7 +178,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     });
   };
 
-  const tableFlowList: any[] = useMemo(() => {
+  const tableWishList: any[] = useMemo(() => {
     return wishList.map((item: any, index: number) => {
       return {
         ...item,
@@ -157,20 +188,22 @@ const SelectorModal: React.FC<any> = (props: any) => {
   }, [wishList]);
 
   useEffect(() => {
-    setSearchWishList(tableFlowList);
-  }, [tableFlowList]);
+    setSearchWishList(tableWishList);
+  }, [tableWishList]);
 
   const onSearch2 = () => {
-    const list = tableFlowList.filter((item: any) => {
-      return item.flowName.includes(searchText2);
+    const list = tableWishList.filter((item: any) => {
+      return item?.intentName?.includes?.(searchText2);
     });
     console.log(list);
     setSearchWishList([...list]);
   };
 
+  // ------------------------
+
   // 选中key值
   const [selectedQuestionKeys, setSelectedQuestionKeys] = useState<any[]>([]);
-  const [selectedFlowKeys, setSelectedFlowKeys] = useState<any[]>([]);
+  const [selectedWishKeys, setSelectedWishKeys] = useState<any[]>([]);
 
   // 选中
   const onSelect = (val: any) => {
@@ -186,6 +219,34 @@ const SelectorModal: React.FC<any> = (props: any) => {
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
       // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      // 新增
+      if (selectedRowKeys.length > selectedQuestionKeys.length) {
+        // 获取
+        let lastInfo = selectedRows?.[selectedRows.length - 1];
+        if (lastInfo) {
+          setSelectList([
+            ...selectList,
+            {
+              recommendType: 1,
+              recommendId: lastInfo.id,
+              recommend: lastInfo.question,
+            },
+          ]);
+        }
+        // 减小
+      } else if (selectedRowKeys.length < selectedQuestionKeys.length) {
+        // 找出少了那个
+        let keys: any = selectedQuestionKeys.filter((_key: any) => {
+          return !selectedRowKeys.includes(_key);
+        });
+        // 进行剔除  过滤出来
+        let list: any[] = selectList?.filter((item: any) => {
+          return !(item.recommendType === 1 && keys.includes(item.recommendId));
+        });
+        console.log(selectedQuestionKeys, keys, list);
+        setSelectList(list);
+      }
+      // 设置选中数组
       setSelectedQuestionKeys(selectedRowKeys);
     },
     getCheckboxProps: (record: any) => {
@@ -198,12 +259,36 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   const rowFlowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
-      // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-      setSelectedFlowKeys(selectedRowKeys);
+      if (selectedRowKeys.length > selectedWishKeys.length) {
+        // 获取
+        let lastInfo = selectedRows?.[selectedRows.length - 1];
+        if (lastInfo) {
+          setSelectList([
+            ...selectList,
+            {
+              recommendType: 2,
+              recommendId: lastInfo.id,
+              recommend: lastInfo.label,
+            },
+          ]);
+        }
+        // 减小
+      } else if (selectedRowKeys.length < selectedWishKeys.length) {
+        // 找出少了那个
+        let keys: any = selectedWishKeys.filter((_key: any) => {
+          return !selectedRowKeys.includes(_key);
+        });
+        // 进行剔除  过滤出来
+        let list: any[] = selectList?.filter((item: any) => {
+          return !(item.recommendType === 2 && keys.includes(item.recommendId));
+        });
+        setSelectList(list);
+      }
+      setSelectedWishKeys(selectedRowKeys);
     },
     getCheckboxProps: (record: any) => {
       return {
-        disabled: disabledFlowKeys.includes(record.name),
+        disabled: disabledWishKeys.includes(record.name),
         name: record.name,
       };
     },
@@ -211,22 +296,23 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     open: (obj: any) => {
-      console.log(obj);
-      setDisabledFlowKeys(obj?.disabledFlowKeys || []);
+      // console.log(obj);
+      // 设置不能选的
+      setDisabledWishKeys(obj?.disabledWishKeys || []);
       setDisabledQuestionKeys(obj?.disabledQuestionKeys || []);
       // 设置默认选中
       setSelectedQuestionKeys(obj?.selectedQuestionKeys || []);
-      setSelectedFlowKeys(obj?.selectedFlowKeys || []);
+      setSelectedWishKeys(obj?.selectedWishKeys || []);
 
       if (obj?.showFlow === false) {
-        setShowFlowKey(false);
+        setShowWishKey(false);
         setActivekey('1');
         onChange1(1);
       } else {
         if (activeKey === '1') {
           onChange1(1);
         }
-        setShowFlowKey(true);
+        setShowWishKey(true);
       }
       setCurrent2(1);
 
@@ -239,35 +325,24 @@ const SelectorModal: React.FC<any> = (props: any) => {
   }));
 
   const submit = () => {
-    let list: any = [];
-    if (activeKey === '2') {
-      list = tableFlowList
-        .filter((item: any) => {
-          return selectedFlowKeys.includes(item.name);
-        })
-        .map((item: any) => item.label);
-      if (list.length > 0) {
-        confirm?.({
-          recommendBizType: activeKey,
-          recommendId: selectedFlowKeys[0],
-          recommend: list[0],
-        });
-      }
-    } else if (activeKey === '1') {
-      list = faqList
-        .filter((item: any) => {
-          return selectedQuestionKeys.includes(item.id);
-        })
-        .map((item: any) => item.question);
-      if (list.length > 0) {
-        confirm?.({
-          recommendBizType: activeKey,
-          recommendId: selectedQuestionKeys[0],
-          recommend: list[0],
-        });
-      }
-    }
+    confirm(selectList || []);
     setVisible(false);
+  };
+
+  // 删除
+  const deleteItem = (item: any, index: number) => {
+    selectList.splice(index, 1);
+    if (item.recommendType === 1) {
+      let _selectedQuestionKeys = selectedQuestionKeys.filter((_item: any) => {
+        return _item !== item.recommendId;
+      });
+      setSelectedQuestionKeys(_selectedQuestionKeys);
+    } else {
+      let _selectedWishKeys = selectedWishKeys.filter((_item: any) => {
+        return _item !== item.recommendId;
+      });
+      setSelectedWishKeys(_selectedWishKeys);
+    }
   };
 
   return (
@@ -281,29 +356,97 @@ const SelectorModal: React.FC<any> = (props: any) => {
       okText={'确定'}
       onOk={submit}
     >
-      <Tabs activeKey={activeKey} onChange={changeActiveKey}>
-        <TabPane tab="问题" key="1">
-          <div className={style['zy-row']}>
-            <div className={style['page_left']}>
-              <MyTree
-                draggable={false}
-                onChange={onSelect}
-                data={treeData}
-                edit={false}
-                size="sm"
-              />
-            </div>
+      <div className={style['modal-bg_default']}>
+        <div className={style['select-box']}>
+          <Condition r-if={selectList.length > 0}>
+            <div className={style['title']}>已选择标准问/意图</div>
 
+            <div className={style['select-content']}>
+              {selectList.map((item: any, index: number) => {
+                return (
+                  <div className={style['select-item']} key={index}>
+                    <Tooltip placement="topLeft" title={item.recommend}>
+                      <div className={style['label']}>
+                        <span className={style['num']}>{index + 1}.</span>
+                        {item.recommend}
+                      </div>
+                    </Tooltip>
+                    <Button
+                      type="link"
+                      icon={<DeleteOutlined />}
+                      onClick={() => {
+                        deleteItem(item, index);
+                      }}
+                    ></Button>
+                  </div>
+                );
+              })}
+            </div>
+          </Condition>
+        </div>
+
+        <Tabs activeKey={activeKey} onChange={changeActiveKey}>
+          <TabPane tab="问题" key="1">
+            <div className={style['zy-row']}>
+              <div className={style['page_left']}>
+                <MyTree
+                  draggable={false}
+                  onChange={onSelect}
+                  data={treeData}
+                  edit={false}
+                  size="sm"
+                />
+              </div>
+
+              <div className={style['page_content']}>
+                <div className={style['zy-row_end']}>
+                  <Search
+                    placeholder="输入标准问进行搜索"
+                    value={searchText1}
+                    onSearch={onSearch1}
+                    onPressEnter={onSearch1}
+                    onChange={onSearchChange1}
+                    allowClear
+                    style={{ width: 200 }}
+                  />
+                </div>
+
+                <div className={style['table-box']}>
+                  <Table
+                    rowSelection={{
+                      type: type === 'radio' ? 'radio' : 'checkbox',
+                      ...rowSelection,
+                      selectedRowKeys: selectedQuestionKeys,
+                      hideSelectAll: true,
+                    }}
+                    expandable={{
+                      expandedRowRender: expendRender,
+                      // 可扩展
+                      rowExpandable: (record: any) => record?.answerList?.length > 0,
+                    }}
+                    size="small"
+                    pagination={{ current: current1, onChange: onChange1, total: totalSize }}
+                    dataSource={faqList}
+                    columns={columns1}
+                    rowKey="id"
+                    loading={loading}
+                  />
+                </div>
+              </div>
+            </div>
+          </TabPane>
+
+          <TabPane tab="意图" key="2" disabled={!showWishKey}>
             <div className={style['page_content']}>
               <div className={style['zy-row_end']}>
                 <Search
-                  placeholder="输入标准问进行搜索"
-                  value={searchText1}
-                  onSearch={onSearch1}
-                  onPressEnter={onSearch1}
-                  onChange={onSearchChange1}
+                  placeholder="输入意图名称进行搜索"
+                  value={searchText2}
+                  onSearch={onSearch2}
+                  onPressEnter={onSearch2}
+                  onChange={onSearchChange2}
                   allowClear
-                  style={{ width: 200 }}
+                  style={{ width: 300 }}
                 />
               </div>
 
@@ -311,53 +454,22 @@ const SelectorModal: React.FC<any> = (props: any) => {
                 <Table
                   rowSelection={{
                     type: type === 'radio' ? 'radio' : 'checkbox',
-                    ...rowSelection,
-                    selectedRowKeys: selectedQuestionKeys,
+                    ...rowFlowSelection,
+                    selectedRowKeys: selectedWishKeys,
+                    hideSelectAll: true,
                   }}
                   size="small"
-                  pagination={{ current: current1, onChange: onChange1, total: totalSize }}
-                  dataSource={faqList}
-                  columns={columns1}
+                  pagination={{ current: current2, onChange: onChange2 }}
+                  dataSource={searchWishList}
+                  columns={columns2}
                   rowKey="id"
-                  loading={loading}
+                  // loading={tableLoading}
                 />
               </div>
             </div>
-          </div>
-        </TabPane>
-
-        <TabPane tab="意图" key="2" disabled={!showFlowKey}>
-          <div className={style['page_content']}>
-            <div className={style['zy-row_end']}>
-              <Search
-                placeholder="输入业务流程进行搜索"
-                value={searchText2}
-                onSearch={onSearch2}
-                onPressEnter={onSearch2}
-                onChange={onSearchChange2}
-                allowClear
-                style={{ width: 300 }}
-              />
-            </div>
-
-            <div className={style['table-box']}>
-              <Table
-                rowSelection={{
-                  type: type === 'radio' ? 'radio' : 'checkbox',
-                  ...rowFlowSelection,
-                  selectedRowKeys: selectedFlowKeys,
-                }}
-                size="small"
-                pagination={{ current: current2, onChange: onChange2 }}
-                dataSource={searchWishList}
-                columns={columns2}
-                rowKey="id"
-                // loading={tableLoading}
-              />
-            </div>
-          </div>
-        </TabPane>
-      </Tabs>
+          </TabPane>
+        </Tabs>
+      </div>
     </Modal>
   );
 };
