@@ -36,11 +36,9 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: calc(70vh - 90px);
-  padding: 16px;
+  height: 100%;
   overflow: hidden;
   // background: #fff;
-
   .scrollbar(1.5px, rgba(0, 0, 0, 0.3));
 
   .page_top {
@@ -61,6 +59,11 @@
   flex: 1;
   flex-direction: column;
   overflow: hidden;
+  .title {
+    margin-bottom: 24px;
+    font-weight: 400;
+    font-size: 20px;
+  }
 }
 
 .Pagination {
@@ -100,51 +103,41 @@
 }
 
 .content-list {
-  // padding: 0 8px 0 0;
   flex: 1;
   overflow: auto !important;
-  // background-color: #fff;
-  border-left: 1px solid #f0f0f0;
+  .timeline {
+    width: 100%;
+    margin-bottom: 24px;
+    border: 1px solid #d9d9d9;
 
-  :global {
-    .ant-pro-card {
-      background-color: #f0f2f5 !important;
-    }
-
-    .ant-pro-card-body {
-      padding: 0 !important;
-    }
-
-    .ant-pro-list-row-header-title {
-      display: block !important;
-    }
-
-    .ant-pro-list-row-selected {
-      background-color: #fff !important;
-    }
-
-    .ant-pro-list-row-title {
-      &:hover {
-        color: #000 !important;
-        cursor: default !important;
-      }
-    }
-
-    .ant-list-item {
-      margin: 5px;
-      // border: 1px solid #d3d3d3 !important;
-      // border-radius: 10px;
-      background-color: #fff;
-      cursor: default !important;
-    }
-
-    .ant-pro-list-row {
-      margin: 0;
+    .header {
+      height: 46px;
       margin-bottom: 16px;
-      padding: 24px !important;
-
-      &:hover {
-        background-color: #fff !important;
+      padding: 12px 16px;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 22px;
+      background-color: #fafafa;
+      border-bottom: 1px solid #d9d9d9;
+    }
+    :global {
+      .ant-timeline-item {
+        padding-bottom: 0 !important;
+      }
+      .ant-timeline-item-label {
+        top: -6px !important;
+        width: 16% !important;
+      }
+      .ant-timeline-item-tail {
+        left: 18% !important;
+      }
+      .ant-timeline-item-head {
+        left: 18% !important;
+      }
+      .ant-timeline-item-content {
+        top: -6px !important;
+        left: 18% !important;
+        width: 75% !important;
       }
     }
   }
@@ -222,7 +215,6 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
   color: rgba(0, 0, 0, 0.65);
 
   .extra {
@@ -230,4 +222,12 @@
     font-weight: 400;
     font-size: 14px;
   }
+}
+
+.reason {
+  padding: 8px 0 20px 0;
+  color: rgba(0, 0, 0, 0.65);
+  font-weight: 400;
+  font-size: 14px;
+  font-family: 'Microsoft YaHei';
 }

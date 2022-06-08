@@ -1,5 +1,5 @@
 import { useState, useImperativeHandle, useEffect, useMemo, useRef } from 'react';
-import { Modal, Input, message, Pagination, Button } from 'antd';
+import { Modal, Input, message, Pagination, Button, Divider, Drawer } from 'antd';
 import { useModel } from 'umi';
 import style from './style.less';
 import ProList from '@ant-design/pro-list';
@@ -11,8 +11,7 @@ const { Search } = Input;
 const SelectorModal: React.FC<any> = (props: any) => {
   const { cref, confirm } = props;
   const [total, setTotal] = useState<any>(0);
-  const [current, setCurrent] = useState<any>(1);
-  const [pageSize, setPageSize] = useState<any>(10);
+  const [questionInfo, setQuestionInfo] = useState<any>();
 
   const { list, getList, loading } = useAnswerListModel();
 
@@ -29,6 +28,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
   useImperativeHandle(cref, () => ({
     open: (row: any) => {
       // 显示
+      setQuestionInfo(row);
       CurrentPage({ faqId: row.id });
       setVisible(true);
     },
@@ -54,37 +54,38 @@ const SelectorModal: React.FC<any> = (props: any) => {
   };
 
   return (
-    <Modal
+    <Drawer
       className={style['modal-bg']}
-      width={850}
-      bodyStyle={{ maxHeight: '500px', overflow: 'auto' }}
-      title={'查看现有答案--还会自动提额吗'}
+      width={'60%'}
+      title={'查看现有答案'}
       visible={visible}
-      onCancel={() => setVisible(false)}
-      okText={'确定'}
-      onOk={submit}
+      onClose={() => setVisible(false)}
     >
-      {list?.map((item: any) => {
-        return (
-          <div className={style['box']}>
-            <div>{item?.answer}</div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <div>
-                生效渠道：
-                {item?.channelList &&
-                  item?.channelList
-                    ?.map((cl: any) => {
-                      return HIGH_CONFIG_SELECT?.[0]?.children?.find((c: any) => c.name == cl)
-                        ?.label;
-                    })
-                    ?.join(' , ')}
+      <div className={style['title']}>{questionInfo?.question}</div>
+      <div id="scrollContent" className={style['content-list']}>
+        {list?.map((item: any) => {
+          return (
+            <div className={style['box']}>
+              <div className={style['box-content']}>{item?.answer}</div>
+              <div className={style['box-footer']}>
+                <div>
+                  生效渠道：
+                  {item?.channelList &&
+                    item?.channelList
+                      ?.map((cl: any) => {
+                        return HIGH_CONFIG_SELECT?.[0]?.children?.find((c: any) => c.name == cl)
+                          ?.label;
+                      })
+                      ?.join(' , ')}
+                </div>
+                <Divider type="vertical"></Divider>
+                <div>生效时间：{`${item.enableStartTime} ~ ${item.enableEndTime}`}</div>
               </div>
-              <div>生效时间：{`${item.enableStartTime}~${item.enableEndTime}`}</div>
             </div>
-          </div>
-        );
-      })}
-    </Modal>
+          );
+        })}
+      </div>
+    </Drawer>
   );
 };
 

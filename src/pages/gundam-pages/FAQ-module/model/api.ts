@@ -51,6 +51,13 @@ export async function getApprovalList(params?: Record<string, any>) {
   });
 }
 
+export async function getPendingList(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/faqPendingPageList`, {
+    method: 'GET',
+    params,
+  });
+}
+
 //获取历史申请记录
 export async function getHistoryList(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/faq/faqApprovalHistoryPageList`, {

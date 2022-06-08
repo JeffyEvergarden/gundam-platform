@@ -1,5 +1,5 @@
 import { useState, useImperativeHandle, useEffect, useMemo, useRef } from 'react';
-import { Modal, Input, message, Pagination, Button } from 'antd';
+import { Modal, Input, message, Pagination, Button, Timeline, Drawer, Divider } from 'antd';
 import { useModel } from 'umi';
 import style from './style.less';
 import ProList from '@ant-design/pro-list';
@@ -73,133 +73,99 @@ const SelectorModal: React.FC<any> = (props: any) => {
   };
 
   return (
-    <Modal
+    <Drawer
       className={style['modal-bg']}
-      width={850}
-      bodyStyle={{ maxHeight: '600px' }}
-      title={'历史申请记录--还会自动提额吗'}
+      width={'60%'}
+      title={'历史申请记录'}
       visible={visible}
-      onCancel={onClose}
-      okText={'确定'}
-      onOk={submit}
+      onClose={onClose}
       destroyOnClose={true}
     >
       <div className={style['FAQ-page']}>
         <div className={style['box']}>
+          <div className={style['title']}>{questionInfo?.question}</div>
           <div id="scrollContent" className={style['content-list']}>
-            <ProList
-              // itemLayout="vertical"
-              loading={loading}
-              actionRef={listRef}
-              dataSource={list}
-              request={async (params = {}, sort, filter) => {
-                // console.log(params);
-                return {};
-                // return CurrentPage({ page: current, pageSize, robotId: info.id });
-              }}
-              tableAlertRender={false}
-              metas={{
-                title: {
-                  render: (title: any, item: any, index: number) => {
+            {list.map((item: any, index: number) => {
+              return (
+                <div key={index}>
+                  {item.historyList.map((v: any, idx: any) => {
                     return (
-                      <div key={index}>
-                        {item.historyList.map((v: any, idx: any) => {
-                          return (
-                            <div key={v.id}>
-                              <div className={style['list-item']}>
+                      <Timeline key={v.id} mode={'left'} className={style['timeline']}>
+                        <div className={style['header']}>{v.createTime}</div>
+                        <Timeline.Item label={v.createTime} color="#1890FF" position="left">
+                          <div>
+                            <div style={{ paddingBottom: '16px' }}>
+                              <span>{v.creator}</span>
+                              <span style={{ marginLeft: '16px' }}>
+                                申请{approvalType[v.operationStatus]}
+                              </span>
+                            </div>
+                          </div>
+                          <div className={style['list-item']}>
+                            <div
+                              style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                flexDirection: 'column',
+                              }}
+                            >
+                              <div className={style['box-answer']}>
                                 <div
-                                  style={{
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    flexDirection: 'column',
-                                  }}
-                                >
-                                  <div className={style['box-answer']}>
-                                    <div
-                                      className={style['box-content']}
-                                      dangerouslySetInnerHTML={{ __html: v.answer }}
-                                    ></div>
-                                    <div className={style['box-footer']}>
+                                  className={style['box-content']}
+                                  dangerouslySetInnerHTML={{ __html: v.answer }}
+                                ></div>
+                                <div className={style['box-footer']}>
+                                  <div>
+                                    <span style={{ display: 'flex' }}>
+                                      生效渠道：
                                       <div>
-                                        <span>
-                                          生效渠道：
-                                          <Button type="link" onClick={() => {}}>
-                                            {v?.channelList &&
-                                              v?.channelList
-                                                ?.map((cl: any) => {
-                                                  return HIGH_CONFIG_SELECT?.[0]?.children?.find(
-                                                    (c: any) => c.name == cl,
-                                                  )?.label;
-                                                })
-                                                ?.join(' , ')}
-                                            {/* {!v?.channelList && '全部'} */}
-                                          </Button>
-                                        </span>
+                                        {v?.channelList &&
+                                          v?.channelList
+                                            ?.map((cl: any) => {
+                                              return HIGH_CONFIG_SELECT?.[0]?.children?.find(
+                                                (c: any) => c.name == cl,
+                                              )?.label;
+                                            })
+                                            ?.join(' , ')}
                                       </div>
-                                      <div>
-                                        生效时间：{`${v.enableStartTime}~${v.enableEndTime}`}
-                                      </div>
-                                    </div>
+                                    </span>
                                   </div>
+                                  <Divider type="vertical"></Divider>
+                                  <div>生效时间：{`${v.enableStartTime} ~ ${v.enableEndTime}`}</div>
                                 </div>
-                              </div>
-                              <div>
-                                <div>
-                                  <span>操作经办：{v.creator}</span>
-                                  <span style={{ marginLeft: '16px' }}>
-                                    操作类型：{approvalType[v.operationStatus]}
-                                  </span>
-                                  <span style={{ marginLeft: '16px' }}>
-                                    操作时间：{v.createTime}
-                                  </span>
-                                </div>
-                                <div
-                                  style={{
-                                    margin: '16px 0',
-                                    border: '1px solid #000',
-                                    padding: '0 6px ',
-                                  }}
-                                >
-                                  {v.reason}
-                                </div>
-                              </div>
-                              <div>
-                                <div>
-                                  <span>审批经办：{v.updateBy}</span>
-                                  <span style={{ marginLeft: '16px' }}>
-                                    审批结果：{approvalResult[v.approvalStatus]}
-                                  </span>
-                                  <span style={{ marginLeft: '16px' }}>
-                                    审批时间：{v.updateTime}
-                                  </span>
-                                </div>
-                                <Condition r-if={v.approvalStatus != 0}>
-                                  <div
-                                    style={{
-                                      margin: '16px 0',
-                                      border: '1px solid #000',
-                                      padding: '0 6px ',
-                                    }}
-                                  >
-                                    {v.approvalReason}
-                                  </div>
-                                </Condition>
                               </div>
                             </div>
-                          );
-                        })}
-                      </div>
+                          </div>
+                          <div className={style['reason']}>备注：{v.reason}</div>
+                        </Timeline.Item>
+                        <Timeline.Item
+                          label={v.updateTime}
+                          color={
+                            v.approvalStatus == 0
+                              ? 'green'
+                              : v.approvalStatus == 2
+                              ? 'red'
+                              : '#1890FF'
+                          }
+                        >
+                          <div>
+                            <div>
+                              <span>{v.updateBy}</span>
+                              <span style={{ marginLeft: '16px' }}>
+                                {approvalResult[v.approvalStatus]}申请
+                              </span>
+                            </div>
+                            <Condition r-if={v.approvalStatus != 0}>
+                              <div className={style['reason']}>备注：{v.approvalReason}</div>
+                            </Condition>
+                          </div>
+                        </Timeline.Item>
+                      </Timeline>
                     );
-                  },
-                },
-              }}
-              // pagination={{
-              //   pageSize: 10,
-              //   // position: ['bottomRight'],
-              // }}
-              rowKey={'id'}
-              key={'id'}
-            />
+                  })}
+                </div>
+              );
+            })}
           </div>
           <div
             style={{
@@ -221,7 +187,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
           </div>
         </div>
       </div>
-    </Modal>
+    </Drawer>
   );
 };
 
