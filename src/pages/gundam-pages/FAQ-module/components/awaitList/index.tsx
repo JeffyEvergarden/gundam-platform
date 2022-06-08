@@ -6,17 +6,18 @@ import { useModel, history } from 'umi';
 import config from '@/config';
 import Condition from '@/pages/gundam-pages/main-draw/flow/common/Condition';
 import KeepAlive, { useActivate, useUnactivate } from 'react-activation';
-import { useFaqModal } from '@/pages/gundam-pages/FAQ/FAQ-manage/model';
-import { deleteQuestion, editQuestion } from '@/pages/gundam-pages/FAQ/FAQ-manage/model/api';
 import { HIGH_CONFIG_SELECT } from '@/pages/gundam-pages/FAQ/FAQ-manage/const';
 import History from '../history-modal';
 import AnswerView from '../answerView-modal';
+import { approvalType } from './count';
+import ReasonModal from '../reason-modal';
+import { useApprovalModel } from './model';
 
 const { Option } = Select;
 
 const AwaitList: React.FC<any> = (props: any) => {
   const { cref, pageType } = props;
-  const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
+  const { list, getList, loading, totalPage } = useApprovalModel();
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     setInfo: model.setInfo,
@@ -24,98 +25,40 @@ const AwaitList: React.FC<any> = (props: any) => {
   const { getCreateUser } = useModel('drawer' as any, (model: any) => ({
     getCreateUser: model.getCreateUser,
   }));
-  const [total, setTotal] = useState<any>(0);
   const [current, setCurrent] = useState<any>(1);
+  const [total, setTotal] = useState<any>(0);
   const [pageSize, setPageSize] = useState<any>(10);
-  const [more, setMore] = useState<any>([]); //更多答案
-  const [edit, setEdit] = useState<any>([]); //编辑名字
-  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
+  const [searchText, setSearchText] = useState<any>('');
+  const [queryType, setQueryType] = useState<any>(0);
 
   const listRef = useRef<any>({});
   const historyRef = useRef<any>(null);
   const answerViewRef = useRef<any>(null);
+  const ReasonModalRef = useRef<any>(null);
 
-  useImperativeHandle(cref, () => ({
-    selectAll(flag: any) {
-      console.log(flag);
-      let all = faqList?.map((item) => item.id);
-      if (flag) {
-        setSelectedRowKeys(all);
-      } else {
-        setSelectedRowKeys([]);
-      }
-    },
-    CurrentPage,
-    editQ,
-    deleteRecycle() {
-      // console.log(selectedRowKeys);
-      return selectedRowKeys;
-    },
-  }));
-
-  const _editAnswer = (Q: any, A: any) => {
-    // console.log(Q);
-    // console.log(A);
-    if (Q.recycle == 0) {
-      history.push(
-        `/gundamPages/faq/answer?faqId=${Q.id}&answerId=${A.answerId}&recycle=${Q.recycle}`,
-      );
-    }
-  };
-
-  //获取问题列表
+  //获取列表
   const CurrentPage = async (obj?: any) => {
-    // let selectTree = sessionStorage.getItem('selectTree');
-    // console.log(obj);
     let params = {
       page: 1,
       pageSize: 10,
       robotId: info.id,
-      // ...heightSelect,
+      approvalStatus: pageType == 'pending' ? 2 : 1, //判断待审批 待处理
+      searchText: searchText,
+      queryType: queryType,
       ...obj,
     };
-    // console.log(selectTree);
-
     console.log(params);
-
-    setEdit([]);
-
-    let res: any = await getFaqList(params);
-    // console.log(res);
-    // getCreateUser(info.id, isRecycle);
-
+    let res: any = await getList(params);
+    console.log(res);
     setTotal(res?.total || 0);
     return res;
   };
   const pageChange = (page: any, size: any) => {
-    // console.log(page, size);
     setCurrent(page);
     setPageSize(size);
     CurrentPage({ page, pageSize: size, robotId: info.id });
   };
 
-  //编辑问题
-  const editQ = async (params: any) => {
-    let reqData = {
-      robotId: info.id,
-      ...params,
-    };
-    await editQuestion(reqData).then((res) => {
-      if (res.resultCode == config.successCode) {
-        message.success(res.resultDesc);
-        CurrentPage();
-        return true;
-      } else {
-        message.error(res.resultDesc);
-        CurrentPage();
-        return false;
-      }
-    });
-  };
-
-  useActivate(() => {
-    CurrentPage();
-  });
   useEffect(() => {
     CurrentPage();
   }, []);
@@ -124,14 +67,14 @@ const AwaitList: React.FC<any> = (props: any) => {
     <div className={style['FAQ-page']}>
       <div className={style['box']}>
         <div className={style['page_top']}>
-          <div>待处理xxx条</div>
+          <div>{pageType == 'pending' ? `待处理${total}条` : `待审核${total}条`}</div>
           <div className={style['page_top__right']}>
             <Space>
               <Input.Group compact>
                 <Select
                   // size="small"
                   defaultValue={0}
-                  // onChange={changeQueryType}
+                  onChange={setQueryType}
                   style={{ backgroundColor: '#fff' }}
                   bordered={false}
                 >
@@ -143,11 +86,13 @@ const AwaitList: React.FC<any> = (props: any) => {
                   bordered={false}
                   style={{ width: '280px', backgroundColor: '#fff', borderColor: '#fff' }}
                   onChange={(e: any) => {
-                    // setSearchText(e.target.value);
+                    setSearchText(e.target.value);
                   }}
-                  // onSearch={onEnter}
+                  onSearch={() => {
+                    CurrentPage();
+                  }}
                   onPressEnter={() => {
-                    // QuestionRef?.current?.CurrentPage();
+                    CurrentPage();
                   }}
                   placeholder={'请输入'}
                   allowClear
@@ -161,7 +106,7 @@ const AwaitList: React.FC<any> = (props: any) => {
             // itemLayout="vertical"
             loading={loading}
             actionRef={listRef}
-            dataSource={faqList}
+            dataSource={list}
             request={async (params = {}, sort, filter) => {
               // console.log(params);
               return {};
@@ -189,64 +134,75 @@ const AwaitList: React.FC<any> = (props: any) => {
                           }}
                         >
                           {/* 答案列表 */}
-                          {item.answerList.map((v: any, idx: any) => {
-                            if (!v.answerId) {
-                              return; // 一个答案都没有的时候才会没有answerId
-                            }
-                            return (
-                              <Condition r-if={more[index] || idx == 0} key={idx}>
-                                <div className={style['box-answer']}>
-                                  <div
-                                    className={style['box-content']}
-                                    dangerouslySetInnerHTML={{ __html: v.answer }}
-                                  ></div>
-                                  <div className={style['box-footer']}>
-                                    <div>
-                                      <span>
-                                        生效渠道：
-                                        <Button
-                                          type="link"
-                                          onClick={() => {
-                                            _editAnswer(item, v);
-                                          }}
-                                        >
-                                          {v?.channelList &&
-                                            v?.channelList
-                                              ?.map((cl: any) => {
-                                                return HIGH_CONFIG_SELECT?.[0]?.children?.find(
-                                                  (c: any) => c.name == cl,
-                                                )?.label;
-                                              })
-                                              ?.join(' , ')}
-                                          {/* {!v?.channelList && '全部'} */}
-                                        </Button>
-                                      </span>
-                                    </div>
-                                    <div>日期:123-123-123</div>
-                                  </div>
-                                </div>
-                              </Condition>
-                            );
-                          })}
+
+                          <div className={style['box-answer']}>
+                            <div
+                              className={style['box-content']}
+                              dangerouslySetInnerHTML={{ __html: item.answer }}
+                            ></div>
+                            <div className={style['box-footer']}>
+                              <div>
+                                <span>
+                                  生效渠道：
+                                  <Button
+                                    type="link"
+                                    onClick={() => {
+                                      // _editAnswer(item, v);
+                                    }}
+                                  >
+                                    {item?.channelList &&
+                                      item?.channelList
+                                        ?.map((cl: any) => {
+                                          return HIGH_CONFIG_SELECT?.[0]?.children?.find(
+                                            (c: any) => c.name == cl,
+                                          )?.label;
+                                        })
+                                        ?.join(' , ')}
+                                  </Button>
+                                </span>
+                              </div>
+                              <div>日期：{`${item.enableStartTime}~${item.enableEndTime}`}</div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div>
-                        <div>
-                          <span>申请人：张珊</span>
-                          <span style={{ marginLeft: '16px' }}>申请类型：修改答案</span>
-                          <span style={{ marginLeft: '16px' }}>申请时间：111-111-111</span>
-                        </div>
+                        <Condition r-if={pageType == 'reviewed'}>
+                          <div>
+                            <span>申请人：{item.creator}</span>
+                            <span style={{ marginLeft: '16px' }}>
+                              申请类型：{approvalType[item.operationStatus]}
+                            </span>
+                            <span style={{ marginLeft: '16px' }}>申请时间：{item.createTime}</span>
+                          </div>
+                        </Condition>
+                        <Condition r-if={pageType == 'pending'}>
+                          <div>
+                            <span>审批经办：{item.creator}</span>
+                            <span style={{ marginLeft: '16px' }}>
+                              审批结果：{approvalType[item.operationStatus]}
+                            </span>
+                            <span style={{ marginLeft: '16px' }}>审批时间：{item.createTime}</span>
+                          </div>
+                        </Condition>
                         <div
                           style={{ margin: '16px 0', border: '1px solid #000', padding: '0 6px ' }}
                         >
-                          原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因
+                          {item.reason}
                         </div>
-                        <Condition r-if={pageType == 'pending'}>
+                        <Condition r-if={pageType == 'reviewed'}>
                           <div>
                             <Button type="primary" size="small">
                               通过
                             </Button>
-                            <Button type="primary" size="small" style={{ marginLeft: '16px' }}>
+                            <Button
+                              type="primary"
+                              size="small"
+                              style={{ marginLeft: '16px' }}
+                              onClick={() => {
+                                ReasonModalRef?.current?.open('退回');
+                              }}
+                            >
                               退回
                             </Button>
                             <Button
@@ -254,7 +210,7 @@ const AwaitList: React.FC<any> = (props: any) => {
                               size="small"
                               style={{ marginLeft: '16px' }}
                               onClick={() => {
-                                answerViewRef?.current?.open();
+                                answerViewRef?.current?.open(item);
                               }}
                             >
                               查看现有答案
@@ -264,14 +220,14 @@ const AwaitList: React.FC<any> = (props: any) => {
                               size="small"
                               style={{ marginLeft: '16px' }}
                               onClick={() => {
-                                historyRef?.current?.open();
+                                historyRef?.current?.open(item);
                               }}
                             >
                               历史申请记录
                             </Button>
                           </div>
                         </Condition>
-                        <Condition r-if={pageType == 'reviewed'}>
+                        <Condition r-if={pageType == 'pending'}>
                           <div>
                             <Button type="primary" size="small">
                               编辑
@@ -281,7 +237,7 @@ const AwaitList: React.FC<any> = (props: any) => {
                               size="small"
                               style={{ marginLeft: '16px' }}
                               onClick={() => {
-                                answerViewRef?.current?.open();
+                                answerViewRef?.current?.open(item);
                               }}
                             >
                               查看现有答案
@@ -291,12 +247,19 @@ const AwaitList: React.FC<any> = (props: any) => {
                               size="small"
                               style={{ marginLeft: '16px' }}
                               onClick={() => {
-                                historyRef?.current?.open();
+                                historyRef?.current?.open(item);
                               }}
                             >
                               历史申请记录
                             </Button>
-                            <Button type="primary" size="small" style={{ marginLeft: '16px' }}>
+                            <Button
+                              type="primary"
+                              size="small"
+                              style={{ marginLeft: '16px' }}
+                              onClick={() => {
+                                ReasonModalRef?.current?.open('删除');
+                              }}
+                            >
                               删除
                             </Button>
                           </div>
@@ -307,10 +270,6 @@ const AwaitList: React.FC<any> = (props: any) => {
                 },
               },
             }}
-            // pagination={{
-            //   pageSize: 10,
-            //   // position: ['bottomRight'],
-            // }}
             rowKey={'id'}
             key={'id'}
           />
@@ -336,6 +295,7 @@ const AwaitList: React.FC<any> = (props: any) => {
       </div>
       <History cref={historyRef} />
       <AnswerView cref={answerViewRef} />
+      <ReasonModal cref={ReasonModalRef}></ReasonModal>
     </div>
   );
 };

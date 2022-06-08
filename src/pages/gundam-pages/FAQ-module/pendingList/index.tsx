@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AwaitList from '../components/awaitList';
 
 const PendingList = (props: any) => {
