@@ -42,3 +42,27 @@ export async function getRecordList(params?: { [key: string]: any }) {
     params,
   });
 }
+
+//获取待审核  待处理列表
+export async function getApprovalList(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/faqApprovalPageList`, {
+    method: 'GET',
+    params,
+  });
+}
+
+//获取历史申请记录
+export async function getHistoryList(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/faqApprovalHistoryPageList`, {
+    method: 'GET',
+    params,
+  });
+}
+
+//获取现有答案列表
+export async function getAnswerList(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/answerList`, {
+    method: 'GET',
+    params,
+  });
+}

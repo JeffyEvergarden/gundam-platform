@@ -4,7 +4,7 @@ import { useModel } from 'umi';
 import style from './style.less';
 import ProList from '@ant-design/pro-list';
 import { HIGH_CONFIG_SELECT } from '@/pages/gundam-pages/FAQ/FAQ-manage/const';
-import { useFaqModal } from '@/pages/gundam-pages/FAQ/FAQ-manage/model';
+import { useAnswerListModel } from './model';
 
 const { Search } = Input;
 
@@ -14,7 +14,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
   const [current, setCurrent] = useState<any>(1);
   const [pageSize, setPageSize] = useState<any>(10);
 
-  const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
+  const { list, getList, loading } = useAnswerListModel();
 
   const listRef = useRef<any>({});
 
@@ -27,8 +27,9 @@ const SelectorModal: React.FC<any> = (props: any) => {
   const [visible, setVisible] = useState<boolean>(false);
 
   useImperativeHandle(cref, () => ({
-    open: () => {
+    open: (row: any) => {
       // 显示
+      CurrentPage({ faqId: row.id });
       setVisible(true);
     },
     close: () => {
@@ -42,23 +43,15 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   //获取问题列表
   const CurrentPage = async (obj?: any) => {
-    // let selectTree = sessionStorage.getItem('selectTree');
-    // console.log(obj);
     let params = {
-      page: 1,
-      pageSize: 10,
-      robotId: info.id,
+      ...obj,
     };
 
-    let res: any = await getFaqList(params);
+    let res: any = await getList(params);
 
     setTotal(res?.total || 0);
     return res;
   };
-
-  useEffect(() => {
-    CurrentPage();
-  }, []);
 
   return (
     <Modal
@@ -71,10 +64,23 @@ const SelectorModal: React.FC<any> = (props: any) => {
       okText={'确定'}
       onOk={submit}
     >
-      {faqList?.[0]?.answerList.map((item: any) => {
+      {list?.map((item: any) => {
         return (
           <div className={style['box']}>
-            <div>{item?.answer}</div> <div>生效渠道：xxx 生效时间：000</div>
+            <div>{item?.answer}</div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div>
+                生效渠道：
+                {item?.channelList &&
+                  item?.channelList
+                    ?.map((cl: any) => {
+                      return HIGH_CONFIG_SELECT?.[0]?.children?.find((c: any) => c.name == cl)
+                        ?.label;
+                    })
+                    ?.join(' , ')}
+              </div>
+              <div>生效时间：{`${item.enableStartTime}~${item.enableEndTime}`}</div>
+            </div>
           </div>
         );
       })}

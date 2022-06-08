@@ -6,18 +6,18 @@ import { useModel, history } from 'umi';
 import config from '@/config';
 import Condition from '@/pages/gundam-pages/main-draw/flow/common/Condition';
 import KeepAlive, { useActivate, useUnactivate } from 'react-activation';
-import { useFaqModal } from '@/pages/gundam-pages/FAQ/FAQ-manage/model';
-import { deleteQuestion, editQuestion } from '@/pages/gundam-pages/FAQ/FAQ-manage/model/api';
 import { HIGH_CONFIG_SELECT } from '@/pages/gundam-pages/FAQ/FAQ-manage/const';
 import History from '../history-modal';
 import AnswerView from '../answerView-modal';
 import { approvalType } from './count';
 import ReasonModal from '../reason-modal';
+import { useApprovalModel } from './model';
 
 const { Option } = Select;
 
 const AwaitList: React.FC<any> = (props: any) => {
-  const { cref, pageType, list, loading, totalPage = 0 } = props;
+  const { cref, pageType } = props;
+  const { list, getList, loading, totalPage } = useApprovalModel();
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     setInfo: model.setInfo,
@@ -26,55 +26,55 @@ const AwaitList: React.FC<any> = (props: any) => {
     getCreateUser: model.getCreateUser,
   }));
   const [current, setCurrent] = useState<any>(1);
+  const [total, setTotal] = useState<any>(0);
   const [pageSize, setPageSize] = useState<any>(10);
+  const [searchText, setSearchText] = useState<any>('');
+  const [queryType, setQueryType] = useState<any>(0);
 
   const listRef = useRef<any>({});
   const historyRef = useRef<any>(null);
   const answerViewRef = useRef<any>(null);
   const ReasonModalRef = useRef<any>(null);
 
-  useImperativeHandle(cref, () => ({
-    CurrentPage,
-  }));
-
-  //获取问题列表
+  //获取列表
   const CurrentPage = async (obj?: any) => {
-    // let selectTree = sessionStorage.getItem('selectTree');
-    // console.log(obj);
     let params = {
       page: 1,
       pageSize: 10,
       robotId: info.id,
-      // ...heightSelect,
+      approvalStatus: pageType == 'pending' ? 2 : 1, //判断待审批 待处理
+      searchText: searchText,
+      queryType: queryType,
       ...obj,
     };
     console.log(params);
-    // let res: any = await getFaqList(params);
-    // console.log(res);
-    // getCreateUser(info.id, isRecycle);
-
-    // setTotal(res?.total || 0);
-    // return res;
+    let res: any = await getList(params);
+    console.log(res);
+    setTotal(res?.total || 0);
+    return res;
   };
   const pageChange = (page: any, size: any) => {
-    // console.log(page, size);
     setCurrent(page);
     setPageSize(size);
     CurrentPage({ page, pageSize: size, robotId: info.id });
   };
 
+  useEffect(() => {
+    CurrentPage();
+  }, []);
+
   return (
     <div className={style['FAQ-page']}>
       <div className={style['box']}>
         <div className={style['page_top']}>
-          <div>{pageType == 'pending' ? `待处理${totalPage}条` : `待审核${totalPage}条`}</div>
+          <div>{pageType == 'pending' ? `待处理${total}条` : `待审核${total}条`}</div>
           <div className={style['page_top__right']}>
             <Space>
               <Input.Group compact>
                 <Select
                   // size="small"
                   defaultValue={0}
-                  // onChange={changeQueryType}
+                  onChange={setQueryType}
                   style={{ backgroundColor: '#fff' }}
                   bordered={false}
                 >
@@ -86,11 +86,13 @@ const AwaitList: React.FC<any> = (props: any) => {
                   bordered={false}
                   style={{ width: '280px', backgroundColor: '#fff', borderColor: '#fff' }}
                   onChange={(e: any) => {
-                    // setSearchText(e.target.value);
+                    setSearchText(e.target.value);
                   }}
-                  // onSearch={onEnter}
+                  onSearch={() => {
+                    CurrentPage();
+                  }}
                   onPressEnter={() => {
-                    // QuestionRef?.current?.CurrentPage();
+                    CurrentPage();
                   }}
                   placeholder={'请输入'}
                   allowClear
@@ -208,7 +210,7 @@ const AwaitList: React.FC<any> = (props: any) => {
                               size="small"
                               style={{ marginLeft: '16px' }}
                               onClick={() => {
-                                answerViewRef?.current?.open();
+                                answerViewRef?.current?.open(item);
                               }}
                             >
                               查看现有答案
@@ -218,7 +220,7 @@ const AwaitList: React.FC<any> = (props: any) => {
                               size="small"
                               style={{ marginLeft: '16px' }}
                               onClick={() => {
-                                historyRef?.current?.open();
+                                historyRef?.current?.open(item);
                               }}
                             >
                               历史申请记录
@@ -235,7 +237,7 @@ const AwaitList: React.FC<any> = (props: any) => {
                               size="small"
                               style={{ marginLeft: '16px' }}
                               onClick={() => {
-                                answerViewRef?.current?.open();
+                                answerViewRef?.current?.open(item);
                               }}
                             >
                               查看现有答案
@@ -245,7 +247,7 @@ const AwaitList: React.FC<any> = (props: any) => {
                               size="small"
                               style={{ marginLeft: '16px' }}
                               onClick={() => {
-                                historyRef?.current?.open();
+                                historyRef?.current?.open(item);
                               }}
                             >
                               历史申请记录
@@ -268,10 +270,6 @@ const AwaitList: React.FC<any> = (props: any) => {
                 },
               },
             }}
-            // pagination={{
-            //   pageSize: 10,
-            //   // position: ['bottomRight'],
-            // }}
             rowKey={'id'}
             key={'id'}
           />
@@ -286,7 +284,7 @@ const AwaitList: React.FC<any> = (props: any) => {
             size="small"
             showSizeChanger
             className={style['Pagination']}
-            total={totalPage || 0}
+            total={total || 0}
             current={current}
             showTotal={(total, range) => `第 ${range[0]}-${range[1]} 条/总共 ${total} 条`}
             defaultPageSize={10}

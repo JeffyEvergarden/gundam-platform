@@ -42,7 +42,7 @@ const ReasonModal: React.FC<any> = (props: any) => {
     >
       <Form form={form}>
         <Form.Item label={'备注'}>
-          <Input.TextArea placeholder="请填写退回原因"></Input.TextArea>
+          <Input.TextArea placeholder="请填写退回原因" maxLength={200}></Input.TextArea>
         </Form.Item>
       </Form>
     </Modal>
