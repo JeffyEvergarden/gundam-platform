@@ -1,3 +1,12 @@
+.drawer {
+  :global {
+    .ant-drawer-body {
+      scroll-behavior: smooth;
+      .scrollbar(4px);
+    }
+  }
+}
+
 .my-row_center {
   display: flex;
   align-items: center;
@@ -29,12 +38,10 @@
 }
 
 .record-bg {
-  height: 500px;
-  padding: 24px;
-  overflow: auto;
-  background-color: #f0f2f5;
-  border-radius: 10px;
-  scroll-behavior: smooth;
+  // height: 100%;
+  padding-right: 12px;
+  // overflow: auto;
+  // scroll-behavior: smooth;
   .scrollbar(4px);
 }
 
@@ -56,19 +63,21 @@
 }
 
 .avator {
-  width: 30px;
-  height: 30px;
-  background: #333;
+  width: 32px;
+  height: 32px;
+  background: #fff;
+  border: none;
   border-radius: 50%;
 }
 
 .content {
   min-width: 50px;
-  max-width: 420px;
-  margin: 4px 16px 0;
+  max-width: 616px;
+  margin: 8px 14px 0;
   padding: 8px;
-  background: #fff;
-  border-radius: 6px;
+  word-break: break-all;
+  background: #f8f8f8;
+  border-radius: 4px;
 }
 
 .record-time {

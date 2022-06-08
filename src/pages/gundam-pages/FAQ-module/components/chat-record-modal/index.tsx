@@ -1,10 +1,12 @@
 import { useState, useImperativeHandle, useEffect, useMemo } from 'react';
-import { Modal, Button, Table, Tooltip, Tabs, Input, message } from 'antd';
+import { Drawer, Button, Table, Tooltip, Tabs, Input, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useModel } from 'umi';
 import style from './style.less';
 import Condition from '@/components/Condition';
 import { useSessionModel } from '../detail-modal/model';
+
+import robotAvator from './img/robot.png';
 
 const { Search } = Input;
 
@@ -43,32 +45,25 @@ const RecordModal: React.FC<any> = (props: any) => {
   };
 
   return (
-    <Modal
-      className={style['modal-bg']}
+    <Drawer
+      className={style['drawer']}
       width={850}
-      title={'查看聊天记录'}
+      title={'会话记录'}
       visible={visible}
-      onCancel={() => setVisible(false)}
+      onClose={close}
       maskClosable={false}
-      okText={'确定'}
-      onOk={submit}
-      footer={
-        <div className={style['my-row_center']}>
-          <Button onClick={close}>关闭</Button>
-        </div>
-      }
     >
-      <div className={style['my-row']}>
+      {/* <div className={style['my-row']}>
         <div>访客信息:</div>
-        {/* <div>访客信息:</div> */}
-      </div>
+        <div>访客信息:</div> 
+      </div> */}
       <div className={style['record-bg']}>
         {recordList.map((item: any, index: number) => {
           let content: any = '';
           if (item.userName === 'left') {
             content = (
               <div className={style['my-row_start']}>
-                <div className={style['avator']}></div>
+                <img className={style['avator']} src={robotAvator} alt="机器人头像"></img>
                 <div
                   className={style['content']}
                   dangerouslySetInnerHTML={{ __html: item.msg }}
@@ -82,7 +77,7 @@ const RecordModal: React.FC<any> = (props: any) => {
                   className={style['content']}
                   dangerouslySetInnerHTML={{ __html: item.msg }}
                 ></div>
-                <div className={style['avator']}></div>
+                <img className={style['avator']} src={robotAvator} alt="机器人头像"></img>
               </div>
             );
           }
@@ -96,7 +91,7 @@ const RecordModal: React.FC<any> = (props: any) => {
           );
         })}
       </div>
-    </Modal>
+    </Drawer>
   );
 };
 

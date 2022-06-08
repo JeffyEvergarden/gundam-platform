@@ -7,6 +7,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useTableModel } from './model';
 import DetailModal from '../components/detail-modal';
 import SelectFaqModal from '../components/select-faq-modal';
+import FaqSelect from './FaqSelect';
 import { QuestionCircleOutlined, MonitorOutlined } from '@ant-design/icons';
 import style from './style.less';
 
@@ -119,7 +120,7 @@ const FAQClearList = (props: any) => {
             >
               {arr.map((item: any, i: number) => {
                 return (
-                  <Tooltip title={item.recommend} placement={'topLeft'}>
+                  <Tooltip title={item.recommend} placement={'topLeft'} key={i}>
                     <div className={style['qustion-label']} key={i}>
                       {item.recommendType == '1' ? (
                         <QuestionCircleOutlined className={style['icon']} />
@@ -315,7 +316,7 @@ const FAQClearList = (props: any) => {
       >
         <div className={style['modal-page']}>
           <div className={style['modal-form']}>
-            <Form form={form} labelCol={{ span: 4 }} wrapperCol={{ span: 18 }} autoComplete="off">
+            <Form form={form} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }} autoComplete="off">
               <Form.Item
                 label="问题名称"
                 name="question"
@@ -328,10 +329,12 @@ const FAQClearList = (props: any) => {
               </Form.Item>
 
               <Form.Item
-                label="渠道"
-                name="channel"
-                rules={[{ required: true, message: '请选择渠道' }]}
-              ></Form.Item>
+                label="标准问/意图"
+                name="questionTypeList"
+                rules={[{ required: true, message: '请选择标准问/意图' }]}
+              >
+                <FaqSelect />
+              </Form.Item>
             </Form>
           </div>
         </div>
