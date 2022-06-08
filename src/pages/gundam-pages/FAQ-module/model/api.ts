@@ -10,7 +10,7 @@ export async function getBlackList(params?: { [key: string]: any }) {
     params,
   });
 }
-
+// 黑名单删除
 export async function deleteBlackCorpus(data?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/faq/blacklist/delete`, {
     method: 'POST',
@@ -18,7 +18,16 @@ export async function deleteBlackCorpus(data?: { [key: string]: any }) {
   });
 }
 
-// ---------------
+// 黑名单新增
+export async function addBlackCorpus(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/faq/blacklist/add`, {
+    method: 'POST',
+    data,
+  });
+}
+
+// ----------------------------------------------------
+// 澄清模块
 // 获取澄清列表
 export async function getClearList(params?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/faq/clearlist`, {
@@ -26,6 +35,22 @@ export async function getClearList(params?: { [key: string]: any }) {
     params,
   });
 }
+
+export async function deleteClearCorpus(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/faq/clearlist/delete`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function addClearCorpus(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/faq/clearlist/add`, {
+    method: 'POST',
+    data,
+  });
+}
+
+// ----------------------------------------------------
 
 // 获取会话列表
 export async function getSessionList(params?: { [key: string]: any }) {

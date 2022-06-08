@@ -1,17 +1,31 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useModel, history } from 'umi';
-import { Table, Button, Dropdown, message, Popconfirm } from 'antd';
+import { Button, Radio, Popconfirm, Form, Input, Modal } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import Condition from '@/components/Condition';
 import { PlusOutlined } from '@ant-design/icons';
+import { formatChannel, CHANNAL_LIST } from '@/pages/gundam-pages/FAQ/const';
 import { useTableModel } from './model';
+import style from './style.less';
+
+const { TextArea } = Input;
 
 const FAQBlackList = (props: any) => {
-  const { tableList, getTableList, tableLoading, deleteBlack } = useTableModel();
+  const { getTableList, tableLoading, deleteBlack, opLoading, addBlack } = useTableModel();
+
+  const { info } = useModel('gundam', (model: any) => {
+    return {
+      info: model.info,
+    };
+  });
 
   const tableRef = useRef<any>({});
 
   const modalRef = useRef<any>({});
+
+  const [visible, setVisible] = useState<boolean>(false);
+
+  const [form] = Form.useForm();
 
   // 删除
   const deleteRow = async (row: any) => {
@@ -48,9 +62,8 @@ const FAQBlackList = (props: any) => {
       title: '渠道',
       dataIndex: 'channel',
       search: false,
-      valueEnum: {
-        0: { text: '文本' },
-        1: { text: '语音' },
+      render: (val: any) => {
+        return formatChannel(val);
       },
       width: 180,
     },
@@ -88,6 +101,38 @@ const FAQBlackList = (props: any) => {
       },
     },
   ];
+
+  // 弹窗相关
+  // 打开弹窗
+  const openModal = () => {
+    form.resetFields();
+    setVisible(true);
+  };
+  // 关闭弹窗
+  const handleCancel = () => {
+    setVisible(false);
+  };
+  // 确认弹窗
+  const handleOk = async () => {
+    // 校验填写
+    let res: any = await form.validateFields().catch((err: any) => false);
+    if (!res) {
+      return;
+    }
+    // ------------
+    let data: any = {
+      robotId: info.id,
+      ...res,
+    };
+    res = await addBlack(data);
+    if (res) {
+      // 成功刷新当前页面
+      handleCancel();
+      tableRef.current.reload();
+    }
+  };
+
+  // -------------------
 
   useEffect(() => {
     tableRef.current.reload();
@@ -140,13 +185,55 @@ const FAQBlackList = (props: any) => {
             icon={<PlusOutlined />}
             type="primary"
             onClick={() => {
-              modalRef.current?.open?.();
+              openModal();
             }}
           >
             新建
           </Button>,
         ]}
       />
+
+      <Modal
+        title={'新增FAQ-黑名单'}
+        visible={visible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        confirmLoading={opLoading}
+        maskClosable={false}
+      >
+        <div className={style['modal-page']}>
+          <div className={style['modal-form']}>
+            <Form form={form} labelCol={{ span: 4 }} wrapperCol={{ span: 18 }} autoComplete="off">
+              <Form.Item
+                label="问题名称"
+                name="question"
+                rules={[
+                  { required: true, message: '请输入问题名称' },
+                  { max: 200, message: '不能超过200个文字' },
+                ]}
+              >
+                <TextArea placeholder={'请输入问题名称'} maxLength={200} rows={3} />
+              </Form.Item>
+
+              <Form.Item
+                label="渠道"
+                name="channel"
+                rules={[{ required: true, message: '请选择渠道' }]}
+              >
+                <Radio.Group>
+                  {CHANNAL_LIST.map((item: any, index: number) => {
+                    return (
+                      <Radio value={item.value} key={index}>
+                        <span style={{ lineHeight: '36px' }}>{item.label}</span>
+                      </Radio>
+                    );
+                  })}
+                </Radio.Group>
+              </Form.Item>
+            </Form>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

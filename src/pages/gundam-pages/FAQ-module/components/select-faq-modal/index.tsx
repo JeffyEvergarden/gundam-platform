@@ -7,6 +7,7 @@ import { useFaqModal } from '../../../FAQ/FAQ-manage/model';
 import style from './style.less';
 import Condition from '@/components/Condition';
 import { deleteBusinessItem } from '@/pages/gundam-pages/business-draw/model/api';
+import { QuestionCircleOutlined, MonitorOutlined } from '@ant-design/icons';
 
 const { TabPane } = Tabs;
 
@@ -130,6 +131,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
   const [current1, setCurrent1] = useState<number>(1);
   const [current2, setCurrent2] = useState<number>(1);
 
+  // 切换分页
   const onChange1 = (val: any) => {
     if (loading) {
       return;
@@ -152,11 +154,14 @@ const SelectorModal: React.FC<any> = (props: any) => {
     setCurrent2(val);
   };
 
+  // 搜索文本
   const [searchText1, setSearchText1] = useState<any>('');
   const [searchText2, setSearchText2] = useState<any>('');
 
+  // 查询意图列表
   const [searchWishList, setSearchWishList] = useState<any>([]);
 
+  // 监听查询内容输出
   const onSearchChange1 = (e: any) => {
     setSearchText1(e.target.value);
   };
@@ -165,6 +170,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     setSearchText2(e.target.value);
   };
 
+  // faq列表触发查询
   const onSearch1 = () => {
     if (!classType) {
       return;
@@ -178,6 +184,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     });
   };
 
+  // 意图触发查询
   const tableWishList: any[] = useMemo(() => {
     return wishList.map((item: any, index: number) => {
       return {
@@ -191,6 +198,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     setSearchWishList(tableWishList);
   }, [tableWishList]);
 
+  // 意图触发查询
   const onSearch2 = () => {
     const list = tableWishList.filter((item: any) => {
       return item?.intentName?.includes?.(searchText2);
@@ -216,9 +224,26 @@ const SelectorModal: React.FC<any> = (props: any) => {
     getFaqList({ page: 1, pageSize: 10, robotId: info.id, faqTypeId: val[0] });
   };
 
+  // 勾选筛选设置
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
+      // 如果是单选
+      if (type === 'radio') {
+        let lastInfo = selectedRows?.[0];
+        setSelectList([
+          {
+            recommendType: 1,
+            recommendId: lastInfo.id,
+            recommend: lastInfo.question,
+          },
+        ]);
+        // 设置选中数组
+        setSelectedQuestionKeys(selectedRowKeys);
+        return;
+      }
+
       // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      // 如果是多选
       // 新增
       if (selectedRowKeys.length > selectedQuestionKeys.length) {
         // 获取
@@ -243,7 +268,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
         let list: any[] = selectList?.filter((item: any) => {
           return !(item.recommendType === 1 && keys.includes(item.recommendId));
         });
-        console.log(selectedQuestionKeys, keys, list);
+        // console.log(selectedQuestionKeys, keys, list);
         setSelectList(list);
       }
       // 设置选中数组
@@ -259,6 +284,21 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   const rowFlowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
+      // 如果是单选
+      if (type === 'radio') {
+        let lastInfo = selectedRows?.[0];
+        setSelectList([
+          {
+            recommendType: 2,
+            recommendId: lastInfo.id,
+            recommend: lastInfo.label,
+          },
+        ]);
+        // 设置选中数组
+        setSelectedWishKeys(selectedRowKeys);
+        return;
+      }
+
       if (selectedRowKeys.length > selectedWishKeys.length) {
         // 获取
         let lastInfo = selectedRows?.[selectedRows.length - 1];
@@ -296,13 +336,14 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     open: (obj: any) => {
-      // console.log(obj);
+      console.log(obj);
       // 设置不能选的
       setDisabledWishKeys(obj?.disabledWishKeys || []);
       setDisabledQuestionKeys(obj?.disabledQuestionKeys || []);
       // 设置默认选中
       setSelectedQuestionKeys(obj?.selectedQuestionKeys || []);
       setSelectedWishKeys(obj?.selectedWishKeys || []);
+      setSelectList(obj?.selectList || []);
 
       if (obj?.showFlow === false) {
         setShowWishKey(false);
@@ -324,12 +365,13 @@ const SelectorModal: React.FC<any> = (props: any) => {
     },
   }));
 
+  // 提交
   const submit = () => {
     confirm(selectList || []);
     setVisible(false);
   };
 
-  // 删除
+  // 删除某个选项
   const deleteItem = (item: any, index: number) => {
     selectList.splice(index, 1);
     if (item.recommendType === 1) {
@@ -368,16 +410,22 @@ const SelectorModal: React.FC<any> = (props: any) => {
                     <Tooltip placement="topLeft" title={item.recommend}>
                       <div className={style['label']}>
                         <span className={style['num']}>{index + 1}.</span>
+                        {item.recommendType == '1' ? (
+                          <QuestionCircleOutlined className={style['icon']} />
+                        ) : (
+                          <MonitorOutlined className={style['icon']} />
+                        )}
                         {item.recommend}
                       </div>
                     </Tooltip>
                     <Button
-                      type="link"
-                      icon={<DeleteOutlined />}
+                      type="text"
                       onClick={() => {
                         deleteItem(item, index);
                       }}
-                    ></Button>
+                    >
+                      <DeleteOutlined style={{ color: '#00000060' }} />
+                    </Button>
                   </div>
                 );
               })}
@@ -407,7 +455,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
                     onPressEnter={onSearch1}
                     onChange={onSearchChange1}
                     allowClear
-                    style={{ width: 200 }}
+                    style={{ width: '300px' }}
                   />
                 </div>
 
@@ -446,7 +494,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
                   onPressEnter={onSearch2}
                   onChange={onSearchChange2}
                   allowClear
-                  style={{ width: 300 }}
+                  style={{ width: '300px' }}
                 />
               </div>
 

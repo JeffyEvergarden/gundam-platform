@@ -23,7 +23,7 @@ import EditBoard from './index';
 import RemarkModal from './components/remark-modal';
 import { history, useModel } from 'umi';
 import style from './style.less';
-import { CHANNAL_LIST } from './test';
+import { CHANNAL_LIST } from '../const';
 import { useAnswerModel, useQuestionModel } from './model';
 import { processAnswerRequest, processAnswerBody, processBody } from './model/utils';
 import config from '@/config';

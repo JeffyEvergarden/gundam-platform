@@ -26,7 +26,7 @@ import RemarkModal from './components/remark-modal';
 import EditBoard from './index';
 import { history, useModel } from 'umi';
 import style from './style.less';
-import { CHANNAL_LIST } from './test';
+import { CHANNAL_LIST } from '../const';
 import { useQuestionModel } from './model';
 import { processRequest, processBody } from './model/utils';
 import config from '@/config';

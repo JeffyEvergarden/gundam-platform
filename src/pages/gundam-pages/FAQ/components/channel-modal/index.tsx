@@ -3,7 +3,7 @@ import style from './style.less';
 import React, { useImperativeHandle, useState } from 'react';
 import MyTree from '../../FAQ-manage/components/my-tree';
 import SpCheckbox from '../../question-board/components/sp-checkbox';
-import { CHANNAL_LIST } from '../../question-board/test';
+import { CHANNAL_LIST } from '../../const';
 
 const ChannelModal: React.FC<any> = (props: any) => {
   const { cref } = props;
