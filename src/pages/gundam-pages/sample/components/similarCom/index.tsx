@@ -2,10 +2,11 @@ import React, { Fragment } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { history, useModel } from 'umi';
 import { Table } from 'antd';
+import Condition from '@/components/Condition';
 import styles from './../index.less';
 
 export default (props: any) => {
-  const { tableInfo, inputValue, similarTableData, refresh, pageType } = props;
+  const { tableInfo, inputValue, similarTableData, refresh, pageType, showTop = true } = props;
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -146,32 +147,35 @@ export default (props: any) => {
 
   return (
     <div className={styles.similar}>
-      <div className={styles.tableTitle}>
-        {pageType == 'wish' ? '当前意图下相似语料' : '当前问题下的相似问法'}
-      </div>
-      <Table
-        // headerTitle={'当前意图下相似语料'}
-        rowKey={(record: any) => record.id}
-        // search={false}
-        columns={pageType == 'wish' ? columnsCurrent : currentStd}
-        dataSource={
-          pageType == 'wish'
-            ? similarTableData?.currentIntentList
-            : similarTableData?.currentStdQueryList
-        }
-        // options={false}
-        pagination={false}
-        // request={async (params) => {
-        //   return getCurrentData(params);
-        // }}
-        // scroll={{ y: 200 }}
-      />
+      <Condition r-if={showTop}>
+        <div className={styles.tableTitle}>
+          {pageType == 'wish' ? '当前意图下相似语料' : '当前问题下的相似问法'}
+        </div>
+        <Table
+          // headerTitle={'当前意图下相似语料'}
+          rowKey={(record: any) => record.id || record.stdQueryId || record.intenId}
+          // search={false}
+          columns={pageType == 'wish' ? columnsCurrent : currentStd}
+          dataSource={
+            pageType == 'wish'
+              ? similarTableData?.currentIntentList
+              : similarTableData?.currentStdQueryList
+          }
+          // options={false}
+          pagination={false}
+          // request={async (params) => {
+          //   return getCurrentData(params);
+          // }}
+          // scroll={{ y: 200 }}
+        />
+      </Condition>
+
       <div className={styles.tableTitle}>
         {pageType == 'wish' ? '其他意图下相似语料' : '其他标准问近似问法'}
       </div>
       <Table
         // headerTitle={'其他意图下相似语料'}
-        rowKey={(record) => record.id}
+        rowKey={(record: any) => record.id || record.stdQueryId || record.intenId}
         // search={false}
         columns={pageType == 'wish' ? columnsOther : orderStd}
         dataSource={
@@ -191,7 +195,7 @@ export default (props: any) => {
       </div>
       <Table
         // headerTitle={'FAQ标准问/相似问'}
-        rowKey={(record) => record.id}
+        rowKey={(record: any) => record.id || record.stdQueryId || record.intenId}
         // search={false}
         columns={pageType == 'wish' ? listFAQ : intentList}
         dataSource={
