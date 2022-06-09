@@ -31,6 +31,7 @@ const FAQBlackList = (props: any) => {
   const deleteRow = async (row: any) => {
     let params: any = {
       id: row.id,
+      robotId: info.id,
     };
     let res: any = await deleteBlack(params);
     if (res) {
@@ -41,12 +42,12 @@ const FAQBlackList = (props: any) => {
 
   const columns: any[] = [
     {
-      title: '问题',
+      title: '客户问题',
       dataIndex: 'question',
       fixed: 'left',
       width: 400,
       fieldProps: {
-        placeholder: '请输入查询内容',
+        placeholder: '请输入问题查询内容',
         // onPressEnter: (e: any) => {
         //   console.log(e);
         //   let obj = { ...searchForm, robotName: e.target.value };
@@ -60,7 +61,7 @@ const FAQBlackList = (props: any) => {
     },
     {
       title: '渠道',
-      dataIndex: 'channel',
+      dataIndex: 'channelCode',
       search: false,
       render: (val: any) => {
         return formatChannel(val);
@@ -217,7 +218,7 @@ const FAQBlackList = (props: any) => {
 
               <Form.Item
                 label="渠道"
-                name="channel"
+                name="channelCode"
                 rules={[{ required: true, message: '请选择渠道' }]}
               >
                 <Radio.Group>

@@ -14,7 +14,8 @@ import style from './style.less';
 const { TextArea } = Input;
 
 const FAQClearList = (props: any) => {
-  const { getTableList, tableLoading, opLoading, deleteClearItem, addClearItem } = useTableModel();
+  const { getTableList, tableLoading, opLoading, deleteClearItem, addClearItem, updateClearItem } =
+    useTableModel();
 
   const { info } = useModel('gundam', (model: any) => {
     return {
@@ -63,7 +64,7 @@ const FAQClearList = (props: any) => {
     // selectedQuestionKeys  已选择的问题
     // selectedWishKeys 已选择的意图
     tmpRef.current.row = row;
-    let questionTypeList: any[] = row.questionTypeList || [];
+    let questionTypeList: any[] = row.clarifyDetail || [];
     questionTypeList = Array.isArray(questionTypeList) ? [...questionTypeList] : [];
     let selectedQuestionKeys: any[] = questionTypeList
       .filter((item: any) => {
@@ -80,16 +81,40 @@ const FAQClearList = (props: any) => {
         return item.recommendId;
       });
     (selectFaqModalRef.current as any)?.open({
-      selectList: row.questionTypeList, //被选中列表
+      selectList: questionTypeList, //被选中列表
       selectedQuestionKeys, // 已选问题
       selectedWishKeys, // 已选意图
     });
   };
   // 确认FAQ/意图模态框 的选择
-  const confirmUpdateSelect = (list: any[]) => {
+  const confirmUpdateSelect = async (list: any[]) => {
     // 输出列表
-    console.log(tmpRef.current.row);
-    console.log(list);
+    let row: any = tmpRef.current.row;
+    let questionTypeList: any[] = row?.clarifyDetail || [];
+    let needUpdate = false;
+    const keys: any[] = list?.map((item: any) => item.recommendId) || [];
+    // 判断是否需要调接口更新
+    if (questionTypeList.length !== list.length) {
+      // 数量不等
+      needUpdate = true;
+    } else {
+      let i = questionTypeList.findIndex((item: any) => {
+        return !keys.includes(item.recommendId);
+      });
+      if (i > -1) {
+        // 找到新增的
+        needUpdate = true;
+      }
+    }
+    if (!needUpdate) {
+      return;
+    }
+
+    let data: any = {
+      clarifyId: row?.id,
+      clarifyDetailList: list,
+    };
+    await updateClearItem(data);
   };
 
   // 列名
@@ -106,7 +131,7 @@ const FAQClearList = (props: any) => {
     },
     {
       title: '标准问/意图',
-      dataIndex: 'questionTypeList',
+      dataIndex: 'clarifyDetail',
       search: false,
       width: 300,
       render: (arr: any, row: any) => {
@@ -120,14 +145,14 @@ const FAQClearList = (props: any) => {
             >
               {arr.map((item: any, i: number) => {
                 return (
-                  <Tooltip title={item.recommend} placement={'topLeft'} key={i}>
+                  <Tooltip title={item.recommendName} placement={'topLeft'} key={i}>
                     <div className={style['qustion-label']} key={i}>
                       {item.recommendType == '1' ? (
                         <QuestionCircleOutlined className={style['icon']} />
                       ) : (
                         <MonitorOutlined className={style['icon']} />
                       )}
-                      {item.recommend}
+                      {item.recommendName}
                     </div>
                   </Tooltip>
                 );
@@ -141,13 +166,13 @@ const FAQClearList = (props: any) => {
     },
     {
       title: '咨询次数',
-      dataIndex: 'adviceTime',
+      dataIndex: 'askNum',
       search: false,
       width: 160,
     },
     {
       title: '澄清采用率',
-      dataIndex: 'clearPercent',
+      dataIndex: 'clarifyAdoptionRate',
       search: false,
       width: 160,
       sorter: true,
@@ -330,7 +355,7 @@ const FAQClearList = (props: any) => {
 
               <Form.Item
                 label="标准问/意图"
-                name="questionTypeList"
+                name="clarifyDetailList"
                 rules={[{ required: true, message: '请选择标准问/意图' }]}
               >
                 <FaqSelect />

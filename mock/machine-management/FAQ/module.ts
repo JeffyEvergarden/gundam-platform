@@ -21,7 +21,7 @@ const getBlackList = (req: any, res: any) => {
     let obj = {
       id: index,
       question: '问题' + (index + 1) + '我想问什么来着',
-      channel: Math.random() > 0.5 ? 'media_zfb' : 'media_wx',
+      channelCode: Math.random() > 0.5 ? 'media_zfb' : 'media_wx',
       createTime: moment(new Date(_date + 60 * 60 * 1000 * index)).format('YYYY-MM—DD hh:mm'),
     };
     return obj;
@@ -49,25 +49,52 @@ const getClearList = (req: any, res: any) => {
       id: index,
       question: '问题' + (index + 1) + '我想问什么来着',
       channel: Math.random() > 0.5 ? 'media_zfb' : 'media_wx',
-      questionTypeList: [
+      clarifyDetail: [
         {
           recommendId: 1,
           recommendType: 1,
-          recommend: '支付宝还款',
+          recommendName: '支付宝还款',
         },
         {
           recommendId: 2,
           recommendType: 1,
-          recommend: '微信还款',
+          recommendName: '微信还款',
         },
         {
           recommendId: 3,
           recommendType: 2,
-          recommend: '中邮钱包还款',
+          recommendName: '中邮钱包还款',
         },
       ],
-      adviceTime: index * 10,
-      clearPercent: Number(Math.random().toFixed(2)),
+      askNum: index * 10,
+      clarifyAdoptionRate: Number(Math.random().toFixed(2)),
+      createTime: moment(new Date(_date + 60 * 60 * 1000 * index)).format('YYYY-MM—DD hh:mm'),
+    };
+    return obj;
+  });
+
+  res.json({
+    resultCode: successCode,
+    resultDesc: '成功',
+    success: true,
+    data: {
+      pageSize: 10,
+      totalPage: 20,
+      page: 1,
+      list: arr,
+    },
+  });
+};
+// 查看会话记录
+const getSessionList = (req: any, res: any) => {
+  let arr = new Array(10).fill(1);
+  let _date = Date.now();
+
+  arr = arr.map((item: any, index: number) => {
+    let obj = {
+      sessionId: 'APP_' + index,
+      channelCode: Math.random() > 0.5 ? 'media_zfb' : 'media_wx',
+      dialogueTurn: (index + 1) * 4,
       createTime: moment(new Date(_date + 60 * 60 * 1000 * index)).format('YYYY-MM—DD hh:mm'),
     };
     return obj;
@@ -86,43 +113,17 @@ const getClearList = (req: any, res: any) => {
   });
 };
 
-const getSessionList = (req: any, res: any) => {
-  let arr = new Array(10).fill(1);
-  let _date = Date.now();
-
-  arr = arr.map((item: any, index: number) => {
-    let obj = {
-      id: 'APP_' + index,
-      channel: Math.random() > 0.5 ? 'media_zfb' : 'media_wx',
-      recordNum: (index + 1) * 4,
-      recordTime: moment(new Date(_date + 60 * 60 * 1000 * index)).format('YYYY-MM—DD hh:mm'),
-    };
-    return obj;
-  });
-
-  res.json({
-    resultCode: successCode,
-    resultDesc: '成功',
-    success: true,
-    data: {
-      pageSize: 10,
-      totalPage: 20,
-      page: 1,
-      list: arr,
-    },
-  });
-};
-
 // ------------
+// 获取聊天记录
 const getRecordList = (req: any, res: any) => {
   let arr = new Array(10).fill(1);
   let _date = Date.now();
 
   arr = arr.map((item: any, index: number) => {
     let obj = {
-      userName: Math.random() > 0.5 ? 'left' : 'right',
-      msg: '你在说什么呢,能说清楚吗',
-      recordTime: moment(new Date(_date + 60 * 60 * 1000 * index)).format('YYYY-MM—DD hh:mm'),
+      role: Math.random() > 0.5 ? 1 : 0,
+      message: '你在说什么呢,能说清楚吗',
+      createTime: moment(new Date(_date + 60 * 60 * 1000 * index)).format('YYYY-MM—DD hh:mm'),
     };
     return obj;
   });
@@ -271,17 +272,18 @@ const getAnswerList = (req: any, res: any) => {
 
 export default {
   // FAQ-黑名单
-  'GET /aichat/robot/faq/blacklist': getBlackList, // 获取FAQ-黑名单语料列表
-  'POST /aichat/robot/faq/blacklist/delete': normalDeal, // 删除黑名单语料
-  'POST /aichat/robot/faq/blacklist/add': normalDeal,
+  'GET /aichat/robot/blacklist/blacklistPageList': getBlackList, // 获取FAQ-黑名单语料列表
+  'POST /aichat/robot/blacklist/blacklistQuestionDelete': normalDeal, // 删除黑名单语料
+  'POST /aichat/robot/blacklist/blacklistQuestionAdd': normalDeal,
   // FAQ-澄清
-  'GET /aichat/robot/faq/clearlist': getClearList, // 获取FAQ-澄清语料列表
-  'POST /aichat/robot/faq/clearlist/delete': normalDeal, // 删除澄清语料
-  'POST /aichat/robot/faq/clearlist/add': normalDeal, // 新增澄清语料
-  'GET /aichat/robot/faq/sessionlist': getSessionList, // 查看明细
-  'POST /aichat/robot/faq/clearlist/update': normalDeal, // 修改标准问/意图
+  'GET /aichat/robot/clarify/clarifyPageList': getClearList, // 获取FAQ-澄清语料列表
+  'POST /aichat/robot/clarify/clarifyDelete': normalDeal, // 删除澄清语料
+  'POST /aichat/robot/clarify/clarifyAdd': normalDeal, // 新增澄清语料
+  'POST /aichat/robot/clarify/clarifyDetailAdd': normalDeal, // 修改标准问/意图
+  // 查看会话记录
+  'GET /aichat/robot/clarify/clarifySessionPageList': getSessionList, // 查看明细
   // 获取聊天记录
-  'GET /aichat/robot/faq/recordlist': getRecordList, // 获取聊天记录
+  'GET /aichat/robot/clarify/dialogueLogList': getRecordList, // 获取聊天记录
   // 获取待审核列表
   'GET /aichat/robot/faq/faqApprovalPageList': getApprovalList,
   //获取历史列表

@@ -21,7 +21,9 @@ const SelectorModal: React.FC<any> = (props: any) => {
     };
   });
 
-  const { tableLoading, tableList, getTableList } = useSessionModel();
+  const [clarifyId, setClarifyId] = useState<any>('');
+
+  const { tableLoading, tableList, getTableList, tableTotal } = useSessionModel();
 
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -34,12 +36,34 @@ const SelectorModal: React.FC<any> = (props: any) => {
     });
   }, [tableList]);
 
+  const [current, setCurrent] = useState<number>(1);
+
+  // 切换分页
+  const onChange = (val: any) => {
+    if (tableLoading) {
+      return;
+    }
+    setCurrent(val);
+    getTableList({
+      id: clarifyId,
+      clarifyId: clarifyId,
+      robotId: info.id,
+      page: val,
+      pageSize: 10,
+    });
+  };
+
   useImperativeHandle(cref, () => ({
     open: (obj: any) => {
       if (obj.id) {
+        setClarifyId(obj.id);
+        setCurrent(1);
         getTableList({
           id: obj.id,
+          clarifyId: obj.id,
           robotId: info.id,
+          page: 1,
+          pageSize: 10,
         });
         // 显示
         setVisible(true);
@@ -60,7 +84,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     // 业务流程列表-列
     {
       title: '会话ID',
-      dataIndex: 'id',
+      dataIndex: 'sessionId',
       ellipsis: {
         showTitle: false,
       },
@@ -78,7 +102,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     },
     {
       title: '渠道',
-      dataIndex: 'channel',
+      dataIndex: 'channelCode',
       ellipsis: {
         showTitle: false,
       },
@@ -88,11 +112,11 @@ const SelectorModal: React.FC<any> = (props: any) => {
     },
     {
       title: '对话轮次',
-      dataIndex: 'recordNum',
+      dataIndex: 'dialogueTurn',
     },
     {
       title: '访问时间',
-      dataIndex: 'recordTime',
+      dataIndex: 'createTime',
     },
   ];
 
@@ -104,8 +128,11 @@ const SelectorModal: React.FC<any> = (props: any) => {
       visible={visible}
       onCancel={() => setVisible(false)}
       maskClosable={false}
-      okText={'确定'}
-      onOk={submit}
+      footer={
+        <div className={style['zy-row_center']}>
+          <Button onClick={submit}>关闭</Button>
+        </div>
+      }
     >
       <div className={style['page_content']}>
         <div className={style['zy-row_end']}></div>
@@ -114,7 +141,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
           <Table
             loading={tableLoading}
             size="small"
-            pagination={false}
+            pagination={{ current, onChange, total: tableTotal }}
             dataSource={sessionTableList}
             columns={columns}
             rowKey="index"

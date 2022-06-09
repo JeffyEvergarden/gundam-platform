@@ -7,9 +7,11 @@ export const successCode = config.successCode;
 
 export const useSessionModel = () => {
   const [tableList, setTableList] = useState<any[]>([]);
+  const [tableTotal, setTableTotal] = useState<number>(0);
   const [tableLoading, setTableLoading] = useState<boolean>(false);
 
   const [recordList, setRecordList] = useState<any[]>([]);
+  const [recordTotal, setRecordTotal] = useState<number>(0);
   const [recordLoading, setRecordLoading] = useState<boolean>(false);
 
   // 获取表格
@@ -17,7 +19,7 @@ export const useSessionModel = () => {
     setTableLoading(true);
     let res: any = await getSessionList(params);
     setTableLoading(false);
-    let { list = [], totalPage, totalSize } = res.data || {};
+    let { list = [], totalPage, pageSize } = res.data || {};
     if (!Array.isArray(list)) {
       list = [];
     }
@@ -29,6 +31,7 @@ export const useSessionModel = () => {
       };
     });
     setTableList(list || []);
+    setTableTotal(totalPage || 0);
     return { data: list, total: totalPage };
   };
 
@@ -36,26 +39,32 @@ export const useSessionModel = () => {
     setRecordLoading(true);
     let res: any = await getRecordList(params);
     setRecordLoading(false);
-    let { list = [], totalPage, totalSize } = res.data || {};
+    let { list = [], totalPage, pageSize } = res.data || {};
     if (!Array.isArray(list)) {
       list = [];
     }
     list = list.map((item: any, index: number) => {
       return {
         ...item,
+        role: item.role === 1 ? '客户' : 'AI',
+        userName: item.role === 1 ? '客户' : '',
+        recordTime: item.createTime,
         index,
       };
     });
     setRecordList(list || []);
+    setRecordTotal(totalPage || 0);
     return { data: list, total: totalPage };
   };
 
   return {
     tableList,
     getTableList,
+    tableTotal,
     tableLoading,
     recordList,
     setRecordList,
+    recordTotal,
     recordLoading,
     getSessionRecordList,
   };

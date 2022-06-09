@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { message } from 'antd';
-import { getClearList, deleteClearCorpus, addClearCorpus } from '../../model/api';
+import {
+  getClearList,
+  deleteClearCorpus,
+  addClearCorpus,
+  updateClearCorpus,
+} from '../../model/api';
 import config from '@/config/index';
 
 export const successCode = config.successCode;
@@ -55,6 +60,20 @@ export const useTableModel = () => {
     }
   };
 
+  // 修改
+  const updateClearItem = async (data: any) => {
+    setOpLoading(true);
+    let res: any = await updateClearCorpus(data);
+    setOpLoading(false);
+    if (res.resultCode === successCode) {
+      message.success('添加成功');
+      return true;
+    } else {
+      message.error(res.resultMsg || '未知异常');
+      return false;
+    }
+  };
+
   return {
     tableList,
     getTableList,
@@ -62,5 +81,6 @@ export const useTableModel = () => {
     opLoading,
     deleteClearItem,
     addClearItem,
+    updateClearItem,
   };
 };

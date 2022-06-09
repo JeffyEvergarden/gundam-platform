@@ -1,8 +1,9 @@
 .drawer {
   :global {
     .ant-drawer-body {
+      // .scrollbar(4px);
+      padding: 0 0 0 24px;
       scroll-behavior: smooth;
-      .scrollbar(4px);
     }
   }
 }
@@ -38,11 +39,12 @@
 }
 
 .record-bg {
-  // height: 100%;
-  padding-right: 12px;
-  // overflow: auto;
+  height: 100%;
+  padding-top: 24px;
+  padding-right: 24px;
+  overflow: auto;
   // scroll-behavior: smooth;
-  .scrollbar(4px);
+  .scrollbar(2px, #333);
 }
 
 .my-row {
@@ -70,23 +72,58 @@
   border-radius: 50%;
 }
 
+.avator_customer {
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.25);
+  border: none;
+  border-radius: 50%;
+
+  .avator-icon {
+    color: #fff;
+    font-size: 20px;
+    line-height: 36px;
+  }
+}
+
 .content {
   min-width: 50px;
   max-width: 616px;
-  margin: 8px 14px 0;
+  margin: 8px 0 0;
   padding: 8px;
   word-break: break-all;
   background: #f8f8f8;
   border-radius: 4px;
 }
 
+.record-name {
+  max-width: 220px;
+  margin-right: 12px;
+  overflow: hidden;
+  color: rgba(0, 0, 0, 0.45);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
+}
+
 .record-time {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 12px;
   color: rgba(0, 0, 0, 0.45);
 }
 
 .record-box {
-  margin-bottom: 12px;
+  margin-bottom: 32px;
+}
+
+.content-box {
+  margin: 0 12px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 14px;
+  line-height: 22px;
 }

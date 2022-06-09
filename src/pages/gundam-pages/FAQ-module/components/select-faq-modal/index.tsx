@@ -1,5 +1,5 @@
 import { useState, useImperativeHandle, useEffect, useMemo } from 'react';
-import { Modal, Button, Table, Tooltip, Tabs, Input } from 'antd';
+import { Modal, Button, Table, Tooltip, Tabs, Input, message } from 'antd';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import MyTree from '../../../FAQ/FAQ-manage/components/my-tree';
 import { useModel } from 'umi';
@@ -89,7 +89,7 @@ const expendRender = (row: any) => {
 // selectedWishKeys 已选择的意图
 
 const SelectorModal: React.FC<any> = (props: any) => {
-  const { cref, confirm, type = 'checkbox' } = props;
+  const { cref, confirm, type = 'checkbox', min = 2, max = 5 } = props;
 
   const [showWishKey, setShowWishKey] = useState<boolean>(true);
   // tabs 操作
@@ -234,7 +234,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
           {
             recommendType: 1,
             recommendId: lastInfo.id,
-            recommend: lastInfo.question,
+            recommendName: lastInfo.question,
           },
         ]);
         // 设置选中数组
@@ -254,7 +254,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
             {
               recommendType: 1,
               recommendId: lastInfo.id,
-              recommend: lastInfo.question,
+              recommendName: lastInfo.question,
             },
           ]);
         }
@@ -367,6 +367,18 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   // 提交
   const submit = () => {
+    if (!Array.isArray(selectList)) {
+      message.warning('请选择有晓的标准问/意图');
+      return;
+    }
+    // ------------------
+    if (type === 'checkbox') {
+      if (selectList.length < min || selectList.length > max) {
+        message.warning('请选择2-5项FAQ或意图用于澄清推荐问题');
+        return;
+      }
+    }
+
     confirm(selectList || []);
     setVisible(false);
   };
@@ -407,7 +419,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
               {selectList.map((item: any, index: number) => {
                 return (
                   <div className={style['select-item']} key={index}>
-                    <Tooltip placement="topLeft" title={item.recommend}>
+                    <Tooltip placement="topLeft" title={item.recommendName}>
                       <div className={style['label']}>
                         <span className={style['num']}>{index + 1}.</span>
                         {item.recommendType == '1' ? (
@@ -415,7 +427,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
                         ) : (
                           <MonitorOutlined className={style['icon']} />
                         )}
-                        {item.recommend}
+                        {item.recommendName}
                       </div>
                     </Tooltip>
                     <Button

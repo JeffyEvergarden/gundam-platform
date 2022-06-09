@@ -56,14 +56,14 @@ const FaqSelect = (props: any) => {
           <div className={style['question-box']}>
             {value?.map?.((item: any, i: number) => {
               return (
-                <Tooltip title={item.recommend} placement={'topLeft'} key={i}>
+                <Tooltip title={item.recommendName} placement={'topLeft'} key={i}>
                   <div className={style['qustion-label']} style={{ width: '200px' }}>
                     {item.recommendType == '1' ? (
                       <QuestionCircleOutlined className={style['icon']} />
                     ) : (
                       <MonitorOutlined className={style['icon']} />
                     )}
-                    {item.recommend}
+                    {item.recommendName}
                   </div>
                 </Tooltip>
               );

@@ -26,14 +26,14 @@ const RemarkModal = (props: any) => {
     console.log(callback);
     // 校验成功
     if (res) {
-      console.log(tmpObj);
+      console.log(res);
       // 如果是新增分类节点
       if (type === 'create') {
         setVisible(false);
-        confirm(tmpObj);
+        confirm(res);
       } else if (type === 'edit') {
         setVisible(false);
-        confirm(tmpObj);
+        confirm(res);
       }
     }
   };
@@ -69,7 +69,7 @@ const RemarkModal = (props: any) => {
           <Form form={form} labelCol={{ span: 4 }} wrapperCol={{ span: 16 }} autoComplete="off">
             <Form.Item
               label="备注"
-              name="remark"
+              name="reason"
               rules={[
                 { required: true, message: '请输入备注内容' },
                 { max: 200, message: '不能超过200个文字' },
