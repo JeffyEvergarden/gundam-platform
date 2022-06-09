@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, Fragment } from 'react';
-import { Input, Button, message, Space, Radio, Modal } from 'antd';
+import React, { useState, useEffect, useRef, Fragment, useMemo } from 'react';
+import { Input, Button, message, Space, Radio, Modal, Popover } from 'antd';
 import styles from './style.less';
 import { useModel } from 'umi';
 import { useChatModel } from './model';
@@ -13,7 +13,7 @@ export default (props: any) => {
     getEnvirmentValue,
     initRobotChat,
     resetTalking,
-    talkingFlag,
+    talkingFlag, // 开启会话标志
     clearDialogFlag,
   } = props;
   const [dialogList, setDialogList] = useState<any>([]); // 对话内容
@@ -28,6 +28,8 @@ export default (props: any) => {
   const [visible, setVisible] = useState<boolean>(false);
 
   const { textRobotDialogueText, soundRobotDialogue } = useChatModel();
+
+  const PopoverVisible = useMemo(() => {}, [chatEvent]);
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -175,10 +177,6 @@ export default (props: any) => {
     // setNumber(a);
   };
 
-  const resetDialog = () => {
-    setDialogList([]);
-  };
-
   const clearDialog = () => {
     setDialogList([]);
   };
@@ -281,9 +279,6 @@ export default (props: any) => {
           <Button size={'small'} onClick={clearDialog}>
             清空内容
           </Button>
-          {/* <Button type="primary" size={'small'} onClick={resetDialog}>
-            重置对话
-          </Button> */}
         </Space>
       </div>
       <div className={styles['chat-environment']}>
@@ -360,6 +355,9 @@ export default (props: any) => {
             })}
           </div>
           <div className={styles['chat-footer']}>
+            <Popover>
+              <div className={styles['hide-box']}></div>
+            </Popover>
             <TextArea
               value={textMessage}
               className={styles['text-area']}

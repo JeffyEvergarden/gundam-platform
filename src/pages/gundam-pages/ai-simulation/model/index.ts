@@ -23,6 +23,8 @@ export const useChatModel = () => {
     return res;
   };
 
+  const [associationList, setAssociationList] = useState<any[]>([]);
+
   return {
     getRobotChatData,
     textRobotDialogueText,

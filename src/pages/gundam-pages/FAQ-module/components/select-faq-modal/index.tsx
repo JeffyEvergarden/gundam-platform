@@ -239,6 +239,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
         ]);
         // 设置选中数组
         setSelectedQuestionKeys(selectedRowKeys);
+        setSelectedWishKeys([]);
         return;
       }
 
@@ -291,11 +292,12 @@ const SelectorModal: React.FC<any> = (props: any) => {
           {
             recommendType: 2,
             recommendId: lastInfo.id,
-            recommend: lastInfo.label,
+            recommendName: lastInfo.label,
           },
         ]);
         // 设置选中数组
         setSelectedWishKeys(selectedRowKeys);
+        setSelectedQuestionKeys([]);
         return;
       }
 
@@ -308,7 +310,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
             {
               recommendType: 2,
               recommendId: lastInfo.id,
-              recommend: lastInfo.label,
+              recommendName: lastInfo.label,
             },
           ]);
         }
