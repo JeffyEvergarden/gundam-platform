@@ -17,7 +17,7 @@ const { Option } = Select;
 //test
 const AwaitList: React.FC<any> = (props: any) => {
   const { cref, pageType } = props;
-  const { list, getList, getPList, loading, totalPage } = useApprovalModel();
+  const { list, getList, getPList, approvalPass, loading, totalPage } = useApprovalModel();
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     setInfo: model.setInfo,
@@ -58,6 +58,13 @@ const AwaitList: React.FC<any> = (props: any) => {
     setCurrent(page);
     setPageSize(size);
     CurrentPage({ page, pageSize: size, robotId: info.id });
+  };
+
+  const passBtn = async (row: any) => {
+    let res: any = await approvalPass({ id: row.id });
+    if (res) {
+      CurrentPage();
+    }
   };
 
   useEffect(() => {
@@ -233,13 +240,19 @@ const AwaitList: React.FC<any> = (props: any) => {
                               danger
                               style={{ marginLeft: '16px' }}
                               onClick={() => {
-                                ReasonModalRef?.current?.open('退回');
+                                ReasonModalRef?.current?.open(item, '退回');
                               }}
                             >
                               退回
                             </Button>
 
-                            <Button type="primary" style={{ marginLeft: '16px' }}>
+                            <Button
+                              type="primary"
+                              style={{ marginLeft: '16px' }}
+                              onClick={() => {
+                                passBtn(item);
+                              }}
+                            >
                               通过
                             </Button>
                           </div>
@@ -266,12 +279,20 @@ const AwaitList: React.FC<any> = (props: any) => {
                               danger
                               style={{ marginLeft: '16px' }}
                               onClick={() => {
-                                ReasonModalRef?.current?.open('删除');
+                                ReasonModalRef?.current?.open(item, '删除');
                               }}
                             >
                               删除
                             </Button>
-                            <Button type="primary" style={{ marginLeft: '16px' }}>
+                            <Button
+                              type="primary"
+                              style={{ marginLeft: '16px' }}
+                              onClick={() => {
+                                history.push(
+                                  `/gundamPages/faq/answer?faqId=${item.faqId}&answerId=${item.id}`,
+                                );
+                              }}
+                            >
                               编辑
                             </Button>
                           </div>
@@ -307,7 +328,7 @@ const AwaitList: React.FC<any> = (props: any) => {
       </div>
       <History cref={historyRef} />
       <AnswerView cref={answerViewRef} />
-      <ReasonModal cref={ReasonModalRef}></ReasonModal>
+      <ReasonModal cref={ReasonModalRef} refresh={CurrentPage} />
     </div>
   );
 };

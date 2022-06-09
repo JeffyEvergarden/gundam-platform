@@ -58,6 +58,29 @@ export async function getPendingList(params?: Record<string, any>) {
   });
 }
 
+//通过
+export async function _approvalPass(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/approvalAdopt`, {
+    method: 'POST',
+    data,
+  });
+}
+
+//退回
+export async function _approvalReturn(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/approvalReturn`, {
+    method: 'POST',
+    data,
+  });
+}
+//删除
+export async function _approvalDelete(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/approvalDelete`, {
+    method: 'POST',
+    data,
+  });
+}
+
 //获取历史申请记录
 export async function getHistoryList(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/faq/faqApprovalHistoryPageList`, {

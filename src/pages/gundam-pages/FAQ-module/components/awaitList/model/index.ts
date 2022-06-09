@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import config from '@/config/index';
 import { message } from 'antd';
-import { getApprovalList, getPendingList } from '../../../model/api';
+import {
+  getApprovalList,
+  getPendingList,
+  _approvalPass,
+  _approvalReturn,
+  _approvalDelete,
+} from '../../../model/api';
 
 const successCode = config.successCode;
 
@@ -40,11 +46,47 @@ export const useApprovalModel = () => {
     return { data: res?.data?.list, total: res?.data?.totalPage };
   };
 
+  const approvalPass = async (params: any) => {
+    let res = await _approvalPass(params);
+    if (res.resultCode == successCode) {
+      message.success(res.resultDesc);
+      return true;
+    } else {
+      message.error(res.resultDesc);
+      return false;
+    }
+  };
+
+  const approvalReturn = async (params: any) => {
+    let res = await _approvalReturn(params);
+    if (res.resultCode == successCode) {
+      message.success(res.resultDesc);
+      return true;
+    } else {
+      message.error(res.resultDesc);
+      return false;
+    }
+  };
+
+  const approvalDelete = async (params: any) => {
+    let res = await _approvalDelete(params);
+    if (res.resultCode == successCode) {
+      message.success(res.resultDesc);
+      return true;
+    } else {
+      message.error(res.resultDesc);
+      return false;
+    }
+  };
+
   return {
     list,
     totalPage,
     getList,
     getPList,
+    approvalPass,
+    approvalReturn,
+    approvalDelete,
     loading,
   };
 };

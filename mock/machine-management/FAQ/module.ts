@@ -148,6 +148,7 @@ const getApprovalList = (req: any, res: any) => {
   arr = arr.map((item: any, index: number) => {
     let obj = {
       id: `id${index}`,
+      faqId: `faqId${index}`,
       robotId: '100',
       question: `问题${index + 1}`,
       answer: `答案${index + 1}`,
@@ -187,6 +188,7 @@ const getPendingList = (req: any, res: any) => {
   arr = arr.map((item: any, index: number) => {
     let obj = {
       id: `id${index}`,
+      faqId: `faqId${index}`,
       robotId: '100',
       question: `问题${index + 1}`,
       answer: `答案${index + 1}`,
@@ -322,6 +324,11 @@ export default {
   // 获取待审核列表
   'GET /aichat/robot/faq/faqApprovalPageList': getApprovalList,
   'GET /aichat/robot/faq/faqPendingPageList': getPendingList,
+  //通过
+  'POST /aichat/robot/faq/approvalAdopt': normalDeal,
+  //退回删除
+  'POST /aichat/robot/faq/approvalReturn': normalDeal,
+  'POST /aichat/robot/faq/approvalDelete': normalDeal,
   //获取历史列表
   'GET /aichat/robot/faq/faqApprovalHistoryPageList': getHistoryList,
   //获取当前问题的答案列表
