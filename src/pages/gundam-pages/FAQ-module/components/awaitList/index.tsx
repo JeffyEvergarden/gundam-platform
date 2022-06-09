@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useImperativeHandle } from 'react';
-import { Select, message, Button, Form, Pagination, Input, Space } from 'antd';
+import { Select, message, Button, Form, Pagination, Input, Space, Divider } from 'antd';
 import style from './style.less';
 import ProList from '@ant-design/pro-list';
 import { useModel, history } from 'umi';
@@ -9,15 +9,15 @@ import KeepAlive, { useActivate, useUnactivate } from 'react-activation';
 import { HIGH_CONFIG_SELECT } from '@/pages/gundam-pages/FAQ/FAQ-manage/const';
 import History from '../history-modal';
 import AnswerView from '../answerView-modal';
-import { approvalType } from './count';
+import { approvalResult, approvalType } from './count';
 import ReasonModal from '../reason-modal';
 import { useApprovalModel } from './model';
 
 const { Option } = Select;
-
+//test
 const AwaitList: React.FC<any> = (props: any) => {
   const { cref, pageType } = props;
-  const { list, getList, loading, totalPage } = useApprovalModel();
+  const { list, getList, getPList, approvalPass, loading, totalPage } = useApprovalModel();
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     setInfo: model.setInfo,
@@ -48,7 +48,8 @@ const AwaitList: React.FC<any> = (props: any) => {
       ...obj,
     };
     console.log(params);
-    let res: any = await getList(params);
+
+    let res: any = pageType == 'reviewed' ? await getList(params) : await getPList(params);
     console.log(res);
     setTotal(res?.total || 0);
     return res;
@@ -59,6 +60,13 @@ const AwaitList: React.FC<any> = (props: any) => {
     CurrentPage({ page, pageSize: size, robotId: info.id });
   };
 
+  const passBtn = async (row: any) => {
+    let res: any = await approvalPass({ id: row.id });
+    if (res) {
+      CurrentPage();
+    }
+  };
+
   useEffect(() => {
     CurrentPage();
   }, []);
@@ -67,7 +75,9 @@ const AwaitList: React.FC<any> = (props: any) => {
     <div className={style['FAQ-page']}>
       <div className={style['box']}>
         <div className={style['page_top']}>
-          <div>{pageType == 'pending' ? `待处理${total}条` : `待审核${total}条`}</div>
+          <div style={{ fontSize: '20px', fontWeight: 400 }}>
+            {pageType == 'pending' ? `待处理${total}条` : `待审核${total}条`}
+          </div>
           <div className={style['page_top__right']}>
             <Space>
               <Input.Group compact>
@@ -120,9 +130,51 @@ const AwaitList: React.FC<any> = (props: any) => {
                     <div key={index}>
                       <div className={style['list-item']}>
                         <div className={style['box-top']}>
-                          <div className={style['title']}>
+                          {/* 问题名 label */}
+                          <div style={{ display: 'flex', alignItems: 'center' }}>
                             {/* 问题名字 */}
-                            {item.question}
+                            <Condition r-if={pageType == 'reviewed'}>
+                              <Condition r-if={item.operationStatus == 3}>
+                                <div className={style['edit']}>
+                                  {approvalType[item.operationStatus]}
+                                </div>
+                              </Condition>
+                              <Condition r-if={item.operationStatus == 2}>
+                                <div className={style['addA']}>
+                                  {approvalType[item.operationStatus]}
+                                </div>
+                              </Condition>
+                              <Condition r-if={item.operationStatus == 1}>
+                                <div className={style['addQ']}>
+                                  {approvalType[item.operationStatus]}
+                                </div>
+                              </Condition>
+                            </Condition>
+                            <Condition r-if={pageType == 'pending'}>
+                              <div className={style['danger']}>
+                                {approvalResult[item.approvalStatus]}
+                              </div>
+                            </Condition>
+
+                            <div className={style['title']}>{item.question}</div>
+                          </div>
+                          {/* 申请人 时间 */}
+                          <div className={style['Info']}>
+                            <Condition r-if={pageType == 'reviewed'}>
+                              <div>
+                                <span>申请人：{item.creator}</span>
+                                <Divider type="vertical"></Divider>
+                                <span>申请时间：{item.createTime}</span>
+                              </div>
+                            </Condition>
+                            <Condition r-if={pageType == 'pending'}>
+                              <div>
+                                <span>审批经办：{item.creator}</span>
+                                <Divider type="vertical"></Divider>
+
+                                <span>审批时间：{item.createTime}</span>
+                              </div>
+                            </Condition>
                           </div>
                         </div>
                         {/* 答案 */}
@@ -136,20 +188,17 @@ const AwaitList: React.FC<any> = (props: any) => {
                           {/* 答案列表 */}
 
                           <div className={style['box-answer']}>
+                            {/* 内容 */}
                             <div
                               className={style['box-content']}
                               dangerouslySetInnerHTML={{ __html: item.answer }}
                             ></div>
+                            {/* 生效渠道 */}
                             <div className={style['box-footer']}>
                               <div>
                                 <span>
                                   生效渠道：
-                                  <Button
-                                    type="link"
-                                    onClick={() => {
-                                      // _editAnswer(item, v);
-                                    }}
-                                  >
+                                  <span>
                                     {item?.channelList &&
                                       item?.channelList
                                         ?.map((cl: any) => {
@@ -158,94 +207,59 @@ const AwaitList: React.FC<any> = (props: any) => {
                                           )?.label;
                                         })
                                         ?.join(' , ')}
-                                  </Button>
+                                  </span>
                                 </span>
                               </div>
-                              <div>日期：{`${item.enableStartTime}~${item.enableEndTime}`}</div>
+                              <Divider type="vertical"></Divider>
+                              <div>日期：{`${item.enableStartTime} ~ ${item.enableEndTime}`}</div>
                             </div>
                           </div>
                         </div>
                       </div>
                       <div>
+                        {/* 备注  原因 */}
+                        <div className={style['reason']}>备注：{item.reason}</div>
                         <Condition r-if={pageType == 'reviewed'}>
-                          <div>
-                            <span>申请人：{item.creator}</span>
-                            <span style={{ marginLeft: '16px' }}>
-                              申请类型：{approvalType[item.operationStatus]}
-                            </span>
-                            <span style={{ marginLeft: '16px' }}>申请时间：{item.createTime}</span>
-                          </div>
-                        </Condition>
-                        <Condition r-if={pageType == 'pending'}>
-                          <div>
-                            <span>审批经办：{item.creator}</span>
-                            <span style={{ marginLeft: '16px' }}>
-                              审批结果：{approvalType[item.operationStatus]}
-                            </span>
-                            <span style={{ marginLeft: '16px' }}>审批时间：{item.createTime}</span>
-                          </div>
-                        </Condition>
-                        <div
-                          style={{ margin: '16px 0', border: '1px solid #000', padding: '0 6px ' }}
-                        >
-                          {item.reason}
-                        </div>
-                        <Condition r-if={pageType == 'reviewed'}>
-                          <div>
-                            <Button type="primary" size="small">
-                              通过
+                          <div className={style['btnGroup']}>
+                            <Button
+                              onClick={() => {
+                                historyRef?.current?.open(item);
+                              }}
+                            >
+                              历史申请记录
                             </Button>
                             <Button
-                              type="primary"
-                              size="small"
                               style={{ marginLeft: '16px' }}
                               onClick={() => {
-                                ReasonModalRef?.current?.open('退回');
+                                answerViewRef?.current?.open(item);
+                              }}
+                            >
+                              查看现有答案
+                            </Button>
+                            <Button
+                              danger
+                              style={{ marginLeft: '16px' }}
+                              onClick={() => {
+                                ReasonModalRef?.current?.open(item, '退回');
                               }}
                             >
                               退回
                             </Button>
+
                             <Button
                               type="primary"
-                              size="small"
                               style={{ marginLeft: '16px' }}
                               onClick={() => {
-                                answerViewRef?.current?.open(item);
+                                passBtn(item);
                               }}
                             >
-                              查看现有答案
-                            </Button>
-                            <Button
-                              type="primary"
-                              size="small"
-                              style={{ marginLeft: '16px' }}
-                              onClick={() => {
-                                historyRef?.current?.open(item);
-                              }}
-                            >
-                              历史申请记录
+                              通过
                             </Button>
                           </div>
                         </Condition>
                         <Condition r-if={pageType == 'pending'}>
-                          <div>
-                            <Button type="primary" size="small">
-                              编辑
-                            </Button>
+                          <div className={style['btnGroup']}>
                             <Button
-                              type="primary"
-                              size="small"
-                              style={{ marginLeft: '16px' }}
-                              onClick={() => {
-                                answerViewRef?.current?.open(item);
-                              }}
-                            >
-                              查看现有答案
-                            </Button>
-                            <Button
-                              type="primary"
-                              size="small"
-                              style={{ marginLeft: '16px' }}
                               onClick={() => {
                                 historyRef?.current?.open(item);
                               }}
@@ -253,14 +267,33 @@ const AwaitList: React.FC<any> = (props: any) => {
                               历史申请记录
                             </Button>
                             <Button
-                              type="primary"
-                              size="small"
                               style={{ marginLeft: '16px' }}
                               onClick={() => {
-                                ReasonModalRef?.current?.open('删除');
+                                answerViewRef?.current?.open(item);
+                              }}
+                            >
+                              查看现有答案
+                            </Button>
+
+                            <Button
+                              danger
+                              style={{ marginLeft: '16px' }}
+                              onClick={() => {
+                                ReasonModalRef?.current?.open(item, '删除');
                               }}
                             >
                               删除
+                            </Button>
+                            <Button
+                              type="primary"
+                              style={{ marginLeft: '16px' }}
+                              onClick={() => {
+                                history.push(
+                                  `/gundamPages/faq/answer?faqId=${item.faqId}&answerId=${item.id}`,
+                                );
+                              }}
+                            >
+                              编辑
                             </Button>
                           </div>
                         </Condition>
@@ -295,7 +328,7 @@ const AwaitList: React.FC<any> = (props: any) => {
       </div>
       <History cref={historyRef} />
       <AnswerView cref={answerViewRef} />
-      <ReasonModal cref={ReasonModalRef}></ReasonModal>
+      <ReasonModal cref={ReasonModalRef} refresh={CurrentPage} />
     </div>
   );
 };
