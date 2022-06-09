@@ -49,7 +49,7 @@ const EditBoard: React.FC<any> = (prop: any) => {
   // onchange事件 内容变动
   const onChangeContent = (editor: any) => {
     let content = editor.getHtml();
-    console.log('content:', content);
+    // console.log('content:', content);
     // if (regEnd.test(content)) {
     //   onChange(undefined);
     //   return;

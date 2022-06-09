@@ -20,9 +20,10 @@ import {
 } from '@ant-design/icons';
 import SpCheckbox from './components/sp-checkbox';
 import EditBoard from './index';
+import RemarkModal from './components/remark-modal';
 import { history, useModel } from 'umi';
 import style from './style.less';
-import { CHANNAL_LIST } from './test';
+import { CHANNAL_LIST } from '../const';
 import { useAnswerModel, useQuestionModel } from './model';
 import { processAnswerRequest, processAnswerBody, processBody } from './model/utils';
 import config from '@/config';
@@ -71,6 +72,8 @@ const Board: React.FC<any> = (props: any) => {
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
+
+  const [originInfo, setOriginInfo] = useState<any>({});
 
   const robotType: any = robotTypeMap[info.robotType] || '语音';
 
@@ -140,7 +143,9 @@ const Board: React.FC<any> = (props: any) => {
     }
   }, []);
 
-  const save = async () => {
+  const remarkModalRef = useRef<any>({});
+
+  const save = async (otherObj: any) => {
     console.log('触发保存');
     let res: any = await form.validateFields().catch(() => {
       message.warning('存在未填写完全的配置');
@@ -155,6 +160,7 @@ const Board: React.FC<any> = (props: any) => {
         robotId: info.id,
         faqId: questionId,
         ...res,
+        ...otherObj,
       };
       let response = await addNewAnswer(data);
       if (response === true) {
@@ -168,6 +174,7 @@ const Board: React.FC<any> = (props: any) => {
         faqId: questionId,
         robotId: info.id,
         answerId: answerId,
+        ...otherObj,
       };
       let response = await updateAnswer(data);
       if (response === true) {
@@ -178,153 +185,179 @@ const Board: React.FC<any> = (props: any) => {
     }
   };
 
+  const openRemarkModal = async () => {
+    let res: any = await form.validateFields().catch(() => {
+      message.warning('存在未填写完全的配置');
+      return false;
+    });
+    if (!res) {
+      return;
+    }
+    remarkModalRef.current?.open?.({
+      type: pageType,
+      info: originInfo,
+    });
+  };
+  const confirmRemarkModal = async (tmpObj: any) => {
+    // 以防万一暂存
+    setOriginInfo({
+      ...originInfo,
+      ...tmpObj,
+    });
+    await save(tmpObj);
+  };
+
   return (
     <div className={style['board-page']}>
-      <div className={style['board-title']}>
-        <Button
-          icon={<ArrowLeftOutlined style={{ fontSize: '20px' }} />}
-          style={{ padding: 0 }}
-          type="link"
-          onClick={() => {
-            history.push('/gundamPages/faq/main');
-          }}
-        ></Button>
-        {pageType === 'edit' ? '编辑答案' : '添加答案'}
-      </div>
+      <div>
+        <div className={style['board-title']}>
+          <Button
+            icon={<ArrowLeftOutlined style={{ fontSize: '20px' }} />}
+            style={{ padding: 0 }}
+            type="link"
+            onClick={() => {
+              history.push('/gundamPages/faq/main');
+            }}
+          ></Button>
+          {pageType === 'edit' ? '编辑答案' : '添加答案'}
+        </div>
 
-      <div className={style['board-form']}>
-        <Form form={form}>
-          <div className={'ant-form-vertical'}>
-            <Form.Item
-              name="question"
-              label="问题名称"
-              rules={[{ message: '请输入问题名称', required: true }]}
-              style={{ width: '600px' }}
-            >
-              <Input
-                placeholder={'请输入问题名称'}
-                autoComplete="off"
-                maxLength={200}
-                disabled={true}
-              />
-            </Form.Item>
+        <div className={style['board-form']}>
+          <Form form={form}>
+            <div className={'ant-form-vertical'}>
+              <Form.Item
+                name="question"
+                label="问题名称"
+                rules={[{ message: '请输入问题名称', required: true }]}
+                style={{ width: '600px' }}
+              >
+                <Input
+                  placeholder={'请输入问题名称'}
+                  autoComplete="off"
+                  maxLength={200}
+                  disabled={true}
+                />
+              </Form.Item>
 
-            <Form.Item
-              name="faqTypeId"
-              label="问题分类"
-              rules={[{ message: '请输入问题分类', required: true }]}
-              style={{ width: '300px' }}
-            >
-              <TreeSelect
-                placeholder={'请选择问题分类'}
-                showSearch
-                allowClear
-                treeData={typeList}
-                treeDefaultExpandedKeys={defaultExpend}
-                disabled={true}
-              ></TreeSelect>
-            </Form.Item>
-          </div>
+              <Form.Item
+                name="faqTypeId"
+                label="问题分类"
+                rules={[{ message: '请输入问题分类', required: true }]}
+                style={{ width: '300px' }}
+              >
+                <TreeSelect
+                  placeholder={'请选择问题分类'}
+                  showSearch
+                  allowClear
+                  treeData={typeList}
+                  treeDefaultExpandedKeys={defaultExpend}
+                  disabled={true}
+                ></TreeSelect>
+              </Form.Item>
+            </div>
 
-          <div>
-            <div className={style['answer-box']}>
-              <div className={style['diy-row']}>
-                <div className={style['zy-row']} style={{ paddingBottom: '6px' }}>
-                  <span className={'ant-form-item-label'}>
-                    <label className={'ant-form-item-required'}>答案内容</label>
-                  </span>
-                </div>
+            <div>
+              <div className={style['answer-box']}>
+                <div className={style['diy-row']}>
+                  <div className={style['zy-row']} style={{ paddingBottom: '6px' }}>
+                    <span className={'ant-form-item-label'}>
+                      <label className={'ant-form-item-required'}>答案内容</label>
+                    </span>
+                  </div>
 
-                {/* <div>富文本编辑待定</div> */}
-                {/* <Form.Item name={'answer'}>
+                  {/* <div>富文本编辑待定</div> */}
+                  {/* <Form.Item name={'answer'}>
                   <EditBoard />
                 </Form.Item> */}
 
-                {/* <div>富文本编辑待定</div> */}
-                <Condition r-if={robotType === '文本'}>
-                  <Form.Item
-                    name={'answer'}
-                    validateTrigger="onBlur"
-                    rules={[
-                      {
-                        message: '请输入答案',
-                        required: true,
-                        validateTrigger: 'onBlur',
-                      },
-                      () => ({
-                        async validator(_, value) {
-                          if (value === undefined) {
-                            return;
-                          }
-                          if (regEnd.test(value)) {
-                            return Promise.reject(new Error('请填写答案'));
-                          }
-                          return Promise.resolve();
+                  {/* <div>富文本编辑待定</div> */}
+                  <Condition r-if={robotType === '文本'}>
+                    <Form.Item
+                      name={'answer'}
+                      validateTrigger="onBlur"
+                      rules={[
+                        {
+                          message: '请输入答案',
+                          required: true,
+                          validateTrigger: 'onBlur',
                         },
-                      }),
-                    ]}
-                  >
-                    <EditBoard />
-                  </Form.Item>
-                </Condition>
-
-                <Condition r-if={robotType === '语音'}>
-                  <Form.Item
-                    name={'answer'}
-                    rules={[
-                      {
-                        message: '请输入答案',
-                        required: true,
-                        validateTrigger: 'onBlur',
-                      },
-                    ]}
-                  >
-                    <TextArea maxLength={2000} rows={5} placeholder={'请输入答案'} showCount />
-                  </Form.Item>
-                </Condition>
-
-                <Form.Item
-                  name={'channelList'}
-                  fieldKey={'channelList'}
-                  label="生效渠道"
-                  rules={[{ message: '请选择生效渠道', required: true }]}
-                >
-                  <SpCheckbox list={CHANNAL_LIST} />
-                </Form.Item>
-
-                <Space>
-                  <Form.Item
-                    name={'enable'}
-                    fieldKey={'enable'}
-                    label="生效时间"
-                    valuePropName="checked"
-                    style={{ width: '180px' }}
-                  >
-                    <Checkbox onChange={updateFn}>启用</Checkbox>
-                  </Form.Item>
-
-                  <Condition r-if={showTime}>
-                    <Space>
-                      <Form.Item name={'enableStartTime'} fieldKey={'enableStartTime'}>
-                        <DatePicker size="small" showTime placeholder={'请选择开始时间'} />
-                      </Form.Item>
-                      <Form.Item name={'enableEndTime'} fieldKey={'enableEndTime'}>
-                        <DatePicker size="small" showTime placeholder={'请选择结束时间'} />
-                      </Form.Item>
-                    </Space>
+                        () => ({
+                          async validator(_, value) {
+                            if (value === undefined) {
+                              return;
+                            }
+                            if (regEnd.test(value)) {
+                              return Promise.reject(new Error('请填写答案'));
+                            }
+                            return Promise.resolve();
+                          },
+                        }),
+                      ]}
+                    >
+                      <EditBoard />
+                    </Form.Item>
                   </Condition>
-                </Space>
+
+                  <Condition r-if={robotType === '语音'}>
+                    <Form.Item
+                      name={'answer'}
+                      rules={[
+                        {
+                          message: '请输入答案',
+                          required: true,
+                          validateTrigger: 'onBlur',
+                        },
+                      ]}
+                    >
+                      <TextArea maxLength={2000} rows={5} placeholder={'请输入答案'} showCount />
+                    </Form.Item>
+                  </Condition>
+
+                  <Form.Item
+                    name={'channelList'}
+                    fieldKey={'channelList'}
+                    label="生效渠道"
+                    rules={[{ message: '请选择生效渠道', required: true }]}
+                  >
+                    <SpCheckbox list={CHANNAL_LIST} />
+                  </Form.Item>
+
+                  <Space>
+                    <Form.Item
+                      name={'enable'}
+                      fieldKey={'enable'}
+                      label="生效时间"
+                      valuePropName="checked"
+                      style={{ width: '180px' }}
+                    >
+                      <Checkbox onChange={updateFn}>启用</Checkbox>
+                    </Form.Item>
+
+                    <Condition r-if={showTime}>
+                      <Space>
+                        <Form.Item name={'enableStartTime'} fieldKey={'enableStartTime'}>
+                          <DatePicker size="small" showTime placeholder={'请选择开始时间'} />
+                        </Form.Item>
+                        <Form.Item name={'enableEndTime'} fieldKey={'enableEndTime'}>
+                          <DatePicker size="small" showTime placeholder={'请选择结束时间'} />
+                        </Form.Item>
+                      </Space>
+                    </Condition>
+                  </Space>
+                </div>
               </div>
             </div>
-          </div>
-        </Form>
+          </Form>
+        </div>
+
+        <div className={style['board-btn']}>
+          <Button type="primary" onClick={openRemarkModal}>
+            确定
+          </Button>
+        </div>
       </div>
 
-      <div className={style['board-btn']}>
-        <Button type="primary" onClick={save}>
-          确定
-        </Button>
-      </div>
+      <RemarkModal cref={remarkModalRef} confirm={confirmRemarkModal} />
     </div>
   );
 };

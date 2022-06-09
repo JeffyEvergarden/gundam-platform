@@ -51,17 +51,17 @@ const getClearList = (req: any, res: any) => {
       channel: Math.random() > 0.5 ? 'media_zfb' : 'media_wx',
       questionTypeList: [
         {
-          recommendId: '1',
+          recommendId: 1,
           recommendType: 1,
           recommend: '支付宝还款',
         },
         {
-          recommendId: '2',
+          recommendId: 2,
           recommendType: 1,
           recommend: '微信还款',
         },
         {
-          recommendId: '3',
+          recommendId: 3,
           recommendType: 2,
           recommend: '中邮钱包还款',
         },
@@ -314,9 +314,11 @@ export default {
   // FAQ-黑名单
   'GET /aichat/robot/faq/blacklist': getBlackList, // 获取FAQ-黑名单语料列表
   'POST /aichat/robot/faq/blacklist/delete': normalDeal, // 删除黑名单语料
+  'POST /aichat/robot/faq/blacklist/add': normalDeal,
   // FAQ-澄清
   'GET /aichat/robot/faq/clearlist': getClearList, // 获取FAQ-澄清语料列表
   'POST /aichat/robot/faq/clearlist/delete': normalDeal, // 删除澄清语料
+  'POST /aichat/robot/faq/clearlist/add': normalDeal, // 新增澄清语料
   'GET /aichat/robot/faq/sessionlist': getSessionList, // 查看明细
   'POST /aichat/robot/faq/clearlist/update': normalDeal, // 修改标准问/意图
   // 获取聊天记录

@@ -1,16 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useModel, history } from 'umi';
-import { Table, Button, Dropdown, message, Popconfirm } from 'antd';
+import { Button, Form, Popconfirm, Input, Modal, Tooltip } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import Condition from '@/components/Condition';
 import { PlusOutlined } from '@ant-design/icons';
 import { useTableModel } from './model';
 import DetailModal from '../components/detail-modal';
 import SelectFaqModal from '../components/select-faq-modal';
+import FaqSelect from './FaqSelect';
+import { QuestionCircleOutlined, MonitorOutlined } from '@ant-design/icons';
 import style from './style.less';
 
+const { TextArea } = Input;
+
 const FAQClearList = (props: any) => {
-  const { tableList, getTableList, tableLoading } = useTableModel();
+  const { getTableList, tableLoading, opLoading, deleteClearItem, addClearItem } = useTableModel();
 
   const { info } = useModel('gundam', (model: any) => {
     return {
@@ -33,33 +37,70 @@ const FAQClearList = (props: any) => {
   const selectFaqModalRef = useRef<any>({});
 
   // 删除
-  const deleteRow = (row: any) => {};
+  const deleteRow = async (row: any) => {
+    let params: any = {
+      robotId: info.id,
+      id: row.id,
+    };
+    let res: any = await deleteClearItem(params);
+    if (res) {
+      // 删除成功就刷新
+      tableRef.current.reload();
+    }
+  };
 
+  // 打开查看明细
   const openDetailModal = (row: any) => {
     console.log(row);
     (modalRef.current as any)?.open(row);
   };
-
+  // 打开选择FAQ/意图模态框
   const openSelectFaqModal = (row: any) => {
-    // console.log(row);
+    console.log(row);
+    // selectlist  (recommendType、recommendId、recommend)
+    // disabledWishKeys    禁止选择的意图
+    // disabledQuestionKeys  禁止选择的问题
+    // selectedQuestionKeys  已选择的问题
+    // selectedWishKeys 已选择的意图
     tmpRef.current.row = row;
-    (selectFaqModalRef.current as any)?.open(row);
+    let questionTypeList: any[] = row.questionTypeList || [];
+    questionTypeList = Array.isArray(questionTypeList) ? [...questionTypeList] : [];
+    let selectedQuestionKeys: any[] = questionTypeList
+      .filter((item: any) => {
+        return item.recommendType == '1';
+      })
+      .map((item: any) => {
+        return item.recommendId;
+      });
+    let selectedWishKeys: any[] = questionTypeList
+      .filter((item: any) => {
+        return item.recommendType == '2';
+      })
+      .map((item: any) => {
+        return item.recommendId;
+      });
+    (selectFaqModalRef.current as any)?.open({
+      selectList: row.questionTypeList, //被选中列表
+      selectedQuestionKeys, // 已选问题
+      selectedWishKeys, // 已选意图
+    });
   };
-
+  // 确认FAQ/意图模态框 的选择
   const confirmUpdateSelect = (list: any[]) => {
     // 输出列表
     console.log(tmpRef.current.row);
     console.log(list);
   };
 
+  // 列名
   const columns: any[] = [
     {
-      title: '问题',
+      title: '客户问题',
       dataIndex: 'question',
       fixed: 'left',
       width: 300,
       fieldProps: {
-        placeholder: '请输入查询内容',
+        placeholder: '请输入客户问题',
       },
       ellipsis: true,
     },
@@ -79,9 +120,16 @@ const FAQClearList = (props: any) => {
             >
               {arr.map((item: any, i: number) => {
                 return (
-                  <div className={style['qustion-label']} key={i}>
-                    {item.recommend}
-                  </div>
+                  <Tooltip title={item.recommend} placement={'topLeft'} key={i}>
+                    <div className={style['qustion-label']} key={i}>
+                      {item.recommendType == '1' ? (
+                        <QuestionCircleOutlined className={style['icon']} />
+                      ) : (
+                        <MonitorOutlined className={style['icon']} />
+                      )}
+                      {item.recommend}
+                    </div>
+                  </Tooltip>
                 );
               })}
             </div>
@@ -95,13 +143,13 @@ const FAQClearList = (props: any) => {
       title: '咨询次数',
       dataIndex: 'adviceTime',
       search: false,
-      width: 180,
+      width: 160,
     },
     {
       title: '澄清采用率',
       dataIndex: 'clearPercent',
       search: false,
-      width: 180,
+      width: 160,
       sorter: true,
       render: (text: any) => {
         if (isNaN(text)) {
@@ -159,6 +207,39 @@ const FAQClearList = (props: any) => {
     },
   ];
 
+  // 新增模态框相关
+
+  const [visible, setVisible] = useState<boolean>(false);
+
+  const [form] = Form.useForm();
+  const openModal = () => {
+    form.resetFields();
+    setVisible(true);
+  };
+  // 关闭弹窗
+  const handleCancel = () => {
+    setVisible(false);
+  };
+  // 确认弹窗
+  const handleOk = async () => {
+    // 校验填写
+    let res: any = await form.validateFields().catch((err: any) => false);
+    if (!res) {
+      return;
+    }
+    // ------------
+    let data: any = {
+      robotId: info.id,
+      ...res,
+    };
+    res = await addClearItem(data);
+    if (res) {
+      // 成功刷新当前页面
+      handleCancel();
+      tableRef.current.reload();
+    }
+  };
+
   useEffect(() => {
     tableRef.current.reload(); // 刷新列表
     getWishList(info.id); // 获取意图列表
@@ -172,6 +253,7 @@ const FAQClearList = (props: any) => {
         columns={columns}
         actionRef={tableRef}
         loading={tableLoading}
+        bordered={true}
         scroll={{ x: columns.length * 200 }}
         request={async (params: any, sort: any, filter: any) => {
           return getTableList({ page: params.current, ...params });
@@ -180,7 +262,7 @@ const FAQClearList = (props: any) => {
           type: 'multiple',
         }}
         columnsState={{
-          persistenceKey: 'pro-table-faq-blacklist',
+          persistenceKey: 'pro-table-faq-clearlist',
           persistenceType: 'localStorage',
         }}
         rowKey="index"
@@ -206,12 +288,57 @@ const FAQClearList = (props: any) => {
         }}
         dateFormatter="string"
         headerTitle="FAQ-澄清"
-        toolBarRender={() => []}
+        toolBarRender={() => [
+          <Button
+            key="button"
+            icon={<PlusOutlined />}
+            type="primary"
+            onClick={() => {
+              openModal();
+            }}
+          >
+            新建
+          </Button>,
+        ]}
       />
 
       <DetailModal cref={modalRef} />
 
       <SelectFaqModal cref={selectFaqModalRef} confirm={confirmUpdateSelect} />
+
+      <Modal
+        title={'新增FAQ-澄清'}
+        visible={visible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        confirmLoading={opLoading}
+        maskClosable={false}
+      >
+        <div className={style['modal-page']}>
+          <div className={style['modal-form']}>
+            <Form form={form} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }} autoComplete="off">
+              <Form.Item
+                label="问题名称"
+                name="question"
+                rules={[
+                  { required: true, message: '请输入问题名称' },
+                  { max: 200, message: '不能超过200个文字' },
+                ]}
+              >
+                <TextArea placeholder={'请输入问题名称'} maxLength={200} rows={3} />
+              </Form.Item>
+
+              <Form.Item
+                label="标准问/意图"
+                name="questionTypeList"
+                rules={[{ required: true, message: '请选择标准问/意图' }]}
+              >
+                <FaqSelect />
+              </Form.Item>
+            </Form>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

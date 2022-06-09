@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { message } from 'antd';
-import { getBlackList, deleteBlackCorpus } from '../../model/api';
+import { getBlackList, deleteBlackCorpus, addBlackCorpus } from '../../model/api';
 import config from '@/config/index';
 
 export const successCode = config.successCode;
@@ -9,12 +9,14 @@ export const useTableModel = () => {
   const [tableList, setTableList] = useState<any[]>([]);
   const [tableLoading, setTableLoading] = useState<boolean>(false);
 
+  const [opLoading, setOpLoading] = useState<boolean>(false);
+
   // 获取表格
   const getTableList = async (params?: any) => {
     setTableLoading(true);
     let res: any = await getBlackList(params);
     setTableLoading(false);
-    let { list = [], totalPage, totalSize } = res.data;
+    let { list = [], totalPage, pageSize } = res.data;
     if (!Array.isArray(list)) {
       list = [];
     }
@@ -41,10 +43,25 @@ export const useTableModel = () => {
     }
   };
 
+  const addBlack = async (data: any) => {
+    setOpLoading(true);
+    let res: any = await addBlackCorpus(data);
+    setOpLoading(false);
+    if (res.resultCode === successCode) {
+      message.success('添加成功');
+      return true;
+    } else {
+      message.error(res.resultMsg || '未知异常');
+      return false;
+    }
+  };
+
   return {
     tableList,
     getTableList,
     tableLoading,
     deleteBlack,
+    addBlack,
+    opLoading,
   };
 };
