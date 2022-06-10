@@ -49,6 +49,10 @@ export default (props: any) => {
   const [nluInfo, setNluInfo] = useState<string>('');
   const [visible, setVisible] = useState<boolean>(false);
 
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
+
   const {
     textRobotDialogueText,
     soundRobotDialogue,
@@ -71,7 +75,11 @@ export default (props: any) => {
         return;
       }
       // ----------------
-      let res = await getAssociationTextList({ query: inputVal, suggestNumber: 5 });
+      let res = await getAssociationTextList({
+        query: inputVal,
+        suggestNumber: 5,
+        robotId: info.id,
+      });
       if (res) {
         timeFn.current.inputVal = inputVal;
       }
@@ -88,10 +96,6 @@ export default (props: any) => {
       return false;
     }
   }, [opLoading, chatEvent, associationList, focus]);
-
-  const { info } = useModel('gundam' as any, (model: any) => ({
-    info: model.info,
-  }));
 
   const boxRef: any = useRef<any>(null);
 
@@ -454,6 +458,7 @@ export default (props: any) => {
               onBlur={() => {
                 setTimeout(() => {
                   setFocus(false);
+                  setAssociationList([]);
                 }, 300);
               }}
             />
