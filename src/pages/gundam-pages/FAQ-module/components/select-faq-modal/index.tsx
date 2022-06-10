@@ -1,13 +1,11 @@
-import { useState, useImperativeHandle, useEffect, useMemo } from 'react';
-import { Modal, Button, Table, Tooltip, Tabs, Input, message } from 'antd';
-import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
-import MyTree from '../../../FAQ/FAQ-manage/components/my-tree';
+import Condition from '@/components/Condition';
+import { DeleteOutlined, MonitorOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { Button, Input, message, Modal, Table, Tabs, Tooltip } from 'antd';
+import { useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import { useModel } from 'umi';
+import MyTree from '../../../FAQ/FAQ-manage/components/my-tree';
 import { useFaqModal } from '../../../FAQ/FAQ-manage/model';
 import style from './style.less';
-import Condition from '@/components/Condition';
-import { deleteBusinessItem } from '@/pages/gundam-pages/business-draw/model/api';
-import { QuestionCircleOutlined, MonitorOutlined } from '@ant-design/icons';
 
 const { TabPane } = Tabs;
 
@@ -238,6 +236,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
           },
         ]);
         // 设置选中数组
+        setSelectedWishKeys([]);
         setSelectedQuestionKeys(selectedRowKeys);
         return;
       }
@@ -295,6 +294,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
           },
         ]);
         // 设置选中数组
+        setSelectedQuestionKeys([]);
         setSelectedWishKeys(selectedRowKeys);
         return;
       }
