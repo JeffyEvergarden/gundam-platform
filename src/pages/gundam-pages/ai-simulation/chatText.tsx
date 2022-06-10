@@ -54,6 +54,7 @@ export default (props: any) => {
     soundRobotDialogue,
     associationList, // 搜索联想
     opLoading, // 查询loading
+    setAssociationList,
     getAssociationTextList,
   } = useChatModel();
 
@@ -66,7 +67,7 @@ export default (props: any) => {
       if (timeFn.current.inputVal === inputVal) {
         return;
       }
-      if (inputVal.length >= 15) {
+      if (inputVal.length >= 20) {
         return;
       }
       // ----------------
@@ -338,6 +339,7 @@ export default (props: any) => {
             onClick={() => {
               setTextMessage(item.label);
               timeFn.current.inputVal = item.label;
+              setAssociationList([]);
             }}
           >
             {item.label}

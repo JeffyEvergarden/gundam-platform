@@ -52,6 +52,7 @@ export const useChatModel = () => {
     textRobotDialogueText,
     soundRobotDialogue,
     associationList,
+    setAssociationList,
     opLoading,
     getAssociationTextList,
   };
