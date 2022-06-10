@@ -123,6 +123,17 @@ const getRecordList = (req: any, res: any) => {
     let obj = {
       role: Math.random() > 0.5 ? 1 : 0,
       message: '你在说什么呢,能说清楚吗',
+      answerText: '我现在就告诉你，爱德华同学',
+      dialogueRecommendList: [
+        {
+          recommendText:
+            '爱德华.穆罕默德天选之子爱德休斯魔法爱德华.穆罕默德天选之子爱德休斯魔法爱德华.穆罕默德天选之子爱德休斯魔法',
+        },
+        {
+          recommendText:
+            '爱德华.穆罕默德天选之子爱德休斯魔法爱德华.穆罕默德天选之子爱德休斯魔法爱德华.穆罕默德天选之子爱德休斯魔法',
+        },
+      ],
       createTime: moment(new Date(_date + 60 * 60 * 1000 * index)).format('YYYY-MM—DD hh:mm'),
     };
     return obj;

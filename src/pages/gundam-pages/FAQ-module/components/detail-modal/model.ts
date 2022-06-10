@@ -44,11 +44,14 @@ export const useSessionModel = () => {
       list = [];
     }
     list = list.map((item: any, index: number) => {
+      let labels = Array.isArray(item.dialogueRecommendList) ? item.dialogueRecommendList : [];
       return {
         ...item,
         role: item.role === 1 ? '客户' : 'AI',
         userName: item.role === 1 ? '客户' : '',
         recordTime: item.createTime,
+        message: (item.role === 1 ? item.message : item.answerText) || '',
+        labels,
         index,
       };
     });

@@ -86,10 +86,17 @@ const RecordModal: React.FC<any> = (props: any) => {
                   <div className={style['user-info']} style={{ justifyContent: 'flex-end' }}>
                     <div className={style['record-time']}>{item.recordTime}</div>
                   </div>
-                  <div
-                    className={style['content']}
-                    dangerouslySetInnerHTML={{ __html: item.message }}
-                  ></div>
+                  <div className={style['content']}>
+                    <div dangerouslySetInnerHTML={{ __html: item.message }}></div>
+
+                    {item.labels.map((item: any, i: number) => {
+                      return (
+                        <div className={style['content-item']}>
+                          {i + 1}.{item.recommendText}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
                 <img className={style['avator']} src={robotAvator} alt="机器人头像"></img>
               </div>
