@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { message } from 'antd';
 
-import { getChatInitData, textDialogData, soundRobotDialogueText } from './api';
+import { getChatInitData, textDialogData, soundRobotDialogueText, getAssociationText } from './api';
 
 import config from '@/config/index';
 
@@ -25,9 +25,34 @@ export const useChatModel = () => {
 
   const [associationList, setAssociationList] = useState<any[]>([]);
 
+  const [opLoading, setOpLoading] = useState<boolean>(false);
+
+  const getAssociationTextList = async (params: any) => {
+    setOpLoading(true);
+    let res: any = await getAssociationText(params);
+    setOpLoading(false);
+    if (res.resultCode === successCode) {
+      let list: any = res?.data || [];
+      list = list.map((item: any, index: number) => {
+        return {
+          ...item,
+          label: item.suggestQuery,
+          index,
+        };
+      });
+      setAssociationList(list);
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return {
     getRobotChatData,
     textRobotDialogueText,
     soundRobotDialogue,
+    associationList,
+    opLoading,
+    getAssociationTextList,
   };
 };

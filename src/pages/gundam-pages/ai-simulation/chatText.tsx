@@ -5,7 +5,29 @@ import { useModel } from 'umi';
 import { useChatModel } from './model';
 import robotPhoto from '@/asset/image/headMan.png';
 import customerPhoto from '@/asset/image/headWoman.png';
+import { useCallback } from 'react';
 const { TextArea } = Input;
+
+const debounce = (fn: (...arr: any[]) => void, second: number) => {
+  let timer: any = null;
+  // let content = this;
+
+  return (...args: any[]) => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    let flag = !timer;
+
+    timer = setTimeout(() => {
+      timer = null;
+    }, second);
+
+    if (flag) {
+      fn.apply(fn, args);
+    }
+  };
+};
 
 export default (props: any) => {
   const {
@@ -27,9 +49,44 @@ export default (props: any) => {
   const [nluInfo, setNluInfo] = useState<string>('');
   const [visible, setVisible] = useState<boolean>(false);
 
-  const { textRobotDialogueText, soundRobotDialogue } = useChatModel();
+  const {
+    textRobotDialogueText,
+    soundRobotDialogue,
+    associationList, // 搜索联想
+    opLoading, // 查询loading
+    getAssociationTextList,
+  } = useChatModel();
 
-  const PopoverVisible = useMemo(() => {}, [chatEvent]);
+  const timeFn: any = useRef<any>({ time: 0, inputVal: '' });
+  const [focus, setFocus] = useState<boolean>(false);
+  // 防抖获取联想内容
+  const getAssociation = useMemo(() => {
+    const fn: any = async (inputVal: any) => {
+      // 和上次结果一样
+      if (timeFn.current.inputVal === inputVal) {
+        return;
+      }
+      if (inputVal.length >= 15) {
+        return;
+      }
+      // ----------------
+      let res = await getAssociationTextList({ query: inputVal, suggestNumber: 5 });
+      if (res) {
+        timeFn.current.inputVal = inputVal;
+      }
+    };
+    return debounce(fn, 1);
+  }, []);
+  // 弹窗显示
+  const PopoverVisible = useMemo(() => {
+    // console.log(opLoading, chatEvent, associationList.length);
+    if (chatEvent === 'dialogue' && associationList.length > 0 && focus) {
+      // console.log('PopoverVisible 显示');
+      return true;
+    } else {
+      return false;
+    }
+  }, [opLoading, chatEvent, associationList, focus]);
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -39,10 +96,15 @@ export default (props: any) => {
 
   // 保存输入的文字内容
   const inputChange = (e: any) => {
+    let val = e.target.value;
     setTextMessage(e.target.value);
     // 开始会话 触发成功后，设置事件
     if (talkingFlag) {
       setChatEvent('dialogue');
+    }
+    // 触发级联搜索
+    if (!opLoading && chatEvent === 'dialogue') {
+      getAssociation(val);
     }
   };
 
@@ -262,14 +324,28 @@ export default (props: any) => {
     number > 1 && robotResponse();
   }, [number]);
 
-  // 初始化，先执行上一个接口
-  // useEffect(() => {
-  //   initRobotChat && robotResponse();
-  // }, [initRobotChat]);
-
   useEffect(() => {
     (boxRef.current as any).scrollTop = (boxRef.current as any).scrollHeight;
   }, [dialogList]);
+
+  const toolTipsContent = (
+    <div className={styles['question-box']}>
+      {associationList.map((item: any, i: number) => {
+        return (
+          <div
+            className={styles['qustion-label']}
+            key={i}
+            onClick={() => {
+              setTextMessage(item.label);
+              timeFn.current.inputVal = item.label;
+            }}
+          >
+            {item.label}
+          </div>
+        );
+      })}
+    </div>
+  );
 
   return (
     <div>
@@ -355,9 +431,10 @@ export default (props: any) => {
             })}
           </div>
           <div className={styles['chat-footer']}>
-            <Popover>
+            <Popover visible={PopoverVisible} content={toolTipsContent} placement="topLeft">
               <div className={styles['hide-box']}></div>
             </Popover>
+
             <TextArea
               value={textMessage}
               className={styles['text-area']}
@@ -369,6 +446,14 @@ export default (props: any) => {
               maxLength={200}
               placeholder={'请输入文本，按回车键发送'}
               // showCount
+              onFocus={() => {
+                setFocus(true);
+              }}
+              onBlur={() => {
+                setTimeout(() => {
+                  setFocus(false);
+                }, 300);
+              }}
             />
 
             <Button className={styles['send-btn']} type="primary" onClick={() => sendMessage()}>

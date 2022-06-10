@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import config from '../../../src/config';
 
 const successCode = 100;
 
@@ -66,9 +67,37 @@ const soundRobotDialogueText = (req: any, res: any) => {
     },
   });
 };
+
+const getAssociationText = (req: any, res: any) => {
+  const arr = [
+    {
+      suggestQuery: (Math.random() * 1000).toFixed(2),
+    },
+    {
+      suggestQuery: '中邮消费金融',
+    },
+    {
+      suggestQuery: '爱德华.阿尔冯斯',
+    },
+    {
+      suggestQuery:
+        '陈奕迅挚爱一生中邮消费金融中邮消费金融中邮消费金融中邮消费金融中邮消费金融中邮消费金融中邮消费金融中邮消费金融中邮消费金融中邮消费金融中邮消费金融中邮消费金融',
+    },
+    {
+      suggestQuery: '孤独患者',
+    },
+  ];
+  res.json({
+    resultCode: config.successCode,
+    resultDesc: '成功',
+    data: arr,
+  });
+};
+
 // 机器人模拟对话
 export default {
   'POST /aichat/robot/dialogueUrl': getChatInitData, // 对话初始化接口
   'POST /aichat/robot/textRobotDialogueText': textRobotDialogueText, // 文本接口
   'POST /aichat/robot/soundRobotDialogueText': soundRobotDialogueText, // 文本接口
+  'GET /aichat/robot/faq/searchSuggest': getAssociationText, // 文本接口
 };
