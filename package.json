@@ -76,7 +76,6 @@
     "react-sortablejs": "^6.0.0",
     "slate": "^0.78.0",
     "sortablejs": "^1.14.0",
-    "swagger-ui-react": "^4.11.1",
     "umi": "^3.5.0",
     "umi-serve": "^1.9.10"
   },
