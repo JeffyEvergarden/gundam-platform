@@ -10,6 +10,7 @@ import styles from './index.less';
 import { ArrowLeftOutlined, EyeOutlined } from '@ant-design/icons';
 import config from '@/config';
 import RemoveSimilar from './components/removeSimilar';
+import SelectFaqModal from '../FAQ-module/components/select-faq-modal';
 
 const { Search } = Input;
 
@@ -17,6 +18,7 @@ export default () => {
   const actionRef = useRef<any>();
   const input = useRef<any>();
   const RemoveSRef = useRef<any>();
+  const selectFaqModalRef = useRef<any>();
 
   const [similar, setSimmilar] = useState<boolean>(false);
   const [similarVisible, setSimilarVisible] = useState<boolean>(false);
@@ -348,6 +350,38 @@ export default () => {
     });
   };
 
+  //添加到其他意图/FAQ
+  const confirmUpdateSelect = async (val: any) => {
+    console.log(val);
+    let resAdd: any;
+    if (val?.[0]?.recommendType == 1) {
+      let addParams = {
+        faqId: val?.[0]?.recommendId,
+        similarText: inputValue,
+        robotId: info.id,
+      };
+      //FAQ
+      resAdd = await addSimilar(addParams);
+    } else if (val?.[0]?.recommendType == 2) {
+      let addParams = {
+        robotId: info.id,
+        intentId: val?.[0]?.recommendId,
+        corpusText: inputValue,
+      };
+      //意图
+      resAdd = await intentAdd(addParams);
+    }
+    if (resAdd.resultCode === config.successCode) {
+      setSimmilar(false);
+      setSimilarVisible(false);
+      setInputValue('');
+      message.success(resAdd.resultDesc || '添加成功');
+      actionRef.current.reload();
+    } else {
+      message.error(resAdd.resultDesc || '添加失败');
+    }
+  };
+
   const tableListWish: any = [
     {
       dataIndex: 'corpusText',
@@ -520,7 +554,7 @@ export default () => {
             )}
           </div>
           <Row className={styles.search_box}>
-            <Col span={14}>
+            <Col span={12}>
               {tableInfo?.recycle != 1 && (
                 <Input
                   ref={input}
@@ -539,7 +573,7 @@ export default () => {
                 />
               )}
             </Col>
-            <Col span={3}>
+            <Col span={5}>
               <Space>
                 {tableInfo?.recycle != 1 && (
                   <Button
@@ -550,12 +584,19 @@ export default () => {
                     添加
                   </Button>
                 )}
-                {/* {similar && (
-                  <Button type="primary" onClick={stillAdd}>
-                    仍然添加
-                  </Button>
-                )}
-                {similar && <Button onClick={cancelAdd}>取消</Button>} */}
+
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    (selectFaqModalRef.current as any)?.open({
+                      selectList: [], //被选中列表
+                      selectedQuestionKeys: [], // 已选问题
+                      selectedWishKeys: [], // 已选意图
+                    });
+                  }}
+                >
+                  其他意图/FAQ
+                </Button>
               </Space>
             </Col>
             <Col span={6}>
@@ -629,6 +670,13 @@ export default () => {
         pageType={pageType}
       />
       <RemoveSimilar cref={RemoveSRef} onSubmit={editRemove} />
+      <SelectFaqModal
+        cref={selectFaqModalRef}
+        confirm={confirmUpdateSelect}
+        type={'radio'}
+        min={1}
+        max={1}
+      ></SelectFaqModal>
     </Fragment>
   );
 };
