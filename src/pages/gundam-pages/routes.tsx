@@ -1,12 +1,12 @@
 import {
-  CrownOutlined,
-  SettingOutlined,
-  DatabaseOutlined,
   BuildOutlined,
+  CrownOutlined,
+  DatabaseOutlined,
   FontColorsOutlined,
-  ShareAltOutlined,
   MessageOutlined,
   MonitorOutlined,
+  SettingOutlined,
+  ShareAltOutlined,
 } from '@ant-design/icons';
 
 export default [
@@ -37,7 +37,7 @@ export default [
         path: '/gundamPages/detail/FAQConfig',
         name: 'FAQ配置',
         hideFn: (info: any) => {
-          return info?.robotType === 1; // 语音机器人
+          return !(info?.robotType === 0 && info?.soundType === 0); // 呼入 文本
         },
       },
     ],
@@ -74,7 +74,7 @@ export default [
     path: '/gundamPages/module',
     name: 'FAQ管理',
     hideFn: (info: any) => {
-      return info?.robotType === 1; // 语音机器人
+      return !(info?.robotType === 0 && info?.soundType === 0); // 呼入 文本
     },
     routes: [
       {

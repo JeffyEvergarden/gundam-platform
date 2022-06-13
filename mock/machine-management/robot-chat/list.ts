@@ -1,4 +1,3 @@
-import { Request, Response } from 'express';
 import config from '../../../src/config';
 
 const successCode = 100;

@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useModel, history } from 'umi';
+import React, { useRef, useState } from 'react';
+import { history, useModel } from 'umi';
 
 import IntentOperModal from './comps/addIntentModal';
 // import RulesSampleModal from './comps/rulesAndsamples';
 
 import { useIntentModel } from './model';
 
-import ProTable from '@ant-design/pro-table';
 import type { ActionType } from '@ant-design/pro-table';
+import ProTable from '@ant-design/pro-table';
 
-import { Button, Space, Popconfirm, message } from 'antd';
-import { tableList } from './comps/config';
 import config from '@/config/index';
+import { Button, message, Popconfirm, Space } from 'antd';
+import { tableList } from './comps/config';
 
 export type TableListItem = {
   id: string;
@@ -133,7 +133,8 @@ const DetailPages: React.FC = (props: any) => {
     {
       dataIndex: 'trainData',
       title: '训练数据',
-      width: 160,
+      width: 140,
+      fixed: 'right',
       search: false,
       render: (text: any, record: any) => {
         return (

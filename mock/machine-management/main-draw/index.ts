@@ -1,6 +1,3 @@
-import { Request, Response } from 'express';
-import { template } from 'lodash';
-import { getFileInfo } from 'prettier';
 import config from '../../../src/config';
 
 const successCode = config.successCode;
