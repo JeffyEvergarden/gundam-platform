@@ -1,15 +1,16 @@
+import config from '@/config';
+import { message } from 'antd';
 import { useState } from 'react';
 import {
-  addQuestion,
-  editQuestion,
-  getQuestionInfo,
   addAnswer,
+  addQuestion,
   editAnswer,
+  editQuestion,
   getAnswerInfo,
+  getApprovalInfo,
   getFaqConfig,
+  getQuestionInfo,
 } from './api';
-import { message } from 'antd';
-import config from '@/config';
 const successCode = config.successCode;
 
 export const useQuestionModel = () => {
@@ -105,9 +106,20 @@ export const useAnswerModel = () => {
     }
   };
 
+  const _getApprovalInfo = async (params: any) => {
+    let res: any = await getApprovalInfo(params);
+    if (res.resultCode === successCode) {
+      return res.data;
+    } else {
+      message.error(res.resultDesc || '获取信息失败');
+      return false;
+    }
+  };
+
   return {
     addNewAnswer,
     updateAnswer,
     getAnswerInfo: _getAnswerInfo,
+    _getApprovalInfo,
   };
 };

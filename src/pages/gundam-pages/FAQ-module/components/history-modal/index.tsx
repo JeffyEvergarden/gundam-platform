@@ -1,12 +1,11 @@
-import { useState, useImperativeHandle, useEffect, useMemo, useRef } from 'react';
-import { Modal, Input, message, Pagination, Button, Timeline, Drawer, Divider } from 'antd';
-import { useModel } from 'umi';
-import style from './style.less';
-import ProList from '@ant-design/pro-list';
-import { HIGH_CONFIG_SELECT } from '@/pages/gundam-pages/FAQ/FAQ-manage/const';
-import { useHistoryModel } from './model';
-import { approvalResult, approvalType } from '../awaitList/count';
 import Condition from '@/components/Condition';
+import { HIGH_CONFIG_SELECT } from '@/pages/gundam-pages/FAQ/FAQ-manage/const';
+import { Divider, Drawer, Input, Pagination, Timeline } from 'antd';
+import { useImperativeHandle, useRef, useState } from 'react';
+import { useModel } from 'umi';
+import { approvalResult, approvalType } from '../awaitList/count';
+import { useHistoryModel } from './model';
+import style from './style.less';
 
 const { Search } = Input;
 
@@ -33,7 +32,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     open: (row: any) => {
       // 显示
       setQuestionInfo(row);
-      CurrentPage({ faqId: row.id });
+      CurrentPage({ faqId: row.faqId });
       setVisible(true);
     },
     close: onClose,
@@ -130,8 +129,14 @@ const SelectorModal: React.FC<any> = (props: any) => {
                                       </div>
                                     </span>
                                   </div>
-                                  <Divider type="vertical"></Divider>
-                                  <div>生效时间：{`${v.enableStartTime} ~ ${v.enableEndTime}`}</div>
+                                  {item.enableStartTime && item.enableEndTime && (
+                                    <Divider type="vertical"></Divider>
+                                  )}
+                                  {item.enableStartTime && item.enableEndTime && (
+                                    <div>
+                                      生效时间：{`${v.enableStartTime} ~ ${v.enableEndTime}`}
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             </div>
@@ -155,7 +160,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
                                 {approvalResult[v.approvalStatus]}申请
                               </span>
                             </div>
-                            <Condition r-if={v.approvalStatus != 0}>
+                            <Condition r-if={v.approvalStatus == 2}>
                               <div className={style['reason']}>备注：{v.approvalReason}</div>
                             </Condition>
                           </div>

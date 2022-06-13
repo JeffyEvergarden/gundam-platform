@@ -1,4 +1,3 @@
-import { Request, Response } from 'express';
 import config from '../../../src/config';
 
 // faq 富文本模块相关
@@ -95,4 +94,5 @@ export default {
   'POST /aichat/robot/faq/answerEdit': normalDeal,
   'POST /aichat/robot/faq/answerDelete': normalDeal,
   'GET /aichat/robot/faq/answerInfo': getAnswer,
+  'GET /aichat/robot/faq/approvalInfo': getAnswer,
 };

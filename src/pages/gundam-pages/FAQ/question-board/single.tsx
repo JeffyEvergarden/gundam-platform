@@ -1,32 +1,26 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import Condition from '@/components/Condition';
+import config from '@/config';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import {
+  Button,
+  Checkbox,
+  DatePicker,
   Form,
   Input,
-  Button,
+  message,
   Select,
   Space,
-  DatePicker,
-  Checkbox,
   TreeSelect,
-  message,
 } from 'antd';
-import Condition from '@/components/Condition';
-import {
-  PlusOutlined,
-  MinusCircleOutlined,
-  PlusCircleOutlined,
-  LoginOutlined,
-  ArrowLeftOutlined,
-} from '@ant-design/icons';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { history, useModel } from 'umi';
+import { CHANNAL_LIST } from '../const';
+import RemarkModal from './components/remark-modal';
 import SpCheckbox from './components/sp-checkbox';
 import EditBoard from './index';
-import RemarkModal from './components/remark-modal';
-import { history, useModel } from 'umi';
-import style from './style.less';
-import { CHANNAL_LIST } from '../const';
 import { useAnswerModel, useQuestionModel } from './model';
-import { processAnswerRequest, processAnswerBody, processBody } from './model/utils';
-import config from '@/config';
+import { processAnswerBody, processAnswerRequest, processBody } from './model/utils';
+import style from './style.less';
 
 const { Option } = Select;
 
@@ -66,6 +60,8 @@ const Board: React.FC<any> = (props: any) => {
   const questionId = query.faqId || '';
   const answerId = query.answerId || '';
   const pageType = questionId && answerId ? 'edit' : 'create';
+  const pageFrom = query.pageFrom || '';
+  const pendingId = query.id || '';
 
   const [form] = Form.useForm();
 
@@ -92,7 +88,7 @@ const Board: React.FC<any> = (props: any) => {
 
   const { getQuestionInfo } = useQuestionModel();
 
-  const { addNewAnswer, updateAnswer, getAnswerInfo } = useAnswerModel();
+  const { addNewAnswer, updateAnswer, getAnswerInfo, _getApprovalInfo } = useAnswerModel();
 
   const _getQuestionInfo = async (id: any) => {
     let res: any = await getQuestionInfo({
@@ -118,11 +114,19 @@ const Board: React.FC<any> = (props: any) => {
   }, [treeData]);
 
   const getInfo = async (id: any) => {
-    let res: any = await getAnswerInfo({
-      robotId: id, // 机器人id
-      faqId: questionId, // 问题id
-      answerId: answerId,
-    });
+    let res: any;
+    if (pageFrom == 'pendingList') {
+      res = await _getApprovalInfo({
+        id: pendingId,
+      });
+    } else {
+      res = await getAnswerInfo({
+        robotId: id, // 机器人id
+        faqId: questionId, // 问题id
+        answerId: answerId,
+      });
+    }
+
     if (res) {
       res = processAnswerBody(res, robotType);
       if (res.enable) {

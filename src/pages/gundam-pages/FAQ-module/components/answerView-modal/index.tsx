@@ -1,10 +1,9 @@
-import { useState, useImperativeHandle, useEffect, useMemo, useRef } from 'react';
-import { Modal, Input, message, Pagination, Button, Divider, Drawer } from 'antd';
-import { useModel } from 'umi';
-import style from './style.less';
-import ProList from '@ant-design/pro-list';
 import { HIGH_CONFIG_SELECT } from '@/pages/gundam-pages/FAQ/FAQ-manage/const';
+import { Divider, Drawer, Input } from 'antd';
+import { useImperativeHandle, useRef, useState } from 'react';
+import { useModel } from 'umi';
 import { useAnswerListModel } from './model';
+import style from './style.less';
 
 const { Search } = Input;
 
@@ -29,7 +28,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     open: (row: any) => {
       // 显示
       setQuestionInfo(row);
-      CurrentPage({ faqId: row.id });
+      CurrentPage({ faqId: row.faqId });
       setVisible(true);
     },
     close: () => {
@@ -63,10 +62,13 @@ const SelectorModal: React.FC<any> = (props: any) => {
     >
       <div className={style['title']}>{questionInfo?.question}</div>
       <div id="scrollContent" className={style['content-list']}>
-        {list?.map((item: any) => {
+        {list?.map((item: any, index: any) => {
           return (
-            <div className={style['box']}>
-              <div className={style['box-content']}>{item?.answer}</div>
+            <div className={style['box']} key={index}>
+              <div
+                className={style['box-content']}
+                dangerouslySetInnerHTML={{ __html: item.answer }}
+              ></div>
               <div className={style['box-footer']}>
                 <div>
                   生效渠道：
@@ -78,8 +80,10 @@ const SelectorModal: React.FC<any> = (props: any) => {
                       })
                       ?.join(' , ')}
                 </div>
-                <Divider type="vertical"></Divider>
-                <div>生效时间：{`${item.enableStartTime} ~ ${item.enableEndTime}`}</div>
+                {item.enableStartTime && item.enableEndTime && <Divider type="vertical"></Divider>}
+                {item.enableStartTime && item.enableEndTime && (
+                  <div>生效时间：{`${item.enableStartTime} ~ ${item.enableEndTime}`}</div>
+                )}
               </div>
             </div>
           );

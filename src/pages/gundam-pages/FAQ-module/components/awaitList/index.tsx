@@ -208,8 +208,12 @@ const AwaitList: React.FC<any> = (props: any) => {
                                   </span>
                                 </span>
                               </div>
-                              <Divider type="vertical"></Divider>
-                              <div>日期：{`${item.enableStartTime} ~ ${item.enableEndTime}`}</div>
+                              {item.enableStartTime && item.enableEndTime && (
+                                <Divider type="vertical"></Divider>
+                              )}
+                              {item.enableStartTime && item.enableEndTime && (
+                                <div>日期：{`${item.enableStartTime} ~ ${item.enableEndTime}`}</div>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -287,7 +291,7 @@ const AwaitList: React.FC<any> = (props: any) => {
                               style={{ marginLeft: '16px' }}
                               onClick={() => {
                                 history.push(
-                                  `/gundamPages/faq/answer?faqId=${item.faqId}&answerId=${item.id}`,
+                                  `/gundamPages/faq/answer?faqId=${item.faqId}&answerId=${item.answerId}&pageFrom=pendingList&id=${item.id}`,
                                 );
                               }}
                             >

@@ -53,6 +53,13 @@ export async function getAnswerInfo(params?: Record<string, any>) {
   });
 }
 
+export async function getApprovalInfo(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/approvalInfo`, {
+    method: 'GET',
+    params,
+  });
+}
+
 export async function getFaqConfig(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/config/list`, {
     method: 'GET',
