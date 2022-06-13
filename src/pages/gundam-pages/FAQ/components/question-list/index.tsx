@@ -1,22 +1,5 @@
-import React, { useState, useEffect, useRef, useImperativeHandle } from 'react';
-import {
-  List,
-  Divider,
-  Skeleton,
-  Select,
-  message,
-  Popconfirm,
-  Button,
-  Badge,
-  Checkbox,
-  TreeSelect,
-  Form,
-  Input,
-  Pagination,
-} from 'antd';
-import { useFaqModal } from '../../FAQ-manage/model';
-import style from './style.less';
-import ProList from '@ant-design/pro-list';
+import config from '@/config';
+import Condition from '@/pages/gundam-pages/main-draw/flow/common/Condition';
 import {
   CheckOutlined,
   CloseOutlined,
@@ -29,15 +12,16 @@ import {
   QuestionCircleFilled,
   UpOutlined,
 } from '@ant-design/icons';
-import { useModel, history } from 'umi';
-import { deleteQuestion } from '../../FAQ-manage/model/api';
-import config from '@/config';
-import Condition from '@/pages/gundam-pages/main-draw/flow/common/Condition';
-import ClassifyModal from '../classify-modal';
-import { deleteAnswer, editQuestion, editAnswer } from '../../question-board/model/api';
-import { CHANNAL_LIST } from '../../question-board/test';
+import ProList from '@ant-design/pro-list';
+import { Button, Divider, Form, Input, message, Pagination, Popconfirm, Select } from 'antd';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { useActivate } from 'react-activation';
+import { history, useModel } from 'umi';
 import { HIGH_CONFIG_SELECT } from '../../FAQ-manage/const';
-import KeepAlive, { useActivate, useUnactivate } from 'react-activation';
+import { useFaqModal } from '../../FAQ-manage/model';
+import { deleteQuestion } from '../../FAQ-manage/model/api';
+import { deleteAnswer, editAnswer, editQuestion } from '../../question-board/model/api';
+import style from './style.less';
 
 const { Option } = Select;
 
@@ -435,7 +419,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                               {/* {item.faqTypeId} */}
                             </Button>
                           </span>
-                          {!hasCheckbox && <Divider type="vertical" />}
+                          {/* {!hasCheckbox && <Divider type="vertical" />}
                           {!hasCheckbox && (
                             <Badge
                               status={status[item.approvalStatus]}
@@ -461,7 +445,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                                 </Select>
                               }
                             />
-                          )}
+                          )} */}
                           <Divider type="vertical" />
                           <Button
                             type="link"
@@ -521,7 +505,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                             <Condition r-if={more[index] || idx == 0} key={idx}>
                               <div className={style['box-answer']}>
                                 <div className={style['box-top']}>
-                                  {!hasCheckbox && (
+                                  {/* {!hasCheckbox && (
                                     <Badge
                                       status={status[v.approvalStatus]}
                                       text={
@@ -549,7 +533,26 @@ const QuestionList: React.FC<any> = (props: any) => {
                                         </Select>
                                       }
                                     />
-                                  )}
+                                  )} */}
+                                  <span>
+                                    生效渠道：
+                                    <Button
+                                      type="link"
+                                      onClick={() => {
+                                        _editAnswer(item, v);
+                                      }}
+                                    >
+                                      {v?.channelList &&
+                                        v?.channelList
+                                          ?.map((cl: any) => {
+                                            return HIGH_CONFIG_SELECT?.[0]?.children?.find(
+                                              (c: any) => c.name == cl,
+                                            )?.label;
+                                          })
+                                          ?.join(' , ')}
+                                    </Button>
+                                  </span>
+
                                   <div></div>
 
                                   <div>
@@ -593,26 +596,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                                 <div className={style['box-footer']}>
                                   <div>
                                     <span>作者：{v.updateBy || v.creator}</span>
-                                    <Divider type="vertical" />
-                                    <span>
-                                      生效渠道：
-                                      <Button
-                                        type="link"
-                                        onClick={() => {
-                                          _editAnswer(item, v);
-                                        }}
-                                      >
-                                        {v?.channelList &&
-                                          v?.channelList
-                                            ?.map((cl: any) => {
-                                              return HIGH_CONFIG_SELECT?.[0]?.children?.find(
-                                                (c: any) => c.name == cl,
-                                              )?.label;
-                                            })
-                                            ?.join(' , ')}
-                                        {/* {!v?.channelList && '全部'} */}
-                                      </Button>
-                                    </span>
+                                    {/* <Divider type="vertical" /> */}
                                   </div>
                                   <div>
                                     <span>

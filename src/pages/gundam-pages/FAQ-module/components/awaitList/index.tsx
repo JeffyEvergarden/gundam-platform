@@ -1,17 +1,15 @@
-import React, { useState, useEffect, useRef, useImperativeHandle } from 'react';
-import { Select, message, Button, Form, Pagination, Input, Space, Divider } from 'antd';
-import style from './style.less';
-import ProList from '@ant-design/pro-list';
-import { useModel, history } from 'umi';
-import config from '@/config';
-import Condition from '@/pages/gundam-pages/main-draw/flow/common/Condition';
-import KeepAlive, { useActivate, useUnactivate } from 'react-activation';
 import { HIGH_CONFIG_SELECT } from '@/pages/gundam-pages/FAQ/FAQ-manage/const';
-import History from '../history-modal';
+import Condition from '@/pages/gundam-pages/main-draw/flow/common/Condition';
+import ProList from '@ant-design/pro-list';
+import { Button, Divider, Input, Pagination, Select, Space } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
+import { history, useModel } from 'umi';
 import AnswerView from '../answerView-modal';
-import { approvalResult, approvalType } from './count';
+import History from '../history-modal';
 import ReasonModal from '../reason-modal';
+import { approvalResult, approvalType } from './count';
 import { useApprovalModel } from './model';
+import style from './style.less';
 
 const { Option } = Select;
 //test
@@ -98,8 +96,8 @@ const AwaitList: React.FC<any> = (props: any) => {
                   onChange={(e: any) => {
                     setSearchText(e.target.value);
                   }}
-                  onSearch={() => {
-                    CurrentPage();
+                  onSearch={(text: any) => {
+                    CurrentPage({ searchText: text });
                   }}
                   onPressEnter={() => {
                     CurrentPage();

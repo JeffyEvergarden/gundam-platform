@@ -34,33 +34,33 @@ export const HIGH_CONFIG_SELECT = [
       },
     ],
   },
-  {
-    name: 'approvalStatusList',
-    label: '状态',
-    type: 'single',
-    children: [
-      {
-        name: null,
-        label: '全部',
-      },
-      {
-        name: 1,
-        label: '等待审批',
-      },
-      {
-        name: 2,
-        label: '被退回',
-      },
-      {
-        name: 3,
-        label: '已过期',
-      },
-      {
-        name: 4,
-        label: '已发布',
-      },
-    ],
-  },
+  // {
+  //   name: 'approvalStatusList',
+  //   label: '状态',
+  //   type: 'single',
+  //   children: [
+  //     {
+  //       name: null,
+  //       label: '全部',
+  //     },
+  //     {
+  //       name: 1,
+  //       label: '等待审批',
+  //     },
+  //     {
+  //       name: 2,
+  //       label: '被退回',
+  //     },
+  //     {
+  //       name: 3,
+  //       label: '已过期',
+  //     },
+  //     {
+  //       name: 4,
+  //       label: '已发布',
+  //     },
+  //   ],
+  // },
   {
     name: 'orderType',
     label: '排序',

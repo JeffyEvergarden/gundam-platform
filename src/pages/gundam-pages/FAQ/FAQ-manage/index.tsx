@@ -1,17 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Button, Input, Select, Space, Tree, Collapse, List, Divider, Skeleton } from 'antd';
-import { DownOutlined, SettingOutlined } from '@ant-design/icons';
+import { SettingOutlined } from '@ant-design/icons';
+import { Button, Collapse, Input, Select, Space } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
+import ChannelModal from '../components/channel-modal';
+import ClassifyModal from '../components/classify-modal';
+import QuestionList from '../components/question-list';
 import HighConfigSelect from './components/high-select';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import MyTree from './components/my-tree';
 import TypeModal from './components/type-modal';
 import { useFaqModal, useTreeModal } from './model';
-import QuestionList from '../components/question-list';
 import style from './style.less';
-import { treeData } from './test';
-import ClassifyModal from '../components/classify-modal';
-import ChannelModal from '../components/channel-modal';
 
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -31,7 +29,6 @@ const FAQPage: React.FC<any> = (props: any) => {
 
   const [value, setValue] = useState<any>({
     channelList: ['all'],
-    approvalStatusList: null,
     orderType: 1,
     creatorList: null,
   });

@@ -1,7 +1,7 @@
-import { Button, Form, InputNumber, message, Space } from 'antd';
+import { Button, Form, Input, InputNumber, message, Space } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useModel } from 'umi';
-import { useGlobalModel, useFAQModel } from '../model';
+import { useFAQModel } from '../model';
 import style from './style.less';
 
 const FAQConfig: React.FC = (props: any) => {
@@ -81,7 +81,10 @@ const FAQConfig: React.FC = (props: any) => {
                   key={'systemConfigList' + item.configKey}
                   rules={[{ required: true }]}
                 >
-                  <InputNumber style={{ width: 200 }} min={0} step="1" precision={0} stringMode />
+                  {item?.dataType == 1 && (
+                    <InputNumber style={{ width: 200 }} min={0} step="1" precision={0} stringMode />
+                  )}
+                  {item?.dataType == 0 && <Input.TextArea style={{ width: 300 }} maxLength={200} />}
                 </FormItem>
               );
             })}
