@@ -5,6 +5,7 @@ import {
   addAnswer,
   addQuestion,
   editAnswer,
+  editApproval,
   editQuestion,
   getAnswerInfo,
   getApprovalInfo,
@@ -115,11 +116,21 @@ export const useAnswerModel = () => {
       return false;
     }
   };
+  const updateApproval = async (data: any) => {
+    let res: any = await editApproval(data);
+    if (res.resultCode === successCode) {
+      return true;
+    } else {
+      message.error(res.resultDesc || '保存失败');
+      return false;
+    }
+  };
 
   return {
     addNewAnswer,
     updateAnswer,
     getAnswerInfo: _getAnswerInfo,
     _getApprovalInfo,
+    updateApproval,
   };
 };

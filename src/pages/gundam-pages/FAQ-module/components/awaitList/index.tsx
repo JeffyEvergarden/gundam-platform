@@ -291,7 +291,7 @@ const AwaitList: React.FC<any> = (props: any) => {
                               style={{ marginLeft: '16px' }}
                               onClick={() => {
                                 history.push(
-                                  `/gundamPages/faq/answer?faqId=${item.faqId}&answerId=${item.answerId}&pageFrom=pendingList&id=${item.id}`,
+                                  `/gundamPages/faq/answer?faqId=${item.faqId}&answerId=${item.answerId}&pageFrom=pendingList&id=${item.id}&batchNumber=${item.batchNumber}`,
                                 );
                               }}
                             >

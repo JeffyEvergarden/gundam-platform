@@ -60,6 +60,20 @@ export async function getApprovalInfo(params?: Record<string, any>) {
   });
 }
 
+export async function editApproval(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/approvalEdit`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function deleteApproval(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/approvalDelete`, {
+    method: 'POST',
+    data,
+  });
+}
+
 export async function getFaqConfig(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/config/list`, {
     method: 'GET',

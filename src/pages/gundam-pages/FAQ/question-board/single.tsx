@@ -62,6 +62,7 @@ const Board: React.FC<any> = (props: any) => {
   const pageType = questionId && answerId ? 'edit' : 'create';
   const pageFrom = query.pageFrom || '';
   const pendingId = query.id || '';
+  const batchNumber = query.batchNumber || '';
 
   const [form] = Form.useForm();
 
@@ -88,7 +89,8 @@ const Board: React.FC<any> = (props: any) => {
 
   const { getQuestionInfo } = useQuestionModel();
 
-  const { addNewAnswer, updateAnswer, getAnswerInfo, _getApprovalInfo } = useAnswerModel();
+  const { addNewAnswer, updateAnswer, getAnswerInfo, _getApprovalInfo, updateApproval } =
+    useAnswerModel();
 
   const _getQuestionInfo = async (id: any) => {
     let res: any = await getQuestionInfo({
@@ -180,7 +182,12 @@ const Board: React.FC<any> = (props: any) => {
         answerId: answerId,
         ...otherObj,
       };
-      let response = await updateAnswer(data);
+      let response: any;
+      if (pageFrom == 'pendingList') {
+        response = await updateApproval({ ...data, id: pendingId, batchNumber: batchNumber });
+      } else {
+        response = await updateAnswer(data);
+      }
       if (response === true) {
         // 回到主页
 
