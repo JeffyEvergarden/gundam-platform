@@ -7,6 +7,7 @@ import {
   MonitorOutlined,
   SettingOutlined,
   ShareAltOutlined,
+  LineChartOutlined,
 } from '@ant-design/icons';
 
 export default [
@@ -101,6 +102,33 @@ export default [
         icon: <CrownOutlined />,
         path: '/gundamPages/module/faq/pendingList',
         name: '待处理',
+      },
+    ],
+  },
+  {
+    icon: <LineChartOutlined />,
+    path: '/gundamPages/reportForm',
+    name: '报表管理',
+    routes: [
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/reportForm/visitorsNumbers',
+        name: '访客次数统计',
+      },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/reportForm/visitorsSession',
+        name: '访客会话明细',
+      },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/reportForm/problemRate',
+        name: '问题匹配率统计',
+      },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/reportForm/recommendAndClare',
+        name: '推荐问和澄清统计',
       },
     ],
   },

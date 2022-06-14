@@ -60,6 +60,7 @@
     "antd": "^4.14.0",
     "bizcharts": "^4.1.14",
     "classnames": "^2.2.6",
+    "echarts": "^5.3.2",
     "gg-editor": "^2.0.4",
     "lodash": "^4.17.11",
     "moment": "^2.25.3",

@@ -153,6 +153,33 @@ export default [
           },
         ],
       },
+      {
+        path: '/gundamPages/reportForm',
+        component: './gundam-pages/report-form/home',
+        name: '报表管理',
+        routes: [
+          {
+            path: '/gundamPages/reportForm/visitorsNumbers',
+            component: './gundam-pages/report-form/visitorsNumbers',
+            name: '访客次数统计',
+          },
+          {
+            path: '/gundamPages/reportForm/visitorsSession',
+            component: './gundam-pages/report-form/visitorsSession',
+            name: '访客会话明细',
+          },
+          {
+            path: '/gundamPages/reportForm/problemRate',
+            component: './gundam-pages/report-form/problemRate',
+            name: '问题匹配率统计',
+          },
+          {
+            path: '/gundamPages/reportForm/recommendAndClare',
+            component: './gundam-pages/report-form/recommendAndClare',
+            name: '推荐问和澄清统计',
+          },
+        ],
+      },
       { redirect: '/gundamPages/mainDraw' },
       { component: './404' },
     ],
