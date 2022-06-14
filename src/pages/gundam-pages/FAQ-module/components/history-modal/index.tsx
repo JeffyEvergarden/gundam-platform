@@ -87,7 +87,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
             {list.map((item: any, index: number) => {
               return (
                 <Timeline key={index} mode={'left'} className={style['timeline']}>
-                  <div className={style['header']}>{'v.createTime'}</div>
+                  <div className={style['header']}>{item?.historyList?.[0]?.createTime}</div>
                   {item.historyList.map((v: any, idx: any) => {
                     return [1, 2].map((t: any) => {
                       if (t == 1) {
