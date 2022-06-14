@@ -177,6 +177,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       page: 1,
       pageSize: 10,
       robotId: info.id,
+      queryType: 0,
       faqTypeId: classType,
       searchText: searchText1,
     });
@@ -219,7 +220,14 @@ const SelectorModal: React.FC<any> = (props: any) => {
     }
     setClassType(val[0]);
     setCurrent1(1);
-    getFaqList({ page: 1, pageSize: 10, robotId: info.id, faqTypeId: val[0] });
+    getFaqList({
+      page: 1,
+      pageSize: 10,
+      robotId: info.id,
+      faqTypeId: val[0],
+      queryType: 0,
+      searchText: searchText1,
+    });
   };
 
   // 勾选筛选设置
