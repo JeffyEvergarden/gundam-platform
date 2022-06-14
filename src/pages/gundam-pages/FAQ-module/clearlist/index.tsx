@@ -1,14 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useModel, history } from 'umi';
-import { Button, Form, Popconfirm, Input, Modal, Tooltip } from 'antd';
+import { MonitorOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import Condition from '@/components/Condition';
-import { PlusOutlined } from '@ant-design/icons';
-import { useTableModel } from './model';
+import { Button, Form, Input, Modal, Popconfirm, Tooltip } from 'antd';
+import { useEffect, useRef, useState } from 'react';
+import { useModel } from 'umi';
 import DetailModal from '../components/detail-modal';
 import SelectFaqModal from '../components/select-faq-modal';
 import FaqSelect from './FaqSelect';
-import { QuestionCircleOutlined, MonitorOutlined } from '@ant-design/icons';
+import { useTableModel } from './model';
 import style from './style.less';
 
 const { TextArea } = Input;
@@ -281,7 +279,7 @@ const FAQClearList = (props: any) => {
         bordered={true}
         scroll={{ x: columns.length * 200 }}
         request={async (params: any, sort: any, filter: any) => {
-          return getTableList({ page: params.current, ...params });
+          return getTableList({ page: params.current, ...params, robotId: info.id });
         }}
         editable={{
           type: 'multiple',

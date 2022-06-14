@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useModel, history } from 'umi';
-import { Button, Radio, Popconfirm, Form, Input, Modal } from 'antd';
-import ProTable from '@ant-design/pro-table';
-import Condition from '@/components/Condition';
+import { CHANNAL_LIST, formatChannel } from '@/pages/gundam-pages/FAQ/const';
 import { PlusOutlined } from '@ant-design/icons';
-import { formatChannel, CHANNAL_LIST } from '@/pages/gundam-pages/FAQ/const';
+import ProTable from '@ant-design/pro-table';
+import { Button, Form, Input, Modal, Popconfirm, Radio } from 'antd';
+import { useEffect, useRef, useState } from 'react';
+import { useModel } from 'umi';
 import { useTableModel } from './model';
 import style from './style.less';
 
@@ -148,7 +147,7 @@ const FAQBlackList = (props: any) => {
         loading={tableLoading}
         scroll={{ x: columns.length * 200 }}
         request={async (params: any, sort: any, filter: any) => {
-          return getTableList({ page: params.current, ...params });
+          return getTableList({ page: params.current, ...params, robotId: info.id });
         }}
         editable={{
           type: 'multiple',
