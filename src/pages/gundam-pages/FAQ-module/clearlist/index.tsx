@@ -79,6 +79,7 @@ const FAQClearList = (props: any) => {
         return item.recommendId;
       });
     (selectFaqModalRef.current as any)?.open({
+      question: row.question || '',
       selectList: questionTypeList, //被选中列表
       selectedQuestionKeys, // 已选问题
       selectedWishKeys, // 已选意图

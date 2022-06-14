@@ -96,6 +96,9 @@ const SelectorModal: React.FC<any> = (props: any) => {
   const [disabledQuestionKeys, setDisabledQuestionKeys] = useState<any[]>([]);
   const [disabledWishKeys, setDisabledWishKeys] = useState<any[]>([]);
 
+  // title
+  const [title, setTitle] = useState<any>('');
+
   // 对象
   const [selectList, setSelectList] = useState<any[]>([]);
   // const [selectWishList, setSelectWishList] = useState<any[]>([]);
@@ -339,6 +342,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
   useImperativeHandle(cref, () => ({
     open: (obj: any) => {
       console.log(obj);
+      setTitle(obj.question || '');
       // 设置不能选的
       setDisabledWishKeys(obj?.disabledWishKeys || []);
       setDisabledQuestionKeys(obj?.disabledQuestionKeys || []);
@@ -413,6 +417,14 @@ const SelectorModal: React.FC<any> = (props: any) => {
       onOk={submit}
     >
       <div className={style['modal-bg_default']}>
+        <Condition r-if={title}>
+          <div className={style['title_top']}>
+            <div className={style['label']}> 问题:</div>
+
+            <Input value={title} />
+          </div>
+        </Condition>
+
         <div className={style['select-box']}>
           <Condition r-if={selectList.length > 0}>
             <div className={style['title']}>已选择标准问/意图</div>
