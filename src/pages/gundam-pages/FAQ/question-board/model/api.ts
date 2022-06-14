@@ -46,6 +46,14 @@ export async function deleteAnswer(data?: Record<string, any>) {
   });
 }
 
+//检测能否新增或者编辑答案
+export async function isAdd(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/answerIsEdit`, {
+    method: 'POST',
+    data,
+  });
+}
+
 export async function getAnswerInfo(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/faq/answerInfo`, {
     method: 'GET',
