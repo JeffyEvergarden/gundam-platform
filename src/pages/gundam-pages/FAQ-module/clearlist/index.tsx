@@ -112,7 +112,10 @@ const FAQClearList = (props: any) => {
       clarifyId: row?.id,
       clarifyDetailList: list,
     };
-    await updateClearItem(data);
+    let res: any = await updateClearItem(data);
+    if (res) {
+      tableRef.current.reload();
+    }
   };
 
   // 列名
