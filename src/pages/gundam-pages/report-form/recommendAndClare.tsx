@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, Fragment } from 'react';
-import { throttle } from '@/utils';
+import { throttle, toNumber } from '@/utils';
 import { useModel } from 'umi';
 import { Space, Table, Tooltip, Typography } from 'antd';
 import HeadSearch from './components/headSearch';
@@ -19,7 +19,31 @@ export default () => {
 
   const { getFaqAndClareList } = useReportForm();
 
+  const rate = document.body.clientWidth / 1366;
+  const [base, setBase] = useState<number>(rate);
+
+  const resize = () => {
+    const html = document.documentElement;
+    const realRate = document.body.clientWidth / 1920;
+    const rate = realRate <= 0.7 ? 0.7 : realRate;
+    html.style.fontSize = rate * 20 + 'px';
+    setBase(rate);
+  };
+
+  useEffect(() => {
+    resize();
+    const fn = throttle(() => {
+      resize();
+    }, 200);
+    window.addEventListener('resize', fn);
+    return () => {
+      window.removeEventListener('resize', fn);
+    };
+  }, []);
+
   const [dataSource, setDataSource] = useState<any>([]);
+  const [dayId, setDayId] = useState<any>([]);
+  const [lineList, setList] = useState<any>([]);
 
   useEffect(() => {
     getList('', '', '');
@@ -44,7 +68,40 @@ export default () => {
       channelCode: code,
     };
     let res = await getFaqAndClareList(params);
-    setDataSource(res?.data?.list);
+    setDataSource(res?.data);
+    let day: any = [];
+    let temp: any = [];
+    let clarifyReplyNum: any = { name: '澄清回复数', val: [] };
+    let clarifyConfirmDistinctNum: any = { name: '澄清确认数', val: [] };
+    let clarifyUnconfirmedReplyNum: any = { name: '澄清未确认数', val: [] };
+    let recommendReplyNum: any = { name: '推荐回复数', val: [] };
+    let recommendDistinctConfirmNum: any = { name: '推荐确认数', val: [] };
+    let recommendReplyUnconfirmedNum: any = { name: '推荐未确认数', val: [] };
+    let clarifyReplyRate: any = { name: '澄清确认率', val: [], isRate: true };
+    let recommendReplyConfimRate: any = { name: '推荐确认率', val: [], isRate: true };
+    res.data.map((item: any) => {
+      day.push(item.dayId);
+      clarifyReplyNum.val.push(item.clarifyReplyNum);
+      clarifyConfirmDistinctNum.val.push(item.clarifyConfirmDistinctNum);
+      clarifyUnconfirmedReplyNum.val.push(item.clarifyUnconfirmedReplyNum);
+      recommendReplyNum.val.push(item.recommendReplyNum);
+      recommendDistinctConfirmNum.val.push(item.recommendDistinctConfirmNum);
+      recommendReplyUnconfirmedNum.val.push(item.recommendReplyUnconfirmedNum);
+      clarifyReplyRate.val.push(toNumber(item.clarifyReplyRate));
+      recommendReplyConfimRate.val.push(toNumber(item.recommendReplyConfimRate));
+    });
+    temp.push(
+      clarifyReplyNum,
+      clarifyConfirmDistinctNum,
+      clarifyUnconfirmedReplyNum,
+      recommendReplyNum,
+      recommendDistinctConfirmNum,
+      recommendReplyUnconfirmedNum,
+      clarifyReplyRate,
+      recommendReplyConfimRate,
+    );
+    setDayId(day);
+    setList(temp);
   };
 
   const choseTime = (begin: string, end: string, code: string) => {};
@@ -197,14 +254,45 @@ export default () => {
     <div className={styles.pageComtain}>
       <div className={styles.pageTitile}>推荐问和澄清统计</div>
       <HeadSearch choseTime={choseTime} exportReportForm={exportReportForm} />
+      <div className={styles.visitorBox}>
+        <LineChart
+          id={'faqAndClarify'}
+          loading={null}
+          title={''}
+          base={base}
+          columns={dayId}
+          data={lineList}
+          color={[
+            '#6395F9',
+            '#62DAAB',
+            '#657798',
+            '#F6C022',
+            '#7666F9',
+            '#78D3F8',
+            '#9661BC',
+            '#F6903D',
+          ]}
+          legendData={[
+            '澄清回复数',
+            '澄清确认数',
+            '澄清未确认数',
+            '推荐回复数',
+            '推荐确认数',
+            '推荐未确认数',
+            '澄清确认率',
+            '推荐确认率',
+          ]}
+          className={styles.visitorBox}
+        />
+      </div>
       <div className={styles.Table_box}>
         <Table
           rowKey={(record: any) => record.dayId}
           columns={columns}
           dataSource={dataSource}
           pagination={false}
-          scroll={{ y: 300 }}
-          // bordered
+          sticky={true}
+          scroll={{ y: 270 }}
           size={'small'}
           summary={(pageData) => {
             let totalclarifyReplyNum = 0;

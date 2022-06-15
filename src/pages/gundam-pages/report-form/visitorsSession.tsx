@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, Fragment } from 'react';
 import { useModel } from 'umi';
 import HeadSearch from './components/headSearch';
 import ProTable from '@ant-design/pro-table';
+import ChatRecordModal from '@/pages/gundam-pages/FAQ-module/components/chat-record-modal';
 import { Space } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -12,6 +13,7 @@ import { useReportForm } from './model';
 
 export default () => {
   const actionRef = useRef<any>();
+  const chatRecordModalRef = useRef<any>({});
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -19,16 +21,11 @@ export default () => {
 
   const { getDialogue } = useReportForm();
 
-  // const [dataSource, setDataSource] = useState<any>([]);
-  const [paramsObj, setParamsObj] = useState<any>({});
-
-  // useEffect(() => {
-  //   initialTable('', '', '');
-  // }, []);
+  const [paramsObj, setParamsObj] = useState<any>({ orderCode: '1', orderType: '2' });
 
   const choseTime = (begin: string, end: string, code: string) => {
-    setParamsObj({ begin: begin, end: end, code: code });
-    // initialTable(begin, end, code);
+    let temp = Object.assign({ ...paramsObj }, { begin: begin, end: end, code: code });
+    setParamsObj(temp);
   };
 
   const initialTable = async (payload: any) => {
@@ -48,6 +45,10 @@ export default () => {
       startTime: startTime,
       endTime: endTime,
       channelCode: payload.code,
+      orderCode: payload.orderCode, //排序code 1-时长  2-轮次
+      orderType: payload.orderType, //1-正序 2-倒序
+      page: payload.current,
+      pageSize: payload.pageSize,
     };
     let res = await getDialogue(params);
     return {
@@ -76,8 +77,44 @@ export default () => {
     );
   };
 
+  const toRecord = (row: any) => {
+    chatRecordModalRef.current?.open?.(row);
+  };
+
+  // orderCode  1-时长  2-轮次
+  //  orderType   1-正序 2-倒序
+  const tableChange = (pagination: any, filters: any, sorter: any) => {
+    let temp = { orderCode: '1', orderType: '2' };
+    if (sorter.columnKey === 'dialogueTurn' && sorter.order === 'ascend') {
+      temp.orderCode = '2';
+      temp.orderType = '1';
+    }
+    if (sorter.columnKey === 'dialogueTurn' && sorter.order === 'descend') {
+      temp.orderCode = '2';
+      temp.orderType = '2';
+    }
+    if (sorter.columnKey === 'duration' && sorter.order === 'ascend') {
+      temp.orderCode = '1';
+      temp.orderType = '1';
+    }
+    if (sorter.columnKey === 'duration' && sorter.order === 'descend') {
+      temp.orderCode = '1';
+      temp.orderType = '2';
+    }
+    let tempParamsObj = JSON.parse(JSON.stringify(paramsObj));
+    let tempObj = Object.assign(tempParamsObj, temp);
+    setParamsObj(tempObj);
+  };
+
   const columns: any = [
-    { title: '会话ID', dataIndex: 'id', ellipsis: true },
+    {
+      title: '会话ID',
+      dataIndex: 'id',
+      ellipsis: true,
+      render: (t: any, r: any, i: any) => {
+        return <a onClick={() => toRecord(r)}>{r.id}</a>;
+      },
+    },
     {
       title: () => {
         return (
@@ -106,7 +143,7 @@ export default () => {
           </Space>
         );
       },
-      sorter: (a: any, b: any) => a.dialogueTurn - b.dialogueTurn,
+      sorter: true,
       dataIndex: 'dialogueTurn',
       ellipsis: true,
     },
@@ -121,7 +158,7 @@ export default () => {
           </Space>
         );
       },
-      sorter: (a: any, b: any) => a.duration - b.duration,
+      sorter: true,
       dataIndex: 'duration',
       ellipsis: true,
     },
@@ -140,6 +177,7 @@ export default () => {
           pagination={{
             pageSize: 10,
           }}
+          onChange={tableChange}
           search={false}
           columns={columns}
           scroll={{ x: columns.length * 200 }}
@@ -150,6 +188,7 @@ export default () => {
           }}
         />
       </div>
+      <ChatRecordModal cref={chatRecordModalRef} />
     </div>
   );
 };

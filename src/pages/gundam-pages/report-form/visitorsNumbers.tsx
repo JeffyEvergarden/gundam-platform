@@ -19,9 +19,9 @@ export default () => {
     info: model.info,
   }));
 
-  // 比率计算
   const rate = document.body.clientWidth / 1366;
   const [base, setBase] = useState<number>(rate);
+
   const [visitorList, setList] = useState<any>([]);
   const [dayId, setDayId] = useState<any>([]);
   const [dataSource, setDataSource] = useState<any>([]);
@@ -34,7 +34,6 @@ export default () => {
     setBase(rate);
   };
 
-  // 初始化mounted
   useEffect(() => {
     resize();
     const fn = throttle(() => {
@@ -76,8 +75,8 @@ export default () => {
     let validVisitorNum: any = { name: '有效访客人数', val: [] };
     let dialogueTurn: any = { name: '会话次数统计', val: [] };
     let day: any = [];
-    setDataSource(res?.data?.list);
-    res.data.list.map((item: any) => {
+    setDataSource(res?.data);
+    res.data.map((item: any) => {
       visitNum.val.push(item.visitNum);
       validVisitNum.val.push(item.validVisitNum);
       visitorNum.val.push(item.visitorNum);
@@ -223,7 +222,8 @@ export default () => {
           columns={columns}
           dataSource={dataSource}
           pagination={false}
-          scroll={{ y: 300 }}
+          scroll={{ y: 270 }}
+          sticky={true}
           size={'small'}
           summary={(pageData) => {
             let totalvisitNum = 0;

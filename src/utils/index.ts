@@ -1,5 +1,3 @@
-// const numeral = require('numeral');
-
 export function throttle(fn: (...args: any[]) => void, second: number) {
   let timer: any = null;
 
@@ -24,14 +22,10 @@ export function formatePercent(val: number): string {
   }
   return '0%';
 }
-
-// export function formateNumer(val: number): string {
-//   if (isNaN(val)) {
-//     return '0';
-//   }
-//   let str = numeral(val).format('0,0');
-//   if (val % 1 !== 0) {
-//     str = numeral(val).format('0,0.00');
-//   }
-//   return str;
-// }
+// 百分比转数字
+export const toNumber = (percent: any) => {
+  if (!percent) return;
+  let str = percent.slice(0, -1);
+  let num = Number(str) / 100;
+  return num;
+};

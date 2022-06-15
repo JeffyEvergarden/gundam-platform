@@ -14,6 +14,7 @@ const PieCharts: React.FC<any> = (props: any) => {
     color,
     legendData,
     columns,
+    sumReplyNum,
   } = props;
 
   let first = false;
@@ -91,7 +92,7 @@ const PieCharts: React.FC<any> = (props: any) => {
               show: true,
               position: 'center',
               fontSize: '24',
-              formatter: ['回答总数', `${999}`].join('\n'),
+              formatter: ['回答总数', `${sumReplyNum}`].join('\n'),
             },
             labelLine: {
               show: false,
