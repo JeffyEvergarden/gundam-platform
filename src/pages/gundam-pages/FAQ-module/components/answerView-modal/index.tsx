@@ -1,4 +1,5 @@
 import { HIGH_CONFIG_SELECT } from '@/pages/gundam-pages/FAQ/FAQ-manage/const';
+import ProList from '@ant-design/pro-list';
 import { Divider, Drawer, Input } from 'antd';
 import { useImperativeHandle, useRef, useState } from 'react';
 import { useModel } from 'umi';
@@ -45,9 +46,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     let params = {
       ...obj,
     };
-
     let res: any = await getList(params);
-
     setTotal(res?.total || 0);
     return res;
   };
@@ -62,32 +61,53 @@ const SelectorModal: React.FC<any> = (props: any) => {
     >
       <div className={style['title']}>{questionInfo?.question}</div>
       <div id="scrollContent" className={style['content-list']}>
-        {list?.map((item: any, index: any) => {
-          return (
-            <div className={style['box']} key={index}>
-              <div
-                className={style['box-content']}
-                dangerouslySetInnerHTML={{ __html: item.answer }}
-              ></div>
-              <div className={style['box-footer']}>
-                <div>
-                  生效渠道：
-                  {item?.channelList &&
-                    item?.channelList
-                      ?.map((cl: any) => {
-                        return HIGH_CONFIG_SELECT?.[0]?.children?.find((c: any) => c.name == cl)
-                          ?.label;
-                      })
-                      ?.join(' , ')}
-                </div>
-                {item.enableStartTime && item.enableEndTime && <Divider type="vertical"></Divider>}
-                {item.enableStartTime && item.enableEndTime && (
-                  <div>生效时间：{`${item.enableStartTime} ~ ${item.enableEndTime}`}</div>
-                )}
-              </div>
-            </div>
-          );
-        })}
+        <ProList
+          // itemLayout="vertical"
+          loading={loading}
+          actionRef={listRef}
+          dataSource={list}
+          request={async (params = {}, sort, filter) => {
+            // console.log(params);
+            return {};
+            // return CurrentPage({ page: current, pageSize, robotId: info.id });
+          }}
+          tableAlertRender={false}
+          metas={{
+            title: {
+              render: (title: any, item: any, index: number) => {
+                return (
+                  <div className={style['box']} key={index}>
+                    <div
+                      className={style['box-content']}
+                      dangerouslySetInnerHTML={{ __html: item.answer }}
+                    ></div>
+                    <div className={style['box-footer']}>
+                      <div>
+                        生效渠道：
+                        {item?.channelList &&
+                          item?.channelList
+                            ?.map((cl: any) => {
+                              return HIGH_CONFIG_SELECT?.[0]?.children?.find(
+                                (c: any) => c.name == cl,
+                              )?.label;
+                            })
+                            ?.join(' , ')}
+                      </div>
+                      {item.enableStartTime && item.enableEndTime && (
+                        <Divider type="vertical"></Divider>
+                      )}
+                      {item.enableStartTime && item.enableEndTime && (
+                        <div>生效时间：{`${item.enableStartTime} ~ ${item.enableEndTime}`}</div>
+                      )}
+                    </div>
+                  </div>
+                );
+              },
+            },
+          }}
+          rowKey={'id'}
+          key={'id'}
+        />
       </div>
     </Drawer>
   );

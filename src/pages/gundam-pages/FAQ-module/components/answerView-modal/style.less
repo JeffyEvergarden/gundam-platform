@@ -39,6 +39,44 @@
 .content-list {
   flex: 1;
   overflow: auto;
+
+  :global {
+    .ant-pro-card-body {
+      padding: 0 !important;
+    }
+
+    .ant-pro-list-row-header-title {
+      display: block !important;
+    }
+
+    .ant-pro-list-row-selected {
+      background-color: #fff !important;
+    }
+
+    .ant-pro-list-row-title {
+      &:hover {
+        color: #000 !important;
+        cursor: default !important;
+      }
+    }
+
+    .ant-list-item {
+      margin: 5px;
+      // border: 1px solid #d3d3d3 !important;
+      // border-radius: 10px;
+      background-color: #fff;
+      cursor: default !important;
+    }
+
+    .ant-pro-list-row {
+      margin: 0;
+      margin-bottom: 16px;
+      padding: 0 !important;
+      &:hover {
+        background-color: #fff !important;
+      }
+    }
+  }
 }
 .box {
   margin-bottom: 16px;

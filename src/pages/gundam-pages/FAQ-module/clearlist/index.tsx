@@ -131,13 +131,16 @@ const FAQClearList = (props: any) => {
   const columns: any[] = [
     {
       title: '客户问题',
-      dataIndex: 'question',
+      dataIndex: 'searchText',
       fixed: 'left',
       width: 300,
       fieldProps: {
         placeholder: '请输入客户问题',
       },
       ellipsis: true,
+      render: (val: any, row: any) => {
+        return row.question;
+      },
     },
     {
       title: '标准问/意图',

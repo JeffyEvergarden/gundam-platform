@@ -4,18 +4,23 @@
       padding: 12px;
       padding-left: 24px;
     }
+    .ant-drawer-content-wrapper {
+      min-width: 800px;
+    }
   }
 }
 
 .scrollbar(@width, @color: #f5f5f5) {
   ::-webkit-scrollbar {
     width: @width * 4;
+    height: @width * 4;
     background: transparent;
     visibility: hidden;
   }
 
   ::-webkit-scrollbar-thumb {
     width: @width * 4;
+    height: @width * 4;
     background: @color;
     border-radius: 30px;
     // visibility: hidden;
@@ -126,17 +131,18 @@
       }
       .ant-timeline-item-label {
         top: -6px !important;
-        width: 16% !important;
+        width: 17% !important;
+        white-space: nowrap;
       }
       .ant-timeline-item-tail {
-        left: 18% !important;
+        left: 19% !important;
       }
       .ant-timeline-item-head {
-        left: 18% !important;
+        left: 19% !important;
       }
       .ant-timeline-item-content {
         top: -6px !important;
-        left: 18% !important;
+        left: 19% !important;
         width: 75% !important;
       }
     }
