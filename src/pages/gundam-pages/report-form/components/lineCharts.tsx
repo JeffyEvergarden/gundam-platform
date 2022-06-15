@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Spin } from 'antd';
 import * as echarts from 'echarts';
-import { formatePercent, formateNumer } from '@/utils';
 import styles from './index.less';
 
 const LineChartPage: React.FC<any> = (props: any) => {
@@ -39,41 +38,51 @@ const LineChartPage: React.FC<any> = (props: any) => {
 
   // 生成图表数据
   const initChart = () => {
-    // const columns: any = ['2021-03-04', '2021-05-04', '2021-06-04', '2021-08-04'];
-    // const data1: any = [10, 20, 30];
-    // const data2: any = [15, 25, 35];
-    // const data3: any = [55, 45, 35];
-    // data.forEach((item: any) => {
-    //   columns.push(item.name);
-    //   data1.push(item.value1);
-    //   data2.push(item.value2);
-    //   data3.push(item.value3);
-    // });
-    // if (!data1.length || !data2.length) {
-    //   return;
-    // }
     let temp: any = [];
     data?.map((item: any) => {
-      temp.push({
-        name: item.name,
-        data: item.val,
-        type: 'line',
-        yAxisIndex: 0,
-        z: 5,
-        showSymbol: false,
-        lineStyle: {
-          width: 2 * base,
-        },
-        emphasis: {
-          focus: 'series',
-        },
-        label: {
-          fontSize: 12 * base,
-        },
-        labelLayout: {
-          moveOverlap: 'shiftY',
-        },
-      });
+      if (item.isRate) {
+        temp.push({
+          name: item.name,
+          data: item.val,
+          type: 'line',
+          yAxisIndex: 1,
+          z: 5,
+          showSymbol: false,
+          lineStyle: {
+            width: 2 * base,
+          },
+          emphasis: {
+            focus: 'series',
+          },
+          label: {
+            fontSize: 12 * base,
+          },
+          labelLayout: {
+            moveOverlap: 'shiftY',
+          },
+        });
+      } else {
+        temp.push({
+          name: item.name,
+          data: item.val,
+          type: 'line',
+          // yAxisIndex: 0,
+          z: 5,
+          showSymbol: false,
+          lineStyle: {
+            width: 2 * base,
+          },
+          emphasis: {
+            focus: 'series',
+          },
+          label: {
+            fontSize: 12 * base,
+          },
+          labelLayout: {
+            moveOverlap: 'shiftY',
+          },
+        });
+      }
     });
     const options: any = initOptions(columns, temp);
     lineChart.current.setOption(options);
@@ -88,29 +97,29 @@ const LineChartPage: React.FC<any> = (props: any) => {
           fontFamily: 'PingFang SC, sans-serif, Microsoft YaHei, SimHei',
         },
         title: {
-          show: false,
+          show: title ? true : false,
           top: 0,
-          left: 180 * base,
+          left: 0,
           text: title,
           textStyle: {
             color: 'rgba(0, 0, 0, 0.85)',
-            fontSize: 14 * base,
+            fontSize: 16 * base,
             lineHeight: 16,
-            fontWeight: 'bold',
+            fontWeight: '400',
           },
         },
         legend: {
-          bottom: -8 * base,
+          bottom: -5 * base,
           left: 350 * base,
           data: legendData,
           textStyle: {
             fontSize: 12 * base,
-            lineHeight: 16,
+            lineHeight: 16 * base,
           },
         },
         grid: [
           {
-            top: 40 * base,
+            top: 50 * base,
             left: 45 * base,
             right: 50 * base,
             bottom: 60 * base,
@@ -128,6 +137,7 @@ const LineChartPage: React.FC<any> = (props: any) => {
         xAxis: {
           type: 'category',
           data: columns,
+          // boundaryGap: false,
           axisTick: {
             show: false,
             alignWithLabel: true,
