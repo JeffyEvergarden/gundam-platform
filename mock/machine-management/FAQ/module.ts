@@ -1,6 +1,5 @@
-import { Request, Response } from 'express';
-import config from '../../../src/config';
 import moment from 'moment';
+import config from '../../../src/config';
 
 // faq 富文本模块相关
 
@@ -143,12 +142,13 @@ const getRecordList = (req: any, res: any) => {
     resultCode: successCode,
     resultDesc: '成功',
     success: true,
-    data: {
-      pageSize: 10,
-      totalPage: 20,
-      page: 1,
-      list: arr,
-    },
+    // data: {
+    //   pageSize: 10,
+    //   totalPage: 20,
+    //   page: 1,
+    //   list: arr,
+    // },
+    data: arr,
   });
 };
 

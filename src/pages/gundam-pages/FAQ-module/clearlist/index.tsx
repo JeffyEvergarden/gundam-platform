@@ -112,20 +112,26 @@ const FAQClearList = (props: any) => {
       clarifyId: row?.id,
       clarifyDetailList: list,
     };
-    await updateClearItem(data);
+    let res: any = await updateClearItem(data);
+    if (res) {
+      tableRef.current.reload();
+    }
   };
 
   // 列名
   const columns: any[] = [
     {
       title: '客户问题',
-      dataIndex: 'question',
+      dataIndex: 'searchText',
       fixed: 'left',
       width: 300,
       fieldProps: {
         placeholder: '请输入客户问题',
       },
       ellipsis: true,
+      render: (val: any, row: any) => {
+        return row.question;
+      },
     },
     {
       title: '标准问/意图',

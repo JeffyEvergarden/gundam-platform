@@ -20,7 +20,7 @@ import { history, useModel } from 'umi';
 import { HIGH_CONFIG_SELECT } from '../../FAQ-manage/const';
 import { useFaqModal } from '../../FAQ-manage/model';
 import { deleteQuestion } from '../../FAQ-manage/model/api';
-import { deleteAnswer, editAnswer, editQuestion } from '../../question-board/model/api';
+import { deleteAnswer, editAnswer, editQuestion, isAdd } from '../../question-board/model/api';
 import style from './style.less';
 
 const { Option } = Select;
@@ -193,18 +193,39 @@ const QuestionList: React.FC<any> = (props: any) => {
     }
   };
 
-  const addAnswer = (item: any) => {
+  const addAnswer = async (item: any) => {
+    await isAdd({ faqId: item.id, robotId: info.id }).then((res) => {
+      if (res.resultCode == config.successCode) {
+        if (res.data.editFlag) {
+          history.push(`/gundamPages/faq/answer?faqId=${item.id}`);
+        } else {
+          message.warning('存在待审批或待处理的答案');
+        }
+      } else {
+        message.error(res.resultDesc);
+      }
+    });
+
     // console.log(item);
-    history.push(`/gundamPages/faq/answer?faqId=${item.id}`);
   };
 
-  const _editAnswer = (Q: any, A: any) => {
+  const _editAnswer = async (Q: any, A: any) => {
     // console.log(Q);
     // console.log(A);
     if (Q.recycle == 0) {
-      history.push(
-        `/gundamPages/faq/answer?faqId=${Q.id}&answerId=${A.answerId}&recycle=${Q.recycle}`,
-      );
+      await isAdd({ faqId: Q.id, robotId: info.id }).then((res) => {
+        if (res.resultCode == config.successCode) {
+          if (res.data.editFlag) {
+            history.push(
+              `/gundamPages/faq/answer?faqId=${Q.id}&answerId=${A.answerId}&recycle=${Q.recycle}`,
+            );
+          } else {
+            message.warning('存在待审批或待处理的答案');
+          }
+        } else {
+          message.error(res.resultDesc);
+        }
+      });
     }
   };
 

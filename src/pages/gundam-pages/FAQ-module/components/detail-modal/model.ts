@@ -1,7 +1,6 @@
-import { useState } from 'react';
-import { message } from 'antd';
-import { getSessionList, getRecordList } from '../../model/api';
 import config from '@/config/index';
+import { useState } from 'react';
+import { getRecordList, getSessionList } from '../../model/api';
 
 export const successCode = config.successCode;
 
@@ -39,7 +38,9 @@ export const useSessionModel = () => {
     setRecordLoading(true);
     let res: any = await getRecordList(params);
     setRecordLoading(false);
-    let { list = [], totalPage, pageSize } = res.data || {};
+    // let { list = [], totalPage, pageSize } = res.data || {};
+    let list = res.data || [];
+    let totalPage = res.data?.length || 0;
     if (!Array.isArray(list)) {
       list = [];
     }
@@ -50,7 +51,7 @@ export const useSessionModel = () => {
         role: item.role === 1 ? '客户' : 'AI',
         userName: item.role === 1 ? '客户' : '',
         recordTime: item.createTime,
-        message: (item.role === 1 ? item.message : item.answerText) || '',
+        message: (item.role === 1 ? item.message : item.answerText || item.message) || '',
         labels,
         index,
       };

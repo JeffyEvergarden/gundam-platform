@@ -73,20 +73,31 @@ const FAQConfig: React.FC = (props: any) => {
             </Space>
 
             {Nconfig?.map((item: any) => {
-              return (
-                <FormItem
-                  // {...col}
-                  label={item.configName}
-                  name={['systemConfigList', item.configKey]}
-                  key={'systemConfigList' + item.configKey}
-                  rules={[{ required: true }]}
-                >
-                  {item?.dataType == 1 && (
+              if (item?.dataType == 1) {
+                return (
+                  <FormItem
+                    // {...col}
+                    label={item.configName}
+                    name={['systemConfigList', item.configKey]}
+                    key={'systemConfigList' + item.configKey}
+                    rules={[{ required: true }]}
+                  >
                     <InputNumber style={{ width: 200 }} min={0} step="1" precision={0} stringMode />
-                  )}
-                  {item?.dataType == 0 && <Input.TextArea style={{ width: 300 }} maxLength={200} />}
-                </FormItem>
-              );
+                  </FormItem>
+                );
+              } else if (item?.dataType == 0) {
+                return (
+                  <FormItem
+                    // {...col}
+                    label={item.configName}
+                    name={['systemConfigList', item.configKey]}
+                    key={'systemConfigList' + item.configKey}
+                    rules={[{ required: true }]}
+                  >
+                    <Input.TextArea style={{ width: 300 }} maxLength={200} />
+                  </FormItem>
+                );
+              }
             })}
           </div>
         </Form>
