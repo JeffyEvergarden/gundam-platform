@@ -12,8 +12,16 @@ import style from './style.less';
 const { TextArea } = Input;
 
 const FAQClearList = (props: any) => {
-  const { getTableList, tableLoading, opLoading, deleteClearItem, addClearItem, updateClearItem } =
-    useTableModel();
+  const {
+    getTableList,
+    tableLoading,
+    opLoading,
+    deleteClearItem,
+    addClearItem,
+    updateClearItem,
+    total,
+    questionTotal,
+  } = useTableModel();
 
   const { info } = useModel('gundam', (model: any) => {
     return {
@@ -79,6 +87,7 @@ const FAQClearList = (props: any) => {
         return item.recommendId;
       });
     (selectFaqModalRef.current as any)?.open({
+      question: row.question || '',
       selectList: questionTypeList, //被选中列表
       selectedQuestionKeys, // 已选问题
       selectedWishKeys, // 已选意图
@@ -316,7 +325,11 @@ const FAQClearList = (props: any) => {
           pageSize: 10,
         }}
         dateFormatter="string"
-        headerTitle="FAQ-澄清"
+        headerTitle={
+          <div>
+            澄清样本问题 {total} 条, 标准问 {questionTotal} 条
+          </div>
+        }
         toolBarRender={() => [
           <Button
             key="button"

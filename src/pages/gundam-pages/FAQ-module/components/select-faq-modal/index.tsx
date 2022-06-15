@@ -96,6 +96,9 @@ const SelectorModal: React.FC<any> = (props: any) => {
   const [disabledQuestionKeys, setDisabledQuestionKeys] = useState<any[]>([]);
   const [disabledWishKeys, setDisabledWishKeys] = useState<any[]>([]);
 
+  // title
+  const [title, setTitle] = useState<any>('');
+
   // 对象
   const [selectList, setSelectList] = useState<any[]>([]);
   // const [selectWishList, setSelectWishList] = useState<any[]>([]);
@@ -114,12 +117,17 @@ const SelectorModal: React.FC<any> = (props: any) => {
   });
 
   // 业务流程列表
-  const { wishList, treeData } = useModel('drawer' as any, (model: any) => {
-    return {
-      wishList: model?._wishList || [],
-      treeData: model?.treeData || [],
-    };
-  });
+  const { wishList, treeData, getTreeData, getWishList } = useModel(
+    'drawer' as any,
+    (model: any) => {
+      return {
+        wishList: model?._wishList || [],
+        treeData: model?.treeData || [],
+        getTreeData: model?.getTreeData,
+        getWishList: model?.getWishList,
+      };
+    },
+  );
 
   const [classType, setClassType] = useState<string>('');
   const { loading, faqList, getFaqList, totalSize, setFaqList } = useFaqModal();
@@ -346,7 +354,10 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     open: (obj: any) => {
+      getWishList(info.id); // 获取意图列表
+      getTreeData(info.id); // 获取faq列表
       console.log(obj);
+      setTitle(obj.question || '');
       // 设置不能选的
       setDisabledWishKeys(obj?.disabledWishKeys || []);
       setDisabledQuestionKeys(obj?.disabledQuestionKeys || []);
@@ -421,6 +432,14 @@ const SelectorModal: React.FC<any> = (props: any) => {
       onOk={submit}
     >
       <div className={style['modal-bg_default']}>
+        <Condition r-if={title}>
+          <div className={style['title_top']}>
+            <div className={style['label']}> 问题:</div>
+
+            <Input value={title} />
+          </div>
+        </Condition>
+
         <div className={style['select-box']}>
           <Condition r-if={selectList.length > 0}>
             <div className={style['title']}>已选择标准问/意图</div>

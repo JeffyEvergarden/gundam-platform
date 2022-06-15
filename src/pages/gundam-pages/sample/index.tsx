@@ -1,16 +1,16 @@
-import { Input, Button, Row, Col, Space, Popconfirm, message } from 'antd';
-import React, { Fragment, useState, useEffect, useRef } from 'react';
-import ProTable from '@ant-design/pro-table';
-import { useModel, history } from 'umi';
-import { useSampleModel, useSimilarModel } from './model';
-import SimilarCom from './components/similarCom';
-import RemoveCom from './components/removeCom';
-import SameModal from './components/sameModal';
-import styles from './index.less';
-import { ArrowLeftOutlined, EyeOutlined } from '@ant-design/icons';
 import config from '@/config';
-import RemoveSimilar from './components/removeSimilar';
+import { ArrowLeftOutlined, EyeOutlined } from '@ant-design/icons';
+import ProTable from '@ant-design/pro-table';
+import { Button, Col, Input, message, Popconfirm, Row, Space } from 'antd';
+import { Fragment, useEffect, useRef, useState } from 'react';
+import { history, useModel } from 'umi';
 import SelectFaqModal from '../FAQ-module/components/select-faq-modal';
+import RemoveCom from './components/removeCom';
+import RemoveSimilar from './components/removeSimilar';
+import SameModal from './components/sameModal';
+import SimilarCom from './components/similarCom';
+import styles from './index.less';
+import { useSampleModel, useSimilarModel } from './model';
 
 const { Search } = Input;
 
@@ -588,6 +588,10 @@ export default () => {
                 <Button
                   type="primary"
                   onClick={() => {
+                    if (!inputValue) {
+                      message.warning('请先输入语料文本');
+                      return;
+                    }
                     (selectFaqModalRef.current as any)?.open({
                       selectList: [], //被选中列表
                       selectedQuestionKeys: [], // 已选问题

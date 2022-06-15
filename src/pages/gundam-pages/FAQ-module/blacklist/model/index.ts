@@ -11,6 +11,8 @@ export const useTableModel = () => {
 
   const [opLoading, setOpLoading] = useState<boolean>(false);
 
+  const [total, setTotal] = useState<number>(0);
+
   // 获取表格
   const getTableList = async (params?: any) => {
     setTableLoading(true);
@@ -28,6 +30,7 @@ export const useTableModel = () => {
       };
     });
     setTableList(list || []);
+    setTotal(totalPage || 0);
     return { data: list, total: totalPage };
   };
 
@@ -63,5 +66,6 @@ export const useTableModel = () => {
     deleteBlack,
     addBlack,
     opLoading,
+    total,
   };
 };
