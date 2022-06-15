@@ -61,32 +61,6 @@ const SelectorModal: React.FC<any> = (props: any) => {
     >
       <div className={style['title']}>{questionInfo?.question}</div>
       <div id="scrollContent" className={style['content-list']}>
-        {list?.map((item: any, index: any) => {
-          return (
-            <div className={style['box']} key={index}>
-              <div
-                className={style['box-content']}
-                dangerouslySetInnerHTML={{ __html: item.answer }}
-              ></div>
-              <div className={style['box-footer']}>
-                <div>
-                  生效渠道：
-                  {item?.channelList &&
-                    item?.channelList
-                      ?.map((cl: any) => {
-                        return HIGH_CONFIG_SELECT?.[0]?.children?.find((c: any) => c.name == cl)
-                          ?.label;
-                      })
-                      ?.join(' , ')}
-                </div>
-                {item.enableStartTime && item.enableEndTime && <Divider type="vertical"></Divider>}
-                {item.enableStartTime && item.enableEndTime && (
-                  <div>生效时间：{`${item.enableStartTime} ~ ${item.enableEndTime}`}</div>
-                )}
-              </div>
-            </div>
-          );
-        })}
         <ProList
           // itemLayout="vertical"
           loading={loading}
