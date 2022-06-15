@@ -9,13 +9,16 @@ import classNames from 'classnames';
 import { useReportForm } from './model';
 import LineChart from './components/lineCharts';
 import PieChart from './components/pieCharts';
-import { throttle } from '@/utils';
+import ChatRecordModal from '@/pages/gundam-pages/FAQ-module/components/chat-record-modal';
+import { throttle, toNumber } from '@/utils';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { CODE } from './enum';
 import styles from './index.less';
 
 export default () => {
   const actionRef = useRef<any>();
+
+  const chatRecordModalRef = useRef<any>({});
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -47,6 +50,9 @@ export default () => {
 
   const [lineList, setList] = useState<any>([]);
   const [dayId, setDayId] = useState<any>([]);
+  const [sumReplyNum, setsumReplyNum] = useState<string>('');
+  const [historySumReplyNum, sethistorySumReplyNum] = useState<string>('');
+  const [pieList, setPieList] = useState<any>([]);
 
   const [paramsObj, setParamsObj] = useState<any>({});
   const [modalData, setModalData] = useState<any>({});
@@ -63,6 +69,7 @@ export default () => {
   const onCancel = () => {
     setVisible(false);
   };
+
   const columns: any = [
     { title: '日期', dataIndex: 'dayId', ellipsis: true },
     {
@@ -175,13 +182,6 @@ export default () => {
     },
   ];
 
-  const toNumber = (percent: any) => {
-    if (!percent) return;
-    let str = percent.slice(0, -1);
-    let num = Number(str) / 100;
-    return num;
-  };
-
   const initialTable = async (payload: any) => {
     let startTime = '';
     let endTime = '';
@@ -201,6 +201,7 @@ export default () => {
       channelCode: payload.code,
     };
     let res = await question(params);
+    // 折线图数据处理
     let temp: any = [];
     let directReplyRate: any = { name: '明确回答率', val: [], isRate: true };
     let clarifyReplyNum: any = { name: '澄清回复数', val: [] };
@@ -219,6 +220,34 @@ export default () => {
     temp.push(directReplyRate, clarifyReplyNum, clarifyConfirmReplyNum, discernReplyNum, matchRate);
     setDayId(day);
     setList(temp);
+
+    // 饼图数据处理
+    // [
+    //   { value: 1048, name: '明确回答数', percent: '80%' },
+    //   { value: 735, name: '澄清回复数', percent: '60%' },
+    //   { value: 580, name: '澄清确认数', percent: '70%' },
+    //   { value: 484, name: '推荐确认数', percent: '50%' },
+    //   { value: 300, name: '拒识总数', percent: '40%' },
+    // ]
+    setsumReplyNum(res?.data?.sum?.sumReplyNum);
+    sethistorySumReplyNum(res?.data?.sum?.historySumReplyNum);
+    let sumData = res?.data?.sum;
+    setPieList([
+      { value: sumData.directReplyNum, name: '明确回答数', percent: sumData.directReplyRate },
+      { value: sumData.clarifyReplyNum, name: '澄清回复数', percent: sumData.clarifyReplyRate },
+      {
+        value: sumData.clarifyConfirmReplyNum,
+        name: '澄清确认数',
+        percent: sumData.clarifyConfirmReplyRate,
+      },
+      {
+        value: sumData.recommendReplyConfirmNum,
+        name: '推荐确认数',
+        percent: sumData.recommendReplyConfirmRate,
+      },
+      { value: sumData.discernReplyNum, name: '拒识总数', percent: sumData.discernReplyRate },
+    ]);
+
     return {
       data: res?.data?.list || [],
       total: res?.data?.total,
@@ -246,7 +275,10 @@ export default () => {
   };
 
   const rejectTable = async (payload: any) => {
-    let params = {};
+    let params = {
+      dayId: modalData.dayId,
+      ...payload,
+    };
     let res = await rejectList(params);
     return {
       data: res?.data?.list || [],
@@ -256,15 +288,19 @@ export default () => {
     };
   };
 
+  const toRecord = (row: any) => {
+    chatRecordModalRef.current?.open?.(row);
+  };
+
   const columnsReject: any = [
     {
-      dataIndex: 'entityValue',
+      dataIndex: 'message',
       title: '客户问题',
       ellipsis: true,
       search: false,
     },
     {
-      dataIndex: 'entityValue1',
+      dataIndex: 'creatTime',
       title: '时间',
       ellipsis: true,
       search: false,
@@ -283,6 +319,9 @@ export default () => {
       title: '操作',
       ellipsis: true,
       search: false,
+      render: (t: any, r: any, i: any) => {
+        return <a onClick={() => toRecord(r)}>会话记录</a>;
+      },
     },
   ];
 
@@ -290,7 +329,7 @@ export default () => {
     <div className={styles.pageComtain}>
       <div className={classNames(styles.pageTitile, styles.question_title)}>
         <span>访客次数统计</span>
-        <span>历史累计回答:65138</span>
+        <span>历史累计回答:{historySumReplyNum}</span>
       </div>
       <HeadSearch choseTime={choseTime} exportReportForm={exportReportForm} />
       <div className={styles.visitorBox}>
@@ -298,13 +337,8 @@ export default () => {
           <PieChart
             id="questionMatch_pie"
             base={base}
-            data={[
-              { value: 1048, name: '明确回答数', percent: '80%' },
-              { value: 735, name: '澄清回复数', percent: '60%' },
-              { value: 580, name: '澄清确认数', percent: '70%' },
-              { value: 484, name: '推荐确认数', percent: '50%' },
-              { value: 300, name: '拒识总数', percent: '40%' },
-            ]}
+            sumReplyNum={sumReplyNum}
+            data={pieList}
             title={'问题回答比例'}
             color={['#6395F9', '#62DAAB', '#657798', '#F6C022', '#7666F9']}
             legendData={['明确回答数', '澄清回复数', '澄清确认数', '推荐确认数', '拒识总数']}
@@ -337,7 +371,8 @@ export default () => {
           search={false}
           columns={columns}
           size={'small'}
-          // scroll={{ x: columns.length * 200 }}
+          sticky={true}
+          scroll={{ y: 270 }}
           // dataSource={dataSource}
           params={paramsObj}
           request={async (params = {}) => {
@@ -366,6 +401,7 @@ export default () => {
           }}
         />
       </Modal>
+      <ChatRecordModal cref={chatRecordModalRef} />
     </div>
   );
 };

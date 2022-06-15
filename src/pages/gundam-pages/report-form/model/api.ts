@@ -27,7 +27,7 @@ export async function questionMatch(params?: Record<string, any>) {
 
 /** 问题匹配率-拒识**/
 export async function reject(params?: Record<string, any>) {
-  return request(`${baseUrl}/robot/statistics/reject`, {
+  return request(`${baseUrl}/robot/statistics/questionMatch/rejectRateDetail`, {
     method: 'GET',
     params,
   });

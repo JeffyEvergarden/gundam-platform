@@ -66,7 +66,7 @@ const LineChartPage: React.FC<any> = (props: any) => {
           name: item.name,
           data: item.val,
           type: 'line',
-          // yAxisIndex: 0,
+          yAxisIndex: 0,
           z: 5,
           showSymbol: false,
           lineStyle: {
@@ -110,7 +110,7 @@ const LineChartPage: React.FC<any> = (props: any) => {
         },
         legend: {
           bottom: -5 * base,
-          left: 350 * base,
+          left: 300 * base,
           data: legendData,
           textStyle: {
             fontSize: 12 * base,
@@ -210,8 +210,13 @@ const LineChartPage: React.FC<any> = (props: any) => {
     let arrStr = '';
     arr.forEach((item: any, index: number) => {
       let label = item.seriesName;
-      let value = item.value;
-
+      let value;
+      let percentName = ['明确回答率', '匹配率', '澄清确认率', '推荐确认率'];
+      if (percentName.includes(item.seriesName)) {
+        value = item.value * 100 + '%';
+      } else {
+        value = item.value;
+      }
       arrStr += `
       <div class='${styles['tooltips-item']}'>
         <div class="${styles.icon}" style="background: ${item.color}"></div>
