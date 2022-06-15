@@ -87,7 +87,7 @@ const expendRender = (row: any) => {
 // selectedWishKeys 已选择的意图
 
 const SelectorModal: React.FC<any> = (props: any) => {
-  const { cref, confirm, type = 'checkbox', min = 2, max = 5 } = props;
+  const { cref, confirm, type = 'checkbox', min = 2, max = 5, readOnly = true } = props;
 
   const [showWishKey, setShowWishKey] = useState<boolean>(true);
   // tabs 操作
@@ -400,7 +400,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       }
     }
 
-    confirm(selectList || []);
+    confirm(selectList || [], title);
     setVisible(false);
   };
 
@@ -432,13 +432,18 @@ const SelectorModal: React.FC<any> = (props: any) => {
       onOk={submit}
     >
       <div className={style['modal-bg_default']}>
-        <Condition r-if={title}>
-          <div className={style['title_top']}>
-            <div className={style['label']}> 问题:</div>
-
-            <Input value={title} />
-          </div>
-        </Condition>
+        {/* <Condition r-if={title}> */}
+        <div className={style['title_top']}>
+          <div className={style['label']}> 问题:</div>
+          <Input
+            value={title}
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
+            readOnly={readOnly}
+          />
+        </div>
+        {/* </Condition> */}
 
         <div className={style['select-box']}>
           <Condition r-if={selectList.length > 0}>

@@ -8,6 +8,11 @@ const FAQConfig: React.FC = (props: any) => {
   const [form] = Form.useForm();
   const { Item: FormItem, List: FormList } = Form;
 
+  const layout = {
+    labelCol: { span: 4 },
+    wrapperCol: { span: 16 },
+  };
+
   const { getTableList, editFAQ } = useFAQModel();
 
   const { info, businessFlowId, getGlobalValConfig } = useModel('gundam' as any, (model: any) => ({
@@ -61,7 +66,7 @@ const FAQConfig: React.FC = (props: any) => {
   return (
     <div className={style['machine-page']}>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <Form form={form}>
+        <Form form={form} {...layout}>
           <div className={style['antd-form']}>
             <Space align="baseline">
               <div

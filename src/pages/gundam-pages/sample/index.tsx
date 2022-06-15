@@ -351,8 +351,16 @@ export default () => {
   };
 
   //添加到其他意图/FAQ
-  const confirmUpdateSelect = async (val: any) => {
+  const confirmUpdateSelect = async (val: any, inputValue: any) => {
     console.log(val);
+    if (!val.length) {
+      message.warning('请选择FAQ/意图');
+      return;
+    }
+    if (!inputValue) {
+      message.warning('请输入相似语料或者相似问');
+      return;
+    }
     let resAdd: any;
     if (val?.[0]?.recommendType == 1) {
       let addParams = {
@@ -371,14 +379,14 @@ export default () => {
       //意图
       resAdd = await intentAdd(addParams);
     }
-    if (resAdd.resultCode === config.successCode) {
+    if (resAdd?.resultCode === config.successCode) {
       setSimmilar(false);
       setSimilarVisible(false);
       setInputValue('');
-      message.success(resAdd.resultDesc || '添加成功');
+      message.success(resAdd?.resultDesc || '添加成功');
       actionRef.current.reload();
     } else {
-      message.error(resAdd.resultDesc || '添加失败');
+      message.error(resAdd?.resultDesc || '添加失败');
     }
   };
 
@@ -588,14 +596,11 @@ export default () => {
                 <Button
                   type="primary"
                   onClick={() => {
-                    if (!inputValue) {
-                      message.warning('请先输入语料文本');
-                      return;
-                    }
                     (selectFaqModalRef.current as any)?.open({
                       selectList: [], //被选中列表
                       selectedQuestionKeys: [], // 已选问题
                       selectedWishKeys: [], // 已选意图
+                      question: inputValue,
                     });
                   }}
                 >
@@ -680,6 +685,7 @@ export default () => {
         type={'radio'}
         min={1}
         max={1}
+        readOnly={false}
       ></SelectFaqModal>
     </Fragment>
   );
