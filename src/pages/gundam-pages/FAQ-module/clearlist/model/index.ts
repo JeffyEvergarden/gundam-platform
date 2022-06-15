@@ -16,11 +16,15 @@ export const useTableModel = () => {
 
   const [opLoading, setOpLoading] = useState<boolean>(false);
 
+  const [total, setTotal] = useState<number>(0);
+
+  const [questionTotal, setQuestionTotal] = useState<number>(0);
+
   const getTableList = async (params?: any) => {
     setTableLoading(true);
     let res: any = await getClearList(params);
     setTableLoading(false);
-    let { list = [], totalPage, totalSize } = res.data;
+    let { list = [], totalPage = 0, totalSize, faqNum = 0 } = res.data;
     if (!Array.isArray(list)) {
       list = [];
     }
@@ -32,6 +36,8 @@ export const useTableModel = () => {
       };
     });
     setTableList(list || []);
+    setTotal(totalPage || 0);
+    setQuestionTotal(faqNum || 0);
     return { data: list, total: totalPage };
   };
 
@@ -82,5 +88,7 @@ export const useTableModel = () => {
     deleteClearItem,
     addClearItem,
     updateClearItem,
+    total,
+    questionTotal,
   };
 };

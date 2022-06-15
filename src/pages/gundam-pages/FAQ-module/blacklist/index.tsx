@@ -10,7 +10,7 @@ import style from './style.less';
 const { TextArea } = Input;
 
 const FAQBlackList = (props: any) => {
-  const { getTableList, tableLoading, deleteBlack, opLoading, addBlack } = useTableModel();
+  const { getTableList, tableLoading, deleteBlack, opLoading, addBlack, total } = useTableModel();
 
   const { info } = useModel('gundam', (model: any) => {
     return {
@@ -178,7 +178,7 @@ const FAQBlackList = (props: any) => {
           pageSize: 10,
         }}
         dateFormatter="string"
-        headerTitle=""
+        headerTitle={total ? <div>黑名单总量: {total}</div> : <div>FAQ-黑名单</div>}
         toolBarRender={() => [
           <Button
             key="button"
