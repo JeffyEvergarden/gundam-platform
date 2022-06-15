@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { visitorList, session, questionMatch } from './api';
+import { visitorList, session, questionMatch, reject, faqAndClareList } from './api';
 
 export const useReportForm = () => {
   const [tableLoading, setTableLoading] = useState<boolean>(false);
@@ -25,10 +25,26 @@ export const useReportForm = () => {
     return res;
   };
 
+  const rejectList = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await reject(params);
+    setTableLoading(false);
+    return res;
+  };
+
+  const getFaqAndClareList = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await faqAndClareList(params);
+    setTableLoading(false);
+    return res;
+  };
+
   return {
     getVisitorList,
     getDialogue,
     question,
+    rejectList,
+    getFaqAndClareList,
     tableLoading,
   };
 };
