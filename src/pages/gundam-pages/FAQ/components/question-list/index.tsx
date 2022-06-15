@@ -120,13 +120,23 @@ const QuestionList: React.FC<any> = (props: any) => {
         CurrentPage();
       });
     } else if (isRecycle == 0) {
-      await deleteQuestion({ id: val?.id }).then((res) => {
-        // console.log(res, config);
-
+      await isAdd({ faqId: [val.id], robotId: info.id }).then(async (res) => {
         if (res.resultCode == config.successCode) {
-          message.success(res?.resultDesc || '');
+          if (res.data.editFlag) {
+            await deleteQuestion({ id: val?.id }).then((res) => {
+              // console.log(res, config);
+
+              if (res.resultCode == config.successCode) {
+                message.success(res?.resultDesc || '');
+              }
+              CurrentPage();
+            });
+          } else {
+            message.warning('存在待审批或待处理的答案');
+          }
+        } else {
+          message.error(res.resultDesc);
         }
-        CurrentPage();
       });
     }
   };
@@ -229,16 +239,27 @@ const QuestionList: React.FC<any> = (props: any) => {
     }
   };
 
-  const _deleteAnswer = async (A: any) => {
+  const _deleteAnswer = async (Q: any, A: any) => {
     // console.log(A);
-
-    await deleteAnswer({ id: A.answerId }).then((res) => {
+    //检测是否有待审批待处理
+    await isAdd({ faqId: Q.id, robotId: info.id }).then(async (res) => {
       if (res.resultCode == config.successCode) {
-        message.success(res.resultDesc);
+        if (res.data.editFlag) {
+          //删除答案
+          await deleteAnswer({ id: A.answerId }).then((res) => {
+            if (res.resultCode == config.successCode) {
+              message.success(res.resultDesc);
+            } else {
+              message.error(res.resultDesc);
+            }
+            CurrentPage();
+          });
+        } else {
+          message.warning('存在待审批或待处理的答案');
+        }
       } else {
         message.error(res.resultDesc);
       }
-      CurrentPage();
     });
   };
 
@@ -602,7 +623,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                                         placement="topRight"
                                         cancelText="取消"
                                         onConfirm={() => {
-                                          _deleteAnswer(v);
+                                          _deleteAnswer(item, v);
                                         }}
                                       >
                                         <DeleteOutlined style={{ color: 'rgba(0,0,0,0.45)' }} />
