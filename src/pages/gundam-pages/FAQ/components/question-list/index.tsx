@@ -120,7 +120,7 @@ const QuestionList: React.FC<any> = (props: any) => {
         CurrentPage();
       });
     } else if (isRecycle == 0) {
-      await isAdd({ faqId: [val.id], robotId: info.id }).then(async (res) => {
+      await isAdd({ faqId: val.id, robotId: info.id }).then(async (res) => {
         if (res.resultCode == config.successCode) {
           if (res.data.editFlag) {
             await deleteQuestion({ id: val?.id }).then((res) => {
