@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import config from '@/config/index';
-import { message } from 'antd';
+import { useState } from 'react';
 import { getHistoryList } from '../../../model/api';
 
 const successCode = config.successCode;
@@ -14,15 +13,35 @@ export const useHistoryModel = () => {
     setLoading(true);
     let res = await getHistoryList(params);
     console.log(res);
+    let data: any = [];
     if (res.resultCode == successCode) {
-      setList(res?.data?.list);
+      data = res?.data?.list || [];
+      let reg = /\$\{getResoureUrl\}/g;
+      const reg1 = /^\<\w+\>/;
+      const reg2 = /\<\/\w+\>$/;
+
+      data?.map((h: any) => {
+        h?.map?.((item: any) => {
+          item?.map?.((subitem: any) => {
+            let answer = subitem.answer || '';
+            if (reg1.test(answer) && reg2.test(answer)) {
+              subitem.answer = answer.replace(reg, '/aichat/robot/file/getFile');
+            }
+            return subitem;
+          });
+          return item;
+        });
+        return h;
+      });
+
+      setList(data);
       setTotalPage(res?.data?.totalPage);
     } else {
       setList([]);
       setTotalPage(0);
     }
     setLoading(false);
-    return { data: res?.data?.list, total: res?.data?.totalPage };
+    return { data, total: res?.data?.totalPage };
   };
 
   return {

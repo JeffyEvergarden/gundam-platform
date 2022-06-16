@@ -303,7 +303,7 @@ const getAnswerList = (req: any, res: any) => {
   arr = arr.map((item: any, index: number) => {
     let obj = {
       faqId: '100',
-      id: '100',
+      id: index,
       question: `问题`,
       answer: `答案${index}`,
       channelList: ['all'],
