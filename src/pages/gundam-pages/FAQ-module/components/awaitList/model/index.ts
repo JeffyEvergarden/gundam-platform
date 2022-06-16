@@ -28,8 +28,7 @@ export const useApprovalModel = () => {
       const reg2 = /\<\/\w+\>$/;
 
       data?.map((item: any) => {
-        item.answerList = item.answerList || [];
-        item.answerList?.map?.((subitem: any) => {
+        item?.map?.((subitem: any) => {
           let answer = subitem.answer || '';
           if (reg1.test(answer) && reg2.test(answer)) {
             subitem.answer = answer.replace(reg, '/aichat/robot/file/getFile');
