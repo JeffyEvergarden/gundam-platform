@@ -19,8 +19,6 @@ export const useHistoryModel = () => {
       let reg = /\$\{getResoureUrl\}/g;
       const reg1 = /^\<\w+\>/;
       const reg2 = /\<\/\w+\>$/;
-      console.log(data);
-
       data?.map((h: any) => {
         h?.historyList?.map?.((subitem: any) => {
           let answer = subitem.answer || '';
@@ -31,8 +29,6 @@ export const useHistoryModel = () => {
         });
         return h.historyList;
       });
-      console.log(data);
-
       setList(data);
       setTotalPage(res?.data?.totalPage);
     } else {
