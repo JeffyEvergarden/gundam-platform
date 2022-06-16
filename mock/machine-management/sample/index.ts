@@ -24,7 +24,7 @@ const intentCorpusCheck = (req: any, res: any) => {
           score: 3,
         },
         {
-          intenId: '10',
+          intenId: '11',
           intentName: '意图名称',
           corpusText: '语料文本2',
           score: 3,
@@ -32,13 +32,13 @@ const intentCorpusCheck = (req: any, res: any) => {
       ],
       otherIntentList: [
         {
-          intenId: '10',
+          intenId: '12',
           intentName: '意图名称3',
           corpusText: '语料文本3',
           score: 3,
         },
         {
-          intenId: '10',
+          intenId: '13',
           intentName: '意图名称33',
           corpusText: '语料文本33',
           score: 3,
@@ -52,7 +52,7 @@ const intentCorpusCheck = (req: any, res: any) => {
           similarQuery: '相似问',
         },
         {
-          stdQueryId: '1313',
+          stdQueryId: '1314',
           stdQuery: '标准问2',
           similarQueryId: '134',
           similarQuery: '相似问2',
@@ -187,7 +187,7 @@ const faqSimilarCheck = (req: any, res: any) => {
           score: 3,
         },
         {
-          intenId: '10',
+          intenId: '11',
           intentName: '意图名称',
           corpusText: '语料文本2',
           score: 3,
@@ -202,7 +202,7 @@ const faqSimilarCheck = (req: any, res: any) => {
           viewNum: 1,
         },
         {
-          stdQueryId: '1313',
+          stdQueryId: '1314',
           stdQuery: '标准问2',
           similarQueryId: '134',
           similarQuery: '相似问2',
@@ -211,14 +211,14 @@ const faqSimilarCheck = (req: any, res: any) => {
       ],
       currentStdQueryList: [
         {
-          stdQueryId: '1313',
+          stdQueryId: '1315',
           stdQuery: '标准问',
           similarQueryId: '134',
           similarQuery: '相似问',
           viewNum: 1,
         },
         {
-          stdQueryId: '1313',
+          stdQueryId: '1316',
           stdQuery: '标准问2',
           similarQueryId: '134',
           similarQuery: '相似问2',
