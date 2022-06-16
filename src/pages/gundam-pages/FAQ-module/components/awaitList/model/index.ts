@@ -73,12 +73,15 @@ export const useApprovalModel = () => {
   };
 
   const approvalPass = async (params: any) => {
+    setLoading(true);
     let res = await _approvalPass(params);
     if (res.resultCode == successCode) {
       message.success(res.resultDesc);
+      setLoading(false);
       return true;
     } else {
       message.error(res.resultDesc);
+      setLoading(false);
       return false;
     }
   };
