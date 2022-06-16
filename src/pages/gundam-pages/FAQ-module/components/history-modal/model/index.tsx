@@ -19,20 +19,19 @@ export const useHistoryModel = () => {
       let reg = /\$\{getResoureUrl\}/g;
       const reg1 = /^\<\w+\>/;
       const reg2 = /\<\/\w+\>$/;
+      console.log(data);
 
       data?.map((h: any) => {
-        h?.historyList?.map?.((item: any) => {
-          item?.map?.((subitem: any) => {
-            let answer = subitem.answer || '';
-            if (reg1.test(answer) && reg2.test(answer)) {
-              subitem.answer = answer.replace(reg, '/aichat/robot/file/getFile');
-            }
-            return subitem;
-          });
-          return item;
+        h?.historyList?.map?.((subitem: any) => {
+          let answer = subitem.answer || '';
+          if (reg1.test(answer) && reg2.test(answer)) {
+            subitem.answer = answer.replace(reg, '/aichat/robot/file/getFile');
+          }
+          return subitem;
         });
-        return h?.historyList;
+        return h.historyList;
       });
+      console.log(data);
 
       setList(data);
       setTotalPage(res?.data?.totalPage);

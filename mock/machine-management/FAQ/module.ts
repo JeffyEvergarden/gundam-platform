@@ -244,7 +244,7 @@ const getHistoryList = (req: any, res: any) => {
           id: `id${index}`,
           robotId: '100',
           question: `问题${index + 1}`,
-          answer: `答案${index + 1}`,
+          answer: `答案${index + 1} <img src=\"\${getResoureUrl}?#\" />`,
           approvalReason: `审批原因${index + 1}`,
           enable: Math.ceil(Math.random() * 1), //是否启用 0n  1y
           enableStartTime: _date,
