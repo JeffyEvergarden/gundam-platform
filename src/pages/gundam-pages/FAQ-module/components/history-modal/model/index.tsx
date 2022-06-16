@@ -31,7 +31,7 @@ export const useHistoryModel = () => {
           });
           return item;
         });
-        return h;
+        return h?.historyList;
       });
 
       setList(data);
