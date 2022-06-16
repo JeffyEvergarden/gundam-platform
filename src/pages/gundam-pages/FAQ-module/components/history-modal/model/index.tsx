@@ -21,7 +21,7 @@ export const useHistoryModel = () => {
       const reg2 = /\<\/\w+\>$/;
 
       data?.map((h: any) => {
-        h?.map?.((item: any) => {
+        h?.historyList?.map?.((item: any) => {
           item?.map?.((subitem: any) => {
             let answer = subitem.answer || '';
             if (reg1.test(answer) && reg2.test(answer)) {
