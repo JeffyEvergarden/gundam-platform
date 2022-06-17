@@ -40,7 +40,7 @@ export async function soundRobotDialogueText(params?: { [key: string]: any }) {
 /** 语音对话接口 **/
 export async function getAssociationText(params?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/faq/searchSuggest`, {
-    method: 'GET',
-    params,
+    method: 'POST',
+    data: params,
   });
 }
