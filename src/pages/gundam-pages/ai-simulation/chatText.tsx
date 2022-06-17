@@ -17,15 +17,16 @@ const debounce = (fn: (...arr: any[]) => void, second: number) => {
       clearTimeout(timer);
     }
 
-    let flag = !timer;
+    // let flag = !timer;
 
     timer = setTimeout(() => {
       timer = null;
-    }, second);
-
-    if (flag) {
       fn.apply(fn, args);
-    }
+    }, second * 1000);
+
+    // if (flag) {
+    //   fn.apply(fn, args);
+    // }
   };
 };
 
@@ -77,14 +78,14 @@ export default (props: any) => {
       // ----------------
       let res = await getAssociationTextList({
         query: inputVal,
-        suggestNumber: 5,
+        suggestNumber: 8,
         robotId: info.id,
       });
       if (res) {
         timeFn.current.inputVal = inputVal;
       }
     };
-    return debounce(fn, 1);
+    return debounce(fn, 0.8);
   }, []);
   // 弹窗显示
   const PopoverVisible = useMemo(() => {
@@ -333,8 +334,10 @@ export default (props: any) => {
     (boxRef.current as any).scrollTop = (boxRef.current as any).scrollHeight;
   }, [dialogList]);
 
+  const toolTipRef = useRef<any>({});
+
   const toolTipsContent = (
-    <div className={styles['question-box']}>
+    <div className={styles['question-box']} ref={toolTipRef}>
       {associationList.map((item: any, i: number) => {
         return (
           <div
@@ -352,6 +355,12 @@ export default (props: any) => {
       })}
     </div>
   );
+
+  useEffect(() => {
+    if (toolTipRef.current) {
+      toolTipRef.current.scrollTop = 0;
+    }
+  }, [associationList]);
 
   return (
     <div>
