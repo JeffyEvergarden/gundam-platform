@@ -21,7 +21,7 @@ const debounce = (fn: (...arr: any[]) => void, second: number) => {
 
     timer = setTimeout(() => {
       timer = null;
-    }, second);
+    }, second * 1000);
 
     if (flag) {
       fn.apply(fn, args);
