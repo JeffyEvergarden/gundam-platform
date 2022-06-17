@@ -240,6 +240,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   // 勾选筛选设置
   const rowSelection = {
+    preserveSelectedRowKeys: true,
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
       // 如果是单选
       if (type === 'radio') {
@@ -259,6 +260,8 @@ const SelectorModal: React.FC<any> = (props: any) => {
       }
 
       // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+
+      // console.log(selectedRowKeys, selectedQuestionKeys);
       // 如果是多选
       // 新增
       if (selectedRowKeys.length > selectedQuestionKeys.length) {
@@ -280,6 +283,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
         let keys: any = selectedQuestionKeys.filter((_key: any) => {
           return !selectedRowKeys.includes(_key);
         });
+        console.log('少了', keys);
         // 进行剔除  过滤出来
         let list: any[] = selectList?.filter((item: any) => {
           return !(item.recommendType === 1 && keys.includes(item.recommendId));
@@ -299,6 +303,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
   };
 
   const rowFlowSelection = {
+    preserveSelectedRowKeys: true,
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
       // 如果是单选
       if (type === 'radio') {

@@ -13,6 +13,8 @@ const normalDeal = (req: any, res: any) => {
 };
 
 const getFaqList = (req: any, res: any, next: any) => {
+  let page = req.body.page || 1;
+  console.log(req.body);
   const jsonObj: any = {
     id: '1',
     robotId: '100',
@@ -68,7 +70,7 @@ const getFaqList = (req: any, res: any, next: any) => {
       ...jsonObj,
       name: '阿斯拉大' + index,
       times: 100 + index,
-      id: index + 1,
+      id: index + 1 + page * 100,
       recycle: index % 2 == 0 ? 0 : 1,
     };
   });
