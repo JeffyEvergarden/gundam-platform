@@ -1,20 +1,8 @@
-import React, { useState, useEffect, useImperativeHandle } from 'react';
-import {
-  Modal,
-  Form,
-  Button,
-  InputNumber,
-  Radio,
-  Select,
-  Input,
-  Upload,
-  message,
-  Divider,
-} from 'antd';
-import style from './style.less';
-import Condition from '@/components/Condition';
-import { getInterfaceDetail } from '../../../model/api';
 import ProTable from '@ant-design/pro-table';
+import { Button, Divider, Form, Input, Modal, Radio, Select } from 'antd';
+import React, { useImperativeHandle, useState } from 'react';
+import { getInterfaceDetail } from '../../../model/api';
+import style from './style.less';
 
 const { Item: FormItem } = Form;
 const { Option } = Select;
@@ -140,7 +128,7 @@ const InfoModal: React.FC<any> = (props: any) => {
             label="接口名称"
             style={{ width: '480px' }}
           >
-            <Input placeholder="请填写接口名称" {...extra} maxLength={150} />
+            <Input placeholder="请填写接口名称" {...extra} maxLength={150} readOnly />
           </FormItem>
 
           <FormItem
@@ -149,7 +137,7 @@ const InfoModal: React.FC<any> = (props: any) => {
             label="URL"
             style={{ width: '480px' }}
           >
-            <Input placeholder="请填写URL" {...extra} maxLength={200} />
+            <Input placeholder="请填写URL" {...extra} maxLength={200} readOnly />
           </FormItem>
           <FormItem
             rules={[{ required: true, message: '请选择接口类型' }]}

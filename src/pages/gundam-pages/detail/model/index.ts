@@ -1,9 +1,9 @@
-import { useState } from 'react';
 import { message } from 'antd';
+import { useState } from 'react';
 
-import { getConfig, editConfig, getInterfaceCurrentList, getFAQList, _editFAQ } from './api';
+import { editConfig, getConfig, getFAQList, getInterfaceCurrentList, _editFAQ } from './api';
 //变量配置接口
-import { getConfigCurrentList, addNewGlobal, editNewGlobal, deleteGlobal } from './api';
+import { addNewGlobal, deleteGlobal, editNewGlobal, getConfigCurrentList } from './api';
 //节点配置
 import { _getNodeConfig, _saveNode } from './api';
 
@@ -162,10 +162,17 @@ export const useFAQModel = () => {
     setConfigLoading(true);
     let res: any = await getFAQList(params);
     console.log(res);
+    let data: any = res.data;
+    data.map((item: any) => {
+      if (item.validateRule) {
+        item.validateRule = JSON?.parse?.(item?.validateRule);
+      }
+      return item;
+    });
 
     setConfigLoading(false);
 
-    return { data: res.data };
+    return { data };
   };
 
   const editFAQ = async (data: any) => {

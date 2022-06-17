@@ -1,5 +1,3 @@
-import { Request, Response } from 'express';
-
 import config from '../../../src/config';
 
 const successCode = config.successCode;
@@ -151,6 +149,7 @@ const configList = (req: any, res: any) => {
           uppdateBy: 'x',
           dataType: 1,
           updateType: 0,
+          validateRule: '{"min":0,"max":99}',
         },
         {
           id: '2',
