@@ -72,7 +72,7 @@ export default () => {
       endTime = yestody.format('YYYY-MM-DD');
     }
     window.open(
-      `${config.basePath}/robot/statistics/sessionExport?startTime=${startTime}&endTime=${endTime}&channelCode=${code}&robotId=${info.id}`,
+      `${config.basePath}/robot/statistics/sessionExport?startTime=${startTime}&endTime=${endTime}&channelCode=${code}&robotId=${info.id}&orderCode=${paramsObj.orderCode}&orderType=${paramsObj.orderType}`,
       '_self',
     );
   };
