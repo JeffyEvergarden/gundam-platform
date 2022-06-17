@@ -1,16 +1,16 @@
-import { useState, useRef } from 'react';
+import config from '@/config/index';
 import {
-  queryLabelList,
+  queryCreateUser,
   queryFlowList,
+  queryLabelList,
   queryMessageList,
-  queryWordSlotTableList,
-  queryWishList,
   queryNodeConfig,
   queryTreeList,
-  queryCreateUser,
+  queryWishList,
+  queryWordSlotTableList,
 } from '@/services/api';
-import config from '@/config/index';
 import { message } from 'antd';
+import { useRef, useState } from 'react';
 
 export default function useDrawerModel() {
   const timeFc = useRef<any>({});
@@ -107,6 +107,30 @@ export default function useDrawerModel() {
       robotId: id,
       current: 1,
       pageSize: 1000,
+    });
+    let data: any[] = res?.data?.list || res?.datas?.list || [];
+    data = Array.isArray(data) ? data : [];
+    data =
+      data.map?.((item: any, index: number) => {
+        return {
+          ...item,
+          index,
+          name: item.id,
+          label: item.intentName,
+          intentName: item.intentName,
+        };
+      }) || [];
+    _setWishList(data);
+  };
+  const getHeadWishList = async (id?: any, forceUpDate: boolean = false) => {
+    if (!forceUpDate && !allowRequest('wish', id)) {
+      return;
+    }
+    let res: any = await queryWishList({
+      robotId: id,
+      current: 1,
+      pageSize: 1000,
+      headIntent: 0,
     });
     let data: any[] = res?.data?.list || res?.datas?.list || [];
     data = Array.isArray(data) ? data : [];
@@ -289,6 +313,7 @@ export default function useDrawerModel() {
     userList,
     getMessageList, // 短信模版
     getWishList, // 意图
+    getHeadWishList, //获取头部意图列表
     getWordSlotList, // 词槽
     getFlowList, // 业务流程
     getLabelList, // 话术标签

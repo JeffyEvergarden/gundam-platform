@@ -31,7 +31,7 @@ const FAQClearList = (props: any) => {
 
   const { getWishList, getTreeData } = useModel('drawer', (model: any) => {
     return {
-      getWishList: model.getWishList,
+      getWishList: model.getHeadWishList, //获取头部意图
       getTreeData: model.getTreeData,
     };
   });

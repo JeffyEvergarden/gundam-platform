@@ -39,6 +39,12 @@ export default () => {
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
+  const { getTreeData, getWishList } = useModel('drawer' as any, (model: any) => {
+    return {
+      getTreeData: model?.getTreeData,
+      getWishList: model?.getWishList,
+    };
+  });
 
   const { getList, intentEdit, deleteIntentFeature, checkIntent, intentAdd, loadingAdd } =
     useSampleModel();
@@ -583,6 +589,8 @@ export default () => {
                 <Button
                   type="primary"
                   onClick={() => {
+                    getWishList(info.id); // 获取意图列表
+                    getTreeData(info.id); // 获取faq列表
                     (selectFaqModalRef.current as any)?.open({
                       selectList: [], //被选中列表
                       selectedQuestionKeys: [], // 已选问题

@@ -1,13 +1,25 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Button, Form, Popconfirm, Input, Modal, Tooltip } from 'antd';
 import Condition from '@/components/Condition';
-import { PlusOutlined, EditOutlined } from '@ant-design/icons';
+import { EditOutlined, MonitorOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
+import { useRef } from 'react';
+import { useModel } from 'umi';
 import SelectFaqModal from '../../components/select-faq-modal';
-import { QuestionCircleOutlined, MonitorOutlined } from '@ant-design/icons';
 import style from '../style.less';
 
 const FaqSelect = (props: any) => {
   const { value, onChange } = props;
+  const { info } = useModel('gundam' as any, (model: any) => {
+    return {
+      info: model.info,
+    };
+  });
+
+  const { getTreeData, getWishList } = useModel('drawer' as any, (model: any) => {
+    return {
+      getTreeData: model?.getTreeData,
+      getWishList: model?.getHeadWishList,
+    };
+  });
 
   const hasValue = Array.isArray(value) && value.length > 0;
 
@@ -36,6 +48,8 @@ const FaqSelect = (props: any) => {
       .map((item: any) => {
         return item.recommendId;
       });
+    getWishList(info.id); // 获取头部意图列表
+    getTreeData(info.id); // 获取faq列表
     (selectFaqModalRef.current as any)?.open({
       selectList: questionTypeList, //被选中列表
       selectedQuestionKeys, // 已选问题
