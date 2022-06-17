@@ -1,14 +1,12 @@
-import { useState, useImperativeHandle, useEffect, useMemo } from 'react';
-import { Drawer, Button, Table, Tooltip, Spin, Input, message, Divider } from 'antd';
-import { PlusOutlined, UserOutlined } from '@ant-design/icons';
-import { useModel } from 'umi';
-import style from './style.less';
 import Condition from '@/components/Condition';
+import { UserOutlined } from '@ant-design/icons';
+import { Drawer, Input, message } from 'antd';
+import { useImperativeHandle, useState } from 'react';
+import { useModel } from 'umi';
 import { useSessionModel } from '../detail-modal/model';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import style from './style.less';
 
 import robotAvator from './img/robot.png';
-import userAvator from './img/user.png';
 
 const { Search } = Input;
 
@@ -92,7 +90,7 @@ const RecordModal: React.FC<any> = (props: any) => {
                     {item.labels.map((item: any, i: number) => {
                       return (
                         <div className={style['content-item']}>
-                          {i + 1}.{item.recommendText}
+                          {item.orderNumber}.{item.recommendText}
                         </div>
                       );
                     })}

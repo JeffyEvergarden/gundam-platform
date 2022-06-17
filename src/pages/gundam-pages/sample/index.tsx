@@ -49,9 +49,12 @@ export default () => {
   useEffect(() => {
     let historyData = history?.location || {};
     let pageType = historyData?.state?.pageType || '';
+    let searchText = historyData?.state?.searchText || '';
+    let tableInfo = historyData?.state?.info;
+    setInputValue(searchText);
     console.log(history);
     setPageType(pageType);
-    setTableInfo(historyData?.state?.info);
+    setTableInfo(tableInfo);
 
     if (pageType === 'wish') {
       setcolumns(tableListWish);

@@ -1,39 +1,37 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import {
-  Form,
-  Input,
-  Button,
-  Select,
-  Space,
-  DatePicker,
-  Switch,
-  Checkbox,
-  TreeSelect,
-  message,
-} from 'antd';
 import Condition from '@/components/Condition';
+import config from '@/config';
 import {
-  PlusOutlined,
+  ArrowLeftOutlined,
   MinusCircleOutlined,
   PlusCircleOutlined,
-  LoginOutlined,
-  ArrowLeftOutlined,
+  PlusOutlined,
 } from '@ant-design/icons';
-import SpCheckbox from './components/sp-checkbox';
+import {
+  Button,
+  Checkbox,
+  DatePicker,
+  Form,
+  Input,
+  message,
+  Select,
+  Space,
+  TreeSelect,
+} from 'antd';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { history, useModel } from 'umi';
+import { CHANNAL_LIST } from '../const';
+import RemarkModal from './components/remark-modal';
 import Selector from './components/selector';
 import SelectorModal from './components/selector-modal';
-import RemarkModal from './components/remark-modal';
+import SpCheckbox from './components/sp-checkbox';
 import EditBoard from './index';
-import { history, useModel } from 'umi';
-import style from './style.less';
-import { CHANNAL_LIST } from '../const';
 import { useQuestionModel } from './model';
-import { processRequest, processBody } from './model/utils';
-import config from '@/config';
+import { processBody, processRequest } from './model/utils';
+import style from './style.less';
 // 相似度组件
-import { useSimilarModel } from '@/pages/gundam-pages/sample/model';
-import SimilarCom from '@/pages/gundam-pages/sample/components/similarCom';
 import SameModal from '@/pages/gundam-pages/sample/components/sameModal';
+import SimilarCom from '@/pages/gundam-pages/sample/components/similarCom';
+import { useSimilarModel } from '@/pages/gundam-pages/sample/model';
 
 const { Option } = Select;
 
@@ -723,7 +721,16 @@ const Board: React.FC<any> = (props: any) => {
           pageType="FAQ"
           inputValue={searchText}
           showTop={false}
-          refresh={() => {}}
+          refresh={(r: any, type: any) => {
+            history.push({
+              pathname: '/gundamPages/faq/similar',
+              state: {
+                info: r,
+                pageType: type,
+                searchText: form.getFieldValue('question'),
+              },
+            });
+          }}
         />
       </Condition>
 
