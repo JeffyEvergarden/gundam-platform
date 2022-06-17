@@ -117,12 +117,17 @@ const SelectorModal: React.FC<any> = (props: any) => {
   });
 
   // 业务流程列表
-  const { wishList, treeData } = useModel('drawer' as any, (model: any) => {
-    return {
-      wishList: model?._wishList || [],
-      treeData: model?.treeData || [],
-    };
-  });
+  const { wishList, treeData, getTreeData, getWishList } = useModel(
+    'drawer' as any,
+    (model: any) => {
+      return {
+        wishList: model?._wishList || [],
+        treeData: model?.treeData || [],
+        getTreeData: model?.getTreeData,
+        getWishList: model?.getWishList,
+      };
+    },
+  );
 
   const [classType, setClassType] = useState<string>('');
   const { loading, faqList, getFaqList, totalSize, setFaqList } = useFaqModal();
@@ -354,6 +359,8 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     open: (obj: any) => {
+      getWishList(info.id); // 获取意图列表
+      getTreeData(info.id); // 获取faq列表
       console.log(obj);
       setTitle(obj.question || '');
       // 设置不能选的
@@ -552,7 +559,11 @@ const SelectorModal: React.FC<any> = (props: any) => {
                   }}
                   size="small"
                   pagination={{ current: current2, onChange: onChange2 }}
-                  dataSource={searchWishList}
+                  dataSource={
+                    readOnly
+                      ? searchWishList.filter((item: any) => item.headIntent == 0)
+                      : searchWishList
+                  }
                   columns={columns2}
                   rowKey="id"
                   // loading={tableLoading}
