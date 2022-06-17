@@ -614,7 +614,7 @@ export default () => {
             </Col>
           </Row>
           <ProTable
-            rowKey={(record) => record?.id}
+            rowKey={'id'}
             scroll={{ x: columns.length * 200 }}
             actionRef={actionRef}
             columns={columns}
