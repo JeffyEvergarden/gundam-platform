@@ -4,10 +4,10 @@ import { Radio, DatePicker, Space, Select, Button } from 'antd';
 import styles from './index.less';
 
 const { RangePicker } = DatePicker;
-const { Option, exportReportForm } = Select;
+const { Option } = Select;
 
 export default (props: any) => {
-  const { choseTime } = props;
+  const { choseTime, exportReportForm, pageType } = props;
 
   const [valRadio, setValue] = useState<string>('sevenDays');
   const [startTime, setStart] = useState<string>('');
@@ -24,6 +24,11 @@ export default (props: any) => {
     if (val === 'yestoday') {
       let yestody = moment().subtract(1, 'days');
       begin = yestody.format('YYYY-MM-DD');
+    }
+    if (val === 'today') {
+      let today = moment().subtract(0, 'days');
+      begin = today.format('YYYY-MM-DD');
+      end = today.format('YYYY-MM-DD');
     }
     if (val === 'sevenDays') {
       let sevenDays = moment().subtract(7, 'days');
@@ -70,6 +75,7 @@ export default (props: any) => {
       <Space>
         <Radio.Group value={valRadio} onChange={changeTime}>
           <Radio.Button value="yestoday">昨天</Radio.Button>
+          {pageType === 'visitorSession' && <Radio.Button value="today">今天</Radio.Button>}
           <Radio.Button value="sevenDays">最近七天</Radio.Button>
           <Radio.Button value="month">最近一个月</Radio.Button>
         </Radio.Group>

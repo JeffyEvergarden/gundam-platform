@@ -167,7 +167,11 @@ export default () => {
   return (
     <div className={styles.pageComtain}>
       <div className={styles.pageTitile}>访客会话明细</div>
-      <HeadSearch choseTime={choseTime} exportReportForm={exportReportForm} />
+      <HeadSearch
+        choseTime={choseTime}
+        exportReportForm={exportReportForm}
+        pageType={'visitorSession'}
+      />
       <div className={styles.Table_box}>
         <ProTable
           rowKey={'id'}
