@@ -1,16 +1,16 @@
-import { useState, useRef } from 'react';
+import config from '@/config/index';
 import {
-  queryLabelList,
+  queryCreateUser,
   queryFlowList,
+  queryLabelList,
   queryMessageList,
-  queryWordSlotTableList,
-  queryWishList,
   queryNodeConfig,
   queryTreeList,
-  queryCreateUser,
+  queryWishList,
+  queryWordSlotTableList,
 } from '@/services/api';
-import config from '@/config/index';
 import { message } from 'antd';
+import { useRef, useState } from 'react';
 
 export default function useDrawerModel() {
   const timeFc = useRef<any>({});

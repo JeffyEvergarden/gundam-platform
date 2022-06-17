@@ -29,13 +29,6 @@ const FAQClearList = (props: any) => {
     };
   });
 
-  const { getWishList, getTreeData } = useModel('drawer', (model: any) => {
-    return {
-      getWishList: model.getWishList,
-      getTreeData: model.getTreeData,
-    };
-  });
-
   const tableRef = useRef<any>({});
 
   const modalRef = useRef<any>({});
@@ -280,8 +273,6 @@ const FAQClearList = (props: any) => {
 
   useEffect(() => {
     tableRef.current.reload(); // 刷新列表
-    getWishList(info.id); // 获取意图列表
-    getTreeData(info.id); // 获取faq列表
   }, []);
 
   return (

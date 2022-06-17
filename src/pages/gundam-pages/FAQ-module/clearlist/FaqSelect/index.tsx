@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Button, Form, Popconfirm, Input, Modal, Tooltip } from 'antd';
 import Condition from '@/components/Condition';
-import { PlusOutlined, EditOutlined } from '@ant-design/icons';
+import { EditOutlined, MonitorOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
+import { useRef } from 'react';
 import SelectFaqModal from '../../components/select-faq-modal';
-import { QuestionCircleOutlined, MonitorOutlined } from '@ant-design/icons';
 import style from '../style.less';
 
 const FaqSelect = (props: any) => {

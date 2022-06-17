@@ -559,7 +559,11 @@ const SelectorModal: React.FC<any> = (props: any) => {
                   }}
                   size="small"
                   pagination={{ current: current2, onChange: onChange2 }}
-                  dataSource={searchWishList.filter((item: any) => item.headIntent == 0)}
+                  dataSource={
+                    readOnly
+                      ? searchWishList.filter((item: any) => item.headIntent == 0)
+                      : searchWishList
+                  }
                   columns={columns2}
                   rowKey="id"
                   // loading={tableLoading}
