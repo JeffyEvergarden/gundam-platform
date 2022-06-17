@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef, Fragment } from 'react';
+import config from '@/config/index';
+import ChatRecordModal from '@/pages/gundam-pages/FAQ-module/components/chat-record-modal';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import ProTable from '@ant-design/pro-table';
+import { Space } from 'antd';
+import moment from 'moment';
+import { useRef, useState } from 'react';
 import { useModel } from 'umi';
 import HeadSearch from './components/headSearch';
-import ProTable from '@ant-design/pro-table';
-import ChatRecordModal from '@/pages/gundam-pages/FAQ-module/components/chat-record-modal';
-import { Space } from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import moment from 'moment';
-import config from '@/config/index';
-import styles from './index.less';
 import { CODE } from './enum';
+import styles from './index.less';
 import { useReportForm } from './model';
 
 export default () => {
@@ -159,7 +159,7 @@ export default () => {
         );
       },
       sorter: true,
-      dataIndex: 'duration',
+      dataIndex: 'durationFormat',
       ellipsis: true,
     },
   ];
