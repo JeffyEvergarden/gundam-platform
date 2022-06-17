@@ -93,11 +93,11 @@ export default () => {
       temp.orderCode = '2';
       temp.orderType = '2';
     }
-    if (sorter.columnKey === 'duration' && sorter.order === 'ascend') {
+    if (sorter.columnKey === 'durationFormat' && sorter.order === 'ascend') {
       temp.orderCode = '1';
       temp.orderType = '1';
     }
-    if (sorter.columnKey === 'duration' && sorter.order === 'descend') {
+    if (sorter.columnKey === 'durationFormat' && sorter.order === 'descend') {
       temp.orderCode = '1';
       temp.orderType = '2';
     }
@@ -170,7 +170,7 @@ export default () => {
       <HeadSearch choseTime={choseTime} exportReportForm={exportReportForm} />
       <div className={styles.Table_box}>
         <ProTable
-          rowKey={(record: any) => record.dayId}
+          rowKey={'id'}
           headerTitle={false}
           toolBarRender={false}
           actionRef={actionRef}
