@@ -65,7 +65,7 @@ const getClearList = (req: any, res: any) => {
           recommendName: '中邮钱包还款',
         },
       ],
-      askNum: index * 10,
+      consultNum: index * 10,
       clarifyAdoptionRate: Number(Math.random().toFixed(2)),
       createTime: moment(new Date(_date + 60 * 60 * 1000 * index)).format('YYYY-MM—DD hh:mm'),
     };
@@ -244,7 +244,7 @@ const getHistoryList = (req: any, res: any) => {
           id: `id${index}`,
           robotId: '100',
           question: `问题${index + 1}`,
-          answer: `答案${index + 1}`,
+          answer: `答案${index + 1} <img src=\"\${getResoureUrl}?#\" />`,
           approvalReason: `审批原因${index + 1}`,
           enable: Math.ceil(Math.random() * 1), //是否启用 0n  1y
           enableStartTime: _date,
@@ -303,7 +303,7 @@ const getAnswerList = (req: any, res: any) => {
   arr = arr.map((item: any, index: number) => {
     let obj = {
       faqId: '100',
-      id: '100',
+      id: index,
       question: `问题`,
       answer: `答案${index}`,
       channelList: ['all'],

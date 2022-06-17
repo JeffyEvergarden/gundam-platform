@@ -1,12 +1,12 @@
-import { useState } from 'react';
 import config from '@/config/index';
 import { message } from 'antd';
+import { useState } from 'react';
 import {
   getApprovalList,
   getPendingList,
+  _approvalDelete,
   _approvalPass,
   _approvalReturn,
-  _approvalDelete,
 } from '../../../model/api';
 
 const successCode = config.successCode;
@@ -20,15 +20,29 @@ export const useApprovalModel = () => {
     setLoading(true);
     let res = await getApprovalList(params);
     console.log(res);
+    let data: any = [];
     if (res.resultCode == successCode) {
-      setList(res?.data?.list);
+      data = res?.data?.list || [];
+      let reg = /\$\{getResoureUrl\}/g;
+      const reg1 = /^\<\w+\>/;
+      const reg2 = /\<\/\w+\>$/;
+
+      data?.map?.((subitem: any) => {
+        let answer = subitem.answer || '';
+        if (reg1.test(answer) && reg2.test(answer)) {
+          subitem.answer = answer.replace(reg, '/aichat/robot/file/getFile');
+        }
+        return subitem;
+      });
+
+      setList(data);
       setTotalPage(res?.data?.totalPage);
     } else {
       setList([]);
       setTotalPage(0);
     }
     setLoading(false);
-    return { data: res?.data?.list, total: res?.data?.totalPage };
+    return { data, total: res?.data?.totalPage };
   };
 
   const getPList = async (params: any) => {
@@ -36,7 +50,19 @@ export const useApprovalModel = () => {
     let res = await getPendingList(params);
     console.log(res);
     if (res.resultCode == successCode) {
-      setList(res?.data?.list);
+      let data = res?.data?.list || [];
+      let reg = /\$\{getResoureUrl\}/g;
+      const reg1 = /^\<\w+\>/;
+      const reg2 = /\<\/\w+\>$/;
+
+      data?.map?.((subitem: any) => {
+        let answer = subitem.answer || '';
+        if (reg1.test(answer) && reg2.test(answer)) {
+          subitem.answer = answer.replace(reg, '/aichat/robot/file/getFile');
+        }
+        return subitem;
+      });
+      setList(data);
       setTotalPage(res?.data?.totalPage);
     } else {
       setList([]);
@@ -47,12 +73,15 @@ export const useApprovalModel = () => {
   };
 
   const approvalPass = async (params: any) => {
+    setLoading(true);
     let res = await _approvalPass(params);
     if (res.resultCode == successCode) {
       message.success(res.resultDesc);
+      setLoading(false);
       return true;
     } else {
       message.error(res.resultDesc);
+      setLoading(false);
       return false;
     }
   };

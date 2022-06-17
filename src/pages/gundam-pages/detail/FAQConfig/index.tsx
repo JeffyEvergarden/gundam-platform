@@ -87,7 +87,14 @@ const FAQConfig: React.FC = (props: any) => {
                     key={'systemConfigList' + item.configKey}
                     rules={[{ required: true }]}
                   >
-                    <InputNumber style={{ width: 200 }} min={0} step="1" precision={0} stringMode />
+                    <InputNumber
+                      style={{ width: 200 }}
+                      min={item?.validateRule?.min ?? 0}
+                      max={item?.validateRule?.max ?? undefined}
+                      step="1"
+                      precision={0}
+                      stringMode
+                    />
                   </FormItem>
                 );
               } else if (item?.dataType == 0) {
@@ -99,7 +106,10 @@ const FAQConfig: React.FC = (props: any) => {
                     key={'systemConfigList' + item.configKey}
                     rules={[{ required: true }]}
                   >
-                    <Input.TextArea style={{ width: 300 }} maxLength={200} />
+                    <Input.TextArea
+                      style={{ width: 300 }}
+                      maxLength={item?.validateRule?.max ?? 200}
+                    />
                   </FormItem>
                 );
               }

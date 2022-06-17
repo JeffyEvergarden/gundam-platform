@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import config from '@/config/index';
-import { message } from 'antd';
+import { useState } from 'react';
 import { getAnswerList } from '../../../model/api';
 
 const successCode = config.successCode;
@@ -13,13 +12,27 @@ export const useAnswerListModel = () => {
     setLoading(true);
     let res = await getAnswerList(params);
     console.log(res);
+    let data: any = [];
     if (res.resultCode == successCode) {
-      setList(res?.data);
+      data = res?.data || [];
+      let reg = /\$\{getResoureUrl\}/g;
+      const reg1 = /^\<\w+\>/;
+      const reg2 = /\<\/\w+\>$/;
+
+      data?.map?.((subitem: any) => {
+        let answer = subitem.answer || '';
+        if (reg1.test(answer) && reg2.test(answer)) {
+          subitem.answer = answer.replace(reg, '/aichat/robot/file/getFile');
+        }
+        return subitem;
+      });
+
+      setList(data);
     } else {
       setList([]);
     }
     setLoading(false);
-    return { data: res?.data };
+    return { data };
   };
 
   return {

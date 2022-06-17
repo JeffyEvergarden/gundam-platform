@@ -1,4 +1,3 @@
-import { Request, Response } from 'express';
 import config from '../../../src/config';
 
 const successCode = config.successCode;
@@ -10,6 +9,7 @@ const editConfig = (req: any, res: any) => {
   });
 };
 
+//word-slot里冲突 实际拿的是wordslot里的
 const getConfig = (req: any, res: any) => {
   console.log(req.query);
   console.log('---------');
@@ -26,7 +26,7 @@ const getConfig = (req: any, res: any) => {
           configName: 'FAQ_RECOMMEND_LIMIT',
           configValue: '3',
           configDesc: 'var1',
-          configKey: 'FAQ_RECOMMEND_LIMIT',
+          configKey: 'FAQ_SEARCH_RECOMMEND_LIMIT',
           robotId: '00000',
           creator: 'jeffy',
           createTime: '2022-04-11 17:16:00',
@@ -35,6 +35,7 @@ const getConfig = (req: any, res: any) => {
           uppdateBy: 'x',
           dataType: 1,
           updateType: 0,
+          validateRule: '{"min":0,"max":99}',
         },
         {
           id: '2',

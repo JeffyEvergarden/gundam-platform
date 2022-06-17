@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useModel, history } from 'umi';
-import { useOpModel, useTableModel } from './model';
-import useUpdateModel from '@/models';
-import { Table, Button, Dropdown, message, Popconfirm } from 'antd';
-import ProTable from '@ant-design/pro-table';
-import { PlusOutlined } from '@ant-design/icons';
-import style from './style.less';
 import Condition from '@/components/Condition';
-import InfoModal from './components/info-modal';
 import config from '@/config/index';
+import useUpdateModel from '@/models';
+import { PlusOutlined } from '@ant-design/icons';
+import ProTable from '@ant-design/pro-table';
+import { Button, message, Popconfirm } from 'antd';
+import React, { useEffect, useRef } from 'react';
+import { history } from 'umi';
+import InfoModal from './components/info-modal';
+import { useOpModel, useTableModel } from './model';
 import { BUSSINESS_CODE, listToMap } from './model/const';
+import style from './style.less';
 
 enum MACHINE_STATUS {
   RUNNING = 0,

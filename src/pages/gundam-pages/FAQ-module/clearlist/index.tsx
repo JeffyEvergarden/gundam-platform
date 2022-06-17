@@ -179,7 +179,7 @@ const FAQClearList = (props: any) => {
     },
     {
       title: '咨询次数',
-      dataIndex: 'askNum',
+      dataIndex: 'consultNum',
       search: false,
       width: 160,
     },
