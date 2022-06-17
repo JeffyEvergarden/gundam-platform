@@ -180,3 +180,34 @@
   border-bottom: 1px solid #f3f3f3;
   cursor: pointer;
 }
+
+.question-box {
+  max-height: 180px;
+  overflow: auto;
+  .scrollbar(1px);
+}
+
+.scrollbar(@width, @color: #f5f5f5) {
+  ::-webkit-scrollbar {
+    width: @width * 4;
+    background: transparent;
+    visibility: hidden;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    width: @width * 4;
+    background: @color;
+    border-radius: 30px;
+    // visibility: hidden;
+  }
+
+  :hover {
+    ::-webkit-scrollbar {
+      visibility: visible;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      visibility: visible;
+    }
+  }
+}
