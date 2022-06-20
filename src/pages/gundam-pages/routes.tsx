@@ -3,11 +3,11 @@ import {
   CrownOutlined,
   DatabaseOutlined,
   FontColorsOutlined,
+  LineChartOutlined,
   MessageOutlined,
   MonitorOutlined,
   SettingOutlined,
   ShareAltOutlined,
-  LineChartOutlined,
 } from '@ant-design/icons';
 
 export default [
@@ -109,6 +109,9 @@ export default [
     icon: <LineChartOutlined />,
     path: '/gundamPages/reportForm',
     name: '报表管理',
+    hideFn: (info: any) => {
+      return !(info?.robotType === 0 && info?.soundType === 0); // 呼入 文本
+    },
     routes: [
       {
         icon: <CrownOutlined />,

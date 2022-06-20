@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef, Fragment } from 'react';
+import config from '@/config/index';
+import ChatRecordModal from '@/pages/gundam-pages/FAQ-module/components/chat-record-modal';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import ProTable from '@ant-design/pro-table';
+import { Space } from 'antd';
+import moment from 'moment';
+import { useRef, useState } from 'react';
 import { useModel } from 'umi';
 import HeadSearch from './components/headSearch';
-import ProTable from '@ant-design/pro-table';
-import ChatRecordModal from '@/pages/gundam-pages/FAQ-module/components/chat-record-modal';
-import { Space } from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import moment from 'moment';
-import config from '@/config/index';
-import styles from './index.less';
 import { CODE } from './enum';
+import styles from './index.less';
 import { useReportForm } from './model';
 
 export default () => {
@@ -72,7 +72,7 @@ export default () => {
       endTime = yestody.format('YYYY-MM-DD');
     }
     window.open(
-      `${config.basePath}/robot/statistics/sessionExport?startTime=${startTime}&endTime=${endTime}&channelCode=${code}&robotId=${info.id}`,
+      `${config.basePath}/robot/statistics/sessionExport?startTime=${startTime}&endTime=${endTime}&channelCode=${code}&robotId=${info.id}&orderCode=${paramsObj.orderCode}&orderType=${paramsObj.orderType}`,
       '_self',
     );
   };
@@ -93,11 +93,11 @@ export default () => {
       temp.orderCode = '2';
       temp.orderType = '2';
     }
-    if (sorter.columnKey === 'duration' && sorter.order === 'ascend') {
+    if (sorter.columnKey === 'durationFormat' && sorter.order === 'ascend') {
       temp.orderCode = '1';
       temp.orderType = '1';
     }
-    if (sorter.columnKey === 'duration' && sorter.order === 'descend') {
+    if (sorter.columnKey === 'durationFormat' && sorter.order === 'descend') {
       temp.orderCode = '1';
       temp.orderType = '2';
     }
@@ -159,7 +159,7 @@ export default () => {
         );
       },
       sorter: true,
-      dataIndex: 'duration',
+      dataIndex: 'durationFormat',
       ellipsis: true,
     },
   ];
@@ -167,10 +167,14 @@ export default () => {
   return (
     <div className={styles.pageComtain}>
       <div className={styles.pageTitile}>访客会话明细</div>
-      <HeadSearch choseTime={choseTime} exportReportForm={exportReportForm} />
+      <HeadSearch
+        choseTime={choseTime}
+        exportReportForm={exportReportForm}
+        pageType={'visitorSession'}
+      />
       <div className={styles.Table_box}>
         <ProTable
-          rowKey={(record: any) => record.dayId}
+          rowKey={'id'}
           headerTitle={false}
           toolBarRender={false}
           actionRef={actionRef}
