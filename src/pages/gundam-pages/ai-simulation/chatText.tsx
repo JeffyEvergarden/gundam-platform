@@ -179,6 +179,9 @@ export default (props: any) => {
 
   // 发送按钮
   const sendMessage = async (text?: any) => {
+    if (loading) {
+      return;
+    }
     if (!talkingFlag) {
       message.warning('请点击‘开始对话’按钮启动对话');
       return;
@@ -263,6 +266,9 @@ export default (props: any) => {
   };
 
   const sendQuiet = async () => {
+    if (loading) {
+      return;
+    }
     if (!talkingFlag) {
       message.warning('请点击‘开始对话’按钮启动对话');
       return;
@@ -479,12 +485,7 @@ export default (props: any) => {
               }}
             />
 
-            <Button
-              className={styles['send-btn']}
-              type="primary"
-              onClick={() => sendMessage()}
-              loading={loading}
-            >
+            <Button className={styles['send-btn']} type="primary" onClick={() => sendMessage()}>
               发送
             </Button>
             {info.robotType === 1 && (
@@ -492,7 +493,6 @@ export default (props: any) => {
                 className={styles['send-btn-quiet']}
                 type="primary"
                 onClick={() => sendQuiet()}
-                loading={loading}
               >
                 发送静默
               </Button>
