@@ -302,8 +302,9 @@ export default () => {
       search: false,
     },
     {
-      dataIndex: 'creatTime',
+      dataIndex: 'createTime',
       title: '时间',
+      width: 200,
       ellipsis: true,
       search: false,
     },

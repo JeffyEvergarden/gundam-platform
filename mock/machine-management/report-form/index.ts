@@ -196,7 +196,7 @@ const reject = (req: any, res: any) => {
       list: [
         {
           id: '1234567',
-          creatTime: '2020-12-23',
+          createTime: '2020-12-23',
           message: '客户问题',
           channelCode: 'media_ycsjyh',
           sessionId: '123456756543',
@@ -219,7 +219,7 @@ const faqAndClarify = (req: any, res: any) => {
         recommendDistinctConfirmNum: 77,
         recommendReplyNum: 33,
         recommendReplyUnconfirmedNum: 44,
-        recommendReplyConfimRate: '90%',
+        recommendReplyConfirmRate: '90%',
       },
       {
         dayId: '2022-03-12',
@@ -230,7 +230,7 @@ const faqAndClarify = (req: any, res: any) => {
         recommendDistinctConfirmNum: 18,
         recommendReplyNum: 20,
         recommendReplyUnconfirmedNum: 1,
-        recommendReplyConfimRate: '40%',
+        recommendReplyConfirmRate: '40%',
       },
       {
         dayId: '2022-04-12',
@@ -241,7 +241,7 @@ const faqAndClarify = (req: any, res: any) => {
         recommendDistinctConfirmNum: 1,
         recommendReplyNum: 1,
         recommendReplyUnconfirmedNum: 1,
-        recommendReplyConfimRate: '60%',
+        recommendReplyConfirmRate: '60%',
       },
     ],
   });
