@@ -53,7 +53,7 @@ export default () => {
     let res = await getDialogue(params);
     return {
       data: res?.data?.list || [],
-      total: res?.data?.total,
+      total: res?.data?.totalPage,
       current: payload.current,
       pageSize: payload.pageSize,
     };

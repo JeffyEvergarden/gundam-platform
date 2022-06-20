@@ -24,7 +24,7 @@ const visitor = (req: any, res: any) => {
         averageDialogueTurn: 65,
       },
       {
-        dayId: '2022-06-12',
+        dayId: '2022-05-12',
         visitNum: 55,
         validVisitNum: 64,
         visitorNum: 75,
@@ -42,7 +42,7 @@ const visitor = (req: any, res: any) => {
         averageDialogueTurn: 85,
       },
       {
-        dayId: '2022-06-12',
+        dayId: '2022-07-12',
         visitNum: 55,
         validVisitNum: 64,
         visitorNum: 75,
@@ -51,7 +51,7 @@ const visitor = (req: any, res: any) => {
         averageDialogueTurn: 85,
       },
       {
-        dayId: '2022-06-12',
+        dayId: '2022-08-12',
         visitNum: 55,
         validVisitNum: 64,
         visitorNum: 75,
@@ -60,7 +60,7 @@ const visitor = (req: any, res: any) => {
         averageDialogueTurn: 85,
       },
       {
-        dayId: '2022-06-12',
+        dayId: '2022-09-12',
         visitNum: 55,
         validVisitNum: 64,
         visitorNum: 75,
@@ -69,7 +69,7 @@ const visitor = (req: any, res: any) => {
         averageDialogueTurn: 85,
       },
       {
-        dayId: '2022-06-12',
+        dayId: '2022-10-12',
         visitNum: 55,
         validVisitNum: 64,
         visitorNum: 75,
