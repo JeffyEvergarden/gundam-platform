@@ -711,7 +711,7 @@ const Board: React.FC<any> = (props: any) => {
 
         <div className={style['board-btn']}>
           <Button type="primary" onClick={checkSimilarQuestion}>
-            确定
+            提交
           </Button>
         </div>
       </div>

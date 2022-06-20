@@ -363,7 +363,7 @@ const Board: React.FC<any> = (props: any) => {
 
         <div className={style['board-btn']}>
           <Button type="primary" onClick={openRemarkModal}>
-            确定
+            提交
           </Button>
         </div>
       </div>
