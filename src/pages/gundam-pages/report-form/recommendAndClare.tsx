@@ -88,7 +88,7 @@ export default () => {
       recommendDistinctConfirmNum.val.push(item.recommendDistinctConfirmNum);
       recommendReplyUnconfirmedNum.val.push(item.recommendReplyUnconfirmedNum);
       clarifyReplyRate.val.push(toNumber(item.clarifyReplyRate));
-      recommendReplyConfimRate.val.push(toNumber(item.recommendReplyConfimRate));
+      recommendReplyConfimRate.val.push(toNumber(item.recommendReplyConfirmRate));
     });
     temp.push(
       clarifyReplyNum,
@@ -245,7 +245,7 @@ export default () => {
               </Space>
             );
           },
-          dataIndex: 'recommendReplyConfimRate',
+          dataIndex: 'recommendReplyConfirmRate',
           ellipsis: true,
         },
       ],
@@ -306,7 +306,7 @@ export default () => {
               let totalrecommendReplyNum = 0;
               let totalrecommendDistinctConfirmNum = 0;
               let totalrecommendReplyUnconfirmedNum = 0;
-              let totalrecommendReplyConfimRate = 0;
+              let totalrecommendReplyConfimRate: any;
 
               pageData.forEach(
                 ({
@@ -318,7 +318,7 @@ export default () => {
                   recommendReplyNum,
                   recommendDistinctConfirmNum,
                   recommendReplyUnconfirmedNum,
-                  recommendReplyConfimRate,
+                  recommendReplyConfirmRate,
                 }) => {
                   totalclarifyReplyNum += clarifyReplyNum;
                   totalclarifyConfirmDistinctNum += clarifyConfirmDistinctNum;
@@ -330,7 +330,11 @@ export default () => {
                   totalrecommendDistinctConfirmNum += recommendDistinctConfirmNum;
                   totalrecommendReplyUnconfirmedNum += recommendReplyUnconfirmedNum;
                   totalrecommendReplyConfimRate =
-                    (totalrecommendDistinctConfirmNum / totalrecommendReplyNum) * 100;
+                    totalrecommendDistinctConfirmNum == 0 || totalrecommendReplyNum == 0
+                      ? '0.00%'
+                      : ((totalrecommendDistinctConfirmNum / totalrecommendReplyNum) * 100).toFixed(
+                          2,
+                        ) + '%';
                 },
               );
 
@@ -360,7 +364,7 @@ export default () => {
                       <Text>{totalrecommendReplyUnconfirmedNum}</Text>
                     </Table.Summary.Cell>
                     <Table.Summary.Cell index={8}>
-                      <Text>{totalrecommendReplyConfimRate.toFixed(2) + '%'}</Text>
+                      <Text>{totalrecommendReplyConfimRate}</Text>
                     </Table.Summary.Cell>
                   </Table.Summary.Row>
                 </Table.Summary>

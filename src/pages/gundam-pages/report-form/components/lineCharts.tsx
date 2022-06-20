@@ -213,7 +213,12 @@ const LineChartPage: React.FC<any> = (props: any) => {
       let value;
       let percentName = ['明确回答率', '匹配率', '澄清确认率', '推荐确认率'];
       if (percentName.includes(item.seriesName)) {
-        value = item.value * 100 + '%';
+        debugger;
+        if (item.value == 0) {
+          value = '0.00%';
+        } else {
+          value = item.value * 100 + '%';
+        }
       } else {
         value = item.value;
       }

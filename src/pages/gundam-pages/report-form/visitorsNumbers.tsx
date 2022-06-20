@@ -232,7 +232,7 @@ export default () => {
               let totalvisitorNum = 0;
               let totalvalidVisitorNum = 0;
               let totaldialogueTurn = 0;
-              let totalaverageDialogueTurn = 0;
+              let totalaverageDialogueTurn: any;
 
               pageData.forEach(
                 ({
@@ -248,7 +248,10 @@ export default () => {
                   totalvisitorNum += visitorNum;
                   totalvalidVisitorNum += validVisitorNum;
                   totaldialogueTurn += dialogueTurn;
-                  totalaverageDialogueTurn += averageDialogueTurn;
+                  totalaverageDialogueTurn =
+                    totaldialogueTurn == 0 || totalvisitNum == 0
+                      ? 0
+                      : (totaldialogueTurn / totalvisitNum).toFixed(2);
                 },
               );
 
