@@ -271,8 +271,8 @@ export default () => {
     }
   };
 
-  const saveRow = async (record: any) => {
-    console.log(record);
+  const saveRow = async (record: any, config: any) => {
+    let editValue = config?.form?.getFieldsValue?.()?.[config.recordKey];
 
     if (record.similarText?.length > 200) {
       record.similarText = record.similarText?.slice(0, 200);
@@ -283,14 +283,14 @@ export default () => {
     if (pageType === 'FAQ') {
       let reqData: any = {
         id: record.id,
-        similarText: record.similarText,
+        similarText: editValue?.similarText,
         viewNum: record.viewNum,
         faqId: tableInfo?.id,
       };
       await editSimilar(reqData).then((res) => {
         if (res.resultCode == config.successCode) {
           message.success(res?.resultDesc || '成功');
-          // actionRef?.current?.cancelEditable?.(record.id);
+          actionRef?.current?.cancelEditable?.(record.id);
           actionRef.current.reload();
         } else {
           message.error(res?.resultDesc);
@@ -301,18 +301,20 @@ export default () => {
       let params: any = {
         id: record.id,
         intentId: record.intentId,
-        corpusText: record.corpusText,
+        corpusText: editValue?.corpusText,
         robotId: info.id,
       };
       let res = await intentEdit(params);
       if (res.resultCode == config.successCode) {
         message.success(res?.resultDesc || '成功');
-        // actionRef?.current?.cancelEditable?.(record.id);
+        actionRef?.current?.cancelEditable?.(record.id);
         actionRef.current.reload();
       } else {
         message.error(res?.resultDesc);
       }
     }
+
+    return true;
   };
 
   const onChange = (e: any) => {
@@ -629,26 +631,26 @@ export default () => {
             editable={{
               type: 'single',
               actionRender: (row, config, dom) => [
-                // <a
-                //   onClick={() => {
-                //     saveRow(row);
-                //   }}
-                // >
-                //   保存
-                // </a>,
-                dom.save,
+                <a
+                  onClick={() => {
+                    saveRow(row, config);
+                  }}
+                >
+                  保存
+                </a>,
+                // dom.save,
                 dom.cancel,
               ],
-              onSave: (key: any, row: any, originRow: any, newLine?: any) => {
-                // if (row.similarText && row.similarText == originRow.similarText) {
-                //   console.log(row, originRow);
-                //   return;
-                // }
-                // if (row.corpusText && row.corpusText == originRow.corpusText) {
-                //   return;
-                // }
-                return saveRow(row);
-              },
+              // onSave: (key: any, row: any, originRow: any, newLine?: any) => {
+              //   // if (row.similarText && row.similarText == originRow.similarText) {
+              //   //   console.log(row, originRow);
+              //   //   return;
+              //   // }
+              //   // if (row.corpusText && row.corpusText == originRow.corpusText) {
+              //   //   return;
+              //   // }
+              //   return saveRow(row);
+              // },
             }}
             request={async (params) => {
               return getInitTable({ corpusText: corpusText, ...params });
