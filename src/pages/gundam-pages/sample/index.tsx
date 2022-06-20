@@ -272,6 +272,8 @@ export default () => {
   };
 
   const saveRow = async (record: any) => {
+    console.log(record);
+
     if (record.similarText?.length > 200) {
       record.similarText = record.similarText?.slice(0, 200);
     }
@@ -288,7 +290,7 @@ export default () => {
       await editSimilar(reqData).then((res) => {
         if (res.resultCode == config.successCode) {
           message.success(res?.resultDesc || '成功');
-          actionRef?.current?.cancelEditable?.(record.id);
+          // actionRef?.current?.cancelEditable?.(record.id);
           actionRef.current.reload();
         } else {
           message.error(res?.resultDesc);
@@ -305,7 +307,7 @@ export default () => {
       let res = await intentEdit(params);
       if (res.resultCode == config.successCode) {
         message.success(res?.resultDesc || '成功');
-        actionRef?.current?.cancelEditable?.(record.id);
+        // actionRef?.current?.cancelEditable?.(record.id);
         actionRef.current.reload();
       } else {
         message.error(res?.resultDesc);
@@ -420,7 +422,7 @@ export default () => {
             <a key="editable" onClick={() => edit(action, record)}>
               编辑
             </a>
-            <a key="editable" onClick={() => removeWish(record)}>
+            <a key="movetable" onClick={() => removeWish(record)}>
               转移
             </a>
             <Popconfirm
@@ -483,7 +485,7 @@ export default () => {
           return (
             <Space>
               <a key="editable">编辑</a>
-              <a key="editable">转移</a>
+              <a key="movetable">转移</a>
 
               <a style={{ color: 'red' }}>删除</a>
             </Space>
@@ -495,7 +497,7 @@ export default () => {
                 编辑
               </a>
               <a
-                key="editable"
+                key="moveable"
                 onClick={() => {
                   removeFAQ(record);
                 }}
@@ -615,6 +617,7 @@ export default () => {
           </Row>
           <ProTable
             rowKey={'id'}
+            key={'id'}
             scroll={{ x: columns.length * 200 }}
             actionRef={actionRef}
             columns={columns}
@@ -626,25 +629,26 @@ export default () => {
             editable={{
               type: 'single',
               actionRender: (row, config, dom) => [
-                <a
-                  onClick={() => {
-                    saveRow(row);
-                  }}
-                >
-                  保存
-                </a>,
+                // <a
+                //   onClick={() => {
+                //     saveRow(row);
+                //   }}
+                // >
+                //   保存
+                // </a>,
+                dom.save,
                 dom.cancel,
               ],
-              // onSave: (key: any, row: any, originRow: any, newLine?: any) => {
-              //   // if (row.similarText && row.similarText == originRow.similarText) {
-              //   //   console.log(row, originRow);
-              //   //   return;
-              //   // }
-              //   // if (row.corpusText && row.corpusText == originRow.corpusText) {
-              //   //   return;
-              //   // }
-              //   return saveRow(row);
-              // },
+              onSave: (key: any, row: any, originRow: any, newLine?: any) => {
+                // if (row.similarText && row.similarText == originRow.similarText) {
+                //   console.log(row, originRow);
+                //   return;
+                // }
+                // if (row.corpusText && row.corpusText == originRow.corpusText) {
+                //   return;
+                // }
+                return saveRow(row);
+              },
             }}
             request={async (params) => {
               return getInitTable({ corpusText: corpusText, ...params });
