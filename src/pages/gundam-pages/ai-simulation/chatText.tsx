@@ -88,7 +88,7 @@ export default (props: any) => {
       }
     };
     return debounce(fn, 0.8);
-  }, []);
+  }, [modalData]);
   // 弹窗显示
   const PopoverVisible = useMemo(() => {
     // console.log(opLoading, chatEvent, associationList.length);
