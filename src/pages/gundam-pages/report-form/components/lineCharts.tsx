@@ -85,7 +85,7 @@ const LineChartPage: React.FC<any> = (props: any) => {
       }
     });
     const options: any = initOptions(columns, temp);
-    lineChart.current.setOption(options);
+    lineChart?.current?.setOption(options);
   };
 
   const initOptions = (columns: any[], data: any[]) => {

@@ -123,12 +123,12 @@ const FAQClearList = (props: any) => {
   // 列名
   const columns: any[] = [
     {
-      title: '客户问题',
+      title: '客户问题/标准问',
       dataIndex: 'searchText',
       fixed: 'left',
       width: 300,
       fieldProps: {
-        placeholder: '请输入客户问题',
+        placeholder: '请输入客户问题/标准问',
       },
       ellipsis: true,
       render: (val: any, row: any) => {
@@ -351,14 +351,14 @@ const FAQClearList = (props: any) => {
           <div className={style['modal-form']}>
             <Form form={form} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }} autoComplete="off">
               <Form.Item
-                label="问题名称"
+                label="客户问题/标准问"
                 name="question"
                 rules={[
-                  { required: true, message: '请输入问题名称' },
+                  { required: true, message: '请输入客户问题/标准问' },
                   { max: 200, message: '不能超过200个文字' },
                 ]}
               >
-                <TextArea placeholder={'请输入问题名称'} maxLength={200} rows={3} />
+                <TextArea placeholder={'请输入客户问题/标准问'} maxLength={200} rows={3} />
               </Form.Item>
 
               <Form.Item
