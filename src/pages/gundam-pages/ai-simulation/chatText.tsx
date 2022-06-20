@@ -195,6 +195,7 @@ export default (props: any) => {
       return;
     }
     setLoading(true);
+    setFocus(false);
     let data = [...dialogList];
     let newDay = new Date().toLocaleDateString();
     let occurDay = newDay.replace(/\//g, '-');
