@@ -104,7 +104,9 @@ export default () => {
     setList(temp);
   };
 
-  const choseTime = (begin: string, end: string, code: string) => {};
+  const choseTime = (begin: string, end: string, code: string) => {
+    getList(begin, end, code);
+  };
 
   const exportReportForm = (begin: string, end: string, code: string) => {
     let startTime = '';
