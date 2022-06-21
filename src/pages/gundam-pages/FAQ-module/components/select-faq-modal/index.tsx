@@ -429,7 +429,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     <Modal
       className={style['modal-bg']}
       width={950}
-      title={'意图/FAQ'}
+      title={'选择标准问/意图'}
       visible={visible}
       maskClosable={false}
       onCancel={() => setVisible(false)}
@@ -439,7 +439,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       <div className={style['modal-bg_default']}>
         {/* <Condition r-if={title}> */}
         <div className={style['title_top']}>
-          <div className={style['label']}> 问题:</div>
+          <div className={style['label']}> 问题样本:</div>
           <Input
             value={title}
             onChange={(e) => {
@@ -485,7 +485,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
         </div>
 
         <Tabs activeKey={activeKey} onChange={changeActiveKey}>
-          <TabPane tab="问题" key="1">
+          <TabPane tab="FAQ" key="1">
             <div className={style['zy-row']}>
               <div className={style['page_left']}>
                 <MyTree
