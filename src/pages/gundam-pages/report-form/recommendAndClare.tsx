@@ -355,7 +355,7 @@ export default () => {
                       <Text>{totalclarifyUnconfirmedReplyNum}</Text>
                     </Table.Summary.Cell>
                     <Table.Summary.Cell index={4}>
-                      <Text>{totalclarifyReplyRate.toFixed(2) + '%'}</Text>
+                      <Text>{totalclarifyReplyRate}</Text>
                     </Table.Summary.Cell>
                     <Table.Summary.Cell index={5}>
                       <Text>{totalrecommendReplyNum}</Text>
