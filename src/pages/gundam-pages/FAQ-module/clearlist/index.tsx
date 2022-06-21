@@ -381,6 +381,7 @@ const FAQClearList = (props: any) => {
         onCancel={handleCancel}
         confirmLoading={opLoading}
         maskClosable={false}
+        width={600}
       >
         <div className={style['modal-page']}>
           <div className={style['modal-form']}>
