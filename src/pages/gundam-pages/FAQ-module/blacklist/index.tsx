@@ -84,7 +84,7 @@ const FAQBlackList = (props: any) => {
           <>
             <div style={{ display: 'flex' }}>
               <Popconfirm
-                title="删除将不可恢复，确认删除？"
+                title="删除操作将不可恢复，继续删除请按【确定】"
                 okText="确定"
                 cancelText="取消"
                 onConfirm={() => {
