@@ -132,7 +132,7 @@ const QuestionList: React.FC<any> = (props: any) => {
               CurrentPage();
             });
           } else {
-            message.warning('存在待审批或待处理的答案');
+            message.warning('已有在途待处理的答案，不可编辑/新增');
           }
         } else {
           message.error(res.resultDesc);
@@ -209,7 +209,7 @@ const QuestionList: React.FC<any> = (props: any) => {
         if (res.data.editFlag) {
           history.push(`/gundamPages/faq/answer?faqId=${item.id}`);
         } else {
-          message.warning('存在待审批或待处理的答案');
+          message.warning('已有在途待处理的答案，不可编辑/新增');
         }
       } else {
         message.error(res.resultDesc);
@@ -230,7 +230,7 @@ const QuestionList: React.FC<any> = (props: any) => {
               `/gundamPages/faq/answer?faqId=${Q.id}&answerId=${A.answerId}&recycle=${Q.recycle}`,
             );
           } else {
-            message.warning('存在待审批或待处理的答案');
+            message.warning('已有在途待处理的答案，不可编辑/新增');
           }
         } else {
           message.error(res.resultDesc);
@@ -255,7 +255,7 @@ const QuestionList: React.FC<any> = (props: any) => {
             CurrentPage();
           });
         } else {
-          message.warning('存在待审批或待处理的答案');
+          message.warning('已有在途待处理的答案，不可编辑/新增');
         }
       } else {
         message.error(res.resultDesc);
