@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import config from '@/config/index';
 import { message } from 'antd';
+import { useState } from 'react';
 import {
-  getClearList,
-  deleteClearCorpus,
   addClearCorpus,
+  deleteClearCorpus,
+  getClearList,
   updateClearCorpus,
 } from '../../model/api';
-import config from '@/config/index';
 
 export const successCode = config.successCode;
 
@@ -48,7 +48,7 @@ export const useTableModel = () => {
       message.success('删除成功');
       return true;
     } else {
-      message.error(res.resultMsg || '未知异常');
+      message.error(res.resultDesc || '未知异常');
       return false;
     }
   };
@@ -61,7 +61,7 @@ export const useTableModel = () => {
       message.success('添加成功');
       return true;
     } else {
-      message.error(res.resultMsg || '未知异常');
+      message.error(res.resultDesc || '未知异常');
       return false;
     }
   };
@@ -75,7 +75,7 @@ export const useTableModel = () => {
       message.success('添加成功');
       return true;
     } else {
-      message.error(res.resultMsg || '未知异常');
+      message.error(res.resultDesc || '未知异常');
       return false;
     }
   };
