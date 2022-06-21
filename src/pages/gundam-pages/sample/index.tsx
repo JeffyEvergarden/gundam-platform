@@ -271,7 +271,9 @@ export default () => {
     }
   };
 
-  const saveRow = async (record: any) => {
+  const saveRow = async (record: any, config: any) => {
+    let editValue = config?.form?.getFieldsValue?.()?.[config.recordKey];
+
     if (record.similarText?.length > 200) {
       record.similarText = record.similarText?.slice(0, 200);
     }
@@ -281,7 +283,7 @@ export default () => {
     if (pageType === 'FAQ') {
       let reqData: any = {
         id: record.id,
-        similarText: record.similarText,
+        similarText: editValue?.similarText,
         viewNum: record.viewNum,
         faqId: tableInfo?.id,
       };
@@ -299,7 +301,7 @@ export default () => {
       let params: any = {
         id: record.id,
         intentId: record.intentId,
-        corpusText: record.corpusText,
+        corpusText: editValue?.corpusText,
         robotId: info.id,
       };
       let res = await intentEdit(params);
@@ -311,6 +313,8 @@ export default () => {
         message.error(res?.resultDesc);
       }
     }
+
+    return true;
   };
 
   const onChange = (e: any) => {
@@ -420,7 +424,7 @@ export default () => {
             <a key="editable" onClick={() => edit(action, record)}>
               编辑
             </a>
-            <a key="editable" onClick={() => removeWish(record)}>
+            <a key="movetable" onClick={() => removeWish(record)}>
               转移
             </a>
             <Popconfirm
@@ -483,7 +487,7 @@ export default () => {
           return (
             <Space>
               <a key="editable">编辑</a>
-              <a key="editable">转移</a>
+              <a key="movetable">转移</a>
 
               <a style={{ color: 'red' }}>删除</a>
             </Space>
@@ -495,7 +499,7 @@ export default () => {
                 编辑
               </a>
               <a
-                key="editable"
+                key="moveable"
                 onClick={() => {
                   removeFAQ(record);
                 }}
@@ -615,6 +619,7 @@ export default () => {
           </Row>
           <ProTable
             rowKey={'id'}
+            key={'id'}
             scroll={{ x: columns.length * 200 }}
             actionRef={actionRef}
             columns={columns}
@@ -628,11 +633,12 @@ export default () => {
               actionRender: (row, config, dom) => [
                 <a
                   onClick={() => {
-                    saveRow(row);
+                    saveRow(row, config);
                   }}
                 >
                   保存
                 </a>,
+                // dom.save,
                 dom.cancel,
               ],
               // onSave: (key: any, row: any, originRow: any, newLine?: any) => {

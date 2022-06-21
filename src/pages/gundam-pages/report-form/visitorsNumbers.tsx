@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, Fragment } from 'react';
 import { throttle } from '@/utils';
 import { useModel } from 'umi';
-import { Space, Table, Tooltip, Typography } from 'antd';
+import { Space, Spin, Table, Tooltip, Typography } from 'antd';
 import HeadSearch from './components/headSearch';
 import LineChart from './components/lineCharts';
 import { useReportForm } from './model';
@@ -13,7 +13,7 @@ import styles from './index.less';
 const { Text } = Typography;
 
 export default () => {
-  const { getVisitorList } = useReportForm();
+  const { getVisitorList, tableLoading } = useReportForm();
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -76,7 +76,7 @@ export default () => {
     let dialogueTurn: any = { name: '会话次数统计', val: [] };
     let day: any = [];
     setDataSource(res?.data);
-    res.data.map((item: any) => {
+    res?.data?.map((item: any) => {
       visitNum.val.push(item.visitNum);
       validVisitNum.val.push(item.validVisitNum);
       visitorNum.val.push(item.visitorNum);
@@ -206,7 +206,7 @@ export default () => {
       <div className={styles.visitorBox}>
         <LineChart
           id={'visitorNumber'}
-          loading={null}
+          loading={tableLoading}
           title={''}
           base={base}
           columns={dayId}
@@ -217,67 +217,72 @@ export default () => {
         />
       </div>
       <div className={styles.Table_box}>
-        <Table
-          rowKey={(record: any) => record.dayId}
-          columns={columns}
-          dataSource={dataSource}
-          pagination={false}
-          scroll={{ y: 270 }}
-          sticky={true}
-          size={'small'}
-          summary={(pageData) => {
-            let totalvisitNum = 0;
-            let totalvalidVisitNum = 0;
-            let totalvisitorNum = 0;
-            let totalvalidVisitorNum = 0;
-            let totaldialogueTurn = 0;
-            let totalaverageDialogueTurn = 0;
+        <Spin spinning={tableLoading}>
+          <Table
+            rowKey={(record: any) => record.dayId}
+            columns={columns}
+            dataSource={dataSource}
+            pagination={false}
+            scroll={{ y: 270 }}
+            sticky={true}
+            size={'small'}
+            summary={(pageData) => {
+              let totalvisitNum = 0;
+              let totalvalidVisitNum = 0;
+              let totalvisitorNum = 0;
+              let totalvalidVisitorNum = 0;
+              let totaldialogueTurn = 0;
+              let totalaverageDialogueTurn: any;
 
-            pageData.forEach(
-              ({
-                visitNum,
-                validVisitNum,
-                visitorNum,
-                validVisitorNum,
-                dialogueTurn,
-                averageDialogueTurn,
-              }) => {
-                totalvisitNum += visitNum;
-                totalvalidVisitNum += validVisitNum;
-                totalvisitorNum += visitorNum;
-                totalvalidVisitorNum += validVisitorNum;
-                totaldialogueTurn += dialogueTurn;
-                totalaverageDialogueTurn += averageDialogueTurn;
-              },
-            );
+              pageData.forEach(
+                ({
+                  visitNum,
+                  validVisitNum,
+                  visitorNum,
+                  validVisitorNum,
+                  dialogueTurn,
+                  averageDialogueTurn,
+                }) => {
+                  totalvisitNum += visitNum;
+                  totalvalidVisitNum += validVisitNum;
+                  totalvisitorNum += visitorNum;
+                  totalvalidVisitorNum += validVisitorNum;
+                  totaldialogueTurn += dialogueTurn;
+                  totalaverageDialogueTurn =
+                    totaldialogueTurn == 0 || totalvisitNum == 0
+                      ? 0
+                      : (totaldialogueTurn / totalvisitNum).toFixed(2);
+                },
+              );
 
-            return (
-              <Table.Summary fixed>
-                <Table.Summary.Row>
-                  <Table.Summary.Cell index={0}>合计</Table.Summary.Cell>
-                  <Table.Summary.Cell index={1}>
-                    <Text>{totalvisitNum}</Text>
-                  </Table.Summary.Cell>
-                  <Table.Summary.Cell index={2}>
-                    <Text>{totalvalidVisitNum}</Text>
-                  </Table.Summary.Cell>
-                  <Table.Summary.Cell index={3}>
-                    <Text>{totalvisitorNum}</Text>
-                  </Table.Summary.Cell>
-                  <Table.Summary.Cell index={4}>
-                    <Text>{totalvalidVisitorNum}</Text>
-                  </Table.Summary.Cell>
-                  <Table.Summary.Cell index={5}>
-                    <Text>{totaldialogueTurn}</Text>
-                  </Table.Summary.Cell>
-                  <Table.Summary.Cell index={6}>
-                    <Text>{totalaverageDialogueTurn}</Text>
-                  </Table.Summary.Cell>
-                </Table.Summary.Row>
-              </Table.Summary>
-            );
-          }}
-        />
+              return (
+                <Table.Summary fixed>
+                  <Table.Summary.Row>
+                    <Table.Summary.Cell index={0}>合计</Table.Summary.Cell>
+                    <Table.Summary.Cell index={1}>
+                      <Text>{totalvisitNum}</Text>
+                    </Table.Summary.Cell>
+                    <Table.Summary.Cell index={2}>
+                      <Text>{totalvalidVisitNum}</Text>
+                    </Table.Summary.Cell>
+                    <Table.Summary.Cell index={3}>
+                      <Text>{totalvisitorNum}</Text>
+                    </Table.Summary.Cell>
+                    <Table.Summary.Cell index={4}>
+                      <Text>{totalvalidVisitorNum}</Text>
+                    </Table.Summary.Cell>
+                    <Table.Summary.Cell index={5}>
+                      <Text>{totaldialogueTurn}</Text>
+                    </Table.Summary.Cell>
+                    <Table.Summary.Cell index={6}>
+                      <Text>{totalaverageDialogueTurn}</Text>
+                    </Table.Summary.Cell>
+                  </Table.Summary.Row>
+                </Table.Summary>
+              );
+            }}
+          />
+        </Spin>
       </div>
     </div>
   );

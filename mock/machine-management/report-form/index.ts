@@ -24,7 +24,7 @@ const visitor = (req: any, res: any) => {
         averageDialogueTurn: 65,
       },
       {
-        dayId: '2022-06-12',
+        dayId: '2022-05-12',
         visitNum: 55,
         validVisitNum: 64,
         visitorNum: 75,
@@ -42,7 +42,7 @@ const visitor = (req: any, res: any) => {
         averageDialogueTurn: 85,
       },
       {
-        dayId: '2022-06-12',
+        dayId: '2022-07-12',
         visitNum: 55,
         validVisitNum: 64,
         visitorNum: 75,
@@ -51,7 +51,7 @@ const visitor = (req: any, res: any) => {
         averageDialogueTurn: 85,
       },
       {
-        dayId: '2022-06-12',
+        dayId: '2022-08-12',
         visitNum: 55,
         validVisitNum: 64,
         visitorNum: 75,
@@ -60,7 +60,7 @@ const visitor = (req: any, res: any) => {
         averageDialogueTurn: 85,
       },
       {
-        dayId: '2022-06-12',
+        dayId: '2022-09-12',
         visitNum: 55,
         validVisitNum: 64,
         visitorNum: 75,
@@ -69,7 +69,7 @@ const visitor = (req: any, res: any) => {
         averageDialogueTurn: 85,
       },
       {
-        dayId: '2022-06-12',
+        dayId: '2022-10-12',
         visitNum: 55,
         validVisitNum: 64,
         visitorNum: 75,
@@ -196,7 +196,7 @@ const reject = (req: any, res: any) => {
       list: [
         {
           id: '1234567',
-          creatTime: '2020-12-23',
+          createTime: '2020-12-23',
           message: '客户问题',
           channelCode: 'media_ycsjyh',
           sessionId: '123456756543',
@@ -219,7 +219,7 @@ const faqAndClarify = (req: any, res: any) => {
         recommendDistinctConfirmNum: 77,
         recommendReplyNum: 33,
         recommendReplyUnconfirmedNum: 44,
-        recommendReplyConfimRate: '90%',
+        recommendReplyConfirmRate: '90%',
       },
       {
         dayId: '2022-03-12',
@@ -230,7 +230,7 @@ const faqAndClarify = (req: any, res: any) => {
         recommendDistinctConfirmNum: 18,
         recommendReplyNum: 20,
         recommendReplyUnconfirmedNum: 1,
-        recommendReplyConfimRate: '40%',
+        recommendReplyConfirmRate: '40%',
       },
       {
         dayId: '2022-04-12',
@@ -241,7 +241,7 @@ const faqAndClarify = (req: any, res: any) => {
         recommendDistinctConfirmNum: 1,
         recommendReplyNum: 1,
         recommendReplyUnconfirmedNum: 1,
-        recommendReplyConfimRate: '60%',
+        recommendReplyConfirmRate: '60%',
       },
     ],
   });

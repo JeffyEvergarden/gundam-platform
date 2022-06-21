@@ -67,7 +67,7 @@ export default (props: any) => {
   };
 
   const disabledDate = (current: any) => {
-    return current && current < moment().subtract(1, 'days').endOf('day');
+    return current && current > moment().subtract(0, 'days').endOf('day');
   };
 
   return (

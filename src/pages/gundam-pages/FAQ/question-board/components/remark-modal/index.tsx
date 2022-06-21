@@ -1,7 +1,6 @@
-import React, { useState, useImperativeHandle, useRef } from 'react';
-import { Form, Input, Button, Modal, message } from 'antd';
+import { Form, Input, Modal } from 'antd';
+import { useImperativeHandle, useRef, useState } from 'react';
 import style from './style.less';
-import { useModel } from 'umi';
 
 const { TextArea } = Input;
 
@@ -58,7 +57,7 @@ const RemarkModal = (props: any) => {
 
   return (
     <Modal
-      title={'填写备注'}
+      title={'提交'}
       visible={visible}
       onOk={handleOk}
       onCancel={handleCancel}
@@ -75,7 +74,13 @@ const RemarkModal = (props: any) => {
                 { max: 200, message: '不能超过200个文字' },
               ]}
             >
-              <TextArea placeholder={'请输入备注内容'} maxLength={200} rows={4} />
+              <TextArea
+                placeholder={
+                  '为了让审批人员快速了解本次提交的内容，请简明扼要说明本次修改的原由及修改要点，限200字'
+                }
+                maxLength={200}
+                rows={4}
+              />
             </Form.Item>
           </Form>
         </div>

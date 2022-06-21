@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef, Fragment, useMemo } from 'react';
-import { Input, Button, message, Space, Radio, Modal, Popover } from 'antd';
-import styles from './style.less';
-import { useModel } from 'umi';
-import { useChatModel } from './model';
 import robotPhoto from '@/asset/image/headMan.png';
 import customerPhoto from '@/asset/image/headWoman.png';
-import { useCallback } from 'react';
+import { Button, Input, message, Modal, Popover, Radio, Space } from 'antd';
+import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import { useModel } from 'umi';
+import { useChatModel } from './model';
+import styles from './style.less';
 const { TextArea } = Input;
 
 const debounce = (fn: (...arr: any[]) => void, second: number) => {
@@ -50,6 +49,8 @@ export default (props: any) => {
   const [nluInfo, setNluInfo] = useState<string>('');
   const [visible, setVisible] = useState<boolean>(false);
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
@@ -80,13 +81,14 @@ export default (props: any) => {
         query: inputVal,
         suggestNumber: 8,
         robotId: info.id,
+        sessionId: modalData.sessionId,
       });
       if (res) {
         timeFn.current.inputVal = inputVal;
       }
     };
     return debounce(fn, 0.8);
-  }, []);
+  }, [modalData]);
   // 弹窗显示
   const PopoverVisible = useMemo(() => {
     // console.log(opLoading, chatEvent, associationList.length);
@@ -176,7 +178,10 @@ export default (props: any) => {
   };
 
   // 发送按钮
-  const sendMessage = async () => {
+  const sendMessage = async (text?: any) => {
+    if (loading) {
+      return;
+    }
     if (!talkingFlag) {
       message.warning('请点击‘开始对话’按钮启动对话');
       return;
@@ -189,6 +194,8 @@ export default (props: any) => {
       message.warning('最多发送200字');
       return;
     }
+    setLoading(true);
+    setFocus(false);
     let data = [...dialogList];
     let newDay = new Date().toLocaleDateString();
     let occurDay = newDay.replace(/\//g, '-');
@@ -198,7 +205,7 @@ export default (props: any) => {
       occurTime: occurDay + ' ' + newTime,
       systemCode: modalData.systemCode,
       sessionId: modalData.sessionId,
-      message: textMessage,
+      message: text || textMessage,
       event: chatEvent, // 事件类型
       actionType: '',
     };
@@ -216,7 +223,7 @@ export default (props: any) => {
       data.push(
         {
           type: 'customer',
-          message: textMessage,
+          message: text || textMessage,
           askKey: res?.data?.askKey,
           nluInfo: res?.data?.nluInfo,
         },
@@ -232,12 +239,13 @@ export default (props: any) => {
     } else {
       data.push({
         type: 'customer',
-        message: textMessage,
+        message: text || textMessage,
         askKey: res?.data?.askKey,
         nluInfo: res?.data?.nluInfo,
       });
       message.error(res?.resultDesc);
     }
+    setLoading(false);
     setDialogList(data);
 
     // let a = number;
@@ -259,10 +267,14 @@ export default (props: any) => {
   };
 
   const sendQuiet = async () => {
+    if (loading) {
+      return;
+    }
     if (!talkingFlag) {
       message.warning('请点击‘开始对话’按钮启动对话');
       return;
     }
+    setLoading(true);
     let data = [...dialogList];
     let newDay = new Date().toLocaleDateString();
     let occurDay = newDay.replace(/\//g, '-');
@@ -310,6 +322,7 @@ export default (props: any) => {
       });
       message.error(res?.resultDesc);
     }
+    setLoading(false);
     setDialogList(data);
     // setChatEvent('silence');
     // let a = number;
@@ -347,6 +360,7 @@ export default (props: any) => {
               setTextMessage(item.label);
               timeFn.current.inputVal = item.label;
               setAssociationList([]);
+              sendMessage(item.label);
             }}
           >
             {item.label}

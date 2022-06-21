@@ -46,7 +46,7 @@ export default () => {
     setBase(rate);
   };
 
-  const { question, rejectList } = useReportForm();
+  const { question, rejectList, tableLoading } = useReportForm();
 
   const [lineList, setList] = useState<any>([]);
   const [dayId, setDayId] = useState<any>([]);
@@ -209,7 +209,7 @@ export default () => {
     let discernReplyNum: any = { name: '拒识总数', val: [] };
     let matchRate: any = { name: '匹配率', val: [], isRate: true };
     let day: any = [];
-    res.data.list.map((item: any) => {
+    res?.data?.list?.map((item: any) => {
       directReplyRate.val.push(toNumber(item.directReplyRate));
       clarifyReplyNum.val.push(item.clarifyReplyNum);
       clarifyConfirmReplyNum.val.push(item.clarifyConfirmReplyNum);
@@ -277,12 +277,14 @@ export default () => {
   const rejectTable = async (payload: any) => {
     let params = {
       dayId: modalData.dayId,
-      ...payload,
+      page: payload.current,
+      pageSize: payload.pageSize,
+      robotId: info.id,
     };
     let res = await rejectList(params);
     return {
       data: res?.data?.list || [],
-      total: res?.data?.total,
+      total: res?.data?.totalPage,
       current: payload.current,
       pageSize: payload.pageSize,
     };
@@ -300,8 +302,9 @@ export default () => {
       search: false,
     },
     {
-      dataIndex: 'creatTime',
+      dataIndex: 'createTime',
       title: '时间',
+      width: 200,
       ellipsis: true,
       search: false,
     },
@@ -339,6 +342,7 @@ export default () => {
             base={base}
             sumReplyNum={sumReplyNum}
             data={pieList}
+            loading={tableLoading}
             title={'问题回答比例'}
             color={['#6395F9', '#62DAAB', '#657798', '#F6C022', '#7666F9']}
             legendData={['明确回答数', '澄清回复数', '澄清确认数', '推荐确认数', '拒识总数']}
@@ -348,7 +352,7 @@ export default () => {
           <LineChart
             id={'questionMatch_line'}
             // width={700}
-            loading={null}
+            loading={tableLoading}
             title={'问题匹配率统计'}
             base={base}
             columns={dayId}
