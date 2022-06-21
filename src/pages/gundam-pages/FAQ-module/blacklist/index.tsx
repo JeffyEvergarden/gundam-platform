@@ -188,7 +188,7 @@ const FAQBlackList = (props: any) => {
               openModal();
             }}
           >
-            新建
+            添加
           </Button>,
         ]}
       />

@@ -126,7 +126,13 @@ const FAQClearList = (props: any) => {
   // 列名
   const columns: any[] = [
     {
-      title: '客户问题',
+      title: (...args: any[]) => {
+        if (args[1] === 'table') {
+          return '客户问题';
+        }
+        // console.log(args);
+        return '客户问题/标准问';
+      },
       dataIndex: 'searchText',
       fixed: 'left',
       width: 300,
@@ -359,7 +365,7 @@ const FAQClearList = (props: any) => {
               openModal();
             }}
           >
-            新建
+            添加
           </Button>,
         ]}
       />
