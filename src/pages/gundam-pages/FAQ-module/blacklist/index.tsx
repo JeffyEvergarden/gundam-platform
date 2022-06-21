@@ -205,7 +205,7 @@ const FAQBlackList = (props: any) => {
           <div className={style['modal-form']}>
             <Form form={form} labelCol={{ span: 4 }} wrapperCol={{ span: 18 }} autoComplete="off">
               <Form.Item
-                label="问题名称"
+                label="客户问题"
                 name="question"
                 rules={[
                   { required: true, message: '请输入问题名称' },
