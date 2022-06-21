@@ -301,7 +301,7 @@ export default () => {
               let totalclarifyReplyNum = 0;
               let totalclarifyConfirmDistinctNum = 0;
               let totalclarifyUnconfirmedReplyNum = 0;
-              let totalclarifyReplyRate = 0;
+              let totalclarifyReplyRate: any;
 
               let totalrecommendReplyNum = 0;
               let totalrecommendDistinctConfirmNum = 0;
@@ -324,7 +324,10 @@ export default () => {
                   totalclarifyConfirmDistinctNum += clarifyConfirmDistinctNum;
                   totalclarifyUnconfirmedReplyNum += clarifyUnconfirmedReplyNum;
                   totalclarifyReplyRate =
-                    (totalclarifyConfirmDistinctNum / totalclarifyReplyNum) * 100;
+                    totalclarifyConfirmDistinctNum == 0 || totalclarifyReplyNum == 0
+                      ? '0.00%'
+                      : ((totalclarifyConfirmDistinctNum / totalclarifyReplyNum) * 100).toFixed(2) +
+                        '%';
 
                   totalrecommendReplyNum += recommendReplyNum;
                   totalrecommendDistinctConfirmNum += recommendDistinctConfirmNum;
