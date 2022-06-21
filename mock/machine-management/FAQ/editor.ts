@@ -84,6 +84,15 @@ const getAnswer = (req: any, res: any) => {
   });
 };
 
+const isEdit = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    data: {
+      editFlag: true,
+    },
+  });
+};
+
 export default {
   'POST /aichat/robot/file/uploadFile': uploadFile, // 获取问答列表
   'GET /aichat/robot/file/getFile': getFile,
@@ -95,4 +104,6 @@ export default {
   'POST /aichat/robot/faq/answerDelete': normalDeal,
   'GET /aichat/robot/faq/answerInfo': getAnswer,
   'GET /aichat/robot/faq/approvalInfo': getAnswer,
+
+  'POST /aichat/robot/faq/answerIsEdit': isEdit, //判断能不能进行新增/编辑
 };
