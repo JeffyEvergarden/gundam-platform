@@ -104,8 +104,6 @@ const PieCharts: React.FC<any> = (props: any) => {
     );
   };
   const formateTooltip = (params: any) => {
-    console.log(params);
-
     return `
     <div class='${styles['tooltips-box_pie']}'>
       <div class="${styles.icon}" style="background: ${params.color}"></div>
