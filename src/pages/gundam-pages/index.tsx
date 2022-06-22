@@ -20,24 +20,35 @@ import Condition from '@/components/Condition';
 import { deepClone } from './FAQ/question-board/model/utils';
 
 // 菜单过滤
-const processRoute = (info: any = {}) => {
+const processRoute = (info: any = {}, userAuth: any[]) => {
   let _route = deepClone(routes);
-  deepProcess(_route, info);
+  deepProcess(_route, info, userAuth);
   return _route;
 };
 
-const deepProcess = (arr: any[], info: any = {}) => {
+const deepProcess = (arr: any[], info: any = {}, userAuth: any[]) => {
   arr.forEach((item: any) => {
     if (Array.isArray(item.routes)) {
-      deepProcess(item.routes, info);
+      deepProcess(item.routes, info, userAuth);
     }
     const hideFn = item.hideFn;
     // console.log(typeof hideFn);
     // hideFn && console.log(hideFn);
+    if (item.code) {
+      item.hideInMenu = !access(userAuth, item.code);
+      if (item.hideInMenu) {
+        return;
+      }
+    }
+
     if (hideFn && typeof hideFn === 'function') {
       item.hideInMenu = hideFn(info);
     }
   });
+};
+
+const access = (userAuth: any[], code: any) => {
+  return userAuth.includes(code);
 };
 
 // 机器人列表
@@ -48,6 +59,8 @@ const MachinePagesHome: React.FC = (props: any) => {
   const [pathname, setPathname] = useState(location.pathname);
 
   const [finish, setFinish] = useState<boolean>(false);
+  const { initialState } = useModel('@@initialState');
+  const { userAuth = [] } = initialState || {};
   const { info, setInfo, globalVarList, setGlobalVarList } = useModel(
     'gundam' as any,
     (model: any) => ({
@@ -62,7 +75,7 @@ const MachinePagesHome: React.FC = (props: any) => {
   }, [location]);
 
   const _routes = useMemo(() => {
-    return processRoute(info);
+    return processRoute(info, userAuth || []);
   }, [info]);
   // console.log('_routes');
   // console.log(_routes);

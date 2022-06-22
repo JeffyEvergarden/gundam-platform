@@ -31,7 +31,6 @@ const FormModal: React.FC<any> = (props: any) => {
       isDisplay: values?.flag,
       oldUrl: values?.url,
     };
-    // TODO
     await updateMenuForm(obj);
     // setVisible(false);
     confirm?.(obj);

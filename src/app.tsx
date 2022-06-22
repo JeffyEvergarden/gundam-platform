@@ -17,6 +17,7 @@ const loginPath = '/aichat/login';
 const routersFilter: any[] = [];
 
 const getNoAuthPage = (routers: any[], flag?: boolean) => {
+  // 递归找到 noAuth 为 true 的页面
   routers.forEach((route: any, index: number) => {
     if (route.noAuth || flag) {
       routersFilter.push(route.path);
@@ -69,9 +70,10 @@ export async function getInitialState(): Promise<{
   const fetchAuthInfo = async () => {
     try {
       const result: any = await queryAuthInfo();
-      return result?.data || {};
+      // TODO 这里应该按照具体执行做点数据加工
+      return result?.datas || [];
     } catch (error) {
-      return {};
+      return [];
     }
   };
 
@@ -88,22 +90,22 @@ export async function getInitialState(): Promise<{
       fetchAuthInfo, // 抓取用户权限
       routersFilter,
       currentUser: {}, // 用户信息
-      userAuth: {}, // 权限信息
+      userAuth: [], // 权限信息
       isLogin: false,
       hadDone: false,
       settings: {},
     };
   }
   // 抓取权限信息结果
-  // let res2: any = fetchAuthInfo();
+  let res2: any = fetchAuthInfo();
   // let [currentUser, userAuth] = await Promise.all([res1]);
-
-  let [userMsg]: any[] = await Promise.all([res1]);
+  // 需要抓取用户信息
+  let [userMsg, userAuth]: any[] = await Promise.all([res1, res2]);
 
   // 部门
   // const orz = userAuth?.userSummary?.organizations?.[0]?.name || '';
   const orz = userMsg?.principal?.organizations?.[0]?.name || '';
-  const isWhite = userMsg?.isWhite || true;
+  // const isWhite = userMsg?.isWhite || true;
   return {
     fetchUserInfo,
     fetchAuthInfo, // 抓取用户权限
@@ -113,7 +115,7 @@ export async function getInitialState(): Promise<{
       department: orz,
       ...userMsg?.principal,
     }, // 用户信息  部门信息
-    userAuth: { userType: isWhite ? 'leader' : 'user' }, // 权限信息   userType 用户类型
+    userAuth: userAuth, // 权限信息   userType 用户类型
     isLogin: userMsg?.principal?.userName ? true : false,
     hadDone: userMsg?.principal?.userName ? true : false,
     settings: {},

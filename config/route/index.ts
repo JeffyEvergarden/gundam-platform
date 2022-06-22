@@ -4,6 +4,6 @@ import session from './session'; // 会话管理
 
 export default [
   ...gundam,
-  // ...session,
+  ...session,
   //...users
 ];

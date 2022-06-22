@@ -68,12 +68,12 @@ export default [
     path: '/gundamPages/businessDraw',
     exact: true,
     _info: { fuck: true },
-    name: '业务流程管理',
   },
   {
     icon: <MessageOutlined />,
     path: '/gundamPages/module',
     name: 'FAQ管理',
+    code: '0-0-4',
     hideFn: (info: any) => {
       return !(info?.robotType === 0 && info?.soundType === 0); // 呼入 文本
     },
