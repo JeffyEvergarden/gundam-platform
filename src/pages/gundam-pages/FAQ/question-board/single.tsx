@@ -246,7 +246,7 @@ const Board: React.FC<any> = (props: any) => {
                   placeholder={'请输入问题名称'}
                   autoComplete="off"
                   maxLength={200}
-                  disabled={true}
+                  disabled={pageFrom == 'pendingList' ? false : true}
                 />
               </Form.Item>
 
@@ -262,7 +262,7 @@ const Board: React.FC<any> = (props: any) => {
                   allowClear
                   treeData={typeList}
                   treeDefaultExpandedKeys={defaultExpend}
-                  disabled={true}
+                  disabled={pageFrom == 'pendingList' ? false : true}
                 ></TreeSelect>
               </Form.Item>
             </div>
