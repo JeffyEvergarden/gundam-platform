@@ -206,16 +206,16 @@ export default () => {
     let directReplyRate: any = { name: '明确回答率', val: [], isRate: true };
     let clarifyReplyNum: any = { name: '澄清回复数', val: [] };
     let clarifyConfirmReplyNum: any = { name: '澄清确认数', val: [] };
+    let recommendReplyConfirmNum: any = { name: '推荐确认数', val: [] };
     let discernReplyNum: any = { name: '拒识总数', val: [] };
-    let recommendReplyConfirmRate: any = { name: '推荐确认率', val: [], isRate: true };
     let matchRate: any = { name: '匹配率', val: [], isRate: true };
     let day: any = [];
     res?.data?.list?.map((item: any) => {
       directReplyRate.val.push(toNumber(item.directReplyRate));
       clarifyReplyNum.val.push(item.clarifyReplyNum);
       clarifyConfirmReplyNum.val.push(item.clarifyConfirmReplyNum);
+      recommendReplyConfirmNum.val.push(item.recommendReplyConfirmNum);
       discernReplyNum.val.push(item.discernReplyNum);
-      recommendReplyConfirmRate.val.push(toNumber(item.recommendReplyConfirmRate));
       matchRate.val.push(toNumber(item.matchRate));
       day.push(item.dayId);
     });
@@ -223,8 +223,8 @@ export default () => {
       directReplyRate,
       clarifyReplyNum,
       clarifyConfirmReplyNum,
+      recommendReplyConfirmNum,
       discernReplyNum,
-      recommendReplyConfirmRate,
       matchRate,
     );
     setDayId(day);
@@ -372,8 +372,8 @@ export default () => {
               '明确回答率',
               '澄清回复数',
               '澄清确认数',
+              '推荐确认数',
               '拒识总数',
-              '推荐确认率',
               '匹配率',
             ]}
             className={styles.visitorBox}
