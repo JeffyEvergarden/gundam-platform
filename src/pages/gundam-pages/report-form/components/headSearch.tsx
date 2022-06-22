@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { Button, DatePicker, Radio, Select, Space } from 'antd';
 import moment from 'moment';
-import { Radio, DatePicker, Space, Select, Button } from 'antd';
+import { useState } from 'react';
 import styles from './index.less';
 
 const { RangePicker } = DatePicker;
@@ -12,6 +12,7 @@ export default (props: any) => {
   const [valRadio, setValue] = useState<string>('sevenDays');
   const [startTime, setStart] = useState<string>('');
   const [endTime, setEnd] = useState<string>('');
+  const [keyValue, setKeyValue] = useState<any>(''); //给rangePicker控件添加key属性，点击重置时，修改key的值，如new Date()，相当于重新渲染控件，达到让控件重置的功能
   const [code, setCode] = useState('');
 
   const changeTime = (e: any) => {
@@ -40,6 +41,7 @@ export default (props: any) => {
     }
     setStart(begin);
     setEnd(end);
+    setKeyValue(new Date());
     choseTime(begin, end, code);
   };
 
@@ -79,7 +81,12 @@ export default (props: any) => {
           <Radio.Button value="sevenDays">最近七天</Radio.Button>
           <Radio.Button value="month">最近一个月</Radio.Button>
         </Radio.Group>
-        <RangePicker onChange={rangeChange} format={'YYYY-MM-DD'} disabledDate={disabledDate} />
+        <RangePicker
+          onChange={rangeChange}
+          format={'YYYY-MM-DD'}
+          disabledDate={disabledDate}
+          key={keyValue}
+        />
         <Select style={{ width: '120px' }} defaultValue="" onChange={changeWay}>
           <Option key={''} value="">
             全部渠道

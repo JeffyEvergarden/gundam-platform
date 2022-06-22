@@ -36,6 +36,9 @@ const FAQClearList = (props: any) => {
   const tmpRef = useRef<any>({});
   const selectFaqModalRef = useRef<any>({});
 
+  //排序
+  const [paramsObj, setParamsObj] = useState<any>({ orderCode: '', orderType: '' });
+
   // 删除
   const deleteRow = async (row: any) => {
     let params: any = {
@@ -49,7 +52,7 @@ const FAQClearList = (props: any) => {
     }
   };
 
-  // 打开查看明细
+  // 打开查看聊天记录
   const openDetailModal = (row: any) => {
     console.log(row);
     (modalRef.current as any)?.open(row);
@@ -204,6 +207,7 @@ const FAQClearList = (props: any) => {
       title: '时间',
       dataIndex: 'createTime',
       search: false,
+      sorter: true,
       width: 200,
     },
     {
@@ -222,7 +226,7 @@ const FAQClearList = (props: any) => {
                   openDetailModal(row);
                 }}
               >
-                查询明细
+                查看聊天记录
               </Button>
 
               <Popconfirm
@@ -277,6 +281,30 @@ const FAQClearList = (props: any) => {
     }
   };
 
+  //排序
+  const tableChange = (pagination: any, filters: any, sorter: any) => {
+    let temp = { orderCode: '', orderType: '' };
+    if (sorter.columnKey === 'clarifyAdoptionRate' && sorter.order === 'ascend') {
+      temp.orderCode = '1';
+      temp.orderType = '1';
+    }
+    if (sorter.columnKey === 'clarifyAdoptionRate' && sorter.order === 'descend') {
+      temp.orderCode = '1';
+      temp.orderType = '2';
+    }
+    if (sorter.columnKey === 'createTime' && sorter.order === 'ascend') {
+      temp.orderCode = '2';
+      temp.orderType = '1';
+    }
+    if (sorter.columnKey === 'createTime' && sorter.order === 'descend') {
+      temp.orderCode = '2';
+      temp.orderType = '2';
+    }
+    let tempParamsObj = JSON.parse(JSON.stringify(paramsObj));
+    let tempObj = Object.assign(tempParamsObj, temp);
+    setParamsObj(tempObj);
+  };
+
   useEffect(() => {
     tableRef.current.reload(); // 刷新列表
   }, []);
@@ -291,11 +319,12 @@ const FAQClearList = (props: any) => {
         bordered={true}
         scroll={{ x: columns.length * 200 }}
         request={async (params: any, sort: any, filter: any) => {
-          return getTableList({ page: params.current, ...params, robotId: info.id });
+          return getTableList({ page: params.current, ...params, robotId: info.id, ...paramsObj });
         }}
         editable={{
           type: 'multiple',
         }}
+        onChange={tableChange}
         columnsState={{
           persistenceKey: 'pro-table-faq-clearlist',
           persistenceType: 'localStorage',
@@ -352,6 +381,7 @@ const FAQClearList = (props: any) => {
         onCancel={handleCancel}
         confirmLoading={opLoading}
         maskClosable={false}
+        width={600}
       >
         <div className={style['modal-page']}>
           <div className={style['modal-form']}>

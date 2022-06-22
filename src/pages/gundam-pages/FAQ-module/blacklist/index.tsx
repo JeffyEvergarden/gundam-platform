@@ -84,7 +84,7 @@ const FAQBlackList = (props: any) => {
           <>
             <div style={{ display: 'flex' }}>
               <Popconfirm
-                title="删除将不可恢复，确认删除？"
+                title="删除操作将不可恢复，继续删除请按【确定】"
                 okText="确定"
                 cancelText="取消"
                 onConfirm={() => {
@@ -205,7 +205,7 @@ const FAQBlackList = (props: any) => {
           <div className={style['modal-form']}>
             <Form form={form} labelCol={{ span: 4 }} wrapperCol={{ span: 18 }} autoComplete="off">
               <Form.Item
-                label="问题名称"
+                label="客户问题"
                 name="question"
                 rules={[
                   { required: true, message: '请输入问题名称' },
