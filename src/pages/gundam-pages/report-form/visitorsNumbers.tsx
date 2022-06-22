@@ -196,8 +196,8 @@ export default () => {
       },
       dataIndex: 'averageDialogueTurn',
       ellipsis: true,
-      render: (val: any) => {
-        return twoDecimal_f(val);
+      render: (val: any, row: any) => {
+        return row.averageDialogueTurnStr || twoDecimal_f(val);
       },
     },
   ];
@@ -254,11 +254,7 @@ export default () => {
                   totalaverageDialogueTurn =
                     totaldialogueTurn == 0 || totalvisitNum == 0
                       ? 0
-                      : Number(
-                          (totaldialogueTurn / totalvisitNum)
-                            .toString()
-                            .match(/^\d+(?:\.\d{0,2})?/),
-                        );
+                      : twoDecimal_f(totaldialogueTurn / totalvisitNum);
                 },
               );
 
