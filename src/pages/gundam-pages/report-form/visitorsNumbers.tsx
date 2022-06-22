@@ -1,5 +1,5 @@
 import config from '@/config/index';
-import { throttle } from '@/utils';
+import { throttle, twoDecimal_f } from '@/utils';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Space, Spin, Table, Typography } from 'antd';
 import moment from 'moment';
@@ -196,6 +196,9 @@ export default () => {
       },
       dataIndex: 'averageDialogueTurn',
       ellipsis: true,
+      render: (val: any) => {
+        return twoDecimal_f(val);
+      },
     },
   ];
 
@@ -251,7 +254,11 @@ export default () => {
                   totalaverageDialogueTurn =
                     totaldialogueTurn == 0 || totalvisitNum == 0
                       ? 0
-                      : (totaldialogueTurn / totalvisitNum).toFixed(2);
+                      : Number(
+                          (totaldialogueTurn / totalvisitNum)
+                            .toString()
+                            .match(/^\d+(?:\.\d{0,2})?/),
+                        );
                 },
               );
 
