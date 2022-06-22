@@ -28,6 +28,8 @@ export default (props: any) => {
   const [beginTalking, handleBeginTalking] = useState<boolean>(false); // 是否开启会话功能,必须点击 ‘开始会话’按钮
   const [clearDialogFlag, handleClearDialog] = useState<boolean>(false); // 是否清理画布
 
+  const [chartFormData, setChatFormData] = useState<any>({});
+
   const { getRobotChatData } = useChatModel();
 
   const { info, globalVarList, getGlobalValConfig } = useModel('gundam' as any, (model: any) => ({
@@ -47,6 +49,7 @@ export default (props: any) => {
     let newTime = new Date().toLocaleTimeString('en-GB');
 
     const values = await form.validateFields();
+    setChatFormData(values);
     const data = form.getFieldsValue();
     let newData = { ...data };
     let params = {
@@ -121,6 +124,7 @@ export default (props: any) => {
         <Col span={14}>
           <RobotChatText
             modalData={robotChatData}
+            formData={chartFormData}
             getEnvirmentValue={getEnvirmentValue}
             initRobotChat={initRobotChat}
             talkingFlag={beginTalking}
