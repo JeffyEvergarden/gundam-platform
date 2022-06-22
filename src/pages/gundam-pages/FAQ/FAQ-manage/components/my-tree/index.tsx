@@ -71,7 +71,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
   const { deleteLeaf } = useTreeModal();
 
   const [dataSource, setDataSource] = useState<any[]>([]);
-  const [defaultOpenTree, setDefaultOpenTree] = useState<any[]>([]);
+  const [defaultOpenTree, setDefaultOpenTree] = useState<any[]>(['0']);
 
   const location: any = useLocation();
 
@@ -327,10 +327,6 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
     console.log(dataSource);
   };
 
-  // useEffect(() => {
-  //   setDefaultOpenTree(['0']);
-  // }, []);
-
   return (
     <div className={`${style['faq-tree']} ${size === 'sm' ? style['faq-tree_sm'] : ''}`}>
       <Condition r-if={query?.test}>
@@ -341,25 +337,27 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
         </div>
       </Condition>
 
-      <Tree
-        // checkable
-        // onCheck={onCheck}
-        treeData={dataSource}
-        switcherIcon={<CaretDownOutlined />}
-        showLine
-        showIcon={false}
-        onSelect={onSelect}
-        titleRender={diyRender}
-        blockNode
-        draggable={draggable}
-        onDrop={onDrop}
-        expandedKeys={defaultOpenTree}
-        onExpand={(val: any) => {
-          console.log(val);
-          setDefaultOpenTree(val);
-        }}
-        // autoExpandParent={true}
-      ></Tree>
+      <Condition r-if={dataSource?.length}>
+        <Tree
+          // checkable
+          // onCheck={onCheck}
+          treeData={dataSource}
+          switcherIcon={<CaretDownOutlined />}
+          showLine
+          showIcon={false}
+          onSelect={onSelect}
+          titleRender={diyRender}
+          blockNode
+          draggable={draggable}
+          onDrop={onDrop}
+          expandedKeys={defaultOpenTree}
+          onExpand={(val: any) => {
+            console.log(val);
+            setDefaultOpenTree(val);
+          }}
+          // autoExpandParent={true}
+        ></Tree>
+      </Condition>
     </div>
   );
 };
