@@ -1,17 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Tree, Modal, Button, message } from 'antd';
-import { useLocation } from 'react-router';
+import Condition from '@/components/Condition';
 import {
-  EditOutlined,
+  CaretDownOutlined,
   DeleteOutlined,
+  EditOutlined,
   ExclamationCircleOutlined,
   PlusCircleOutlined,
-  UploadOutlined,
-  CaretDownOutlined,
 } from '@ant-design/icons';
-import Condition from '@/components/Condition';
-import style from './style.less';
+import { Button, message, Modal, Tree } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 import { useTreeModal } from '../../model';
+import style from './style.less';
 
 interface TreeProps {
   data: any[];
@@ -328,6 +327,10 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
     console.log(dataSource);
   };
 
+  useEffect(() => {
+    setDefaultOpenTree(['0']);
+  }, []);
+
   return (
     <div className={`${style['faq-tree']} ${size === 'sm' ? style['faq-tree_sm'] : ''}`}>
       <Condition r-if={query?.test}>
@@ -353,7 +356,6 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
         expandedKeys={defaultOpenTree}
         onExpand={(val: any) => {
           console.log(val);
-
           setDefaultOpenTree(val);
         }}
         // autoExpandParent={true}
