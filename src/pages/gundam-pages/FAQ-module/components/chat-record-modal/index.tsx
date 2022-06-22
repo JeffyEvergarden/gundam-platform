@@ -24,13 +24,17 @@ const RecordModal: React.FC<any> = (props: any) => {
   const { recordLoading, recordList, recordTotal, getSessionRecordList } = useSessionModel();
 
   const [visible, setVisible] = useState<boolean>(false);
+  const [heightLihgt, setHeightLihgt] = useState<any>('');
 
   const close = () => {
+    setHeightLihgt('');
     setVisible(false);
   };
 
   useImperativeHandle(cref, () => ({
     open: (obj: any) => {
+      console.log(obj);
+      setHeightLihgt(obj?.message);
       if (obj.id || obj.sessionId) {
         getSessionRecordList({
           sessionId: obj.sessionId || obj.id,
@@ -72,6 +76,7 @@ const RecordModal: React.FC<any> = (props: any) => {
                   </div>
                   <div
                     className={style['content']}
+                    style={{ color: heightLihgt == item.message ? 'red' : '' }}
                     dangerouslySetInnerHTML={{ __html: item.message }}
                   ></div>
                 </div>
