@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
 import { Spin } from 'antd';
 import * as echarts from 'echarts';
+import { useEffect, useRef } from 'react';
 import styles from './index.less';
 
 const LineChartPage: React.FC<any> = (props: any) => {
@@ -111,7 +111,7 @@ const LineChartPage: React.FC<any> = (props: any) => {
         legend: {
           bottom: -5 * base,
           left: 300 * base,
-          data: legendData,
+          // data: legendData,
           textStyle: {
             fontSize: 12 * base,
             lineHeight: 16 * base,
@@ -216,7 +216,7 @@ const LineChartPage: React.FC<any> = (props: any) => {
         if (item.value == 0) {
           value = '0.00%';
         } else {
-          value = item.value * 100 + '%';
+          value = (item.value * 100).toFixed(2) + '%';
         }
       } else {
         value = item.value;
