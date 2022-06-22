@@ -327,9 +327,9 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
     console.log(dataSource);
   };
 
-  useEffect(() => {
-    setDefaultOpenTree(['0']);
-  }, []);
+  // useEffect(() => {
+  //   setDefaultOpenTree(['0']);
+  // }, []);
 
   return (
     <div className={`${style['faq-tree']} ${size === 'sm' ? style['faq-tree_sm'] : ''}`}>
