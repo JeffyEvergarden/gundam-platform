@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef, Fragment } from 'react';
+import config from '@/config/index';
 import { throttle } from '@/utils';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Space, Spin, Table, Typography } from 'antd';
+import moment from 'moment';
+import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
-import { Space, Spin, Table, Tooltip, Typography } from 'antd';
 import HeadSearch from './components/headSearch';
 import LineChart from './components/lineCharts';
-import { useReportForm } from './model';
-import moment from 'moment';
-import config from '@/config/index';
-import { QuestionCircleOutlined } from '@ant-design/icons';
 import styles from './index.less';
+import { useReportForm } from './model';
 
 const { Text } = Typography;
 
@@ -69,8 +69,8 @@ export default () => {
     };
     let res = await getVisitorList(params);
     let temp: any = [];
-    let visitNum: any = { name: '访问总次数', val: [] };
-    let validVisitNum: any = { name: '有效访问总次数', val: [] };
+    let visitNum: any = { name: '访问次数', val: [] };
+    let validVisitNum: any = { name: '有效访问次数', val: [] };
     let visitorNum: any = { name: '访客人数', val: [] };
     let validVisitorNum: any = { name: '有效访客人数', val: [] };
     let dialogueTurn: any = { name: '会话次数统计', val: [] };
@@ -212,7 +212,7 @@ export default () => {
           columns={dayId}
           data={visitorList}
           color={['#6395F9', '#62DAAB', '#657798', '#F6C022', '#7666F9']}
-          legendData={['访问总次数', '有效访问总次数', '访客人数', '有效访客人数', '会话次数统计']}
+          legendData={['访问次数', '有效访问次数', '访客人数', '有效访客人数', '会话次数统计']}
           className={styles.visitorBox}
         />
       </div>

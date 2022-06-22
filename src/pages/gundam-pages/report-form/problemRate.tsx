@@ -203,7 +203,7 @@ export default () => {
     let res = await question(params);
     // 折线图数据处理
     let temp: any = [];
-    let directReplyRate: any = { name: '明确回答率', val: [], isRate: true };
+    let directReplyNum: any = { name: '明确回答数', val: [] };
     let clarifyReplyNum: any = { name: '澄清回复数', val: [] };
     let clarifyConfirmReplyNum: any = { name: '澄清确认数', val: [] };
     let recommendReplyConfirmNum: any = { name: '推荐确认数', val: [] };
@@ -211,7 +211,7 @@ export default () => {
     let matchRate: any = { name: '匹配率', val: [], isRate: true };
     let day: any = [];
     res?.data?.list?.map((item: any) => {
-      directReplyRate.val.push(toNumber(item.directReplyRate));
+      directReplyNum.val.push(item.directReplyNum);
       clarifyReplyNum.val.push(item.clarifyReplyNum);
       clarifyConfirmReplyNum.val.push(item.clarifyConfirmReplyNum);
       recommendReplyConfirmNum.val.push(item.recommendReplyConfirmNum);
@@ -220,7 +220,7 @@ export default () => {
       day.push(item.dayId);
     });
     temp.push(
-      directReplyRate,
+      directReplyNum,
       clarifyReplyNum,
       clarifyConfirmReplyNum,
       recommendReplyConfirmNum,
