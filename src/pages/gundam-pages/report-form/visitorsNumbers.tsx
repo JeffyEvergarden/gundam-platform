@@ -73,7 +73,7 @@ export default () => {
     let validVisitNum: any = { name: '有效访问次数', val: [] };
     let visitorNum: any = { name: '访客人数', val: [] };
     let validVisitorNum: any = { name: '有效访客人数', val: [] };
-    let dialogueTurn: any = { name: '会话次数统计', val: [] };
+    let dialogueTurn: any = { name: '对话轮次', val: [] };
     let day: any = [];
     setDataSource(res?.data);
     res?.data?.map((item: any) => {
@@ -215,7 +215,7 @@ export default () => {
           columns={dayId}
           data={visitorList}
           color={['#6395F9', '#62DAAB', '#657798', '#F6C022', '#7666F9']}
-          legendData={['访问次数', '有效访问次数', '访客人数', '有效访客人数', '会话次数统计']}
+          legendData={['访问次数', '有效访问次数', '访客人数', '有效访客人数', '对话轮次']}
           className={styles.visitorBox}
         />
       </div>
@@ -259,29 +259,31 @@ export default () => {
               );
 
               return (
-                <Table.Summary fixed>
-                  <Table.Summary.Row>
-                    <Table.Summary.Cell index={0}>总计</Table.Summary.Cell>
-                    <Table.Summary.Cell index={1}>
-                      <Text>{totalvisitNum}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={2}>
-                      <Text>{totalvalidVisitNum}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={3}>
-                      <Text>{totalvisitorNum}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={4}>
-                      <Text>{totalvalidVisitorNum}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={5}>
-                      <Text>{totaldialogueTurn}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={6}>
-                      <Text>{totalaverageDialogueTurn}</Text>
-                    </Table.Summary.Cell>
-                  </Table.Summary.Row>
-                </Table.Summary>
+                dataSource?.length && (
+                  <Table.Summary fixed>
+                    <Table.Summary.Row>
+                      <Table.Summary.Cell index={0}>总计</Table.Summary.Cell>
+                      <Table.Summary.Cell index={1}>
+                        <Text>{totalvisitNum}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={2}>
+                        <Text>{totalvalidVisitNum}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={3}>
+                        <Text>{totalvisitorNum}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={4}>
+                        <Text>{totalvalidVisitorNum}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={5}>
+                        <Text>{totaldialogueTurn}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={6}>
+                        <Text>{totalaverageDialogueTurn}</Text>
+                      </Table.Summary.Cell>
+                    </Table.Summary.Row>
+                  </Table.Summary>
+                )
               );
             }}
           />

@@ -347,35 +347,37 @@ export default () => {
               );
 
               return (
-                <Table.Summary fixed>
-                  <Table.Summary.Row>
-                    <Table.Summary.Cell index={0}>总计</Table.Summary.Cell>
-                    <Table.Summary.Cell index={1}>
-                      <Text>{totalclarifyReplyNum}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={2}>
-                      <Text>{totalclarifyConfirmDistinctNum}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={3}>
-                      <Text>{totalclarifyUnconfirmedReplyNum}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={4}>
-                      <Text>{totalclarifyReplyRate}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={5}>
-                      <Text>{totalrecommendReplyNum}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={6}>
-                      <Text>{totalrecommendDistinctConfirmNum}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={7}>
-                      <Text>{totalrecommendReplyUnconfirmedNum}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={8}>
-                      <Text>{totalrecommendReplyConfimRate}</Text>
-                    </Table.Summary.Cell>
-                  </Table.Summary.Row>
-                </Table.Summary>
+                dataSource?.length && (
+                  <Table.Summary fixed>
+                    <Table.Summary.Row>
+                      <Table.Summary.Cell index={0}>总计</Table.Summary.Cell>
+                      <Table.Summary.Cell index={1}>
+                        <Text>{totalclarifyReplyNum}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={2}>
+                        <Text>{totalclarifyConfirmDistinctNum}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={3}>
+                        <Text>{totalclarifyUnconfirmedReplyNum}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={4}>
+                        <Text>{totalclarifyReplyRate}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={5}>
+                        <Text>{totalrecommendReplyNum}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={6}>
+                        <Text>{totalrecommendDistinctConfirmNum}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={7}>
+                        <Text>{totalrecommendReplyUnconfirmedNum}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={8}>
+                        <Text>{totalrecommendReplyConfimRate}</Text>
+                      </Table.Summary.Cell>
+                    </Table.Summary.Row>
+                  </Table.Summary>
+                )
               );
             }}
           />
