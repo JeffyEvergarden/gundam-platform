@@ -327,7 +327,9 @@ export default () => {
                     totalclarifyConfirmDistinctNum == 0 || totalclarifyReplyNum == 0
                       ? '0.00%'
                       : twoDecimal_f(
-                          Math.floor((totalclarifyConfirmDistinctNum / totalclarifyReplyNum) * 100),
+                          Math.floor(
+                            (totalclarifyConfirmDistinctNum / totalclarifyReplyNum) * 10000,
+                          ) / 100,
                         ) + '%';
 
                   totalrecommendReplyNum += recommendReplyNum;
@@ -338,8 +340,8 @@ export default () => {
                       ? '0.00%'
                       : twoDecimal_f(
                           Math.floor(
-                            (totalrecommendDistinctConfirmNum / totalrecommendReplyNum) * 100,
-                          ),
+                            (totalrecommendDistinctConfirmNum / totalrecommendReplyNum) * 10000,
+                          ) / 100,
                         ) + '%';
                 },
               );
