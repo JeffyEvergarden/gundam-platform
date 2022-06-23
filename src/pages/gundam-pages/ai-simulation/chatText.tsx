@@ -32,6 +32,7 @@ const debounce = (fn: (...arr: any[]) => void, second: number) => {
 export default (props: any) => {
   const {
     modalData,
+    formData,
     getEnvirmentValue,
     initRobotChat,
     resetTalking,
@@ -82,6 +83,7 @@ export default (props: any) => {
         suggestNumber: 8,
         robotId: info.id,
         sessionId: modalData.sessionId,
+        formData,
       });
       if (res) {
         timeFn.current.inputVal = inputVal;

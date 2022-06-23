@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
 import { Spin } from 'antd';
 import * as echarts from 'echarts';
+import { useEffect, useRef } from 'react';
 import styles from './index.less';
 
 const PieCharts: React.FC<any> = (props: any) => {
@@ -109,7 +109,7 @@ const PieCharts: React.FC<any> = (props: any) => {
       <div class="${styles.icon}" style="background: ${params.color}"></div>
       <div class="${styles.val}">${params.name}</div>
       <div class="${styles.val}">${params.value}</div>
-      <div class="${styles.val}">${params.percent + '%'}</div>
+      <div class="${styles.val}">${params.data.percent}</div>
     </div>
 
     `;

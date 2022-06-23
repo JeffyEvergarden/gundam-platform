@@ -1,17 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Tree, Modal, Button, message } from 'antd';
-import { useLocation } from 'react-router';
+import Condition from '@/components/Condition';
 import {
-  EditOutlined,
+  CaretDownOutlined,
   DeleteOutlined,
+  EditOutlined,
   ExclamationCircleOutlined,
   PlusCircleOutlined,
-  UploadOutlined,
-  CaretDownOutlined,
 } from '@ant-design/icons';
-import Condition from '@/components/Condition';
-import style from './style.less';
+import { Button, message, Modal, Tree } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 import { useTreeModal } from '../../model';
+import style from './style.less';
 
 interface TreeProps {
   data: any[];
@@ -72,7 +71,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
   const { deleteLeaf } = useTreeModal();
 
   const [dataSource, setDataSource] = useState<any[]>([]);
-  const [defaultOpenTree, setDefaultOpenTree] = useState<any[]>([]);
+  const [defaultOpenTree, setDefaultOpenTree] = useState<any[]>(['0']);
 
   const location: any = useLocation();
 
@@ -338,26 +337,27 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
         </div>
       </Condition>
 
-      <Tree
-        // checkable
-        // onCheck={onCheck}
-        treeData={dataSource}
-        switcherIcon={<CaretDownOutlined />}
-        showLine
-        showIcon={false}
-        onSelect={onSelect}
-        titleRender={diyRender}
-        blockNode
-        draggable={draggable}
-        onDrop={onDrop}
-        expandedKeys={defaultOpenTree}
-        onExpand={(val: any) => {
-          console.log(val);
-
-          setDefaultOpenTree(val);
-        }}
-        // autoExpandParent={true}
-      ></Tree>
+      <Condition r-if={dataSource?.length}>
+        <Tree
+          // checkable
+          // onCheck={onCheck}
+          treeData={dataSource}
+          switcherIcon={<CaretDownOutlined />}
+          showLine
+          showIcon={false}
+          onSelect={onSelect}
+          titleRender={diyRender}
+          blockNode
+          draggable={draggable}
+          onDrop={onDrop}
+          expandedKeys={defaultOpenTree}
+          onExpand={(val: any) => {
+            console.log(val);
+            setDefaultOpenTree(val);
+          }}
+          // autoExpandParent={true}
+        ></Tree>
+      </Condition>
     </div>
   );
 };
