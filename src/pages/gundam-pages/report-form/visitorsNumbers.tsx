@@ -257,9 +257,8 @@ export default () => {
                       : twoDecimal_f(Math.floor((totaldialogueTurn / totalvisitNum) * 100) / 100);
                 },
               );
-
-              return (
-                dataSource?.length && (
+              if (dataSource?.length)
+                return (
                   <Table.Summary fixed>
                     <Table.Summary.Row>
                       <Table.Summary.Cell index={0}>总计</Table.Summary.Cell>
@@ -283,8 +282,7 @@ export default () => {
                       </Table.Summary.Cell>
                     </Table.Summary.Row>
                   </Table.Summary>
-                )
-              );
+                );
             }}
           />
         </Spin>
