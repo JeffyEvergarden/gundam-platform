@@ -261,7 +261,7 @@ export default () => {
               return (
                 <Table.Summary fixed>
                   <Table.Summary.Row>
-                    <Table.Summary.Cell index={0}>合计</Table.Summary.Cell>
+                    <Table.Summary.Cell index={0}>总计</Table.Summary.Cell>
                     <Table.Summary.Cell index={1}>
                       <Text>{totalvisitNum}</Text>
                     </Table.Summary.Cell>
