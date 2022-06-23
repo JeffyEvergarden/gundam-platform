@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef, Fragment } from 'react';
-import { throttle, toNumber } from '@/utils';
+import config from '@/config/index';
+import { throttle, toNumber, twoDecimal_f } from '@/utils';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Space, Spin, Table, Typography } from 'antd';
+import moment from 'moment';
+import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
-import { Space, Table, Tooltip, Typography, Spin } from 'antd';
 import HeadSearch from './components/headSearch';
 import LineChart from './components/lineCharts';
-import { useReportForm } from './model';
-import moment from 'moment';
-import config from '@/config/index';
-import { QuestionCircleOutlined } from '@ant-design/icons';
 import styles from './index.less';
+import { useReportForm } from './model';
 
 const { Text } = Typography;
 
@@ -326,8 +326,11 @@ export default () => {
                   totalclarifyReplyRate =
                     totalclarifyConfirmDistinctNum == 0 || totalclarifyReplyNum == 0
                       ? '0.00%'
-                      : ((totalclarifyConfirmDistinctNum / totalclarifyReplyNum) * 100).toFixed(2) +
-                        '%';
+                      : twoDecimal_f(
+                          Math.floor(
+                            (totalclarifyConfirmDistinctNum / totalclarifyReplyNum) * 100,
+                          ) / 100,
+                        ) + '%';
 
                   totalrecommendReplyNum += recommendReplyNum;
                   totalrecommendDistinctConfirmNum += recommendDistinctConfirmNum;
@@ -335,8 +338,10 @@ export default () => {
                   totalrecommendReplyConfimRate =
                     totalrecommendDistinctConfirmNum == 0 || totalrecommendReplyNum == 0
                       ? '0.00%'
-                      : ((totalrecommendDistinctConfirmNum / totalrecommendReplyNum) * 100).toFixed(
-                          2,
+                      : twoDecimal_f(
+                          Math.floor(
+                            (totalrecommendDistinctConfirmNum / totalrecommendReplyNum) * 100,
+                          ) / 100,
                         ) + '%';
                 },
               );
