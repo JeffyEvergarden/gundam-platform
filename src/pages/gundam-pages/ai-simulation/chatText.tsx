@@ -200,8 +200,6 @@ export default (props: any) => {
       return;
     }
     setLoading(true);
-    setFocus(false);
-    setAssociationList([]);
     let data = [...dialogList];
     let newDay = new Date().toLocaleDateString();
     let occurDay = newDay.replace(/\//g, '-');
@@ -241,6 +239,8 @@ export default (props: any) => {
         },
       );
       setTextMessage('');
+      setFocus(false);
+      setAssociationList([]);
       setChatEvent('dialogue');
     } else {
       data.push({
