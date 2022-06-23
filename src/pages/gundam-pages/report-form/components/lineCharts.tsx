@@ -216,7 +216,7 @@ const LineChartPage: React.FC<any> = (props: any) => {
         if (item.value == 0) {
           value = '0.00%';
         } else {
-          value = Number((item.value * 100).toFixed(2)) + '%';
+          value = (item.value * 100).toFixed(2) + '%';
         }
       } else {
         value = item.value;
