@@ -1,7 +1,7 @@
 import robotPhoto from '@/asset/image/headMan.png';
 import customerPhoto from '@/asset/image/headWoman.png';
 import { Button, Input, message, Modal, Popover, Radio, Space } from 'antd';
-import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { useChatModel } from './model';
 import styles from './style.less';
@@ -31,6 +31,7 @@ const debounce = (fn: (...arr: any[]) => void, second: number) => {
 
 export default (props: any) => {
   const {
+    cref,
     modalData,
     formData,
     getEnvirmentValue,
@@ -49,6 +50,7 @@ export default (props: any) => {
 
   const [nluInfo, setNluInfo] = useState<string>('');
   const [visible, setVisible] = useState<boolean>(false);
+  const [chatVisible, setChatVisible] = useState<boolean>(true);
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -71,9 +73,9 @@ export default (props: any) => {
   const getAssociation = useMemo(() => {
     const fn: any = async (inputVal: any) => {
       // 和上次结果一样
-      if (timeFn.current.inputVal === inputVal) {
-        return;
-      }
+      // if (timeFn.current.inputVal === inputVal) {
+      //   return;
+      // }
       if (inputVal.length >= 20) {
         return;
       }
@@ -94,13 +96,13 @@ export default (props: any) => {
   // 弹窗显示
   const PopoverVisible = useMemo(() => {
     // console.log(opLoading, chatEvent, associationList.length);
-    if (chatEvent === 'dialogue' && associationList.length > 0 && focus) {
+    if (chatEvent === 'dialogue' && associationList.length > 0 && focus && chatVisible) {
       // console.log('PopoverVisible 显示');
       return true;
     } else {
       return false;
     }
-  }, [opLoading, chatEvent, associationList, focus]);
+  }, [opLoading, chatEvent, associationList, focus, chatVisible]);
 
   const boxRef: any = useRef<any>(null);
 
@@ -198,6 +200,7 @@ export default (props: any) => {
     }
     setLoading(true);
     setFocus(false);
+    setAssociationList([]);
     let data = [...dialogList];
     let newDay = new Date().toLocaleDateString();
     let occurDay = newDay.replace(/\//g, '-');
@@ -372,6 +375,10 @@ export default (props: any) => {
     </div>
   );
 
+  useImperativeHandle(cref, () => ({
+    setChatVisible,
+  }));
+
   useEffect(() => {
     if (toolTipRef.current) {
       toolTipRef.current.scrollTop = 0;
@@ -481,10 +488,10 @@ export default (props: any) => {
                 setFocus(true);
               }}
               onBlur={() => {
-                setTimeout(() => {
-                  setFocus(false);
-                  setAssociationList([]);
-                }, 300);
+                // setTimeout(() => {
+                // setFocus(false);
+                // setAssociationList([]);
+                // }, 300);
               }}
             />
 

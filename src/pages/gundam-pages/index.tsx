@@ -1,23 +1,17 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { useModel, history, useLocation } from 'umi';
-import { message, Button, Space, Modal, Badge, Tooltip } from 'antd';
-import { LoginOutlined } from '@ant-design/icons';
 import hoverRobot from '@/asset/image/hoverRobot.png';
+import { LoginOutlined } from '@ant-design/icons';
+import { message, Modal } from 'antd';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { history, useLocation, useModel } from 'umi';
 import RobotChatBox from './ai-simulation';
 
-import ProLayout, {
-  PageContainer,
-  RouteContext,
-  RouteContextType,
-  ProBreadcrumb,
-} from '@ant-design/pro-layout';
+import ProLayout, { RouteContext, RouteContextType } from '@ant-design/pro-layout';
 
 import RightContent from '@/components/RightContent';
+import { useOpModel } from '../gundam/management/model';
+import { deepClone } from './FAQ/question-board/model/utils';
 import routes from './routes';
 import style from './style.less';
-import { useOpModel, usePublishModel } from '../gundam/management/model';
-import Condition from '@/components/Condition';
-import { deepClone } from './FAQ/question-board/model/utils';
 
 // 菜单过滤
 const processRoute = (info: any = {}) => {
@@ -46,6 +40,8 @@ const MachinePagesHome: React.FC = (props: any) => {
   const [chatVisible, handleChatVisible] = useState<boolean>(false);
 
   const [pathname, setPathname] = useState(location.pathname);
+
+  const RobotChatBoxRef = useRef<any>();
 
   const [finish, setFinish] = useState<boolean>(false);
   const { info, setInfo, globalVarList, setGlobalVarList } = useModel(
@@ -95,6 +91,12 @@ const MachinePagesHome: React.FC = (props: any) => {
     _getInfo({ id: robotId });
   };
 
+  const setChatVis = (flag: any) => {
+    console.log(flag);
+
+    RobotChatBoxRef?.current?.setChatVisible(flag);
+  };
+
   useEffect(() => {
     getLastInfo();
   }, []);
@@ -123,6 +125,7 @@ const MachinePagesHome: React.FC = (props: any) => {
   const robotChatComp = () => {
     getLastInfo();
     handleChatVisible(true);
+    setChatVis(true);
   };
 
   return (
@@ -141,6 +144,7 @@ const MachinePagesHome: React.FC = (props: any) => {
       rightContentRender={() => <RightContent />}
       onPageChange={() => {
         handleChatVisible(false);
+        setChatVis(false);
       }}
       menuItemRender={(item: any, dom: any) => (
         <a
@@ -170,9 +174,16 @@ const MachinePagesHome: React.FC = (props: any) => {
                   title={info.robotName}
                   footer={null}
                   width={1000}
-                  onCancel={() => handleChatVisible(false)}
+                  onCancel={() => {
+                    handleChatVisible(false);
+                    setChatVis(false);
+                  }}
                 >
-                  <RobotChatBox robotInfo={globalVarList} chatVisible={chatVisible} />
+                  <RobotChatBox
+                    cref={RobotChatBoxRef}
+                    robotInfo={globalVarList}
+                    chatVisible={chatVisible}
+                  />
                 </Modal>
               </>
             )
