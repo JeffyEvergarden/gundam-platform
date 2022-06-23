@@ -88,6 +88,7 @@ export default (props: any) => {
         formData,
       });
       if (res) {
+        setFocus(true);
         timeFn.current.inputVal = inputVal;
       }
     };
