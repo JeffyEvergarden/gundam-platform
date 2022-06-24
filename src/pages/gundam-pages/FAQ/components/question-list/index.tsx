@@ -274,16 +274,16 @@ const QuestionList: React.FC<any> = (props: any) => {
       queryType: queryType,
       searchText: searchText,
       recycle: isRecycle,
-      faqTypeId: selectTree,
+      faqTypeId: selectTree == '0' ? null : selectTree,
       ...heightSelect,
       ...obj,
     };
     // console.log(selectTree);
 
     console.log(params);
-    if (isRecycle == 0 && !params.faqTypeId) {
-      return;
-    }
+    // if (isRecycle == 0 && !params.faqTypeId) {
+    //   return;
+    // }
 
     setEdit([]);
 
