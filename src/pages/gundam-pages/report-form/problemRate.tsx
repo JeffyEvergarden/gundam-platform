@@ -57,6 +57,7 @@ export default () => {
   const [paramsObj, setParamsObj] = useState<any>({});
   const [modalData, setModalData] = useState<any>({});
   const [visible, setVisible] = useState<boolean>(false);
+  const [dataSource, setDataSource] = useState<any>([]);
 
   const choseTime = (begin: string, end: string, code: string) => {
     setParamsObj({ begin: begin, end: end, code: code });
@@ -201,6 +202,7 @@ export default () => {
       channelCode: payload.code,
     };
     let res = await question(params);
+    setDataSource(res?.data?.list);
     // 折线图数据处理
     let temp: any = [];
     let directReplyNum: any = { name: '明确回答数', val: [] };
@@ -352,6 +354,7 @@ export default () => {
             base={base}
             sumReplyNum={sumReplyNum}
             data={pieList}
+            dataSource={dataSource}
             loading={tableLoading}
             title={'问题回答比例'}
             color={['#6395F9', '#62DAAB', '#657798', '#F6C022', '#7666F9']}
@@ -365,6 +368,7 @@ export default () => {
             loading={tableLoading}
             title={'问题匹配率统计'}
             base={base}
+            dataSource={dataSource}
             columns={dayId}
             data={lineList}
             color={['#6395F9', '#62DAAB', '#657798', '#F6C022', '#7666F9', '#B382D6']}

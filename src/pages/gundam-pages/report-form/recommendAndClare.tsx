@@ -262,6 +262,7 @@ export default () => {
           loading={tableLoading}
           title={''}
           base={base}
+          dataSource={dataSource}
           columns={dayId}
           data={lineList}
           color={[
