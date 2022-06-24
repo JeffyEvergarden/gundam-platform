@@ -383,6 +383,8 @@ const SelectorModal: React.FC<any> = (props: any) => {
       }
       setCurrent2(1);
 
+      onSelect(['0']);
+
       // 显示
       setVisible(true);
     },
@@ -494,7 +496,6 @@ const SelectorModal: React.FC<any> = (props: any) => {
                   data={treeData}
                   edit={false}
                   size="sm"
-                  selectAll={true}
                 />
               </div>
 

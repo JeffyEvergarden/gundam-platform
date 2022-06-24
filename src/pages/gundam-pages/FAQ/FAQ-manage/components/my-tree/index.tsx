@@ -25,7 +25,6 @@ interface TreeProps {
   selectTree?: any;
   leafClickOnly?: boolean;
   getTree?: any;
-  selectAll: any;
 }
 
 const { DirectoryTree } = Tree;
@@ -67,7 +66,6 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
     size,
     leafClickOnly = true,
     getTree,
-    selectAll = false,
   } = props;
 
   const { deleteLeaf } = useTreeModal();
@@ -88,9 +86,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
     let node = opt.node;
     if (leafClickOnly) {
       if (node.key === '0') {
-        if (selectAll) {
-          onChange?.(key, opt);
-        }
+        onChange?.(key, opt);
         return;
       }
       if (!node.children || node.children?.length === 0) {
