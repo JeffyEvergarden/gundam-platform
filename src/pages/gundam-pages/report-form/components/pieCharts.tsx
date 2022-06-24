@@ -15,6 +15,7 @@ const PieCharts: React.FC<any> = (props: any) => {
     legendData,
     columns,
     sumReplyNum,
+    dataSource,
   } = props;
 
   let first = false;
@@ -41,6 +42,34 @@ const PieCharts: React.FC<any> = (props: any) => {
   };
 
   const initOptions = (data: any) => {
+    let Title;
+    if (dataSource.length && dataSource.length > 0) {
+      Title = {
+        show: title ? true : false,
+        left: 0,
+        top: 0,
+        text: title,
+        textStyle: {
+          color: 'rgba(0, 0, 0, 0.85)',
+          fontSize: 16 * base,
+          lineHeight: 16,
+          fontWeight: '400',
+        },
+      };
+    } else {
+      Title = {
+        show: true,
+        left: 'center',
+        top: 'center',
+        text: '暂无数据',
+        textStyle: {
+          color: 'rgba(0, 0, 0, 0.85)',
+          fontSize: 16 * base,
+          lineHeight: 16,
+          fontWeight: '400',
+        },
+      };
+    }
     return Object.assign(
       {},
       {
@@ -48,18 +77,7 @@ const PieCharts: React.FC<any> = (props: any) => {
         textStyle: {
           fontFamily: 'PingFang SC, sans-serif, Microsoft YaHei, SimHei',
         },
-        title: {
-          show: true,
-          top: 0,
-          left: 48 * base,
-          text: title,
-          textStyle: {
-            color: 'rgba(0, 0, 0, 0.85)',
-            fontSize: 16 * base,
-            lineHeight: 16,
-            fontWeight: '400',
-          },
-        },
+        title: Title,
         legend: {
           bottom: -5 * base,
           left: 58 * base,
@@ -89,7 +107,7 @@ const PieCharts: React.FC<any> = (props: any) => {
             avoidLabelOverlap: false,
             center: ['50%', '50%'],
             label: {
-              show: true,
+              show: dataSource.length && dataSource.length > 0 ? true : false,
               position: 'center',
               fontSize: '24',
               formatter: ['回答总数', `${sumReplyNum}`].join('\n'),

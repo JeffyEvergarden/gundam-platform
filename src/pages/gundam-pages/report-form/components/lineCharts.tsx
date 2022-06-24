@@ -14,6 +14,7 @@ const LineChartPage: React.FC<any> = (props: any) => {
     color,
     legendData,
     columns,
+    dataSource,
   } = props;
 
   base = isNaN(base) ? 1 : base;
@@ -89,6 +90,34 @@ const LineChartPage: React.FC<any> = (props: any) => {
   };
 
   const initOptions = (columns: any[], data: any[]) => {
+    let Title;
+    if (dataSource.length && dataSource.length > 0) {
+      Title = {
+        show: title ? true : false,
+        left: 0,
+        top: 0,
+        text: title,
+        textStyle: {
+          color: 'rgba(0, 0, 0, 0.85)',
+          fontSize: 16 * base,
+          lineHeight: 16,
+          fontWeight: '400',
+        },
+      };
+    } else {
+      Title = {
+        show: true,
+        left: 'center',
+        top: 'center',
+        text: '暂无数据',
+        textStyle: {
+          color: 'rgba(0, 0, 0, 0.85)',
+          fontSize: 16 * base,
+          lineHeight: 16,
+          fontWeight: '400',
+        },
+      };
+    }
     return Object.assign(
       {},
       {
@@ -96,18 +125,7 @@ const LineChartPage: React.FC<any> = (props: any) => {
         textStyle: {
           fontFamily: 'PingFang SC, sans-serif, Microsoft YaHei, SimHei',
         },
-        title: {
-          show: title ? true : false,
-          top: 0,
-          left: 0,
-          text: title,
-          textStyle: {
-            color: 'rgba(0, 0, 0, 0.85)',
-            fontSize: 16 * base,
-            lineHeight: 16,
-            fontWeight: '400',
-          },
-        },
+        title: Title,
         legend: {
           bottom: -5 * base,
           left: 300 * base,

@@ -211,6 +211,7 @@ export default () => {
           id={'visitorNumber'}
           loading={tableLoading}
           title={''}
+          dataSource={dataSource}
           base={base}
           columns={dayId}
           data={visitorList}
