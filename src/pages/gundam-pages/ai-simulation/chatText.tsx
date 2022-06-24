@@ -144,6 +144,16 @@ export default (props: any) => {
     setVisible(true);
   };
 
+  const img = (text: any) => {
+    let reg = /\$\{getResoureUrl\}/g;
+    const reg1 = /^\<\w+\>/;
+    const reg2 = /\<\/\w+\>$/;
+    if (reg1.test(text) && reg2.test(text)) {
+      return text.replace(reg, '/aichat/robot/file/getFile');
+    }
+    return text;
+  };
+
   // 机器人回复内容
   const robotResponse = async (data?: any) => {
     console.log('info', info);
@@ -151,6 +161,7 @@ export default (props: any) => {
     let newDay = new Date().toLocaleDateString();
     let occurDay = newDay.replace(/\//g, '-');
     let newTime = new Date().toLocaleTimeString('en-GB');
+
     let params = {
       requestId: modalData.requestId,
       occurTime: occurDay + ' ' + newTime,
@@ -175,7 +186,7 @@ export default (props: any) => {
       let newData = [...dialogList];
       newData.push({
         type: 'robot',
-        askText: res?.data?.askText,
+        askText: img(res?.data?.askText),
         message: res?.data?.actionMessage,
         recommendQuestion: res?.data?.recommendQuestion,
       });
@@ -239,7 +250,7 @@ export default (props: any) => {
         },
         {
           type: 'robot',
-          askText: res?.data?.askText,
+          askText: img(res?.data?.askText),
           message: res?.data?.actionMessage,
           recommendQuestion: res?.data?.recommendQuestion,
         },
@@ -320,7 +331,7 @@ export default (props: any) => {
         },
         {
           type: 'robot',
-          askText: res?.data?.askText,
+          askText: img(res?.data?.askText),
           message: res?.data?.actionMessage,
           recommendQuestion: res?.data?.recommendQuestion,
         },
