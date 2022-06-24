@@ -232,7 +232,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       page: 1,
       pageSize: 10,
       robotId: info.id,
-      faqTypeId: val[0],
+      faqTypeId: val[0] == '0' ? '' : val[0],
       queryType: 0,
       searchText: searchText1,
     });
@@ -494,6 +494,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
                   data={treeData}
                   edit={false}
                   size="sm"
+                  selectAll={true}
                 />
               </div>
 

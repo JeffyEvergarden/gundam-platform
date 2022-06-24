@@ -97,7 +97,13 @@ export default (props: any) => {
   // 弹窗显示
   const PopoverVisible = useMemo(() => {
     // console.log(opLoading, chatEvent, associationList.length);
-    if (chatEvent === 'dialogue' && associationList.length > 0 && focus && chatVisible) {
+    if (
+      chatEvent === 'dialogue' &&
+      associationList.length > 0 &&
+      focus &&
+      chatVisible &&
+      textMessage
+    ) {
       // console.log('PopoverVisible 显示');
       return true;
     } else {
