@@ -149,7 +149,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
         pageSize: 10,
         queryType: 0,
         robotId: info.id,
-        faqTypeId: classType,
+        faqTypeId: classType == '0' ? null : classType,
         searchText: searchText1,
       });
     } else {
@@ -186,7 +186,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       pageSize: 10,
       robotId: info.id,
       queryType: 0,
-      faqTypeId: classType,
+      faqTypeId: classType == '0' ? null : classType,
       searchText: searchText1,
     });
   };
@@ -526,7 +526,12 @@ const SelectorModal: React.FC<any> = (props: any) => {
                       rowExpandable: (record: any) => record?.answerList?.length > 0,
                     }}
                     size="small"
-                    pagination={{ current: current1, onChange: onChange1, total: totalSize }}
+                    pagination={{
+                      current: current1,
+                      onChange: onChange1,
+                      total: totalSize,
+                      showSizeChanger: false,
+                    }}
                     dataSource={faqList}
                     columns={columns1}
                     rowKey="id"
