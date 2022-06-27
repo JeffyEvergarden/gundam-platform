@@ -76,7 +76,7 @@ const RecordModal: React.FC<any> = (props: any) => {
                   </div>
                   <div
                     className={style['content']}
-                    style={{ color: heightLihgt == item.message ? '#1890FF' : '' }}
+                    style={{ color: heightLihgt == item.message ? 'red' : '' }}
                     dangerouslySetInnerHTML={{ __html: item.message }}
                   ></div>
                 </div>
