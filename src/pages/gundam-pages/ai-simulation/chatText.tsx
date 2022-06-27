@@ -244,7 +244,7 @@ export default (props: any) => {
       data.push(
         {
           type: 'customer',
-          message: text || textMessage,
+          message: repEnter(text || textMessage),
           askKey: res?.data?.askKey,
           nluInfo: res?.data?.nluInfo,
         },
@@ -262,7 +262,7 @@ export default (props: any) => {
     } else {
       data.push({
         type: 'customer',
-        message: text || textMessage,
+        message: repEnter(text || textMessage),
         askKey: res?.data?.askKey,
         nluInfo: res?.data?.nluInfo,
       });
@@ -274,6 +274,11 @@ export default (props: any) => {
     // let a = number;
     // a++;
     // setNumber(a);
+  };
+
+  //替换回车
+  const repEnter = (text: any) => {
+    return text.replace('/\\n/g', '<br/>');
   };
 
   const clearDialog = () => {
@@ -430,7 +435,11 @@ export default (props: any) => {
                     <div className={styles['customer-part']}>
                       <img className={styles['head-customer']} alt="customer" src={customerPhoto} />
                       <div className={styles['wordsbox']}>
-                        <div className={styles['words']}>{item.message}</div>
+                        <div
+                          className={styles['words']}
+                          style={{ whiteSpace: 'pre-wrap' }}
+                          dangerouslySetInnerHTML={{ __html: item?.message }}
+                        ></div>
                         <div className={styles['words-type']}>
                           <Space>
                             <span>{item.askKey}</span>
@@ -495,9 +504,9 @@ export default (props: any) => {
               value={textMessage}
               className={styles['text-area']}
               autoSize={{ minRows: 6, maxRows: 6 }}
-              onPressEnter={inputChange}
+              onPressEnter={onKeyDown}
               // handleKeyDown={()=>{}}
-              onKeyDown={onKeyDown}
+              // onKeyDown={onKeyDown}
               onChange={inputChange}
               maxLength={200}
               placeholder={'请输入文本，按回车键发送'}
