@@ -11,8 +11,8 @@ export default [
         name: '用户列表',
       },
       {
-        path: '/users/authManagement',
-        component: './users/auth-management',
+        path: '/users/roleManagement*',
+        component: './users/role-management/home',
         name: '角色列表',
       },
     ],

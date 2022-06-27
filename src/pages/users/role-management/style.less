@@ -1,0 +1,30 @@
+.machine-page {
+  width: 100%;
+  padding: 24px;
+  background: #fff;
+}
+
+.icon {
+  max-width: 100px;
+  max-height: 80px;
+}
+
+.auth-page {
+  display: flex;
+  height: calc(100vh - 170px);
+  padding: 16px;
+  overflow: auto;
+  background: #fff;
+
+  :global {
+    .ant-select-tree-title {
+      color: rgba(0, 0, 0, 0.3);
+    }
+
+    .ant-select-tree-switcher-noop + span {
+      .ant-select-tree-title {
+        color: #333 !important;
+      }
+    }
+  }
+}

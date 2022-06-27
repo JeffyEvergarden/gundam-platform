@@ -71,9 +71,9 @@ export default (props: any) => {
   const getAssociation = useMemo(() => {
     const fn: any = async (inputVal: any) => {
       // 和上次结果一样
-      if (timeFn.current.inputVal === inputVal) {
-        return;
-      }
+      // if (timeFn.current.inputVal === inputVal) {
+      //   return;
+      // }
       if (inputVal.length >= 20) {
         return;
       }
@@ -237,6 +237,7 @@ export default (props: any) => {
         },
       );
       setTextMessage('');
+      setAssociationList([]);
       setChatEvent('dialogue');
     } else {
       data.push({
@@ -249,10 +250,6 @@ export default (props: any) => {
     }
     setLoading(false);
     setDialogList(data);
-
-    // let a = number;
-    // a++;
-    // setNumber(a);
   };
 
   const clearDialog = () => {

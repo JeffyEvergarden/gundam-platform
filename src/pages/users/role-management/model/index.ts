@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { message } from 'antd';
 
-import { getMachineList } from './api';
+import { getRoleList } from './api';
+import config from '@/config';
 
-export const successCode = 100;
+export const successCode = config.successCode;
 
-// 菜单管理的表格数据
 export const useTableModel = () => {
   const [tableList, setTableList] = useState<any[]>([]);
   const [tableLoading, setTableLoading] = useState<boolean>(false);
@@ -13,21 +13,22 @@ export const useTableModel = () => {
 
   const getTableList = async (params?: any) => {
     setTableLoading(true);
-    let res: any = await getMachineList(params);
+    let res: any = await getRoleList(params);
     setTableLoading(false);
-    let { data = [] } = res;
-    if (!Array.isArray(data)) {
-      data = [];
+    let { list = [], totalPage, totalSize } = res.data || {};
+    if (!Array.isArray(list)) {
+      list = [];
     }
-    data = data.map((item: any, index: number) => {
+    list = list.map((item: any, index: number) => {
       return {
         ...item,
         title: item.name,
         index,
       };
     });
-    // console.log('tableList', data);
-    setTableList(data || []);
+    // console.log('tableList', datas);
+    setTableList(list || []);
+    return { data: list, total: totalPage };
   };
 
   return {
