@@ -405,6 +405,7 @@ export default () => {
           }}
         />
       </div>
+
       <Modal
         visible={visible}
         onCancel={onCancel}
@@ -425,8 +426,8 @@ export default () => {
             return rejectTable(params);
           }}
         />
+        <ChatRecordModal cref={chatRecordModalRef} />
       </Modal>
-      <ChatRecordModal cref={chatRecordModalRef} />
     </div>
   );
 };
