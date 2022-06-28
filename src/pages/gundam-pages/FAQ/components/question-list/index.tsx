@@ -267,6 +267,12 @@ const QuestionList: React.FC<any> = (props: any) => {
   const CurrentPage = async (obj?: any) => {
     // let selectTree = sessionStorage.getItem('selectTree');
     // console.log(obj);
+    if (!obj?.page) {
+      setCurrent(1);
+    }
+    if (!obj?.pageSize) {
+      setPageSize(10);
+    }
     let params = {
       page: 1,
       pageSize: 10,
