@@ -181,6 +181,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     if (!classType) {
       return;
     }
+    setCurrent1(1);
     getFaqList({
       page: 1,
       pageSize: 10,
