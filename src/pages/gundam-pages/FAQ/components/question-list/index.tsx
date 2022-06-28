@@ -268,8 +268,8 @@ const QuestionList: React.FC<any> = (props: any) => {
     // let selectTree = sessionStorage.getItem('selectTree');
     // console.log(obj);
     let params = {
-      page: 1,
-      pageSize: 10,
+      page: current,
+      pageSize: pageSize,
       robotId: info.id,
       queryType: queryType,
       searchText: searchText,
@@ -390,6 +390,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                               </Form.Item>
                             </Form>
                           )}
+                          {/* 不在回收站 */}
                           {!hasCheckbox && !edit[index] && (
                             <Button
                               type="link"
