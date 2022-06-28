@@ -36,6 +36,12 @@ const AwaitList: React.FC<any> = (props: any) => {
 
   //获取列表
   const CurrentPage = async (obj?: any) => {
+    if (!obj?.page) {
+      setCurrent(1);
+    }
+    if (!obj?.pageSize) {
+      setPageSize(10);
+    }
     let params = {
       page: 1,
       pageSize: 10,
@@ -61,8 +67,12 @@ const AwaitList: React.FC<any> = (props: any) => {
   const passBtn = async (row: any) => {
     let res: any = await approvalPass({ id: row.id });
     if (res) {
-      CurrentPage();
+      CurrentPage({ page: current, pageSize });
     }
+  };
+
+  const refreshList = () => {
+    CurrentPage({ page: current, pageSize });
   };
 
   useEffect(() => {
@@ -330,7 +340,7 @@ const AwaitList: React.FC<any> = (props: any) => {
       </div>
       <History cref={historyRef} />
       <AnswerView cref={answerViewRef} />
-      <ReasonModal cref={ReasonModalRef} refresh={CurrentPage} />
+      <ReasonModal cref={ReasonModalRef} refresh={refreshList} />
     </div>
   );
 };
