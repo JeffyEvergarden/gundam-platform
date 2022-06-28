@@ -56,6 +56,7 @@ const AwaitList: React.FC<any> = (props: any) => {
     let res: any = pageType == 'reviewed' ? await getList(params) : await getPList(params);
     console.log(res);
     if (res) {
+      //分页大于2时删除当前页最后一条数据返回前一页
       if (res.total > 0) {
         if (params?.page > Math.ceil(res?.total / params?.pageSize)) {
           let num: number = current - 1 <= 1 ? 1 : current - 1;
@@ -63,14 +64,6 @@ const AwaitList: React.FC<any> = (props: any) => {
           CurrentPage({ page: num, pageSize });
         }
       }
-      // if (params.page != 1) {
-      //   if (!res?.data?.list?.length) {
-      //     let num = current - 1 <= 1 ? 1 : current - 1;
-      //     setCurrent(num);
-      //     CurrentPage({ page: num, pageSize });
-      //     return;
-      //   }
-      // }
     }
 
     setTotal(res?.total || 0);

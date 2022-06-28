@@ -64,11 +64,11 @@ const RecordModal: React.FC<any> = (props: any) => {
     <Drawer
       className={style['drawer']}
       width={850}
-      title={'会话记录'}
+      title={`会话记录（${heightLihgt?.sessionId}）`}
       visible={visible}
       onClose={close}
       destroyOnClose={true}
-      maskClosable={false}
+      // maskClosable={false}
     >
       <div id="scrollableDiv" className={style['record-bg']}>
         {recordList.map((item: any, index: number) => {
