@@ -295,6 +295,7 @@ export default () => {
             columns={columns}
             dataSource={dataSource}
             pagination={false}
+            bordered
             sticky={true}
             scroll={{ y: 270 }}
             size={'small'}

@@ -389,6 +389,7 @@ export default () => {
           rowKey={(record: any) => record.dayId}
           headerTitle={false}
           toolBarRender={false}
+          bordered
           actionRef={actionRef}
           pagination={{
             pageSize: 10,
@@ -417,6 +418,7 @@ export default () => {
           rowKey={(record: any) => record.dayId}
           headerTitle={false}
           toolBarRender={false}
+          bordered
           pagination={{
             pageSize: 10,
           }}

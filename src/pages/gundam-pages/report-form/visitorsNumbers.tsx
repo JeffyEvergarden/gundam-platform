@@ -224,6 +224,7 @@ export default () => {
         <Spin spinning={tableLoading}>
           <Table
             rowKey={(record: any) => record.dayId}
+            bordered
             columns={columns}
             dataSource={dataSource}
             pagination={false}

@@ -177,6 +177,7 @@ export default () => {
           rowKey={'id'}
           headerTitle={false}
           toolBarRender={false}
+          bordered
           actionRef={actionRef}
           pagination={{
             pageSize: 10,
