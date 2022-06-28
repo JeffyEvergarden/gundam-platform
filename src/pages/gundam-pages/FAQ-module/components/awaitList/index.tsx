@@ -55,6 +55,14 @@ const AwaitList: React.FC<any> = (props: any) => {
 
     let res: any = pageType == 'reviewed' ? await getList(params) : await getPList(params);
     console.log(res);
+    if (params.page != 1) {
+      if (!res?.data?.list?.length) {
+        let num = current - 1;
+        setCurrent(num);
+        CurrentPage({ page: num, pageSize });
+        return;
+      }
+    }
     setTotal(res?.total || 0);
     return res;
   };

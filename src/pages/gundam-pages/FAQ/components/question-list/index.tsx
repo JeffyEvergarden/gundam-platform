@@ -294,6 +294,15 @@ const QuestionList: React.FC<any> = (props: any) => {
     setEdit([]);
 
     let res: any = await getFaqList(params);
+    if (params.page != 1) {
+      if (!res?.data?.list?.length) {
+        let num = current - 1;
+        setCurrent(num);
+        CurrentPage({ page: num, pageSize });
+        return;
+      }
+    }
+
     // console.log(res);
     getCreateUser(info.id, isRecycle);
 
