@@ -275,7 +275,7 @@ const QuestionList: React.FC<any> = (props: any) => {
     }
     let params = {
       page: 1,
-      pageSize: pageSize,
+      pageSize: 10,
       robotId: info.id,
       queryType: queryType,
       searchText: searchText,
