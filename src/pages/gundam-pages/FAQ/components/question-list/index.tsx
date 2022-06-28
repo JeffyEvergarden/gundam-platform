@@ -268,8 +268,8 @@ const QuestionList: React.FC<any> = (props: any) => {
     // let selectTree = sessionStorage.getItem('selectTree');
     // console.log(obj);
     let params = {
-      page: current,
-      pageSize: pageSize,
+      page: 1,
+      pageSize: 10,
       robotId: info.id,
       queryType: queryType,
       searchText: searchText,
@@ -310,11 +310,11 @@ const QuestionList: React.FC<any> = (props: any) => {
     await editQuestion(reqData).then((res) => {
       if (res.resultCode == config.successCode) {
         message.success(res.resultDesc);
-        CurrentPage();
+        CurrentPage({ page: current, pageSize });
         return true;
       } else {
         message.error(res.resultDesc);
-        CurrentPage();
+        CurrentPage({ page: current, pageSize });
         return false;
       }
     });
