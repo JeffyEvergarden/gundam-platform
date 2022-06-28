@@ -117,7 +117,7 @@ const QuestionList: React.FC<any> = (props: any) => {
         } else {
           message.error(res.resultDesc);
         }
-        CurrentPage();
+        CurrentPage({ page: current, pageSize });
       });
     } else if (isRecycle == 0) {
       await isAdd({ faqId: val.id, robotId: info.id }).then(async (res) => {
@@ -129,7 +129,7 @@ const QuestionList: React.FC<any> = (props: any) => {
               if (res.resultCode == config.successCode) {
                 message.success(res?.resultDesc || '');
               }
-              CurrentPage();
+              CurrentPage({ page: current, pageSize });
             });
           } else {
             message.warning('已有在途待处理的答案，不可编辑/新增');
@@ -252,7 +252,7 @@ const QuestionList: React.FC<any> = (props: any) => {
             } else {
               message.error(res.resultDesc);
             }
-            CurrentPage();
+            CurrentPage({ page: current, pageSize });
           });
         } else {
           message.warning('已有在途待处理的答案，不可编辑/新增');
