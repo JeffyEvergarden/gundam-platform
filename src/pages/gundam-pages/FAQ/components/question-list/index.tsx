@@ -275,7 +275,7 @@ const QuestionList: React.FC<any> = (props: any) => {
     }
     let params = {
       page: 1,
-      pageSize: 10,
+      pageSize: pageSize,
       robotId: info.id,
       queryType: queryType,
       searchText: searchText,
@@ -744,6 +744,7 @@ const QuestionList: React.FC<any> = (props: any) => {
           className={style['Pagination']}
           total={total || 0}
           current={current}
+          pageSize={pageSize}
           showTotal={(total, range) => `第 ${range[0]}-${range[1]} 条/总共 ${total} 条`}
           defaultPageSize={10}
           defaultCurrent={1}

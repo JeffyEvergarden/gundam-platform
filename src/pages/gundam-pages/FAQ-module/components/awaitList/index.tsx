@@ -342,6 +342,7 @@ const AwaitList: React.FC<any> = (props: any) => {
             className={style['Pagination']}
             total={total || 0}
             current={current}
+            pageSize={pageSize}
             showTotal={(total, range) => `第 ${range[0]}-${range[1]} 条/总共 ${total} 条`}
             defaultPageSize={10}
             defaultCurrent={1}
