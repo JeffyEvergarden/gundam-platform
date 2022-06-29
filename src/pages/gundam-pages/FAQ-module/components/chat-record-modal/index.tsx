@@ -64,7 +64,7 @@ const RecordModal: React.FC<any> = (props: any) => {
     <Drawer
       className={style['drawer']}
       width={850}
-      title={`会话记录（${heightLihgt?.sessionId}）`}
+      title={`会话记录（${heightLihgt?.sessionId || heightLihgt?.id}）`}
       visible={visible}
       onClose={close}
       destroyOnClose={true}
