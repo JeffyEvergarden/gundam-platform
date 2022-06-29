@@ -51,7 +51,12 @@ export const useSessionModel = () => {
         role: item.role === 1 ? '客户' : 'AI',
         userName: item.role === 1 ? '客户' : '',
         recordTime: item.createTime,
-        message: (item.role === 1 ? item.message : item.answerText || item.message) || '',
+        message:
+          (item.role === 1
+            ? item.message
+            : item?.aiTextHitType == 2
+            ? item.message
+            : item.answerText || item.message) || '',
         labels,
         index,
       };
