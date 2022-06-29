@@ -103,7 +103,7 @@ const RecordModal: React.FC<any> = (props: any) => {
                   </div>
                   <div className={style['content']}>
                     <div dangerouslySetInnerHTML={{ __html: item.message }}></div>
-
+                    <div>{item.recommendQuestion}</div>
                     {item.labels.map((item: any, i: number) => {
                       return (
                         <div className={style['content-item']}>
