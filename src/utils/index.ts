@@ -48,3 +48,14 @@ export function twoDecimal_f(x: any) {
   }
   return s_x;
 }
+
+//图片回显加工
+export function img(text: any) {
+  let reg = /\$\{getResoureUrl\}/g;
+  const reg1 = /^\<\w+\>/;
+  const reg2 = /\<\/\w+\>$/;
+  if (reg1.test(text) && reg2.test(text)) {
+    return text.replace(reg, '/aichat/robot/file/getFile');
+  }
+  return text;
+}
