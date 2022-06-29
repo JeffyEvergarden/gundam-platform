@@ -54,7 +54,7 @@ export const useSessionModel = () => {
         message:
           (item.role === 1
             ? item.message
-            : item?.aiTextHitType == 2
+            : item?.aiTextHitType == 2 || item?.aiTextHitType == 6
             ? item.message
             : item.answerText || item.message) || '',
         labels,
