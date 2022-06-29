@@ -57,7 +57,11 @@ export const useSessionModel = () => {
             : item?.aiTextHitType == 2 || item?.aiTextHitType == 6
             ? item.message
             : item.answerText || item.message) || '',
-        recommendQuestion: item?.answerText && labels?.length && '您是否要想咨询以下问题：', //如果满足手动加一句
+        recommendQuestion: item?.answerText
+          ? labels?.length
+            ? '您是否要想咨询以下问题：'
+            : ''
+          : '', //如果满足手动加一句
         labels,
         index,
       };
