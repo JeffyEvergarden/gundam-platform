@@ -48,7 +48,7 @@ const deepProcess = (arr: any[], info: any = {}, userAuth: any[]) => {
 };
 
 const access = (userAuth: any[], code: any) => {
-  return userAuth.includes(code);
+  return userAuth?.includes?.(code);
 };
 
 // 机器人列表

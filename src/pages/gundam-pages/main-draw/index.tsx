@@ -80,7 +80,7 @@ const MainDraw = (props: any) => {
   // 插入节点
   const insertNode = async (node: any) => {
     // console.log('外层监测到插入Node');
-    // console.log(node);
+    console.log(node);
     // color: #1890FF 普通节点、 #fffbe6 业务节点
     let params: any = {
       ...preParams,
@@ -94,6 +94,11 @@ const MainDraw = (props: any) => {
       // 如果节点有复制标志会
       // 通过复制创建
       params.copyId = node.copy_id;
+    }
+    if (node._nodetype === 'start') {
+      (fake.current as any).executeCommand?.('undo');
+      message.warning('开始节点不允许复制粘贴');
+      return;
     }
 
     let res = await addNode(params);
