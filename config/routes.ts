@@ -9,19 +9,11 @@ export default [
   },
   ...routes,
   {
-    path: '/demo',
+    path: '/demo*',
     layout: false,
     hideInMenu: true,
     name: 'demo事例',
     component: './demo',
-    noAuth: true,
-  },
-  {
-    path: '/demo2',
-    layout: false,
-    hideInMenu: true,
-    name: 'demo事例2',
-    component: './demo/demo',
     noAuth: true,
   },
   {

@@ -36,7 +36,6 @@ export default function useGundamModel() {
         type: item.dataType,
       };
     });
-    console.log(data);
 
     setGlobalVarList(data);
   };

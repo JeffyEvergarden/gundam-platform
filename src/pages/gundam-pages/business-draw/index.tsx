@@ -148,7 +148,7 @@ const DetailPages: React.FC = (props: any) => {
   }, []);
 
   return (
-    <React.Fragment>
+    <div className="list-page">
       <ProTable<any>
         loading={loading}
         headerTitle={'业务流程管理'}
@@ -180,7 +180,7 @@ const DetailPages: React.FC = (props: any) => {
         modalData={{ ...operFlowData, robotId: info.id }}
         operateFunc={operateFunc}
       />
-    </React.Fragment>
+    </div>
   );
 };
 

@@ -1,9 +1,9 @@
-import { useState } from 'react';
 import { message } from 'antd';
+import { useState } from 'react';
 
-import { getConfig, editConfig, getInterfaceCurrentList } from './api';
+import { editConfig, getConfig, getFAQList, getInterfaceCurrentList, _editFAQ } from './api';
 //变量配置接口
-import { getConfigCurrentList, addNewGlobal, editNewGlobal, deleteGlobal } from './api';
+import { addNewGlobal, deleteGlobal, editNewGlobal, getConfigCurrentList } from './api';
 //节点配置
 import { _getNodeConfig, _saveNode } from './api';
 
@@ -150,6 +150,47 @@ export const useNodeModel = () => {
   return {
     getNodeConfig,
     saveNode,
+    configLoading,
+  };
+};
+
+//变量配置
+export const useFAQModel = () => {
+  const [configLoading, setConfigLoading] = useState<boolean>(false);
+
+  const getTableList = async (params: any) => {
+    setConfigLoading(true);
+    let res: any = await getFAQList(params);
+    console.log(res);
+    let data: any = res.data;
+    data.map((item: any) => {
+      if (item.validateRule) {
+        item.validateRule = JSON?.parse?.(item?.validateRule);
+      }
+      return item;
+    });
+
+    setConfigLoading(false);
+
+    return { data };
+  };
+
+  const editFAQ = async (data: any) => {
+    setConfigLoading(true);
+    let res: any = await _editFAQ(data);
+    setConfigLoading(false);
+    if (res.resultCode === successCode) {
+      message.success(res?.resultDesc);
+      return true;
+    } else {
+      message.error(res?.resultDesc || '未知系统异常');
+      return false;
+    }
+  };
+
+  return {
+    editFAQ,
+    getTableList,
     configLoading,
   };
 };

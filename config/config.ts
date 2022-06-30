@@ -74,7 +74,9 @@ export default defineConfig({
   mfsu: {},
   webpack5: {},
   exportStatic: {},
-  extraBabelPlugins: isProd ? ['transform-remove-console'] : [],
+  extraBabelPlugins: isProd
+    ? ['transform-remove-console', 'react-activation/babel']
+    : ['react-activation/babel'],
 
   // 开启gzip压缩
   chainWebpack: function (config: any) {

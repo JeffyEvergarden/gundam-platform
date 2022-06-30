@@ -1,6 +1,3 @@
-import { Request, Response } from 'express';
-import { template } from 'lodash';
-import { getFileInfo } from 'prettier';
 import config from '../../../src/config';
 
 const successCode = config.successCode;
@@ -153,7 +150,8 @@ const getInfo = (req: any, res: any) => {
       id: '100',
       flowId: '100',
       robotName: '命运官位指定阿尔托莉亚潘多拉',
-      robotType: 1,
+      robotType: 0,
+      soundType: 0,
     },
   });
 };

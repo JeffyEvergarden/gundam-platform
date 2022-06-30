@@ -1,4 +1,14 @@
-import { CrownOutlined } from '@ant-design/icons';
+import {
+  BuildOutlined,
+  CrownOutlined,
+  DatabaseOutlined,
+  FontColorsOutlined,
+  LineChartOutlined,
+  MessageOutlined,
+  MonitorOutlined,
+  SettingOutlined,
+  ShareAltOutlined,
+} from '@ant-design/icons';
 
 export default [
   {
@@ -7,61 +17,122 @@ export default [
     name: '主流程配置',
   },
   {
-    icon: <CrownOutlined />,
+    icon: <SettingOutlined />,
     path: '/gundamPages/detail',
     name: '全局配置',
     routes: [
       {
         icon: <CrownOutlined />,
         path: '/gundamPages/detail/nodeConfig',
-        // component: './gundam-pages/detail',
         name: '节点配置',
       },
       {
-        icon: <CrownOutlined />,
         path: '/gundamPages/detail/globalConfig',
-        // component: './gundam-pages/detail',
         name: '全局变量配置',
       },
       {
-        icon: <CrownOutlined />,
         path: '/gundamPages/detail/interfaceConfig',
-        // component: './gundam-pages/detail/interfaceConfig',
         name: '接口配置',
+      },
+      {
+        path: '/gundamPages/detail/FAQConfig',
+        name: 'FAQ配置',
+        hideFn: (info: any) => {
+          return !(info?.robotType === 0 && info?.soundType === 0); // 呼入 文本
+        },
       },
     ],
   },
   {
-    icon: <CrownOutlined />,
+    icon: <MonitorOutlined />,
     path: '/gundamPages/wish',
     name: '意图管理',
   },
   {
-    icon: <CrownOutlined />,
+    icon: <DatabaseOutlined />,
     path: '/gundamPages/wordSlotLibrary',
     name: '词槽管理',
   },
   {
-    icon: <CrownOutlined />,
+    icon: <BuildOutlined />,
     path: '/gundamPages/lexiconManage',
     name: '词库管理',
   },
   {
-    icon: <CrownOutlined />,
+    icon: <FontColorsOutlined />,
     path: '/gundamPages/spokenLabel',
     name: '话术标签管理',
   },
   {
-    icon: <CrownOutlined />,
+    icon: <ShareAltOutlined />,
     path: '/gundamPages/businessDraw',
     exact: true,
     _info: { fuck: true },
     name: '业务流程管理',
   },
   {
-    icon: <CrownOutlined />,
-    hideInMenu: true,
-    path: '/gundamPages/businessDraw/detail',
-    name: '业务流程管理-详情配置',
+    icon: <MessageOutlined />,
+    path: '/gundamPages/module',
+    name: 'FAQ管理',
+    hideFn: (info: any) => {
+      return !(info?.robotType === 0 && info?.soundType === 0); // 呼入 文本
+    },
+    routes: [
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/faq',
+        name: 'FAQ-标准',
+      },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/module/faq/clearlist',
+        name: 'FAQ-澄清',
+      },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/module/faq/blacklist',
+        name: 'FAQ-黑名单',
+      },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/module/faq/reviewedList',
+        name: '待审核',
+      },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/module/faq/pendingList',
+        name: '待处理',
+      },
+    ],
+  },
+  {
+    icon: <LineChartOutlined />,
+    path: '/gundamPages/reportForm',
+    name: '报表管理',
+    hideFn: (info: any) => {
+      return !(info?.robotType === 0 && info?.soundType === 0); // 呼入 文本
+    },
+    routes: [
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/reportForm/visitorsNumbers',
+        name: '访客次数统计',
+      },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/reportForm/visitorsSession',
+        name: '访客会话明细',
+      },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/reportForm/problemRate',
+        name: '问题匹配率统计',
+      },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/reportForm/recommendAndClare',
+        name: '推荐问和澄清统计',
+      },
+    ],
   },
 ];

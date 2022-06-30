@@ -1,0 +1,32 @@
+.box-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  font-size: 14px;
+  line-height: 28px;
+
+  .box-title {
+    flex-shrink: 0;
+    width: 100px;
+  }
+
+  .box-content {
+    display: flex;
+    flex-wrap: wrap;
+    color: rgba(0, 0, 0, 0.45);
+  }
+
+  .sub-item {
+    margin-right: 16px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .sub-item_selected {
+    color: #1890ff;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

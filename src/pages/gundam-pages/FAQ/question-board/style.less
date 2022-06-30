@@ -1,0 +1,100 @@
+.board-page {
+  display: flex;
+  height: 100%;
+  padding: 16px;
+  background: #fff;
+
+  :global {
+    .ant-select-tree-title {
+      color: rgba(0, 0, 0, 0.3);
+    }
+
+    .ant-select-tree-switcher-noop + span {
+      .ant-select-tree-title {
+        color: #333 !important;
+      }
+    }
+  }
+}
+
+.board-title {
+  margin-bottom: 24px;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.board-form {
+  :global {
+    .ant-form-item-label > label {
+      justify-content: flex-end;
+      margin-right: 8px;
+    }
+
+    .ant-select-tree-node-content-wrapper {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .w-e-max-length-info {
+      right: 2em;
+    }
+  }
+}
+
+.zy-row {
+  display: flex;
+  align-items: center;
+}
+
+.zy-row_sp {
+  display: flex;
+  align-items: baseline;
+}
+
+.del-bt {
+  margin-right: 8px;
+  color: #00000040;
+  cursor: pointer;
+}
+
+.answer-box {
+  margin-bottom: 24px;
+  padding: 12px 24px;
+  background: rgba(248, 249, 252, 1);
+}
+
+.diy-row {
+  :global {
+    .ant-form-item {
+      margin-bottom: 12px !important;
+    }
+  }
+}
+
+.recommend-box {
+  padding-left: 78px;
+}
+
+.toolbar {
+  height: 0;
+  overflow: hidden;
+  // border-bottom: 1px solid #D9D9D9;
+}
+
+.board-btn {
+  display: flex;
+  margin-top: 24px;
+}
+
+.circle-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: #fff;
+  font-size: 12px;
+  background: #1890ff;
+  border-radius: 50%;
+}

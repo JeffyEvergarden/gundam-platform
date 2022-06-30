@@ -1,0 +1,81 @@
+.faq-tree {
+  flex: 1;
+  flex-shrink: 0;
+  overflow-y: auto;
+  // 树形组件样式修改
+  :global {
+    .ant-tree-node-content-wrapper {
+      display: flex;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ant-tree-title {
+      flex: 1 1 auto;
+    }
+
+    .ant-tree-treenode {
+      padding: 10px 4px !important;
+      overflow: hidden;
+      color: rgba(0, 0, 0, 0.85);
+      font-size: 14px;
+      line-height: 22px;
+      text-align: left;
+
+      &:hover {
+        div[class^='edit-layout'] {
+          display: block;
+        }
+      }
+    }
+
+    .ant-tree-node-selected {
+      color: #333 !important;
+      background: #e6f7ff !important;
+    }
+
+    .ant-tree-treenode-selected {
+      &::before {
+        background: #e6f7ff !important;
+      }
+
+      color: #333 !important;
+      background: #e6f7ff !important;
+
+      .ant-tree-switcher {
+        background: #e6f7ff !important;
+      }
+    }
+  }
+
+  .tree-node {
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: nowrap;
+
+    .label {
+      flex: 1 1 auto;
+
+      div {
+        max-width: 130px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .edit-layout {
+      display: none;
+      flex-shrink: 0;
+      width: auto;
+    }
+  }
+}
+
+.faq-tree_sm {
+  :global {
+    .ant-tree-treenode {
+      padding: 6px 4px !important;
+    }
+  }
+}

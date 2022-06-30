@@ -25,13 +25,16 @@ const MainDraw = (props: any) => {
 
   const { info, businessFlowId, getGlobalValConfig, drawType, setDrawType } = useModel(
     'gundam' as any,
-    (model: any) => ({
-      info: model.info,
-      businessFlowId: model.businessFlowId,
-      getGlobalValConfig: model.getGlobalValConfig,
-      drawType: model.drawType, // 画布类型
-      setDrawType: model.setDrawType,
-    }),
+    (model: any) => {
+      console.log('gundam', model);
+      return {
+        info: model.info,
+        businessFlowId: model.businessFlowId,
+        getGlobalValConfig: model.getGlobalValConfig,
+        drawType: model.drawType, // 画布类型
+        setDrawType: model.setDrawType,
+      };
+    },
   );
 
   // 意图列表、词槽列表

@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useModel, history } from 'umi';
-import { useOpModel, useTableModel } from './model';
-import useUpdateModel from '@/models';
-import { Table, Button, Dropdown, message, Popconfirm } from 'antd';
-import ProTable from '@ant-design/pro-table';
-import { PlusOutlined } from '@ant-design/icons';
-import style from './style.less';
 import Condition from '@/components/Condition';
-import InfoModal from './components/info-modal';
 import config from '@/config/index';
+import useUpdateModel from '@/models';
+import { PlusOutlined } from '@ant-design/icons';
+import ProTable from '@ant-design/pro-table';
+import { Button, message, Popconfirm } from 'antd';
+import React, { useEffect, useRef } from 'react';
+import { history } from 'umi';
+import InfoModal from './components/info-modal';
+import { useOpModel, useTableModel } from './model';
 import { BUSSINESS_CODE, listToMap } from './model/const';
+import style from './style.less';
 
 enum MACHINE_STATUS {
   RUNNING = 0,
@@ -24,10 +24,10 @@ const MachineManagement: React.FC = (props: any) => {
 
   const { opLoading, changeStatus, deleteMachine, addNewMachine, editMachine } = useOpModel();
 
-  const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
-    info: model.info,
-    setInfo: model.setInfo,
-  }));
+  // const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
+  //   info: model.info,
+  //   setInfo: model.setInfo,
+  // }));
 
   const { updatePage } = useUpdateModel();
 
@@ -40,9 +40,10 @@ const MachineManagement: React.FC = (props: any) => {
   // 分页相关 ---
   // const [current, setCurrent] = useState<number>(1);
 
-  // const onChange = (val: number) => {
-  //   setCurrent(val);
-  // };
+  const onChange = (val: number) => {
+    // setCurrent(val);、
+    console.log(val);
+  };
 
   // 改变状态
   const _changeStatus = async (row: any) => {
@@ -297,7 +298,7 @@ const MachineManagement: React.FC = (props: any) => {
   }, []);
 
   return (
-    <div className={style['machine-page']}>
+    <div className={`${style['machine-page']} list-page`}>
       <ProTable<any>
         // params={searchForm}
         columns={columns}
@@ -330,17 +331,6 @@ const MachineManagement: React.FC = (props: any) => {
             }
             return values;
           },
-          // onFieldsChange: (change, all) => {
-          //   let params: any = {};
-          //   clearTimeout(time);
-          //   all.forEach((item) => {
-          //     if (item.touched) {
-          //       params[item.name[0]] = item.value;
-          //     }
-          //   });
-          //   delete params.robotName;
-          //   setSearchForm(params);
-          // },
         }}
         pagination={{
           pageSize: 10,
@@ -360,14 +350,6 @@ const MachineManagement: React.FC = (props: any) => {
           </Button>,
         ]}
       />
-
-      {/* <Table
-        pagination={{ current, onChange }}
-        dataSource={tableList}
-        columns={columns}
-        rowKey="index"
-        loading={tableLoading}
-      /> */}
 
       <InfoModal cref={modalRef} confirm={confirmInfo} loading={opLoading} />
     </div>

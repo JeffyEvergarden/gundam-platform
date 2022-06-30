@@ -1,0 +1,108 @@
+.ruleDrawer {
+  .ruleName {
+    :global {
+      .ant-form-item-label {
+        display: inline-block;
+        width: 100px;
+      }
+      .ant-form-item-control-input {
+        width: 668px;
+      }
+    }
+  }
+  .ruleSome {
+    :global {
+      .ant-form-item {
+        margin-bottom: 8px;
+      }
+    }
+  }
+  .formItem_box {
+    display: flex;
+    align-items: center;
+    justify-content: space-start;
+    width: 668px;
+    .isNeedText {
+      display: inline-block;
+      width: 114px;
+      padding-left: 24px;
+      text-align: left;
+    }
+    .ruleText {
+      display: inline-block;
+      width: 450px;
+      padding-left: 10px;
+      text-align: left;
+    }
+    .sortText {
+      display: inline-block;
+      width: 100px;
+      padding-left: 10px;
+      text-align: left;
+    }
+  }
+
+  .listFormBox {
+    // display: flex;
+    // align-items: center;
+    // justify-content: space-start;
+    // width: 668px;
+    padding-left: 100px;
+    :global {
+      .ant-form-item {
+        margin-bottom: 5px;
+      }
+    }
+    .isNeed {
+      display: inline-block;
+      :global {
+        .ant-form-item-control-input {
+          width: 100px;
+          padding-left: 10px;
+        }
+        .ant-form-item-explain-error {
+          padding-left: 10px;
+        }
+      }
+    }
+    .rule {
+      display: inline-block;
+      :global {
+        .ant-form-item-control-input {
+          width: 450px;
+          padding-left: 10px;
+        }
+        .ant-form-item-explain-error {
+          padding-left: 10px;
+        }
+      }
+    }
+  }
+  .slotBox {
+    display: flex;
+    align-content: flex-start;
+    margin-bottom: 24px;
+    margin-left: 100px;
+  }
+  .slotTxt {
+    display: inline-block;
+    width: 80px;
+    padding-top: 10px;
+  }
+  .slotList {
+    display: inline-block;
+    width: 640px;
+    max-height: 400px;
+    padding-left: 10px;
+    overflow-y: auto;
+    text-align: left;
+    span {
+      display: inline-block;
+      margin: 5px;
+      padding: 5px 10px;
+      background: rgba(240, 242, 245, 1);
+      border-radius: 99999px;
+      cursor: pointer;
+    }
+  }
+}

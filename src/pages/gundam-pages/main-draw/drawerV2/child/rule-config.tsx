@@ -31,11 +31,19 @@ const RuleConfig = (props: any) => {
     style,
   } = props;
 
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
+
   // 是否是数组
   const isArray = Array.isArray(_formName);
   const key = isArray ? _formName[0] : _formName;
 
-  const CURRENT_RULE_LIST = type === 'node' ? RUlE_LIST : [...RUlE_LIST, ...EDGE_RULE_LIST];
+  let CURRENT_RULE_LIST = type === 'node' ? RUlE_LIST : [...RUlE_LIST, ...EDGE_RULE_LIST];
+
+  if (info.robotType == 0) {
+    CURRENT_RULE_LIST = RUlE_LIST;
+  }
 
   // 获取当前修改
   const getItem = (i?: number, j?: number) => {

@@ -49,6 +49,8 @@ const HighConfig = (props: any) => {
   };
 
   useEffect(() => {
+    console.log(info);
+
     console.log(config);
     let res = form.getFieldsValue();
 
@@ -124,14 +126,19 @@ const HighConfig = (props: any) => {
             </Select>
           </FormItem>
         </div>
-
-        <HightformTemplate form={form} name="silenceAction" title={'静默'} type={type} />
+        {/*文本不需要这两个  0文本 1语音 */}
+        <Condition r-if={info?.robotType == 1}>
+          <HightformTemplate form={form} name="silenceAction" title={'静默'} type={type} />
+        </Condition>
 
         <HightformTemplate form={form} name="rejectAction" title={'拒识'} type={type} />
 
         <HightformTemplate form={form} name="clearAction" title={'澄清'} type={type} />
 
-        <HightformTemplate form={form} name="unclearAction" title={'客户未听清'} type={type} />
+        {/*文本不需要这两个  0文本 1语音 */}
+        <Condition r-if={info?.robotType == 1}>
+          <HightformTemplate form={form} name="unclearAction" title={'客户未听清'} type={type} />
+        </Condition>
       </Condition>
     </>
   );

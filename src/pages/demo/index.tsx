@@ -1,59 +1,44 @@
-import { useState, useImperativeHandle } from 'react';
+import { useState, useImperativeHandle, useRef, useEffect } from 'react';
 import { Drawer, Form, Input, Select, Button } from 'antd';
 import { PlusCircleOutlined, AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import styles from './style.less';
-import { getFileInfo } from 'prettier';
-import { add } from 'lodash';
+import { history, useLocation } from 'umi';
+import KeepAlive, {
+  AliveScope,
+  useActivate,
+  useUnactivate,
+  withActivation,
+} from 'react-activation';
+import Route from './components/Route';
+import A from './a';
+import B from './b';
+import C from './c';
 
 const { TextArea } = Input;
 const { Option } = Select;
 
-const reg = /(\$|#)\{\w+\}/g;
+const Demo = (props: any) => {
+  const location = useLocation();
 
-const formatHtml = (str: any) => {
-  if (!str) {
-    return ['无内容展示'];
-  }
-  // 正则列表匹配出来的
-  const list: any[] = str.match(reg);
-  console.log(list);
-  if (list) {
-    let strList = [];
-    while (list.length > 0) {
-      let key = list.shift();
-      let _list: any[] = str.split(key);
-      if (_list.length > 1) {
-        let val = _list.shift();
-        strList.push(val, {
-          type: key[0] === '$' ? '变量' : '词槽',
-          value: key.substring(2, key.length - 1),
-        });
-        str = _list.join(key);
-      }
-    }
-    return strList;
-  } else {
-    return [str];
-  }
-};
+  const currentPath = location.pathname;
 
-const DrawerForm = (props: any) => {
-  const strList: any[] = formatHtml('asfasfafa${fa${fuck00}ke}d#{fuck}adadas${fake2}');
-
-  const [focus, setFocus] = useState<boolean>(true);
+  const path = history.location.pathname;
 
   return (
-    <div className={`${styles['div-content']}`}>
-      {strList?.map((item: any) => {
-        if (typeof item === 'string') {
-          return item;
-        } else if (typeof item === 'object') {
-          return <span className={styles['sp-text']}>{item.value}</span>;
-        }
-      })}
-      {focus && <span className={styles['focus']}></span>}
-    </div>
+    <AliveScope>
+      <div className={`${styles['div-content']}`}>
+        <div>父页面 路径：{path}</div>
+        {currentPath === '/demo/a' && (
+          <KeepAlive>
+            <A></A>
+          </KeepAlive>
+        )}
+
+        <Route path="/demo/b" component={<B></B>}></Route>
+        <Route path="/demo/c" component={<C></C>}></Route>
+      </div>
+    </AliveScope>
   );
 };
 
-export default DrawerForm;
+export default Demo;

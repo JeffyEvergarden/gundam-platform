@@ -34,25 +34,48 @@ export default [
           {
             path: '/gundamPages/detail/nodeConfig',
             component: './gundam-pages/detail/nodeConfig',
-            name: '业务流程管理',
+            name: '节点配置',
           },
           {
             path: '/gundamPages/detail/globalConfig',
             component: './gundam-pages/detail/globalConfig',
-            name: '业务流程管理-详情配置',
+            name: '变量配置',
           },
           {
             path: '/gundamPages/detail/interfaceConfig',
             component: './gundam-pages/detail/interfaceConfig',
-            name: '业务流程管理',
+            name: '接口配置',
+          },
+          {
+            path: '/gundamPages/detail/FAQConfig',
+            component: './gundam-pages/detail/FAQConfig',
+            name: 'FAQ配置',
           },
           { redirect: '/gundamPages/detail' },
         ],
       },
       {
         path: '/gundamPages/wish',
-        component: './gundam-pages/wish',
+        component: './gundam-pages/wish/home',
         name: '意图管理',
+        routes: [
+          {
+            path: '/gundamPages/wish/wishList',
+            component: './gundam-pages/wish/wishList',
+            name: '意图管理',
+          },
+          {
+            path: '/gundamPages/wish/ruleMould',
+            component: './gundam-pages/wish/ruleMould',
+            name: '规则模版',
+          },
+          { redirect: '/gundamPages/wish/wishList' },
+        ],
+      },
+      {
+        path: '/gundamPages/sample',
+        component: './gundam-pages/sample',
+        name: '样本',
       },
       {
         path: '/gundamPages/wordSlotLibrary',
@@ -96,6 +119,66 @@ export default [
         path: '/gundamPages/aiSimulation',
         component: './gundam-pages/ai-simulation',
         name: '机器人模拟',
+      },
+      // FAQ相关 -------------------------------------
+      {
+        path: '/gundamPages/faq*',
+        component: './gundam-pages/FAQ/home',
+        name: 'FAQ-标准',
+      },
+      {
+        path: '/gundamPages/module', // faq相关页面都整合到这里
+        component: './gundam-pages/FAQ-module/home',
+        name: 'FAQ管理',
+        routes: [
+          {
+            path: '/gundamPages/module/faq/clearlist',
+            component: './gundam-pages/FAQ-module/clearlist',
+            name: 'FAQ-澄清',
+          },
+          {
+            path: '/gundamPages/module/faq/blacklist',
+            component: './gundam-pages/FAQ-module/blacklist',
+            name: 'FAQ-黑名单',
+          },
+          {
+            path: '/gundamPages/module/faq/reviewedList',
+            component: './gundam-pages/FAQ-module/reviewedList',
+            name: '待审核',
+          },
+          {
+            path: '/gundamPages/module/faq/pendingList',
+            component: './gundam-pages/FAQ-module/pendingList',
+            name: '待验证',
+          },
+        ],
+      },
+      {
+        path: '/gundamPages/reportForm',
+        component: './gundam-pages/report-form/home',
+        name: '报表管理',
+        routes: [
+          {
+            path: '/gundamPages/reportForm/visitorsNumbers',
+            component: './gundam-pages/report-form/visitorsNumbers',
+            name: '访客次数统计',
+          },
+          {
+            path: '/gundamPages/reportForm/visitorsSession',
+            component: './gundam-pages/report-form/visitorsSession',
+            name: '访客会话明细',
+          },
+          {
+            path: '/gundamPages/reportForm/problemRate',
+            component: './gundam-pages/report-form/problemRate',
+            name: '问题匹配率统计',
+          },
+          {
+            path: '/gundamPages/reportForm/recommendAndClare',
+            component: './gundam-pages/report-form/recommendAndClare',
+            name: '推荐问和澄清统计',
+          },
+        ],
       },
       { redirect: '/gundamPages/mainDraw' },
       { component: './404' },

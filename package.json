@@ -51,23 +51,31 @@
     "@ant-design/pro-descriptions": "^1.6.8",
     "@ant-design/pro-form": "^1.18.3",
     "@ant-design/pro-layout": "^6.15.3",
+    "@ant-design/pro-list": "^1.21.58",
     "@ant-design/pro-table": "^2.30.8",
     "@umijs/route-utils": "^1.0.36",
+    "@wangeditor/editor": "^5.0.1",
+    "@wangeditor/editor-for-react": "^1.0.2",
     "animate.css": "^4.1.1",
     "antd": "^4.14.0",
     "bizcharts": "^4.1.14",
-    "gg-editor": "^2.0.4",
     "classnames": "^2.2.6",
+    "echarts": "^5.3.2",
+    "gg-editor": "^2.0.4",
     "lodash": "^4.17.11",
     "moment": "^2.25.3",
     "omit.js": "^2.0.2",
     "rc-menu": "^9.0.13",
     "rc-util": "^5.14.0",
+    "rc-virtual-list": "^3.4.7",
     "react": "^17.0.0",
+    "react-activation": "^0.11.1",
     "react-dev-inspector": "^1.1.1",
     "react-dom": "^17.0.0",
     "react-helmet-async": "^1.0.4",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-sortablejs": "^6.0.0",
+    "slate": "^0.78.0",
     "sortablejs": "^1.14.0",
     "umi": "^3.5.0",
     "umi-serve": "^1.9.10"
@@ -101,6 +109,7 @@
     "eslint": "^7.1.0",
     "express": "^4.17.1",
     "gh-pages": "^3.0.0",
+    "husky": "^4.3.8",
     "jsdom-global": "^3.0.2",
     "lint-staged": "^10.0.0",
     "mockjs": "^1.0.1-beta3",
@@ -113,7 +122,10 @@
   "engines": {
     "node": ">=10.0.0"
   },
-  "gitHooks": {
-    "commit-msg": "fabric verify-commit"
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "node scripts/commit.js"
+    }
   }
 }

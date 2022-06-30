@@ -3,9 +3,6 @@ import { Modal, Form, Input, Button, Space } from 'antd';
 
 const { TextArea } = Input;
 
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 12 },
-};
 const layout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 18 },
@@ -43,7 +40,8 @@ export default (props: any) => {
     <Modal
       visible={ruleVisible}
       title={null}
-      footer={null}
+      okText={'提交'}
+      onOk={handleOver}
       destroyOnClose={true}
       onCancel={cancelRule}
     >
@@ -61,14 +59,6 @@ export default (props: any) => {
           // rules={[{ required: true, message: '请输入规则内容' }]}
         >
           <TextArea rows={4} placeholder={'请输入规则内容'} maxLength={150} />
-        </Form.Item>
-        <Form.Item {...tailLayout}>
-          <Space>
-            <Button onClick={cancelRule}>取消</Button>
-            <Button type="primary" onClick={handleOver}>
-              提交
-            </Button>
-          </Space>
         </Form.Item>
       </Form>
     </Modal>
