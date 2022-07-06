@@ -109,6 +109,9 @@ export default (props: any) => {
           <Option key={'media_ycsjyh'} value="media_ycsjyh">
             邮储手机银行
           </Option>
+          <Option key={'media_test'} value="media_test">
+            邮储手机银行
+          </Option>
         </Select>
       </Space>
       <Button type="primary" onClick={exportForm}>

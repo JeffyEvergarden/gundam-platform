@@ -5,6 +5,7 @@ export const channelMap = {
   media_jtyw: '集团邮务',
   media_gw: '中邮官网',
   media_ycsjyh: '邮储手机银行',
+  media_test: '测试',
 };
 
 export const CHANNAL_LIST: any[] = [
@@ -31,6 +32,10 @@ export const CHANNAL_LIST: any[] = [
   {
     value: 'media_ycsjyh',
     label: '邮储手机银行',
+  },
+  {
+    value: 'media_test',
+    label: '测试',
   },
 ];
 
