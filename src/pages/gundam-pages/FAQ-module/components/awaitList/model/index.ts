@@ -40,6 +40,8 @@ export const useApprovalModel = () => {
     } else {
       setList([]);
       setTotalPage(0);
+      setLoading(false);
+      return false;
     }
     setLoading(false);
     return { data, total: res?.data?.totalPage };
@@ -67,6 +69,8 @@ export const useApprovalModel = () => {
     } else {
       setList([]);
       setTotalPage(0);
+      setLoading(false);
+      return false;
     }
     setLoading(false);
     return { data: res?.data?.list, total: res?.data?.totalPage };

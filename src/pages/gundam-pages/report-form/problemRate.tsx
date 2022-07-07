@@ -1,19 +1,19 @@
-import React, { useState, useEffect, useRef, Fragment } from 'react';
-import ProTable from '@ant-design/pro-table';
-import HeadSearch from './components/headSearch';
-import { Space, Modal } from 'antd';
-import moment from 'moment';
-import { useModel } from 'umi';
 import config from '@/config/index';
-import classNames from 'classnames';
-import { useReportForm } from './model';
-import LineChart from './components/lineCharts';
-import PieChart from './components/pieCharts';
 import ChatRecordModal from '@/pages/gundam-pages/FAQ-module/components/chat-record-modal';
 import { throttle, toNumber } from '@/utils';
 import { QuestionCircleOutlined } from '@ant-design/icons';
+import ProTable from '@ant-design/pro-table';
+import { Modal, Space } from 'antd';
+import classNames from 'classnames';
+import moment from 'moment';
+import { useEffect, useRef, useState } from 'react';
+import { useModel } from 'umi';
+import HeadSearch from './components/headSearch';
+import LineChart from './components/lineCharts';
+import PieChart from './components/pieCharts';
 import { CODE } from './enum';
 import styles from './index.less';
+import { useReportForm } from './model';
 
 export default () => {
   const actionRef = useRef<any>();
@@ -57,6 +57,7 @@ export default () => {
   const [paramsObj, setParamsObj] = useState<any>({});
   const [modalData, setModalData] = useState<any>({});
   const [visible, setVisible] = useState<boolean>(false);
+  const [dataSource, setDataSource] = useState<any>([]);
 
   const choseTime = (begin: string, end: string, code: string) => {
     setParamsObj({ begin: begin, end: end, code: code });
@@ -201,23 +202,33 @@ export default () => {
       channelCode: payload.code,
     };
     let res = await question(params);
+    setDataSource(res?.data?.list);
     // 折线图数据处理
     let temp: any = [];
-    let directReplyRate: any = { name: '明确回答率', val: [], isRate: true };
+    let directReplyNum: any = { name: '明确回答数', val: [] };
     let clarifyReplyNum: any = { name: '澄清回复数', val: [] };
     let clarifyConfirmReplyNum: any = { name: '澄清确认数', val: [] };
+    let recommendReplyConfirmNum: any = { name: '推荐确认数', val: [] };
     let discernReplyNum: any = { name: '拒识总数', val: [] };
     let matchRate: any = { name: '匹配率', val: [], isRate: true };
     let day: any = [];
     res?.data?.list?.map((item: any) => {
-      directReplyRate.val.push(toNumber(item.directReplyRate));
+      directReplyNum.val.push(item.directReplyNum);
       clarifyReplyNum.val.push(item.clarifyReplyNum);
       clarifyConfirmReplyNum.val.push(item.clarifyConfirmReplyNum);
+      recommendReplyConfirmNum.val.push(item.recommendReplyConfirmNum);
       discernReplyNum.val.push(item.discernReplyNum);
       matchRate.val.push(toNumber(item.matchRate));
       day.push(item.dayId);
     });
-    temp.push(directReplyRate, clarifyReplyNum, clarifyConfirmReplyNum, discernReplyNum, matchRate);
+    temp.push(
+      directReplyNum,
+      clarifyReplyNum,
+      clarifyConfirmReplyNum,
+      recommendReplyConfirmNum,
+      discernReplyNum,
+      matchRate,
+    );
     setDayId(day);
     setList(temp);
 
@@ -280,6 +291,7 @@ export default () => {
       page: payload.current,
       pageSize: payload.pageSize,
       robotId: info.id,
+      channelCode: paramsObj.code,
     };
     let res = await rejectList(params);
     return {
@@ -331,7 +343,7 @@ export default () => {
   return (
     <div className={styles.pageComtain}>
       <div className={classNames(styles.pageTitile, styles.question_title)}>
-        <span>访客次数统计</span>
+        <span>问题匹配率统计</span>
         <span>历史累计回答:{historySumReplyNum}</span>
       </div>
       <HeadSearch choseTime={choseTime} exportReportForm={exportReportForm} />
@@ -342,6 +354,7 @@ export default () => {
             base={base}
             sumReplyNum={sumReplyNum}
             data={pieList}
+            dataSource={dataSource}
             loading={tableLoading}
             title={'问题回答比例'}
             color={['#6395F9', '#62DAAB', '#657798', '#F6C022', '#7666F9']}
@@ -355,10 +368,18 @@ export default () => {
             loading={tableLoading}
             title={'问题匹配率统计'}
             base={base}
+            dataSource={dataSource}
             columns={dayId}
             data={lineList}
-            color={['#6395F9', '#62DAAB', '#657798', '#F6C022', '#7666F9']}
-            legendData={['明确回答率', '澄清回复数', '澄清确认数', '拒识总数', '匹配率']}
+            color={['#6395F9', '#62DAAB', '#657798', '#F6C022', '#7666F9', '#B382D6']}
+            legendData={[
+              '明确回答率',
+              '澄清回复数',
+              '澄清确认数',
+              '推荐确认数',
+              '拒识总数',
+              '匹配率',
+            ]}
             className={styles.visitorBox}
           />
         </div>
@@ -368,6 +389,7 @@ export default () => {
           rowKey={(record: any) => record.dayId}
           headerTitle={false}
           toolBarRender={false}
+          bordered
           actionRef={actionRef}
           pagination={{
             pageSize: 10,
@@ -384,6 +406,7 @@ export default () => {
           }}
         />
       </div>
+
       <Modal
         visible={visible}
         onCancel={onCancel}
@@ -395,6 +418,7 @@ export default () => {
           rowKey={(record: any) => record.dayId}
           headerTitle={false}
           toolBarRender={false}
+          bordered
           pagination={{
             pageSize: 10,
           }}
@@ -404,8 +428,8 @@ export default () => {
             return rejectTable(params);
           }}
         />
+        <ChatRecordModal cref={chatRecordModalRef} />
       </Modal>
-      <ChatRecordModal cref={chatRecordModalRef} />
     </div>
   );
 };

@@ -86,6 +86,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
     let node = opt.node;
     if (leafClickOnly) {
       if (node.key === '0') {
+        onChange?.(key, opt);
         return;
       }
       if (!node.children || node.children?.length === 0) {

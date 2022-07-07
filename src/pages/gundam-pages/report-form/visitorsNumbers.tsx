@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef, Fragment } from 'react';
-import { throttle } from '@/utils';
+import config from '@/config/index';
+import { throttle, twoDecimal_f } from '@/utils';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Space, Spin, Table, Typography } from 'antd';
+import moment from 'moment';
+import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
-import { Space, Spin, Table, Tooltip, Typography } from 'antd';
 import HeadSearch from './components/headSearch';
 import LineChart from './components/lineCharts';
-import { useReportForm } from './model';
-import moment from 'moment';
-import config from '@/config/index';
-import { QuestionCircleOutlined } from '@ant-design/icons';
 import styles from './index.less';
+import { useReportForm } from './model';
 
 const { Text } = Typography;
 
@@ -69,11 +69,11 @@ export default () => {
     };
     let res = await getVisitorList(params);
     let temp: any = [];
-    let visitNum: any = { name: '访问总次数', val: [] };
-    let validVisitNum: any = { name: '有效访问总次数', val: [] };
+    let visitNum: any = { name: '访问次数', val: [] };
+    let validVisitNum: any = { name: '有效访问次数', val: [] };
     let visitorNum: any = { name: '访客人数', val: [] };
     let validVisitorNum: any = { name: '有效访客人数', val: [] };
-    let dialogueTurn: any = { name: '会话次数统计', val: [] };
+    let dialogueTurn: any = { name: '对话轮次', val: [] };
     let day: any = [];
     setDataSource(res?.data);
     res?.data?.map((item: any) => {
@@ -196,6 +196,9 @@ export default () => {
       },
       dataIndex: 'averageDialogueTurn',
       ellipsis: true,
+      render: (val: any, row: any) => {
+        return row.averageDialogueTurnStr;
+      },
     },
   ];
 
@@ -208,11 +211,12 @@ export default () => {
           id={'visitorNumber'}
           loading={tableLoading}
           title={''}
+          dataSource={dataSource}
           base={base}
           columns={dayId}
           data={visitorList}
           color={['#6395F9', '#62DAAB', '#657798', '#F6C022', '#7666F9']}
-          legendData={['访问总次数', '有效访问总次数', '访客人数', '有效访客人数', '会话次数统计']}
+          legendData={['访问次数', '有效访问次数', '访客人数', '有效访客人数', '对话轮次']}
           className={styles.visitorBox}
         />
       </div>
@@ -220,6 +224,7 @@ export default () => {
         <Spin spinning={tableLoading}>
           <Table
             rowKey={(record: any) => record.dayId}
+            bordered
             columns={columns}
             dataSource={dataSource}
             pagination={false}
@@ -251,35 +256,35 @@ export default () => {
                   totalaverageDialogueTurn =
                     totaldialogueTurn == 0 || totalvisitNum == 0
                       ? 0
-                      : (totaldialogueTurn / totalvisitNum).toFixed(2);
+                      : twoDecimal_f(Math.floor((totaldialogueTurn / totalvisitNum) * 100) / 100);
                 },
               );
-
-              return (
-                <Table.Summary fixed>
-                  <Table.Summary.Row>
-                    <Table.Summary.Cell index={0}>合计</Table.Summary.Cell>
-                    <Table.Summary.Cell index={1}>
-                      <Text>{totalvisitNum}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={2}>
-                      <Text>{totalvalidVisitNum}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={3}>
-                      <Text>{totalvisitorNum}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={4}>
-                      <Text>{totalvalidVisitorNum}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={5}>
-                      <Text>{totaldialogueTurn}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={6}>
-                      <Text>{totalaverageDialogueTurn}</Text>
-                    </Table.Summary.Cell>
-                  </Table.Summary.Row>
-                </Table.Summary>
-              );
+              if (dataSource?.length)
+                return (
+                  <Table.Summary fixed>
+                    <Table.Summary.Row>
+                      <Table.Summary.Cell index={0}>总计</Table.Summary.Cell>
+                      <Table.Summary.Cell index={1}>
+                        <Text>{totalvisitNum}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={2}>
+                        <Text>{totalvalidVisitNum}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={3}>
+                        <Text>{totalvisitorNum}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={4}>
+                        <Text>{totalvalidVisitorNum}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={5}>
+                        <Text>{totaldialogueTurn}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={6}>
+                        <Text>{totalaverageDialogueTurn}</Text>
+                      </Table.Summary.Cell>
+                    </Table.Summary.Row>
+                  </Table.Summary>
+                );
             }}
           />
         </Spin>

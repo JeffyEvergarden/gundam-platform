@@ -1,12 +1,10 @@
-import { useState, useImperativeHandle, useEffect, useMemo, useRef } from 'react';
-import { Modal, Button, Table, Tooltip, Tabs, Input, message } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Button, Input, message, Modal, Table } from 'antd';
+import { useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useModel } from 'umi';
-import style from './style.less';
-import Condition from '@/components/Condition';
+import { formatChannel } from '../../model/util';
 import ChatRecordModal from '../chat-record-modal';
 import { useSessionModel } from './model';
-import { formatChannel } from '../../model/util';
+import style from './style.less';
 
 const { Search } = Input;
 
@@ -26,6 +24,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
   const { tableLoading, tableList, getTableList, tableTotal } = useSessionModel();
 
   const [visible, setVisible] = useState<boolean>(false);
+  const [clearInfo, setClearInfo] = useState<any>();
 
   const sessionTableList: any[] = useMemo(() => {
     return tableList.map((item: any, index: number) => {
@@ -56,6 +55,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
   useImperativeHandle(cref, () => ({
     open: (obj: any) => {
       if (obj.id) {
+        setClearInfo(obj);
         setClarifyId(obj.id);
         setCurrent(1);
         getTableList({
@@ -92,7 +92,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
         return (
           <a
             onClick={() => {
-              chatRecordModalRef.current?.open?.(row);
+              chatRecordModalRef.current?.open?.({ ...row, message: clearInfo?.question });
             }}
           >
             {val}

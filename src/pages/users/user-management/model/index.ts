@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { message } from 'antd';
 
-import { getMachineList } from './api';
+import { getUsersList } from './api';
 
 export const successCode = 100;
 
@@ -13,13 +13,13 @@ export const useTableModel = () => {
 
   const getTableList = async (params?: any) => {
     setTableLoading(true);
-    let res: any = await getMachineList(params);
+    let res: any = await getUsersList(params);
     setTableLoading(false);
-    let { data = [] } = res;
-    if (!Array.isArray(data)) {
-      data = [];
+    let { list = [], totalPage, totalSize } = res.data || {};
+    if (!Array.isArray(list)) {
+      list = [];
     }
-    data = data.map((item: any, index: number) => {
+    list = list.map((item: any, index: number) => {
       return {
         ...item,
         title: item.name,
@@ -27,7 +27,8 @@ export const useTableModel = () => {
       };
     });
     // console.log('tableList', data);
-    setTableList(data || []);
+    setTableList(list || []);
+    return { data: list, total: totalPage };
   };
 
   return {

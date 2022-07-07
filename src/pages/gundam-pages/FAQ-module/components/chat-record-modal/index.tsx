@@ -24,13 +24,16 @@ const RecordModal: React.FC<any> = (props: any) => {
   const { recordLoading, recordList, recordTotal, getSessionRecordList } = useSessionModel();
 
   const [visible, setVisible] = useState<boolean>(false);
+  const [heightLihgt, setHeightLihgt] = useState<any>({});
 
   const close = () => {
+    setHeightLihgt({});
     setVisible(false);
   };
 
   useImperativeHandle(cref, () => ({
     open: (obj: any) => {
+      setHeightLihgt(obj);
       if (obj.id || obj.sessionId) {
         getSessionRecordList({
           sessionId: obj.sessionId || obj.id,
@@ -44,15 +47,28 @@ const RecordModal: React.FC<any> = (props: any) => {
     close,
   }));
 
+  const hLihgt = (item: any) => {
+    if (heightLihgt.id) {
+      if (heightLihgt?.id == item.id) {
+        return 'red';
+      }
+    } else {
+      if (heightLihgt?.message == item.message) {
+        return 'red';
+      }
+    }
+    return '';
+  };
+
   return (
     <Drawer
       className={style['drawer']}
       width={850}
-      title={'会话记录'}
+      title={`会话记录（${heightLihgt?.sessionId || heightLihgt?.id}）`}
       visible={visible}
       onClose={close}
       destroyOnClose={true}
-      maskClosable={false}
+      // maskClosable={false}
     >
       <div id="scrollableDiv" className={style['record-bg']}>
         {recordList.map((item: any, index: number) => {
@@ -72,6 +88,7 @@ const RecordModal: React.FC<any> = (props: any) => {
                   </div>
                   <div
                     className={style['content']}
+                    style={{ color: hLihgt(item) }}
                     dangerouslySetInnerHTML={{ __html: item.message }}
                   ></div>
                 </div>
@@ -86,7 +103,7 @@ const RecordModal: React.FC<any> = (props: any) => {
                   </div>
                   <div className={style['content']}>
                     <div dangerouslySetInnerHTML={{ __html: item.message }}></div>
-
+                    <div>{item?.recommendQuestion ? item?.recommendQuestion : ''}</div>
                     {item.labels.map((item: any, i: number) => {
                       return (
                         <div className={style['content-item']}>

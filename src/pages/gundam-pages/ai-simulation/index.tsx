@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Row, Col, Form, Card, Input, Radio, Select, Button, message } from 'antd';
+import { Button, Col, Form, Input, message, Row, Select } from 'antd';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { useModel } from 'umi';
 import RobotChatText from './chatText';
 import { useChatModel } from './model';
-import { useModel } from 'umi';
 import styles from './style.less';
 
 const { Option } = Select;
@@ -17,7 +17,7 @@ const tailLayout = {
 };
 
 export default (props: any) => {
-  const { chatVisible, robotInfo } = props;
+  const { cref, chatVisible, robotInfo } = props;
   const [form] = Form.useForm();
   const [envirValue, setEnvirValue] = useState<string>('test'); // 环境值：生产、测试
 
@@ -29,6 +29,8 @@ export default (props: any) => {
   const [clearDialogFlag, handleClearDialog] = useState<boolean>(false); // 是否清理画布
 
   const [chartFormData, setChatFormData] = useState<any>({});
+
+  const RobotChatTexRef = useRef<any>();
 
   const { getRobotChatData } = useChatModel();
 
@@ -79,18 +81,28 @@ export default (props: any) => {
     handleBeginTalking(false); // 重置开始会话功能
   };
 
+  const setChatVisible = (flag: any) => {
+    RobotChatTexRef?.current?.setChatVisible(flag);
+  };
   const fieldValueChange = () => {};
+
+  useImperativeHandle(cref, () => ({
+    setChatVisible,
+  }));
 
   useEffect(() => {
     setRobotChatData({});
     console.log('globalVarList', globalVarList);
     setRobotFormList(globalVarList);
+    console.log(RobotChatTexRef);
 
     // setRobotFormList(robotInfo); // 表单信息
     // showChatText(); // 初始化不开启会话功能
   }, [chatVisible, robotInfo]);
 
   useEffect(() => {
+    console.log(1);
+
     getGlobalValConfig(info.id);
   }, [chatVisible]);
 
@@ -123,6 +135,7 @@ export default (props: any) => {
         </Col>
         <Col span={14}>
           <RobotChatText
+            cref={RobotChatTexRef}
             modalData={robotChatData}
             formData={chartFormData}
             getEnvirmentValue={getEnvirmentValue}

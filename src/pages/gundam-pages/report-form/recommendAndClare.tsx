@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef, Fragment } from 'react';
-import { throttle, toNumber } from '@/utils';
+import config from '@/config/index';
+import { throttle, toNumber, twoDecimal_f } from '@/utils';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Space, Spin, Table, Typography } from 'antd';
+import moment from 'moment';
+import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
-import { Space, Table, Tooltip, Typography, Spin } from 'antd';
 import HeadSearch from './components/headSearch';
 import LineChart from './components/lineCharts';
-import { useReportForm } from './model';
-import moment from 'moment';
-import config from '@/config/index';
-import { QuestionCircleOutlined } from '@ant-design/icons';
 import styles from './index.less';
+import { useReportForm } from './model';
 
 const { Text } = Typography;
 
@@ -262,6 +262,7 @@ export default () => {
           loading={tableLoading}
           title={''}
           base={base}
+          dataSource={dataSource}
           columns={dayId}
           data={lineList}
           color={[
@@ -294,6 +295,7 @@ export default () => {
             columns={columns}
             dataSource={dataSource}
             pagination={false}
+            bordered
             sticky={true}
             scroll={{ y: 270 }}
             size={'small'}
@@ -326,8 +328,11 @@ export default () => {
                   totalclarifyReplyRate =
                     totalclarifyConfirmDistinctNum == 0 || totalclarifyReplyNum == 0
                       ? '0.00%'
-                      : ((totalclarifyConfirmDistinctNum / totalclarifyReplyNum) * 100).toFixed(2) +
-                        '%';
+                      : twoDecimal_f(
+                          Math.floor(
+                            (totalclarifyConfirmDistinctNum / totalclarifyReplyNum) * 10000,
+                          ) / 100,
+                        ) + '%';
 
                   totalrecommendReplyNum += recommendReplyNum;
                   totalrecommendDistinctConfirmNum += recommendDistinctConfirmNum;
@@ -335,43 +340,45 @@ export default () => {
                   totalrecommendReplyConfimRate =
                     totalrecommendDistinctConfirmNum == 0 || totalrecommendReplyNum == 0
                       ? '0.00%'
-                      : ((totalrecommendDistinctConfirmNum / totalrecommendReplyNum) * 100).toFixed(
-                          2,
+                      : twoDecimal_f(
+                          Math.floor(
+                            (totalrecommendDistinctConfirmNum / totalrecommendReplyNum) * 10000,
+                          ) / 100,
                         ) + '%';
                 },
               );
-
-              return (
-                <Table.Summary fixed>
-                  <Table.Summary.Row>
-                    <Table.Summary.Cell index={0}>合计</Table.Summary.Cell>
-                    <Table.Summary.Cell index={1}>
-                      <Text>{totalclarifyReplyNum}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={2}>
-                      <Text>{totalclarifyConfirmDistinctNum}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={3}>
-                      <Text>{totalclarifyUnconfirmedReplyNum}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={4}>
-                      <Text>{totalclarifyReplyRate}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={5}>
-                      <Text>{totalrecommendReplyNum}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={6}>
-                      <Text>{totalrecommendDistinctConfirmNum}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={7}>
-                      <Text>{totalrecommendReplyUnconfirmedNum}</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={8}>
-                      <Text>{totalrecommendReplyConfimRate}</Text>
-                    </Table.Summary.Cell>
-                  </Table.Summary.Row>
-                </Table.Summary>
-              );
+              if (dataSource?.length)
+                return (
+                  <Table.Summary fixed>
+                    <Table.Summary.Row>
+                      <Table.Summary.Cell index={0}>总计</Table.Summary.Cell>
+                      <Table.Summary.Cell index={1}>
+                        <Text>{totalclarifyReplyNum}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={2}>
+                        <Text>{totalclarifyConfirmDistinctNum}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={3}>
+                        <Text>{totalclarifyUnconfirmedReplyNum}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={4}>
+                        <Text>{totalclarifyReplyRate}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={5}>
+                        <Text>{totalrecommendReplyNum}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={6}>
+                        <Text>{totalrecommendDistinctConfirmNum}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={7}>
+                        <Text>{totalrecommendReplyUnconfirmedNum}</Text>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={8}>
+                        <Text>{totalrecommendReplyConfimRate}</Text>
+                      </Table.Summary.Cell>
+                    </Table.Summary.Row>
+                  </Table.Summary>
+                );
             }}
           />
         </Spin>

@@ -36,6 +36,12 @@ const AwaitList: React.FC<any> = (props: any) => {
 
   //获取列表
   const CurrentPage = async (obj?: any) => {
+    if (!obj?.page) {
+      setCurrent(1);
+    }
+    if (!obj?.pageSize) {
+      setPageSize(10);
+    }
     let params = {
       page: 1,
       pageSize: 10,
@@ -49,6 +55,17 @@ const AwaitList: React.FC<any> = (props: any) => {
 
     let res: any = pageType == 'reviewed' ? await getList(params) : await getPList(params);
     console.log(res);
+    if (res) {
+      //分页大于2时删除当前页最后一条数据返回前一页
+      if (res.total > 0) {
+        if (params?.page > Math.ceil(res?.total / params?.pageSize)) {
+          let num: number = current - 1 <= 1 ? 1 : current - 1;
+          setCurrent(num);
+          CurrentPage({ page: num, pageSize });
+        }
+      }
+    }
+
     setTotal(res?.total || 0);
     return res;
   };
@@ -61,8 +78,12 @@ const AwaitList: React.FC<any> = (props: any) => {
   const passBtn = async (row: any) => {
     let res: any = await approvalPass({ id: row.id });
     if (res) {
-      CurrentPage();
+      CurrentPage({ page: current, pageSize });
     }
+  };
+
+  const refreshList = () => {
+    CurrentPage({ page: current, pageSize });
   };
 
   useEffect(() => {
@@ -321,6 +342,7 @@ const AwaitList: React.FC<any> = (props: any) => {
             className={style['Pagination']}
             total={total || 0}
             current={current}
+            pageSize={pageSize}
             showTotal={(total, range) => `第 ${range[0]}-${range[1]} 条/总共 ${total} 条`}
             defaultPageSize={10}
             defaultCurrent={1}
@@ -330,7 +352,7 @@ const AwaitList: React.FC<any> = (props: any) => {
       </div>
       <History cref={historyRef} />
       <AnswerView cref={answerViewRef} />
-      <ReasonModal cref={ReasonModalRef} refresh={CurrentPage} />
+      <ReasonModal cref={ReasonModalRef} refresh={refreshList} />
     </div>
   );
 };

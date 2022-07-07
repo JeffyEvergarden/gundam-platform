@@ -1,10 +1,11 @@
 import { request } from '@/services/request';
+import config from '@/config';
 
-const baseUrl: string = '';
+const baseUrl: string = config.basePath;
 
 /** 获取所有菜单列表 **/
-export async function getMachineList(params?: Record<string, any>) {
-  return request(`${baseUrl}/machine/list`, {
+export async function getUsersList(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/users/userlist`, {
     method: 'GET',
     params,
   });

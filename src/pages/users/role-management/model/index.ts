@@ -1,19 +1,19 @@
 import { useState } from 'react';
 import { message } from 'antd';
 
-import { getRoleList } from './api';
+import { queryRoleList } from './api';
 import config from '@/config';
 
 export const successCode = config.successCode;
 
-export const useTableModel = () => {
-  const [tableList, setTableList] = useState<any[]>([]);
+export const useRoleModel = () => {
+  const [roleList, setRoleList] = useState<any[]>([]);
   const [tableLoading, setTableLoading] = useState<boolean>(false);
   const [opLoading, setOpLoading] = useState<boolean>(false);
 
-  const getTableList = async (params?: any) => {
+  const getRoleList = async (params?: any) => {
     setTableLoading(true);
-    let res: any = await getRoleList(params);
+    let res: any = await queryRoleList(params);
     setTableLoading(false);
     let { list = [], totalPage, totalSize } = res.data || {};
     if (!Array.isArray(list)) {
@@ -26,17 +26,17 @@ export const useTableModel = () => {
         index,
       };
     });
-    // console.log('tableList', datas);
-    setTableList(list || []);
+    // console.log('roleList', datas);
+    setRoleList(list || []);
     return { data: list, total: totalPage };
   };
 
   return {
-    tableList,
-    setTableList,
+    roleList,
+    setRoleList,
     tableLoading,
     opLoading,
     setOpLoading,
-    getTableList, // 获取表格数据
+    getRoleList, // 获取表格数据
   };
 };

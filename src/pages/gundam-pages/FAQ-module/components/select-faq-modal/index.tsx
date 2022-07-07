@@ -149,7 +149,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
         pageSize: 10,
         queryType: 0,
         robotId: info.id,
-        faqTypeId: classType,
+        faqTypeId: classType == '0' ? null : classType,
         searchText: searchText1,
       });
     } else {
@@ -181,12 +181,13 @@ const SelectorModal: React.FC<any> = (props: any) => {
     if (!classType) {
       return;
     }
+    setCurrent1(1);
     getFaqList({
       page: 1,
       pageSize: 10,
       robotId: info.id,
       queryType: 0,
-      faqTypeId: classType,
+      faqTypeId: classType == '0' ? null : classType,
       searchText: searchText1,
     });
   };
@@ -232,7 +233,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       page: 1,
       pageSize: 10,
       robotId: info.id,
-      faqTypeId: val[0],
+      faqTypeId: val[0] == '0' ? null : val[0],
       queryType: 0,
       searchText: searchText1,
     });
@@ -383,6 +384,8 @@ const SelectorModal: React.FC<any> = (props: any) => {
       }
       setCurrent2(1);
 
+      onSelect(['0']);
+
       // 显示
       setVisible(true);
     },
@@ -524,7 +527,12 @@ const SelectorModal: React.FC<any> = (props: any) => {
                       rowExpandable: (record: any) => record?.answerList?.length > 0,
                     }}
                     size="small"
-                    pagination={{ current: current1, onChange: onChange1, total: totalSize }}
+                    pagination={{
+                      current: current1,
+                      onChange: onChange1,
+                      total: totalSize,
+                      showSizeChanger: false,
+                    }}
                     dataSource={faqList}
                     columns={columns1}
                     rowKey="id"
