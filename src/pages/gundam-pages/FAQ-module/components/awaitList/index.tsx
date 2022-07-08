@@ -1,7 +1,7 @@
 import { HIGH_CONFIG_SELECT } from '@/pages/gundam-pages/FAQ/FAQ-manage/const';
 import Condition from '@/pages/gundam-pages/main-draw/flow/common/Condition';
 import ProList from '@ant-design/pro-list';
-import { Button, Divider, Input, Pagination, Select, Space } from 'antd';
+import { Button, Checkbox, Divider, Input, Pagination, Select, Space } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
 import AnswerView from '../answerView-modal';
@@ -28,6 +28,8 @@ const AwaitList: React.FC<any> = (props: any) => {
   const [pageSize, setPageSize] = useState<any>(10);
   const [searchText, setSearchText] = useState<any>('');
   const [queryType, setQueryType] = useState<any>(0);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
+  const [selectAll, setSelectAll] = useState<boolean>(false);
 
   const listRef = useRef<any>({});
   const historyRef = useRef<any>(null);
@@ -69,6 +71,35 @@ const AwaitList: React.FC<any> = (props: any) => {
     CurrentPage();
   }, []);
 
+  const checkboxChange = (val: any) => {
+    let flag = val.target.checked;
+    setSelectAll(flag);
+    handleAll(flag);
+  };
+
+  const handleAll = (flag: any) => {
+    console.log(flag);
+    let all = list?.map((item: any) => item.id);
+    if (flag) {
+      setSelectedRowKeys(all);
+    } else {
+      setSelectedRowKeys([]);
+    }
+  };
+
+  const rowSelection = () => {
+    if (pageType != 'reviewed') {
+      return false;
+    }
+    return {
+      selectedRowKeys,
+      onChange: (keys: any[]) => {
+        console.log(keys);
+        return setSelectedRowKeys(keys);
+      },
+    };
+  };
+
   return (
     <div className={style['FAQ-page']}>
       <div className={style['box']}>
@@ -109,6 +140,16 @@ const AwaitList: React.FC<any> = (props: any) => {
             </Space>
           </div>
         </div>
+        <Condition r-if={pageType == 'reviewed'}>
+          <div className={style['batch_pass']} style={{ marginBottom: '16px' }}>
+            <div className={style['batch_pass']} style={{ paddingTop: '4px' }}>
+              <Checkbox onChange={checkboxChange} checked={selectAll}></Checkbox>
+              <span style={{ marginLeft: '8px' }}>全选</span>
+            </div>
+            <Button type="primary">批量审核通过</Button>
+          </div>
+        </Condition>
+
         <div id="scrollContent" className={style['content-list']}>
           <ProList
             // itemLayout="vertical"
@@ -121,6 +162,7 @@ const AwaitList: React.FC<any> = (props: any) => {
               // return CurrentPage({ page: current, pageSize, robotId: info.id });
             }}
             tableAlertRender={false}
+            rowSelection={rowSelection()}
             metas={{
               title: {
                 render: (title: any, item: any, index: number) => {

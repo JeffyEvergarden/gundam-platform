@@ -271,8 +271,8 @@ export default () => {
     }
   };
 
-  const saveRow = async (record: any, config: any) => {
-    let editValue = config?.form?.getFieldsValue?.()?.[config.recordKey];
+  const saveRow = async (record: any, conf: any) => {
+    let editValue = conf?.form?.getFieldsValue?.()?.[conf.recordKey];
 
     if (record.similarText?.length > 200) {
       record.similarText = record.similarText?.slice(0, 200);
@@ -288,6 +288,9 @@ export default () => {
         faqId: tableInfo?.id,
       };
       await editSimilar(reqData).then((res) => {
+        console.log(res);
+        console.log(config);
+
         if (res.resultCode == config.successCode) {
           message.success(res?.resultDesc || '成功');
           actionRef?.current?.cancelEditable?.(record.id);
