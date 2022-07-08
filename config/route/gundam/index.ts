@@ -145,6 +145,28 @@ export default [
         ],
       },
       {
+        path: '/gundamPages/knowledgeLearn',
+        component: './gundam-pages/knowledge-learn/home',
+        name: '知识学习',
+        routes: [
+          {
+            path: '/gundamPages/knowledgeLearn/batchTest',
+            component: './gundam-pages/knowledge-learn/batch-test',
+            name: '批量检测',
+          },
+          {
+            path: '/gundamPages/knowledgeLearn/batchTest/detailList',
+            component: './gundam-pages/knowledge-learn/component/detail-list',
+            name: '明细',
+          },
+          {
+            path: '/gundamPages/knowledgeLearn/checkWhite',
+            component: './gundam-pages/knowledge-learn/check-white',
+            name: '检测白名单',
+          },
+        ],
+      },
+      {
         path: '/gundamPages/reportForm',
         component: './gundam-pages/report-form/home',
         name: '报表管理',

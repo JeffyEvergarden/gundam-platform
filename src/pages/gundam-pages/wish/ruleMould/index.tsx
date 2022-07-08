@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef, Fragment } from 'react';
+import config from '@/config';
+import { ArrowLeftOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Space, Button, Tooltip, Popconfirm, message, Card, Divider } from 'antd';
-import { useRuleModule } from './model';
-import { useModel, history } from 'umi';
+import { Button, Card, Divider, message, Popconfirm, Space, Tooltip } from 'antd';
+import { Fragment, useEffect, useRef, useState } from 'react';
+import { history, useModel } from 'umi';
 import FeatureModal from './components/featureModal';
 import RuleDrawer from './components/ruleDrawer';
-import { QuestionCircleOutlined, ArrowLeftOutlined } from '@ant-design/icons';
-import config from '@/config';
 import styles from './index.less';
+import { useRuleModule } from './model';
 
 export default (props: any) => {
   const actionRef = useRef<any>();
