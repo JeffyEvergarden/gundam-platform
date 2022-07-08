@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Input, Select, Collapse, Row, Col, Form, message } from 'antd';
-import { ArrowLeftOutlined, SettingOutlined } from '@ant-design/icons';
-import style from './style.less';
-import Recommend from '../question-board/components/recommend-modal';
+import config from '@/config';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { Button, Collapse, Form, message, Select } from 'antd';
+import React, { useEffect } from 'react';
 import { history, useModel } from 'umi';
 import { editQuestion, getRecommend } from '../FAQ-manage/model/api';
-import config from '@/config';
+import Recommend from '../question-board/components/recommend-modal';
+import style from './style.less';
 
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -40,7 +40,7 @@ const RecommendPage: React.FC<any> = (props: any) => {
     let reqData = {
       id: query?.faqId,
       robotId: info.id,
-      faqTypeId: query?.treeId,
+      // faqTypeId: query?.treeId,可不传
       ...params,
     };
     await editQuestion(reqData).then((res) => {

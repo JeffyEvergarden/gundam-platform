@@ -3,33 +3,18 @@ export default [
     path: '/users',
     layout: true,
     component: '../layout',
-    name: '用户管理',
+    name: '权限管理',
     routes: [
       {
         path: '/users/userManagement',
         component: './users/user-management',
-        name: '用户列表',
+        name: '用户管理',
       },
       {
         path: '/users/roleManagement*',
         component: './users/role-management/home',
-        name: '角色列表',
+        name: '角色管理',
       },
-    ],
-  },
-  {
-    path: '/menu',
-    layout: true,
-    component: './menu',
-    name: '菜单管理',
-    routes: [
-      {
-        path: '/menu/home',
-        component: './menu/menu-management',
-        name: '菜单配置',
-      },
-      { redirect: '/menu/home' },
-      { component: './404' },
     ],
   },
 ];

@@ -54,12 +54,12 @@ const FAQClearList = (props: any) => {
 
   // 打开查看聊天记录
   const openDetailModal = (row: any) => {
-    console.log(row);
+    // console.log(row);
     (modalRef.current as any)?.open(row);
   };
   // 打开选择FAQ/意图模态框
   const openSelectFaqModal = (row: any) => {
-    console.log(row);
+    // console.log(row);
     // selectlist  (recommendType、recommendId、recommend)
     // disabledWishKeys    禁止选择的意图
     // disabledQuestionKeys  禁止选择的问题

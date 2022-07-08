@@ -34,7 +34,7 @@ const FAQPage: React.FC<any> = (props: any) => {
   });
   const [queryType, setQueryType] = useState<any>(0);
   const [searchText, setSearchText] = useState<any>('');
-  const [selectTree, setSelectTree] = useState<any>('');
+  const [selectTree, setSelectTree] = useState<any>('0');
 
   const onSelect = (val: any, opt: any) => {
     console.log('选择树形组件:' + val);

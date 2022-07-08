@@ -1,3 +1,5 @@
+import { CHANNAL_LIST } from '../../FAQ/const';
+
 export const HIGH_CONFIG_SELECT = [
   {
     name: 'channelList',
@@ -8,59 +10,14 @@ export const HIGH_CONFIG_SELECT = [
         name: 'all',
         label: '全部',
       },
-      {
-        name: 'media_wx',
-        label: '微信',
-      },
-      {
-        name: 'media_zyqb',
-        label: '中邮钱包',
-      },
-      {
-        name: 'media_zfb',
-        label: '支付宝',
-      },
-      {
-        name: 'media_jtyw',
-        label: '集团邮务',
-      },
-      {
-        name: 'media_gw',
-        label: '中邮官网',
-      },
-      {
-        name: 'media_ycsjyh',
-        label: '邮储手机银行',
-      },
+      ...CHANNAL_LIST.map((item) => {
+        return {
+          name: item.value,
+          ...item,
+        };
+      }),
     ],
   },
-  // {
-  //   name: 'approvalStatusList',
-  //   label: '状态',
-  //   type: 'single',
-  //   children: [
-  //     {
-  //       name: null,
-  //       label: '全部',
-  //     },
-  //     {
-  //       name: 1,
-  //       label: '等待审批',
-  //     },
-  //     {
-  //       name: 2,
-  //       label: '被退回',
-  //     },
-  //     {
-  //       name: 3,
-  //       label: '已过期',
-  //     },
-  //     {
-  //       name: 4,
-  //       label: '已发布',
-  //     },
-  //   ],
-  // },
   {
     name: 'orderType',
     label: '排序',

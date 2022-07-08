@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useModel, history } from 'umi';
-import { useTableModel } from './model';
+import { useRoleModel } from './model';
 import ProTable from '@ant-design/pro-table';
 import { Button, message, Popconfirm } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -9,17 +9,10 @@ import config from '@/config/index';
 import style from './style.less';
 
 // 机器人列表
-const MachineManagement: React.FC = (props: any) => {
+const RoleManagement: React.FC = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
 
-  const { tableList, getTableList, tableLoading } = useTableModel();
-
-  // 分页相关 ---
-  const [current, setCurrent] = useState<number>(1);
-
-  const onChange = (val: number) => {
-    setCurrent(val);
-  };
+  const { roleList, getRoleList, tableLoading } = useRoleModel();
 
   const goToEdit = (row: any) => {
     const roleId = row.id;
@@ -52,6 +45,16 @@ const MachineManagement: React.FC = (props: any) => {
       },
     },
     {
+      title: '用户数',
+      dataIndex: 'roleNum',
+      search: false,
+      width: 200,
+      ellipsis: true,
+      render: (val: any, row: any) => {
+        return val;
+      },
+    },
+    {
       title: '操作',
       dataIndex: 'op',
       width: 130,
@@ -69,6 +72,18 @@ const MachineManagement: React.FC = (props: any) => {
             >
               编辑
             </Button>
+
+            <Button
+              type="link"
+              onClick={() => {
+                // goToEdit(row);
+              }}
+              className={style['btn-success']}
+              style={{ marginRight: '6px' }}
+            >
+              查看用户
+            </Button>
+
             <Button type="link" danger onClick={() => {}}>
               删除
             </Button>
@@ -79,7 +94,7 @@ const MachineManagement: React.FC = (props: any) => {
   ];
 
   useEffect(() => {
-    getTableList();
+    getRoleList();
   }, []);
 
   return (
@@ -90,7 +105,7 @@ const MachineManagement: React.FC = (props: any) => {
         actionRef={tableRef}
         scroll={{ x: columns.length * 200 }}
         request={async (params = {}, sort, filter) => {
-          return getTableList({ page: params.current, ...params });
+          return getRoleList({ page: params.current, ...params });
         }}
         editable={{
           type: 'multiple',
@@ -139,4 +154,4 @@ const MachineManagement: React.FC = (props: any) => {
   );
 };
 
-export default MachineManagement;
+export default RoleManagement;

@@ -1,4 +1,5 @@
 import config from '@/config/index';
+import { img } from '@/utils';
 import { useState } from 'react';
 import { getRecordList, getSessionList } from '../../model/api';
 
@@ -51,7 +52,19 @@ export const useSessionModel = () => {
         role: item.role === 1 ? '客户' : 'AI',
         userName: item.role === 1 ? '客户' : '',
         recordTime: item.createTime,
-        message: (item.role === 1 ? item.message : item.answerText || item.message) || '',
+        message: img(
+          (item.role === 1
+            ? item.message
+            : item?.aiTextHitType == 2 || item?.aiTextHitType == 6 //为澄清情况直接message
+            ? item.message
+            : item.answerText || item.message) || '',
+        ),
+        recommendQuestion:
+          item?.aiTextHitType != 2 && item?.aiTextHitType != 6 && item?.answerText
+            ? labels?.length
+              ? '您是否要想咨询以下问题：'
+              : ''
+            : '', //如果非澄清情况且存在答案和推荐要添加询问
         labels,
         index,
       };

@@ -1,7 +1,7 @@
 import robotPhoto from '@/asset/image/headMan.png';
 import customerPhoto from '@/asset/image/headWoman.png';
 import { Button, Input, message, Modal, Popover, Radio, Space } from 'antd';
-import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { useChatModel } from './model';
 import styles from './style.less';
@@ -31,6 +31,7 @@ const debounce = (fn: (...arr: any[]) => void, second: number) => {
 
 export default (props: any) => {
   const {
+    cref,
     modalData,
     formData,
     getEnvirmentValue,
@@ -49,6 +50,7 @@ export default (props: any) => {
 
   const [nluInfo, setNluInfo] = useState<string>('');
   const [visible, setVisible] = useState<boolean>(false);
+  const [chatVisible, setChatVisible] = useState<boolean>(true);
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -86,6 +88,7 @@ export default (props: any) => {
         formData,
       });
       if (res) {
+        setFocus(true);
         timeFn.current.inputVal = inputVal;
       }
     };
@@ -94,13 +97,19 @@ export default (props: any) => {
   // 弹窗显示
   const PopoverVisible = useMemo(() => {
     // console.log(opLoading, chatEvent, associationList.length);
-    if (chatEvent === 'dialogue' && associationList.length > 0 && focus) {
+    if (
+      chatEvent === 'dialogue' &&
+      associationList.length > 0 &&
+      focus &&
+      chatVisible &&
+      textMessage
+    ) {
       // console.log('PopoverVisible 显示');
       return true;
     } else {
       return false;
     }
-  }, [opLoading, chatEvent, associationList, focus]);
+  }, [opLoading, chatEvent, associationList, focus, chatVisible]);
 
   const boxRef: any = useRef<any>(null);
 
@@ -135,6 +144,16 @@ export default (props: any) => {
     setVisible(true);
   };
 
+  const img = (text: any) => {
+    let reg = /\$\{getResoureUrl\}/g;
+    const reg1 = /^\<\w+\>/;
+    const reg2 = /\<\/\w+\>$/;
+    if (reg1.test(text) && reg2.test(text)) {
+      return text.replace(reg, '/aichat/robot/file/getFile');
+    }
+    return text;
+  };
+
   // 机器人回复内容
   const robotResponse = async (data?: any) => {
     console.log('info', info);
@@ -142,6 +161,7 @@ export default (props: any) => {
     let newDay = new Date().toLocaleDateString();
     let occurDay = newDay.replace(/\//g, '-');
     let newTime = new Date().toLocaleTimeString('en-GB');
+
     let params = {
       requestId: modalData.requestId,
       occurTime: occurDay + ' ' + newTime,
@@ -166,7 +186,7 @@ export default (props: any) => {
       let newData = [...dialogList];
       newData.push({
         type: 'robot',
-        askText: res?.data?.askText,
+        askText: img(res?.data?.askText),
         message: res?.data?.actionMessage,
         recommendQuestion: res?.data?.recommendQuestion,
       });
@@ -197,7 +217,6 @@ export default (props: any) => {
       return;
     }
     setLoading(true);
-    setFocus(false);
     let data = [...dialogList];
     let newDay = new Date().toLocaleDateString();
     let occurDay = newDay.replace(/\//g, '-');
@@ -225,24 +244,25 @@ export default (props: any) => {
       data.push(
         {
           type: 'customer',
-          message: text || textMessage,
+          message: repEnter(text || textMessage),
           askKey: res?.data?.askKey,
           nluInfo: res?.data?.nluInfo,
         },
         {
           type: 'robot',
-          askText: res?.data?.askText,
+          askText: img(res?.data?.askText),
           message: res?.data?.actionMessage,
           recommendQuestion: res?.data?.recommendQuestion,
         },
       );
       setTextMessage('');
+      setFocus(false);
       setAssociationList([]);
       setChatEvent('dialogue');
     } else {
       data.push({
         type: 'customer',
-        message: text || textMessage,
+        message: repEnter(text || textMessage),
         askKey: res?.data?.askKey,
         nluInfo: res?.data?.nluInfo,
       });
@@ -250,6 +270,11 @@ export default (props: any) => {
     }
     setLoading(false);
     setDialogList(data);
+  };
+
+  //替换回车
+  const repEnter = (text: any) => {
+    return text.replace('/\\n/g', '<br/>');
   };
 
   const clearDialog = () => {
@@ -307,7 +332,7 @@ export default (props: any) => {
         },
         {
           type: 'robot',
-          askText: res?.data?.askText,
+          askText: img(res?.data?.askText),
           message: res?.data?.actionMessage,
           recommendQuestion: res?.data?.recommendQuestion,
         },
@@ -369,6 +394,10 @@ export default (props: any) => {
     </div>
   );
 
+  useImperativeHandle(cref, () => ({
+    setChatVisible,
+  }));
+
   useEffect(() => {
     if (toolTipRef.current) {
       toolTipRef.current.scrollTop = 0;
@@ -402,7 +431,11 @@ export default (props: any) => {
                     <div className={styles['customer-part']}>
                       <img className={styles['head-customer']} alt="customer" src={customerPhoto} />
                       <div className={styles['wordsbox']}>
-                        <div className={styles['words']}>{item.message}</div>
+                        <div
+                          className={styles['words']}
+                          style={{ whiteSpace: 'pre-wrap' }}
+                          dangerouslySetInnerHTML={{ __html: item?.message }}
+                        ></div>
                         <div className={styles['words-type']}>
                           <Space>
                             <span>{item.askKey}</span>
@@ -467,9 +500,9 @@ export default (props: any) => {
               value={textMessage}
               className={styles['text-area']}
               autoSize={{ minRows: 6, maxRows: 6 }}
-              onPressEnter={inputChange}
+              onPressEnter={onKeyDown}
               // handleKeyDown={()=>{}}
-              onKeyDown={onKeyDown}
+              // onKeyDown={onKeyDown}
               onChange={inputChange}
               maxLength={200}
               placeholder={'请输入文本，按回车键发送'}
@@ -478,10 +511,10 @@ export default (props: any) => {
                 setFocus(true);
               }}
               onBlur={() => {
-                setTimeout(() => {
-                  setFocus(false);
-                  setAssociationList([]);
-                }, 300);
+                // setTimeout(() => {
+                // setFocus(false);
+                // setAssociationList([]);
+                // }, 300);
               }}
             />
 

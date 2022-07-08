@@ -1,18 +1,9 @@
 export default [
   {
-    path: '/gundam',
+    path: '/gundam/home/list',
     layout: true,
-    component: '../layout',
+    component: './gundam/management/layout',
     name: '机器人管理',
-    routes: [
-      {
-        path: '/gundam/home/list',
-        component: './gundam/management',
-        name: '机器人列表',
-      },
-      { redirect: '/gundam/home/list' },
-      { component: './404' },
-    ],
   },
   {
     path: '/gundamPages',

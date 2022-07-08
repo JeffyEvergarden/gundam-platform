@@ -6,7 +6,7 @@ const visitor = (req: any, res: any) => {
     resultCode: successCode,
     data: [
       {
-        dayId: '2022-02-12',
+        dayId: '2022-03-12',
         visitNum: 25,
         validVisitNum: 34,
         visitorNum: 35,

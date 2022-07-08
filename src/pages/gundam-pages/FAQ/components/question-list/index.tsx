@@ -117,7 +117,7 @@ const QuestionList: React.FC<any> = (props: any) => {
         } else {
           message.error(res.resultDesc);
         }
-        CurrentPage();
+        CurrentPage({ page: current, pageSize });
       });
     } else if (isRecycle == 0) {
       await isAdd({ faqId: val.id, robotId: info.id }).then(async (res) => {
@@ -129,7 +129,7 @@ const QuestionList: React.FC<any> = (props: any) => {
               if (res.resultCode == config.successCode) {
                 message.success(res?.resultDesc || '');
               }
-              CurrentPage();
+              CurrentPage({ page: current, pageSize });
             });
           } else {
             message.warning('已有在途待处理的答案，不可编辑/新增');
@@ -252,7 +252,7 @@ const QuestionList: React.FC<any> = (props: any) => {
             } else {
               message.error(res.resultDesc);
             }
-            CurrentPage();
+            CurrentPage({ page: current, pageSize });
           });
         } else {
           message.warning('已有在途待处理的答案，不可编辑/新增');
@@ -267,6 +267,12 @@ const QuestionList: React.FC<any> = (props: any) => {
   const CurrentPage = async (obj?: any) => {
     // let selectTree = sessionStorage.getItem('selectTree');
     // console.log(obj);
+    if (!obj?.page) {
+      setCurrent(1);
+    }
+    if (!obj?.pageSize) {
+      setPageSize(10);
+    }
     let params = {
       page: 1,
       pageSize: 10,
@@ -274,20 +280,31 @@ const QuestionList: React.FC<any> = (props: any) => {
       queryType: queryType,
       searchText: searchText,
       recycle: isRecycle,
-      faqTypeId: selectTree,
+      faqTypeId: selectTree == '0' ? null : selectTree,
       ...heightSelect,
       ...obj,
     };
     // console.log(selectTree);
 
     console.log(params);
-    if (isRecycle == 0 && !params.faqTypeId) {
-      return;
-    }
+    // if (isRecycle == 0 && !params.faqTypeId) {
+    //   return;
+    // }
 
     setEdit([]);
 
     let res: any = await getFaqList(params);
+    if (res) {
+      //分页大于2时删除当前页最后一条数据返回前一页
+      if (res.total > 0) {
+        if (params?.page > Math.ceil(res?.total / params?.pageSize)) {
+          let num: number = current - 1 <= 1 ? 1 : current - 1;
+          setCurrent(num);
+          CurrentPage({ page: num, pageSize });
+        }
+      }
+    }
+
     // console.log(res);
     getCreateUser(info.id, isRecycle);
 
@@ -310,11 +327,11 @@ const QuestionList: React.FC<any> = (props: any) => {
     await editQuestion(reqData).then((res) => {
       if (res.resultCode == config.successCode) {
         message.success(res.resultDesc);
-        CurrentPage();
+        CurrentPage({ page: current, pageSize });
         return true;
       } else {
         message.error(res.resultDesc);
-        CurrentPage();
+        CurrentPage({ page: current, pageSize });
         return false;
       }
     });
@@ -390,6 +407,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                               </Form.Item>
                             </Form>
                           )}
+                          {/* 不在回收站 */}
                           {!hasCheckbox && !edit[index] && (
                             <Button
                               type="link"
@@ -502,7 +520,11 @@ const QuestionList: React.FC<any> = (props: any) => {
                             type="link"
                             onClick={() => {
                               history.push(
-                                `/gundamPages/faq/recommend?faqId=${item.id}&question=${item.question}&treeId=${selectTree}&recommend=${item.questionRecommend}&recycle=${item.recycle}`,
+                                `/gundamPages/faq/recommend?faqId=${item.id}&question=${
+                                  item.question
+                                }&treeId=${selectTree == '0' ? '' : selectTree}&recommend=${
+                                  item.questionRecommend
+                                }&recycle=${item.recycle}`,
                               );
                             }}
                           >
@@ -722,6 +744,7 @@ const QuestionList: React.FC<any> = (props: any) => {
           className={style['Pagination']}
           total={total || 0}
           current={current}
+          pageSize={pageSize}
           showTotal={(total, range) => `第 ${range[0]}-${range[1]} 条/总共 ${total} 条`}
           defaultPageSize={10}
           defaultCurrent={1}

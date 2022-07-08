@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { message } from 'antd';
+import config from '@/config';
 
-import { getMachineList } from './api';
+import { getUsersList, updateUserAuth } from './api';
 
-export const successCode = 100;
+export const successCode = config.successCode;
 
 // 菜单管理的表格数据
 export const useTableModel = () => {
@@ -13,13 +14,13 @@ export const useTableModel = () => {
 
   const getTableList = async (params?: any) => {
     setTableLoading(true);
-    let res: any = await getMachineList(params);
+    let res: any = await getUsersList(params);
     setTableLoading(false);
-    let { data = [] } = res;
-    if (!Array.isArray(data)) {
-      data = [];
+    let { list = [], totalPage, totalSize } = res.data || {};
+    if (!Array.isArray(list)) {
+      list = [];
     }
-    data = data.map((item: any, index: number) => {
+    list = list.map((item: any, index: number) => {
       return {
         ...item,
         title: item.name,
@@ -27,7 +28,21 @@ export const useTableModel = () => {
       };
     });
     // console.log('tableList', data);
-    setTableList(data || []);
+    setTableList(list || []);
+    return { data: list, total: totalPage };
+  };
+
+  const updateAuth = async (data?: any) => {
+    setOpLoading(true);
+    let res: any = await updateUserAuth(data);
+    setOpLoading(false);
+    if (res.resultCode === successCode) {
+      message.success('编辑用户角色成功');
+      return true;
+    } else {
+      message.warning(res.resultMsg || '未知异常');
+      return false;
+    }
   };
 
   return {
@@ -37,5 +52,6 @@ export const useTableModel = () => {
     opLoading,
     setOpLoading,
     getTableList, // 获取表格数据
+    updateAuth,
   };
 };

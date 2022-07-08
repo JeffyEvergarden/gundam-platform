@@ -101,6 +101,12 @@ const MainDraw = (props: any) => {
       return;
     }
 
+    if (node._nodetype === 'start') {
+      (fake.current as any).executeCommand?.('undo');
+      message.warning('开始节点不允许复制粘贴');
+      return;
+    }
+
     let res = await addNode(params);
     if (res === false) {
       (fake.current as any).deleteNode(node);
