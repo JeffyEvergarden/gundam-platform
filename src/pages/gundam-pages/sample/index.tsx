@@ -271,8 +271,8 @@ export default () => {
     }
   };
 
-  const saveRow = async (record: any, config: any) => {
-    let editValue = config?.form?.getFieldsValue?.()?.[config.recordKey];
+  const saveRow = async (record: any, conf: any) => {
+    let editValue = conf?.form?.getFieldsValue?.()?.[conf.recordKey];
 
     if (record.similarText?.length > 200) {
       record.similarText = record.similarText?.slice(0, 200);
