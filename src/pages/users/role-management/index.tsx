@@ -45,6 +45,16 @@ const RoleManagement: React.FC = (props: any) => {
       },
     },
     {
+      title: '用户数',
+      dataIndex: 'roleNum',
+      search: false,
+      width: 200,
+      ellipsis: true,
+      render: (val: any, row: any) => {
+        return val;
+      },
+    },
+    {
       title: '操作',
       dataIndex: 'op',
       width: 130,
@@ -62,6 +72,18 @@ const RoleManagement: React.FC = (props: any) => {
             >
               编辑
             </Button>
+
+            <Button
+              type="link"
+              onClick={() => {
+                // goToEdit(row);
+              }}
+              className={style['btn-success']}
+              style={{ marginRight: '6px' }}
+            >
+              查看用户
+            </Button>
+
             <Button type="link" danger onClick={() => {}}>
               删除
             </Button>

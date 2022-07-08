@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { message } from 'antd';
+import config from '@/config';
 
-import { getUsersList } from './api';
+import { getUsersList, updateUserAuth } from './api';
 
-export const successCode = 100;
+export const successCode = config.successCode;
 
 // 菜单管理的表格数据
 export const useTableModel = () => {
@@ -31,6 +32,19 @@ export const useTableModel = () => {
     return { data: list, total: totalPage };
   };
 
+  const updateAuth = async (data?: any) => {
+    setOpLoading(true);
+    let res: any = await updateUserAuth(data);
+    setOpLoading(false);
+    if (res.resultCode === successCode) {
+      message.success('编辑用户角色成功');
+      return true;
+    } else {
+      message.warning(res.resultMsg || '未知异常');
+      return false;
+    }
+  };
+
   return {
     tableList,
     setTableList,
@@ -38,5 +52,6 @@ export const useTableModel = () => {
     opLoading,
     setOpLoading,
     getTableList, // 获取表格数据
+    updateAuth,
   };
 };

@@ -1,10 +1,33 @@
 .machine-page {
-  background: #fff;
-  padding: 24px;
   width: 100%;
+  padding: 24px;
+  background: #fff;
 }
 
 .icon {
   max-width: 100px;
   max-height: 80px;
+}
+
+.row_hide {
+  width: 200px;
+  overflow: hidden; // 溢出隐藏
+  white-space: nowrap; // 强制一行
+  text-overflow: ellipsis; // 文字溢出显示省略号
+}
+
+.desc {
+  display: flex;
+  flex-wrap: wrap;
+
+  .desc_block {
+    min-width: 120px;
+    margin-right: 8px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    line-height: 20px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+  }
 }

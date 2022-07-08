@@ -10,3 +10,10 @@ export async function getUsersList(params?: Record<string, any>) {
     params,
   });
 }
+
+export async function updateUserAuth(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/users/updateUserAuth`, {
+    method: 'POST',
+    data,
+  });
+}
