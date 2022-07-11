@@ -110,7 +110,7 @@ export default (props: any) => {
             邮储手机银行
           </Option>
           <Option key={'media_test'} value="media_test">
-            邮储手机银行
+            测试
           </Option>
         </Select>
       </Space>
