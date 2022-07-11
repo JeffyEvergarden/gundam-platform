@@ -69,6 +69,7 @@ export default [
     path: '/gundamPages/businessDraw',
     exact: true,
     _info: { fuck: true },
+    name: '业务流程管理',
   },
   {
     icon: <MessageOutlined />,

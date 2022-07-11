@@ -14,7 +14,7 @@ export const AUTH_LIST: any[] = [
       {
         label: '角色管理',
         value: 'auth',
-        code: '000-001-000',
+        code: '000-002-000',
       },
     ],
   },

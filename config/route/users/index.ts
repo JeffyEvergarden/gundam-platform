@@ -2,8 +2,8 @@ export default [
   {
     path: '/users',
     layout: true,
-    component: '../layout',
     name: '权限管理',
+    component: './users',
     routes: [
       {
         path: '/users/userManagement',

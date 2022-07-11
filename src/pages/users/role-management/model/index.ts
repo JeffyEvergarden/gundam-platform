@@ -3,6 +3,8 @@ import { message } from 'antd';
 
 import { queryRoleList } from './api';
 import config from '@/config';
+import { AUTH_LIST } from '@/auth';
+import { object } from '@umijs/deps/compiled/@hapi/joi';
 
 export const successCode = config.successCode;
 
@@ -38,5 +40,36 @@ export const useRoleModel = () => {
     opLoading,
     setOpLoading,
     getRoleList, // 获取表格数据
+  };
+};
+
+const processTree = (arr: any[]) => {
+  if (!Array.isArray(arr)) {
+    return undefined;
+  }
+
+  let tree = arr.map((item: any) => {
+    let obj: any = {
+      title: item.label,
+      key: item.code,
+      _key: item.value,
+    };
+    if (Array.isArray(item.children)) {
+      obj.children = processTree(item.children);
+    }
+    return obj;
+  });
+
+  return tree;
+};
+
+export const useRoleInfoModel = () => {
+  const AUTH_TREE: any[] = processTree(AUTH_LIST) || [];
+
+  const autoExpendKeys: any[] = AUTH_TREE?.map((item: any) => item.key) || [];
+
+  return {
+    AUTH_TREE,
+    autoExpendKeys,
   };
 };

@@ -61,7 +61,22 @@ const getRoleList = (req: Request, res: Response) => {
   });
 };
 
+const getRoleInfo = (req: Request, res: Response) => {
+  res.json({
+    resultCode: successCode,
+    resultDesc: '成功',
+    success: true,
+    data: {
+      id: '001',
+      roleName: '超级管理员',
+      roleDesc: '超级赛亚人4',
+      createTime: '2022-02-02 22:22:22',
+    },
+  });
+};
+
 export default {
   'GET /aichat/users/myAuth': getMyAuth,
   'GET /aichat/users/role/list': getRoleList,
+  'GET /aichat/users/role/info': getRoleInfo,
 };

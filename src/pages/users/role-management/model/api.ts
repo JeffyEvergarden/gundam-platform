@@ -10,3 +10,10 @@ export async function queryRoleList(params?: Record<string, any>) {
     params,
   });
 }
+
+export async function getRoleInfo(params?: Record<string, any>) {
+  return request(`${baseUrl}/users/role/info`, {
+    method: 'GET',
+    params,
+  });
+}
