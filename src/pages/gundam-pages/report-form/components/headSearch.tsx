@@ -2,6 +2,7 @@ import { Button, DatePicker, Radio, Select, Space } from 'antd';
 import moment from 'moment';
 import { useState } from 'react';
 import styles from './index.less';
+import { CHANNAL_LIST } from '../../FAQ/const';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -91,27 +92,13 @@ export default (props: any) => {
           <Option key={''} value="">
             全部渠道
           </Option>
-          <Option key={'media_wx'} value="media_wx">
-            微信
-          </Option>
-          <Option key={'media_zyqb'} value="media_zyqb">
-            中邮钱包
-          </Option>
-          <Option key={'media_zfb'} value="media_zfb">
-            支付宝
-          </Option>
-          <Option key={'media_jtyw'} value="media_jtyw">
-            集团邮务
-          </Option>
-          <Option key={'media_gw'} value="media_gw">
-            中邮官网
-          </Option>
-          <Option key={'media_ycsjyh'} value="media_ycsjyh">
-            邮储手机银行
-          </Option>
-          <Option key={'media_test'} value="media_test">
-            邮储手机银行
-          </Option>
+          {CHANNAL_LIST.map((item: any) => {
+            return (
+              <Option key={item.value} value={item.value}>
+                {item.label}
+              </Option>
+            );
+          })}
         </Select>
       </Space>
       <Button type="primary" onClick={exportForm}>
