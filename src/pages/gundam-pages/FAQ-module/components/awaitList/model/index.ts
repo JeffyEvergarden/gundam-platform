@@ -4,6 +4,7 @@ import { useState } from 'react';
 import {
   getApprovalList,
   getPendingList,
+  _allApprovalPass,
   _approvalDelete,
   _approvalPass,
   _approvalReturn,
@@ -90,6 +91,20 @@ export const useApprovalModel = () => {
     }
   };
 
+  const allApprovalPass = async (params: any) => {
+    setLoading(true);
+    let res = await _allApprovalPass(params);
+    if (res.resultCode == successCode) {
+      message.success(res.resultDesc);
+      setLoading(false);
+      return true;
+    } else {
+      message.error(res.resultDesc);
+      setLoading(false);
+      return false;
+    }
+  };
+
   const approvalReturn = async (params: any) => {
     let res = await _approvalReturn(params);
     if (res.resultCode == successCode) {
@@ -118,6 +133,7 @@ export const useApprovalModel = () => {
     getList,
     getPList,
     approvalPass,
+    allApprovalPass,
     approvalReturn,
     approvalDelete,
     loading,

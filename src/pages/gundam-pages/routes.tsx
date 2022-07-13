@@ -127,6 +127,7 @@ export default [
         name: '待审核',
         code: 'robot_mg-faq_audit-list',
         access: 'routerAuth',
+        showBadge: true,
       },
       {
         icon: <CrownOutlined />,
@@ -134,6 +135,7 @@ export default [
         name: '待处理',
         code: 'robot_mg-faq_pending-list',
         access: 'routerAuth',
+        showBadge: true,
       },
     ],
   },
@@ -142,6 +144,11 @@ export default [
     path: '/gundamPages/knowledgeLearn',
     name: '知识学习',
     routes: [
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/knowledgeLearn/unknowQuestion',
+        name: '未知问题',
+      },
       {
         icon: <CrownOutlined />,
         path: '/gundamPages/knowledgeLearn/batchTest',

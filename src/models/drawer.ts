@@ -5,6 +5,8 @@ import {
   queryLabelList,
   queryMessageList,
   queryNodeConfig,
+  queryPenging,
+  queryReviewed,
   queryTreeList,
   queryWishList,
   queryWordSlotTableList,
@@ -36,6 +38,9 @@ export default function useDrawerModel() {
   const [_wordSlotList, _setWordSlotList] = useState<any[]>([]); // 词槽列表
 
   const [_messageList, _setMessageList] = useState<any[]>([]); // 信息列表
+
+  const [pengingTotal, setPengingTotal] = useState<any>(0); // 待审核总数
+  const [reviewedTotal, setReviewedTotal] = useState<any>(0); // 待处理总数
 
   // faq 问题树形结构
   const [treeData, setTreeData] = useState<any[]>([]);
@@ -270,6 +275,20 @@ export default function useDrawerModel() {
     }
   };
 
+  const getShowBadgeTotal = async (id?: any) => {
+    let params = {
+      page: 1,
+      pageSize: 1000,
+      robotId: id,
+    };
+    await queryPenging({ ...params, approvalStatus: 2 }).then((res) => {
+      setPengingTotal(res?.data?.totalPage || 0);
+    });
+    await queryReviewed({ ...params, approvalStatus: 1 }).then((res) => {
+      setReviewedTotal(res?.data?.totalPage || 0);
+    });
+  };
+
   return {
     _wishList,
     _setWishList,
@@ -296,5 +315,8 @@ export default function useDrawerModel() {
     getTreeData, // 获取faq问题分类树形结构
     getCreateUser,
     selectBody,
+    getShowBadgeTotal, //获取待审核 待处理
+    pengingTotal,
+    reviewedTotal,
   };
 }

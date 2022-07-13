@@ -1,7 +1,7 @@
 import { HIGH_CONFIG_SELECT } from '@/pages/gundam-pages/FAQ/FAQ-manage/const';
 import Condition from '@/pages/gundam-pages/main-draw/flow/common/Condition';
 import ProList from '@ant-design/pro-list';
-import { Button, Checkbox, Divider, Input, Pagination, Select, Space } from 'antd';
+import { Button, Checkbox, Divider, Input, message, Pagination, Select, Space } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
 import AnswerView from '../answerView-modal';
@@ -15,13 +15,14 @@ const { Option } = Select;
 //test
 const AwaitList: React.FC<any> = (props: any) => {
   const { cref, pageType } = props;
-  const { list, getList, getPList, approvalPass, loading, totalPage } = useApprovalModel();
+  const { list, getList, getPList, approvalPass, allApprovalPass, loading, totalPage } =
+    useApprovalModel();
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     setInfo: model.setInfo,
   }));
-  const { getCreateUser } = useModel('drawer' as any, (model: any) => ({
-    getCreateUser: model.getCreateUser,
+  const { getShowBadgeTotal } = useModel('drawer' as any, (model: any) => ({
+    getShowBadgeTotal: model.getShowBadgeTotal,
   }));
   const [current, setCurrent] = useState<any>(1);
   const [total, setTotal] = useState<any>(0);
@@ -67,6 +68,7 @@ const AwaitList: React.FC<any> = (props: any) => {
         }
       }
     }
+    getShowBadgeTotal(info.id);
 
     setTotal(res?.total || 0);
     return res;
@@ -79,6 +81,19 @@ const AwaitList: React.FC<any> = (props: any) => {
 
   const passBtn = async (row: any) => {
     let res: any = await approvalPass({ id: row.id });
+    if (res) {
+      CurrentPage({ page: current, pageSize });
+    }
+  };
+
+  const allPass = async () => {
+    console.log(selectedRowKeys);
+    if (!selectedRowKeys?.length) {
+      message.warning('请选择待审核问题');
+      return;
+    }
+    let res: any = await allApprovalPass({ idList: selectedRowKeys });
+
     if (res) {
       CurrentPage({ page: current, pageSize });
     }
@@ -167,7 +182,9 @@ const AwaitList: React.FC<any> = (props: any) => {
               <Checkbox onChange={checkboxChange} checked={selectAll}></Checkbox>
               <span style={{ marginLeft: '8px' }}>全选</span>
             </div>
-            <Button type="primary">批量审核通过</Button>
+            <Button type="primary" onClick={allPass}>
+              批量审核通过
+            </Button>
           </div>
         </Condition>
 

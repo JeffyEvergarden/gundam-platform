@@ -1,12 +1,13 @@
 import hoverRobot from '@/asset/image/hoverRobot.png';
 import { LoginOutlined } from '@ant-design/icons';
-import { message, Modal } from 'antd';
+import { Badge, message, Modal } from 'antd';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { history, useLocation, useModel } from 'umi';
 import RobotChatBox from './ai-simulation';
 
 import ProLayout, { RouteContext, RouteContextType } from '@ant-design/pro-layout';
 
+import Condition from '@/components/Condition';
 import RightContent from '@/components/RightContent';
 import { useOpModel } from '../gundam/management/model';
 import { deepClone } from './FAQ/question-board/model/utils';
@@ -66,6 +67,14 @@ const MachinePagesHome: React.FC = (props: any) => {
       setGlobalVarList: model.setGlobalVarList,
     }),
   );
+  const { pengingTotal, reviewedTotal, getShowBadgeTotal } = useModel(
+    'drawer' as any,
+    (model: any) => ({
+      pengingTotal: model.pengingTotal,
+      reviewedTotal: model.reviewedTotal,
+      getShowBadgeTotal: model.getShowBadgeTotal,
+    }),
+  );
   useEffect(() => {
     setPathname(location.pathname);
   }, [location]);
@@ -112,6 +121,7 @@ const MachinePagesHome: React.FC = (props: any) => {
 
   useEffect(() => {
     getLastInfo();
+    getShowBadgeTotal(info.id);
   }, []);
 
   const goBack = () => {
@@ -141,6 +151,16 @@ const MachinePagesHome: React.FC = (props: any) => {
     setChatVis(true);
   };
 
+  //小红点
+  const showBadge = (item: any) => {
+    if (item.name == '待审核') {
+      return reviewedTotal;
+    } else if (item.name == '待处理') {
+      return pengingTotal;
+    }
+    return 0;
+  };
+
   return (
     <ProLayout
       title="机器人详情"
@@ -160,14 +180,18 @@ const MachinePagesHome: React.FC = (props: any) => {
         setChatVis(false);
       }}
       menuItemRender={(item: any, dom: any) => (
-        <a
+        <div
+          className={style['menu-item']}
           onClick={() => {
             history.push(item.path);
             setPathname(item.path || '/gundamPages/mainDraw');
           }}
         >
-          {dom}
-        </a>
+          <a>{dom}</a>
+          <Condition r-if={item?.showBadge}>
+            <Badge count={showBadge(item)} style={{ marginLeft: '16px' }} />
+          </Condition>
+        </div>
       )}
       disableContentMargin={false}
     >
