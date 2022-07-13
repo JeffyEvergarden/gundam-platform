@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { message } from 'antd';
 
-import { queryRoleList } from './api';
+import { queryRoleList, getRoleInfo, addRoleInfo, updateRoleAuth, updateRoleInfo } from './api';
 import config from '@/config';
 import { AUTH_LIST } from '@/auth';
-import { object } from '@umijs/deps/compiled/@hapi/joi';
 
 export const successCode = config.successCode;
 
@@ -12,6 +11,8 @@ export const useRoleModel = () => {
   const [roleList, setRoleList] = useState<any[]>([]);
   const [tableLoading, setTableLoading] = useState<boolean>(false);
   const [opLoading, setOpLoading] = useState<boolean>(false);
+
+  const [roleInfo, setInfo] = useState<any>(false);
 
   const getRoleList = async (params?: any) => {
     setTableLoading(true);
@@ -33,13 +34,64 @@ export const useRoleModel = () => {
     return { data: list, total: totalPage };
   };
 
+  const getRole = async (params: any) => {
+    let res = await getRoleInfo(params);
+    if (res.resultCode === successCode) {
+      setInfo(res.data);
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const updateAuth = async (data: any) => {
+    setOpLoading(true);
+    let res = await updateRoleAuth(data);
+    setOpLoading(false);
+    if (res.resultCode === successCode) {
+      return true;
+    } else {
+      message.error(res.resultMsg || '修改失败');
+      return false;
+    }
+  };
+
+  const addRole = async (data: any) => {
+    setOpLoading(true);
+    let res = await addRoleInfo(data);
+    setOpLoading(false);
+    if (res.resultCode === successCode) {
+      return true;
+    } else {
+      message.error(res.resultMsg || '新建失败');
+      return false;
+    }
+  };
+
+  const updateRole = async (data: any) => {
+    setOpLoading(true);
+    let res = await updateRoleInfo(data);
+    setOpLoading(false);
+    if (res.resultCode === successCode) {
+      return true;
+    } else {
+      message.error(res.resultMsg || '修改失败');
+      return false;
+    }
+  };
+
   return {
     roleList,
     setRoleList,
     tableLoading,
     opLoading,
+    roleInfo,
     setOpLoading,
     getRoleList, // 获取表格数据
+    getRole,
+    updateAuth,
+    addRole,
+    updateRole,
   };
 };
 

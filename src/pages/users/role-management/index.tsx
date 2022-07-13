@@ -7,46 +7,57 @@ import { PlusOutlined } from '@ant-design/icons';
 import Condition from '@/components/Condition';
 import config from '@/config/index';
 import style from './style.less';
+import RoleModal from './components/role-modal';
+import { addRoleInfo } from './model/api';
 
 // 机器人列表
 const RoleManagement: React.FC = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
 
-  const { roleList, getRoleList, tableLoading } = useRoleModel();
+  const { roleList, getRoleList, tableLoading, addRole, opLoading, updateRole } = useRoleModel();
 
   const goToEdit = (row: any) => {
-    const roleId = row.id;
-    history.push(`/users/roleManagement/edit?roleId=${roleId}`);
+    const roleId = row.code;
+    history.push(`/users/roleManagement/edit?roleCode=${roleId}&name=${row.name}`);
+  };
+
+  const goToUsers = (row: any) => {
+    const roleId = row.code;
+    history.push(`/users/userManagement?roleCode=${roleId}`);
   };
 
   const tableRef = useRef<any>({});
 
   const modalRef = useRef<any>({});
 
+  const openEditModal = (row: any) => {
+    (modalRef.current as any)?.open(row);
+  };
+
   const columns: any[] = [
     {
       title: '角色名称',
-      dataIndex: 'roleName',
+      dataIndex: 'name',
       fixed: 'left',
       fieldProps: {
         placeholder: '请输入角色名称',
       },
       ellipsis: true,
-      width: 180,
-    },
-    {
-      title: '角色描述',
-      dataIndex: 'roleDesc',
-      search: false,
       width: 200,
-      ellipsis: true,
-      render: (val: any, row: any) => {
-        return val;
-      },
     },
+    // {
+    //   title: '角色描述',
+    //   dataIndex: 'roleDesc',
+    //   search: false,
+    //   width: 200,
+    //   ellipsis: true,
+    //   render: (val: any, row: any) => {
+    //     return val;
+    //   },
+    // },
     {
       title: '用户数',
-      dataIndex: 'roleNum',
+      dataIndex: 'userCount',
       search: false,
       width: 200,
       ellipsis: true,
@@ -57,26 +68,37 @@ const RoleManagement: React.FC = (props: any) => {
     {
       title: '操作',
       dataIndex: 'op',
-      width: 130,
+      width: 120,
       search: false,
       render: (val: any, row: any, index: number) => {
         return (
           <div style={{ display: 'flex' }}>
-            <Button
-              type="link"
+            {/* <Button
+              type="text"
               onClick={() => {
                 console.log(row);
-                goToEdit(row);
+                openEditModal(row);
               }}
               style={{ marginRight: '6px' }}
             >
               编辑
+            </Button> */}
+
+            <Button
+              type="link"
+              onClick={() => {
+                // console.log(row);
+                goToEdit(row);
+              }}
+              style={{ marginRight: '6px' }}
+            >
+              权限设置
             </Button>
 
             <Button
               type="link"
               onClick={() => {
-                // goToEdit(row);
+                goToUsers(row);
               }}
               className={style['btn-success']}
               style={{ marginRight: '6px' }}
@@ -84,17 +106,41 @@ const RoleManagement: React.FC = (props: any) => {
               查看用户
             </Button>
 
-            <Button type="link" danger onClick={() => {}}>
+            {/* <Button type="link" danger onClick={() => {}}>
               删除
-            </Button>
+            </Button> */}
           </div>
         );
       },
     },
   ];
 
+  const onConfirm = async (row: any) => {
+    console.log(row);
+    let res: any = false;
+    if (row._openType === 'new') {
+      res = await addRole({
+        ...row.form,
+      });
+    } else if (row._openType === 'edit') {
+      const roleId = row?._originInfo?.id;
+      if (!roleId) {
+        message.warning('获取不到角色ID');
+        return;
+      }
+      res = await updateRole({
+        id: roleId,
+        ...row.form,
+      });
+    }
+    if (res) {
+      (modalRef.current as any).close();
+      (tableRef.current as any).reload();
+    }
+  };
+
   useEffect(() => {
-    getRoleList();
+    (tableRef.current as any).reload();
   }, []);
 
   return (
@@ -138,18 +184,20 @@ const RoleManagement: React.FC = (props: any) => {
         dateFormatter="string"
         headerTitle=""
         toolBarRender={() => [
-          <Button
-            key="button"
-            icon={<PlusOutlined />}
-            type="primary"
-            onClick={() => {
-              modalRef.current?.open?.();
-            }}
-          >
-            新建角色
-          </Button>,
+          // <Button
+          //   key="button"
+          //   icon={<PlusOutlined />}
+          //   type="primary"
+          //   onClick={() => {
+          //     (modalRef.current as any)?.open({});
+          //   }}
+          // >
+          //   新建角色
+          // </Button>,
         ]}
       />
+
+      <RoleModal cref={modalRef} confirm={onConfirm} loading={opLoading}></RoleModal>
     </div>
   );
 };

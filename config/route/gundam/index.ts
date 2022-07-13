@@ -4,6 +4,7 @@ export default [
     layout: true,
     component: './gundam/management/layout',
     name: '机器人管理',
+    access: 'routerAuth',
   },
   {
     path: '/gundamPages',

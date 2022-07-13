@@ -2,7 +2,8 @@ import { AUTH_LIST } from './index';
 
 const codeToNameMap = {}; // 后端code 到 中文名称映射
 const valueToCodeMap = {}; // 前端code 到 后端code映射
-const valueToObjMap = {};
+const valueToObjMap = {}; // 前端code 到 后端code映射
+const codeToObjMap = {};
 
 const listToMap = (arr: any) => {
   arr.forEach((item: any) => {
@@ -16,10 +17,11 @@ const listToMap = (arr: any) => {
         label: item.label,
         value: item.value,
       };
+      codeToObjMap[item.code] = valueToObjMap[item.value];
     }
   });
 };
 
 listToMap(AUTH_LIST);
 
-export { codeToNameMap, valueToCodeMap, valueToObjMap };
+export { codeToNameMap, valueToCodeMap, valueToObjMap, codeToObjMap };

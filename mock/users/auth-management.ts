@@ -21,39 +21,39 @@ const getRoleList = (req: Request, res: Response) => {
       page: 1,
       list: [
         {
-          id: '001',
-          roleName: '超级管理员',
-          roleDesc: '超级赛亚人4',
+          code: '001',
+          name: '超级管理员',
+          userCount: '超级赛亚人4',
           createTime: '2022-02-02 22:22:22',
         },
         {
-          id: '002',
-          roleName: '普通管理员',
-          roleDesc: '超级赛亚人',
+          code: '002',
+          name: '普通管理员',
+          userCount: '超级赛亚人',
           createTime: '2022-02-02 22:22:22',
         },
         {
-          id: '003',
-          roleName: '管理员1',
-          roleDesc: '超级赛亚人4',
+          code: '003',
+          name: '管理员1',
+          userCount: '超级赛亚人4',
           createTime: '2022-02-02 22:22:22',
         },
         {
-          id: '004',
-          roleName: '管理员2',
-          roleDesc: '超级赛亚人',
+          code: '004',
+          name: '管理员2',
+          userCount: '超级赛亚人',
           createTime: '2022-02-02 22:22:22',
         },
         {
-          id: '005',
-          roleName: '管理员3',
-          roleDesc: '超级赛亚人4',
+          code: '005',
+          name: '管理员3',
+          userCount: '超级赛亚人4',
           createTime: '2022-02-02 22:22:22',
         },
         {
-          id: '006',
-          roleName: '管理员4',
-          roleDesc: '超级赛亚人',
+          code: '006',
+          name: '管理员4',
+          userCount: '超级赛亚人',
           createTime: '2022-02-02 22:22:22',
         },
       ],
@@ -66,17 +66,39 @@ const getRoleInfo = (req: Request, res: Response) => {
     resultCode: successCode,
     resultDesc: '成功',
     success: true,
-    data: {
-      id: '001',
-      roleName: '超级管理员',
-      roleDesc: '超级赛亚人4',
+    datas: {
+      code: '001',
+      name: '超级管理员',
+      userCount: '超级赛亚人4',
       createTime: '2022-02-02 22:22:22',
+      authKeys: ['001-001-001'],
     },
+    data: [
+      {
+        operationCode: '001-001-001',
+        roleCode: '超级管理员',
+      },
+      {
+        operationCode: '001-002-001',
+        roleCode: '超级管理员',
+      },
+    ],
+  });
+};
+
+const normalRes = (req: Request, res: Response) => {
+  res.json({
+    resultCode: successCode,
+    resultDesc: '成功',
+    success: true,
   });
 };
 
 export default {
   'GET /aichat/users/myAuth': getMyAuth,
-  'GET /aichat/users/role/list': getRoleList,
-  'GET /aichat/users/role/info': getRoleInfo,
+  'GET /aichat/robot/role/list': getRoleList,
+  'GET /aichat/robot/role/getPermission': getRoleInfo,
+  'POST /aichat/users/role/addInfo': normalRes,
+  'POST /aichat/users/role/updateInfo': normalRes,
+  'POST /aichat/robot/role/savePermission': normalRes,
 };

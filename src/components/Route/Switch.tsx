@@ -33,6 +33,7 @@ const Switch = (props: any) => {
           pageRedirect = (
             <LifeCycle
               onMount={() => {
+                console.log(url);
                 history.replace(url);
               }}
             />
@@ -44,13 +45,15 @@ const Switch = (props: any) => {
     }
   });
 
-  return match
+  let page = match
     ? React.cloneElement(element, { computedMatch: match })
     : pageRedirect
     ? pageRedirect
     : page404
     ? React.cloneElement(page404, { needShow: true })
     : null;
+  console.log(page);
+  return page;
 };
 
 export default Switch;

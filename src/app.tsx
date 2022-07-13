@@ -70,8 +70,14 @@ export async function getInitialState(): Promise<{
   const fetchAuthInfo = async () => {
     try {
       const result: any = await queryAuthInfo();
+      let data: any = result.data || [];
+      data = Array.isArray(data)
+        ? data.map((item: any) => {
+            return item.operationCode;
+          })
+        : [];
       // TODO 这里应该按照具体执行做点数据加工
-      return result?.datas || [];
+      return data;
     } catch (error) {
       return [];
     }
@@ -101,6 +107,8 @@ export async function getInitialState(): Promise<{
   // let [currentUser, userAuth] = await Promise.all([res1]);
   // 需要抓取用户信息
   let [userMsg, userAuth]: any[] = await Promise.all([res1, res2]);
+  // console.log('userAuth');
+  // console.log(userAuth);
 
   // 部门
   // const orz = userAuth?.userSummary?.organizations?.[0]?.name || '';
