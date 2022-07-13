@@ -11,9 +11,8 @@
 
 .auth-page {
   display: flex;
-  height: calc(100vh - 170px);
+  min-height: calc(100vh - 170px);
   padding: 16px;
-  overflow: auto;
   background: #fff;
 
   :global {
@@ -29,6 +28,14 @@
   }
 }
 
+.diy-container {
+  :global {
+    .ant-page-header-content {
+      padding-top: 0;
+    }
+  }
+}
+
 .btn-success {
   color: #19be6b;
 
@@ -39,4 +46,17 @@
   &:active {
     color: #47cb89;
   }
+}
+
+.zy-row {
+  display: flex;
+  align-items: center;
+}
+
+.left {
+  flex: 1 0 auto;
+}
+
+.right {
+  flex-shrink: 0;
 }

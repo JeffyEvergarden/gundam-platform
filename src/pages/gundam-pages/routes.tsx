@@ -69,6 +69,7 @@ export default [
     path: '/gundamPages/businessDraw',
     exact: true,
     _info: { fuck: true },
+    name: '业务流程管理',
   },
   {
     icon: <MessageOutlined />,
@@ -113,6 +114,11 @@ export default [
     path: '/gundamPages/knowledgeLearn',
     name: '知识学习',
     routes: [
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/knowledgeLearn/unknowQuestion',
+        name: '未知问题',
+      },
       {
         icon: <CrownOutlined />,
         path: '/gundamPages/knowledgeLearn/batchTest',
