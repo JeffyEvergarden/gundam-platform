@@ -150,6 +150,11 @@ export default [
         name: '知识学习',
         routes: [
           {
+            path: '/gundamPages/knowledgeLearn/unknowQuestion',
+            component: './gundam-pages/knowledge-learn/unknowQuestion',
+            name: '未知问题',
+          },
+          {
             path: '/gundamPages/knowledgeLearn/batchTest',
             component: './gundam-pages/knowledge-learn/batch-test',
             name: '批量检测',

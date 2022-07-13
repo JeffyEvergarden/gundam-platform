@@ -114,6 +114,11 @@ export default [
     routes: [
       {
         icon: <CrownOutlined />,
+        path: '/gundamPages/knowledgeLearn/unknowQuestion',
+        name: '未知问题',
+      },
+      {
+        icon: <CrownOutlined />,
         path: '/gundamPages/knowledgeLearn/batchTest',
         name: '批量检测',
       },
