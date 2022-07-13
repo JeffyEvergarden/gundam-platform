@@ -343,6 +343,7 @@ export default {
   'GET /aichat/robot/faq/faqPendingPageList': getPendingList,
   //通过
   'POST /aichat/robot/faq/approvalAdopt': normalDeal,
+  'POST /aichat/robot/faq/batchApprovalAdopt': normalDeal,
   //退回删除
   'POST /aichat/robot/faq/approvalReturn': normalDeal,
   'POST /aichat/robot/faq/approvalDelete': normalDeal,

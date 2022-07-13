@@ -133,7 +133,7 @@ const WhiteListPages: React.FC = (props: any) => {
           persistenceKey: 'pro-table-machine-list',
           persistenceType: 'localStorage',
         }}
-        rowKey="index"
+        rowKey="id"
         search={false}
         form={{
           // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下

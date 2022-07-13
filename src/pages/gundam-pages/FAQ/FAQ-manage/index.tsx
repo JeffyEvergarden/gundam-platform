@@ -154,6 +154,12 @@ const FAQPage: React.FC<any> = (props: any) => {
             <Button
               // type="primary"
               style={{ border: 0 }}
+            >
+              批量导出
+            </Button>
+            <Button
+              // type="primary"
+              style={{ border: 0 }}
               onClick={() => {
                 history.push('/gundamPages/faq/recycle');
               }}

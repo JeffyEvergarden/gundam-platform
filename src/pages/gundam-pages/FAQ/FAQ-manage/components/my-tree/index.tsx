@@ -84,17 +84,17 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
   // 选择节点
   const onSelect = (key: any, opt: any) => {
     let node = opt.node;
-    if (leafClickOnly) {
-      if (node.key === '0') {
-        onChange?.(key, opt);
-        return;
-      }
-      if (!node.children || node.children?.length === 0) {
-        onChange?.(key, opt);
-      }
-    } else {
-      onChange?.(key, opt);
-    }
+    // if (leafClickOnly) {
+    //   if (node.key === '0') {
+    //     onChange?.(key, opt);
+    //     return;
+    //   }
+    //   if (!node.children || node.children?.length === 0) {
+    //     onChange?.(key, opt);
+    //   }
+    // } else {
+    onChange?.(key, opt);
+    // }
     // 只有level2级的才会触发加载
     // if (opt?.node?.level === 2) {
     //   onChange?.(key, opt);

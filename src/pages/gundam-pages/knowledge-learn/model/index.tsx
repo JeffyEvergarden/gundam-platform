@@ -6,14 +6,15 @@ import {
   getBatchList,
   getDetailList,
   getWhiteList,
-  saveTestTsak,
-  temporaryTest as _temporaryTest,
+  saveTemporaryTask,
+  saveTestTask,
 } from './api';
 
 const successCode = config.successCode;
 
 export const useBatchModel = () => {
   const [list, setList] = useState<any>([]);
+  const [nextCheckTime, setNextCheckTime] = useState<any>('-');
   const [totalPage, setTotalPage] = useState<any>(0);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -25,9 +26,11 @@ export const useBatchModel = () => {
     if (res.resultCode == successCode) {
       data = res?.data?.list || [];
       setList(data);
+      setNextCheckTime(res?.data?.nextTestTime);
       setTotalPage(res?.data?.totalPage);
     } else {
       setList([]);
+      setNextCheckTime('-');
       setTotalPage(0);
     }
     setLoading(false);
@@ -45,6 +48,7 @@ export const useBatchModel = () => {
 
   return {
     list,
+    nextCheckTime,
     totalPage,
     getList,
     loading,
@@ -54,7 +58,7 @@ export const useBatchModel = () => {
 //检测管理
 export const useTestModel = () => {
   const saveTest = async (params: any) => {
-    let res = await saveTestTsak(params);
+    let res = await saveTestTask(params);
     if (res.resultCode == successCode) {
       message.success(res.resultDesc);
       return true;
@@ -64,8 +68,8 @@ export const useTestModel = () => {
     }
   };
 
-  const temporaryTest = async (params: any) => {
-    let res = await _temporaryTest(params);
+  const saveTemporary = async (params: any) => {
+    let res = await saveTemporaryTask(params);
     if (res.resultCode == successCode) {
       message.success(res.resultDesc);
       return true;
@@ -77,7 +81,7 @@ export const useTestModel = () => {
 
   return {
     saveTest,
-    temporaryTest,
+    saveTemporary,
   };
 };
 

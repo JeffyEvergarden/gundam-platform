@@ -103,3 +103,19 @@ export async function queryCreateUser(params?: Record<string, any>) {
     params,
   });
 }
+
+//待处理
+export async function queryPenging(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/faqPendingPageList`, {
+    method: 'GET',
+    params,
+  });
+}
+
+//待审核
+export async function queryReviewed(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/faqApprovalPageList`, {
+    method: 'GET',
+    params,
+  });
+}

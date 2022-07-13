@@ -98,11 +98,13 @@ export default [
         icon: <CrownOutlined />,
         path: '/gundamPages/module/faq/reviewedList',
         name: '待审核',
+        showBadge: true,
       },
       {
         icon: <CrownOutlined />,
         path: '/gundamPages/module/faq/pendingList',
         name: '待处理',
+        showBadge: true,
       },
     ],
   },
