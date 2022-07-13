@@ -21,8 +21,8 @@ const AwaitList: React.FC<any> = (props: any) => {
     info: model.info,
     setInfo: model.setInfo,
   }));
-  const { getCreateUser } = useModel('drawer' as any, (model: any) => ({
-    getCreateUser: model.getCreateUser,
+  const { getShowBadgeTotal } = useModel('drawer' as any, (model: any) => ({
+    getShowBadgeTotal: model.getShowBadgeTotal,
   }));
   const [current, setCurrent] = useState<any>(1);
   const [total, setTotal] = useState<any>(0);
@@ -68,6 +68,7 @@ const AwaitList: React.FC<any> = (props: any) => {
         }
       }
     }
+    getShowBadgeTotal(info.id);
 
     setTotal(res?.total || 0);
     return res;
