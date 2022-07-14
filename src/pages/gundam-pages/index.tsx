@@ -176,6 +176,7 @@ const MachinePagesHome: React.FC = (props: any) => {
       onPageChange={() => {
         handleChatVisible(false);
         setChatVis(false);
+        getShowBadgeTotal(info.id);
       }}
       menuItemRender={(item: any, dom: any) => (
         <div

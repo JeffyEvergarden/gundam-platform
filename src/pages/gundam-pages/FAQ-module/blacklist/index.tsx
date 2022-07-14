@@ -1,7 +1,6 @@
-import { CHANNAL_LIST, formatChannel } from '@/pages/gundam-pages/FAQ/const';
 import { PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Button, Form, Input, Modal, Popconfirm, Radio } from 'antd';
+import { Button, Form, Input, Modal, Popconfirm } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { useTableModel } from './model';
@@ -58,15 +57,15 @@ const FAQBlackList = (props: any) => {
       },
       ellipsis: true,
     },
-    {
-      title: '渠道',
-      dataIndex: 'channelCode',
-      search: false,
-      render: (val: any) => {
-        return formatChannel(val);
-      },
-      width: 180,
-    },
+    // {
+    //   title: '渠道',
+    //   dataIndex: 'channelCode',
+    //   search: false,
+    //   render: (val: any) => {
+    //     return formatChannel(val);
+    //   },
+    //   width: 180,
+    // },
     {
       title: '添加时间',
       dataIndex: 'createTime',
@@ -215,7 +214,7 @@ const FAQBlackList = (props: any) => {
                 <TextArea placeholder={'请输入问题名称'} maxLength={200} rows={3} />
               </Form.Item>
 
-              <Form.Item
+              {/* <Form.Item
                 label="渠道"
                 name="channelCode"
                 rules={[{ required: true, message: '请选择渠道' }]}
@@ -229,7 +228,7 @@ const FAQBlackList = (props: any) => {
                     );
                   })}
                 </Radio.Group>
-              </Form.Item>
+              </Form.Item> */}
             </Form>
           </div>
         </div>

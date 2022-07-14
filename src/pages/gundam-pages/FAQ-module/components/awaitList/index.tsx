@@ -68,7 +68,7 @@ const AwaitList: React.FC<any> = (props: any) => {
         }
       }
     }
-    getShowBadgeTotal(info.id);
+    // getShowBadgeTotal(info.id);
 
     setTotal(res?.total || 0);
     return res;
