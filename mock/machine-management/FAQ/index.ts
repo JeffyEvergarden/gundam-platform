@@ -1,4 +1,3 @@
-import { Request, Response } from 'express';
 import config from '../../../src/config';
 
 // faq 标准模块相关
@@ -84,6 +83,7 @@ const getFaqList = (req: any, res: any, next: any) => {
       pageSize: 10,
       totalPage: 11,
       page: 1,
+      similarNum: 20,
       list: [...list],
     },
   });
@@ -136,6 +136,7 @@ const getTreeList = (req: any, res: any) => {
       {
         title: '贷款产品分类',
         key: '0-0',
+        faqCount: 2,
         children: [
           {
             title: '循环贷循环贷循环贷循环贷循环贷循环贷循环贷循环贷循环贷',
@@ -150,6 +151,7 @@ const getTreeList = (req: any, res: any) => {
       {
         title: '产品操作',
         key: '0-1',
+        faqCount: 2,
         children: [
           {
             title: '神奇流程',

@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { getQuestionList, getTreeList, addNodeLeaf, editNodeLeaf, deleteNodeLeaf } from './api';
 import config from '@/config/index';
 import { message } from 'antd';
+import { useState } from 'react';
+import { addNodeLeaf, deleteNodeLeaf, editNodeLeaf, getQuestionList, getTreeList } from './api';
 
 const successCode = config.successCode;
 
@@ -10,6 +10,7 @@ export const useFaqModal = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [faqList, setFaqList] = useState<any[]>([]);
   const [totalSize, setTotalSize] = useState<number>(0);
+  const [resData, setResData] = useState<any>();
 
   const getFaqList = async (params: any) => {
     setLoading(true);
@@ -36,6 +37,7 @@ export const useFaqModal = () => {
 
       setFaqList(data);
       setTotalSize(res?.data?.totalPage || 0);
+      setResData(res?.data);
       return { data, total: res?.data?.totalPage };
     } else {
       setFaqList([]);
@@ -62,6 +64,7 @@ export const useFaqModal = () => {
 
   return {
     loading,
+    resData,
     faqList,
     totalSize,
     setFaqList,
@@ -90,10 +93,11 @@ export const useTreeModal = () => {
     }
     let _data = data.map((item: any) => {
       let obj: any = {
-        title: item.title,
+        title: item.faqCount ? `${item.title} [${item.faqCount}]` : item.title,
         key: item.key,
         parent: parent || item.parent || '0',
         deep: parent?.deep + 1 || 1,
+        count: item.faqCount,
       };
       let children: any = processTreeData(item.children, obj);
 

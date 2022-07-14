@@ -226,8 +226,9 @@ export default function useDrawerModel() {
 
     let _data = data.map((item: any) => {
       let obj: any = {
-        title: item?.title,
+        title: item.faqCount ? `${item.title} [${item.faqCount}]` : item.title,
         key: item?.key,
+        count: item?.faqCount,
         // parent: parent,
       };
       let children: any = processTreeData(item?.children, obj);
