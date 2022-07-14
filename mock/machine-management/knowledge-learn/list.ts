@@ -119,7 +119,7 @@ const getDetailList = (req: any, res: any) => {
           textOneId: '333',
           textOneType: 'similar',
           textOneValue: 'aaa',
-          textOneName: '标准问',
+          textOneName: '标准问标准问标准问标准问标准问标准问',
           textTwoName: '标准问2',
           textTwoId: '333',
           textTwoType: 'similar',

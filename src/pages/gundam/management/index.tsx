@@ -5,7 +5,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import { Button, message, Popconfirm } from 'antd';
 import React, { useEffect, useRef } from 'react';
-import { history, useAccess, Access } from 'umi';
+import { history, useAccess } from 'umi';
 import InfoModal from './components/info-modal';
 import { useOpModel, useTableModel } from './model';
 import { BUSSINESS_CODE, listToMap } from './model/const';
@@ -233,68 +233,68 @@ const MachineManagement: React.FC = (props: any) => {
         return (
           <>
             <div style={{ display: 'flex' }}>
-              <Access accessible={access.accessAuth('robot_mg-mg-op')}>
-                <Condition r-if={row.status === MACHINE_STATUS.RUNNING}>
-                  <Button
-                    type="text"
-                    className={style['btn-disable']}
-                    onClick={() => {
-                      _changeStatus(row);
-                    }}
-                  >
-                    停用
-                  </Button>
-                </Condition>
-
-                <Condition r-if={row.status === MACHINE_STATUS.STOP}>
-                  <Button
-                    type="link"
-                    className={style['btn-success']}
-                    onClick={() => {
-                      _changeStatus(row);
-                    }}
-                  >
-                    启用
-                  </Button>
-                </Condition>
-              </Access>
-
-              {access.accessAuth('robot_mg-mg-edit') && (
+              {/* <Access accessible={access.accessAuth('robot_mg-mg-op')}> */}
+              <Condition r-if={row.status === MACHINE_STATUS.RUNNING}>
                 <Button
-                  type="link"
+                  type="text"
+                  className={style['btn-disable']}
                   onClick={() => {
-                    modalRef.current?.open?.(row);
+                    _changeStatus(row);
                   }}
                 >
-                  编辑
+                  停用
                 </Button>
-              )}
-              <Condition access="robot_mg-mg-conf">
+              </Condition>
+
+              <Condition r-if={row.status === MACHINE_STATUS.STOP}>
                 <Button
                   type="link"
                   className={style['btn-success']}
                   onClick={() => {
-                    goToNewSystem(row);
+                    _changeStatus(row);
                   }}
                 >
-                  配置
+                  启用
                 </Button>
               </Condition>
+              {/* </Access> */}
 
-              <Condition access="robot_mg-mg-del">
-                <Popconfirm
-                  title="删除将不可恢复，确认删除？"
-                  okText="确定"
-                  cancelText="取消"
-                  onConfirm={() => {
-                    deleteRow(row);
-                  }}
-                >
-                  <Button type="link" danger>
-                    删除
-                  </Button>
-                </Popconfirm>
-              </Condition>
+              {/* {access.accessAuth('robot_mg-mg-edit') && ( */}
+              <Button
+                type="link"
+                onClick={() => {
+                  modalRef.current?.open?.(row);
+                }}
+              >
+                编辑
+              </Button>
+              {/* )} */}
+              {/* <Condition access="robot_mg-mg-conf"> */}
+              <Button
+                type="link"
+                className={style['btn-success']}
+                onClick={() => {
+                  goToNewSystem(row);
+                }}
+              >
+                配置
+              </Button>
+              {/* </Condition> */}
+
+              {/* <Condition access="robot_mg-mg-del"> */}
+              <Popconfirm
+                title="删除将不可恢复，确认删除？"
+                okText="确定"
+                cancelText="取消"
+                onConfirm={() => {
+                  deleteRow(row);
+                }}
+              >
+                <Button type="link" danger>
+                  删除
+                </Button>
+              </Popconfirm>
+              {/* </Condition> */}
             </div>
           </>
         );

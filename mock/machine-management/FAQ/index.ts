@@ -1,4 +1,3 @@
-import { Request, Response } from 'express';
 import config from '../../../src/config';
 
 // faq 标准模块相关
@@ -84,6 +83,7 @@ const getFaqList = (req: any, res: any, next: any) => {
       pageSize: 10,
       totalPage: 11,
       page: 1,
+      similarNum: 20,
       list: [...list],
     },
   });
@@ -132,36 +132,41 @@ const getTreeList = (req: any, res: any) => {
     resultCode: successCode,
     resultDesc: '成功',
     success: true,
-    data: [
-      {
-        title: '贷款产品分类',
-        key: '0-0',
-        children: [
-          {
-            title: '循环贷循环贷循环贷循环贷循环贷循环贷循环贷循环贷循环贷',
-            key: '0-0-1',
-          },
-          {
-            title: '极速贷',
-            key: '0-0-2',
-          },
-        ],
-      },
-      {
-        title: '产品操作',
-        key: '0-1',
-        children: [
-          {
-            title: '神奇流程',
-            key: '0-1-0',
-          },
-          {
-            title: '神奇流程',
-            key: '0-1-1',
-          },
-        ],
-      },
-    ],
+    data: {
+      faqTotal: 4,
+      list: [
+        {
+          title: '贷款产品分类',
+          key: '0-0',
+          faqCount: 2,
+          children: [
+            {
+              title: '循环贷循环贷循环贷循环贷循环贷循环贷循环贷循环贷循环贷',
+              key: '0-0-1',
+            },
+            {
+              title: '极速贷',
+              key: '0-0-2',
+            },
+          ],
+        },
+        {
+          title: '产品操作',
+          key: '0-1',
+          faqCount: 2,
+          children: [
+            {
+              title: '神奇流程',
+              key: '0-1-0',
+            },
+            {
+              title: '神奇流程',
+              key: '0-1-1',
+            },
+          ],
+        },
+      ],
+    },
   });
 };
 

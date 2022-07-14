@@ -1,7 +1,7 @@
 import SelectFaqModal from '@/pages/gundam-pages/FAQ-module/components/select-faq-modal';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Button } from 'antd';
+import { Button, Tooltip } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
 import { useDetailModel } from '../../model';
@@ -22,14 +22,18 @@ const DetailList: React.FC = (props: any) => {
     {
       title: '样本',
       dataIndex: 'textValue',
-      // fixed: 'left',
+      fixed: 'left',
       ellipsis: true,
       // width: 180,
       render: (val: any, row: any) => {
         return (
           <div>
-            <div className={style['btn']}>{row.textOneValue}</div>
-            <div className={style['btn']}>{row.textTwoValue}</div>
+            <Tooltip placement="topLeft" title={row.textOneValue}>
+              <div className={style['btn']}>{row.textOneValue}</div>
+            </Tooltip>
+            <Tooltip placement="topLeft" title={row.textTwoValue}>
+              <div className={style['btn']}>{row.textTwoValue}</div>
+            </Tooltip>
           </div>
         );
       },
@@ -38,13 +42,17 @@ const DetailList: React.FC = (props: any) => {
       title: '所属标准问或意图',
       dataIndex: 'textName',
       search: false,
-      // width: 200,
+      width: 200,
       ellipsis: true,
       render: (val: any, row: any) => {
         return (
           <div>
-            <div className={style['btn']}>{row.textOneName}</div>
-            <div className={style['btn']}>{row.textTwoName}</div>
+            <Tooltip placement="topLeft" title={row.textOneName}>
+              <div className={style['btn']}>{row.textOneName}</div>
+            </Tooltip>
+            <Tooltip placement="topLeft" title={row.textTwoName}>
+              <div className={style['btn']}>{row.textTwoName}</div>
+            </Tooltip>
           </div>
         );
       },
@@ -202,7 +210,14 @@ const DetailList: React.FC = (props: any) => {
           pageSize: 10,
         }}
         dateFormatter="string"
-        headerTitle={`本次检测样本总量${detailInfo?.sampleTotal}，异常样本量${detailInfo?.abnormalSampleAmount}，已复核${detailInfo?.reviewAmount}`}
+        headerTitle={
+          <span>
+            本次检测样本总量<span style={{ color: '#1890FF' }}>{detailInfo?.sampleTotal}</span>
+            ，异常样本量
+            <span style={{ color: '#1890FF' }}>{detailInfo?.abnormalSampleAmount}</span>，已复核
+            <span style={{ color: '#1890FF' }}>{detailInfo?.reviewAmount}</span>
+          </span>
+        }
         // toolBarRender={() => []}
       />
 

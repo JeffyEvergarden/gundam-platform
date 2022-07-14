@@ -1,4 +1,3 @@
-import { CHANNAL_LIST, formatChannel } from '@/pages/gundam-pages/FAQ/const';
 import { PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import { Button, Form, Input, Modal, Popconfirm, Radio, Tooltip } from 'antd';
