@@ -1,22 +1,19 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
-import ProTable from '@ant-design/pro-table';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import styles from './index.less';
-import { useUnknownQuestion } from './model';
-import { history } from 'umi';
-import { Space, Tooltip, Dropdown, Button, Menu } from 'antd';
+import ProTable from '@ant-design/pro-table';
+import { Space, Divider, Tooltip, Dropdown, Button, Menu } from 'antd';
+import { useStandard } from './model';
 import { DownOutlined } from '@ant-design/icons';
 import SessionRecord from './../component/sessionRecord';
 
 export default () => {
   const actionRef = useRef<any>();
 
-  const { getList } = useUnknownQuestion();
+  const { getList } = useStandard();
 
-  const [learnNum, setLearnNum] = useState<number>(0);
-  const [standardNum, setStandardNum] = useState<number>(0);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>(null);
   const [selectRow, setSelectRow] = useState<any>(null);
-
   const [visibleSession, setVisibleSession] = useState<boolean>(false);
   const [modalData, setModalData] = useState<any>({});
 
@@ -38,13 +35,10 @@ export default () => {
     };
   };
 
-  const toStandard = (r: any) => {
-    history.push({
-      pathname: '/gundamPages/knowledgeLearn/standardQuestionLearn',
-    });
+  const handleMenuClick = (r: any) => {
+    setVisibleSession(true);
+    setModalData(r);
   };
-
-  const handleMenuClick = () => {};
 
   const openSession = (r: any) => {
     setVisibleSession(true);
@@ -59,16 +53,12 @@ export default () => {
       onClick={handleMenuClick}
       items={[
         {
-          label: '批量操作',
+          label: '批量转移',
           key: '1',
         },
         {
-          label: '批量加入黑名单',
+          label: '批量通过',
           key: '2',
-        },
-        {
-          label: '批量添加',
-          key: '3',
         },
       ]}
     />
@@ -82,26 +72,6 @@ export default () => {
       width: 200,
     },
     {
-      dataIndex: 'rangeTime',
-      title: '选择时间',
-      hideInTable: true,
-      valueType: 'dateRange',
-      width: 200,
-    },
-    {
-      dataIndex: 'source',
-      title: '问题来源',
-      ellipsis: true,
-      valueType: 'select',
-      initialValue: '',
-      width: 100,
-      valueEnum: {
-        1: '澄清',
-        2: '拒识',
-        '': '全部',
-      },
-    },
-    {
       dataIndex: 'askNum',
       title: '咨询次数',
       search: false,
@@ -109,30 +79,21 @@ export default () => {
       width: 100,
     },
     {
-      dataIndex: 'faqTypeName',
-      title: '分类',
+      dataIndex: 'channelCode',
+      title: '渠道',
       search: false,
       ellipsis: true,
       width: 100,
     },
     {
-      dataIndex: 'recommendName',
-      title: '标注问/意图(数量)',
-      width: 200,
-      search: false,
-      render: (t: any, r: any, i: any) => {
-        return (
-          <Fragment>
-            <Tooltip title={r.recommendName}>
-              <div className={styles.nameBox}>
-                <a className={styles.wrapStyle} onClick={() => toStandard(r)}>
-                  {r.recommendName}
-                </a>
-                <span>{'(' + r.recommendNum + ')'}</span>
-              </div>
-            </Tooltip>
-          </Fragment>
-        );
+      dataIndex: 'source',
+      title: '问题来源',
+      ellipsis: true,
+      valueType: 'select',
+      width: 100,
+      valueEnum: {
+        1: '澄清',
+        2: '拒识',
       },
     },
     {
@@ -145,7 +106,7 @@ export default () => {
     {
       title: '操作',
       key: 'option',
-      width: 200,
+      width: 300,
       fixed: 'right',
       valueType: 'option',
       render: (text: any, record: any, _: any, action: any) => {
@@ -154,8 +115,9 @@ export default () => {
             <a key="record" onClick={() => openSession(record)}>
               会话记录
             </a>
+            <a key="edit">编辑通过</a>
+            <a key="remove">转移</a>
             <a key="addStandar">新增标准问</a>
-            <a key="add">添加</a>
             <a key="clarify">澄清</a>
             <a key="black">黑名单</a>
           </Space>
@@ -165,24 +127,33 @@ export default () => {
   ];
   return (
     <Fragment>
-      <div className={styles.unknowPage}>
+      <div className={styles.stardard}>
+        <div className={styles.topBox}>
+          <div>
+            <ArrowLeftOutlined
+              style={{ marginRight: '6px', color: '#1890ff' }}
+              onClick={() => {}}
+            />
+            问题: {'贷款审批结果'}
+          </div>
+          <div>
+            <Space>
+              <a>查看答案</a>
+              <Divider type="vertical" />
+              <a>现有相似问</a>
+            </Space>
+          </div>
+        </div>
         <ProTable
-          headerTitle={
-            <Fragment>
-              <span className={styles.topTitle}>
-                未知问题待学习<span className={styles.titleNum}>{learnNum}</span>条, 涉及标准问
-                {standardNum}条
-              </span>
-            </Fragment>
-          }
+          headerTitle={'未知问题列表'}
           rowKey={'id'}
           actionRef={actionRef}
           columns={columns}
           scroll={{ x: columns.length * 200 }}
+          search={false}
           pagination={{
             pageSize: 10,
           }}
-          rowSelection={rowSelection}
           toolBarRender={() => [
             <Dropdown overlay={menu} key="Dropdown">
               <Button type="primary">
@@ -196,8 +167,9 @@ export default () => {
           request={async (params) => {
             return getInitTable({ params });
           }}
+          rowSelection={rowSelection}
         />
-      </div>
+      </div>{' '}
       <SessionRecord visible={visibleSession} onCancel={cancelSession} modalData={modalData} />
     </Fragment>
   );
