@@ -17,11 +17,10 @@ export default function access(initialState: {
       if (!route.code) {
         return true;
       }
-
       let authValue = route.code;
       let code = valueToCodeMap[authValue] || '';
-      // console.log(authValue, valueToObjMap, code);
       let authFlag = userAuth?.includes?.(code);
+      console.log(authValue, code, authFlag);
       console.log(`判断当前页面权限： ${authFlag ? '有' : '无'}`);
       return authFlag;
     },
