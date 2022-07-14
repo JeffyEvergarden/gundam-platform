@@ -16,6 +16,7 @@ const getBatchList = (req: any, res: any) => {
       page: 1,
       pageSize: 10,
       totalSize: 3,
+      nextTestTime: '2022-07-12',
       list: [
         {
           id: 'pl1',
@@ -80,6 +81,8 @@ const getDetailList = (req: any, res: any) => {
           textOneId: '111',
           textOneType: 'intent',
           textOneValue: 'aaa',
+          textOneName: '标准问',
+          textTwoName: '标准问2',
           textTwoId: '222',
           textTwoType: 'intent',
           textTwoValue: 'bbb',
@@ -97,6 +100,8 @@ const getDetailList = (req: any, res: any) => {
           textOneId: '111',
           textOneType: 'faq',
           textOneValue: 'aaa',
+          textOneName: '标准问',
+          textTwoName: '标准问2',
           textTwoId: '222',
           textTwoType: 'faq',
           textTwoValue: 'bbb',
@@ -114,6 +119,8 @@ const getDetailList = (req: any, res: any) => {
           textOneId: '333',
           textOneType: 'similar',
           textOneValue: 'aaa',
+          textOneName: '标准问标准问标准问标准问标准问标准问',
+          textTwoName: '标准问2',
           textTwoId: '333',
           textTwoType: 'similar',
           textTwoValue: 'bbb',
@@ -180,5 +187,6 @@ export default {
   'GET /aichat/robot/batchTest/testDetailPageList': getDetailList,
   'GET /aichat/robot/testWhiteList/whiteListPageList': getWhiteList,
   'POST /aichat/robot/batchTest/testDetailDelete': defaultList,
-  'POST /aichat/robot/batchTest/temporaryTest': defaultList, //临时检测
+  'POST /aichat/robot/batchTest/saveTemporaryTask': defaultList, //临时检测
+  'POST /aichat/robot/batchTest/saveTestTask': defaultList, //检测计划
 };

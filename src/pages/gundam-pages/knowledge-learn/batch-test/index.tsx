@@ -1,4 +1,3 @@
-import { SettingOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import { Button, message, Popconfirm } from 'antd';
 import React, { useRef } from 'react';
@@ -6,10 +5,10 @@ import { history, useModel } from 'umi';
 import style from './style.less';
 
 import { useBatchModel } from '../model';
-import InfoModal from './component/test-plan';
+import TestPlanModal from './component/test-plan';
 
 const TestPages: React.FC = (props: any) => {
-  const { list, totalPage, getList, loading, deleteBatch } = useBatchModel();
+  const { list, nextCheckTime, totalPage, getList, loading, deleteBatch } = useBatchModel();
 
   const batchTableRef = useRef<any>({});
   const batchModalRef = useRef<any>({});
@@ -183,22 +182,30 @@ const TestPages: React.FC = (props: any) => {
           pageSize: 10,
         }}
         dateFormatter="string"
-        headerTitle="下次检测日期：xxx"
+        headerTitle={`下次检测日期：${nextCheckTime}`}
         toolBarRender={() => [
           <Button
             key="button"
-            icon={<SettingOutlined />}
             type="primary"
             onClick={() => {
-              batchModalRef.current?.open?.();
+              batchModalRef.current?.open?.('plan');
             }}
           >
             检测计划
           </Button>,
+          <Button
+            key="button"
+            type="primary"
+            onClick={() => {
+              batchModalRef.current?.open?.('temporary');
+            }}
+          >
+            临时检测
+          </Button>,
         ]}
       />
 
-      <InfoModal cref={batchModalRef} />
+      <TestPlanModal cref={batchModalRef} />
     </div>
   );
 };

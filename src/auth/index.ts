@@ -8,12 +8,12 @@ export const AUTH_LIST: any[] = [
     children: [
       {
         label: '用户管理',
-        value: 'auth',
+        value: 'auth-user-list',
         code: '000-001-000',
       },
       {
         label: '角色管理',
-        value: 'auth',
+        value: 'auth-role-list',
         code: '000-002-000',
       },
     ],

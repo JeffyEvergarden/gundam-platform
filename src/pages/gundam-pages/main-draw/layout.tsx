@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useModel, useAccess, history } from 'umi';
 import { Button, Space, Badge, Tooltip } from 'antd';
 
 import { PageContainer, ProBreadcrumb } from '@ant-design/pro-layout';
@@ -11,6 +11,7 @@ import MainDraw from './index';
 
 // 机器人列表
 const MainLayout: React.FC = (props: any) => {
+  const access = useAccess();
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
@@ -42,6 +43,14 @@ const MainLayout: React.FC = (props: any) => {
       clearInterval(fn);
     };
   }, [info]);
+
+  useEffect(() => {
+    if (!access.accessAuth('robot_mg-main_page')) {
+      //  code: 'robot_mg-main_page',
+      history.replace('/gundamPages/home');
+    }
+  }, []);
+
   return (
     <PageContainer
       header={{

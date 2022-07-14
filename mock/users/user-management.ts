@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import config from '../../src/config';
+import { codeToObjMap } from '../../src/auth/util';
 
 // faq 标准模块相关
 
@@ -17,48 +18,48 @@ const getUsers = (req: Request, res: Response) => {
       list: [
         {
           id: '000000001',
-          name: '梁山伯',
+          userName: '梁山伯',
           account: 'liangshanbo',
-          departName: '科技部',
+          organization: '科技部',
           avatar: 'https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png',
           lastLoginTime: '2018-08-09 19:00',
           roles: [
             {
-              id: '001',
+              code: '001',
               name: '系统管理员',
             },
             {
-              id: '002',
+              code: '002',
               name: '普通管理员',
             },
           ],
         },
         {
           id: '000000002',
-          name: '梁世清',
-          departName: '世界部',
+          userName: '梁世清',
+          organization: '世界部',
           account: 'liangshiqing',
           avatar: 'https://gw.alipayobjects.com/zos/rmsportal/OKJXDXrmkNshAMvwtvhu.png',
           lastLoginTime: '2018-08-09 19:00',
           roles: [
             {
-              id: '001',
+              code: '001',
               name: '系统管理员',
             },
             {
-              id: '000',
+              code: '000',
               name: '系统管理员1',
             },
             {
-              id: '002',
+              code: '002',
               name: '系统管理员2',
             },
             {
-              id: '003',
+              code: '003',
               name: '系统管理员3',
             },
             {
-              id: '004',
+              code: '004',
               name: '系统管理员4',
             },
           ],
@@ -72,7 +73,7 @@ const getUsers = (req: Request, res: Response) => {
           lastLoginTime: '2018-08-09 19:00',
           roles: [
             {
-              id: '001',
+              code: '001',
               name: '系统管理员',
             },
           ],
@@ -83,14 +84,21 @@ const getUsers = (req: Request, res: Response) => {
 };
 
 const normalDeal = (req: Request, res: Response) => {
+  const list: any = Object.keys(codeToObjMap).map((key: any) => {
+    return {
+      roleCode: '001',
+      operationCode: key,
+    };
+  });
   res.json({
     resultCode: successCode,
     resultDesc: '成功',
     success: true,
+    data: list,
   });
 };
 
 export default {
-  'GET /aichat/robot/users/userlist': getUsers,
-  'POST /aichat/robot/users/updateUserAuth': normalDeal,
+  'GET /aichat/robot/user/listPage': getUsers,
+  'GET /aichat/robot/user/getPermission': normalDeal,
 };

@@ -8,7 +8,7 @@ import QuestionList from '../components/question-list';
 import HighConfigSelect from './components/high-select';
 import MyTree from './components/my-tree';
 import TypeModal from './components/type-modal';
-import { useFaqModal, useTreeModal } from './model';
+import { useTreeModal } from './model';
 import style from './style.less';
 
 const { Panel } = Collapse;
@@ -56,7 +56,7 @@ const FAQPage: React.FC<any> = (props: any) => {
   };
   const [pageNo, setPageNo] = useState<number>(1);
 
-  const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
+  // const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
 
   const { treeData, childList, getTreeData } = useTreeModal();
 
@@ -94,16 +94,16 @@ const FAQPage: React.FC<any> = (props: any) => {
     getGlobalValConfig(info.id);
   }, []);
 
-  const _getMoreFaqList = async () => {
-    console.log(faqList.length, totalSize, faqList.length < totalSize);
-    if (loading) {
-      return;
-    }
-    let res = await getMoreFaqList({ pageNo: pageNo + 1 });
-    if (res) {
-      setPageNo(pageNo + 1);
-    }
-  };
+  // const _getMoreFaqList = async () => {
+  //   console.log(faqList.length, totalSize, faqList.length < totalSize);
+  //   if (loading) {
+  //     return;
+  //   }
+  //   let res = await getMoreFaqList({ pageNo: pageNo + 1 });
+  //   if (res) {
+  //     setPageNo(pageNo + 1);
+  //   }
+  // };
 
   const extraBtnHtml = <SettingOutlined />;
 
@@ -150,6 +150,12 @@ const FAQPage: React.FC<any> = (props: any) => {
               }}
             >
               批量导入
+            </Button>
+            <Button
+              // type="primary"
+              style={{ border: 0 }}
+            >
+              批量导出
             </Button>
             <Button
               // type="primary"
@@ -202,7 +208,6 @@ const FAQPage: React.FC<any> = (props: any) => {
             style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
           >
             问答列表
-            {/* <Button type="link" icon={<UploadOutlined />} onClick={importList}></Button> */}
           </div>
           <MyTree
             draggable={false}
@@ -218,7 +223,20 @@ const FAQPage: React.FC<any> = (props: any) => {
         <div className={style['main-content']}>
           <div className={style['high-config-select']}>
             <Collapse expandIconPosition="right">
-              <Panel header={<div>问答列表</div>} key="1" extra={'高级筛选'} style={{ border: 0 }}>
+              <Panel
+                header={
+                  <div>
+                    问答列表
+                    <span style={{ marginLeft: '16px' }}>
+                      {QuestionRef?.current?.resData?.totalPage || 0}个标准问，
+                      {QuestionRef?.current?.resData?.similarNum || 0}个相似问
+                    </span>
+                  </div>
+                }
+                key="1"
+                extra={'高级筛选'}
+                style={{ border: 0 }}
+              >
                 <HighConfigSelect value={value} onChange={changeHighConfig} isRecycle={0} />
               </Panel>
             </Collapse>

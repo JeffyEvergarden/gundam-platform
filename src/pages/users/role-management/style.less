@@ -37,14 +37,14 @@
 }
 
 .btn-success {
-  color: #19be6b;
+  color: #19be6b !important;
 
   &:hover {
-    color: #47cb89;
+    color: #47cb89 !important;
   }
 
   &:active {
-    color: #47cb89;
+    color: #47cb89 !important;
   }
 }
 
@@ -59,4 +59,17 @@
 
 .right {
   flex-shrink: 0;
+}
+
+.info-box {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 16px;
+  padding-left: 32px;
+  line-height: 20px;
+
+  .info-title {
+    flex-shrink: 0;
+    font-size: 16px;
+  }
 }

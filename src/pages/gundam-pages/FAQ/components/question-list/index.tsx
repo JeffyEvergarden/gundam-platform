@@ -39,7 +39,7 @@ const QuestionList: React.FC<any> = (props: any) => {
     deleteRecycle,
     selectTree,
   } = props;
-  const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
+  const { loading, resData, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
   const [form] = Form.useForm();
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -57,18 +57,6 @@ const QuestionList: React.FC<any> = (props: any) => {
 
   const listRef = useRef<any>({});
 
-  const _getMoreFaqList = async () => {
-    // console.log(faqList.length, totalSize, faqList.length < totalSize);
-    // if (loading) {
-    //   return;
-    // }
-    // let res = await getMoreFaqList({ pageNo: pageNo + 1 });
-    // if (res) {
-    //   setPageNo(pageNo + 1);
-    // }
-    return true;
-  };
-
   useImperativeHandle(cref, () => ({
     selectAll(flag: any) {
       console.log(flag);
@@ -85,6 +73,7 @@ const QuestionList: React.FC<any> = (props: any) => {
       // console.log(selectedRowKeys);
       return selectedRowKeys;
     },
+    resData,
   }));
 
   useEffect(() => {

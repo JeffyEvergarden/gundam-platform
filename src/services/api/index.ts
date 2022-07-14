@@ -3,7 +3,7 @@ import { request } from '../request';
 const baseUrl = '/aichat';
 // 抓取权限
 export async function queryAuthInfo(options?: Record<string, any>) {
-  return request<Record<string, any>>(`${baseUrl}/users/myAuth`, {
+  return request<Record<string, any>>(`${baseUrl}/robot/user/getPermission`, {
     method: 'get',
     ...(options || {}),
   });
@@ -99,6 +99,22 @@ export async function queryTreeList(params?: Record<string, any>) {
 //faq用户信息
 export async function queryCreateUser(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/faq/listCreateUser`, {
+    method: 'GET',
+    params,
+  });
+}
+
+//待处理
+export async function queryPenging(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/faqPendingPageList`, {
+    method: 'GET',
+    params,
+  });
+}
+
+//待审核
+export async function queryReviewed(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/faqApprovalPageList`, {
     method: 'GET',
     params,
   });

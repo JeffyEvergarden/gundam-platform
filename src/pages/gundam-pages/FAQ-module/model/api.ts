@@ -1,5 +1,5 @@
-import { request } from '@/services/request';
 import config from '@/config/index';
+import { request } from '@/services/request';
 
 const baseUrl: string = config.basePath;
 
@@ -93,6 +93,14 @@ export async function getPendingList(params?: Record<string, any>) {
 //通过
 export async function _approvalPass(data?: Record<string, any>) {
   return request(`${baseUrl}/robot/faq/approvalAdopt`, {
+    method: 'POST',
+    data,
+  });
+}
+
+//批量通过
+export async function _allApprovalPass(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/batchApprovalAdopt`, {
     method: 'POST',
     data,
   });

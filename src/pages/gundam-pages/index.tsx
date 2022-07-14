@@ -1,12 +1,14 @@
 import hoverRobot from '@/asset/image/hoverRobot.png';
 import { LoginOutlined } from '@ant-design/icons';
-import { message, Modal } from 'antd';
+import { Badge, message, Modal } from 'antd';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { history, useLocation, useModel } from 'umi';
 import RobotChatBox from './ai-simulation';
 
 import ProLayout, { RouteContext, RouteContextType } from '@ant-design/pro-layout';
 
+import { valueToCodeMap } from '@/auth/util';
+import Condition from '@/components/Condition';
 import RightContent from '@/components/RightContent';
 import { useOpModel } from '../gundam/management/model';
 import { deepClone } from './FAQ/question-board/model/utils';
@@ -26,8 +28,6 @@ const deepProcess = (arr: any[], info: any = {}, userAuth: any[]) => {
       deepProcess(item.routes, info, userAuth);
     }
     const hideFn = item.hideFn;
-    // console.log(typeof hideFn);
-    // hideFn && console.log(hideFn);
     if (item.code) {
       item.hideInMenu = !access(userAuth, item.code);
       if (item.hideInMenu) {
@@ -42,7 +42,9 @@ const deepProcess = (arr: any[], info: any = {}, userAuth: any[]) => {
 };
 
 const access = (userAuth: any[], code: any) => {
-  return userAuth?.includes?.(code);
+  code = valueToCodeMap[code] || '';
+  // return userAuth?.includes?.(code);
+  return true;
 };
 
 // 机器人列表
@@ -64,6 +66,14 @@ const MachinePagesHome: React.FC = (props: any) => {
       setInfo: model.setInfo,
       globalVarList: model.globalVarList,
       setGlobalVarList: model.setGlobalVarList,
+    }),
+  );
+  const { pengingTotal, reviewedTotal, getShowBadgeTotal } = useModel(
+    'drawer' as any,
+    (model: any) => ({
+      pengingTotal: model.pengingTotal,
+      reviewedTotal: model.reviewedTotal,
+      getShowBadgeTotal: model.getShowBadgeTotal,
     }),
   );
   useEffect(() => {
@@ -100,18 +110,16 @@ const MachinePagesHome: React.FC = (props: any) => {
       localStorage.getItem('robot_id') ||
       info.id ||
       '';
-    console.log(robotId);
     _getInfo({ id: robotId });
   };
 
   const setChatVis = (flag: any) => {
-    console.log(flag);
-
     RobotChatBoxRef?.current?.setChatVisible(flag);
   };
 
   useEffect(() => {
     getLastInfo();
+    getShowBadgeTotal(info.id);
   }, []);
 
   const goBack = () => {
@@ -141,6 +149,16 @@ const MachinePagesHome: React.FC = (props: any) => {
     setChatVis(true);
   };
 
+  //小红点
+  const showBadge = (item: any) => {
+    if (item.name == '待审核') {
+      return reviewedTotal;
+    } else if (item.name == '待处理') {
+      return pengingTotal;
+    }
+    return 0;
+  };
+
   return (
     <ProLayout
       title="机器人详情"
@@ -158,16 +176,21 @@ const MachinePagesHome: React.FC = (props: any) => {
       onPageChange={() => {
         handleChatVisible(false);
         setChatVis(false);
+        getShowBadgeTotal(info.id);
       }}
       menuItemRender={(item: any, dom: any) => (
-        <a
+        <div
+          className={style['menu-item']}
           onClick={() => {
             history.push(item.path);
             setPathname(item.path || '/gundamPages/mainDraw');
           }}
         >
-          {dom}
-        </a>
+          <a>{dom}</a>
+          <Condition r-if={item?.showBadge}>
+            <Badge count={showBadge(item)} style={{ marginLeft: '16px' }} />
+          </Condition>
+        </div>
       )}
       disableContentMargin={false}
     >

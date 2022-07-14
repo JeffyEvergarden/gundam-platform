@@ -5,7 +5,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import { Button, message, Popconfirm } from 'antd';
 import React, { useEffect, useRef } from 'react';
-import { history } from 'umi';
+import { history, useAccess } from 'umi';
 import InfoModal from './components/info-modal';
 import { useOpModel, useTableModel } from './model';
 import { BUSSINESS_CODE, listToMap } from './model/const';
@@ -23,6 +23,8 @@ const MachineManagement: React.FC = (props: any) => {
   const { tableList, getTableList, tableLoading } = useTableModel();
 
   const { opLoading, changeStatus, deleteMachine, addNewMachine, editMachine } = useOpModel();
+
+  const access = useAccess();
 
   // const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
   //   info: model.info,
@@ -231,6 +233,7 @@ const MachineManagement: React.FC = (props: any) => {
         return (
           <>
             <div style={{ display: 'flex' }}>
+              {/* <Access accessible={access.accessAuth('robot_mg-mg-op')}> */}
               <Condition r-if={row.status === MACHINE_STATUS.RUNNING}>
                 <Button
                   type="text"
@@ -254,7 +257,9 @@ const MachineManagement: React.FC = (props: any) => {
                   启用
                 </Button>
               </Condition>
+              {/* </Access> */}
 
+              {/* {access.accessAuth('robot_mg-mg-edit') && ( */}
               <Button
                 type="link"
                 onClick={() => {
@@ -263,7 +268,8 @@ const MachineManagement: React.FC = (props: any) => {
               >
                 编辑
               </Button>
-
+              {/* )} */}
+              {/* <Condition access="robot_mg-mg-conf"> */}
               <Button
                 type="link"
                 className={style['btn-success']}
@@ -273,7 +279,9 @@ const MachineManagement: React.FC = (props: any) => {
               >
                 配置
               </Button>
+              {/* </Condition> */}
 
+              {/* <Condition access="robot_mg-mg-del"> */}
               <Popconfirm
                 title="删除将不可恢复，确认删除？"
                 okText="确定"
@@ -286,6 +294,7 @@ const MachineManagement: React.FC = (props: any) => {
                   删除
                 </Button>
               </Popconfirm>
+              {/* </Condition> */}
             </div>
           </>
         );

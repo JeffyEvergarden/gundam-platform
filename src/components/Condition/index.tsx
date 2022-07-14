@@ -1,9 +1,13 @@
 import React from 'react';
 
 import { useModel } from 'umi';
+import { valueToCodeMap } from '@/auth/util';
 
 interface dataProp {
   children: any;
+  'r-if'?: any;
+  'r-show'?: any;
+  access?: string;
 }
 
 const Condition: React.FC<dataProp> = (props) => {
@@ -18,7 +22,8 @@ const Condition: React.FC<dataProp> = (props) => {
 
   if (keys.includes('access')) {
     const { userAuth = [] } = initialState || {};
-    return userAuth.includes(access) ? <>{children}</> : null;
+    const code = valueToCodeMap[access || ''] || '';
+    return userAuth.includes(code) ? <>{children}</> : null;
   }
 
   if (keys.includes('r-if')) {

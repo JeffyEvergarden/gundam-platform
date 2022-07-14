@@ -26,7 +26,7 @@ const MainDraw = (props: any) => {
   const { info, businessFlowId, getGlobalValConfig, drawType, setDrawType } = useModel(
     'gundam' as any,
     (model: any) => {
-      console.log('gundam', model);
+      // console.log('gundam', model);
       return {
         info: model.info,
         businessFlowId: model.businessFlowId,

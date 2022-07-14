@@ -5,6 +5,8 @@ import {
   queryLabelList,
   queryMessageList,
   queryNodeConfig,
+  queryPenging,
+  queryReviewed,
   queryTreeList,
   queryWishList,
   queryWordSlotTableList,
@@ -36,6 +38,9 @@ export default function useDrawerModel() {
   const [_wordSlotList, _setWordSlotList] = useState<any[]>([]); // 词槽列表
 
   const [_messageList, _setMessageList] = useState<any[]>([]); // 信息列表
+
+  const [pengingTotal, setPengingTotal] = useState<any>(0); // 待审核总数
+  const [reviewedTotal, setReviewedTotal] = useState<any>(0); // 待处理总数
 
   // faq 问题树形结构
   const [treeData, setTreeData] = useState<any[]>([]);
@@ -221,8 +226,9 @@ export default function useDrawerModel() {
 
     let _data = data.map((item: any) => {
       let obj: any = {
-        title: item?.title,
+        title: item.faqCount ? `${item.title} [${item.faqCount}]` : item.title,
         key: item?.key,
+        count: item?.faqCount,
         // parent: parent,
       };
       let children: any = processTreeData(item?.children, obj);
@@ -246,15 +252,16 @@ export default function useDrawerModel() {
     }
     let res: any = await queryTreeList({ robotId: id });
     if (res.resultCode === config.successCode) {
-      let data: any = Array.isArray(res.data) ? res.data : [];
+      let data: any = Array.isArray(res?.data?.list) ? res?.data?.list : [];
       // 数据加工
       let _data = processTreeData(data); // 设置了parents会造成model层报错， 这里的数据不能进行delete操作
       let root: any[] = [
         {
-          title: '全部分类',
+          title: res?.data?.faqTotal ? `全部分类 [${res?.data?.faqTotal}]` : '全部分类',
           key: '0',
           parent: undefined,
           children: _data,
+          count: res?.data?.faqTotal || 0,
         },
       ];
       setTreeData(root);
@@ -268,6 +275,20 @@ export default function useDrawerModel() {
     } else {
       message.error(res.resultDesc);
     }
+  };
+
+  const getShowBadgeTotal = async (id?: any) => {
+    let params = {
+      page: 1,
+      pageSize: 1000,
+      robotId: id,
+    };
+    await queryPenging({ ...params, approvalStatus: 2 }).then((res) => {
+      setPengingTotal(res?.data?.totalPage || 0);
+    });
+    await queryReviewed({ ...params, approvalStatus: 1 }).then((res) => {
+      setReviewedTotal(res?.data?.totalPage || 0);
+    });
   };
 
   return {
@@ -296,5 +317,8 @@ export default function useDrawerModel() {
     getTreeData, // 获取faq问题分类树形结构
     getCreateUser,
     selectBody,
+    getShowBadgeTotal, //获取待审核 待处理
+    pengingTotal,
+    reviewedTotal,
   };
 }
