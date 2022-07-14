@@ -117,15 +117,16 @@ export const useTreeModal = () => {
   const getTreeData = async (data: any) => {
     let res: any = await getTreeList(data);
     if (res.resultCode === successCode) {
-      let data: any = Array.isArray(res.data) ? res.data : [];
+      let data: any = Array.isArray(res?.data?.list) ? res?.data?.list : [];
       // 数据加工
       data = processTreeData(data);
       let root: any[] = [
         {
-          title: '全部分类',
+          title: res?.data?.faqTotal ? `全部分类 [${res?.data?.faqTotal}]` : '全部分类',
           key: '0',
           parent: undefined,
           children: data,
+          count: res?.data?.faqTotal || 0,
           deep: 0,
         },
       ];
