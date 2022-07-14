@@ -13,6 +13,7 @@ import { useOpModel } from '../gundam/management/model';
 import { deepClone } from './FAQ/question-board/model/utils';
 import routes from './routes';
 import style from './style.less';
+import { valueToCodeMap } from '@/auth/util';
 
 // 菜单过滤
 const processRoute = (info: any = {}, userAuth: any[]) => {
@@ -27,8 +28,6 @@ const deepProcess = (arr: any[], info: any = {}, userAuth: any[]) => {
       deepProcess(item.routes, info, userAuth);
     }
     const hideFn = item.hideFn;
-    // console.log(typeof hideFn);
-    // hideFn && console.log(hideFn);
     if (item.code) {
       item.hideInMenu = !access(userAuth, item.code);
       if (item.hideInMenu) {
@@ -43,6 +42,7 @@ const deepProcess = (arr: any[], info: any = {}, userAuth: any[]) => {
 };
 
 const access = (userAuth: any[], code: any) => {
+  code = valueToCodeMap[code] || '';
   return userAuth?.includes?.(code);
 };
 
@@ -109,13 +109,10 @@ const MachinePagesHome: React.FC = (props: any) => {
       localStorage.getItem('robot_id') ||
       info.id ||
       '';
-    console.log(robotId);
     _getInfo({ id: robotId });
   };
 
   const setChatVis = (flag: any) => {
-    console.log(flag);
-
     RobotChatBoxRef?.current?.setChatVisible(flag);
   };
 

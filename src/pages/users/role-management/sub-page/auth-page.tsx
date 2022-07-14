@@ -1,8 +1,8 @@
 import { PageContainer, ProBreadcrumb } from '@ant-design/pro-layout';
 import React, { useState, useEffect, useRef } from 'react';
-import { useModel, history } from 'umi';
-import { Button, Tree } from 'antd';
-import { useRoleInfoModel } from '../model';
+import { useModel, history, useLocation } from 'umi';
+import { Button, Tree, message, Checkbox } from 'antd';
+import { useRoleInfoModel, useRoleModel } from '../model';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 
 import style from '../style.less';
@@ -10,12 +10,33 @@ import style from '../style.less';
 const AuthPage = (props: any) => {
   const { AUTH_TREE, autoExpendKeys } = useRoleInfoModel();
 
+  const { roleInfo, getRole, updateAuth } = useRoleModel();
+
+  const location: any = useLocation();
+
+  const roleId: any = location?.query?.roleCode || '';
+
+  const roleName: any = location?.query?.name || '';
+
   const [checkedKeys, setCheckedKeys] = useState<React.Key[]>([]);
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
 
+  const [check, setCheck] = useState<boolean>(false);
+
   const onCheck = (checked: any) => {
-    console.log('onCheck', checked);
+    // console.log('onCheck', checked);
     setCheckedKeys(checked);
+  };
+
+  const onChange = (e: any) => {
+    // console.log(e.target);
+    const val = e.target.checked;
+    setCheck(val);
+    if (val) {
+      setCheckedKeys([...autoExpendKeys]);
+    } else {
+      setCheckedKeys([]);
+    }
   };
 
   const onSelect = (selectedKeysValue: React.Key[], info: any) => {
@@ -23,11 +44,49 @@ const AuthPage = (props: any) => {
     setSelectedKeys(selectedKeysValue);
   };
 
-  const submit = () => {
+  const submit = async () => {
     console.log('submit');
     console.log(checkedKeys);
-    console.log(selectedKeys);
+    let submitObj = {
+      root: checkedKeys.map((item: any) => {
+        return {
+          operationCode: item,
+          roleCode: roleId,
+        };
+      }),
+    };
+    let res = await updateAuth(submitObj);
+    if (res) {
+      // 操作成功返回列表
+      history.push('/users/roleManagement/list');
+    }
   };
+
+  const getInfo = async () => {
+    let res = await getRole({ roleCode: roleId });
+    if (!res) {
+      history.replace('/users/roleManagement/list');
+    }
+  };
+
+  useEffect(() => {
+    if (roleId) {
+      getInfo();
+    } else {
+      history.replace('/users/roleManagement/list');
+      message.warning('获取不到角色ID');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (roleInfo) {
+      let selectKey: any[] = Array.isArray(roleInfo) ? roleInfo : [];
+      selectKey = selectKey?.map((item: any) => {
+        return item.operationCode;
+      });
+      setCheckedKeys(selectKey);
+    }
+  }, [roleInfo]);
 
   return (
     <PageContainer
@@ -42,7 +101,7 @@ const AuthPage = (props: any) => {
                 style={{ padding: 0 }}
                 type="link"
                 onClick={() => {
-                  history.push('/gundamPages/faq/main');
+                  history.push('/users/roleManagement/list');
                 }}
               ></Button>
 
@@ -57,7 +116,13 @@ const AuthPage = (props: any) => {
             </div>
           </div>
 
-          <div className={style['info-box']}></div>
+          <div className={style['info-box']}>
+            <span className={style['info-title']}>{roleName}</span>
+
+            <Checkbox checked={check} onChange={onChange} style={{ marginLeft: '32px' }}>
+              全选
+            </Checkbox>
+          </div>
         </>
       }
     >

@@ -38,7 +38,7 @@ const UserManagement: React.FC = (props: any) => {
   const columns: any[] = [
     {
       title: '用户姓名',
-      dataIndex: 'name',
+      dataIndex: 'userName',
       width: 180,
       fixed: 'left',
       fieldProps: {
@@ -46,8 +46,27 @@ const UserManagement: React.FC = (props: any) => {
       },
     },
     {
+      title: '角色',
+      dataIndex: 'roleCode',
+      hideInTable: true,
+      valueType: 'select',
+      request: async () => {
+        const { data = [] } = await getRoleList({ page: 1, pageSize: 1000 });
+        return data.map((item: any) => {
+          return {
+            label: item.name,
+            value: item.code,
+          };
+        });
+      },
+      fieldProps: {
+        placeholder: '请选择角色',
+      },
+    },
+    {
       title: '部门',
-      dataIndex: 'departName',
+      // search: false,
+      dataIndex: 'organization',
       width: 180,
       fieldProps: {
         placeholder: '请输入部门',
@@ -78,34 +97,28 @@ const UserManagement: React.FC = (props: any) => {
         }
       },
     },
-    {
-      title: '最后登录时间',
-      dataIndex: 'lastLoginTime',
-      search: false,
-      width: 200,
-    },
-    {
-      title: '操作',
-      dataIndex: 'op',
-      width: 130,
-      search: false,
-      fixed: 'right',
-      render: (val: any, row: any, index: number) => {
-        return (
-          <div style={{ display: 'flex' }}>
-            <Button
-              type="link"
-              onClick={() => {
-                openAuthModal(row);
-              }}
-              style={{ marginRight: '6px' }}
-            >
-              编辑权限
-            </Button>
-          </div>
-        );
-      },
-    },
+    // {
+    //   title: '操作',
+    //   dataIndex: 'op',
+    //   width: 130,
+    //   search: false,
+    //   fixed: 'right',
+    //   render: (val: any, row: any, index: number) => {
+    //     return (
+    //       <div style={{ display: 'flex' }}>
+    //         <Button
+    //           type="link"
+    //           onClick={() => {
+    //             openAuthModal(row);
+    //           }}
+    //           style={{ marginRight: '6px' }}
+    //         >
+    //           编辑权限
+    //         </Button>
+    //       </div>
+    //     );
+    //   },
+    // },
   ];
 
   useEffect(() => {
