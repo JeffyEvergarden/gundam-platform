@@ -1,6 +1,6 @@
 import { PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Button, Form, Input, Modal, Popconfirm } from 'antd';
+import { Button, Form, Input, Modal, Popconfirm, Radio, Tooltip } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { useTableModel } from './model';
@@ -56,6 +56,13 @@ const FAQBlackList = (props: any) => {
         // },
       },
       ellipsis: true,
+      render: (val: any, row: any) => {
+        return (
+          <Tooltip title={row.question} placement={'topLeft'}>
+            <div className={style['qustion-label']}>{row.question}</div>
+          </Tooltip>
+        );
+      },
     },
     // {
     //   title: '渠道',

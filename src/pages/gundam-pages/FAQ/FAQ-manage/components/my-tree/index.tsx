@@ -6,7 +6,7 @@ import {
   ExclamationCircleOutlined,
   PlusCircleOutlined,
 } from '@ant-design/icons';
-import { Button, message, Modal, Tree } from 'antd';
+import { Button, message, Modal, Tooltip, Tree } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import { useTreeModal } from '../../model';
@@ -275,12 +275,14 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
     let extra = null;
     if (nodeData && nodeData?.deep < 5) {
       extra = (
-        <PlusCircleOutlined
-          style={{ marginRight: '8px', fontSize: '12px' }}
-          onClick={(e: any) => {
-            openAddModal(e, nodeData);
-          }}
-        />
+        <Tooltip title={'添加子分类'} placement={'top'}>
+          <PlusCircleOutlined
+            style={{ marginRight: '8px', fontSize: '12px' }}
+            onClick={(e: any) => {
+              openAddModal(e, nodeData);
+            }}
+          />
+        </Tooltip>
       );
     }
 
@@ -302,20 +304,24 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
           <div className={style['edit-layout']} style={def()}>
             {extra}
             {nodeData.parent && (
-              <EditOutlined
-                style={{ marginRight: '8px', fontSize: '12px' }}
-                onClick={(e) => {
-                  openEditModal(e, nodeData);
-                }}
-              />
+              <Tooltip title={'编辑当前分类'} placement={'top'}>
+                <EditOutlined
+                  style={{ marginRight: '8px', fontSize: '12px' }}
+                  onClick={(e) => {
+                    openEditModal(e, nodeData);
+                  }}
+                />
+              </Tooltip>
             )}
             {nodeData.parent && !nodeData?.children?.length && (
-              <DeleteOutlined
-                style={{ fontSize: '12px' }}
-                onClick={(e) => {
-                  openDeleteModal(e, nodeData);
-                }}
-              />
+              <Tooltip title={'删除当前分类'} placement={'top'}>
+                <DeleteOutlined
+                  style={{ fontSize: '12px' }}
+                  onClick={(e) => {
+                    openDeleteModal(e, nodeData);
+                  }}
+                />
+              </Tooltip>
             )}
           </div>
         </Condition>
