@@ -190,6 +190,11 @@ export default [
             name: '未知问题',
           },
           {
+            path: '/gundamPages/knowledgeLearn/standardQuestionLearn',
+            component: './gundam-pages/knowledge-learn/standardQuestionLearn',
+            name: '标准问学习',
+          },
+          {
             path: '/gundamPages/knowledgeLearn/batchTest',
             component: './gundam-pages/knowledge-learn/batch-test',
             name: '批量检测',
