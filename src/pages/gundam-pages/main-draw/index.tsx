@@ -1,15 +1,15 @@
-import { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
-import FlowPage from './flow';
+import { message } from 'antd';
 import { useModel } from 'umi';
 import DrawerForm from './drawerV2';
 import SpDrawerForm from './drawerV2/sp-index';
 import EdgeDrawerForm from './EdgeDrawer';
-import style from './style.less';
-import { useNodeOpsModel, useSelectModel } from './model';
-import { processType } from './model/const';
+import FlowPage from './flow';
 import eventbus from './flow/utils/eventbus';
-import { message } from 'antd';
+import { useNodeOpsModel } from './model';
+import { processType } from './model/const';
+import style from './style.less';
 
 const MainDraw = (props: any) => {
   const { type = 'main' } = props;
@@ -104,6 +104,12 @@ const MainDraw = (props: any) => {
     if (node._nodetype === 'start') {
       (fake.current as any).executeCommand?.('undo');
       message.warning('开始节点不允许复制粘贴');
+      return;
+    }
+
+    if (node._nodetype === 'sp_business') {
+      (fake.current as any).executeCommand?.('undo');
+      message.warning('特殊业务节点不允许复制粘贴');
       return;
     }
 
