@@ -127,6 +127,15 @@ const RoleManagement: React.FC = (props: any) => {
             </Button> */}
 
             <Button
+              type="text"
+              onClick={() => {
+                openAuthModal(row);
+              }}
+            >
+              权限设置
+            </Button>
+
+            <Button
               type="link"
               onClick={() => {
                 // console.log(row);
@@ -134,7 +143,7 @@ const RoleManagement: React.FC = (props: any) => {
               }}
               style={{ marginRight: '6px' }}
             >
-              权限设置
+              详情设置
             </Button>
 
             <Button
@@ -146,15 +155,6 @@ const RoleManagement: React.FC = (props: any) => {
               style={{ marginRight: '6px' }}
             >
               查看用户
-            </Button>
-
-            <Button
-              type="link"
-              onClick={() => {
-                openAuthModal(row);
-              }}
-            >
-              测试权限
             </Button>
           </div>
         );
