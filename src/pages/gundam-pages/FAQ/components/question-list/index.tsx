@@ -45,8 +45,9 @@ const QuestionList: React.FC<any> = (props: any) => {
     info: model.info,
     setInfo: model.setInfo,
   }));
-  const { getCreateUser } = useModel('drawer' as any, (model: any) => ({
+  const { getCreateUser, getShowBadgeTotal } = useModel('drawer' as any, (model: any) => ({
     getCreateUser: model.getCreateUser,
+    getShowBadgeTotal: model.getShowBadgeTotal,
   }));
   const [total, setTotal] = useState<any>(0);
   const [current, setCurrent] = useState<any>(1);
@@ -296,6 +297,7 @@ const QuestionList: React.FC<any> = (props: any) => {
 
     // console.log(res);
     getCreateUser(info.id, isRecycle);
+    getShowBadgeTotal(info.id);
 
     setTotal(res?.total || 0);
     return res;

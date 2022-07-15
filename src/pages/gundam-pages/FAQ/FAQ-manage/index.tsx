@@ -21,11 +21,15 @@ const FAQPage: React.FC<any> = (props: any) => {
     getGlobalValConfig: model.getGlobalValConfig,
   }));
 
-  const { userList, getCreateUser, _getTreeData } = useModel('drawer' as any, (model: any) => ({
-    userList: model.userList,
-    getCreateUser: model.getCreateUser,
-    _getTreeData: model.getTreeData,
-  }));
+  const { userList, getCreateUser, _getTreeData, getShowBadgeTotal } = useModel(
+    'drawer' as any,
+    (model: any) => ({
+      userList: model.userList,
+      getCreateUser: model.getCreateUser,
+      _getTreeData: model.getTreeData,
+      getShowBadgeTotal: model.getShowBadgeTotal,
+    }),
+  );
 
   const [value, setValue] = useState<any>({
     channelList: ['all'],
@@ -92,6 +96,7 @@ const FAQPage: React.FC<any> = (props: any) => {
     getTree();
     getCreateUser(info.id, 0);
     getGlobalValConfig(info.id);
+    getShowBadgeTotal(info.id);
   }, []);
 
   // const _getMoreFaqList = async () => {
