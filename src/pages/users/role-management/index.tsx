@@ -110,7 +110,7 @@ const RoleManagement: React.FC = (props: any) => {
     {
       title: '操作',
       dataIndex: 'op',
-      width: 120,
+      width: 200,
       search: false,
       render: (val: any, row: any, index: number) => {
         return (
