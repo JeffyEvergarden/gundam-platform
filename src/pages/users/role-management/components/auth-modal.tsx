@@ -182,7 +182,6 @@ const DrawerForm = (props: any) => {
                     <div className={styles['auth-box']} key={index}>
                       <Condition r-if={hasChildren}>
                         <div className={styles['auth-title']}>
-                          {_item.title}
                           <Checkbox
                             checked={!val && haskey}
                             indeterminate={flag}
@@ -190,8 +189,10 @@ const DrawerForm = (props: any) => {
                               console.log(needKey.length, length);
                               onChangeKey(e.target.checked, needKey);
                             }}
-                            style={{ marginLeft: '16px' }}
-                          ></Checkbox>
+                            style={{ marginRight: '8px' }}
+                          >
+                            <span style={{ fontSize: '16px' }}> {_item.title}</span>
+                          </Checkbox>
                         </div>
 
                         <FormItem name={[outField.name]}>
@@ -215,8 +216,9 @@ const DrawerForm = (props: any) => {
                         <FormItem name={[outField.name]}>
                           <CheckboxGroup>
                             <div className={styles['auth-title']}>
-                              {_item.title}
-                              <Checkbox value={_item.key} style={{ marginLeft: '16px' }}></Checkbox>
+                              <Checkbox value={_item.key} style={{ marginRight: '8px' }}>
+                                <span style={{ fontSize: '16px' }}>{_item.title}</span>
+                              </Checkbox>
                             </div>
                           </CheckboxGroup>
                         </FormItem>
