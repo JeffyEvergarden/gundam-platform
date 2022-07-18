@@ -424,7 +424,7 @@ const Board: React.FC<any> = (props: any) => {
       setSimilarVisible(true);
       setSimilarData(res?.data);
     } else {
-      message.error(res.resultMsg);
+      message.error(res.resultDesc);
     }
   };
 

@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { message } from 'antd';
 import config from '@/config';
+import { message } from 'antd';
+import { useState } from 'react';
 
 import { getUsersList, updateUserAuth } from './api';
 
@@ -40,7 +40,7 @@ export const useTableModel = () => {
       message.success('编辑用户角色成功');
       return true;
     } else {
-      message.warning(res.resultMsg || '未知异常');
+      message.warning(res.resultDesc || '未知异常');
       return false;
     }
   };
