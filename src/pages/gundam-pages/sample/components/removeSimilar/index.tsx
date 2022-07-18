@@ -1,5 +1,5 @@
 import { Input, Modal, Table } from 'antd';
-import { useImperativeHandle, useState } from 'react';
+import { useEffect, useImperativeHandle, useState } from 'react';
 
 import { useModel } from 'umi';
 
@@ -115,6 +115,14 @@ const SelectorModal: React.FC<any> = (props: any) => {
     onSubmit(similarInfo?.id, selectedQuestionKeys?.[0]);
     // setVisible(false);
   };
+
+  useEffect(() => {
+    getFaqList({
+      page: 1,
+      pageSize: 10,
+      robotId: info.id,
+    });
+  }, []);
 
   return (
     <Modal
