@@ -75,6 +75,7 @@ const QuestionList: React.FC<any> = (props: any) => {
       return selectedRowKeys;
     },
     resData,
+    faqExport,
   }));
 
   useEffect(() => {
@@ -84,6 +85,20 @@ const QuestionList: React.FC<any> = (props: any) => {
     // listRef.current.reload();
     // console.log(listRef);
   }, [childList]);
+
+  const faqExport = () => {
+    let params = {
+      robotId: info.id,
+      queryType: queryType,
+      searchText: searchText,
+      recycle: isRecycle,
+      faqTypeId: selectTree == '0' ? null : selectTree,
+      ...heightSelect,
+    };
+
+    const reqData = new URLSearchParams(Object.entries(params)).toString();
+    window.open(`${config.basePath}/robot/faq/robotFaqExport?${reqData}`);
+  };
 
   const rowSelection = () => {
     if (!hasCheckbox) {

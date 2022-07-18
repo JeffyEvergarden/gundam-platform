@@ -159,6 +159,9 @@ const FAQPage: React.FC<any> = (props: any) => {
             <Button
               // type="primary"
               style={{ border: 0 }}
+              onClick={() => {
+                QuestionRef?.current?.faqExport();
+              }}
             >
               批量导出
             </Button>

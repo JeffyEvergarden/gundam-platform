@@ -123,28 +123,28 @@ const WordSlotModal: React.FC<any> = (props: any) => {
           </FormItem>
 
           <FormItem
-            name="life"
+            name="lifeCycle"
             label="生命周期"
             style={{ width: '400px' }}
             rules={[{ required: true, message: '请选择' }]}
             initialValue={true}
           >
             <Radio.Group>
-              <Radio value={0}>整轮对话有效</Radio>
-              <Radio value={1}>节点跳转后清空</Radio>
+              <Radio value={'dialogue'}>整轮对话有效</Radio>
+              <Radio value={'node'}>节点跳转后清空</Radio>
             </Radio.Group>
           </FormItem>
 
           <FormItem
-            name="soltFill"
+            name="preFill"
             label="词槽是否预填充"
             style={{ width: '400px' }}
             rules={[{ required: true, message: '请选择' }]}
             initialValue={true}
           >
             <Radio.Group>
-              <Radio value={0}>是</Radio>
-              <Radio value={1}>否</Radio>
+              <Radio value={1}>是</Radio>
+              <Radio value={0}>否</Radio>
             </Radio.Group>
           </FormItem>
 
