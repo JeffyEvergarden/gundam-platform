@@ -2,7 +2,6 @@ import config from '../../../src/config';
 
 const successCode = config.successCode;
 const editConfig = (req: any, res: any) => {
-  console.log(req.query);
   res.json({
     resultCode: successCode,
     resultDesc: '成功',
@@ -11,8 +10,6 @@ const editConfig = (req: any, res: any) => {
 
 //word-slot里冲突 实际拿的是wordslot里的
 const getConfig = (req: any, res: any) => {
-  console.log(req.query);
-  console.log('---------');
   if (req.query.configType == '2') {
     res.json({
       resultCode: successCode,

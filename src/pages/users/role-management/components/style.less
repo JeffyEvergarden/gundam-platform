@@ -1,3 +1,65 @@
 .tree-node {
   font-size: 14px;
 }
+
+.auth-page {
+  :global {
+    .ant-form-item {
+      margin-bottom: 4px !important;
+    }
+  }
+}
+
+.auth-box {
+  width: 100%;
+  margin-top: 16px;
+  border-bottom: 1px solid #f3f3f3;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  .auth-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .auth-content {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding-left: 16px;
+
+    .desc_block {
+      width: 160px;
+      margin-bottom: 20px;
+      padding-right: 8px;
+      overflow: hidden;
+      line-height: 20px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      cursor: pointer;
+    }
+  }
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+  font-weight: 700;
+  font-size: 16px;
+
+  .icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 16px;
+    line-height: 34px;
+    text-align: center;
+    background-color: #d6e4ff;
+    border-radius: 4px;
+  }
+}

@@ -65,7 +65,10 @@ const TestPages: React.FC = (props: any) => {
       search: false,
       width: 200,
       render: (val: any) => {
-        return val + 's';
+        if (val) {
+          return val + 's';
+        }
+        return val;
       },
     },
     {
@@ -102,11 +105,13 @@ const TestPages: React.FC = (props: any) => {
                   type="link"
                   onClick={() => {
                     history.push({
-                      pathname: '/gundamPages/knowledgeLearn/batchTest/detailList',
+                      pathname: `/gundamPages/knowledgeLearn/batchTest/detailList`,
                       state: {
                         info: row,
                       },
+                      search: `?id=${row.id}`,
                     });
+                    // history.push(`/gundamPages/knowledgeLearn/batchTest/detailList?id=${row.id}`);
                   }}
                 >
                   查看明细
@@ -182,7 +187,7 @@ const TestPages: React.FC = (props: any) => {
           pageSize: 10,
         }}
         dateFormatter="string"
-        headerTitle={`下次检测日期：${nextCheckTime}`}
+        headerTitle={`下次检测日期：${nextCheckTime || '-'}`}
         toolBarRender={() => [
           <Button
             key="button"

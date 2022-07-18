@@ -109,7 +109,6 @@ const changeMachineStatus = (req: any, res: any) => {
 };
 
 const addNewMachine = (req: any, res: any) => {
-  console.log(req.query);
   res.json({
     resultCode: successCode,
   });

@@ -45,8 +45,9 @@ const QuestionList: React.FC<any> = (props: any) => {
     info: model.info,
     setInfo: model.setInfo,
   }));
-  const { getCreateUser } = useModel('drawer' as any, (model: any) => ({
+  const { getCreateUser, getShowBadgeTotal } = useModel('drawer' as any, (model: any) => ({
     getCreateUser: model.getCreateUser,
+    getShowBadgeTotal: model.getShowBadgeTotal,
   }));
   const [total, setTotal] = useState<any>(0);
   const [current, setCurrent] = useState<any>(1);
@@ -121,7 +122,7 @@ const QuestionList: React.FC<any> = (props: any) => {
               CurrentPage({ page: current, pageSize });
             });
           } else {
-            message.warning('已有在途待处理的答案，不可编辑/新增');
+            message.warning('已有在途待处理的答案，不可编辑/新增/删除');
           }
         } else {
           message.error(res.resultDesc);
@@ -198,7 +199,7 @@ const QuestionList: React.FC<any> = (props: any) => {
         if (res.data.editFlag) {
           history.push(`/gundamPages/faq/answer?faqId=${item.id}`);
         } else {
-          message.warning('已有在途待处理的答案，不可编辑/新增');
+          message.warning('已有在途待处理的答案，不可编辑/新增/删除');
         }
       } else {
         message.error(res.resultDesc);
@@ -219,7 +220,7 @@ const QuestionList: React.FC<any> = (props: any) => {
               `/gundamPages/faq/answer?faqId=${Q.id}&answerId=${A.answerId}&recycle=${Q.recycle}`,
             );
           } else {
-            message.warning('已有在途待处理的答案，不可编辑/新增');
+            message.warning('已有在途待处理的答案，不可编辑/新增/删除');
           }
         } else {
           message.error(res.resultDesc);
@@ -244,7 +245,7 @@ const QuestionList: React.FC<any> = (props: any) => {
             CurrentPage({ page: current, pageSize });
           });
         } else {
-          message.warning('已有在途待处理的答案，不可编辑/新增');
+          message.warning('已有在途待处理的答案，不可编辑/新增/删除');
         }
       } else {
         message.error(res.resultDesc);
@@ -296,6 +297,7 @@ const QuestionList: React.FC<any> = (props: any) => {
 
     // console.log(res);
     getCreateUser(info.id, isRecycle);
+    getShowBadgeTotal(info.id);
 
     setTotal(res?.total || 0);
     return res;

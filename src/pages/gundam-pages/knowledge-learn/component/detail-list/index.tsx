@@ -1,7 +1,7 @@
 import SelectFaqModal from '@/pages/gundam-pages/FAQ-module/components/select-faq-modal';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Button, Tooltip } from 'antd';
+import { Button, Popconfirm, Tooltip } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
 import { useDetailModel } from '../../model';
@@ -23,8 +23,9 @@ const DetailList: React.FC = (props: any) => {
       title: '样本',
       dataIndex: 'textValue',
       fixed: 'left',
+      search: false,
       ellipsis: true,
-      // width: 180,
+      width: 180,
       render: (val: any, row: any) => {
         return (
           <div>
@@ -61,13 +62,13 @@ const DetailList: React.FC = (props: any) => {
       title: '相似度',
       dataIndex: 'score',
       search: false,
-      // width: 200,
+      width: 100,
     },
     {
       title: '样本对操作',
       dataIndex: 'creator',
       search: false,
-      // width: 200,
+      width: 200,
       render: (val: any, row: any) => {
         return (
           <div className={style['lf']}>
@@ -79,13 +80,21 @@ const DetailList: React.FC = (props: any) => {
                 合并到本项
               </Button>
             </div>
-            <Button
-              type="link"
+            <Popconfirm
+              title="是否添加到白名单"
+              okText="确定"
+              cancelText="取消"
+              onConfirm={() => {}}
               disabled={row.handleStatus == 2 ? true : false}
-              style={{ marginLeft: '16px' }}
             >
-              白名单
-            </Button>
+              <Button
+                type="link"
+                disabled={row.handleStatus == 2 ? true : false}
+                style={{ marginLeft: '16px' }}
+              >
+                白名单
+              </Button>
+            </Popconfirm>
           </div>
         );
       },
@@ -94,7 +103,7 @@ const DetailList: React.FC = (props: any) => {
       title: '单样本操作',
       dataIndex: 'creator',
       search: false,
-      // width: 200,
+      width: 150,
       render: (val: any, row: any) => {
         return (
           <div className={style['lf']}>
@@ -125,18 +134,20 @@ const DetailList: React.FC = (props: any) => {
     {
       title: '处理状态',
       dataIndex: 'handleStatus',
-      search: false,
+      fieldProps: {
+        placeholder: '请选择',
+      },
       valueEnum: {
         1: { text: '待处理', status: 'Error' },
         2: { text: '已处理', status: 'Success' },
       },
-      // width: 200,
+      width: 150,
     },
   ];
 
   useEffect(() => {
     const query: any = history?.location?.state;
-    console.log(query);
+    console.log(history);
     setDetailInfo(query?.info);
   }, []);
 
@@ -193,7 +204,9 @@ const DetailList: React.FC = (props: any) => {
           persistenceType: 'localStorage',
         }}
         rowKey="id"
-        search={false}
+        search={{
+          labelWidth: 'auto',
+        }}
         form={{
           // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
           // 查询参数转化

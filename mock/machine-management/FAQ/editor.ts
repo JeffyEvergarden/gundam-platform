@@ -41,7 +41,6 @@ const getFile = (req: any, res: any, next: any) => {
 };
 
 const getInfo = (req: any, res: any) => {
-  console.log('获取信息');
   res.json({
     resultCode: successCode,
     data: {
