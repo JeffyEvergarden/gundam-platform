@@ -2,12 +2,14 @@ import config from '@/config/index';
 import { message } from 'antd';
 import { useState } from 'react';
 import {
+  addWhiteList,
   deleteDetailList,
   getBatchList,
   getDetailList,
   getWhiteList,
   saveTemporaryTask,
   saveTestTask,
+  _sampleTransfer,
 } from './api';
 
 const successCode = config.successCode;
@@ -89,6 +91,7 @@ export const useDetailModel = () => {
   const [list, setList] = useState<any>([]);
   const [totalPage, setTotalPage] = useState<any>(0);
   const [loading, setLoading] = useState<boolean>(false);
+  const [resData, setResData] = useState<any>();
 
   const getList = async (params: any) => {
     setLoading(true);
@@ -99,17 +102,32 @@ export const useDetailModel = () => {
       data = res?.data?.list || [];
       setList(data);
       setTotalPage(res?.data?.totalPage);
+      setResData(res);
     } else {
       setList([]);
       setTotalPage(0);
+      setResData({});
     }
     setLoading(false);
     return { data, total: res?.data?.totalPage };
   };
 
+  const sampleTransfer = async (params: any) => {
+    let res = await _sampleTransfer(params);
+    if (res.resultCode == successCode) {
+      message.success(res.resultDesc);
+      return true;
+    } else {
+      message.error(res.resultDesc);
+      return false;
+    }
+  };
+
   return {
+    resData,
     list,
     totalPage,
+    sampleTransfer,
     getList,
     loading,
   };
@@ -137,10 +155,22 @@ export const useWhiteModel = () => {
     return { data, total: res?.data?.totalPage };
   };
 
+  const addWhite = async (params: any) => {
+    let res = await addWhiteList(params);
+    if (res.resultCode == successCode) {
+      message.success(res.resultDesc);
+      return true;
+    } else {
+      message.error(res.resultDesc);
+      return false;
+    }
+  };
+
   return {
     list,
     totalPage,
     getList,
+    addWhite,
     loading,
   };
 };

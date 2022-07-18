@@ -1,5 +1,6 @@
 import config from '@/config';
 import Condition from '@/pages/gundam-pages/main-draw/flow/common/Condition';
+import { ObjToSearch } from '@/utils';
 import {
   CheckOutlined,
   CloseOutlined,
@@ -95,26 +96,10 @@ const QuestionList: React.FC<any> = (props: any) => {
       faqTypeId: selectTree == '0' ? null : selectTree,
       ...heightSelect,
     };
-    let str: string = '';
-    Object.keys(params).forEach((item) => {
-      // console.log(params[item]);
-      if (typeof params[item] != 'number') {
-        if (Array.isArray(params[item])) {
-          if (params[item]?.length) {
-            let res = params[item]?.map((v: any, index: any) => `&${item}=${v}`).join('');
-            str += res;
-          }
-        } else {
-          if (params[item]) {
-            str += `&${item}=${params[item]}`;
-          }
-        }
-      } else {
-        str += `&${item}=${params[item]}`;
-      }
-    });
+    // const reqData = new URLSearchParams(Object.entries(params)).toString();
+    // console.log(reqData);
 
-    window.open(`${config.basePath}/robot/faq/robotFaqExport?${str.replace('&', '')}`);
+    window.open(`${config.basePath}/robot/faq/robotFaqExport?${ObjToSearch(params)}`);
   };
 
   const rowSelection = () => {

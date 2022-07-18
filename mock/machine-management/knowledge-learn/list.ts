@@ -132,6 +132,10 @@ const getDetailList = (req: any, res: any) => {
         },
       ],
     },
+    id: '111',
+    sampleTotal: 100,
+    abnormalSampleAmount: 50,
+    reviewAmount: 50,
   });
 };
 
@@ -189,4 +193,6 @@ export default {
   'POST /aichat/robot/batchTest/testDetailDelete': defaultList,
   'POST /aichat/robot/batchTest/saveTemporaryTask': defaultList, //临时检测
   'POST /aichat/robot/batchTest/saveTestTask': defaultList, //检测计划
+  'POST /aichat/robot/testWhiteList/whiteListAdd': defaultList, //添加到白名单
+  'POST /aichat/robot/batchTest/sampleTransfer': defaultList, //添加到白名单
 };

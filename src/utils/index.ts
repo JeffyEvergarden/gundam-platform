@@ -59,3 +59,26 @@ export function img(text: any) {
   }
   return text;
 }
+
+//下载 - 对象转get参数
+export function ObjToSearch(params: any) {
+  let str: string = '';
+  Object.keys(params).forEach((item) => {
+    // console.log(params[item]);
+    if (typeof params[item] != 'number') {
+      if (Array.isArray(params[item])) {
+        if (params[item]?.length) {
+          let res = params[item]?.map((v: any, index: any) => `&${item}=${v}`).join('');
+          str += res;
+        }
+      } else {
+        if (params[item]) {
+          str += `&${item}=${params[item]}`;
+        }
+      }
+    } else {
+      str += `&${item}=${params[item]}`;
+    }
+  });
+  return str.replace('&', '');
+}

@@ -43,10 +43,26 @@ export async function getDetailList(params?: { [key: string]: any }) {
   });
 }
 
+/** 明细转移  合并 **/
+export async function _sampleTransfer(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/batchTest/sampleTransfer`, {
+    method: 'POST',
+    data,
+  });
+}
+
 /** 白名单列表 **/
 export async function getWhiteList(params?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/testWhiteList/whiteListPageList`, {
     method: 'GET',
     params,
+  });
+}
+
+/** 添加到白名单 **/
+export async function addWhiteList(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/testWhiteList/whiteListAdd`, {
+    method: 'POST',
+    data,
   });
 }
