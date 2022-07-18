@@ -1,11 +1,9 @@
-import { useState, useImperativeHandle, useEffect, useMemo } from 'react';
-import { Modal, Button, Table, Tooltip, Form, Input, Select, Checkbox, Space } from 'antd';
-import { PlusOutlined, MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import ConversationConfig from '../child/conversation-config';
-import ActionConfig from '../child/action-config';
-import styles from '../style.less';
-import { useModel } from 'umi';
 import Condition from '@/components/Condition';
+import { Checkbox, Form, Input, Modal, Radio, Select } from 'antd';
+import { useImperativeHandle, useState } from 'react';
+import ActionConfig from '../child/action-config';
+import ConversationConfig from '../child/conversation-config';
+import styles from '../style.less';
 
 const { Item: FormItem, List: FormList } = Form;
 const { TextArea } = Input;
@@ -122,6 +120,32 @@ const WordSlotModal: React.FC<any> = (props: any) => {
             initialValue={true}
           >
             <Checkbox onChange={onChange}>必填</Checkbox>
+          </FormItem>
+
+          <FormItem
+            name="life"
+            label="生命周期"
+            style={{ width: '400px' }}
+            rules={[{ required: true, message: '请选择' }]}
+            initialValue={true}
+          >
+            <Radio.Group>
+              <Radio value={0}>整轮对话有效</Radio>
+              <Radio value={1}>节点跳转后清空</Radio>
+            </Radio.Group>
+          </FormItem>
+
+          <FormItem
+            name="soltFill"
+            label="词槽是否预填充"
+            style={{ width: '400px' }}
+            rules={[{ required: true, message: '请选择' }]}
+            initialValue={true}
+          >
+            <Radio.Group>
+              <Radio value={0}>是</Radio>
+              <Radio value={1}>否</Radio>
+            </Radio.Group>
           </FormItem>
 
           <Condition r-if={show}>

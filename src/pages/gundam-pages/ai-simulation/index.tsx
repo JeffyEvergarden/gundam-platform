@@ -1,6 +1,8 @@
+import Condition from '@/components/Condition';
 import { Button, Col, Form, Input, message, Row, Select } from 'antd';
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useModel } from 'umi';
+import { CHANNAL_LIST } from '../FAQ/const';
 import RobotChatText from './chatText';
 import { useChatModel } from './model';
 import styles from './style.less';
@@ -116,12 +118,29 @@ export default (props: any) => {
               {robotFormList?.map((item: any) => {
                 return (
                   <React.Fragment key={item.name}>
-                    <Form.Item
-                      name={item?.configName || item?.name}
-                      label={item?.configValue || item?.label}
-                    >
-                      <Input placeholder={item?.placeholder} />
-                    </Form.Item>
+                    <Condition r-if={item.name != 'CHANNEL_CODE'}>
+                      <Form.Item
+                        name={item?.configName || item?.name}
+                        label={item?.configValue || item?.label}
+                      >
+                        <Input placeholder={item?.placeholder} />
+                      </Form.Item>
+                    </Condition>
+                    <Condition r-if={item.name == 'CHANNEL_CODE'}>
+                      <Form.Item
+                        name={item?.configName || item?.name}
+                        label={item?.configValue || item?.label}
+                        rules={[{ required: true, message: '请选择' }]}
+                      >
+                        <Select placeholder={item?.placeholder}>
+                          {CHANNAL_LIST?.map((item: any, index: any) => (
+                            <Option key={index} value={item.name}>
+                              {item.label}
+                            </Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Condition>
                   </React.Fragment>
                 );
               })}
