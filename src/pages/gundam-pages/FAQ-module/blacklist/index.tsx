@@ -1,6 +1,6 @@
 import { PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Button, Form, Input, Modal, Popconfirm, Radio, Tooltip } from 'antd';
+import { Button, Form, Input, Modal, Popconfirm, Tooltip } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { useTableModel } from './model';
@@ -153,7 +153,11 @@ const FAQBlackList = (props: any) => {
         loading={tableLoading}
         scroll={{ x: columns.length * 200 }}
         request={async (params: any, sort: any, filter: any) => {
-          return getTableList({ page: params.current, ...params, robotId: info.id });
+          return getTableList({
+            page: params.current,
+            ...params,
+            robotId: info.id,
+          });
         }}
         editable={{
           type: 'multiple',
