@@ -3,21 +3,30 @@ import { Modal, Space } from 'antd';
 import ChatRecordModal from '@/pages/gundam-pages/FAQ-module/components/chat-record-modal';
 import ProTable from '@ant-design/pro-table';
 import { channelMap } from '@/pages/gundam-pages/FAQ/const';
+import { useSessionList } from './model';
 
-export const CODE = {
-  ...channelMap,
-};
+// export const CODE = {
+//   ...channelMap,
+// };
 
 export default (props: any) => {
-  const { visible, onCancel } = props;
+  const { visible, onCancel, modalData } = props;
+  const { getSessionList } = useSessionList();
 
   const chatRecordModalRef = useRef<any>({});
+  const actionRef = useRef<any>();
 
-  const sessionList = (payload: any) => {
-    let res: any;
+  useEffect(() => {
+    visible && actionRef?.current?.reloadAndRest();
+  }, [visible, modalData]);
+
+  const sessionList = async (payload: any) => {
+    let params = {};
+
+    let res = await getSessionList(params);
     return {
       data: res?.data?.list || [],
-      total: res?.data?.total,
+      total: res?.data?.totalPage,
       current: payload.current,
       pageSize: payload.pageSize,
     };
@@ -29,7 +38,7 @@ export default (props: any) => {
 
   const columns: any = [
     {
-      dataIndex: 'message',
+      dataIndex: 'question',
       title: '客户问题',
       ellipsis: true,
       search: false,
@@ -46,7 +55,7 @@ export default (props: any) => {
       ellipsis: true,
       search: false,
       render: (t: any, r: any, i: any) => {
-        return <span>{CODE[r.channelCode]}</span>;
+        return <span>{channelMap[r.channelCode]}</span>;
       },
     },
     {
@@ -67,12 +76,14 @@ export default (props: any) => {
       destroyOnClose={true}
       title={'会话明细'}
       footer={null}
+      width={600}
     >
       <ProTable
-        rowKey={(record: any) => record.dayId}
+        rowKey={(record: any) => record.id}
         headerTitle={false}
         toolBarRender={false}
         bordered
+        actionRef={actionRef}
         pagination={{
           pageSize: 10,
         }}

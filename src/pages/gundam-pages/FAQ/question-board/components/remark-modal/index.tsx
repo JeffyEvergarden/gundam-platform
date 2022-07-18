@@ -5,7 +5,7 @@ import style from './style.less';
 const { TextArea } = Input;
 
 const RemarkModal = (props: any) => {
-  const { cref, confirm } = props;
+  const { cref, confirm, pageUrl } = props;
 
   // const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
   //   info: model.info,

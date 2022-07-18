@@ -8,3 +8,31 @@ export async function questionList(params?: Record<string, any>) {
     params,
   });
 }
+
+export async function addBlackList(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/blacklist/blacklistQuestionAdd`, {
+    method: 'POST',
+    data: params,
+  });
+}
+
+export async function addBlackListBatch(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/blacklist/blacklistQuestionBatchAdd`, {
+    method: 'POST',
+    data: params,
+  });
+}
+
+export async function getintentAddBatch(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/intent/intentCorpusBatchAdd`, {
+    method: 'POST',
+    data: params,
+  });
+}
+
+export async function getfaqAddBatch(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/faqSimilarBatchAdd`, {
+    method: 'POST',
+    data: params,
+  });
+}

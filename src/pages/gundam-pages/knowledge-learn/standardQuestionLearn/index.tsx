@@ -16,6 +16,7 @@ export default () => {
   const [selectRow, setSelectRow] = useState<any>(null);
   const [visibleSession, setVisibleSession] = useState<boolean>(false);
   const [modalData, setModalData] = useState<any>({});
+  const [menulabel, setMenuLabel] = useState<string>('批量处理');
 
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
@@ -35,13 +36,18 @@ export default () => {
     };
   };
 
-  const handleMenuClick = (r: any) => {
-    setVisibleSession(true);
-    setModalData(r);
+  const handleMenuClick = (item: any) => {
+    if (item.key == '1') {
+      setMenuLabel('批量加入黑名单');
+    }
+    if (item.key == '2') {
+      setMenuLabel('批量添加');
+    }
   };
 
   const openSession = (r: any) => {
     setVisibleSession(true);
+    setModalData(r);
   };
 
   const cancelSession = () => {
@@ -154,11 +160,13 @@ export default () => {
           pagination={{
             pageSize: 10,
           }}
+          tableAlertRender={false}
+          tableAlertOptionRender={false}
           toolBarRender={() => [
             <Dropdown overlay={menu} key="Dropdown">
               <Button type="primary">
                 <Space>
-                  批量处理
+                  {menulabel}
                   <DownOutlined />
                 </Space>
               </Button>
