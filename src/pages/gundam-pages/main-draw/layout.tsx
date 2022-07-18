@@ -1,13 +1,13 @@
+import { Badge, Button, Space, Tooltip } from 'antd';
 import React, { useEffect } from 'react';
-import { useModel, useAccess, history } from 'umi';
-import { Button, Space, Badge, Tooltip } from 'antd';
+import { history, useAccess, useModel } from 'umi';
 
 import { PageContainer, ProBreadcrumb } from '@ant-design/pro-layout';
 
-import style from './style.less';
-import { usePublishModel } from '../../gundam/management/model';
 import Condition from '@/components/Condition';
+import { usePublishModel } from '../../gundam/management/model';
 import MainDraw from './index';
+import style from './style.less';
 
 // 机器人列表
 const MainLayout: React.FC = (props: any) => {

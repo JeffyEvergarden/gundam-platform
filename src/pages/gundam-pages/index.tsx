@@ -111,6 +111,7 @@ const MachinePagesHome: React.FC = (props: any) => {
       info.id ||
       '';
     _getInfo({ id: robotId });
+    getShowBadgeTotal(robotId);
   };
 
   const setChatVis = (flag: any) => {
@@ -119,7 +120,6 @@ const MachinePagesHome: React.FC = (props: any) => {
 
   useEffect(() => {
     getLastInfo();
-    getShowBadgeTotal(info.id);
   }, []);
 
   const goBack = () => {
