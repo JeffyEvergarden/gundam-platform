@@ -35,10 +35,12 @@ export const useRoleModel = () => {
   };
 
   const getRole = async (params: any) => {
+    setOpLoading(true);
     let res = await getRoleInfo(params);
+    setOpLoading(false);
     if (res.resultCode === successCode) {
       setInfo(res.data);
-      return true;
+      return res.data;
     } else {
       return false;
     }

@@ -28,12 +28,12 @@ const deepProcess = (arr: any[], info: any = {}, userAuth: any[]) => {
       deepProcess(item.routes, info, userAuth);
     }
     const hideFn = item.hideFn;
-    if (item.code) {
-      item.hideInMenu = !access(userAuth, item.code);
-      if (item.hideInMenu) {
-        return;
-      }
-    }
+    // if (item.code) {
+    //   item.hideInMenu = !access(userAuth, item.code);
+    //   if (item.hideInMenu) {
+    //     return;
+    //   }
+    // }
 
     if (hideFn && typeof hideFn === 'function') {
       item.hideInMenu = hideFn(info);

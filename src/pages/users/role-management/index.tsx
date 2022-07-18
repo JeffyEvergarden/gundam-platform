@@ -8,6 +8,7 @@ import Condition from '@/components/Condition';
 import config from '@/config/index';
 import style from './style.less';
 import RoleModal from './components/role-modal';
+import AuthModal from './components/auth-modal';
 import { addRoleInfo } from './model/api';
 
 // 机器人列表
@@ -30,8 +31,49 @@ const RoleManagement: React.FC = (props: any) => {
 
   const modalRef = useRef<any>({});
 
+  const drawerRef = useRef<any>({});
+
   const openEditModal = (row: any) => {
     (modalRef.current as any)?.open(row);
+  };
+
+  const { getRole, updateAuth, opLoading: roleOpLoading } = useRoleModel();
+
+  const openAuthModal = async (row: any) => {
+    if (roleOpLoading) {
+      return;
+    }
+    const roleId = row.code;
+    let res: any = await getRole({ roleCode: roleId });
+
+    let selectKey: any[] = Array.isArray(res) ? res : [];
+    selectKey = selectKey?.map((item: any) => {
+      return item.operationCode;
+    });
+
+    (drawerRef.current as any)?.open({
+      ...row,
+      selectKey,
+    });
+  };
+
+  const onConfirmAuth = async (obj: any) => {
+    let value = obj.value || [];
+
+    let submitObj = {
+      root: value.map((item: any) => {
+        return {
+          operationCode: item,
+          roleCode: obj.code,
+        };
+      }),
+    };
+    let res = await updateAuth(submitObj);
+    if (res) {
+      // 操作成功返回列表
+      drawerRef.current?.close?.();
+      (tableRef.current as any).reload();
+    }
   };
 
   const columns: any[] = [
@@ -68,7 +110,7 @@ const RoleManagement: React.FC = (props: any) => {
     {
       title: '操作',
       dataIndex: 'op',
-      width: 120,
+      width: 200,
       search: false,
       render: (val: any, row: any, index: number) => {
         return (
@@ -85,6 +127,15 @@ const RoleManagement: React.FC = (props: any) => {
             </Button> */}
 
             <Button
+              type="text"
+              onClick={() => {
+                openAuthModal(row);
+              }}
+            >
+              权限设置
+            </Button>
+
+            <Button
               type="link"
               onClick={() => {
                 // console.log(row);
@@ -92,7 +143,7 @@ const RoleManagement: React.FC = (props: any) => {
               }}
               style={{ marginRight: '6px' }}
             >
-              权限设置
+              详情设置
             </Button>
 
             <Button
@@ -105,10 +156,6 @@ const RoleManagement: React.FC = (props: any) => {
             >
               查看用户
             </Button>
-
-            {/* <Button type="link" danger onClick={() => {}}>
-              删除
-            </Button> */}
           </div>
         );
       },
@@ -198,6 +245,8 @@ const RoleManagement: React.FC = (props: any) => {
       />
 
       <RoleModal cref={modalRef} confirm={onConfirm} loading={opLoading}></RoleModal>
+
+      <AuthModal cref={drawerRef} confirm={onConfirmAuth} loading={roleOpLoading} />
     </div>
   );
 };
