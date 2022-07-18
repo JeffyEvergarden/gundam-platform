@@ -1,22 +1,35 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, InfoCircleFilled } from '@ant-design/icons';
 import styles from './index.less';
 import ProTable from '@ant-design/pro-table';
-import { Space, Divider, Tooltip, Dropdown, Button, Menu } from 'antd';
+import { history, useModel } from 'umi';
+import { Space, Divider, Tooltip, Dropdown, Button, Menu, Modal } from 'antd';
 import { useStandard } from './model';
+import { useSimilarModel, useSampleModel } from '@/pages/gundam-pages/sample/model';
 import { DownOutlined } from '@ant-design/icons';
 import SessionRecord from './../component/sessionRecord';
-
+import AnswerView from '@/pages/gundam-pages/FAQ-module/components/answerView-modal';
 export default () => {
   const actionRef = useRef<any>();
+  const answerViewRef = useRef<any>(null);
 
-  const { getList } = useStandard();
+  const { getListUnknown } = useStandard();
+  const { getSimilarList } = useSimilarModel();
+  const { getList } = useSampleModel();
+
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>(null);
   const [selectRow, setSelectRow] = useState<any>(null);
   const [visibleSession, setVisibleSession] = useState<boolean>(false);
   const [modalData, setModalData] = useState<any>({});
   const [menulabel, setMenuLabel] = useState<string>('批量处理');
+  const [rowInfo, setRowInfo] = useState<any>({});
+  const [paramsObj, setParamsObj] = useState<any>({ orderCode: '1', orderType: '2' });
+  const [visible, setVisible] = useState<boolean>(false);
+  const [pageInfo, setPageInfo] = useState<any>({});
 
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
@@ -25,9 +38,24 @@ export default () => {
     },
   };
 
-  const getInitTable = async (payload: any) => {
-    let res = await getList();
+  useEffect(() => {
+    let historyData = history?.location || {};
+    let rowInfo = historyData?.state?.rowInfo || {};
+    setRowInfo(rowInfo);
+  }, [history]);
 
+  const getInitTable = async (payload: any) => {
+    let params = {
+      page: payload.page,
+      pageSize: payload.pageSize,
+      robotId: info.id,
+      recommenId: rowInfo.recommendId,
+      recommenType: rowInfo.recommendType,
+      orderType: payload.orderType,
+      orderCode: payload.orderCode,
+    };
+    let res = await getListUnknown(params);
+    setPageInfo(res?.data);
     return {
       data: res?.data?.list || [],
       total: res?.data?.totalPage || res?.data?.list?.length,
@@ -70,6 +98,59 @@ export default () => {
     />
   );
 
+  // orderCode  '1'-分类  '2'-时间
+  //  orderType   '1'-升序 '2'-降序
+  const tableChange = (pagination: any, filters: any, sorter: any) => {
+    let temp = { orderCode: '1', orderType: '2' };
+    if (sorter.columnKey === 'createTime' && sorter.order === 'ascend') {
+      temp.orderCode = '2';
+      temp.orderType = '1';
+    }
+    if (sorter.columnKey === 'createTime' && sorter.order === 'descend') {
+      temp.orderCode = '2';
+      temp.orderType = '2';
+    }
+    let tempParamsObj = JSON.parse(JSON.stringify(paramsObj));
+    let tempObj = Object.assign(tempParamsObj, temp);
+    setParamsObj(tempObj);
+  };
+
+  const viewAnswer = () => {
+    answerViewRef?.current?.open(rowInfo);
+  };
+
+  const viewFAQOrIntent = async () => {
+    setVisible(true);
+  };
+
+  const getListFAQOrIntent = async (payload: any) => {
+    let res;
+    if (rowInfo.recommendType == '1') {
+      //相似问
+      let params = {
+        page: payload.current,
+        pageSize: payload.pageSize,
+        faqId: rowInfo?.recommendId,
+        robotId: info.id,
+      };
+      res = await getSimilarList(params);
+    } else if (rowInfo.recommendType == '2') {
+      // 意图
+      let params = {
+        page: payload.current,
+        pageSize: payload.pageSize,
+        intentId: rowInfo?.recommendId,
+      };
+      res = await getList(params);
+    }
+    return {
+      data: res?.data?.list || [],
+      total: res?.data?.totalPage || res?.data?.list?.length,
+      current: payload.current,
+      pageSize: payload.pageSize,
+    };
+  };
+
   const columns: any = [
     {
       dataIndex: 'question',
@@ -108,6 +189,7 @@ export default () => {
       search: false,
       ellipsis: true,
       width: 200,
+      sorter: true,
     },
     {
       title: '操作',
@@ -131,6 +213,27 @@ export default () => {
       },
     },
   ];
+
+  const columnsFAQOrIntent: any = [
+    {
+      dataIndex: 'question',
+      title: '序号',
+      ellipsis: true,
+      width: 100,
+      render: (t: any, r: any, i: any) => {
+        return (Number(pageInfo.page) - 1) * Number(pageInfo.pageSize) + Number(i) + 1;
+      },
+    },
+    {
+      dataIndex: 'Similar',
+      title: '相似问',
+      ellipsis: true,
+      render: (t: any, r: any, i: any) => {
+        return <span>{rowInfo.recommendType == '1' ? r.similarText : r.corpusText}</span>;
+      },
+    },
+  ];
+
   return (
     <Fragment>
       <div className={styles.stardard}>
@@ -138,15 +241,23 @@ export default () => {
           <div>
             <ArrowLeftOutlined
               style={{ marginRight: '6px', color: '#1890ff' }}
-              onClick={() => {}}
+              onClick={() => {
+                history.goBack();
+              }}
             />
-            问题: {'贷款审批结果'}
+            问题: {rowInfo?.recommendName}
           </div>
           <div>
             <Space>
-              <a>查看答案</a>
-              <Divider type="vertical" />
-              <a>现有相似问</a>
+              {rowInfo?.recommendType == '1' && (
+                <Fragment>
+                  <a onClick={viewAnswer}>查看答案</a>
+                  <Divider type="vertical" />
+                </Fragment>
+              )}
+              <a onClick={viewFAQOrIntent}>
+                现有{rowInfo.recommendType == '1' ? '相似问' : '样本'}
+              </a>
             </Space>
           </div>
         </div>
@@ -154,6 +265,8 @@ export default () => {
           headerTitle={'未知问题列表'}
           rowKey={'id'}
           actionRef={actionRef}
+          onChange={tableChange}
+          params={paramsObj}
           columns={columns}
           scroll={{ x: columns.length * 200 }}
           search={false}
@@ -173,12 +286,37 @@ export default () => {
             </Dropdown>,
           ]}
           request={async (params) => {
-            return getInitTable({ params });
+            return getInitTable(params);
           }}
           rowSelection={rowSelection}
         />
       </div>{' '}
       <SessionRecord visible={visibleSession} onCancel={cancelSession} modalData={modalData} />
+      <AnswerView cref={answerViewRef} />
+      <Modal
+        visible={visible}
+        onCancel={() => setVisible(false)}
+        destroyOnClose={true}
+        title={rowInfo.recommendType == '1' ? '相似问' : '样本'}
+        footer={null}
+        width={600}
+      >
+        <ProTable
+          rowKey={(record: any) => record.id}
+          headerTitle={false}
+          toolBarRender={false}
+          bordered
+          // actionRef={actionRefFAQOrIntent}
+          pagination={{
+            pageSize: 10,
+          }}
+          search={false}
+          columns={columnsFAQOrIntent}
+          request={async (params = {}) => {
+            return getListFAQOrIntent(params);
+          }}
+        />
+      </Modal>
     </Fragment>
   );
 };

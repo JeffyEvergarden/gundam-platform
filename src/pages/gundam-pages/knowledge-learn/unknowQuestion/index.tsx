@@ -33,6 +33,7 @@ export default () => {
   const [disaAbledData, setDisAbledData] = useState<any>();
   const [datasource, setDataSource] = useState<any>([]);
   const [operation, setOperation] = useState<string>('');
+  const [paramsObj, setParamsObj] = useState<any>({ orderCode: '1', orderType: '2' });
 
   const getHide = () => {
     if (
@@ -67,7 +68,22 @@ export default () => {
   };
 
   const getInitTable = async (payload: any) => {
-    let res = await getList();
+    let start = payload?.rangeTime?.[0];
+    let end = payload?.rangeTime?.[1];
+    let params = {
+      page: payload.current,
+      pageSize: payload.pageSize,
+      question: payload.question,
+      robotId: info.id,
+      orderType: payload.orderType,
+      orderCode: payload.orderCode,
+      startTime: start,
+      endTime: end,
+    };
+    if (payload.source) {
+      params.source = payload.source;
+    }
+    let res = await getList(params);
     setLearnNum(res?.data?.unknownQuestionCount);
     setStandardNum(res?.data?.faqCount);
     setDataSource(res?.data?.list);
@@ -82,6 +98,9 @@ export default () => {
   const toStandard = (r: any) => {
     history.push({
       pathname: '/gundamPages/knowledgeLearn/standardQuestionLearn',
+      state: {
+        rowInfo: r,
+      },
     });
   };
 
@@ -281,6 +300,31 @@ export default () => {
     />
   );
 
+  // orderCode  '1'-分类  '2'-时间
+  //  orderType   '1'-升序 '2'-降序
+  const tableChange = (pagination: any, filters: any, sorter: any) => {
+    let temp = { orderCode: '1', orderType: '2' };
+    if (sorter.columnKey === 'faqTypeName' && sorter.order === 'ascend') {
+      temp.orderCode = '1';
+      temp.orderType = '1';
+    }
+    if (sorter.columnKey === 'faqTypeName' && sorter.order === 'descend') {
+      temp.orderCode = '1';
+      temp.orderType = '2';
+    }
+    if (sorter.columnKey === 'createTime' && sorter.order === 'ascend') {
+      temp.orderCode = '2';
+      temp.orderType = '1';
+    }
+    if (sorter.columnKey === 'createTime' && sorter.order === 'descend') {
+      temp.orderCode = '2';
+      temp.orderType = '2';
+    }
+    let tempParamsObj = JSON.parse(JSON.stringify(paramsObj));
+    let tempObj = Object.assign(tempParamsObj, temp);
+    setParamsObj(tempObj);
+  };
+
   const columns: any = [
     {
       dataIndex: 'question',
@@ -321,6 +365,7 @@ export default () => {
       search: false,
       ellipsis: true,
       width: 100,
+      sorter: true,
     },
     {
       dataIndex: 'recommendName',
@@ -348,6 +393,7 @@ export default () => {
       search: false,
       ellipsis: true,
       width: 200,
+      sorter: true,
     },
     {
       title: '操作',
@@ -403,6 +449,8 @@ export default () => {
           pagination={{
             pageSize: 10,
           }}
+          params={paramsObj}
+          onChange={tableChange}
           rowSelection={rowSelection}
           tableAlertOptionRender={false}
           tableAlertRender={false}
@@ -417,7 +465,7 @@ export default () => {
             </Dropdown>,
           ]}
           request={async (params) => {
-            return getInitTable({ params });
+            return getInitTable(params);
           }}
         />
       </div>

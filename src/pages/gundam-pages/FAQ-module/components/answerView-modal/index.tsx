@@ -29,7 +29,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     open: (row: any) => {
       // 显示
       setQuestionInfo(row);
-      CurrentPage({ faqId: row.faqId });
+      CurrentPage({ faqId: row.faqId ? row.faqId : row.recommendId });
       setVisible(true);
     },
     close: () => {
@@ -80,7 +80,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
                     <div
                       className={style['box-content']}
                       dangerouslySetInnerHTML={{ __html: item.answer }}
-                    ></div>
+                    />
                     <div className={style['box-footer']}>
                       <div>
                         生效渠道：
@@ -93,9 +93,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
                             })
                             ?.join(' , ')}
                       </div>
-                      {item.enableStartTime && item.enableEndTime && (
-                        <Divider type="vertical"></Divider>
-                      )}
+                      {item.enableStartTime && item.enableEndTime && <Divider type="vertical" />}
                       {item.enableStartTime && item.enableEndTime && (
                         <div>生效时间：{`${item.enableStartTime} ~ ${item.enableEndTime}`}</div>
                       )}
