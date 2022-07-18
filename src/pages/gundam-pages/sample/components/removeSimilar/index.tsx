@@ -1,14 +1,11 @@
-import { useState, useImperativeHandle, useEffect, useMemo } from 'react';
-import { Modal, Button, Table, Tooltip, Tabs, Input } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Input, Modal, Table } from 'antd';
+import { useImperativeHandle, useState } from 'react';
 
 import { useModel } from 'umi';
 
-import style from './style.less';
-import Condition from '@/components/Condition';
 import MyTree from '@/pages/gundam-pages/FAQ/FAQ-manage/components/my-tree';
 import { useFaqModal } from '@/pages/gundam-pages/FAQ/FAQ-manage/model';
-import { useSimilarModel } from '../../model';
+import style from './style.less';
 
 const columns1: any[] = [
   // 问题列表-列
@@ -78,7 +75,12 @@ const SelectorModal: React.FC<any> = (props: any) => {
   const onSelect = (val: any) => {
     setClassType(val[0]);
     setCurrent1(1);
-    getFaqList({ page: 1, pageSize: 10, robotId: info.id, faqTypeId: val[0] });
+    getFaqList({
+      page: 1,
+      pageSize: 10,
+      robotId: info.id,
+      faqTypeId: val[0] == '0' ? null : val[0],
+    });
   };
 
   const rowSelection = {
