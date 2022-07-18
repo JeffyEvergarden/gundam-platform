@@ -101,12 +101,24 @@ const Board: React.FC<any> = (props: any) => {
   const [searchText, setSearchText] = useState<string>(''); // 查询相似问的内容
   const [lastText, setLastText] = useState<string>(''); // 查询相似问的内容
   const [similarData, setSimilarData] = useState<any>({});
-
+  const [pageUrl, setPageUrl] = useState<string>('');
   // 打开备注
 
   useEffect(() => {
     console.log(info);
   }, [info]);
+
+  useEffect(() => {
+    let historyData = history?.location || {};
+    let pageUrl = historyData?.state?.pageUrl || '';
+    let payload = historyData?.state?.payload || {};
+    if (pageUrl === 'unknownQuestion') {
+      form.setFieldsValue({
+        question: payload?.question,
+      });
+      setPageUrl('unknownQuestion');
+    }
+  }, []);
 
   const { maxRecommendLength, addNewQuestion, updateQuestion, getQuestionInfo, getFaqConfig } =
     useQuestionModel();
@@ -325,7 +337,11 @@ const Board: React.FC<any> = (props: any) => {
       let response = await addNewQuestion(data);
       if (response === true) {
         // 回到主页
-        history.push('/gundamPages/faq/main');
+        if (pageUrl == 'unknownQuestion') {
+          history.push('/gundamPages/knowledgeLearn/unknowQuestion');
+        } else {
+          history.push('/gundamPages/faq/main');
+        }
       }
     } else {
       let data: any = {
@@ -426,9 +442,13 @@ const Board: React.FC<any> = (props: any) => {
             style={{ padding: 0 }}
             type="link"
             onClick={() => {
-              history.push('/gundamPages/faq/main');
+              if (pageUrl === 'unknownQuestion') {
+                history.push('/gundamPages/knowledgeLearn/unknowQuestion');
+              } else {
+                history.push('/gundamPages/faq/main');
+              }
             }}
-          ></Button>
+          />
           {pageType === 'edit' ? '编辑问题' : '添加问题'}
         </div>
 
@@ -464,7 +484,7 @@ const Board: React.FC<any> = (props: any) => {
                   treeData={typeList}
                   treeDefaultExpandedKeys={defaultExpend}
                   getPopupContainer={(trigger) => trigger.parentElement}
-                ></TreeSelect>
+                />
               </Form.Item>
             </div>
             <FormList name="answerList">
@@ -742,7 +762,7 @@ const Board: React.FC<any> = (props: any) => {
         saveSame={saveSame}
         pageType={'FAQ'}
       />
-      <RemarkModal cref={remarkModalRef} confirm={confirmRemarkModal} />
+      <RemarkModal cref={remarkModalRef} confirm={confirmRemarkModal} pageUrl={pageUrl} />
       <SelectorModal cref={selectModalRef} confirm={confirm} />
     </div>
   );

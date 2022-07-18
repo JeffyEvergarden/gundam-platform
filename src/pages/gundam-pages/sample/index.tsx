@@ -29,6 +29,7 @@ export default () => {
 
   const [pageType, setPageType] = useState<string>('');
   const [tableInfo, setTableInfo] = useState<any>();
+  const [pageUrl, setPageUrl] = useState<string>('');
 
   const [inputValue, setInputValue] = useState<string>('');
 
@@ -51,6 +52,8 @@ export default () => {
     let pageType = historyData?.state?.pageType || '';
     let searchText = historyData?.state?.searchText || '';
     let tableInfo = historyData?.state?.info;
+    let pageUrl = historyData?.state?.pageUrl;
+    setPageUrl(pageUrl);
     setInputValue(searchText);
     console.log(history);
     setPageType(pageType);
@@ -387,6 +390,24 @@ export default () => {
     }
   };
 
+  const getName = () => {
+    let name: string = '';
+    if (pageType === 'wish') {
+      if (pageUrl === 'unknownQustion') {
+        name = tableInfo?.recommendName;
+      } else {
+        name = tableInfo?.intentName;
+      }
+    } else if (pageType === 'FAQ') {
+      if (pageUrl === 'unknownQustion') {
+        name = tableInfo?.recommendName;
+      } else {
+        name = tableInfo?.question;
+      }
+    }
+    return name;
+  };
+
   const tableListWish: any = [
     {
       dataIndex: 'corpusText',
@@ -541,16 +562,19 @@ export default () => {
                     } else {
                       history.push('/gundamPages/faq/main');
                     }
+                    if (pageUrl === 'unknownQustion') {
+                      history.push('/gundamPages/knowledgeLearn/unknowQuestion');
+                    }
+                  } else if (pageType === 'wish') {
+                    if (pageUrl === 'unknownQustion') {
+                      history.push('/gundamPages/knowledgeLearn/unknowQuestion');
+                    }
                   } else {
                     history?.goBack();
                   }
                 }}
               />
-              {pageType === 'wish'
-                ? tableInfo?.intentName
-                : pageType === 'FAQ'
-                ? tableInfo?.question
-                : '问题名称'}
+              {getName()}
             </div>
             {pageType == 'FAQ' && (
               <div style={{ fontSize: '14px' }}>

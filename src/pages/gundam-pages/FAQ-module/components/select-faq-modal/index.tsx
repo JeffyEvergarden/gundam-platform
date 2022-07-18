@@ -72,7 +72,7 @@ const expendRender = (row: any) => {
             <div
               className={style['answer-content']}
               dangerouslySetInnerHTML={{ __html: item.answer || null }}
-            ></div>
+            />
           </div>
         );
       })}
@@ -102,6 +102,10 @@ const SelectorModal: React.FC<any> = (props: any) => {
   // 对象
   const [selectList, setSelectList] = useState<any[]>([]);
   // const [selectWishList, setSelectWishList] = useState<any[]>([]);
+
+  //  批量相关操作
+  const [operation, setOperation] = useState<string>('');
+  const [questionList, setQuestionList] = useState<any>([]);
 
   const changeActiveKey = (val: any) => {
     setActivekey(val);
@@ -363,6 +367,13 @@ const SelectorModal: React.FC<any> = (props: any) => {
       getWishList(info.id); // 获取意图列表
       getTreeData(info.id); // 获取faq列表
       console.log(obj);
+      if (obj.operation === 'batch') {
+        setOperation('batch');
+        setQuestionList(obj.questionList);
+      } else {
+        setOperation('');
+        setQuestionList([]);
+      }
       setTitle(obj.question || '');
       // 设置不能选的
       setDisabledWishKeys(obj?.disabledWishKeys || []);
@@ -397,7 +408,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
   // 提交
   const submit = () => {
     if (!Array.isArray(selectList)) {
-      message.warning('请选择有晓的标准问/意图');
+      message.warning('请选择有效的标准问/意图');
       return;
     }
     // ------------------
@@ -407,8 +418,12 @@ const SelectorModal: React.FC<any> = (props: any) => {
         return;
       }
     }
+    if (operation == 'batch') {
+      confirm(selectList || [], questionList);
+    } else {
+      confirm(selectList || [], title);
+    }
 
-    confirm(selectList || [], title);
     setVisible(false);
   };
 
@@ -428,6 +443,16 @@ const SelectorModal: React.FC<any> = (props: any) => {
     }
   };
 
+  const editList = (val: any, item: any) => {
+    let temp: any = [...questionList];
+    questionList.map((el: any, index: any) => {
+      if (item.id === el.id) {
+        el.question = val;
+      }
+    });
+    setQuestionList(temp);
+  };
+
   return (
     <Modal
       className={style['modal-bg']}
@@ -441,16 +466,36 @@ const SelectorModal: React.FC<any> = (props: any) => {
     >
       <div className={style['modal-bg_default']}>
         {/* <Condition r-if={title}> */}
-        <div className={style['title_top']}>
-          <div className={style['label']}> 问题样本:</div>
-          <Input
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
-            readOnly={readOnly}
-          />
-        </div>
+        {operation == 'batch' ? (
+          <div className={style.batch_box}>
+            {questionList.map((item: any, index: any) => {
+              return (
+                <div key={item.id} className={style['title_top_batch']}>
+                  <div className={style['label']}> 问题样本{index + 1}:</div>
+                  <Input
+                    value={item.question}
+                    onChange={(e) => {
+                      editList(e.target.value, item);
+                    }}
+                    readOnly={readOnly}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className={style['title_top']}>
+            <div className={style['label']}> 问题样本:</div>
+            <Input
+              value={title}
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
+              readOnly={readOnly}
+            />
+          </div>
+        )}
+
         {/* </Condition> */}
 
         <div className={style['select-box']}>

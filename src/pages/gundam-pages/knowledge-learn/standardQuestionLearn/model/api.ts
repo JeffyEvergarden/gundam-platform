@@ -8,3 +8,10 @@ export async function unknownQuestionByFaqPageList(params?: Record<string, any>)
     params,
   });
 }
+
+export async function sessionList(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/knowledgeLearn/sessionList`, {
+    method: 'GET',
+    params,
+  });
+}
