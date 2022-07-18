@@ -134,7 +134,7 @@ export default (props: any) => {
                       >
                         <Select placeholder={item?.placeholder}>
                           {CHANNAL_LIST?.map((item: any, index: any) => (
-                            <Option key={index} value={item.name}>
+                            <Option key={index} value={item.value}>
                               {item.label}
                             </Option>
                           ))}
