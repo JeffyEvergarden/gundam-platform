@@ -1,9 +1,9 @@
-import { useState } from 'react';
 import { message } from 'antd';
+import { useState } from 'react';
 
-import { queryRoleList, getRoleInfo, addRoleInfo, updateRoleAuth, updateRoleInfo } from './api';
-import config from '@/config';
 import { AUTH_LIST } from '@/auth';
+import config from '@/config';
+import { addRoleInfo, getRoleInfo, queryRoleList, updateRoleAuth, updateRoleInfo } from './api';
 
 export const successCode = config.successCode;
 
@@ -53,7 +53,7 @@ export const useRoleModel = () => {
     if (res.resultCode === successCode) {
       return true;
     } else {
-      message.error(res.resultMsg || '修改失败');
+      message.error(res.resultDesc || '修改失败');
       return false;
     }
   };
@@ -65,7 +65,7 @@ export const useRoleModel = () => {
     if (res.resultCode === successCode) {
       return true;
     } else {
-      message.error(res.resultMsg || '新建失败');
+      message.error(res.resultDesc || '新建失败');
       return false;
     }
   };
@@ -77,7 +77,7 @@ export const useRoleModel = () => {
     if (res.resultCode === successCode) {
       return true;
     } else {
-      message.error(res.resultMsg || '修改失败');
+      message.error(res.resultDesc || '修改失败');
       return false;
     }
   };
