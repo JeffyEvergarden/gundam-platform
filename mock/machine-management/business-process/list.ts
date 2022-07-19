@@ -1,4 +1,3 @@
-import { Request, Response } from 'express';
 import config from '../../../src/config';
 
 const successCode = config.successCode;
@@ -30,12 +29,12 @@ const getBusinessTableData = (req: any, res: any) => {
     resultCode: successCode,
     data: {
       pageSize: 20,
-      totalSize: 200,
+      totalPage: 200,
       page: 10,
       list: arr,
     },
     pageSize: 20,
-    totalSize: 200,
+    totalPage: 200,
     page: 10,
   });
 };

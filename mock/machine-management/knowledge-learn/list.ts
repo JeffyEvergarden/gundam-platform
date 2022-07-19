@@ -15,7 +15,7 @@ const getBatchList = (req: any, res: any) => {
     data: {
       page: 1,
       pageSize: 10,
-      totalSize: 3,
+      totalPage: 3,
       nextTestTime: '2022-07-12',
       list: [
         {
@@ -71,7 +71,7 @@ const getDetailList = (req: any, res: any) => {
     data: {
       page: 1,
       pageSize: 10,
-      totalSize: 3,
+      totalPage: 3,
       list: [
         {
           id: 'pl1',
@@ -145,7 +145,7 @@ const getWhiteList = (req: any, res: any) => {
     data: {
       page: 1,
       pageSize: 10,
-      totalSize: 3,
+      totalPage: 3,
       list: [
         {
           id: 'pl1',
@@ -215,5 +215,6 @@ export default {
   'GET /aichat/robot/batchTest/testTaskInfo': getTest, //回显检测
   'POST /aichat/robot/batchTest/saveTestTask': defaultList, //检测计划
   'POST /aichat/robot/testWhiteList/whiteListAdd': defaultList, //添加到白名单
-  'POST /aichat/robot/batchTest/sampleTransfer': defaultList, //添加到白名单
+  'POST /aichat/robot/testWhiteList/whiteListDelete': defaultList, //删除白名单
+  'POST /aichat/robot/batchTest/sampleTransfer': defaultList,
 };

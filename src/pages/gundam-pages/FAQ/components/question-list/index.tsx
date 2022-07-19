@@ -277,12 +277,12 @@ const QuestionList: React.FC<any> = (props: any) => {
     if (!obj?.page) {
       setCurrent(1);
     }
-    if (!obj?.pageSize) {
-      setPageSize(10);
-    }
+    // if (!obj?.pageSize) {
+    //   setPageSize(10);
+    // }
     let params = {
       page: 1,
-      pageSize: 10,
+      pageSize: pageSize,
       robotId: info.id,
       queryType: queryType,
       searchText: searchText,

@@ -42,12 +42,12 @@ const AwaitList: React.FC<any> = (props: any) => {
     if (!obj?.page) {
       setCurrent(1);
     }
-    if (!obj?.pageSize) {
-      setPageSize(10);
-    }
+    // if (!obj?.pageSize) {
+    //   setPageSize(10);
+    // }
     let params = {
       page: 1,
-      pageSize: 10,
+      pageSize: pageSize,
       robotId: info.id,
       approvalStatus: pageType == 'pending' ? 2 : 1, //判断待审批 待处理
       searchText: searchText,

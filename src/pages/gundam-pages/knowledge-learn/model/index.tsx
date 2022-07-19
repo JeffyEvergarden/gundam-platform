@@ -4,6 +4,7 @@ import { useState } from 'react';
 import {
   addWhiteList,
   deleteDetailList,
+  deleteWhiteList,
   getBatchList,
   getDetailList,
   getWhiteList,
@@ -176,11 +177,23 @@ export const useWhiteModel = () => {
     }
   };
 
+  const deleteWhite = async (params: any) => {
+    let res = await deleteWhiteList(params);
+    if (res.resultCode == successCode) {
+      message.success(res.resultDesc);
+      return true;
+    } else {
+      message.error(res.resultDesc);
+      return false;
+    }
+  };
+
   return {
     list,
     totalPage,
     getList,
     addWhite,
+    deleteWhite,
     loading,
   };
 };

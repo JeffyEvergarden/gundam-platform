@@ -1,5 +1,3 @@
-import { Request, Response } from 'express';
-
 import config from '../../../src/config';
 
 const successCode = config.successCode;
@@ -33,7 +31,7 @@ const getLabelList = (req: any, res: any) => {
     data: {
       page: 1,
       pageSize: 10,
-      totalSize: 3,
+      totalPage: 3,
       list: [
         {
           actionLabel: '话术标签1',

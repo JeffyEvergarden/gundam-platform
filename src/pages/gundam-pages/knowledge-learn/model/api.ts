@@ -73,3 +73,11 @@ export async function addWhiteList(data?: { [key: string]: any }) {
     data,
   });
 }
+
+/** 添加到白名单 **/
+export async function deleteWhiteList(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/testWhiteList/whiteListDelete`, {
+    method: 'POST',
+    data,
+  });
+}
