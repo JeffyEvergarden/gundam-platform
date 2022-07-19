@@ -104,6 +104,11 @@ const TestPlanModal: React.FC<any> = (props: any) => {
     }
   };
 
+  const disabledDate: any = (current: any) => {
+    // Can not select days before today and today
+    return current && current < moment().endOf('day');
+  };
+
   return (
     <Modal
       width={650}
@@ -138,7 +143,7 @@ const TestPlanModal: React.FC<any> = (props: any) => {
             <div className={style['icon-box']}>
               <FormItem style={{ marginRight: '6px' }}>首次检测日期：</FormItem>
               <FormItem name="firstTestingTime" style={{ width: '100px', marginRight: '6px' }}>
-                <DatePicker style={{ width: '200px' }} />
+                <DatePicker style={{ width: '200px' }} disabledDate={disabledDate} />
               </FormItem>
             </div>
           </Condition>
