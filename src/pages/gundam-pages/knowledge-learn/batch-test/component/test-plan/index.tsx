@@ -175,7 +175,7 @@ const TestPlanModal: React.FC<any> = (props: any) => {
               <FormItem name="clearNumber" style={{ marginRight: '6px' }} initialValue={1}>
                 <InputNumber min={1} max={12}></InputNumber>
               </FormItem>
-              <FormItem>月之前的检测结果明细数据</FormItem>
+              <FormItem>个月之前的检测结果明细数据</FormItem>
             </div>
           </Condition>
         </Form>
