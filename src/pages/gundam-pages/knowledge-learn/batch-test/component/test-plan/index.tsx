@@ -1,5 +1,6 @@
 import Condition from '@/components/Condition';
 import { Checkbox, DatePicker, Form, InputNumber, Modal, Select } from 'antd';
+import moment from 'moment';
 import React, { useImperativeHandle, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { useTestModel } from '../../../model';
@@ -15,7 +16,7 @@ const extra = {
 const TestPlanModal: React.FC<any> = (props: any) => {
   const { cref } = props;
 
-  const { saveTest, saveTemporary } = useTestModel();
+  const { saveTest, saveTemporary, getTestTaskInfo } = useTestModel();
 
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -51,6 +52,7 @@ const TestPlanModal: React.FC<any> = (props: any) => {
       ...values,
       autoClear: values?.autoClear == true ? 1 : values?.autoClear == false ? 0 : undefined,
       robotId: info.id,
+      firstTestingTime: values?.firstTestingTime?.format('YYYY-MM-DD'),
     };
 
     let res: any;
@@ -67,9 +69,21 @@ const TestPlanModal: React.FC<any> = (props: any) => {
   useImperativeHandle(cref, () => ({
     open: (type: any) => {
       setPageType(type);
+      if (type == 'plan') {
+        getTestTaskInfo({ robotId: info.id }).then((res: any) => {
+          let formData = res;
+          formData.autoClear =
+            formData?.autoClear == 1 ? true : formData?.autoClear == 0 ? false : undefined;
+          formData.firstTestingTime = formData?.firstTestingTime
+            ? moment(formData?.firstTestingTime)
+            : undefined;
+          form.setFieldsValue(formData);
+        });
+      }
       setVisible(true);
     },
     close: () => {
+      form.resetFields();
       setVisible(false);
     },
     submit,

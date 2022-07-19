@@ -9,6 +9,7 @@ import {
   getWhiteList,
   saveTemporaryTask,
   saveTestTask,
+  testTaskInfo,
   _sampleTransfer,
 } from './api';
 
@@ -80,10 +81,19 @@ export const useTestModel = () => {
       return false;
     }
   };
+  const getTestTaskInfo = async (params: any) => {
+    let res = await testTaskInfo(params);
+    if (res.resultCode == successCode) {
+      return res?.data;
+    } else {
+      return false;
+    }
+  };
 
   return {
     saveTest,
     saveTemporary,
+    getTestTaskInfo,
   };
 };
 

@@ -18,6 +18,13 @@ export async function saveTestTask(data?: { [key: string]: any }) {
     data,
   });
 }
+/** 回显检测计划 **/
+export async function testTaskInfo(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/batchTest/testTaskInfo`, {
+    method: 'GET',
+    params,
+  });
+}
 
 /** 临时检测 **/
 export async function saveTemporaryTask(data?: { [key: string]: any }) {
