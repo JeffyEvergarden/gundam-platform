@@ -162,6 +162,11 @@ export default () => {
       dataIndex: 'durationFormat',
       ellipsis: true,
     },
+    {
+      title: '会话开始时间',
+      dataIndex: 'createTime',
+      ellipsis: true,
+    },
   ];
 
   return (
