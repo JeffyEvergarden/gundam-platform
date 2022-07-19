@@ -7,7 +7,7 @@ const getWordSlotList = (req: any, res: any) => {
     resultCode: successCode,
     data: {
       pageSize: 20,
-      totalSize: 200,
+      totalPage: 200,
       page: 10,
       list: [
         {

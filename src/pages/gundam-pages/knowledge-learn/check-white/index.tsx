@@ -1,15 +1,16 @@
 import ProTable from '@ant-design/pro-table';
-import { Button, Popconfirm } from 'antd';
-import React, { useRef } from 'react';
+import { Button, Input, Popconfirm, Space } from 'antd';
+import React, { useRef, useState } from 'react';
 import { useModel } from 'umi';
 import style from './style.less';
 
 import { useWhiteModel } from '../model';
 
 const WhiteListPages: React.FC = (props: any) => {
-  const { list, totalPage, getList, loading } = useWhiteModel();
+  const { list, totalPage, getList, deleteWhite, loading } = useWhiteModel();
   const labelTableRef = useRef<any>({});
-  const labelModalRef = useRef<any>({});
+
+  const [searchText, setSearchText] = useState<any>('');
 
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -32,13 +33,6 @@ const WhiteListPages: React.FC = (props: any) => {
   // };
 
   const columns: any[] = [
-    // {
-    //   title: '序号',
-    //   dataIndex: 'actionLabel',
-    //   search: false,
-    //   ellipsis: true,
-    //   width: 180,
-    // },
     {
       title: '样本1',
       dataIndex: 'textOneValue',
@@ -83,21 +77,12 @@ const WhiteListPages: React.FC = (props: any) => {
         return (
           <div>
             <div style={{ display: 'flex' }}>
-              {/* <Button // 标签无法编辑
-                type="link"
-                onClick={() => {
-                  labelModalRef.current?.open?.(row);
-                }}
-              >
-                编辑
-              </Button> */}
-
               <Popconfirm
                 title="删除将不可恢复，确认删除？"
                 okText="确定"
                 cancelText="取消"
                 onConfirm={() => {
-                  // deleteRow(row);
+                  deleteWhite({ id: row.id, robotId: info.id });
                 }}
               >
                 <Button type="link" danger>
@@ -113,7 +98,27 @@ const WhiteListPages: React.FC = (props: any) => {
 
   return (
     <div className={`${style['machine-page']} list-page`}>
+      <div className={style['page_top']}>
+        <div style={{ fontSize: '20px', fontWeight: 400 }}>{`白名单${totalPage || 0}条`}</div>
+        <div className={style['page_top__right']}>
+          <Space>
+            <Input.Search
+              bordered={false}
+              style={{ width: '280px', backgroundColor: '#fff', borderColor: '#fff' }}
+              onSearch={(text: any) => {
+                setSearchText(text);
+              }}
+              onPressEnter={(e: any) => {
+                setSearchText(e.target.value);
+              }}
+              placeholder={'请输入'}
+              allowClear
+            />
+          </Space>
+        </div>
+      </div>
       <ProTable<any>
+        params={{ searchText }}
         columns={columns}
         actionRef={labelTableRef}
         scroll={{ x: columns.length * 200 }}

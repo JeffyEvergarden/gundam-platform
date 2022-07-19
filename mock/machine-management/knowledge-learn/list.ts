@@ -15,7 +15,7 @@ const getBatchList = (req: any, res: any) => {
     data: {
       page: 1,
       pageSize: 10,
-      totalSize: 3,
+      totalPage: 3,
       nextTestTime: '2022-07-12',
       list: [
         {
@@ -71,7 +71,7 @@ const getDetailList = (req: any, res: any) => {
     data: {
       page: 1,
       pageSize: 10,
-      totalSize: 3,
+      totalPage: 3,
       list: [
         {
           id: 'pl1',
@@ -132,6 +132,10 @@ const getDetailList = (req: any, res: any) => {
         },
       ],
     },
+    id: '111',
+    sampleTotal: 100,
+    abnormalSampleAmount: 50,
+    reviewAmount: 50,
   });
 };
 
@@ -141,7 +145,7 @@ const getWhiteList = (req: any, res: any) => {
     data: {
       page: 1,
       pageSize: 10,
-      totalSize: 3,
+      totalPage: 3,
       list: [
         {
           id: 'pl1',
@@ -182,11 +186,35 @@ const getWhiteList = (req: any, res: any) => {
   });
 };
 
+const getTest = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    data: {
+      autoClear: 1,
+      clearNumber: 1,
+      createTime: 'xxx',
+      creator: 'xxx',
+      dataStatus: 0,
+      firstTestingTime: '2022-07-19 14:57:33',
+      id: '111',
+      robotId: '100',
+      trmporaryTest: 0,
+      testingCycle: 1,
+      testingRule: 'week',
+      threshold: 0.9,
+    },
+  });
+};
+
 export default {
   'GET /aichat/robot/batchTest/testPageList': getBatchList,
   'GET /aichat/robot/batchTest/testDetailPageList': getDetailList,
   'GET /aichat/robot/testWhiteList/whiteListPageList': getWhiteList,
   'POST /aichat/robot/batchTest/testDetailDelete': defaultList,
   'POST /aichat/robot/batchTest/saveTemporaryTask': defaultList, //临时检测
+  'GET /aichat/robot/batchTest/testTaskInfo': getTest, //回显检测
   'POST /aichat/robot/batchTest/saveTestTask': defaultList, //检测计划
+  'POST /aichat/robot/testWhiteList/whiteListAdd': defaultList, //添加到白名单
+  'POST /aichat/robot/testWhiteList/whiteListDelete': defaultList, //删除白名单
+  'POST /aichat/robot/batchTest/sampleTransfer': defaultList,
 };

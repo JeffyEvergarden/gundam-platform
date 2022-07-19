@@ -1,5 +1,6 @@
 import Condition from '@/components/Condition';
 import { Checkbox, DatePicker, Form, InputNumber, Modal, Select } from 'antd';
+import moment from 'moment';
 import React, { useImperativeHandle, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { useTestModel } from '../../../model';
@@ -13,9 +14,9 @@ const extra = {
 };
 
 const TestPlanModal: React.FC<any> = (props: any) => {
-  const { cref } = props;
+  const { cref, refresh } = props;
 
-  const { saveTest, saveTemporary } = useTestModel();
+  const { saveTest, saveTemporary, getTestTaskInfo } = useTestModel();
 
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -30,10 +31,10 @@ const TestPlanModal: React.FC<any> = (props: any) => {
   const [pageType, setPageType] = useState<string>('');
 
   const date = [
-    {
-      key: '天',
-      value: 'day',
-    },
+    // {
+    //   key: '天',
+    //   value: 'day',
+    // },
     {
       key: '周',
       value: 'week',
@@ -51,6 +52,7 @@ const TestPlanModal: React.FC<any> = (props: any) => {
       ...values,
       autoClear: values?.autoClear == true ? 1 : values?.autoClear == false ? 0 : undefined,
       robotId: info.id,
+      firstTestingTime: values?.firstTestingTime?.format('YYYY-MM-DD HH:mm:ss'),
     };
 
     let res: any;
@@ -60,6 +62,7 @@ const TestPlanModal: React.FC<any> = (props: any) => {
       res = await saveTemporary(reqData);
     }
     if (res) {
+      refresh();
       setVisible(false);
     }
   };
@@ -67,9 +70,21 @@ const TestPlanModal: React.FC<any> = (props: any) => {
   useImperativeHandle(cref, () => ({
     open: (type: any) => {
       setPageType(type);
+      if (type == 'plan') {
+        getTestTaskInfo({ robotId: info.id }).then((res: any) => {
+          let formData = res;
+          formData.autoClear =
+            formData?.autoClear == 1 ? true : formData?.autoClear == 0 ? false : undefined;
+          formData.firstTestingTime = formData?.firstTestingTime
+            ? moment(formData?.firstTestingTime)
+            : undefined;
+          form.setFieldsValue(formData);
+        });
+      }
       setVisible(true);
     },
     close: () => {
+      form.resetFields();
       setVisible(false);
     },
     submit,
@@ -90,6 +105,11 @@ const TestPlanModal: React.FC<any> = (props: any) => {
     }
   };
 
+  const disabledDate: any = (current: any) => {
+    // Can not select days before today and today
+    return current && current < moment().endOf('day');
+  };
+
   return (
     <Modal
       width={650}
@@ -100,14 +120,14 @@ const TestPlanModal: React.FC<any> = (props: any) => {
       onOk={submit}
     >
       <div className={style['modal_bg']} style={{ paddingLeft: '110px' }}>
-        <Form form={form} style={{ width: '360px' }}>
+        <Form form={form} style={{ width: '400px' }}>
           <Condition r-if={pageType == 'plan'}>
             <div className={style['icon-box']}>
               <FormItem style={{ marginRight: '6px' }}>检测周期：每</FormItem>
               <FormItem name="testingCycle" style={{ width: '100px', marginRight: '6px' }}>
                 <InputNumber min={1} max={99} step="1" precision={0} />
               </FormItem>
-              <FormItem name="testingRule" style={{ marginRight: '6px' }} initialValue={'day'}>
+              <FormItem name="testingRule" style={{ marginRight: '6px' }} initialValue={'week'}>
                 <Select>
                   {date.map((item) => (
                     <Option key={item.key} value={item.value}>
@@ -124,7 +144,7 @@ const TestPlanModal: React.FC<any> = (props: any) => {
             <div className={style['icon-box']}>
               <FormItem style={{ marginRight: '6px' }}>首次检测日期：</FormItem>
               <FormItem name="firstTestingTime" style={{ width: '100px', marginRight: '6px' }}>
-                <DatePicker style={{ width: '200px' }} />
+                <DatePicker style={{ width: '200px' }} disabledDate={disabledDate} />
               </FormItem>
             </div>
           </Condition>
@@ -161,7 +181,7 @@ const TestPlanModal: React.FC<any> = (props: any) => {
               <FormItem name="clearNumber" style={{ marginRight: '6px' }} initialValue={1}>
                 <InputNumber min={1} max={12}></InputNumber>
               </FormItem>
-              <FormItem>月之前的检测结果明细数据</FormItem>
+              <FormItem>个月之前的检测结果明细数据</FormItem>
             </div>
           </Condition>
         </Form>

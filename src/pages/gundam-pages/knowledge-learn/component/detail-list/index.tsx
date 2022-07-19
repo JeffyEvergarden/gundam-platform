@@ -1,22 +1,33 @@
 import SelectFaqModal from '@/pages/gundam-pages/FAQ-module/components/select-faq-modal';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Button, Popconfirm, Tooltip } from 'antd';
+import { Button, Modal, Popconfirm, Tooltip } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
-import { useDetailModel } from '../../model';
+import { useDetailModel, useWhiteModel } from '../../model';
 import style from './style.less';
 
 const DetailList: React.FC = (props: any) => {
   const [detailInfo, setDetailInfo] = useState<any>();
-  const { list, totalPage, getList, loading } = useDetailModel();
+  const { resData, list, totalPage, getList, sampleTransfer, loading } = useDetailModel();
+  const { addWhite } = useWhiteModel();
   const DetailTableRef = useRef<any>({});
   const selectFaqModalRef = useRef<any>({});
+
+  const [visible, setVisible] = useState<any>(false);
+  const [selectInfo, setSelectInfo] = useState<any>();
+  const [selectNum, setSelectNum] = useState<any>();
 
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     setInfo: model.setInfo,
   }));
+
+  const tType = {
+    faq: 'FAQ',
+    similar: '【相似问】',
+    intent: '【意图】',
+  };
 
   const columns: any[] = [
     {
@@ -73,10 +84,26 @@ const DetailList: React.FC = (props: any) => {
         return (
           <div className={style['lf']}>
             <div className={style['tb']}>
-              <Button type="link" disabled={row.handleStatus == 2 ? true : false}>
+              <Button
+                type="link"
+                disabled={row.handleStatus == 2 || row.textTwoType == 'faq' ? true : false}
+                onClick={() => {
+                  setVisible(true);
+                  setSelectInfo(row);
+                  setSelectNum(1);
+                }}
+              >
                 合并到本项
               </Button>
-              <Button type="link" disabled={row.handleStatus == 2 ? true : false}>
+              <Button
+                type="link"
+                disabled={row.handleStatus == 2 || row.textOneType == 'faq' ? true : false}
+                onClick={() => {
+                  setVisible(true);
+                  setSelectInfo(row);
+                  setSelectNum(2);
+                }}
+              >
                 合并到本项
               </Button>
             </div>
@@ -84,7 +111,13 @@ const DetailList: React.FC = (props: any) => {
               title="是否添加到白名单"
               okText="确定"
               cancelText="取消"
-              onConfirm={() => {}}
+              onConfirm={() => {
+                addWhite(row).then((res: any) => {
+                  if (res) {
+                    DetailTableRef?.current?.reload();
+                  }
+                });
+              }}
               disabled={row.handleStatus == 2 ? true : false}
             >
               <Button
@@ -110,8 +143,10 @@ const DetailList: React.FC = (props: any) => {
             <div className={style['tb']}>
               <Button
                 type="link"
-                disabled={row.handleStatus == 2 ? true : false}
+                disabled={row.handleStatus == 2 || row.textOneType == 'faq' ? true : false}
                 onClick={() => {
+                  setSelectInfo(row);
+                  setSelectNum(3);
                   openSelectFaqModal('textOneValue', row);
                 }}
               >
@@ -119,8 +154,10 @@ const DetailList: React.FC = (props: any) => {
               </Button>
               <Button
                 type="link"
-                disabled={row.handleStatus == 2 ? true : false}
+                disabled={row.handleStatus == 2 || row.textTwoType == 'faq' ? true : false}
                 onClick={() => {
+                  setSelectInfo(row);
+                  setSelectNum(4);
                   openSelectFaqModal('textTwoValue', row);
                 }}
               >
@@ -154,6 +191,33 @@ const DetailList: React.FC = (props: any) => {
   // 确认FAQ/意图模态框 的选择
   const confirmUpdateSelect = async (list: any[]) => {
     console.log(list);
+    let res: any;
+    if (selectNum == 3) {
+      res = sampleTransfer({
+        robotId: info.id,
+        detailId: selectInfo.id,
+        sampleId: selectInfo.textOneId,
+        sampleType: selectInfo.textOneType,
+        transferType: list?.[0]?.recommendType == 1 ? 'faq' : 'intent',
+        transferId: list?.[0]?.recommendId,
+        sample: selectInfo.textOneValue,
+      });
+    }
+    if (selectNum == 4) {
+      res = sampleTransfer({
+        robotId: info.id,
+        detailId: selectInfo.id,
+        sampleId: selectInfo.textTwoId,
+        sampleType: selectInfo.textTwoType,
+        transferType: list?.[0]?.recommendType == 1 ? 'faq' : 'intent',
+        transferId: list?.[0]?.recommendId,
+        sample: selectInfo.textTwoValue,
+      });
+    }
+    if (res) {
+      setVisible(false);
+      DetailTableRef?.current?.reload();
+    }
   };
 
   // 打开选择FAQ/意图模态框
@@ -168,6 +232,38 @@ const DetailList: React.FC = (props: any) => {
     });
   };
 
+  const handleOk = () => {
+    console.log(selectInfo);
+
+    let res: any;
+    if (selectNum == 1) {
+      res = sampleTransfer({
+        robotId: info.id,
+        detailId: selectInfo.id,
+        sampleId: selectInfo.textTwoId,
+        sampleType: selectInfo.textTwoType,
+        transferType: selectInfo.textOneId,
+        transferId: selectInfo.textOneType,
+        sample: selectInfo.textTwoValue,
+      });
+    }
+    if (selectNum == 2) {
+      res = sampleTransfer({
+        robotId: info.id,
+        detailId: selectInfo.id,
+        sampleId: selectInfo.textOneId,
+        sampleType: selectInfo.textOneType,
+        transferType: selectInfo.textTwoId,
+        transferId: selectInfo.textTwoType,
+        sample: selectInfo.textOneValue,
+      });
+    }
+    if (res) {
+      setVisible(false);
+      DetailTableRef?.current?.reload();
+    }
+  };
+
   return (
     <div className={`${style['machine-page']} list-page`}>
       <div className={style['page_top']}>
@@ -179,7 +275,7 @@ const DetailList: React.FC = (props: any) => {
               history.push('/gundamPages/knowledgeLearn/batchTest');
             }}
           />
-          检测批次ID：{detailInfo?.id}
+          检测批次ID：{(detailInfo?.id || resData?.id) ?? '-'}
         </div>
       </div>
       <ProTable<any>
@@ -225,10 +321,18 @@ const DetailList: React.FC = (props: any) => {
         dateFormatter="string"
         headerTitle={
           <span>
-            本次检测样本总量<span style={{ color: '#1890FF' }}>{detailInfo?.sampleTotal}</span>
+            本次检测样本总量
+            <span style={{ color: '#1890FF' }}>
+              {(detailInfo?.sampleTotal || resData?.sampleTotal) ?? '-'}
+            </span>
             ，异常样本量
-            <span style={{ color: '#1890FF' }}>{detailInfo?.abnormalSampleAmount}</span>，已复核
-            <span style={{ color: '#1890FF' }}>{detailInfo?.reviewAmount}</span>
+            <span style={{ color: '#1890FF' }}>
+              {(detailInfo?.abnormalSampleAmount || resData?.abnormalSampleAmount) ?? '-'}
+            </span>
+            ，已复核
+            <span style={{ color: '#1890FF' }}>
+              {(detailInfo?.reviewAmount || resData?.reviewAmount) ?? '-'}
+            </span>
           </span>
         }
         // toolBarRender={() => []}
@@ -242,6 +346,23 @@ const DetailList: React.FC = (props: any) => {
         max={1}
         readOnly={true}
       />
+
+      <Modal
+        title={'样本归纳提示'}
+        visible={visible}
+        onOk={handleOk}
+        onCancel={() => {
+          setVisible(false);
+        }}
+      >
+        {selectNum == 1
+          ? `“${selectInfo?.textTwoValue}”将归纳到${tType[selectInfo?.textOneType]}“${
+              selectInfo?.textOneValue
+            }”`
+          : `“${selectInfo?.textOneValue}”将归纳到${tType[selectInfo?.textTwoType]}“${
+              selectInfo?.textTwoValue
+            }”`}
+      </Modal>
     </div>
   );
 };
