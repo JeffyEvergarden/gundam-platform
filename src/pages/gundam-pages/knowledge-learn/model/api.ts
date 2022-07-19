@@ -12,18 +12,18 @@ export async function getBatchList(params?: { [key: string]: any }) {
 }
 
 /** 检测计划保存 **/
-export async function saveTestTask(params?: { [key: string]: any }) {
+export async function saveTestTask(data?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/batchTest/saveTestTask`, {
     method: 'POST',
-    params,
+    data,
   });
 }
 
 /** 临时检测 **/
-export async function saveTemporaryTask(params?: { [key: string]: any }) {
+export async function saveTemporaryTask(data?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/batchTest/saveTemporaryTask`, {
     method: 'POST',
-    params,
+    data,
   });
 }
 
