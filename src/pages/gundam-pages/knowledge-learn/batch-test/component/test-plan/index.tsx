@@ -107,7 +107,7 @@ const TestPlanModal: React.FC<any> = (props: any) => {
               <FormItem name="testingCycle" style={{ width: '100px', marginRight: '6px' }}>
                 <InputNumber min={1} max={99} step="1" precision={0} />
               </FormItem>
-              <FormItem name="testingRule" style={{ marginRight: '6px' }} initialValue={'day'}>
+              <FormItem name="testingRule" style={{ marginRight: '6px' }} initialValue={'week'}>
                 <Select>
                   {date.map((item) => (
                     <Option key={item.key} value={item.value}>
