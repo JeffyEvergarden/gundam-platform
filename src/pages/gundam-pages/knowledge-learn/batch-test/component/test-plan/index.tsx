@@ -52,7 +52,7 @@ const TestPlanModal: React.FC<any> = (props: any) => {
       ...values,
       autoClear: values?.autoClear == true ? 1 : values?.autoClear == false ? 0 : undefined,
       robotId: info.id,
-      firstTestingTime: values?.firstTestingTime?.format('YYYY-MM-DD'),
+      firstTestingTime: values?.firstTestingTime?.format('YYYY-MM-DD HH:mm:ss'),
     };
 
     let res: any;
