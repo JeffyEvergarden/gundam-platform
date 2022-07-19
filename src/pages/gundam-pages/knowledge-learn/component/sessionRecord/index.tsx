@@ -4,14 +4,15 @@ import ChatRecordModal from '@/pages/gundam-pages/FAQ-module/components/chat-rec
 import ProTable from '@ant-design/pro-table';
 import { channelMap } from '@/pages/gundam-pages/FAQ/const';
 import { useSessionList } from './model';
-
-// export const CODE = {
-//   ...channelMap,
-// };
+import { history, useModel } from 'umi';
 
 export default (props: any) => {
   const { visible, onCancel, modalData } = props;
   const { getSessionList } = useSessionList();
+
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
 
   const chatRecordModalRef = useRef<any>({});
   const actionRef = useRef<any>();
@@ -21,7 +22,12 @@ export default (props: any) => {
   }, [visible, modalData]);
 
   const sessionList = async (payload: any) => {
-    let params = {};
+    let params = {
+      page: payload.current,
+      pageSize: payload.pageSize,
+      robotId: info.id,
+      unknowId: modalData?.id,
+    };
 
     let res = await getSessionList(params);
     return {

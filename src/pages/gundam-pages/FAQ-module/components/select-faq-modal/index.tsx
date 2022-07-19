@@ -453,6 +453,20 @@ const SelectorModal: React.FC<any> = (props: any) => {
     setQuestionList(temp);
   };
 
+  const delFaqOrSample = (item: any, index: any) => {
+    if (questionList?.length < 2) {
+      message.warning('至少保留一条');
+    } else {
+      let temp: any = [];
+      questionList.map((el: any, index: any) => {
+        if (item.id !== el.id) {
+          temp.push(el);
+        }
+      });
+      setQuestionList(temp);
+    }
+  };
+
   return (
     <Modal
       className={style['modal-bg']}
@@ -479,6 +493,12 @@ const SelectorModal: React.FC<any> = (props: any) => {
                     }}
                     readOnly={readOnly}
                   />
+                  <div style={{ padding: '10px' }}>
+                    <DeleteOutlined
+                      style={{ color: '#00000060', fontSize: '20px', cursor: 'pointer' }}
+                      onClick={() => delFaqOrSample(item, index)}
+                    />
+                  </div>
                 </div>
               );
             })}

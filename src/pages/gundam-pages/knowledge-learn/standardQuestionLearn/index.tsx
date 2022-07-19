@@ -3,19 +3,28 @@ import { ArrowLeftOutlined, InfoCircleFilled } from '@ant-design/icons';
 import styles from './index.less';
 import ProTable from '@ant-design/pro-table';
 import { history, useModel } from 'umi';
-import { Space, Divider, Tooltip, Dropdown, Button, Menu, Modal } from 'antd';
+import { Space, Divider, Tooltip, Dropdown, Button, Menu, Modal, message, Popconfirm } from 'antd';
 import { useStandard } from './model';
+import { useUnknownQuestion } from './../unknowQuestion/model';
+import { useTableModel } from '@/pages/gundam-pages/FAQ-module/clearlist/model';
 import { useSimilarModel, useSampleModel } from '@/pages/gundam-pages/sample/model';
 import { DownOutlined } from '@ant-design/icons';
 import SessionRecord from './../component/sessionRecord';
 import AnswerView from '@/pages/gundam-pages/FAQ-module/components/answerView-modal';
+import EditPass from './../component/editPass';
+import config from '@/config';
+import SelectFaqModal from '@/pages/gundam-pages/FAQ-module/components/select-faq-modal';
+
 export default () => {
   const actionRef = useRef<any>();
   const answerViewRef = useRef<any>(null);
+  const selectFaqModalRef = useRef<any>();
 
   const { getListUnknown } = useStandard();
-  const { getSimilarList } = useSimilarModel();
-  const { getList } = useSampleModel();
+  const { getSimilarList, addSimilar } = useSimilarModel();
+  const { getList, intentAdd } = useSampleModel();
+  const { intentAddBatch, faqAddBatch, addBlack } = useUnknownQuestion();
+  const { addClearItem } = useTableModel();
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -28,8 +37,13 @@ export default () => {
   const [menulabel, setMenuLabel] = useState<string>('批量处理');
   const [rowInfo, setRowInfo] = useState<any>({});
   const [paramsObj, setParamsObj] = useState<any>({ orderCode: '1', orderType: '2' });
+
   const [visible, setVisible] = useState<boolean>(false);
   const [pageInfo, setPageInfo] = useState<any>({});
+
+  const [editVisible, setVisibleEdit] = useState<boolean>(false);
+
+  const [operation, setOperation] = useState<string>('');
 
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
@@ -66,10 +80,20 @@ export default () => {
 
   const handleMenuClick = (item: any) => {
     if (item.key == '1') {
-      setMenuLabel('批量加入黑名单');
-    }
-    if (item.key == '2') {
-      setMenuLabel('批量添加');
+      if (selectRow?.length > 0) {
+        setMenuLabel('批量转移');
+        setOperation('addBatch');
+        (selectFaqModalRef.current as any)?.open({
+          selectList: [], //被选中列表
+          selectedQuestionKeys: [], // 已选问题
+          selectedWishKeys: [], // 已选意图
+          question: '批量转移',
+          operation: 'batch',
+          questionList: selectRow,
+        });
+      } else {
+        message.warning('请至少选择一条数据');
+      }
     }
   };
 
@@ -82,20 +106,59 @@ export default () => {
     setVisibleSession(false);
   };
 
+  const onConfirm = async () => {
+    if (selectRow?.length > 0) {
+      setMenuLabel('批量通过');
+      let res;
+      let temp: any = [];
+      selectRow.map((item: any) => {
+        temp.push({
+          question: item.nowquestion,
+          unknownId: item?.id,
+        });
+      });
+      if (rowInfo.recommendType == '1') {
+        //标准问
+        let params = {
+          robotId: info.id,
+          faqId: rowInfo?.recommendId,
+          corpusTextList: temp,
+        };
+        res = await faqAddBatch(params);
+      }
+      if (rowInfo.recommendType == '2') {
+        //意图
+        let params = {
+          robotId: info.id,
+          intentId: rowInfo?.recommendId,
+          corpusTextList: temp,
+        };
+        res = await intentAddBatch(params);
+      }
+      if (res.resultCode === config.successCode) {
+        message.success(res?.msg || '成功');
+        actionRef?.current?.reloadAndRest();
+      } else {
+        message.error(res?.msg || '失败');
+      }
+    } else {
+      message.warning('请至少选择一条数据');
+    }
+  };
+
   const menu = (
-    <Menu
-      onClick={handleMenuClick}
-      items={[
-        {
-          label: '批量转移',
-          key: '1',
-        },
-        {
-          label: '批量通过',
-          key: '2',
-        },
-      ]}
-    />
+    <Menu onClick={handleMenuClick}>
+      <Menu.Item key={'1'}>批量转移</Menu.Item>
+      <Popconfirm
+        title="确认要批量通过吗？"
+        onConfirm={onConfirm}
+        onCancel={() => {}}
+        okText="通过"
+        cancelText="取消"
+      >
+        <Menu.Item key={'2'}>批量通过</Menu.Item>
+      </Popconfirm>
+    </Menu>
   );
 
   // orderCode  '1'-分类  '2'-时间
@@ -151,6 +214,175 @@ export default () => {
     };
   };
 
+  const editPass = (r: any) => {
+    setVisibleEdit(true);
+    setModalData(r);
+  };
+
+  const cancelEdit = () => {
+    setVisibleEdit(false);
+  };
+
+  const save = async (val: any) => {
+    let res;
+    if (modalData.recommendType == '1') {
+      //标准问
+      let params = {
+        robotId: info.id,
+        faqId: modalData?.recommendId,
+        corpusTextList: [
+          {
+            question: val.nowquestion,
+            unknownId: modalData?.id,
+          },
+        ],
+      };
+      res = await faqAddBatch(params);
+    }
+    if (modalData.recommendType == '2') {
+      //意图
+      let params = {
+        robotId: info.id,
+        intentId: modalData?.recommendId,
+        corpusTextList: [
+          {
+            question: val.nowquestion,
+            unknownId: modalData?.id,
+          },
+        ],
+      };
+      res = await intentAddBatch(params);
+    }
+    if (res.resultCode === config.successCode) {
+      message.success(res?.msg || '成功');
+      setVisibleEdit(false);
+      actionRef?.current?.reloadAndRest();
+    } else {
+      message.error(res?.msg || '失败');
+    }
+  };
+
+  const remove = async (r: any) => {
+    setModalData(r);
+    setOperation('remove');
+    (selectFaqModalRef.current as any)?.open({
+      selectList: [], //被选中列表
+      selectedQuestionKeys: [], // 已选问题
+      selectedWishKeys: [], // 已选意图
+      question: r.question,
+      operation: 'single',
+      questionList: [],
+    });
+  };
+
+  const clarify = (r: any) => {
+    setOperation('clarify');
+    setModalData(r);
+    (selectFaqModalRef.current as any)?.open({
+      selectList: [], //被选中列表
+      selectedQuestionKeys: [], // 已选问题
+      selectedWishKeys: [], // 已选意图
+      question: r.question,
+      operation: 'single',
+      questionList: [],
+    });
+  };
+
+  const confirmUpdateSelect = async (val: any, inputValue: any) => {
+    if (!val.length) {
+      message.warning('请选择FAQ/意图');
+      return;
+    }
+    if (!inputValue) {
+      message.warning('请输入相似语料或者相似问');
+      return;
+    }
+    let resAdd: any;
+    // 转移
+    if (operation == 'remove') {
+      if (val?.[0]?.recommendType == 2) {
+        //意图
+        let addParams = {
+          robotId: info.id,
+          intentId: val?.[0]?.recommendId,
+          corpusText: inputValue,
+          unknownId: modalData.id,
+        };
+        resAdd = await intentAdd(addParams);
+      } else if (val?.[0]?.recommendType == 1) {
+        //faq
+        let addParams = {
+          faqId: val?.[0]?.recommendId,
+          similarText: inputValue,
+          robotId: info.id,
+          unknownId: modalData.id,
+        };
+        resAdd = await addSimilar(addParams);
+      }
+      //批量转移
+    } else if (operation == 'addBatch') {
+      let temp: any = [];
+      inputValue.map((item: any) => {
+        temp.push({
+          question: item.question,
+          unknownId: item.id,
+        });
+      });
+      let params = {
+        robotId: info.id,
+        intentId: val?.[0]?.recommendId,
+        corpusTextList: temp,
+      };
+      if (val?.[0]?.recommendType == 2) {
+        // 意图
+        resAdd = await intentAddBatch(params);
+        // faq
+      } else if (val?.[0]?.recommendType == 1) {
+        resAdd = await faqAddBatch(params);
+      }
+    } else if (operation == 'clarify') {
+      // 澄清
+      let addParams = {
+        robotId: info.id,
+        question: modalData.question,
+        unknownId: modalData.id,
+        clarifyDetailList: val,
+      };
+      resAdd = await addClearItem(addParams);
+    }
+    if (resAdd?.resultCode === config.successCode) {
+      message.success(resAdd?.resultDesc || '成功');
+      actionRef.current.reloadAndRest();
+    } else {
+      message.error(resAdd?.resultDesc || '失败');
+    }
+  };
+
+  const addStandard = (r: any) => {
+    history.push({
+      pathname: '/gundamPages/faq/board',
+      state: {
+        pageUrl: 'standardQuestionLearn',
+        payload: r,
+      },
+    });
+  };
+
+  const addBlackList = async (r: any) => {
+    let params = {
+      robotId: info.id,
+      question: r.question,
+      unknownId: r.id,
+    };
+    let res = await addBlack(params);
+    if (res.resultCode === config.successCode) {
+      message.success(res?.msg || '成功');
+      actionRef?.current?.reloadAndRest();
+    } else {
+      message.error(res?.msg || '失败');
+    }
+  };
+
   const columns: any = [
     {
       dataIndex: 'question',
@@ -203,11 +435,27 @@ export default () => {
             <a key="record" onClick={() => openSession(record)}>
               会话记录
             </a>
-            <a key="edit">编辑通过</a>
-            <a key="remove">转移</a>
-            <a key="addStandar">新增标准问</a>
-            <a key="clarify">澄清</a>
-            <a key="black">黑名单</a>
+            <a key="edit" onClick={() => editPass(record)}>
+              编辑通过
+            </a>
+            <a key="remove" onClick={() => remove(record)}>
+              转移
+            </a>
+            <a key="addStandar" onClick={() => addStandard(record)}>
+              新增标准问
+            </a>
+            <a key="clarify" onClick={() => clarify(record)}>
+              澄清
+            </a>
+            <Popconfirm
+              title="点击【确定】将该问题加入黑名单。"
+              onConfirm={() => addBlackList(record)}
+              onCancel={() => {}}
+              okText="确定"
+              cancelText="取消"
+            >
+              <a key="black">黑名单</a>
+            </Popconfirm>
           </Space>
         );
       },
@@ -242,7 +490,7 @@ export default () => {
             <ArrowLeftOutlined
               style={{ marginRight: '6px', color: '#1890ff' }}
               onClick={() => {
-                history.goBack();
+                history.push('/gundamPages/knowledgeLearn/unknowQuestion');
               }}
             />
             问题: {rowInfo?.recommendName}
@@ -317,6 +565,15 @@ export default () => {
           }}
         />
       </Modal>
+      <EditPass visible={editVisible} onCancel={cancelEdit} modalData={modalData} save={save} />
+      <SelectFaqModal
+        cref={selectFaqModalRef}
+        confirm={confirmUpdateSelect}
+        type={operation == 'clarify' ? 'checkbox' : 'radio'}
+        min={operation == 'clarify' ? 2 : 1}
+        max={operation == 'clarify' ? 5 : 1}
+        readOnly={false}
+      />
     </Fragment>
   );
 };

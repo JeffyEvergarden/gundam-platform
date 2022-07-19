@@ -11,6 +11,7 @@ export const useStandard = () => {
     setTableLoading(false);
     return res;
   };
+
   return {
     getListUnknown,
     tableLoading,

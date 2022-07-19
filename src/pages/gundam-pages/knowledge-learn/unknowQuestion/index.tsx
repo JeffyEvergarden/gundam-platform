@@ -3,6 +3,7 @@ import ProTable from '@ant-design/pro-table';
 import styles from './index.less';
 import { useUnknownQuestion } from './model';
 import { useSampleModel, useSimilarModel } from '@/pages/gundam-pages/sample/model';
+import { useTableModel } from '@/pages/gundam-pages/FAQ-module/clearlist/model';
 import { history, useModel } from 'umi';
 import { Space, Tooltip, Dropdown, Button, Menu, message, Popconfirm } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
@@ -15,8 +16,9 @@ export default () => {
   const selectFaqModalRef = useRef<any>();
 
   const { getList, addBlack, addBlackBatch, intentAddBatch, faqAddBatch } = useUnknownQuestion();
-  const { intentAdd } = useSampleModel();
-  const { addSimilar } = useSimilarModel();
+  // const { intentAdd } = useSampleModel();
+  // const { addSimilar } = useSimilarModel();
+  const { addClearItem } = useTableModel();
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -30,7 +32,7 @@ export default () => {
 
   const [visibleSession, setVisibleSession] = useState<boolean>(false);
   const [modalData, setModalData] = useState<any>({});
-  const [disaAbledData, setDisAbledData] = useState<any>();
+  // const [disaAbledData, setDisAbledData] = useState<any>();
   const [datasource, setDataSource] = useState<any>([]);
   const [operation, setOperation] = useState<string>('');
   const [paramsObj, setParamsObj] = useState<any>({ orderCode: '1', orderType: '2' });
@@ -49,17 +51,20 @@ export default () => {
 
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
-      if (selectedRowKeys.length && selectedRowKeys.length > 0) {
-        setSelectedRowKeys(selectedRowKeys);
-        setSelectRow(selectedRows);
-        setDisAbledData(selectedRows[0].recommendType);
-      } else {
-        setSelectedRowKeys(selectedRowKeys);
-        setSelectRow(selectedRows);
-        setDisAbledData(null);
-      }
+      setSelectedRowKeys(selectedRowKeys);
+      setSelectRow(selectedRows);
+
+      // if (selectedRowKeys.length && selectedRowKeys.length > 0) {
+      //   setSelectedRowKeys(selectedRowKeys);
+      //   setSelectRow(selectedRows);
+      //   setDisAbledData(selectedRows[0].recommendType);
+      // } else {
+      //   setSelectedRowKeys(selectedRowKeys);
+      //   setSelectRow(selectedRows);
+      //   setDisAbledData(null);
+      // }
     },
-    hideSelectAll: getHide(),
+    // hideSelectAll: getHide(),
     getCheckboxProps: (record: any) => {
       return {
         // disabled: disaAbledData && record.recommendType !== disaAbledData,
@@ -168,6 +173,7 @@ export default () => {
           pageType: 'wish',
           info: r,
           pageUrl: 'unknownQustion',
+          searchText: r.question,
         },
       });
     }
@@ -180,6 +186,7 @@ export default () => {
           pageType: 'FAQ',
           info: r,
           pageUrl: 'unknownQustion',
+          searchText: r.question,
         },
       });
     }
@@ -236,27 +243,15 @@ export default () => {
     }
     let resAdd: any;
     // 澄清
-    if (operation !== 'addBatch') {
-      debugger;
-      // 意图
-      if (val?.[0]?.recommendType == 2) {
-        let addParams = {
-          faqId: val?.[0]?.recommendId,
-          similarText: inputValue,
-          robotId: info.id,
-        };
-        resAdd = await intentAdd(addParams);
-        //FAQ
-      } else if (val?.[0]?.recommendType == 1) {
-        let addParams = {
-          robotId: info.id,
-          intentId: val?.[0]?.recommendId,
-          corpusText: inputValue,
-        };
-        resAdd = await addSimilar(addParams);
-      }
+    if (operation == 'clarify') {
+      let addParams = {
+        robotId: info.id,
+        question: modalData.question,
+        unknownId: modalData.id,
+        clarifyDetailList: val,
+      };
+      resAdd = await addClearItem(addParams);
     } else if (operation == 'addBatch') {
-      // 意图
       let temp: any = [];
       inputValue.map((item: any) => {
         temp.push({
@@ -270,6 +265,7 @@ export default () => {
         corpusTextList: temp,
       };
       if (val?.[0]?.recommendType == 2) {
+        // 意图
         resAdd = await intentAddBatch(params);
         // faq
       } else if (val?.[0]?.recommendType == 1) {
@@ -280,7 +276,7 @@ export default () => {
       message.success(resAdd?.resultDesc || '添加成功');
       actionRef.current.reloadAndRest();
     } else {
-      message.error(resAdd?.resultDesc || '添加失败');
+      message.error(resAdd?.resultDesc || '添加失败1');
     }
   };
 
@@ -380,7 +376,7 @@ export default () => {
                 <a className={styles.wrapStyle} onClick={() => toStandard(r)}>
                   {r.recommendName}
                 </a>
-                <span>{r.recommendName && '(' + r.recommendNum + ')'}</span>
+                <span>{r.recommendName && '(' + r.learnNum + ')'}</span>
               </div>
             </Tooltip>
           </Fragment>

@@ -167,6 +167,7 @@ export default () => {
       robotId: tableInfo.robotId || info.id,
       intentId: tableInfo.id,
       corpusText: inputValue,
+      unknownId: history?.location?.state?.info?.id,
     };
     let resAdd = await intentAdd(addParams);
     if (resAdd.resultCode === config.successCode) {
@@ -186,6 +187,7 @@ export default () => {
       faqId: tableInfo?.id,
       similarText: inputValue,
       robotId: info.id,
+      unknownId: history?.location?.state?.info?.id,
     };
     let resAdd = await addSimilar(addParams);
     if (resAdd.resultCode === config.successCode) {
@@ -367,6 +369,7 @@ export default () => {
         faqId: val?.[0]?.recommendId,
         similarText: inputValue,
         robotId: info.id,
+        unknownId: history?.location?.state?.info?.id,
       };
       //FAQ
       resAdd = await addSimilar(addParams);
@@ -375,6 +378,7 @@ export default () => {
         robotId: info.id,
         intentId: val?.[0]?.recommendId,
         corpusText: inputValue,
+        unknownId: history?.location?.state?.info?.id,
       };
       //意图
       resAdd = await intentAdd(addParams);

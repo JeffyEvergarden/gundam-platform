@@ -112,11 +112,11 @@ const Board: React.FC<any> = (props: any) => {
     let historyData = history?.location || {};
     let pageUrl = historyData?.state?.pageUrl || '';
     let payload = historyData?.state?.payload || {};
-    if (pageUrl === 'unknownQuestion') {
+    if (pageUrl === 'unknownQuestion' || pageUrl === 'standardQuestionLearn') {
       form.setFieldsValue({
         question: payload?.question,
       });
-      setPageUrl('unknownQuestion');
+      setPageUrl(pageUrl);
     }
   }, []);
 
@@ -333,12 +333,15 @@ const Board: React.FC<any> = (props: any) => {
         robotId: info.id,
         ...res,
         ...otherObj,
+        unknownId: history?.location?.state?.payload?.id,
       };
       let response = await addNewQuestion(data);
       if (response === true) {
         // 回到主页
         if (pageUrl == 'unknownQuestion') {
           history.push('/gundamPages/knowledgeLearn/unknowQuestion');
+        } else if (pageUrl == 'standardQuestionLearn') {
+          history.push('/gundamPages/knowledgeLearn/standardQuestionLearn');
         } else {
           history.push('/gundamPages/faq/main');
         }
@@ -442,8 +445,10 @@ const Board: React.FC<any> = (props: any) => {
             style={{ padding: 0 }}
             type="link"
             onClick={() => {
-              if (pageUrl === 'unknownQuestion') {
+              if (pageUrl == 'unknownQuestion') {
                 history.push('/gundamPages/knowledgeLearn/unknowQuestion');
+              } else if (pageUrl == 'standardQuestionLearn') {
+                history.push('/gundamPages/knowledgeLearn/standardQuestionLearn');
               } else {
                 history.push('/gundamPages/faq/main');
               }

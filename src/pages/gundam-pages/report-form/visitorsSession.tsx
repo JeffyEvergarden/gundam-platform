@@ -162,6 +162,20 @@ export default () => {
       dataIndex: 'durationFormat',
       ellipsis: true,
     },
+    {
+      title: () => {
+        return (
+          <Space>
+            会话开始时间
+            <span>
+              <QuestionCircleOutlined />
+            </span>
+          </Space>
+        );
+      },
+      dataIndex: 'createTime',
+      ellipsis: true,
+    },
   ];
 
   return (
