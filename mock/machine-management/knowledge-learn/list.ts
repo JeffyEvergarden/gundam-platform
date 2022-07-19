@@ -186,12 +186,33 @@ const getWhiteList = (req: any, res: any) => {
   });
 };
 
+const getTest = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    data: {
+      autoClear: 1,
+      clearNumber: 1,
+      createTime: 'xxx',
+      creator: 'xxx',
+      dataStatus: 0,
+      firstTestingTime: '2022-07-19 14:57:33',
+      id: '111',
+      robotId: '100',
+      trmporaryTest: 0,
+      testingCycle: 1,
+      testingRule: 'week',
+      threshold: 0.9,
+    },
+  });
+};
+
 export default {
   'GET /aichat/robot/batchTest/testPageList': getBatchList,
   'GET /aichat/robot/batchTest/testDetailPageList': getDetailList,
   'GET /aichat/robot/testWhiteList/whiteListPageList': getWhiteList,
   'POST /aichat/robot/batchTest/testDetailDelete': defaultList,
   'POST /aichat/robot/batchTest/saveTemporaryTask': defaultList, //临时检测
+  'GET /aichat/robot/batchTest/testTaskInfo': getTest, //回显检测
   'POST /aichat/robot/batchTest/saveTestTask': defaultList, //检测计划
   'POST /aichat/robot/testWhiteList/whiteListAdd': defaultList, //添加到白名单
   'POST /aichat/robot/batchTest/sampleTransfer': defaultList, //添加到白名单

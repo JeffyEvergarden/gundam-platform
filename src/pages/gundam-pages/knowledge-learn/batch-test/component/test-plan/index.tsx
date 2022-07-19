@@ -114,7 +114,7 @@ const TestPlanModal: React.FC<any> = (props: any) => {
       onOk={submit}
     >
       <div className={style['modal_bg']} style={{ paddingLeft: '110px' }}>
-        <Form form={form} style={{ width: '360px' }}>
+        <Form form={form} style={{ width: '400px' }}>
           <Condition r-if={pageType == 'plan'}>
             <div className={style['icon-box']}>
               <FormItem style={{ marginRight: '6px' }}>检测周期：每</FormItem>
