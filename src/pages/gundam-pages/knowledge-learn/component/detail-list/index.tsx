@@ -272,7 +272,7 @@ const DetailList: React.FC = (props: any) => {
             className={style['blue']}
             style={{ marginRight: '6px' }}
             onClick={() => {
-              history.push('/gundamPages/knowledgeLearn/batchtext');
+              history.push('/gundamPages/knowledgeLearn/batchTest');
             }}
           />
           检测批次ID：{(detailInfo?.id || resData?.id) ?? '-'}

@@ -210,7 +210,12 @@ const TestPages: React.FC = (props: any) => {
         ]}
       />
 
-      <TestPlanModal cref={batchModalRef} />
+      <TestPlanModal
+        cref={batchModalRef}
+        refresh={() => {
+          batchTableRef?.current?.reload();
+        }}
+      />
     </div>
   );
 };

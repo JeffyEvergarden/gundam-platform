@@ -14,7 +14,7 @@ const extra = {
 };
 
 const TestPlanModal: React.FC<any> = (props: any) => {
-  const { cref } = props;
+  const { cref, refresh } = props;
 
   const { saveTest, saveTemporary, getTestTaskInfo } = useTestModel();
 
@@ -62,6 +62,7 @@ const TestPlanModal: React.FC<any> = (props: any) => {
       res = await saveTemporary(reqData);
     }
     if (res) {
+      refresh();
       setVisible(false);
     }
   };
