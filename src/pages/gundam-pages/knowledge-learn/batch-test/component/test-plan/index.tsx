@@ -30,10 +30,10 @@ const TestPlanModal: React.FC<any> = (props: any) => {
   const [pageType, setPageType] = useState<string>('');
 
   const date = [
-    {
-      key: '天',
-      value: 'day',
-    },
+    // {
+    //   key: '天',
+    //   value: 'day',
+    // },
     {
       key: '周',
       value: 'week',
