@@ -52,18 +52,18 @@ const DetailList: React.FC = (props: any) => {
     },
     {
       title: '所属标准问或意图',
-      dataIndex: 'textName',
+      dataIndex: 'textRelationName',
       search: false,
       width: 200,
       ellipsis: true,
       render: (val: any, row: any) => {
         return (
           <div>
-            <Tooltip placement="topLeft" title={row.textOneName}>
-              <div className={style['btn']}>{row.textOneName}</div>
+            <Tooltip placement="topLeft" title={row.textOneRelationName}>
+              <div className={style['btn']}>{row.textOneRelationName}</div>
             </Tooltip>
-            <Tooltip placement="topLeft" title={row.textTwoName}>
-              <div className={style['btn']}>{row.textTwoName}</div>
+            <Tooltip placement="topLeft" title={row.textTwoRelationName}>
+              <div className={style['btn']}>{row.textTwoRelationName}</div>
             </Tooltip>
           </div>
         );
