@@ -161,7 +161,7 @@ const WhiteListPages: React.FC = (props: any) => {
           <Space>
             <Input.Search
               // bordered={false}
-              style={{ width: '280px' }}
+              style={{ width: '280px', padding: '4px' }}
               onSearch={(text: any) => {
                 setSearchText(text);
               }}
