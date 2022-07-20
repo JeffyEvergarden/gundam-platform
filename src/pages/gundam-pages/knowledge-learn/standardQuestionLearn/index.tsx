@@ -432,7 +432,7 @@ export default () => {
       render: (text: any, record: any, _: any, action: any) => {
         return (
           <Space>
-            <a key="record" onClick={() => openSession(record)}>
+            <a key="record" style={{ color: '#52C41A' }} onClick={() => openSession(record)}>
               会话记录
             </a>
             <a key="edit" onClick={() => editPass(record)}>
@@ -454,7 +454,9 @@ export default () => {
               okText="确定"
               cancelText="取消"
             >
-              <a key="black">黑名单</a>
+              <a key="black" style={{ color: '#FF4D4F' }}>
+                黑名单
+              </a>
             </Popconfirm>
           </Space>
         );
@@ -524,10 +526,10 @@ export default () => {
           tableAlertRender={false}
           tableAlertOptionRender={false}
           toolBarRender={() => [
-            <Dropdown overlay={menu} key="Dropdown">
+            <Dropdown overlay={menu} key="Dropdown" disabled={selectRow?.length < 1}>
               <Button type="primary">
                 <Space>
-                  {menulabel}
+                  批量操作
                   <DownOutlined />
                 </Space>
               </Button>
