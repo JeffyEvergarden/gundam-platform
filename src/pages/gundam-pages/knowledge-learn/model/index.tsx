@@ -113,7 +113,7 @@ export const useDetailModel = () => {
       data = res?.data?.list || [];
       setList(data);
       setTotalPage(res?.data?.totalPage);
-      setResData(res);
+      setResData(res?.data);
     } else {
       setList([]);
       setTotalPage(0);
