@@ -200,7 +200,6 @@ const TestPages: React.FC = (props: any) => {
           </Button>,
           <Button
             key="button"
-            type="primary"
             onClick={() => {
               batchModalRef.current?.open?.('temporary');
             }}
