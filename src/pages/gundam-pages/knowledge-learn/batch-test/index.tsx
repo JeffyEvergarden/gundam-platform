@@ -195,6 +195,7 @@ const TestPages: React.FC = (props: any) => {
             onClick={() => {
               batchModalRef.current?.open?.('plan');
             }}
+            style={{ margin: '4px 0' }}
           >
             检测计划
           </Button>,
