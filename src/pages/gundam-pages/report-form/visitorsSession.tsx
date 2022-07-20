@@ -163,7 +163,16 @@ export default () => {
       ellipsis: true,
     },
     {
-      title: '会话开始时间',
+      title: () => {
+        return (
+          <Space>
+            会话开始时间
+            <span>
+              <QuestionCircleOutlined />
+            </span>
+          </Space>
+        );
+      },
       dataIndex: 'createTime',
       ellipsis: true,
     },
