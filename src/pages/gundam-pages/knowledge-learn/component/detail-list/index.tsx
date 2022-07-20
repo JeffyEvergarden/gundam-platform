@@ -186,6 +186,7 @@ const DetailList: React.FC = (props: any) => {
     const query: any = history?.location?.state;
     console.log(history);
     setDetailInfo(query?.info);
+    DetailTableRef?.current?.reload();
   }, []);
 
   // 确认FAQ/意图模态框 的选择
@@ -275,7 +276,7 @@ const DetailList: React.FC = (props: any) => {
               history.push('/gundamPages/knowledgeLearn/batchTest');
             }}
           />
-          检测批次ID：{(detailInfo?.id || resData?.id) ?? '-'}
+          检测批次ID：{(detailInfo?.id || resData?.id || history?.location?.query?.id) ?? '-'}
         </div>
       </div>
       <ProTable<any>
@@ -287,7 +288,7 @@ const DetailList: React.FC = (props: any) => {
           return getList({
             robotId: info.id,
             page: params.current,
-            // batchId: detailInfo.id,
+            batchId: detailInfo?.id || history?.location?.query?.id,
             ...params,
           });
           // return {};
