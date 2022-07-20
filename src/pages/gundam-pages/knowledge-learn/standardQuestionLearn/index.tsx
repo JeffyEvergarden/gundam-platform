@@ -62,7 +62,7 @@ export default () => {
       page: payload.page,
       pageSize: payload.pageSize,
       robotId: info.id,
-      recommenId: rowInfo.recommendId,
+      recommendId: rowInfo.recommendId,
       recommenType: rowInfo.recommendType,
       orderType: payload.orderType,
       orderCode: payload.orderCode,
