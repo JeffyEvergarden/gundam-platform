@@ -1,19 +1,18 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
-import { ArrowLeftOutlined, InfoCircleFilled } from '@ant-design/icons';
-import styles from './index.less';
-import ProTable from '@ant-design/pro-table';
-import { history, useModel } from 'umi';
-import { Space, Divider, Tooltip, Dropdown, Button, Menu, Modal, message, Popconfirm } from 'antd';
-import { useStandard } from './model';
-import { useUnknownQuestion } from './../unknowQuestion/model';
-import { useTableModel } from '@/pages/gundam-pages/FAQ-module/clearlist/model';
-import { useSimilarModel, useSampleModel } from '@/pages/gundam-pages/sample/model';
-import { DownOutlined } from '@ant-design/icons';
-import SessionRecord from './../component/sessionRecord';
-import AnswerView from '@/pages/gundam-pages/FAQ-module/components/answerView-modal';
-import EditPass from './../component/editPass';
 import config from '@/config';
+import { useTableModel } from '@/pages/gundam-pages/FAQ-module/clearlist/model';
+import AnswerView from '@/pages/gundam-pages/FAQ-module/components/answerView-modal';
 import SelectFaqModal from '@/pages/gundam-pages/FAQ-module/components/select-faq-modal';
+import { useSampleModel, useSimilarModel } from '@/pages/gundam-pages/sample/model';
+import { ArrowLeftOutlined, DownOutlined } from '@ant-design/icons';
+import ProTable from '@ant-design/pro-table';
+import { Button, Divider, Dropdown, Menu, message, Modal, Popconfirm, Space } from 'antd';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { history, useModel } from 'umi';
+import EditPass from './../component/editPass';
+import SessionRecord from './../component/sessionRecord';
+import { useUnknownQuestion } from './../unknowQuestion/model';
+import styles from './index.less';
+import { useStandard } from './model';
 
 export default () => {
   const actionRef = useRef<any>();
@@ -497,7 +496,7 @@ export default () => {
             />
             问题: {rowInfo?.recommendName}
           </div>
-          <div>
+          <div style={{ fontSize: '14px' }}>
             <Space>
               {rowInfo?.recommendType == '1' && (
                 <Fragment>

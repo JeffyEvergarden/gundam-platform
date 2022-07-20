@@ -52,18 +52,18 @@ const DetailList: React.FC = (props: any) => {
     },
     {
       title: '所属标准问或意图',
-      dataIndex: 'textName',
+      dataIndex: 'textRelationName',
       search: false,
       width: 200,
       ellipsis: true,
       render: (val: any, row: any) => {
         return (
           <div>
-            <Tooltip placement="topLeft" title={row.textOneName}>
-              <div className={style['btn']}>{row.textOneName}</div>
+            <Tooltip placement="topLeft" title={row.textOneRelationName}>
+              <div className={style['btn']}>{row.textOneRelationName}</div>
             </Tooltip>
-            <Tooltip placement="topLeft" title={row.textTwoName}>
-              <div className={style['btn']}>{row.textTwoName}</div>
+            <Tooltip placement="topLeft" title={row.textTwoRelationName}>
+              <div className={style['btn']}>{row.textTwoRelationName}</div>
             </Tooltip>
           </div>
         );
@@ -186,6 +186,7 @@ const DetailList: React.FC = (props: any) => {
     const query: any = history?.location?.state;
     console.log(history);
     setDetailInfo(query?.info);
+    DetailTableRef?.current?.reload();
   }, []);
 
   // 确认FAQ/意图模态框 的选择
@@ -275,7 +276,7 @@ const DetailList: React.FC = (props: any) => {
               history.push('/gundamPages/knowledgeLearn/batchTest');
             }}
           />
-          检测批次ID：{(detailInfo?.id || resData?.id) ?? '-'}
+          检测批次ID：{(detailInfo?.id || resData?.id || history?.location?.query?.id) ?? '-'}
         </div>
       </div>
       <ProTable<any>
@@ -287,7 +288,7 @@ const DetailList: React.FC = (props: any) => {
           return getList({
             robotId: info.id,
             page: params.current,
-            // batchId: detailInfo.id,
+            batchId: detailInfo?.id || history?.location?.query?.id,
             ...params,
           });
           // return {};

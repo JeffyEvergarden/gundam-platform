@@ -98,13 +98,13 @@ const WhiteListPages: React.FC = (props: any) => {
 
   return (
     <div className={`${style['machine-page']} list-page`}>
-      <div className={style['page_top']}>
+      {/* <div className={style['page_top']}>
         <div style={{ fontSize: '20px', fontWeight: 400 }}>{`白名单${totalPage || 0}条`}</div>
         <div className={style['page_top__right']}>
           <Space>
             <Input.Search
-              bordered={false}
-              style={{ width: '280px', backgroundColor: '#fff', borderColor: '#fff' }}
+              // bordered={false}
+              style={{ width: '280px' }}
               onSearch={(text: any) => {
                 setSearchText(text);
               }}
@@ -116,7 +116,7 @@ const WhiteListPages: React.FC = (props: any) => {
             />
           </Space>
         </div>
-      </div>
+      </div> */}
       <ProTable<any>
         params={{ searchText }}
         columns={columns}
@@ -156,8 +156,23 @@ const WhiteListPages: React.FC = (props: any) => {
           pageSize: 10,
         }}
         dateFormatter="string"
-        headerTitle="检测白名单列表"
-        toolBarRender={() => []}
+        headerTitle={`白名单${totalPage || 0}条`}
+        toolBarRender={() => [
+          <Space>
+            <Input.Search
+              // bordered={false}
+              style={{ width: '280px', padding: '4px' }}
+              onSearch={(text: any) => {
+                setSearchText(text);
+              }}
+              onPressEnter={(e: any) => {
+                setSearchText(e.target.value);
+              }}
+              placeholder={'请输入'}
+              allowClear
+            />
+          </Space>,
+        ]}
       />
 
       {/* <InfoModal

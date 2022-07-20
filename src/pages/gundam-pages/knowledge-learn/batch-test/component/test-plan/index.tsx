@@ -115,7 +115,10 @@ const TestPlanModal: React.FC<any> = (props: any) => {
       width={650}
       title={'检测计划管理'}
       visible={visible}
-      onCancel={() => setVisible(false)}
+      onCancel={() => {
+        form.resetFields();
+        setVisible(false);
+      }}
       okText={'提交'}
       onOk={submit}
     >
