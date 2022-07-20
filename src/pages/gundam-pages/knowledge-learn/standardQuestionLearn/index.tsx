@@ -59,11 +59,11 @@ export default () => {
 
   const getInitTable = async (payload: any) => {
     let params = {
-      page: payload.page,
+      page: payload.current,
       pageSize: payload.pageSize,
       robotId: info.id,
       recommendId: rowInfo.recommendId,
-      recommenType: rowInfo.recommendType,
+      recommendType: rowInfo.recommendType,
       orderType: payload.orderType,
       orderCode: payload.orderCode,
     };

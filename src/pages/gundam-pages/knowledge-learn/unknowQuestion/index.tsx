@@ -278,7 +278,7 @@ export default () => {
           params = {
             robotId: info.id,
             faqId: val?.[0]?.recommendId,
-            corpusTextList: temp,
+            similarList: temp,
           };
           resAdd = await faqAddBatch(params);
         }
@@ -303,7 +303,7 @@ export default () => {
           params = {
             robotId: info.id,
             faqId: val?.[0]?.recommendId,
-            corpusTextList: [
+            similarList: [
               {
                 question: modalData.question,
                 unknownId: modalData.id,
