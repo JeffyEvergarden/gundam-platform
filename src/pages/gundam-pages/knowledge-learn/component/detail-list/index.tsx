@@ -32,7 +32,7 @@ const DetailList: React.FC = (props: any) => {
   const columns: any[] = [
     {
       title: '样本',
-      dataIndex: 'textValue',
+      dataIndex: 'textName',
       fixed: 'left',
       search: false,
       ellipsis: true,
@@ -40,11 +40,11 @@ const DetailList: React.FC = (props: any) => {
       render: (val: any, row: any) => {
         return (
           <div>
-            <Tooltip placement="topLeft" title={row.textOneValue}>
-              <div className={style['btn']}>{row.textOneValue}</div>
+            <Tooltip placement="topLeft" title={row.textOneName}>
+              <div className={style['btn']}>{row.textOneName}</div>
             </Tooltip>
-            <Tooltip placement="topLeft" title={row.textTwoValue}>
-              <div className={style['btn']}>{row.textTwoValue}</div>
+            <Tooltip placement="topLeft" title={row.textTwoName}>
+              <div className={style['btn']}>{row.textTwoName}</div>
             </Tooltip>
           </div>
         );
@@ -201,7 +201,7 @@ const DetailList: React.FC = (props: any) => {
         sampleType: selectInfo.textOneType,
         transferType: list?.[0]?.recommendType == 1 ? 'faq' : 'intent',
         transferId: list?.[0]?.recommendId,
-        sample: selectInfo.textOneValue,
+        sample: selectInfo.textOneName,
       });
     }
     if (selectNum == 4) {
@@ -212,7 +212,7 @@ const DetailList: React.FC = (props: any) => {
         sampleType: selectInfo.textTwoType,
         transferType: list?.[0]?.recommendType == 1 ? 'faq' : 'intent',
         transferId: list?.[0]?.recommendId,
-        sample: selectInfo.textTwoValue,
+        sample: selectInfo.textTwoName,
       });
     }
     if (res) {
@@ -243,9 +243,9 @@ const DetailList: React.FC = (props: any) => {
         detailId: selectInfo.id,
         sampleId: selectInfo.textTwoId,
         sampleType: selectInfo.textTwoType,
-        transferType: selectInfo.textOneId,
-        transferId: selectInfo.textOneType,
-        sample: selectInfo.textTwoValue,
+        transferType: selectInfo.textOneType,
+        transferId: selectInfo.textOneValue,
+        sample: selectInfo.textTwoName,
       });
     }
     if (selectNum == 2) {
@@ -254,9 +254,9 @@ const DetailList: React.FC = (props: any) => {
         detailId: selectInfo.id,
         sampleId: selectInfo.textOneId,
         sampleType: selectInfo.textOneType,
-        transferType: selectInfo.textTwoId,
-        transferId: selectInfo.textTwoType,
-        sample: selectInfo.textOneValue,
+        transferType: selectInfo.textTwoType,
+        transferId: selectInfo.textTwoValue,
+        sample: selectInfo.textOneName,
       });
     }
     if (res) {
@@ -357,11 +357,11 @@ const DetailList: React.FC = (props: any) => {
         }}
       >
         {selectNum == 1
-          ? `“${selectInfo?.textTwoValue}”将归纳到${tType[selectInfo?.textOneType]}“${
-              selectInfo?.textOneValue
+          ? `“${selectInfo?.textTwoName}”将归纳到${tType[selectInfo?.textOneType]}“${
+              selectInfo?.textOneName
             }”`
-          : `“${selectInfo?.textOneValue}”将归纳到${tType[selectInfo?.textTwoType]}“${
-              selectInfo?.textTwoValue
+          : `“${selectInfo?.textOneName}”将归纳到${tType[selectInfo?.textTwoType]}“${
+              selectInfo?.textTwoName
             }”`}
       </Modal>
     </div>
