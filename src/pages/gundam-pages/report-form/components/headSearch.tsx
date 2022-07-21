@@ -78,7 +78,7 @@ export default (props: any) => {
       <Space>
         <Radio.Group value={valRadio} onChange={changeTime}>
           <Radio.Button value="yestoday">昨天</Radio.Button>
-          {pageType === 'visitorSession' && <Radio.Button value="today">今天</Radio.Button>}
+          <Radio.Button value="today">今天</Radio.Button>
           <Radio.Button value="sevenDays">最近七天</Radio.Button>
           <Radio.Button value="month">最近一个月</Radio.Button>
         </Radio.Group>

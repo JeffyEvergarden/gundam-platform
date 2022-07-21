@@ -229,7 +229,7 @@ export default () => {
       let params = {
         robotId: info.id,
         faqId: modalData?.recommendId,
-        corpusTextList: [
+        similarList: [
           {
             question: val.nowquestion,
             unknownId: modalData?.id,

@@ -379,13 +379,13 @@ export default () => {
       title: '选择时间',
       hideInTable: true,
       valueType: 'dateRange',
+      search: true,
       width: 200,
+      fieldProps: {
+        placeholder: ['开始时间', '结束时间'],
+      },
       renderFormItem: (t: any, r: any, i: any) => {
-        return (
-          <Fragment>
-            <RangePicker disabledDate={disabledDate} />
-          </Fragment>
-        );
+        return <RangePicker disabledDate={disabledDate} />;
       },
     },
     {
@@ -429,7 +429,9 @@ export default () => {
                 <a className={styles.wrapStyle} onClick={() => toStandard(r)}>
                   {r.recommendName}
                 </a>
-                <span>{r.recommendName && '(' + r.learnNum + ')'}</span>
+                <span style={{ color: '#1890ff' }}>
+                  {r.recommendName && '(' + r.learnNum + ')'}
+                </span>
               </div>
             </Tooltip>
           </Fragment>
