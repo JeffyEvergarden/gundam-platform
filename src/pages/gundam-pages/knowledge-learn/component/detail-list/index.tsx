@@ -276,7 +276,7 @@ const DetailList: React.FC = (props: any) => {
               history.push('/gundamPages/knowledgeLearn/batchTest');
             }}
           />
-          检测批次ID：{(detailInfo?.id || resData?.id || history?.location?.query?.id) ?? '-'}
+          检测批次ID：{(detailInfo?.id || resData?.id || history?.location?.query?.batchId) ?? '-'}
         </div>
       </div>
       <ProTable<any>
@@ -288,7 +288,7 @@ const DetailList: React.FC = (props: any) => {
           return getList({
             robotId: info.id,
             page: params.current,
-            batchId: detailInfo?.id || history?.location?.query?.id,
+            batchId: detailInfo?.id || history?.location?.query?.batchId,
             ...params,
           });
           // return {};
