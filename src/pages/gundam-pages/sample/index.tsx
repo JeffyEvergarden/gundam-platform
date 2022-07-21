@@ -84,7 +84,12 @@ export default () => {
       let params: any = {
         page: payload.current,
         pageSize: payload.pageSize,
-        intentId: tableInfo.id || tableInfo.intentId,
+        intentId:
+          pageUrl === 'unknownQustion'
+            ? tableInfo.recommendId
+            : tableInfo.id
+            ? tableInfo.id
+            : tableInfo.intentId,
         corpusText: payload.corpusText,
       };
       res = await getList(params);
@@ -95,7 +100,7 @@ export default () => {
         page: payload.current,
         pageSize: payload.pageSize,
         similarText: payload?.corpusText || '',
-        faqId: tableInfo?.id,
+        faqId: pageUrl === 'unknownQustion' ? tableInfo.recommendId : tableInfo.id,
         robotId: info.id,
       };
       res = await getSimilarList(params);
@@ -128,8 +133,8 @@ export default () => {
         let params = {
           robotId: tableInfo?.robotId || info?.id,
           corpusText: inputValue,
-          intentId: tableInfo.id,
-          intentName: tableInfo.intentName,
+          intentId: pageUrl === 'unknownQustion' ? tableInfo.recommendId : tableInfo.id,
+          intentName: tableInfo.intentName || tableInfo.recommendName,
         };
         res = await checkIntent(params);
       }
@@ -137,7 +142,7 @@ export default () => {
         let params = {
           robotId: tableInfo.robotId,
           similarText: inputValue || '',
-          faqId: tableInfo?.id,
+          faqId: pageUrl === 'unknownQustion' ? tableInfo.recommendId : tableInfo.id,
         };
         res = await checkSimilar(params);
       }
@@ -165,7 +170,7 @@ export default () => {
   const intentCorpusAdd = async () => {
     let addParams = {
       robotId: tableInfo.robotId || info.id,
-      intentId: tableInfo.id,
+      intentId: pageUrl === 'unknownQustion' ? tableInfo.recommendId : tableInfo.id,
       corpusText: inputValue,
       unknownId: history?.location?.state?.info?.id,
     };
@@ -184,7 +189,7 @@ export default () => {
 
   const similarAdd = async () => {
     let addParams = {
-      faqId: tableInfo?.id,
+      faqId: pageUrl === 'unknownQustion' ? tableInfo.recommendId : tableInfo.id,
       similarText: inputValue,
       robotId: info.id,
       unknownId: history?.location?.state?.info?.id,
@@ -572,9 +577,10 @@ export default () => {
                   } else if (pageType === 'wish') {
                     if (pageUrl === 'unknownQustion') {
                       history.push('/gundamPages/knowledgeLearn/unknowQuestion');
+                    } else {
+                      history?.goBack();
                     }
                   } else {
-                    history?.goBack();
                   }
                 }}
               />

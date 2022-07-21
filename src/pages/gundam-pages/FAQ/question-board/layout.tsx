@@ -102,6 +102,7 @@ const Board: React.FC<any> = (props: any) => {
   const [lastText, setLastText] = useState<string>(''); // 查询相似问的内容
   const [similarData, setSimilarData] = useState<any>({});
   const [pageUrl, setPageUrl] = useState<string>('');
+  const [payloadData, setpayload] = useState<any>({});
   // 打开备注
 
   useEffect(() => {
@@ -117,6 +118,7 @@ const Board: React.FC<any> = (props: any) => {
         question: payload?.question,
       });
       setPageUrl(pageUrl);
+      setpayload(payload);
     }
   }, []);
 
@@ -448,7 +450,12 @@ const Board: React.FC<any> = (props: any) => {
               if (pageUrl == 'unknownQuestion') {
                 history.push('/gundamPages/knowledgeLearn/unknowQuestion');
               } else if (pageUrl == 'standardQuestionLearn') {
-                history.push('/gundamPages/knowledgeLearn/standardQuestionLearn');
+                history.push({
+                  pathname: '/gundamPages/knowledgeLearn/standardQuestionLearn',
+                  state: {
+                    rowInfo: payloadData,
+                  },
+                });
               } else {
                 history.push('/gundamPages/faq/main');
               }

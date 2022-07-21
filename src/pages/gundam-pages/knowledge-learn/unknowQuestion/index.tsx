@@ -5,11 +5,14 @@ import { useUnknownQuestion } from './model';
 import { useSampleModel, useSimilarModel } from '@/pages/gundam-pages/sample/model';
 import { useTableModel } from '@/pages/gundam-pages/FAQ-module/clearlist/model';
 import { history, useModel } from 'umi';
-import { Space, Tooltip, Dropdown, Button, Menu, message, Popconfirm } from 'antd';
+import { Space, Tooltip, Dropdown, Button, Menu, message, Popconfirm, DatePicker } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import SessionRecord from './../component/sessionRecord';
 import config from '@/config';
 import SelectFaqModal from '@/pages/gundam-pages/FAQ-module/components/select-faq-modal';
+import moment from 'moment';
+
+const { RangePicker } = DatePicker;
 
 export default () => {
   const actionRef = useRef<any>();
@@ -165,7 +168,7 @@ export default () => {
 
   const addFAQOrSample = (r: any) => {
     // 意图
-    if (r.recommendType == 2) {
+    if (r.recommendType == 2 && r.recommendName) {
       history.push({
         pathname: '/gundamPages/sample',
         state: {
@@ -176,9 +179,8 @@ export default () => {
           searchText: r.question,
         },
       });
-    }
-    // 相似问
-    if (r.recommendType == 1) {
+    } else if (r.recommendType == 1 && r.recommendName) {
+      //相似问
       history.push({
         pathname: '/gundamPages/sample',
         state: {
@@ -189,9 +191,8 @@ export default () => {
           searchText: r.question,
         },
       });
-    }
-    // 不是意图或者相似问
-    if (!r.recommendName) {
+    } else if (!r.recommendType || !r.recommendName) {
+      //为空-既没有标准问也没有意图
       (selectFaqModalRef.current as any)?.open({
         selectList: [], //被选中列表
         selectedQuestionKeys: [], // 已选问题
@@ -199,6 +200,7 @@ export default () => {
         question: r.question,
       });
       setOperation('');
+      setModalData(r);
     }
   };
 
@@ -230,6 +232,7 @@ export default () => {
       question: r.question,
     });
     setOperation('clarify');
+    setModalData(r);
   };
 
   const confirmUpdateSelect = async (val: any, inputValue: any) => {
@@ -241,7 +244,7 @@ export default () => {
       message.warning('请输入相似语料或者相似问');
       return;
     }
-    let resAdd: any;
+    let resAdd: any = {};
     // 澄清
     if (operation == 'clarify') {
       let addParams = {
@@ -251,32 +254,71 @@ export default () => {
         clarifyDetailList: val,
       };
       resAdd = await addClearItem(addParams);
-    } else if (operation == 'addBatch') {
-      let temp: any = [];
-      inputValue.map((item: any) => {
-        temp.push({
-          question: item.question,
-          unknownId: item.id,
+    } else if (operation == 'addBatch' || operation == '') {
+      let params;
+      if (operation == 'addBatch') {
+        //批量添加
+        let temp: any = [];
+        inputValue.map((item: any) => {
+          temp.push({
+            question: item.question,
+            unknownId: item.id,
+          });
         });
-      });
-      let params = {
-        robotId: info.id,
-        intentId: val?.[0]?.recommendId,
-        corpusTextList: temp,
-      };
-      if (val?.[0]?.recommendType == 2) {
-        // 意图
-        resAdd = await intentAddBatch(params);
-        // faq
-      } else if (val?.[0]?.recommendType == 1) {
-        resAdd = await faqAddBatch(params);
+        if (val?.[0]?.recommendType == 2) {
+          // 意图
+          params = {
+            robotId: info.id,
+            intentId: val?.[0]?.recommendId,
+            corpusTextList: temp,
+          };
+          resAdd = await intentAddBatch(params);
+          // faq
+        } else if (val?.[0]?.recommendType == 1) {
+          params = {
+            robotId: info.id,
+            faqId: val?.[0]?.recommendId,
+            similarList: temp,
+          };
+          resAdd = await faqAddBatch(params);
+        }
       }
-    }
-    if (resAdd?.resultCode === config.successCode) {
-      message.success(resAdd?.resultDesc || '添加成功');
-      actionRef.current.reloadAndRest();
-    } else {
-      message.error(resAdd?.resultDesc || '添加失败1');
+      if (operation == '') {
+        //非意图非标准问
+        if (val?.[0]?.recommendType == 2) {
+          // 意图
+          params = {
+            robotId: info.id,
+            intentId: val?.[0]?.recommendId,
+            corpusTextList: [
+              {
+                question: modalData.question,
+                unknownId: modalData.id,
+              },
+            ],
+          };
+          resAdd = await intentAddBatch(params);
+          // faq
+        } else if (val?.[0]?.recommendType == 1) {
+          params = {
+            robotId: info.id,
+            faqId: val?.[0]?.recommendId,
+            similarList: [
+              {
+                question: modalData.question,
+                unknownId: modalData.id,
+              },
+            ],
+          };
+          resAdd = await faqAddBatch(params);
+        }
+      }
+      if (resAdd?.resultCode === config.successCode) {
+        message.success(resAdd?.resultDesc || '添加成功');
+        actionRef.current.reloadAndRest();
+      } else {
+        message.error(resAdd?.resultDesc || '添加失败1');
+      }
     }
   };
 
@@ -321,6 +363,10 @@ export default () => {
     setParamsObj(tempObj);
   };
 
+  const disabledDate = (current: any) => {
+    return current && current > moment().subtract(0, 'days').endOf('day');
+  };
+
   const columns: any = [
     {
       dataIndex: 'question',
@@ -334,6 +380,13 @@ export default () => {
       hideInTable: true,
       valueType: 'dateRange',
       width: 200,
+      renderFormItem: (t: any, r: any, i: any) => {
+        return (
+          <Fragment>
+            <RangePicker disabledDate={disabledDate} />
+          </Fragment>
+        );
+      },
     },
     {
       dataIndex: 'source',
@@ -365,7 +418,7 @@ export default () => {
     },
     {
       dataIndex: 'recommendName',
-      title: '标注问/意图(数量)',
+      title: '标准问/意图(数量)',
       width: 200,
       search: false,
       render: (t: any, r: any, i: any) => {
@@ -400,7 +453,7 @@ export default () => {
       render: (text: any, record: any, _: any, action: any) => {
         return (
           <Space>
-            <a key="record" onClick={() => openSession(record)}>
+            <a key="record" style={{ color: '#52C41A' }} onClick={() => openSession(record)}>
               会话记录
             </a>
             <a key="addStandar" onClick={() => addStandard(record)}>
@@ -419,7 +472,9 @@ export default () => {
               okText="确定"
               cancelText="取消"
             >
-              <a key="black">黑名单</a>
+              <a key="black" style={{ color: '#FF4D4F' }}>
+                黑名单
+              </a>
             </Popconfirm>
           </Space>
         );
@@ -451,10 +506,10 @@ export default () => {
           tableAlertOptionRender={false}
           tableAlertRender={false}
           toolBarRender={() => [
-            <Dropdown overlay={menu} key="Dropdown">
+            <Dropdown overlay={menu} key="Dropdown" disabled={selectRow?.length < 1}>
               <Button type="primary">
                 <Space>
-                  {menulabel}
+                  批量操作
                   <DownOutlined />
                 </Space>
               </Button>

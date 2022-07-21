@@ -265,7 +265,8 @@ const normalDeal = (req: any, res: any) => {
 
 export default {
   'GET /aichat/robot/knowledgeLearn/unknownQuestionPageList': unknownQuestionList,
-  'GET /aichat/robot/knowledgeLearn/unknownQuestionByFaqPageList': unknownQuestionByFaqPageList,
+  'GET /aichat/robot/knowledgeLearn/unknownQuestionByRecommendPageList':
+    unknownQuestionByFaqPageList,
   'GET /aichat/robot/knowledgeLearn/sessionRecordPageList': sessionRecordPageList,
   'POST /aichat/robot/blacklist/blacklistQuestionBatchAdd': normalDeal,
   'POST /aichat/robot/intent/intentCorpusBatchAdd': normalDeal,
