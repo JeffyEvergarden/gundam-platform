@@ -81,7 +81,7 @@ export default () => {
     chatRecordModalRef.current?.open?.(row);
   };
 
-  // orderCode  1-时长  2-轮次
+  // orderCode  1-时长  2-轮次 3-会话开始时间
   //  orderType   1-正序 2-倒序
   const tableChange = (pagination: any, filters: any, sorter: any) => {
     let temp = { orderCode: '1', orderType: '2' };
@@ -99,6 +99,15 @@ export default () => {
     }
     if (sorter.columnKey === 'durationFormat' && sorter.order === 'descend') {
       temp.orderCode = '1';
+      temp.orderType = '2';
+    }
+
+    if (sorter.columnKey === 'createTime' && sorter.order === 'ascend') {
+      temp.orderCode = '3';
+      temp.orderType = '1';
+    }
+    if (sorter.columnKey === 'durationFormat' && sorter.order === 'descend') {
+      temp.orderCode = '3';
       temp.orderType = '2';
     }
     let tempParamsObj = JSON.parse(JSON.stringify(paramsObj));
