@@ -4,6 +4,7 @@ import React, { useRef } from 'react';
 import { history, useModel } from 'umi';
 import style from './style.less';
 
+import moment from 'moment';
 import { useBatchModel } from '../model';
 import TestPlanModal from './component/test-plan';
 
@@ -187,7 +188,9 @@ const TestPages: React.FC = (props: any) => {
           pageSize: 10,
         }}
         dateFormatter="string"
-        headerTitle={`下次检测日期：${nextCheckTime || '-'}`}
+        headerTitle={`下次检测日期：${
+          nextCheckTime ? moment?.(nextCheckTime)?.format('YYYY-MM-DD') : '-'
+        }`}
         toolBarRender={() => [
           <Button
             key="button"
