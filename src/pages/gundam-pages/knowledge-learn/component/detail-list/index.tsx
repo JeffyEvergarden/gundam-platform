@@ -147,7 +147,7 @@ const DetailList: React.FC = (props: any) => {
                 onClick={() => {
                   setSelectInfo(row);
                   setSelectNum(3);
-                  openSelectFaqModal('textOneValue', row);
+                  openSelectFaqModal('textOneName', row);
                 }}
               >
                 转移样本
@@ -158,7 +158,7 @@ const DetailList: React.FC = (props: any) => {
                 onClick={() => {
                   setSelectInfo(row);
                   setSelectNum(4);
-                  openSelectFaqModal('textTwoValue', row);
+                  openSelectFaqModal('textTwoName', row);
                 }}
               >
                 转移样本
