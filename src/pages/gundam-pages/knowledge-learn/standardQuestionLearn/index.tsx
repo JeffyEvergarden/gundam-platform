@@ -29,8 +29,8 @@ export default () => {
     info: model.info,
   }));
 
-  const [selectedRowKeys, setSelectedRowKeys] = useState<any>(null);
-  const [selectRow, setSelectRow] = useState<any>(null);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
+  const [selectRow, setSelectRow] = useState<any>([]);
   const [visibleSession, setVisibleSession] = useState<boolean>(false);
   const [modalData, setModalData] = useState<any>({});
   const [menulabel, setMenuLabel] = useState<string>('批量处理');
@@ -112,7 +112,7 @@ export default () => {
       let temp: any = [];
       selectRow.map((item: any) => {
         temp.push({
-          question: item.nowquestion,
+          question: item.question,
           unknownId: item?.id,
         });
       });
@@ -135,10 +135,10 @@ export default () => {
         res = await intentAddBatch(params);
       }
       if (res.resultCode === config.successCode) {
-        message.success(res?.msg || '成功');
+        message.success(res?.resultDesc || '成功');
         actionRef?.current?.reloadAndRest();
       } else {
-        message.error(res?.msg || '失败');
+        message.error(res?.resultDesc || '失败');
       }
     } else {
       message.warning('请至少选择一条数据');
@@ -253,11 +253,11 @@ export default () => {
       res = await intentAddBatch(params);
     }
     if (res.resultCode === config.successCode) {
-      message.success(res?.msg || '成功');
+      message.success(res?.resultDesc || '成功');
       setVisibleEdit(false);
       actionRef?.current?.reloadAndRest();
     } else {
-      message.error(res?.msg || '失败');
+      message.error(res?.resultDesc || '失败');
     }
   };
 
@@ -318,6 +318,12 @@ export default () => {
         };
         resAdd = await addSimilar(addParams);
       }
+      if (resAdd?.resultCode === config.successCode) {
+        message.success(resAdd?.resultDesc || '成功');
+        actionRef.current.reloadAndRest();
+      } else {
+        message.error(resAdd?.resultDesc || '失败');
+      }
       //批量转移
     } else if (operation == 'addBatch') {
       let temp: any = [];
@@ -327,17 +333,29 @@ export default () => {
           unknownId: item.id,
         });
       });
-      let params = {
-        robotId: info.id,
-        intentId: val?.[0]?.recommendId,
-        corpusTextList: temp,
-      };
+
       if (val?.[0]?.recommendType == 2) {
         // 意图
+        let params = {
+          robotId: info.id,
+          intentId: val?.[0]?.recommendId,
+          corpusTextList: temp,
+        };
         resAdd = await intentAddBatch(params);
         // faq
       } else if (val?.[0]?.recommendType == 1) {
+        let params = {
+          robotId: info.id,
+          faqId: val?.[0]?.recommendId,
+          similarList: temp,
+        };
         resAdd = await faqAddBatch(params);
+      }
+      if (resAdd?.resultCode === config.successCode) {
+        message.success(resAdd?.resultDesc || '成功');
+        actionRef.current.reloadAndRest();
+      } else {
+        message.error(resAdd?.resultDesc || '失败');
       }
     } else if (operation == 'clarify') {
       // 澄清
@@ -348,12 +366,7 @@ export default () => {
         clarifyDetailList: val,
       };
       resAdd = await addClearItem(addParams);
-    }
-    if (resAdd?.resultCode === config.successCode) {
-      message.success(resAdd?.resultDesc || '成功');
-      actionRef.current.reloadAndRest();
-    } else {
-      message.error(resAdd?.resultDesc || '失败');
+      resAdd && actionRef.current.reloadAndRest();
     }
   };
 
@@ -375,10 +388,10 @@ export default () => {
     };
     let res = await addBlack(params);
     if (res.resultCode === config.successCode) {
-      message.success(res?.msg || '成功');
+      message.success(res?.resultDesc || '成功');
       actionRef?.current?.reloadAndRest();
     } else {
-      message.error(res?.msg || '失败');
+      message.error(res?.resultDesc || '失败');
     }
   };
 

@@ -129,10 +129,10 @@ export default () => {
         };
         let res = await addBlackBatch(params);
         if (res.resultCode === config.successCode) {
-          message.success(res?.msg || '成功');
+          message.success(res?.resultDesc || '成功');
           actionRef?.current?.reloadAndRest();
         } else {
-          message.error(res?.msg || '失败');
+          message.error(res?.resultDesc || '失败');
         }
       }
       if (item.key == '2') {
@@ -213,10 +213,10 @@ export default () => {
 
     let res = await addBlack(params);
     if (res.resultCode === config.successCode) {
-      message.success(res?.msg || '成功');
+      message.success(res?.resultDesc || '成功');
       actionRef?.current?.reloadAndRest();
     } else {
-      message.error(res?.msg || '失败');
+      message.error(res?.resultDesc || '失败');
     }
   };
 
@@ -254,6 +254,7 @@ export default () => {
         clarifyDetailList: val,
       };
       resAdd = await addClearItem(addParams);
+      resAdd && actionRef.current.reloadAndRest();
     } else if (operation == 'addBatch' || operation == '') {
       let params;
       if (operation == 'addBatch') {
