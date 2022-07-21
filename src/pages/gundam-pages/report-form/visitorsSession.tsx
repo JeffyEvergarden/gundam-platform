@@ -106,7 +106,7 @@ export default () => {
       temp.orderCode = '3';
       temp.orderType = '1';
     }
-    if (sorter.columnKey === 'durationFormat' && sorter.order === 'descend') {
+    if (sorter.columnKey === 'createTime' && sorter.order === 'descend') {
       temp.orderCode = '3';
       temp.orderType = '2';
     }
@@ -182,6 +182,7 @@ export default () => {
           </Space>
         );
       },
+      sorter: true,
       dataIndex: 'createTime',
       ellipsis: true,
     },
