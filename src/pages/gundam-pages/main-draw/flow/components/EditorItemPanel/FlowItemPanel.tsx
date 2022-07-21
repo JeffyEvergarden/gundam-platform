@@ -1,9 +1,8 @@
-import { Item, ItemPanel } from 'gg-editor';
-import { Card } from 'antd';
-import styles from './index.less';
 import Condition from '@/components/Condition';
-import { useModel } from 'umi';
+import { Item, ItemPanel } from 'gg-editor';
 import { useEffect } from 'react';
+import { useModel } from 'umi';
+import styles from './index.less';
 interface PanelProps {
   type?: any;
 }
@@ -22,7 +21,7 @@ const FlowItemPanel = (props: PanelProps) => {
   return (
     <ItemPanel className={styles.itemPanel}>
       {/*文本不需要这个  0文本 1语音 */}
-      <Condition r-if={info?.soundType == 1 || (info?.soundType == 0 && type == 'business')}>
+      <Condition r-if={info?.robotType == 1 || (info?.robotType == 0 && type == 'business')}>
         <Item
           type="node"
           size="140*45"
