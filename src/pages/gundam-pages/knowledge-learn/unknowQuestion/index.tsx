@@ -153,6 +153,7 @@ export default () => {
   };
 
   const openSession = (r: any) => {
+    setModalData(r);
     setVisibleSession(true);
   };
 

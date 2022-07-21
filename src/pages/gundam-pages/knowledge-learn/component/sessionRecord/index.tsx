@@ -26,7 +26,7 @@ export default (props: any) => {
       page: payload.current,
       pageSize: payload.pageSize,
       robotId: info.id,
-      unknowId: modalData?.id,
+      unknownId: modalData?.id,
     };
 
     let res = await getSessionList(params);
