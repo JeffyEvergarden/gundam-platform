@@ -35,7 +35,7 @@ const WhiteListPages: React.FC = (props: any) => {
   const columns: any[] = [
     {
       title: '样本1',
-      dataIndex: 'textOneValue',
+      dataIndex: 'textOneName',
       search: false,
       width: 200,
       ellipsis: true,
@@ -51,7 +51,7 @@ const WhiteListPages: React.FC = (props: any) => {
     },
     {
       title: '样本2',
-      dataIndex: 'textTwoValue',
+      dataIndex: 'textTwoName',
       search: false,
       width: 200,
     },
