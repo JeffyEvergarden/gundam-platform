@@ -109,7 +109,7 @@ const TestPages: React.FC = (props: any) => {
                       state: {
                         info: row,
                       },
-                      search: `?id=${row.id}`,
+                      search: `?batchId=${row.id}`,
                     });
                     // history.push(`/gundamPages/knowledgeLearn/batchTest/detailList?id=${row.id}`);
                   }}
