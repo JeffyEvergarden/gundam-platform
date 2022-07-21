@@ -189,7 +189,7 @@ const TestPages: React.FC = (props: any) => {
         }}
         dateFormatter="string"
         headerTitle={`下次检测日期：${
-          nextCheckTime ? moment?.(nextCheckTime)?.format('YYYY-MM-DD') : '-'
+          !nextCheckTime ? '-' : moment?.(nextCheckTime)?.format('YYYY-MM-DD')
         }`}
         toolBarRender={() => [
           <Button
