@@ -20,10 +20,15 @@ export default () => {
   const selectFaqModalRef = useRef<any>();
 
   const { getListUnknown } = useStandard();
-  const { getSimilarList, addSimilar } = useSimilarModel();
-  const { getList, intentAdd } = useSampleModel();
-  const { intentAddBatch, faqAddBatch, addBlack } = useUnknownQuestion();
-  const { addClearItem } = useTableModel();
+  const { getSimilarList, addSimilar, tableLoading: similarLoading } = useSimilarModel();
+  const { getList, intentAdd, tableLoading: intentAddLoading } = useSampleModel();
+  const {
+    intentAddBatch,
+    faqAddBatch,
+    addBlack,
+    tableLoading: batchLoading,
+  } = useUnknownQuestion();
+  const { addClearItem, opLoading: addClearLoading } = useTableModel();
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -552,7 +557,7 @@ export default () => {
           }}
           rowSelection={rowSelection}
         />
-      </div>{' '}
+      </div>
       <SessionRecord visible={visibleSession} onCancel={cancelSession} modalData={modalData} />
       <AnswerView cref={answerViewRef} pageType={'standardQuestionLearn'} />
       <Modal
@@ -579,7 +584,13 @@ export default () => {
           }}
         />
       </Modal>
-      <EditPass visible={editVisible} onCancel={cancelEdit} modalData={modalData} save={save} />
+      <EditPass
+        visible={editVisible}
+        onCancel={cancelEdit}
+        modalData={modalData}
+        save={save}
+        tableLoading={batchLoading}
+      />
       <SelectFaqModal
         cref={selectFaqModalRef}
         confirm={confirmUpdateSelect}
@@ -587,6 +598,7 @@ export default () => {
         min={operation == 'clarify' ? 2 : 1}
         max={operation == 'clarify' ? 5 : 1}
         readOnly={false}
+        tableLoading={similarLoading || intentAddLoading || addClearLoading || batchLoading}
       />
     </Fragment>
   );

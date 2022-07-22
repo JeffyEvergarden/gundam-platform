@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Form, Modal, Space, Input } from 'antd';
+import { Form, Modal, Space, Input, Button } from 'antd';
 
 const { TextArea } = Input;
 
@@ -9,7 +9,7 @@ const layout = {
 };
 
 export default (props: any) => {
-  const { visible, onCancel, modalData, save } = props;
+  const { visible, onCancel, modalData, save, tableLoading } = props;
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -35,6 +35,14 @@ export default (props: any) => {
       width={600}
       okText={'通过'}
       onOk={submit}
+      footer={[
+        <Button key="back" onClick={onCancel} loading={tableLoading}>
+          取消
+        </Button>,
+        <Button key="submit" type="primary" loading={tableLoading} onClick={submit}>
+          通过
+        </Button>,
+      ]}
     >
       <Form form={form} {...layout} layout={'vertical'}>
         <Form.Item

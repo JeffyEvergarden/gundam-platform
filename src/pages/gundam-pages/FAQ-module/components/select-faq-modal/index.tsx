@@ -87,7 +87,15 @@ const expendRender = (row: any) => {
 // selectedWishKeys 已选择的意图
 
 const SelectorModal: React.FC<any> = (props: any) => {
-  const { cref, confirm, type = 'checkbox', min = 2, max = 5, readOnly = true } = props;
+  const {
+    cref,
+    confirm,
+    type = 'checkbox',
+    min = 2,
+    max = 5,
+    readOnly = true,
+    tableLoading = false,
+  } = props;
 
   const [showWishKey, setShowWishKey] = useState<boolean>(true);
   // tabs 操作
@@ -406,7 +414,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
   }));
 
   // 提交
-  const submit = () => {
+  const submit = async () => {
     if (!Array.isArray(selectList)) {
       message.warning('请选择有效的标准问/意图');
       return;
@@ -419,9 +427,9 @@ const SelectorModal: React.FC<any> = (props: any) => {
       }
     }
     if (operation == 'batch') {
-      confirm(selectList || [], questionList);
+      await confirm(selectList || [], questionList);
     } else {
-      confirm(selectList || [], title);
+      await confirm(selectList || [], title);
     }
 
     setVisible(false);
@@ -477,6 +485,14 @@ const SelectorModal: React.FC<any> = (props: any) => {
       onCancel={() => setVisible(false)}
       okText={'确定'}
       onOk={submit}
+      footer={[
+        <Button key="back" onClick={() => setVisible(false)} loading={tableLoading}>
+          取消
+        </Button>,
+        <Button key="submit" type="primary" loading={tableLoading} onClick={submit}>
+          确定
+        </Button>,
+      ]}
     >
       <div className={style['modal-bg_default']}>
         {/* <Condition r-if={title}> */}
