@@ -18,10 +18,17 @@ export default () => {
   const actionRef = useRef<any>();
   const selectFaqModalRef = useRef<any>();
 
-  const { getList, addBlack, addBlackBatch, intentAddBatch, faqAddBatch } = useUnknownQuestion();
+  const {
+    getList,
+    addBlack,
+    addBlackBatch,
+    intentAddBatch,
+    faqAddBatch,
+    tableLoading: batchLoading,
+  } = useUnknownQuestion();
   // const { intentAdd } = useSampleModel();
   // const { addSimilar } = useSimilarModel();
-  const { addClearItem } = useTableModel();
+  const { addClearItem, opLoading: addClearLoading } = useTableModel();
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -420,7 +427,7 @@ export default () => {
     },
     {
       dataIndex: 'recommendName',
-      title: '标准问/意图(数量)',
+      title: '标准问/意图',
       width: 200,
       search: false,
       render: (t: any, r: any, i: any) => {
@@ -431,14 +438,17 @@ export default () => {
                 <a className={styles.wrapStyle} onClick={() => toStandard(r)}>
                   {r.recommendName}
                 </a>
-                <span style={{ color: '#1890ff' }}>
-                  {r.recommendName && '(' + r.learnNum + ')'}
-                </span>
               </div>
             </Tooltip>
           </Fragment>
         );
       },
+    },
+    {
+      dataIndex: 'learnNum',
+      title: '数量',
+      width: 100,
+      search: false,
     },
     {
       dataIndex: 'createTime',
@@ -532,6 +542,7 @@ export default () => {
         min={operation == 'clarify' ? 2 : 1}
         max={operation == 'clarify' ? 5 : 1}
         readOnly={false}
+        tableLoading={addClearLoading || batchLoading}
       />
     </Fragment>
   );
