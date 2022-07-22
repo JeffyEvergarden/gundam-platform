@@ -22,7 +22,7 @@ const TestPages: React.FC = (props: any) => {
   const deleteRow = async (row: any) => {
     let params: any = {
       robotId: info.id,
-      id: row.id,
+      batchId: row.id,
     };
     let res: any = await deleteBatch(params);
     if (res) {
