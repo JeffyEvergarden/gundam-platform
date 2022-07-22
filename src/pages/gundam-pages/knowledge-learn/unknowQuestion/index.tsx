@@ -257,7 +257,7 @@ export default () => {
     if (operation == 'clarify') {
       let addParams = {
         robotId: info.id,
-        question: modalData.question,
+        question: inputValue,
         unknownId: modalData.id,
         clarifyDetailList: val,
       };
@@ -301,7 +301,7 @@ export default () => {
             intentId: val?.[0]?.recommendId,
             corpusTextList: [
               {
-                question: modalData.question,
+                question: inputValue,
                 unknownId: modalData.id,
               },
             ],
@@ -314,7 +314,7 @@ export default () => {
             faqId: val?.[0]?.recommendId,
             similarList: [
               {
-                question: modalData.question,
+                question: inputValue,
                 unknownId: modalData.id,
               },
             ],
@@ -451,7 +451,7 @@ export default () => {
       search: false,
     },
     {
-      dataIndex: 'createTime',
+      dataIndex: 'updateTime',
       title: '日期时间',
       search: false,
       ellipsis: true,
