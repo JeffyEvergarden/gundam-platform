@@ -89,11 +89,15 @@ const Board: React.FC<any> = (props: any) => {
 
   const robotType: any = robotTypeMap[info.robotType] || '语音';
 
-  const { getFlowList, getTreeData, treeData } = useModel('drawer' as any, (model: any) => ({
-    getFlowList: model.getFlowList,
-    getTreeData: model.getTreeData,
-    treeData: model.treeData,
-  }));
+  const { getShowBadgeTotal, getFlowList, getTreeData, treeData } = useModel(
+    'drawer' as any,
+    (model: any) => ({
+      getShowBadgeTotal: model.getShowBadgeTotal,
+      getFlowList: model.getFlowList,
+      getTreeData: model.getTreeData,
+      treeData: model.treeData,
+    }),
+  );
 
   // 相似问检测
   const [similarFlag, setSimilarFlag] = useState<any>(false); //（开关）
@@ -388,6 +392,7 @@ const Board: React.FC<any> = (props: any) => {
       ...tmpObj,
     });
     await save(tmpObj);
+    getShowBadgeTotal(info.id);
   };
 
   const { checkSimilar } = useSimilarModel();
