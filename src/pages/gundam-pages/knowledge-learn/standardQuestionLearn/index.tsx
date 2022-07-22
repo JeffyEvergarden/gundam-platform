@@ -409,13 +409,13 @@ export default () => {
       ellipsis: true,
       width: 100,
     },
-    {
-      dataIndex: 'channelCode',
-      title: '渠道',
-      search: false,
-      ellipsis: true,
-      width: 100,
-    },
+    // {
+    //   dataIndex: 'channelCode',
+    //   title: '渠道',
+    //   search: false,
+    //   ellipsis: true,
+    //   width: 100,
+    // },
     {
       dataIndex: 'source',
       title: '问题来源',
@@ -428,7 +428,7 @@ export default () => {
       },
     },
     {
-      dataIndex: 'createTime',
+      dataIndex: 'updateTime',
       title: '日期时间',
       search: false,
       ellipsis: true,
@@ -554,7 +554,7 @@ export default () => {
         />
       </div>{' '}
       <SessionRecord visible={visibleSession} onCancel={cancelSession} modalData={modalData} />
-      <AnswerView cref={answerViewRef} />
+      <AnswerView cref={answerViewRef} pageType={'standardQuestionLearn'} />
       <Modal
         visible={visible}
         onCancel={() => setVisible(false)}

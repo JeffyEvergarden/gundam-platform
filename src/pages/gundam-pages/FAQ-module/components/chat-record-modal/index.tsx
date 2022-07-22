@@ -51,6 +51,10 @@ const RecordModal: React.FC<any> = (props: any) => {
     if (heightLihgt.id) {
       if (heightLihgt?.id == item.id) {
         return 'red';
+      } else {
+        if (heightLihgt?.question == item.message) {
+          return 'red';
+        }
       }
     } else {
       if (heightLihgt?.message == item.message) {
@@ -90,7 +94,7 @@ const RecordModal: React.FC<any> = (props: any) => {
                     className={style['content']}
                     style={{ color: hLihgt(item) }}
                     dangerouslySetInnerHTML={{ __html: item.message }}
-                  ></div>
+                  />
                 </div>
               </div>
             );
@@ -102,7 +106,7 @@ const RecordModal: React.FC<any> = (props: any) => {
                     <div className={style['record-time']}>{item.recordTime}</div>
                   </div>
                   <div className={style['content']}>
-                    <div dangerouslySetInnerHTML={{ __html: item.message }}></div>
+                    <div dangerouslySetInnerHTML={{ __html: item.message }} />
                     <div>{item?.recommendQuestion ? item?.recommendQuestion : ''}</div>
                     {item.labels.map((item: any, i: number) => {
                       return (
@@ -113,7 +117,7 @@ const RecordModal: React.FC<any> = (props: any) => {
                     })}
                   </div>
                 </div>
-                <img className={style['avator']} src={robotAvator} alt="机器人头像"></img>
+                <img className={style['avator']} src={robotAvator} alt="机器人头像" />
               </div>
             );
           }
