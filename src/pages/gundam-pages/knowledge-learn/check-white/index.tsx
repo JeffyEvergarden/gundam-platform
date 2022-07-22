@@ -81,8 +81,11 @@ const WhiteListPages: React.FC = (props: any) => {
                 title="删除将不可恢复，确认删除？"
                 okText="确定"
                 cancelText="取消"
-                onConfirm={() => {
-                  deleteWhite({ id: row.id, robotId: info.id });
+                onConfirm={async () => {
+                  let res: any = await deleteWhite({ id: row.id, robotId: info.id });
+                  if (res) {
+                    labelTableRef?.current?.reload();
+                  }
                 }}
               >
                 <Button type="link" danger>
@@ -98,25 +101,6 @@ const WhiteListPages: React.FC = (props: any) => {
 
   return (
     <div className={`${style['machine-page']} list-page`}>
-      {/* <div className={style['page_top']}>
-        <div style={{ fontSize: '20px', fontWeight: 400 }}>{`白名单${totalPage || 0}条`}</div>
-        <div className={style['page_top__right']}>
-          <Space>
-            <Input.Search
-              // bordered={false}
-              style={{ width: '280px' }}
-              onSearch={(text: any) => {
-                setSearchText(text);
-              }}
-              onPressEnter={(e: any) => {
-                setSearchText(e.target.value);
-              }}
-              placeholder={'请输入'}
-              allowClear
-            />
-          </Space>
-        </div>
-      </div> */}
       <ProTable<any>
         params={{ searchText }}
         columns={columns}
