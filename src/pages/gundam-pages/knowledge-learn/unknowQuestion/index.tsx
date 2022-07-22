@@ -38,7 +38,7 @@ export default () => {
   // const [disaAbledData, setDisAbledData] = useState<any>();
   const [datasource, setDataSource] = useState<any>([]);
   const [operation, setOperation] = useState<string>('');
-  const [paramsObj, setParamsObj] = useState<any>({ orderCode: '1', orderType: '2' });
+  const [paramsObj, setParamsObj] = useState<any>({ orderCode: '2', orderType: '2' });
 
   const getHide = () => {
     if (

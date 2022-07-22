@@ -9,7 +9,7 @@ import style from './style.less';
 const { Search } = Input;
 
 const SelectorModal: React.FC<any> = (props: any) => {
-  const { cref, confirm } = props;
+  const { cref, confirm, pageType } = props;
   const [total, setTotal] = useState<any>(0);
   const [questionInfo, setQuestionInfo] = useState<any>();
 
@@ -59,7 +59,11 @@ const SelectorModal: React.FC<any> = (props: any) => {
       visible={visible}
       onClose={() => setVisible(false)}
     >
-      <div className={style['title']}>{questionInfo?.question}</div>
+      <div className={style['title']}>
+        {pageType === 'standardQuestionLearn'
+          ? questionInfo?.recommendName
+          : questionInfo?.question}
+      </div>
       <div id="scrollContent" className={style['content-list']}>
         <ProList
           // itemLayout="vertical"
