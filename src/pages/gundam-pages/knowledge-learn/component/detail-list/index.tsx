@@ -323,17 +323,11 @@ const DetailList: React.FC = (props: any) => {
         headerTitle={
           <span>
             本次检测样本总量
-            <span style={{ color: '#1890FF' }}>
-              {(detailInfo?.sampleTotal || resData?.sampleTotal) ?? '-'}
-            </span>
+            <span style={{ color: '#1890FF' }}>{resData?.sampleTotal ?? '-'}</span>
             ，异常样本量
-            <span style={{ color: '#1890FF' }}>
-              {(detailInfo?.abnormalSampleAmount || resData?.abnormalSampleAmount) ?? '-'}
-            </span>
+            <span style={{ color: '#1890FF' }}>{resData?.abnormalSampleAmount ?? '-'}</span>
             ，已复核
-            <span style={{ color: '#1890FF' }}>
-              {(detailInfo?.reviewAmount || resData?.reviewAmount) ?? '-'}
-            </span>
+            <span style={{ color: '#1890FF' }}>{resData?.reviewAmount ?? '-'}</span>
           </span>
         }
         // toolBarRender={() => []}
