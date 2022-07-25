@@ -45,7 +45,7 @@ const WhiteListPages: React.FC = (props: any) => {
     },
     {
       title: '所属FAQ/意图',
-      dataIndex: 'textOneType',
+      dataIndex: 'textOneRelationName',
       search: false,
       width: 200,
     },
@@ -57,7 +57,7 @@ const WhiteListPages: React.FC = (props: any) => {
     },
     {
       title: '所属FAQ/意图',
-      dataIndex: 'textTwoType',
+      dataIndex: 'textTwoRelationName',
       search: false,
       width: 200,
     },
