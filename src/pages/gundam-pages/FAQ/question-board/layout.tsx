@@ -347,7 +347,12 @@ const Board: React.FC<any> = (props: any) => {
         if (pageUrl == 'unknownQuestion') {
           history.push('/gundamPages/knowledgeLearn/unknowQuestion');
         } else if (pageUrl == 'standardQuestionLearn') {
-          history.push('/gundamPages/knowledgeLearn/standardQuestionLearn');
+          history.push({
+            pathname: '/gundamPages/knowledgeLearn/standardQuestionLearn',
+            state: {
+              rowInfo: payloadData,
+            },
+          });
         } else {
           history.push('/gundamPages/faq/main');
         }
