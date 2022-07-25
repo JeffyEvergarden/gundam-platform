@@ -483,7 +483,8 @@ const QuestionList: React.FC<any> = (props: any) => {
                                 openClassify?.(item);
                               }}
                             >
-                              {childList?.find((c: any) => c.key == item.faqTypeId)?.title || '-'}
+                              {childList?.find((c: any) => c.key == item.faqTypeId)?.classify ||
+                                '-'}
                               {/* {item.faqTypeId} */}
                             </Button>
                           </span>
@@ -701,6 +702,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                               arr[index] = !arr[index];
                               setMore(arr);
                             }}
+                            disabled={item?.answerList?.length <= 1}
                           >
                             更多答案{more[index] ? <UpOutlined /> : <DownOutlined />}
                           </Button>

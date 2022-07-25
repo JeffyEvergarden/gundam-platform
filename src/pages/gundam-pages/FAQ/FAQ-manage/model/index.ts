@@ -98,6 +98,7 @@ export const useTreeModal = () => {
         parent: parent || item.parent || '0',
         deep: parent?.deep + 1 || 1,
         count: item.faqCount,
+        classify: item.title,
       };
       let children: any = processTreeData(item.children, obj);
 
