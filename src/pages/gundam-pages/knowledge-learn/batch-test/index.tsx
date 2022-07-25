@@ -114,6 +114,7 @@ const TestPages: React.FC = (props: any) => {
                     });
                     // history.push(`/gundamPages/knowledgeLearn/batchTest/detailList?id=${row.id}`);
                   }}
+                  disabled={row.detailDelete == 1 ? true : false}
                 >
                   查看明细
                 </Button>
@@ -131,8 +132,9 @@ const TestPages: React.FC = (props: any) => {
                   onConfirm={() => {
                     deleteRow(row);
                   }}
+                  disabled={row.detailDelete == 1 ? true : false}
                 >
-                  <Button type="link" danger>
+                  <Button type="link" danger disabled={row.detailDelete == 1 ? true : false}>
                     删除明细
                   </Button>
                 </Popconfirm>
