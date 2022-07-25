@@ -488,33 +488,6 @@ const QuestionList: React.FC<any> = (props: any) => {
                               {/* {item.faqTypeId} */}
                             </Button>
                           </span>
-                          {/* {!hasCheckbox && <Divider type="vertical" />}
-                          {!hasCheckbox && (
-                            <Badge
-                              status={status[item.approvalStatus]}
-                              text={
-                                <Select
-                                  size="small"
-                                  value={item.approvalStatus}
-                                  defaultValue={item.approvalStatus}
-                                  style={{ width: 100, padding: 0 }}
-                                  bordered={false}
-                                  onChange={(val) => {
-                                    // console.log(val);
-                                    editQ({ id: item.id, approvalStatus: val });
-                                  }}
-                                >
-                                  {statusList.map((val: any) => {
-                                    return (
-                                      <Option value={val.value} key={val.value}>
-                                        {val.name}
-                                      </Option>
-                                    );
-                                  })}
-                                </Select>
-                              }
-                            />
-                          )} */}
                           <Divider type="vertical" />
                           <Button
                             type="link"

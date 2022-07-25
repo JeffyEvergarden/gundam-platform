@@ -127,7 +127,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
             label="生命周期"
             style={{ width: '400px' }}
             rules={[{ required: true, message: '请选择' }]}
-            initialValue={true}
+            initialValue={'dialogue'}
           >
             <Radio.Group>
               <Radio value={'dialogue'}>整轮对话有效</Radio>
@@ -140,7 +140,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
             label="词槽是否预填充"
             style={{ width: '400px' }}
             rules={[{ required: true, message: '请选择' }]}
-            initialValue={true}
+            initialValue={1}
           >
             <Radio.Group>
               <Radio value={1}>是</Radio>
