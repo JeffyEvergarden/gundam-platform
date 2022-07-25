@@ -243,7 +243,7 @@ const DetailList: React.FC = (props: any) => {
         detailId: selectInfo.id,
         sampleId: selectInfo.textTwoId,
         sampleType: selectInfo.textTwoType,
-        transferType: selectInfo.textOneType,
+        transferType: selectInfo.textOneType == 'similar' ? 'faq' : selectInfo.textOneType,
         transferId: selectInfo.textOneValue,
         sample: selectInfo.textTwoName,
       });
@@ -254,7 +254,7 @@ const DetailList: React.FC = (props: any) => {
         detailId: selectInfo.id,
         sampleId: selectInfo.textOneId,
         sampleType: selectInfo.textOneType,
-        transferType: selectInfo.textTwoType,
+        transferType: selectInfo.textTwoType == 'similar' ? 'faq' : selectInfo.textTwoType,
         transferId: selectInfo.textTwoValue,
         sample: selectInfo.textOneName,
       });
