@@ -301,6 +301,10 @@ export default () => {
       message.warning('请输入相似语料或者相似问');
       return;
     }
+    if (operation == 'addBatch' && inputValue.some((item: any) => item.question == '')) {
+      message.warning('请输入相似语料或者相似问');
+      return false;
+    }
     let resAdd: any;
     // 转移
     if (operation == 'remove') {
@@ -326,8 +330,10 @@ export default () => {
       if (resAdd?.resultCode === config.successCode) {
         message.success(resAdd?.resultDesc || '成功');
         actionRef.current.reloadAndRest();
+        return true;
       } else {
         message.error(resAdd?.resultDesc || '失败');
+        return false;
       }
       //批量转移
     } else if (operation == 'addBatch') {
@@ -359,8 +365,10 @@ export default () => {
       if (resAdd?.resultCode === config.successCode) {
         message.success(resAdd?.resultDesc || '成功');
         actionRef.current.reloadAndRest();
+        return true;
       } else {
         message.error(resAdd?.resultDesc || '失败');
+        return false;
       }
     } else if (operation == 'clarify') {
       // 澄清
@@ -371,7 +379,10 @@ export default () => {
         clarifyDetailList: val,
       };
       resAdd = await addClearItem(addParams);
-      resAdd && actionRef.current.reloadAndRest();
+      if (resAdd) {
+        actionRef.current.reloadAndRest();
+        return true;
+      }
     }
   };
 

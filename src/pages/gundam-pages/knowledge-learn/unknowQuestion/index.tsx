@@ -246,11 +246,15 @@ export default () => {
   const confirmUpdateSelect = async (val: any, inputValue: any) => {
     if (!val.length) {
       message.warning('请选择FAQ/意图');
-      return;
+      return false;
     }
     if (!inputValue) {
       message.warning('请输入相似语料或者相似问');
-      return;
+      return false;
+    }
+    if (operation == 'addBatch' && inputValue.some((item: any) => item.question == '')) {
+      message.warning('请输入相似语料或者相似问');
+      return false;
     }
     let resAdd: any = {};
     // 澄清
@@ -262,7 +266,12 @@ export default () => {
         clarifyDetailList: val,
       };
       resAdd = await addClearItem(addParams);
-      resAdd && actionRef.current.reloadAndRest();
+      if (resAdd) {
+        actionRef.current.reloadAndRest();
+        return true;
+      } else {
+        return false;
+      }
     } else if (operation == 'addBatch' || operation == '') {
       let params;
       if (operation == 'addBatch') {
@@ -325,8 +334,10 @@ export default () => {
       if (resAdd?.resultCode === config.successCode) {
         message.success(resAdd?.resultDesc || '添加成功');
         actionRef.current.reloadAndRest();
+        return true;
       } else {
-        message.error(resAdd?.resultDesc || '添加失败1');
+        message.error(resAdd?.resultDesc || '添加失败');
+        return false;
       }
     }
   };
