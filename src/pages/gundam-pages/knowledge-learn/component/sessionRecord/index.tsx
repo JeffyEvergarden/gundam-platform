@@ -100,7 +100,7 @@ export default (props: any) => {
           return sessionList(params);
         }}
       />
-      <ChatRecordModal cref={chatRecordModalRef} />
+      <ChatRecordModal cref={chatRecordModalRef} pageType={'unknownQuestion'} />
     </Modal>
   );
 };
