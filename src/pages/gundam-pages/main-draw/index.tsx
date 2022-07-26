@@ -166,7 +166,7 @@ const MainDraw = (props: any) => {
   const getMachineInfo = async () => {
     let data: any = await getMachineMainDraw({ ...preParams });
     let { nodes = [], edges = [] } = data || {};
-    console.log(edges);
+    // console.log(edges);
     (fake.current as any)?.init?.({
       nodes: nodes,
       edges: edges,
@@ -274,7 +274,10 @@ const MainDraw = (props: any) => {
   }, []);
 
   useEffect(() => {
-    getMachineInfo(); // 获取机器人主流程信息
+    getMachineInfo().then((res) => {
+      fake.current.executeCommand('autoZoom');
+      fake.current.executeCommand('resetZoom');
+    }); // 获取机器人主流程信息
   }, [businessFlowId]);
 
   // -- end-----
