@@ -1,4 +1,3 @@
-import { Request, Response } from 'express';
 import config from '../../src/config';
 
 const successCode = config.successCode;
@@ -142,10 +141,10 @@ const getPublishStatus = (req: any, res: any) => {
     data: {
       prodTime: '2022-03-02 17:51',
       prodDesc: '哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
-      prodStatus: 1,
+      prodStatus: 0,
       testTime: '2022-03-03 17:51',
       testDesc: '黑黑黑黑黑黑黑黑黑黑黑黑黑黑黑黑黑黑',
-      testStatus: 0,
+      testStatus: 2,
     },
   });
 };

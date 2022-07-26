@@ -1,19 +1,18 @@
-import { useState } from 'react';
+import config from '@/config/index';
 import { message } from 'antd';
-import moment from 'moment';
+import { useState } from 'react';
 import {
-  getMachineList,
+  addNewMachine,
   changeMachineStatus,
   deleteMachine,
-  addNewMachine,
   editMachine,
   getMachineInfo,
-  publishProd,
-  getPublishTest,
+  getMachineList,
   getPublishStatus,
+  getPublishTest,
+  publishProd,
   _getGlobalValConfig,
 } from './api';
-import config from '@/config/index';
 
 export const successCode = config.successCode;
 
@@ -163,6 +162,7 @@ export const usePublishModel = () => {
     setLoading(false);
     if (res.resultCode === successCode) {
       message.info('发布中...');
+      getTime(robotId);
       // setProductionTime(res.datas?.publishTime || '-');
       // setStatus(res.datas?.status || false);
       // setResult(res.datas?.desc || '未知错误');
@@ -179,6 +179,7 @@ export const usePublishModel = () => {
     setTestLoading(false);
     if (res.resultCode === successCode) {
       message.info('发布中...');
+      getTime(robotId);
       // setTestTime(res.datas?.publishTime || '-');
       // setTestStatus(res.datas?.status || false);
       // setTestResult(res.datas?.desc || '未知错误');
@@ -192,10 +193,10 @@ export const usePublishModel = () => {
       robotId,
     });
     setProductionTime(res.data?.prodTime || '-');
-    setStatus(!!res.data?.prodStatus || false);
+    setStatus(res.data?.prodStatus || 0);
     setResult(res.data?.prodDesc || '-');
     setTestTime(res.data?.testTime || '-');
-    setTestStatus(!!res.data?.testStatus || false);
+    setTestStatus(res.data?.testStatus || 0);
     setTestResult(res.data?.testDesc || '-');
   };
 

@@ -62,7 +62,7 @@ const MainLayout: React.FC = (props: any) => {
               <Condition r-if={productionTime}>
                 <span className={style['time-module']} style={{ marginRight: '24px' }}>
                   <span className={style['label']}>生产发布状态:</span>
-                  {status && (
+                  {status == 1 && (
                     <span className={style['box']}>
                       <Badge status="success" size="default" />
                       <span className={style['msg']}>正常</span>
@@ -70,7 +70,7 @@ const MainLayout: React.FC = (props: any) => {
                     </span>
                   )}
 
-                  {!status && (
+                  {status == 0 && (
                     <Tooltip placement="bottomLeft" title={result || '未知系统异常'}>
                       <span className={style['box']}>
                         <Badge status={`${productionTime == '-' ? 'default' : 'error'}`} />
@@ -81,12 +81,19 @@ const MainLayout: React.FC = (props: any) => {
                       </span>
                     </Tooltip>
                   )}
+                  {status == 2 && (
+                    <span className={style['box']}>
+                      <Badge status="warning" size="default" />
+                      <span className={style['msg']}>发布中</span>
+                      <span className={style['time']}>({productionTime})</span>
+                    </span>
+                  )}
                 </span>
               </Condition>
               <Condition r-if={testTime}>
                 <span className={style['time-module']}>
                   <span className={style['label']}>测试发布状态:</span>
-                  {testStatus && (
+                  {testStatus == 1 && (
                     <span className={style['box']}>
                       <Badge status="success" />
                       <span className={style['msg']}>正常</span>
@@ -94,7 +101,7 @@ const MainLayout: React.FC = (props: any) => {
                     </span>
                   )}
 
-                  {!testStatus && (
+                  {testStatus == 0 && (
                     <Tooltip placement="bottomLeft" title={testResult || '未知系统异常'}>
                       <span className={style['box']}>
                         <Badge status={`${testTime == '-' ? 'default' : 'error'}`} />
@@ -104,6 +111,13 @@ const MainLayout: React.FC = (props: any) => {
                         <span className={style['time']}>({testTime})</span>
                       </span>
                     </Tooltip>
+                  )}
+                  {testStatus == 2 && (
+                    <span className={style['box']}>
+                      <Badge status="warning" />
+                      <span className={style['msg']}>发布中</span>
+                      <span className={style['time']}>({testTime})</span>
+                    </span>
                   )}
                 </span>
               </Condition>

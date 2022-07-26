@@ -112,7 +112,12 @@ const DetailList: React.FC = (props: any) => {
               okText="确定"
               cancelText="取消"
               onConfirm={() => {
-                addWhite({ ...row, detailId: row.id }).then((res: any) => {
+                addWhite({
+                  ...row,
+                  textOneType: row.textOneType == 'similar' ? 'faq' : row.textOneType,
+                  textTwoType: row.textTwoType == 'similar' ? 'faq' : row.textTwoType,
+                  detailId: row.id,
+                }).then((res: any) => {
                   if (res) {
                     DetailTableRef?.current?.reload();
                   }
