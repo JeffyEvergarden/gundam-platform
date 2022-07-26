@@ -4,7 +4,6 @@ import moment from 'moment';
 import React, { useImperativeHandle, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { useTestModel } from '../../../model';
-import TemporaryTestModal from '../temporaryTestModal';
 import style from './style.less';
 
 const { Item: FormItem } = Form;
@@ -29,6 +28,7 @@ const TestPlanModal: React.FC<any> = (props: any) => {
 
   const [visible, setVisible] = useState<boolean>(false);
   const [pageType, setPageType] = useState<string>('');
+  const [check, setCheck] = useState<boolean>(false);
 
   const date = [
     // {
@@ -79,6 +79,7 @@ const TestPlanModal: React.FC<any> = (props: any) => {
             ? moment(formData?.firstTestingTime)
             : undefined;
           form.setFieldsValue(formData);
+          setCheck(formData.autoClear);
         });
       }
       setVisible(true);
@@ -90,20 +91,20 @@ const TestPlanModal: React.FC<any> = (props: any) => {
     submit,
   }));
 
-  const _temporaryTest = async () => {
-    const values = await form.validateFields();
+  // const _temporaryTest = async () => {
+  //   const values = await form.validateFields();
 
-    let reqData = {
-      threshold: values.threshold,
-      robotId: info.id,
-    };
-    let res = await temporaryTest(reqData);
-    if (res) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+  //   let reqData = {
+  //     threshold: values.threshold,
+  //     robotId: info.id,
+  //   };
+  //   let res = await temporaryTest(reqData);
+  //   if (res) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // };
 
   const disabledDate: any = (current: any) => {
     // Can not select days before today and today
@@ -179,9 +180,22 @@ const TestPlanModal: React.FC<any> = (props: any) => {
                 // style={{ width: '100px' }}
                 initialValue={false}
               >
-                <Checkbox>自动清除</Checkbox>
+                <Checkbox
+                  onChange={(e) => {
+                    console.log(e);
+                    setCheck(e.target.checked);
+                    form.validateFields(['clearNumber']);
+                  }}
+                >
+                  自动清除
+                </Checkbox>
               </FormItem>
-              <FormItem name="clearNumber" style={{ marginRight: '6px' }} initialValue={1}>
+              <FormItem
+                name="clearNumber"
+                style={{ marginRight: '6px' }}
+                initialValue={1}
+                rules={[{ required: check, message: '请输入' }]}
+              >
                 <InputNumber min={1} max={12}></InputNumber>
               </FormItem>
               <FormItem>个月之前的检测结果明细数据</FormItem>
@@ -189,7 +203,7 @@ const TestPlanModal: React.FC<any> = (props: any) => {
           </Condition>
         </Form>
       </div>
-      <TemporaryTestModal cref={testRef} confirm={_temporaryTest}></TemporaryTestModal>
+      {/* <TemporaryTestModal cref={testRef} confirm={_temporaryTest}></TemporaryTestModal> */}
     </Modal>
   );
 };
