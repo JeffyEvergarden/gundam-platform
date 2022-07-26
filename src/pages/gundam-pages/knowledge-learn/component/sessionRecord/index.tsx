@@ -53,6 +53,7 @@ export default (props: any) => {
       dataIndex: 'createTime',
       title: '时间',
       ellipsis: true,
+      width: 200,
       search: false,
     },
     {
