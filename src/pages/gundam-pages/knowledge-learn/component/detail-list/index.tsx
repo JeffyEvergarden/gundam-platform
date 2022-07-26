@@ -194,7 +194,7 @@ const DetailList: React.FC = (props: any) => {
     console.log(list);
     let res: any;
     if (selectNum == 3) {
-      res = sampleTransfer({
+      res = await sampleTransfer({
         robotId: info.id,
         detailId: selectInfo.id,
         sampleId: selectInfo.textOneId,
@@ -205,7 +205,7 @@ const DetailList: React.FC = (props: any) => {
       });
     }
     if (selectNum == 4) {
-      res = sampleTransfer({
+      res = await sampleTransfer({
         robotId: info.id,
         detailId: selectInfo.id,
         sampleId: selectInfo.textTwoId,
@@ -233,12 +233,12 @@ const DetailList: React.FC = (props: any) => {
     });
   };
 
-  const handleOk = () => {
+  const handleOk = async () => {
     console.log(selectInfo);
 
     let res: any;
     if (selectNum == 1) {
-      res = sampleTransfer({
+      res = await sampleTransfer({
         robotId: info.id,
         detailId: selectInfo.id,
         sampleId: selectInfo.textTwoId,
@@ -249,7 +249,7 @@ const DetailList: React.FC = (props: any) => {
       });
     }
     if (selectNum == 2) {
-      res = sampleTransfer({
+      res = await sampleTransfer({
         robotId: info.id,
         detailId: selectInfo.id,
         sampleId: selectInfo.textOneId,
