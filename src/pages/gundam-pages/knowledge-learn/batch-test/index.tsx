@@ -98,7 +98,7 @@ const TestPages: React.FC = (props: any) => {
       fixed: 'right',
       // width: 130,
       render: (val: any, row: any, index: number) => {
-        if (row.taskStatus == 2) {
+        if (row.taskStatus == 2 || row.taskStatus == 4) {
           return (
             <div>
               <div style={{ display: 'flex' }}>
