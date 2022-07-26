@@ -33,12 +33,16 @@ export default (props: any) => {
       end = today.format('YYYY-MM-DD');
     }
     if (val === 'sevenDays') {
-      let sevenDays = moment().subtract(7, 'days');
+      let sevenDays = moment().subtract(6, 'days');
       begin = sevenDays.format('YYYY-MM-DD');
+      let today = moment().subtract(0, 'days');
+      end = today.format('YYYY-MM-DD');
     }
     if (val === 'month') {
-      let month = moment().subtract(30, 'days');
+      let month = moment().subtract(29, 'days');
       begin = month.format('YYYY-MM-DD');
+      let today = moment().subtract(0, 'days');
+      end = today.format('YYYY-MM-DD');
     }
     setStart(begin);
     setEnd(end);

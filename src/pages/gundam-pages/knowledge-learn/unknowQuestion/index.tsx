@@ -361,7 +361,7 @@ export default () => {
   // orderCode  '1'-分类  '2'-时间
   //  orderType   '1'-升序 '2'-降序
   const tableChange = (pagination: any, filters: any, sorter: any) => {
-    let temp = { orderCode: '1', orderType: '2' };
+    let temp = { orderCode: '2', orderType: '2' };
     if (sorter.columnKey === 'faqTypeName' && sorter.order === 'ascend') {
       temp.orderCode = '1';
       temp.orderType = '1';
