@@ -120,7 +120,9 @@ const FAQClearList = (props: any) => {
     let res: any = await updateClearItem(data);
     if (res) {
       tableRef.current.reload();
+      return true;
     }
+    return false;
   };
 
   // 列名

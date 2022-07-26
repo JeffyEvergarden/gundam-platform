@@ -362,11 +362,11 @@ export default () => {
     console.log(val);
     if (!val.length) {
       message.warning('请选择FAQ/意图');
-      return;
+      return false;
     }
     if (!inputValue) {
       message.warning('请输入相似语料或者相似问');
-      return;
+      return false;
     }
     let resAdd: any;
     if (val?.[0]?.recommendType == 1) {
@@ -394,8 +394,10 @@ export default () => {
       setInputValue('');
       message.success(resAdd?.resultDesc || '添加成功');
       actionRef.current.reload();
+      return true;
     } else {
       message.error(resAdd?.resultDesc || '添加失败');
+      return false;
     }
   };
 
