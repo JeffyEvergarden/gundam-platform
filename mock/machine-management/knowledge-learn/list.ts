@@ -151,6 +151,7 @@ const getDetailList = (req: any, res: any) => {
       sampleTotal: 100,
       abnormalSampleAmount: 50,
       reviewAmount: 50,
+      batchExpired: 1,
     },
   });
 };

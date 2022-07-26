@@ -86,7 +86,11 @@ const DetailList: React.FC = (props: any) => {
             <div className={style['tb']}>
               <Button
                 type="link"
-                disabled={row.handleStatus == 2 || row.textTwoType == 'faq' ? true : false}
+                disabled={
+                  row.handleStatus == 2 || row.textTwoType == 'faq' || resData?.batchExpired
+                    ? true
+                    : false
+                }
                 onClick={() => {
                   setVisible(true);
                   setSelectInfo(row);
@@ -97,7 +101,11 @@ const DetailList: React.FC = (props: any) => {
               </Button>
               <Button
                 type="link"
-                disabled={row.handleStatus == 2 || row.textOneType == 'faq' ? true : false}
+                disabled={
+                  row.handleStatus == 2 || row.textOneType == 'faq' || resData?.batchExpired
+                    ? true
+                    : false
+                }
                 onClick={() => {
                   setVisible(true);
                   setSelectInfo(row);
@@ -123,11 +131,11 @@ const DetailList: React.FC = (props: any) => {
                   }
                 });
               }}
-              disabled={row.handleStatus == 2 ? true : false}
+              disabled={row.handleStatus == 2 || resData?.batchExpired ? true : false}
             >
               <Button
                 type="link"
-                disabled={row.handleStatus == 2 ? true : false}
+                disabled={row.handleStatus == 2 || resData?.batchExpired ? true : false}
                 style={{ marginLeft: '16px' }}
               >
                 白名单
@@ -148,7 +156,11 @@ const DetailList: React.FC = (props: any) => {
             <div className={style['tb']}>
               <Button
                 type="link"
-                disabled={row.handleStatus == 2 || row.textOneType == 'faq' ? true : false}
+                disabled={
+                  row.handleStatus == 2 || row.textOneType == 'faq' || resData?.batchExpired
+                    ? true
+                    : false
+                }
                 onClick={() => {
                   setSelectInfo(row);
                   setSelectNum(3);
@@ -159,7 +171,11 @@ const DetailList: React.FC = (props: any) => {
               </Button>
               <Button
                 type="link"
-                disabled={row.handleStatus == 2 || row.textTwoType == 'faq' ? true : false}
+                disabled={
+                  row.handleStatus == 2 || row.textTwoType == 'faq' || resData?.batchExpired
+                    ? true
+                    : false
+                }
                 onClick={() => {
                   setSelectInfo(row);
                   setSelectNum(4);

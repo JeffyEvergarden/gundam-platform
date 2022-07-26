@@ -143,7 +143,7 @@ const TestPages: React.FC = (props: any) => {
           );
         } else if (row.taskStatus == 1) {
           return '跑批中';
-        } else {
+        } else if (row.taskStatus == 0) {
           return '待跑批';
         }
       },
