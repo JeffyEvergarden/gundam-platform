@@ -13,7 +13,7 @@ const { Search } = Input;
 const pageSize = 10;
 
 const RecordModal: React.FC<any> = (props: any) => {
-  const { cref, confirm } = props;
+  const { cref, confirm, pageType } = props;
 
   const { info } = useModel('gundam' as any, (model: any) => {
     return {
@@ -48,17 +48,21 @@ const RecordModal: React.FC<any> = (props: any) => {
   }));
 
   const hLihgt = (item: any) => {
-    if (heightLihgt.id) {
-      if (heightLihgt?.id == item.id) {
-        return 'red';
-      } else {
-        if (heightLihgt?.question == item.message) {
+    if (pageType == 'unknownQuestion') {
+      if (heightLihgt.dialogueId) {
+        if (heightLihgt?.dialogueId == item.id) {
           return 'red';
         }
       }
     } else {
-      if (heightLihgt?.message == item.message) {
-        return 'red';
+      if (heightLihgt.id) {
+        if (heightLihgt?.id == item.id) {
+          return 'red';
+        }
+      } else {
+        if (heightLihgt?.message == item.message) {
+          return 'red';
+        }
       }
     }
     return '';
