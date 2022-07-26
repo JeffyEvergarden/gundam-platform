@@ -1,7 +1,7 @@
 import SelectFaqModal from '@/pages/gundam-pages/FAQ-module/components/select-faq-modal';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Button, Modal, Popconfirm, Tooltip } from 'antd';
+import { Button, message, Modal, Popconfirm, Tooltip } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
 import { useDetailModel, useWhiteModel } from '../../model';
@@ -192,6 +192,10 @@ const DetailList: React.FC = (props: any) => {
   // 确认FAQ/意图模态框 的选择
   const confirmUpdateSelect = async (list: any[]) => {
     console.log(list);
+    if (!list.length) {
+      message.warning('请选择有效的标准问/意图');
+      return false;
+    }
     let res: any;
     if (selectNum == 3) {
       res = await sampleTransfer({
@@ -218,7 +222,9 @@ const DetailList: React.FC = (props: any) => {
     if (res) {
       setVisible(false);
       DetailTableRef?.current?.reload();
+      return true;
     }
+    return false;
   };
 
   // 打开选择FAQ/意图模态框
