@@ -9,7 +9,7 @@ import style from './style.less';
 
 const DetailList: React.FC = (props: any) => {
   const [detailInfo, setDetailInfo] = useState<any>();
-  const { resData, list, totalPage, getList, sampleTransfer, loading } = useDetailModel();
+  const { resData, list, totalPage, getList, sampleTransfer, loading, SLoading } = useDetailModel();
   const { addWhite } = useWhiteModel();
   const DetailTableRef = useRef<any>({});
   const selectFaqModalRef = useRef<any>({});
@@ -24,8 +24,8 @@ const DetailList: React.FC = (props: any) => {
   }));
 
   const tType = {
-    faq: 'FAQ',
-    similar: '【相似问】',
+    faq: '【FAQ】',
+    similar: '【FAQ】',
     intent: '【意图】',
   };
 
@@ -340,6 +340,7 @@ const DetailList: React.FC = (props: any) => {
         min={1}
         max={1}
         readOnly={true}
+        tableLoading={SLoading}
       />
 
       <Modal
@@ -349,6 +350,7 @@ const DetailList: React.FC = (props: any) => {
         onCancel={() => {
           setVisible(false);
         }}
+        confirmLoading={SLoading}
       >
         {selectNum == 1
           ? `“${selectInfo?.textTwoName}”将归纳到${tType[selectInfo?.textOneType]}“${

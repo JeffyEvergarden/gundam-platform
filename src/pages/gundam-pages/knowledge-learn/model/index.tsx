@@ -102,6 +102,7 @@ export const useDetailModel = () => {
   const [list, setList] = useState<any>([]);
   const [totalPage, setTotalPage] = useState<any>(0);
   const [loading, setLoading] = useState<boolean>(false);
+  const [SLoading, setSLoading] = useState<boolean>(false);
   const [resData, setResData] = useState<any>();
 
   const getList = async (params: any) => {
@@ -124,7 +125,9 @@ export const useDetailModel = () => {
   };
 
   const sampleTransfer = async (params: any) => {
+    setSLoading(true);
     let res = await _sampleTransfer(params);
+    setSLoading(false);
     if (res.resultCode == successCode) {
       message.success(res.resultDesc);
       return true;
@@ -141,6 +144,7 @@ export const useDetailModel = () => {
     sampleTransfer,
     getList,
     loading,
+    SLoading,
   };
 };
 

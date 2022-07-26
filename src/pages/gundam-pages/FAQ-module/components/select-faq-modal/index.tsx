@@ -426,10 +426,22 @@ const SelectorModal: React.FC<any> = (props: any) => {
         return;
       }
     }
+    if (type == 'radio') {
+      if (!selectList.length) {
+        message.warning('请选择FAQ/意图');
+        return;
+      }
+      if (!title) {
+        message.warning('请输入相似语料或者相似问');
+        return;
+      }
+    }
+
+    let res: any;
     if (operation == 'batch') {
-      await confirm(selectList || [], questionList);
+      res = await confirm(selectList || [], questionList);
     } else {
-      await confirm(selectList || [], title);
+      res = await confirm(selectList || [], title);
     }
 
     setVisible(false);
