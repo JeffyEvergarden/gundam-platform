@@ -1,5 +1,6 @@
 import config from '@/config/index';
 import { message } from 'antd';
+import moment from 'moment';
 import { useState } from 'react';
 import {
   addWhiteList,
@@ -30,7 +31,9 @@ export const useBatchModel = () => {
     if (res.resultCode == successCode) {
       data = res?.data?.list || [];
       setList(data);
-      setNextCheckTime(res?.data?.nextTestTime);
+      setNextCheckTime(
+        res?.data?.nextTestTime ? moment?.(res?.data?.nextTestTime)?.format('YYYY-MM-DD') : '-',
+      );
       setTotalPage(res?.data?.totalPage);
     } else {
       setList([]);
