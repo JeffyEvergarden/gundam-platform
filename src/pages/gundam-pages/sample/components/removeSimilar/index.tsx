@@ -48,21 +48,20 @@ const SelectorModal: React.FC<any> = (props: any) => {
   const [current1, setCurrent1] = useState<number>(1);
 
   const onChange1 = (val: any) => {
+    console.log(classType);
+
     if (loading) {
       return;
     }
     setCurrent1(val);
-    if (classType) {
-      getFaqList({
-        page: val,
-        pageSize: 10,
-        robotId: info.id,
-        faqTypeId: classType == '0' ? null : classType,
-        searchText: searchText1,
-      });
-    } else {
-      setFaqList([]);
-    }
+
+    getFaqList({
+      page: val,
+      pageSize: 10,
+      robotId: info.id,
+      faqTypeId: classType == '0' ? null : classType,
+      searchText: searchText1,
+    });
   };
 
   const [searchText1, setSearchText1] = useState<any>('');
