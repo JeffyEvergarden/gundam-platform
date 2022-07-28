@@ -121,27 +121,6 @@ export default () => {
 
   const handleMenuClick = async (item: any) => {
     if (selectRow.length > 0) {
-      if (item.key == '1') {
-        setMenuLabel('批量加入黑名单');
-        let temp: any = [];
-        selectRow.map((item: any) => {
-          temp.push({
-            question: item.question,
-            unknownId: item.id,
-          });
-        });
-        let params = {
-          robotId: info.id,
-          blacklistQuestionList: temp,
-        };
-        let res = await addBlackBatch(params);
-        if (res.resultCode === config.successCode) {
-          message.success(res?.resultDesc || '成功');
-          actionRef?.current?.reloadAndRest();
-        } else {
-          message.error(res?.resultDesc || '失败');
-        }
-      }
       if (item.key == '2') {
         setMenuLabel('批量添加');
         setOperation('addBatch');
@@ -156,6 +135,28 @@ export default () => {
       }
     } else {
       message.warning('至少选择一个问题');
+    }
+  };
+
+  const onConfirm = async () => {
+    setMenuLabel('批量加入黑名单');
+    let temp: any = [];
+    selectRow.map((item: any) => {
+      temp.push({
+        question: item.question,
+        unknownId: item.id,
+      });
+    });
+    let params = {
+      robotId: info.id,
+      blacklistQuestionList: temp,
+    };
+    let res = await addBlackBatch(params);
+    if (res.resultCode === config.successCode) {
+      message.success(res?.resultDesc || '成功');
+      actionRef?.current?.reloadAndRest();
+    } else {
+      message.error(res?.resultDesc || '失败');
     }
   };
 
@@ -343,19 +344,18 @@ export default () => {
   };
 
   const menu = (
-    <Menu
-      onClick={handleMenuClick}
-      items={[
-        {
-          label: '批量加入黑名单',
-          key: '1',
-        },
-        {
-          label: '批量添加',
-          key: '2',
-        },
-      ]}
-    />
+    <Menu onClick={handleMenuClick}>
+      <Popconfirm
+        title="确认要批量通过吗？"
+        onConfirm={onConfirm}
+        onCancel={() => {}}
+        okText="通过"
+        cancelText="取消"
+      >
+        <Menu.Item key={'1'}>批量加入黑名单</Menu.Item>
+      </Popconfirm>
+      <Menu.Item key={'2'}>批量添加</Menu.Item>
+    </Menu>
   );
 
   // orderCode  '1'-分类  '2'-时间
