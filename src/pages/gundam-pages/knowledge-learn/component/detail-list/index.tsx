@@ -227,6 +227,7 @@ const DetailList: React.FC = (props: any) => {
         transferType: list?.[0]?.recommendType == 1 ? 'faq' : 'intent',
         transferId: list?.[0]?.recommendId,
         sample: selectInfo.textOneName,
+        batchId: detailInfo?.id || resData?.id || history?.location?.query?.batchId,
       });
     }
     if (selectNum == 4) {
@@ -238,6 +239,7 @@ const DetailList: React.FC = (props: any) => {
         transferType: list?.[0]?.recommendType == 1 ? 'faq' : 'intent',
         transferId: list?.[0]?.recommendId,
         sample: selectInfo.textTwoName,
+        batchId: detailInfo?.id || resData?.id || history?.location?.query?.batchId,
       });
     }
     if (res) {
@@ -266,6 +268,7 @@ const DetailList: React.FC = (props: any) => {
     let res: any;
     if (selectNum == 1) {
       res = await sampleTransfer({
+        batchId: detailInfo?.id || resData?.id || history?.location?.query?.batchId,
         robotId: info.id,
         detailId: selectInfo.id,
         sampleId: selectInfo.textTwoId,
@@ -277,6 +280,7 @@ const DetailList: React.FC = (props: any) => {
     }
     if (selectNum == 2) {
       res = await sampleTransfer({
+        batchId: detailInfo?.id || resData?.id || history?.location?.query?.batchId,
         robotId: info.id,
         detailId: selectInfo.id,
         sampleId: selectInfo.textOneId,
