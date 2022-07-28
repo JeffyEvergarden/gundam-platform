@@ -346,10 +346,10 @@ export default () => {
   const menu = (
     <Menu onClick={handleMenuClick}>
       <Popconfirm
-        title="确认要批量通过吗？"
+        title="确认要批量加入黑名单吗？"
         onConfirm={onConfirm}
         onCancel={() => {}}
-        okText="通过"
+        okText="确定"
         cancelText="取消"
       >
         <Menu.Item key={'1'}>批量加入黑名单</Menu.Item>
