@@ -115,8 +115,8 @@ const Board: React.FC<any> = (props: any) => {
 
   useEffect(() => {
     let historyData = history?.location || {};
-    let pageUrl = historyData?.state?.pageUrl || '';
-    let payload = historyData?.state?.payload || {};
+    let pageUrl = (history?.location?.state as any)?.pageUrl || '';
+    let payload = (history?.location?.state as any)?.payload || {};
     if (pageUrl === 'unknownQuestion' || pageUrl === 'standardQuestionLearn') {
       form.setFieldsValue({
         question: payload?.question,
@@ -339,7 +339,7 @@ const Board: React.FC<any> = (props: any) => {
         robotId: info.id,
         ...res,
         ...otherObj,
-        unknownId: history?.location?.state?.payload?.id,
+        unknownId: (history?.location?.state as any)?.payload?.id,
       };
       let response = await addNewQuestion(data);
       if (response === true) {
