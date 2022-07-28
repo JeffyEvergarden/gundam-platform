@@ -1,11 +1,9 @@
-import { useState, useImperativeHandle, useEffect, useMemo } from 'react';
-import { Modal, Button, Table, Tooltip, Tabs, Input } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
-import MyTree from '../../../FAQ-manage/components/my-tree';
+import { Input, Modal, Table, Tabs, Tooltip } from 'antd';
+import { useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import { useModel } from 'umi';
+import MyTree from '../../../FAQ-manage/components/my-tree';
 import { useFaqModal } from '../../../FAQ-manage/model';
 import style from './style.less';
-import Condition from '@/components/Condition';
 
 const { TabPane } = Tabs;
 
@@ -85,7 +83,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
         pageSize: 10,
         queryType: 0,
         robotId: info.id,
-        faqTypeId: classType,
+        faqTypeId: classType == '0' ? null : classType,
         searchText: searchText1,
       });
     } else {
@@ -117,7 +115,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       page: 1,
       pageSize: 10,
       robotId: info.id,
-      faqTypeId: classType,
+      faqTypeId: classType == '0' ? null : classType,
       searchText: searchText1,
     });
   };
@@ -155,7 +153,12 @@ const SelectorModal: React.FC<any> = (props: any) => {
     }
     setClassType(val[0]);
     setCurrent1(1);
-    getFaqList({ page: 1, pageSize: 10, robotId: info.id, faqTypeId: val[0] });
+    getFaqList({
+      page: 1,
+      pageSize: 10,
+      robotId: info.id,
+      faqTypeId: val[0] == '0' ? null : val[0],
+    });
   };
 
   const rowSelection = {
@@ -204,6 +207,11 @@ const SelectorModal: React.FC<any> = (props: any) => {
         setShowFlowKey(true);
       }
       setCurrent2(1);
+      getFaqList({
+        page: 1,
+        pageSize: 10,
+        robotId: info.id,
+      });
 
       // 显示
       setVisible(true);

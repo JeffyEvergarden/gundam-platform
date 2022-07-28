@@ -1,12 +1,12 @@
-import { Button, Checkbox, Form, message } from 'antd';
-import style from './style.less';
 import Condition from '@/components/Condition';
-import React, { useState, useEffect, useRef } from 'react';
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Form, message } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
+import { history, useModel } from 'umi';
+import { useQuestionModel } from '../../model';
 import Selector from '../selector';
 import SelectorModal from '../selector-modal';
-import { useQuestionModel } from '../../model';
-import { history, useModel } from 'umi';
+import style from './style.less';
 
 const { List: FormList } = Form;
 const Recommend: React.FC<any> = (props: any) => {
@@ -98,6 +98,10 @@ const Recommend: React.FC<any> = (props: any) => {
 
   useEffect(() => {
     getFaqConfig({ robotId: info.id });
+    console.log(query?.recommend);
+
+    form.setFieldsValue({ questionRecommend: query?.recommend == 1 ? true : false });
+    setShowAdvise(query?.recommend == 1 ? true : false);
   }, []);
 
   return (
@@ -110,7 +114,7 @@ const Recommend: React.FC<any> = (props: any) => {
           label="推荐设置"
           valuePropName="checked"
           // style={{ width: '180px' }}
-          initialValue={true}
+          // initialValue={true}
         >
           <Checkbox onChange={changeAdvise}>启用</Checkbox>
         </Form.Item>
