@@ -370,11 +370,11 @@ export default () => {
       temp.orderCode = '1';
       temp.orderType = '2';
     }
-    if (sorter.columnKey === 'createTime' && sorter.order === 'ascend') {
+    if (sorter.columnKey === 'updateTime' && sorter.order === 'ascend') {
       temp.orderCode = '2';
       temp.orderType = '1';
     }
-    if (sorter.columnKey === 'createTime' && sorter.order === 'descend') {
+    if (sorter.columnKey === 'updateTime' && sorter.order === 'descend') {
       temp.orderCode = '2';
       temp.orderType = '2';
     }
