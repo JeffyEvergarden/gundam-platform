@@ -124,13 +124,13 @@ const SelectorModal: React.FC<any> = (props: any) => {
                             })
                             ?.join(' , ')}
                       </div>
-                      {item.enableStartTime && item.enableEndTime && <Divider type="vertical" />}
-                      {item.enableStartTime && item.enableEndTime && (
-                        <div>
-                          <span className={style['label_sty']}>生效时间：</span>
-                          {`${item.enableStartTime} ~ ${item.enableEndTime}`}
-                        </div>
-                      )}
+                      <Divider type="vertical" />
+                      <div>
+                        <span className={style['label_sty']}>生效时间：</span>
+                        {item.enable == 1
+                          ? `${item.enableStartTime} ~ ${item.enableEndTime}`
+                          : '未设置'}
+                      </div>
                     </div>
                   </div>
                 );

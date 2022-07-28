@@ -1,5 +1,5 @@
-import robotPhoto from '@/asset/image/headMan.png';
-import customerPhoto from '@/asset/image/headWoman.png';
+import robotPhoto from '@/asset/image/robot.png';
+import customerPhoto from '@/asset/image/customer.png';
 import { Button, Input, message, Modal, Popover, Radio, Space } from 'antd';
 import React, { Fragment, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useModel } from 'umi';
@@ -409,17 +409,14 @@ export default (props: any) => {
       <div className={styles['chat-topTitle']}>
         <span className={styles['box-title']}>对话测试</span>
         <Space>
-          <Button size={'small'} onClick={clearDialog}>
-            清空内容
-          </Button>
+          <Radio.Group onChange={radioChange} value={environment}>
+            <Radio value={'prod'}>生产</Radio>
+            <Radio value={'test'}>测试</Radio>
+          </Radio.Group>
+          <Button onClick={clearDialog}>清空内容</Button>
         </Space>
       </div>
-      <div className={styles['chat-environment']}>
-        <Radio.Group onChange={radioChange} value={environment}>
-          <Radio value={'prod'}>生产</Radio>
-          <Radio value={'test'}>测试</Radio>
-        </Radio.Group>
-      </div>
+      <div className={styles['chat-environment']} />
 
       {true && (
         <div className={styles['chat-box']}>
@@ -435,7 +432,7 @@ export default (props: any) => {
                           className={styles['words']}
                           style={{ whiteSpace: 'pre-wrap' }}
                           dangerouslySetInnerHTML={{ __html: item?.message }}
-                        ></div>
+                        />
                         <div className={styles['words-type']}>
                           <Space>
                             <span>{item.askKey}</span>
@@ -493,7 +490,7 @@ export default (props: any) => {
           </div>
           <div className={styles['chat-footer']}>
             <Popover visible={PopoverVisible} content={toolTipsContent} placement="topLeft">
-              <div className={styles['hide-box']}></div>
+              <div className={styles['hide-box']} />
             </Popover>
 
             <TextArea
