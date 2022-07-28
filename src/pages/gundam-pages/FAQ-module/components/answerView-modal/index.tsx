@@ -88,24 +88,33 @@ const SelectorModal: React.FC<any> = (props: any) => {
                     <div className={style['box-footer']}>
                       {pageType === 'standardQuestionLearn' && (
                         <Fragment>
-                          <div>创建者：{item?.creator}</div>
+                          <div>
+                            <span className={style['label_sty']}>创建者：</span>
+                            {item?.creator}
+                          </div>
                           <Divider type="vertical" />
                         </Fragment>
                       )}
                       {pageType === 'standardQuestionLearn' && (
                         <Fragment>
-                          <div>分类：{item?.faqTypeName}</div>
+                          <div>
+                            <span className={style['label_sty']}>分类：</span>
+                            {item?.faqTypeName}
+                          </div>
                           <Divider type="vertical" />
                         </Fragment>
                       )}
                       {pageType === 'standardQuestionLearn' && (
                         <Fragment>
-                          <div>浏览次数：{item?.viewNum}</div>
+                          <div>
+                            <span className={style['label_sty']}>浏览次数：</span>
+                            {item?.viewNum}
+                          </div>
                           <Divider type="vertical" />
                         </Fragment>
                       )}
                       <div>
-                        生效渠道：
+                        <span className={style['label_sty']}>生效渠道：</span>
                         {item?.channelList &&
                           item?.channelList
                             ?.map((cl: any) => {
@@ -115,10 +124,13 @@ const SelectorModal: React.FC<any> = (props: any) => {
                             })
                             ?.join(' , ')}
                       </div>
-                      {item.enableStartTime && item.enableEndTime && <Divider type="vertical" />}
-                      {item.enableStartTime && item.enableEndTime && (
-                        <div>生效时间：{`${item.enableStartTime} ~ ${item.enableEndTime}`}</div>
-                      )}
+                      <Divider type="vertical" />
+                      <div>
+                        <span className={style['label_sty']}>生效时间：</span>
+                        {item.enable == 1
+                          ? `${item.enableStartTime} ~ ${item.enableEndTime}`
+                          : '未设置'}
+                      </div>
                     </div>
                   </div>
                 );
