@@ -57,7 +57,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
         page: val,
         pageSize: 10,
         robotId: info.id,
-        faqTypeId: classType,
+        faqTypeId: classType == '0' ? null : classType,
         searchText: searchText1,
       });
     } else {
