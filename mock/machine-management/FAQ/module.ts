@@ -312,6 +312,9 @@ const getAnswerList = (req: any, res: any) => {
       enable: 0,
       enableStartTime: _date,
       enableEndTime: _date,
+      creator: '张三四',
+      faqTypeName: '营销活动类/对外信息',
+      viewNum: 99,
     };
     return obj;
   });

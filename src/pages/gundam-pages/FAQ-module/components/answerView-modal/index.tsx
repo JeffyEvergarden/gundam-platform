@@ -1,7 +1,7 @@
 import { HIGH_CONFIG_SELECT } from '@/pages/gundam-pages/FAQ/FAQ-manage/const';
 import ProList from '@ant-design/pro-list';
 import { Divider, Drawer, Input } from 'antd';
-import { useImperativeHandle, useRef, useState } from 'react';
+import { Fragment, useImperativeHandle, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { useAnswerListModel } from './model';
 import style from './style.less';
@@ -86,6 +86,24 @@ const SelectorModal: React.FC<any> = (props: any) => {
                       dangerouslySetInnerHTML={{ __html: item.answer }}
                     />
                     <div className={style['box-footer']}>
+                      {pageType === 'standardQuestionLearn' && (
+                        <Fragment>
+                          <div>创建者：{item?.creator}</div>
+                          <Divider type="vertical" />
+                        </Fragment>
+                      )}
+                      {pageType === 'standardQuestionLearn' && (
+                        <Fragment>
+                          <div>分类：{item?.faqTypeName}</div>
+                          <Divider type="vertical" />
+                        </Fragment>
+                      )}
+                      {pageType === 'standardQuestionLearn' && (
+                        <Fragment>
+                          <div>浏览次数：{item?.viewNum}</div>
+                          <Divider type="vertical" />
+                        </Fragment>
+                      )}
                       <div>
                         生效渠道：
                         {item?.channelList &&
