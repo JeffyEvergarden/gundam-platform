@@ -486,11 +486,21 @@ const SelectorModal: React.FC<any> = (props: any) => {
       title={'选择标准问/意图'}
       visible={visible}
       maskClosable={false}
-      onCancel={() => setVisible(false)}
+      onCancel={() => {
+        setSearchText1('');
+        setVisible(false);
+      }}
       okText={'确定'}
       onOk={submit}
       footer={[
-        <Button key="back" onClick={() => setVisible(false)} loading={tableLoading}>
+        <Button
+          key="back"
+          onClick={() => {
+            setSearchText1('');
+            setVisible(false);
+          }}
+          loading={tableLoading}
+        >
           取消
         </Button>,
         <Button key="submit" type="primary" loading={tableLoading} onClick={submit}>
