@@ -504,7 +504,7 @@ export default () => {
     },
     {
       dataIndex: 'Similar',
-      title: '相似问',
+      title: rowInfo.recommendType == '1' ? '相似问' : '样本',
       ellipsis: true,
       render: (t: any, r: any, i: any) => {
         return <span>{rowInfo.recommendType == '1' ? r.similarText : r.corpusText}</span>;
