@@ -141,11 +141,11 @@ const TestPages: React.FC = (props: any) => {
             </div>
           );
         } else if (row.taskStatus == 1) {
-          return '跑批中';
+          return <div className={style['btn']}>跑批中</div>;
         } else if (row.taskStatus == 0) {
-          return '待跑批';
+          return <div className={style['btn']}>待跑批</div>;
         } else if (row.taskStatus == 3) {
-          return '跑批失败';
+          return <div className={style['btn']}>跑批失败</div>;
         }
       },
     },
