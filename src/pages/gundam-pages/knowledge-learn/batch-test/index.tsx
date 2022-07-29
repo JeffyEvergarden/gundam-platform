@@ -61,15 +61,15 @@ const TestPages: React.FC = (props: any) => {
     },
     {
       title: '检测耗时',
-      dataIndex: 'costTime',
+      dataIndex: 'formatCostTime',
       search: false,
       width: 200,
-      render: (val: any) => {
-        if (val) {
-          return val + 's';
-        }
-        return val;
-      },
+      // render: (val: any) => {
+      //   if (val) {
+      //     return val + 's';
+      //   }
+      //   return val;
+      // },
     },
     {
       title: '样本总量',
@@ -141,9 +141,11 @@ const TestPages: React.FC = (props: any) => {
             </div>
           );
         } else if (row.taskStatus == 1) {
-          return '跑批中';
+          return <div className={style['btn']}>跑批中</div>;
         } else if (row.taskStatus == 0) {
-          return '待跑批';
+          return <div className={style['btn']}>待跑批</div>;
+        } else if (row.taskStatus == 3) {
+          return <div className={style['btn']}>跑批失败</div>;
         }
       },
     },
