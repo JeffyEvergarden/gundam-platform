@@ -409,6 +409,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       setVisible(true);
     },
     close: () => {
+      setSearchText1('');
       setVisible(false);
     },
   }));
@@ -435,6 +436,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     }
 
     if (res) {
+      setSearchText1('');
       setVisible(false);
     }
   };
