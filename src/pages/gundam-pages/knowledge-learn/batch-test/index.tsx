@@ -61,15 +61,15 @@ const TestPages: React.FC = (props: any) => {
     },
     {
       title: '检测耗时',
-      dataIndex: 'costTime',
+      dataIndex: 'formatCostTime',
       search: false,
       width: 200,
-      render: (val: any) => {
-        if (val) {
-          return val + 's';
-        }
-        return val;
-      },
+      // render: (val: any) => {
+      //   if (val) {
+      //     return val + 's';
+      //   }
+      //   return val;
+      // },
     },
     {
       title: '样本总量',
