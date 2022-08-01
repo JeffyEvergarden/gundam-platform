@@ -193,7 +193,7 @@ const TestPlanModal: React.FC<any> = (props: any) => {
               <FormItem
                 name="clearNumber"
                 style={{ marginRight: '6px' }}
-                rules={[{ required: true, message: '请输入' }]}
+                rules={[{ required: check, message: '请输入' }]}
               >
                 <InputNumber min={1} max={12}></InputNumber>
               </FormItem>
