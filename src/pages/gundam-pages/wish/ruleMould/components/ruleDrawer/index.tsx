@@ -162,10 +162,10 @@ export default (props: any) => {
         <Form.List name="ruleClips">
           {(fields, { add, remove }) => (
             <Fragment>
-              {fields.map(({ key, name, ...restField }) => (
+              {fields.map(({ key, name, ...restField }, index) => (
                 <div key={key} className={styles.listFormBox}>
                   <span>
-                    <MinusCircleOutlined onClick={() => remove(key)} />
+                    <MinusCircleOutlined onClick={() => remove(index)} />
                   </span>
                   <span className={styles.isNeed}>
                     <Form.Item
