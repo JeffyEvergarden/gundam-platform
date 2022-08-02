@@ -203,91 +203,93 @@ export default () => {
   ];
 
   return (
-    <div className={styles.pageComtain}>
-      <div className={styles.pageTitile}>访客次数统计</div>
-      <HeadSearch choseTime={choseTime} exportReportForm={exportReportForm} />
-      <div className={styles.visitorBox}>
-        <LineChart
-          id={'visitorNumber'}
-          loading={tableLoading}
-          title={''}
-          dataSource={dataSource}
-          base={base}
-          columns={dayId}
-          data={visitorList}
-          color={['#6395F9', '#62DAAB', '#657798', '#F6C022', '#7666F9']}
-          legendData={['访问次数', '有效访问次数', '访客人数', '有效访客人数', '对话轮次']}
-          className={styles.visitorBox}
-        />
-      </div>
-      <div className={styles.Table_box}>
-        <Spin spinning={tableLoading}>
-          <Table
-            rowKey={(record: any) => record.dayId}
-            bordered
-            columns={columns}
+    <div className={styles.pageContainer}>
+      <div className={styles.pageComtain}>
+        <div className={styles.pageTitile}>访客次数统计</div>
+        <HeadSearch choseTime={choseTime} exportReportForm={exportReportForm} />
+        <div className={styles.visitorBox}>
+          <LineChart
+            id={'visitorNumber'}
+            loading={tableLoading}
+            title={''}
             dataSource={dataSource}
-            pagination={false}
-            scroll={{ y: 270 }}
-            sticky={true}
-            size={'small'}
-            summary={(pageData) => {
-              let totalvisitNum = 0;
-              let totalvalidVisitNum = 0;
-              let totalvisitorNum = 0;
-              let totalvalidVisitorNum = 0;
-              let totaldialogueTurn = 0;
-              let totalaverageDialogueTurn: any;
-
-              pageData.forEach(
-                ({
-                  visitNum,
-                  validVisitNum,
-                  visitorNum,
-                  validVisitorNum,
-                  dialogueTurn,
-                  averageDialogueTurn,
-                }) => {
-                  totalvisitNum += visitNum;
-                  totalvalidVisitNum += validVisitNum;
-                  totalvisitorNum += visitorNum;
-                  totalvalidVisitorNum += validVisitorNum;
-                  totaldialogueTurn += dialogueTurn;
-                  totalaverageDialogueTurn =
-                    totaldialogueTurn == 0 || totalvisitNum == 0
-                      ? 0
-                      : twoDecimal_f(Math.floor((totaldialogueTurn / totalvisitNum) * 100) / 100);
-                },
-              );
-              if (dataSource?.length)
-                return (
-                  <Table.Summary fixed>
-                    <Table.Summary.Row>
-                      <Table.Summary.Cell index={0}>总计</Table.Summary.Cell>
-                      <Table.Summary.Cell index={1}>
-                        <Text>{totalvisitNum}</Text>
-                      </Table.Summary.Cell>
-                      <Table.Summary.Cell index={2}>
-                        <Text>{totalvalidVisitNum}</Text>
-                      </Table.Summary.Cell>
-                      <Table.Summary.Cell index={3}>
-                        <Text>{totalvisitorNum}</Text>
-                      </Table.Summary.Cell>
-                      <Table.Summary.Cell index={4}>
-                        <Text>{totalvalidVisitorNum}</Text>
-                      </Table.Summary.Cell>
-                      <Table.Summary.Cell index={5}>
-                        <Text>{totaldialogueTurn}</Text>
-                      </Table.Summary.Cell>
-                      <Table.Summary.Cell index={6}>
-                        <Text>{totalaverageDialogueTurn}</Text>
-                      </Table.Summary.Cell>
-                    </Table.Summary.Row>
-                  </Table.Summary>
-                );
-            }}
+            base={base}
+            columns={dayId}
+            data={visitorList}
+            color={['#6395F9', '#62DAAB', '#657798', '#F6C022', '#7666F9']}
+            legendData={['访问次数', '有效访问次数', '访客人数', '有效访客人数', '对话轮次']}
+            className={styles.visitorBox}
           />
-        </Spin>
+        </div>
+        <div className={styles.Table_box}>
+          <Spin spinning={tableLoading}>
+            <Table
+              rowKey={(record: any) => record.dayId}
+              bordered
+              columns={columns}
+              dataSource={dataSource}
+              pagination={false}
+              scroll={{ y: 270 }}
+              sticky={true}
+              size={'small'}
+              summary={(pageData) => {
+                let totalvisitNum = 0;
+                let totalvalidVisitNum = 0;
+                let totalvisitorNum = 0;
+                let totalvalidVisitorNum = 0;
+                let totaldialogueTurn = 0;
+                let totalaverageDialogueTurn: any;
+
+                pageData.forEach(
+                  ({
+                    visitNum,
+                    validVisitNum,
+                    visitorNum,
+                    validVisitorNum,
+                    dialogueTurn,
+                    averageDialogueTurn,
+                  }) => {
+                    totalvisitNum += visitNum;
+                    totalvalidVisitNum += validVisitNum;
+                    totalvisitorNum += visitorNum;
+                    totalvalidVisitorNum += validVisitorNum;
+                    totaldialogueTurn += dialogueTurn;
+                    totalaverageDialogueTurn =
+                      totaldialogueTurn == 0 || totalvisitNum == 0
+                        ? 0
+                        : twoDecimal_f(Math.floor((totaldialogueTurn / totalvisitNum) * 100) / 100);
+                  },
+                );
+                if (dataSource?.length)
+                  return (
+                    <Table.Summary fixed>
+                      <Table.Summary.Row>
+                        <Table.Summary.Cell index={0}>总计</Table.Summary.Cell>
+                        <Table.Summary.Cell index={1}>
+                          <Text>{totalvisitNum}</Text>
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell index={2}>
+                          <Text>{totalvalidVisitNum}</Text>
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell index={3}>
+                          <Text>{totalvisitorNum}</Text>
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell index={4}>
+                          <Text>{totalvalidVisitorNum}</Text>
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell index={5}>
+                          <Text>{totaldialogueTurn}</Text>
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell index={6}>
+                          <Text>{totalaverageDialogueTurn}</Text>
+                        </Table.Summary.Cell>
+                      </Table.Summary.Row>
+                    </Table.Summary>
+                  );
+              }}
+            />
+          </Spin>
+        </div>
       </div>
     </div>
   );

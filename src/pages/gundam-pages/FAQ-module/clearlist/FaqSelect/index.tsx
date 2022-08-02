@@ -44,8 +44,8 @@ const FaqSelect = (props: any) => {
   // 确认FAQ/意图模态框 的选择
   const confirmUpdateSelect = (list: any[]) => {
     // 输出列表
-    // console.log(list);
     onChange(list);
+    return true;
   };
 
   return (

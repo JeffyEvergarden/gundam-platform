@@ -1,6 +1,6 @@
 import { MonitorOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Button, Form, Input, Modal, Popconfirm, Tooltip } from 'antd';
+import { Button, Form, Input, message, Modal, Popconfirm, Tooltip } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import DetailModal from '../components/detail-modal';
@@ -90,7 +90,9 @@ const FAQClearList = (props: any) => {
     });
   };
   // 确认FAQ/意图模态框 的选择
-  const confirmUpdateSelect = async (list: any[]) => {
+  const confirmUpdateSelect = async (list: any[], a: any) => {
+    console.log(list);
+
     // 输出列表
     let row: any = tmpRef.current.row;
     let questionTypeList: any[] = row?.clarifyDetail || [];
@@ -268,6 +270,7 @@ const FAQClearList = (props: any) => {
     // 校验填写
     let res: any = await form.validateFields().catch((err: any) => false);
     if (!res) {
+      message.warning('表单校验不通过');
       return;
     }
     // ------------

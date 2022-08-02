@@ -189,35 +189,37 @@ export default () => {
   ];
 
   return (
-    <div className={styles.pageComtain}>
-      <div className={styles.pageTitile}>访客会话明细</div>
-      <HeadSearch
-        choseTime={choseTime}
-        exportReportForm={exportReportForm}
-        pageType={'visitorSession'}
-      />
-      <div className={styles.Table_box}>
-        <ProTable
-          rowKey={'id'}
-          headerTitle={false}
-          toolBarRender={false}
-          bordered
-          actionRef={actionRef}
-          pagination={{
-            pageSize: 10,
-          }}
-          onChange={tableChange}
-          search={false}
-          columns={columns}
-          scroll={{ x: columns.length * 200 }}
-          // dataSource={dataSource}
-          params={paramsObj}
-          request={async (params = {}) => {
-            return initialTable(params);
-          }}
+    <div className={styles.pageContainer}>
+      <div className={styles.pageComtain}>
+        <div className={styles.pageTitile}>访客会话明细</div>
+        <HeadSearch
+          choseTime={choseTime}
+          exportReportForm={exportReportForm}
+          pageType={'visitorSession'}
         />
+        <div className={styles.Table_box}>
+          <ProTable
+            rowKey={'id'}
+            headerTitle={false}
+            toolBarRender={false}
+            bordered
+            actionRef={actionRef}
+            pagination={{
+              pageSize: 10,
+            }}
+            onChange={tableChange}
+            search={false}
+            columns={columns}
+            scroll={{ x: columns.length * 200 }}
+            // dataSource={dataSource}
+            params={paramsObj}
+            request={async (params = {}) => {
+              return initialTable(params);
+            }}
+          />
+        </div>
+        <ChatRecordModal cref={chatRecordModalRef} />
       </div>
-      <ChatRecordModal cref={chatRecordModalRef} />
     </div>
   );
 };

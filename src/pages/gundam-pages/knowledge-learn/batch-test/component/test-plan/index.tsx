@@ -70,8 +70,9 @@ const TestPlanModal: React.FC<any> = (props: any) => {
   useImperativeHandle(cref, () => ({
     open: (type: any) => {
       setPageType(type);
-      if (type == 'plan') {
-        getTestTaskInfo({ robotId: info.id }).then((res: any) => {
+      // if (type == 'plan') {
+      getTestTaskInfo({ robotId: info.id, temporaryTest: type == 'plan' ? 0 : 1 }).then(
+        (res: any) => {
           let formData = res;
           formData.autoClear =
             formData?.autoClear == 1 ? true : formData?.autoClear == 0 ? false : undefined;
@@ -80,8 +81,9 @@ const TestPlanModal: React.FC<any> = (props: any) => {
             : undefined;
           form.setFieldsValue(formData);
           setCheck(formData.autoClear);
-        });
-      }
+        },
+      );
+      // }
       setVisible(true);
     },
     close: () => {

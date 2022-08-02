@@ -121,7 +121,7 @@ const getDetailList = (req: any, res: any) => {
           textTwoId: '222',
           textTwoType: 'faq',
           textTwoValue: 'bbb',
-          handleStatus: 2,
+          handleStatus: 1,
           creator: 'ujiangjiahao',
           createTime: '2022-02-17 11:54:59',
           updateTime: '2022-02-17 11:54:59',
@@ -140,7 +140,7 @@ const getDetailList = (req: any, res: any) => {
           textTwoId: '333',
           textTwoType: 'similar',
           textTwoValue: 'bbb',
-          handleStatus: 2,
+          handleStatus: 1,
           creator: 'ujiangjiahao',
           createTime: '2022-02-17 11:54:59',
           updateTime: '2022-02-17 11:54:59',
@@ -151,7 +151,7 @@ const getDetailList = (req: any, res: any) => {
       sampleTotal: 100,
       abnormalSampleAmount: 50,
       reviewAmount: 50,
-      batchExpired: 1,
+      batchExpired: 0,
     },
   });
 };
