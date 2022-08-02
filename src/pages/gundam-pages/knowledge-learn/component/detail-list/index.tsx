@@ -387,10 +387,10 @@ const DetailList: React.FC = (props: any) => {
       >
         {selectNum == 1
           ? `“${selectInfo?.textTwoName}”将归纳到${tType[selectInfo?.textOneType]}“${
-              selectInfo?.textOneName
+              selectInfo?.textOneRelationName
             }”`
           : `“${selectInfo?.textOneName}”将归纳到${tType[selectInfo?.textTwoType]}“${
-              selectInfo?.textTwoName
+              selectInfo?.textTwoRelationName
             }”`}
       </Modal>
     </div>
