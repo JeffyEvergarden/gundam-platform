@@ -370,7 +370,7 @@ const DetailList: React.FC = (props: any) => {
         type={'radio'}
         min={1}
         max={1}
-        readOnly={true}
+        readOnly={false}
         tableLoading={SLoading}
       />
 
