@@ -43,7 +43,7 @@ export default (props: any) => {
     let res = await getFeatureListAll({ intentId: tableProps?.id });
     setFeatureList(res?.data);
   };
-  const templateFocus = (key: any, name: any) => {
+  const templateFocus = (key: any, name: any, index: any) => {
     // let data = form.getFieldValue('ruleClips');
     // if (!data?.[key]) {
     //   data[key] = {
@@ -53,7 +53,8 @@ export default (props: any) => {
     //     ...data,
     //   });
     // }
-    setCurrTempClipsIndex(key);
+
+    setCurrTempClipsIndex(index);
   };
 
   const insetWordTemp = (value: any, type: string) => {
@@ -197,7 +198,7 @@ export default (props: any) => {
                         onBlur={(e) => {
                           let num: any = e.target.selectionStart;
                           setStartPos(isNaN(num) ? -1 : num);
-                          templateFocus(key, name);
+                          templateFocus(key, name, index);
                         }}
                       />
                     </Form.Item>
@@ -216,7 +217,16 @@ export default (props: any) => {
               <span className={styles.ruleSome}>
                 <Form.Item label={''}>
                   <div
-                    onClick={() => add()}
+                    onClick={() =>
+                      add(
+                        {
+                          fragment: '',
+                          orderNumber: null,
+                          required: 1,
+                        },
+                        fields.length,
+                      )
+                    }
                     style={{
                       color: 'rgba(24,144,255,1)',
                       cursor: 'pointer',
