@@ -257,6 +257,8 @@ const DetailList: React.FC = (props: any) => {
     (selectFaqModalRef.current as any)?.open({
       selectList: [], //被选中列表
       selectedQuestionKeys: [], // 已选问题
+      disabledWishKeys: [num == 'textOneName' ? row.textOneValue : row.textTwoValue],
+      disabledQuestionKeys: [num == 'textOneName' ? row.textOneValue : row.textTwoValue],
       selectedWishKeys: [], // 已选意图
       question: row?.[num],
     });
