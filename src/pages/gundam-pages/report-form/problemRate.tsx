@@ -341,95 +341,97 @@ export default () => {
   ];
 
   return (
-    <div className={styles.pageComtain}>
-      <div className={classNames(styles.pageTitile, styles.question_title)}>
-        <span>问题匹配率统计</span>
-        <span>历史累计回答:{historySumReplyNum}</span>
-      </div>
-      <HeadSearch choseTime={choseTime} exportReportForm={exportReportForm} />
-      <div className={styles.visitorBox}>
-        <div style={{ width: '30%' }}>
-          <PieChart
-            id="questionMatch_pie"
-            base={base}
-            sumReplyNum={sumReplyNum}
-            data={pieList}
-            dataSource={dataSource}
-            loading={tableLoading}
-            title={'问题回答比例'}
-            color={['#6395F9', '#62DAAB', '#657798', '#F6C022', '#7666F9']}
-            legendData={['明确回答数', '澄清回复数', '澄清确认数', '推荐确认数', '拒识总数']}
+    <div className={styles.pageContainer}>
+      <div className={styles.pageComtain}>
+        <div className={classNames(styles.pageTitile, styles.question_title)}>
+          <span>问题匹配率统计</span>
+          <span>历史累计回答:{historySumReplyNum}</span>
+        </div>
+        <HeadSearch choseTime={choseTime} exportReportForm={exportReportForm} />
+        <div className={styles.visitorBox}>
+          <div style={{ width: '30%' }}>
+            <PieChart
+              id="questionMatch_pie"
+              base={base}
+              sumReplyNum={sumReplyNum}
+              data={pieList}
+              dataSource={dataSource}
+              loading={tableLoading}
+              title={'问题回答比例'}
+              color={['#6395F9', '#62DAAB', '#657798', '#F6C022', '#7666F9']}
+              legendData={['明确回答数', '澄清回复数', '澄清确认数', '推荐确认数', '拒识总数']}
+            />
+          </div>
+          <div style={{ width: '70%' }}>
+            <LineChart
+              id={'questionMatch_line'}
+              // width={700}
+              loading={tableLoading}
+              title={'问题匹配率统计'}
+              base={base}
+              dataSource={dataSource}
+              columns={dayId}
+              data={lineList}
+              color={['#6395F9', '#62DAAB', '#657798', '#F6C022', '#7666F9', '#B382D6']}
+              legendData={[
+                '明确回答率',
+                '澄清回复数',
+                '澄清确认数',
+                '推荐确认数',
+                '拒识总数',
+                '匹配率',
+              ]}
+              className={styles.visitorBox}
+            />
+          </div>
+        </div>
+        <div className={styles.Table_box}>
+          <ProTable
+            rowKey={(record: any) => record.dayId}
+            headerTitle={false}
+            toolBarRender={false}
+            bordered
+            actionRef={actionRef}
+            pagination={{
+              pageSize: 10,
+            }}
+            search={false}
+            columns={columns}
+            size={'small'}
+            sticky={true}
+            scroll={{ y: 270 }}
+            // dataSource={dataSource}
+            params={paramsObj}
+            request={async (params = {}) => {
+              return initialTable(params);
+            }}
           />
         </div>
-        <div style={{ width: '70%' }}>
-          <LineChart
-            id={'questionMatch_line'}
-            // width={700}
-            loading={tableLoading}
-            title={'问题匹配率统计'}
-            base={base}
-            dataSource={dataSource}
-            columns={dayId}
-            data={lineList}
-            color={['#6395F9', '#62DAAB', '#657798', '#F6C022', '#7666F9', '#B382D6']}
-            legendData={[
-              '明确回答率',
-              '澄清回复数',
-              '澄清确认数',
-              '推荐确认数',
-              '拒识总数',
-              '匹配率',
-            ]}
-            className={styles.visitorBox}
-          />
-        </div>
-      </div>
-      <div className={styles.Table_box}>
-        <ProTable
-          rowKey={(record: any) => record.dayId}
-          headerTitle={false}
-          toolBarRender={false}
-          bordered
-          actionRef={actionRef}
-          pagination={{
-            pageSize: 10,
-          }}
-          search={false}
-          columns={columns}
-          size={'small'}
-          sticky={true}
-          scroll={{ y: 270 }}
-          // dataSource={dataSource}
-          params={paramsObj}
-          request={async (params = {}) => {
-            return initialTable(params);
-          }}
-        />
-      </div>
 
-      <Modal
-        visible={visible}
-        onCancel={onCancel}
-        destroyOnClose={true}
-        title={'拒识明细'}
-        footer={null}
-      >
-        <ProTable
-          rowKey={(record: any) => record.dayId}
-          headerTitle={false}
-          toolBarRender={false}
-          bordered
-          pagination={{
-            pageSize: 10,
-          }}
-          search={false}
-          columns={columnsReject}
-          request={async (params = {}) => {
-            return rejectTable(params);
-          }}
-        />
-        <ChatRecordModal cref={chatRecordModalRef} />
-      </Modal>
+        <Modal
+          visible={visible}
+          onCancel={onCancel}
+          destroyOnClose={true}
+          title={'拒识明细'}
+          footer={null}
+        >
+          <ProTable
+            rowKey={(record: any) => record.dayId}
+            headerTitle={false}
+            toolBarRender={false}
+            bordered
+            pagination={{
+              pageSize: 10,
+            }}
+            search={false}
+            columns={columnsReject}
+            request={async (params = {}) => {
+              return rejectTable(params);
+            }}
+          />
+          <ChatRecordModal cref={chatRecordModalRef} />
+        </Modal>
+      </div>
     </div>
   );
 };
