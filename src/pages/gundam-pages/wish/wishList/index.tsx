@@ -50,6 +50,7 @@ const DetailPages: React.FC = (props: any) => {
         pageSize: pageData.pageSize,
         page: pageData.current,
         headIntent: pageData?.headIntent,
+        intentName: pageData?.intentName,
       };
       const res: any = await getIntentTableList(params);
       return {
