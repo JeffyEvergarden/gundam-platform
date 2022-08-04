@@ -47,8 +47,10 @@ export const useBatchModel = () => {
   const deleteBatch = async (params: any) => {
     let res = await deleteDetailList(params);
     if (res.resultCode == successCode) {
+      message.success(res.resultDesc);
       return true;
     } else {
+      message.error(res.resultDesc);
       return false;
     }
   };

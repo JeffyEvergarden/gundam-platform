@@ -183,4 +183,21 @@ export default [
       },
     ],
   },
+  {
+    icon: <ReadOutlined />,
+    path: '/gundamPages/effectEvaluation',
+    name: '效果评估',
+    routes: [
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/effectEvaluation/sampleManager',
+        name: '样本管理',
+      },
+      // {
+      //   icon: <CrownOutlined />,
+      //   path: '/gundamPages/effectEvaluation/modelEvaluation',
+      //   name: '模型评估',
+      // },
+    ],
+  },
 ];

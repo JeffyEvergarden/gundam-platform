@@ -1,5 +1,5 @@
 import ProTable from '@ant-design/pro-table';
-import { Button, message, Popconfirm } from 'antd';
+import { Button, Popconfirm } from 'antd';
 import React, { useRef } from 'react';
 import { history, useModel } from 'umi';
 import style from './style.less';
@@ -25,10 +25,7 @@ const TestPages: React.FC = (props: any) => {
     };
     let res: any = await deleteBatch(params);
     if (res) {
-      message.success('删除成功');
       batchTableRef.current.reload();
-    } else {
-      message.error(res);
     }
   };
 

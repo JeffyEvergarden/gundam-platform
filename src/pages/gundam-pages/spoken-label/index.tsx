@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useModel, history, useLocation } from 'umi';
-import { Table, Button, Popconfirm, message } from 'antd';
-import ProTable from '@ant-design/pro-table';
-import style from './style.less';
-import { PlusOutlined } from '@ant-design/icons';
-import Condition from '@/components/Condition';
-import InfoModal from './components/info-modal';
-import { useOpModel, useLabelModel } from './model';
 import config from '@/config/index';
+import { PlusOutlined } from '@ant-design/icons';
+import ProTable from '@ant-design/pro-table';
+import { Button, message, Popconfirm } from 'antd';
+import React, { useRef } from 'react';
+import { useModel } from 'umi';
+import InfoModal from './components/info-modal';
+import { useLabelModel, useOpModel } from './model';
+import style from './style.less';
 
 // 话术标签列表
 const DetailPages: React.FC = (props: any) => {
