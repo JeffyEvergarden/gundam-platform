@@ -28,12 +28,23 @@ const deepProcess = (arr: any[], info: any = {}, userAuth: any[]) => {
       deepProcess(item.routes, info, userAuth);
     }
     const hideFn = item.hideFn;
-    // if (item.code) {
-    //   item.hideInMenu = !access(userAuth, item.code);
-    //   if (item.hideInMenu) {
-    //     return;
-    //   }
-    // }
+
+    if (item?.routes?.length > 0) {
+      // 查看子菜单是否存在一个有权限的
+      let index = item.routes.findIndex((_item: any) => {
+        return !_item.code || (_item.code && access(userAuth, _item.code));
+      });
+
+      item.hideInMenu = !(index > -1);
+      return;
+    }
+
+    if (item.code) {
+      item.hideInMenu = !access(userAuth, item.code);
+      if (item.hideInMenu) {
+        return;
+      }
+    }
 
     if (hideFn && typeof hideFn === 'function') {
       item.hideInMenu = hideFn(info);
@@ -42,9 +53,8 @@ const deepProcess = (arr: any[], info: any = {}, userAuth: any[]) => {
 };
 
 const access = (userAuth: any[], code: any) => {
-  code = valueToCodeMap[code] || '';
-  // return userAuth?.includes?.(code);
-  return true;
+  let _code = valueToCodeMap[code] || '';
+  return userAuth?.includes?.(_code);
 };
 
 // 机器人列表

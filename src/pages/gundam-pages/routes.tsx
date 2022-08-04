@@ -43,10 +43,14 @@ export default [
         path: '/gundamPages/detail/FAQConfig',
         name: 'FAQ配置',
         code: 'robot_mg-global-faq_conf',
-
         hideFn: (info: any) => {
           return !(info?.robotType === 0 && info?.soundType === 0); // 呼入 文本
         },
+      },
+      {
+        path: '/gundamPages/detail/channelConfig',
+        name: '渠道配置',
+        code: 'robot_mg-global-channel_conf',
       },
     ],
   },
@@ -86,7 +90,7 @@ export default [
     icon: <MessageOutlined />,
     path: '/gundamPages/module',
     name: 'FAQ管理',
-    // code: '0-0-4',
+
     hideFn: (info: any) => {
       return !(info?.robotType === 0 && info?.soundType === 0); // 呼入 文本
     },
@@ -131,21 +135,25 @@ export default [
     icon: <ReadOutlined />,
     path: '/gundamPages/knowledgeLearn',
     name: '知识学习',
+
     routes: [
       {
         icon: <CrownOutlined />,
         path: '/gundamPages/knowledgeLearn/unknowQuestion',
         name: '未知问题',
+        code: 'robot_mg-knowledge_unknow_learn-view',
       },
       {
         icon: <CrownOutlined />,
         path: '/gundamPages/knowledgeLearn/batchTest',
         name: '批量检测',
+        code: 'robot_mg-knowledge_batch_check-view',
       },
       {
         icon: <CrownOutlined />,
         path: '/gundamPages/knowledgeLearn/checkWhite',
         name: '检测白名单',
+        code: 'robot_mg-knowledge_check_white_list-view',
       },
     ],
   },
@@ -153,6 +161,7 @@ export default [
     icon: <LineChartOutlined />,
     path: '/gundamPages/reportForm',
     name: '报表管理',
+
     hideFn: (info: any) => {
       return !(info?.robotType === 0 && info?.soundType === 0); // 呼入 文本
     },

@@ -275,8 +275,8 @@ const MainDraw = (props: any) => {
 
   useEffect(() => {
     getMachineInfo().then((res) => {
-      fake.current.executeCommand('autoZoom');
-      fake.current.executeCommand('resetZoom');
+      fake.current?.executeCommand?.('autoZoom');
+      fake.current?.executeCommand?.('resetZoom');
     }); // 获取机器人主流程信息
   }, [businessFlowId]);
 

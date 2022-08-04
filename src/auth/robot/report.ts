@@ -45,6 +45,17 @@ export default [
         value: 'robot_mg-report_recommend_and_clarify-export_bt',
         code: '001-009-004-001',
       },
+
+      {
+        label: '搜索联想统计',
+        value: 'robot_mg-report-search-association-view',
+        code: '001-009-005',
+      },
+      {
+        label: '搜索联想统计-导出',
+        value: 'robot_mg-report-search-association-export_bt',
+        code: '001-009-005-001',
+      },
     ],
   },
 ];
