@@ -103,8 +103,8 @@ export async function getInitialState(): Promise<{
     };
   }
   // 抓取权限信息结果
-  // let res2: any = fetchAuthInfo();
-  let res2: any = [];
+  let res2: any = fetchAuthInfo();
+  // let res2: any = [];
   // let [currentUser, userAuth] = await Promise.all([res1]);
   // 需要抓取用户信息
   let [userMsg, userAuth]: any[] = await Promise.all([res1, res2]);

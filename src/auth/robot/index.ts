@@ -1,4 +1,4 @@
-import report from './report';
+import report from './report'; // 报表统计
 
 export default [
   // 主流程配置
@@ -32,6 +32,11 @@ export default [
         label: 'FAQ配置',
         value: 'robot_mg-global-faq_conf',
         code: '001-002-004',
+      },
+      {
+        label: '渠道配置',
+        value: 'robot_mg-global-channel_conf',
+        code: '001-002-005',
       },
     ],
   },

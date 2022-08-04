@@ -3,7 +3,7 @@ import config from '../../../src/config';
 const successCode = config.successCode;
 
 const getBusinessTableData = (req: any, res: any) => {
-  let arr = new Array(20).fill(1);
+  let arr = new Array(10).fill(1);
   const obj = {
     flowName: '前端mock-流程',
     id: 'front_mock_id_',
@@ -28,14 +28,14 @@ const getBusinessTableData = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
     data: {
-      pageSize: 20,
+      pageSize: 10,
       totalPage: 200,
       page: 10,
       list: arr,
     },
     pageSize: 20,
     totalPage: 200,
-    page: 10,
+    page: 1,
   });
 };
 

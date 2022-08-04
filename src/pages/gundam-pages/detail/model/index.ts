@@ -7,6 +7,13 @@ import { addNewGlobal, deleteGlobal, editNewGlobal, getConfigCurrentList } from 
 //节点配置
 import { _getNodeConfig, _saveNode } from './api';
 
+import {
+  getChannelConfigList,
+  addNewChannelConfig,
+  editChannelConfig,
+  deleteChannelConfig,
+} from './api';
+
 import config from '@/config/index';
 
 export const successCode = config.successCode;
@@ -192,5 +199,80 @@ export const useFAQModel = () => {
     editFAQ,
     getTableList,
     configLoading,
+  };
+};
+
+//
+export const useChannelConfigModel = () => {
+  const [tableList, setTableList] = useState<any[]>([]);
+  const [tableLoading, setTableLoading] = useState<boolean>(false);
+  const [opLoading, setOpLoading] = useState<boolean>(false);
+
+  const getChannelList = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await getChannelConfigList(params);
+    setTableLoading(false);
+    let { list = [], totalPage, totalSize } = res.data;
+    if (!Array.isArray(list)) {
+      list = [];
+    }
+    list = list.map((item: any, index: number) => {
+      return {
+        ...item,
+        title: item.name,
+        index,
+      };
+    });
+    // console.log('tableList', datas);
+    setTableList(list || []);
+    return { data: list, total: totalPage };
+  };
+
+  const addNewChannel = async (data: any) => {
+    let res: any = await addNewChannelConfig(data);
+    setOpLoading(false);
+    if (res.resultCode === successCode) {
+      message.success('添加成功');
+      return true;
+    } else {
+      message.error(res?.resultDesc || '未知系统异常');
+      return false;
+    }
+  };
+
+  const editChannel = async (data: any) => {
+    let res: any = await editChannelConfig(data);
+    setOpLoading(false);
+    if (res.resultCode === successCode) {
+      message.success('修改成功');
+      return true;
+    } else {
+      message.error(res?.resultDesc || '未知系统异常');
+      return false;
+    }
+  };
+
+  const deleteChannel = async (data: any) => {
+    let res: any = await deleteChannelConfig(data);
+    setOpLoading(false);
+    if (res.resultCode === successCode) {
+      message.success('删除成功');
+      return true;
+    } else {
+      message.error(res?.resultDesc || '未知系统异常');
+      return false;
+    }
+  };
+
+  return {
+    tableList,
+    setTableList,
+    tableLoading,
+    opLoading,
+    setOpLoading,
+    getChannelList, // 获取表格数据
+    addNewChannel,
+    editChannel,
+    deleteChannel,
   };
 };
