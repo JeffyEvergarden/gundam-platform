@@ -207,11 +207,11 @@ export default [
         path: '/gundamPages/effectEvaluation/sampleManager',
         name: '样本管理',
       },
-      // {
-      //   icon: <CrownOutlined />,
-      //   path: '/gundamPages/effectEvaluation/modelEvaluation',
-      //   name: '模型评估',
-      // },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/effectEvaluation/modelEvaluation',
+        name: '模型评估',
+      },
     ],
   },
 ];
