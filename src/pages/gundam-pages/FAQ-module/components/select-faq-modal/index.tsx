@@ -410,6 +410,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     },
     close: () => {
       setSearchText1('');
+      setSearchText2('');
       setVisible(false);
     },
   }));
@@ -437,6 +438,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
     if (res) {
       setSearchText1('');
+      setSearchText2('');
       setVisible(false);
     }
   };
@@ -490,6 +492,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       maskClosable={false}
       onCancel={() => {
         setSearchText1('');
+        setSearchText2('');
         setVisible(false);
       }}
       okText={'确定'}
@@ -499,6 +502,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
           key="back"
           onClick={() => {
             setSearchText1('');
+            setSearchText2('');
             setVisible(false);
           }}
           loading={tableLoading}
