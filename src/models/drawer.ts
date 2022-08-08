@@ -10,6 +10,7 @@ import {
   queryTreeList,
   queryWishList,
   queryWordSlotTableList,
+  queryChannelList,
 } from '@/services/api';
 import { message } from 'antd';
 import { useRef, useState } from 'react';
@@ -41,6 +42,9 @@ export default function useDrawerModel() {
 
   const [pengingTotal, setPengingTotal] = useState<any>(0); // 待审核总数
   const [reviewedTotal, setReviewedTotal] = useState<any>(0); // 待处理总数
+
+  const [channelList, setChannelList] = useState<any[]>([]); // 渠道列表
+  const [highChannelList, setHighChannelList] = useState<any[]>([]); // 渠道列表
 
   // faq 问题树形结构
   const [treeData, setTreeData] = useState<any[]>([]);
@@ -219,6 +223,38 @@ export default function useDrawerModel() {
     _setGlobalNodeList(data);
   };
 
+  const getChannelList = async (id?: any) => {
+    console.log('获取渠道列表');
+    if (!allowRequest('channel', id, 8)) {
+      return;
+    }
+    if (!id) {
+      console.log('机器人的高级配置获取不到机器人id');
+      return;
+    }
+    let res: any = await queryChannelList({ robotId: id });
+    console.log('渠道结果', res);
+    let data: any[] = res?.data?.list || [];
+    data = Array.isArray(data) ? data : [];
+    data = data.map((item: any) => {
+      return {
+        value: item.channelCode,
+        name: item.channelCode,
+        label: item.channelName,
+      };
+    });
+
+    setChannelList(data);
+    setHighChannelList([
+      {
+        name: 'all',
+        value: 'all',
+        label: '全部',
+      },
+      ...data,
+    ]);
+  };
+
   const processTreeData = (data: any[], parent?: any) => {
     if (!Array.isArray(data)) {
       return [];
@@ -320,5 +356,9 @@ export default function useDrawerModel() {
     getShowBadgeTotal, //获取待审核 待处理
     pengingTotal,
     reviewedTotal,
+    channelList,
+    highChannelList,
+    setChannelList,
+    getChannelList,
   };
 }

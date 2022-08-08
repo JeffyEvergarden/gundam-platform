@@ -18,6 +18,15 @@ const HighConfigSelect = (props: HighConfigProps) => {
     setInfo: model.setInfo,
   }));
 
+  const { highChannelList, getChannelList } = useModel('drawer' as any, (model: any) => ({
+    highChannelList: model.highChannelList,
+    getChannelList: model.getChannelList,
+  }));
+
+  useEffect(() => {
+    getChannelList(info.id);
+  }, []);
+
   const { userList, getCreateUser } = useModel('drawer' as any, (model: any) => ({
     userList: model.userList,
     getCreateUser: model.getCreateUser,
@@ -109,7 +118,25 @@ const HighConfigSelect = (props: HighConfigProps) => {
                     </div>
                   );
                 })}
+
+              {_key == 'channelList' &&
+                highChannelList.map((item: any, index: number) => {
+                  return (
+                    <div
+                      key={index}
+                      className={`${style['sub-item']} ${
+                        includes(item.name, val) ? style['sub-item_selected'] : ''
+                      }`}
+                      onClick={() => {
+                        onClick(item.name, _key, type, _key);
+                      }}
+                    >
+                      {item.label}
+                    </div>
+                  );
+                })}
               {_key != 'creatorList' &&
+                _key != 'channelList' &&
                 children.map((item: any, index: number) => {
                   return (
                     <div

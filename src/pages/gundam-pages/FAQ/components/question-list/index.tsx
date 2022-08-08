@@ -18,7 +18,6 @@ import { Button, Divider, Form, Input, message, Pagination, Popconfirm, Select }
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useActivate } from 'react-activation';
 import { history, useModel } from 'umi';
-import { HIGH_CONFIG_SELECT } from '../../FAQ-manage/const';
 import { useFaqModal } from '../../FAQ-manage/model';
 import { deleteQuestion } from '../../FAQ-manage/model/api';
 import { deleteAnswer, editAnswer, editQuestion, isAdd } from '../../question-board/model/api';
@@ -46,6 +45,15 @@ const QuestionList: React.FC<any> = (props: any) => {
     info: model.info,
     setInfo: model.setInfo,
   }));
+
+  const { highChannelList, getChannelList } = useModel('drawer' as any, (model: any) => ({
+    highChannelList: model.highChannelList,
+    getChannelList: model.getChannelList,
+  }));
+  useEffect(() => {
+    getChannelList(info.id);
+  }, []);
+
   const { getCreateUser, getShowBadgeTotal } = useModel('drawer' as any, (model: any) => ({
     getCreateUser: model.getCreateUser,
     getShowBadgeTotal: model.getShowBadgeTotal,
@@ -103,9 +111,9 @@ const QuestionList: React.FC<any> = (props: any) => {
   };
 
   const rowSelection = () => {
-    if (!hasCheckbox) {
-      return false;
-    }
+    // if (!hasCheckbox) {
+    //   return false;
+    // }
     return {
       selectedRowKeys,
       onChange: (keys: any[]) => {
@@ -365,7 +373,7 @@ const QuestionList: React.FC<any> = (props: any) => {
   };
 
   useActivate(() => {
-    CurrentPage();
+    CurrentPage({ page: current, pageSize });
   });
   useEffect(() => {
     CurrentPage();
@@ -551,35 +559,6 @@ const QuestionList: React.FC<any> = (props: any) => {
                             <Condition r-if={more[index] || idx == 0} key={idx}>
                               <div className={style['box-answer']}>
                                 <div className={style['box-top']}>
-                                  {/* {!hasCheckbox && (
-                                    <Badge
-                                      status={status[v.approvalStatus]}
-                                      text={
-                                        <Select
-                                          size="small"
-                                          value={v.approvalStatus}
-                                          defaultValue={v.approvalStatus}
-                                          style={{ width: 100, padding: 0 }}
-                                          bordered={false}
-                                          onChange={(val: any) => {
-                                            editA({
-                                              answerId: v.answerId,
-                                              approvalStatus: val,
-                                              faqId: item.id,
-                                            });
-                                          }}
-                                        >
-                                          {statusList.map((val: any) => {
-                                            return (
-                                              <Option value={val.value} key={val.value}>
-                                                {val.name}
-                                              </Option>
-                                            );
-                                          })}
-                                        </Select>
-                                      }
-                                    />
-                                  )} */}
                                   <span>
                                     生效渠道：
                                     <Button
@@ -591,9 +570,8 @@ const QuestionList: React.FC<any> = (props: any) => {
                                       {v?.channelList &&
                                         v?.channelList
                                           ?.map((cl: any) => {
-                                            return HIGH_CONFIG_SELECT?.[0]?.children?.find(
-                                              (c: any) => c.name == cl,
-                                            )?.label;
+                                            return highChannelList?.find((c: any) => c.name == cl)
+                                              ?.label;
                                           })
                                           ?.join(' , ')}
                                     </Button>

@@ -1,7 +1,6 @@
 import Condition from '@/components/Condition';
-import { HIGH_CONFIG_SELECT } from '@/pages/gundam-pages/FAQ/FAQ-manage/const';
 import { Divider, Drawer, Input, Pagination, Timeline } from 'antd';
-import { useImperativeHandle, useRef, useState } from 'react';
+import { useImperativeHandle, useRef, useState, useEffect } from 'react';
 import { useModel } from 'umi';
 import { approvalResult, approvalType } from '../awaitList/count';
 import { useHistoryModel } from './model';
@@ -25,6 +24,15 @@ const SelectorModal: React.FC<any> = (props: any) => {
       info: model.info,
     };
   });
+
+  const { highChannelList, getChannelList } = useModel('drawer' as any, (model: any) => ({
+    highChannelList: model.highChannelList,
+    getChannelList: model.getChannelList,
+  }));
+
+  useEffect(() => {
+    getChannelList(info.id);
+  }, []);
 
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -123,7 +131,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
                                           {v?.channelList &&
                                             v?.channelList
                                               ?.map((cl: any) => {
-                                                return HIGH_CONFIG_SELECT?.[0]?.children?.find(
+                                                return highChannelList?.find(
                                                   (c: any) => c.name == cl,
                                                 )?.label;
                                               })

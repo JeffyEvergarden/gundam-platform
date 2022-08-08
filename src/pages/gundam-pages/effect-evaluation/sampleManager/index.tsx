@@ -1,10 +1,11 @@
 import ProTable from '@ant-design/pro-table';
 import { Button, Popconfirm } from 'antd';
 import React, { useRef } from 'react';
-import { useModel } from 'umi';
+import { history, useModel } from 'umi';
 import ImportModal from '../component/importModal';
 import SampleModal from '../component/sampleModal';
 import { useSampleModel } from '../model';
+import style from './style.less';
 
 const DetailPages: React.FC = (props: any) => {
   const TableRef = useRef<any>({});
@@ -21,7 +22,7 @@ const DetailPages: React.FC = (props: any) => {
   const columns: any[] = [
     {
       title: 'ID',
-      dataIndex: 'id',
+      dataIndex: 'sampleSetId',
       search: false,
       fixed: 'left',
       ellipsis: true,
@@ -29,17 +30,41 @@ const DetailPages: React.FC = (props: any) => {
     },
     {
       title: '样本集名称',
-      dataIndex: 'sampleName',
+      dataIndex: 'sampleSetName',
       search: false,
       width: 200,
       ellipsis: true,
       render: (val: any, row: any) => {
-        return val;
+        return (
+          <div>
+            <Button
+              type="link"
+              style={{ color: '#1890ff !important' }}
+              onClick={() => {
+                history.push('/gundamPages/effectEvaluation/sampleManager/sampleDetail');
+              }}
+            >
+              {row.sampleSetName}
+            </Button>
+          </div>
+        );
       },
     },
     {
       title: '标注进度',
-      dataIndex: 'markProgress',
+      dataIndex: 'tagProgress',
+      search: false,
+      width: 200,
+    },
+    {
+      title: '创建者',
+      dataIndex: 'creator',
+      search: false,
+      width: 200,
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createTime',
       search: false,
       width: 200,
     },
@@ -48,7 +73,7 @@ const DetailPages: React.FC = (props: any) => {
       dataIndex: 'op',
       search: false,
       fixed: 'right',
-      width: 150,
+      width: 210,
       render: (val: any, row: any, index: number) => {
         return (
           <div style={{ display: 'flex' }}>
@@ -81,7 +106,7 @@ const DetailPages: React.FC = (props: any) => {
             <Button
               type="link"
               onClick={() => {
-                ImportRef?.current?.open();
+                ImportRef?.current?.open(row);
               }}
             >
               导入
@@ -96,8 +121,12 @@ const DetailPages: React.FC = (props: any) => {
     },
   ];
 
+  const refresh = () => {
+    TableRef?.current?.reload();
+  };
+
   return (
-    <div>
+    <div className={`${style['machine-page']} list-page`}>
       <ProTable<any>
         columns={columns}
         actionRef={TableRef}
@@ -145,9 +174,9 @@ const DetailPages: React.FC = (props: any) => {
           </Button>,
         ]}
       />
-      <SampleModal cref={ModalRef} />
+      <SampleModal cref={ModalRef} refresh={refresh} />
 
-      <ImportModal cref={ImportRef} />
+      <ImportModal cref={ImportRef} refresh={refresh} />
     </div>
   );
 };

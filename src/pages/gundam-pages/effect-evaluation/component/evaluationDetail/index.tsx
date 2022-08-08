@@ -130,7 +130,7 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
       }}
       footer={false}
     >
-      <div className={style['info']}>评估集名称</div>
+      <div className={style['info']}>评估集名称：xxx</div>
       <div className={`${style['machine-page']} list-page`}>
         <ProTable<any>
           columns={columns}

@@ -1,26 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import {
-  Button,
-  Input,
-  Select,
-  Collapse,
-  Divider,
-  Skeleton,
-  Checkbox,
-  message,
-  Popconfirm,
-} from 'antd';
-import { ArrowLeftOutlined, DownOutlined, LeftOutlined, SettingOutlined } from '@ant-design/icons';
-import HighConfigSelect from '../FAQ-manage/components/high-select';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import style from './style.less';
-import { useFaqModal, useTreeModal } from '../FAQ-manage/model';
-import ProList from '@ant-design/pro-list';
-import QuestionList from '../components/question-list';
-import { history, useModel } from 'umi';
-import { deleteRecycle } from '../FAQ-manage/model/api';
 import config from '@/config';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Collapse, Input, message, Popconfirm, Select } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
+import { history, useModel } from 'umi';
 import ClassifyModal from '../components/classify-modal';
+import QuestionList from '../components/question-list';
+import HighConfigSelect from '../FAQ-manage/components/high-select';
+import { useFaqModal, useTreeModal } from '../FAQ-manage/model';
+import { deleteRecycle } from '../FAQ-manage/model/api';
+import style from './style.less';
 
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -148,7 +136,7 @@ const RecyclePage: React.FC<any> = (props: any) => {
             <Collapse expandIconPosition="right">
               <Panel
                 style={{ alignItems: 'center' }}
-                header={<div className={style['title_sp']}>问答列表</div>}
+                header={<div>问答列表</div>}
                 key="1"
                 extra={<div>高级筛选</div>}
               >

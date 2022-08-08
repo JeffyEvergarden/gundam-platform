@@ -14,7 +14,6 @@ import {
 } from 'antd';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
-import { CHANNAL_LIST } from '../const';
 import RemarkModal from './components/remark-modal';
 import SpCheckbox from './components/sp-checkbox';
 import EditBoard from './index';
@@ -68,6 +67,11 @@ const Board: React.FC<any> = (props: any) => {
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
+  }));
+
+  const { channelList, getChannelList } = useModel('drawer' as any, (model: any) => ({
+    channelList: model.channelList,
+    getChannelList: model.getChannelList,
   }));
 
   const [originInfo, setOriginInfo] = useState<any>({});
@@ -147,6 +151,7 @@ const Board: React.FC<any> = (props: any) => {
     } else {
       _getQuestionInfo(info.id);
     }
+    getChannelList(info.id);
   }, []);
 
   const remarkModalRef = useRef<any>({});
@@ -330,7 +335,7 @@ const Board: React.FC<any> = (props: any) => {
                     label="生效渠道"
                     rules={[{ message: '请选择生效渠道', required: true }]}
                   >
-                    <SpCheckbox list={CHANNAL_LIST} />
+                    <SpCheckbox list={channelList} />
                   </Form.Item>
 
                   <Space>

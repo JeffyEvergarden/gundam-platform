@@ -21,12 +21,14 @@ const SampleModal: React.FC<any> = (props: any) => {
 
   const [visible, setVisible] = useState<boolean>(false);
   const [modalType, setModalType] = useState<string>('');
+  const [row, setRow] = useState<any>([]);
 
   const submit = async () => {
     const values = await form.validateFields();
     console.log(values);
     let reqData = {
       robotId: info.id,
+      id: row.sampleSetId || undefined,
       ...values,
     };
     if (modalType == 'add') {
@@ -48,14 +50,17 @@ const SampleModal: React.FC<any> = (props: any) => {
   const close = () => {
     form.resetFields();
     setVisible(false);
+    setRow({});
+    refresh();
   };
 
   useImperativeHandle(cref, () => ({
     open: (type: any, row?: any) => {
       if (row) {
+        setRow(row);
         console.log(row);
         form.setFieldsValue({
-          sampleName: row.sampleName,
+          sampleSetName: row.sampleSetName,
         });
       }
       setVisible(true);
@@ -73,6 +78,7 @@ const SampleModal: React.FC<any> = (props: any) => {
       onCancel={() => {
         form.resetFields();
         setVisible(false);
+        setRow({});
       }}
       okText={'提交'}
       onOk={submit}
@@ -81,7 +87,7 @@ const SampleModal: React.FC<any> = (props: any) => {
         <Form form={form} style={{ width: '400px' }}>
           <FormItem
             rules={[{ required: true, message: '请填写样本集名称' }]}
-            name="sampleName"
+            name="sampleSetName"
             label="样本集名称"
             style={{ width: '360px' }}
           >
