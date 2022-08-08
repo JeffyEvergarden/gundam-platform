@@ -2,7 +2,6 @@ import Condition from '@/components/Condition';
 import { Button, Col, Form, Input, message, Row, Select } from 'antd';
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useModel } from 'umi';
-import { CHANNAL_LIST } from '../FAQ/const';
 import RobotChatText from './chatText';
 import { useChatModel } from './model';
 import styles from './style.less';
@@ -40,6 +39,11 @@ export default (props: any) => {
     info: model.info,
     globalVarList: model.globalVarList,
     getGlobalValConfig: model.getGlobalValConfig,
+  }));
+
+  const { channelList, getChannelList } = useModel('drawer' as any, (model: any) => ({
+    channelList: model.channelList,
+    getChannelList: model.getChannelList,
   }));
 
   // 从对话框获取环境值,会话重新开始
@@ -93,6 +97,10 @@ export default (props: any) => {
   }));
 
   useEffect(() => {
+    getChannelList(info.id);
+  }, [info]);
+
+  useEffect(() => {
     setRobotChatData({});
     console.log('globalVarList', globalVarList);
     setRobotFormList(globalVarList);
@@ -133,7 +141,7 @@ export default (props: any) => {
                         rules={[{ required: true, message: '请选择' }]}
                       >
                         <Select placeholder={item?.placeholder}>
-                          {CHANNAL_LIST?.map((item: any, index: any) => (
+                          {channelList?.map((item: any, index: any) => (
                             <Option key={index} value={item.value}>
                               {item.label}
                             </Option>

@@ -1,4 +1,3 @@
-import { HIGH_CONFIG_SELECT } from '@/pages/gundam-pages/FAQ/FAQ-manage/const';
 import Condition from '@/pages/gundam-pages/main-draw/flow/common/Condition';
 import ProList from '@ant-design/pro-list';
 import { Button, Checkbox, Divider, Input, message, Pagination, Select, Space } from 'antd';
@@ -17,10 +16,17 @@ const AwaitList: React.FC<any> = (props: any) => {
   const { cref, pageType } = props;
   const { list, getList, getPList, approvalPass, allApprovalPass, loading, totalPage } =
     useApprovalModel();
+
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     setInfo: model.setInfo,
   }));
+
+  const { highChannelList, getChannelList } = useModel('drawer' as any, (model: any) => ({
+    highChannelList: model.highChannelList,
+    getChannelList: model.getChannelList,
+  }));
+
   const { getShowBadgeTotal } = useModel('drawer' as any, (model: any) => ({
     getShowBadgeTotal: model.getShowBadgeTotal,
   }));
@@ -280,9 +286,8 @@ const AwaitList: React.FC<any> = (props: any) => {
                                     {item?.channelList &&
                                       item?.channelList
                                         ?.map((cl: any) => {
-                                          return HIGH_CONFIG_SELECT?.[0]?.children?.find(
-                                            (c: any) => c.name == cl,
-                                          )?.label;
+                                          return highChannelList?.find((c: any) => c.name == cl)
+                                            ?.label;
                                         })
                                         ?.join(' , ')}
                                   </span>

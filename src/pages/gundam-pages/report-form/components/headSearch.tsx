@@ -1,14 +1,28 @@
 import { Button, DatePicker, Radio, Select, Space } from 'antd';
 import moment from 'moment';
+import { useEffect } from 'react';
 import { useState } from 'react';
+import { useModel } from 'umi';
 import styles from './index.less';
-import { CHANNAL_LIST } from '../../FAQ/const';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 export default (props: any) => {
   const { choseTime, exportReportForm, pageType } = props;
+
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
+
+  const { channelList, getChannelList } = useModel('drawer' as any, (model: any) => ({
+    channelList: model.channelList,
+    getChannelList: model.getChannelList,
+  }));
+
+  useEffect(() => {
+    getChannelList(info.id);
+  }, []);
 
   const [valRadio, setValue] = useState<string>('sevenDays');
   const [startTime, setStart] = useState<string>('');
@@ -96,7 +110,7 @@ export default (props: any) => {
           <Option key={''} value="">
             全部渠道
           </Option>
-          {CHANNAL_LIST.map((item: any) => {
+          {channelList.map((item: any) => {
             return (
               <Option key={item.value} value={item.value}>
                 {item.label}

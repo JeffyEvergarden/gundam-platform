@@ -1,7 +1,6 @@
-import { HIGH_CONFIG_SELECT } from '@/pages/gundam-pages/FAQ/FAQ-manage/const';
 import ProList from '@ant-design/pro-list';
 import { Divider, Drawer, Input } from 'antd';
-import { Fragment, useImperativeHandle, useRef, useState } from 'react';
+import { Fragment, useImperativeHandle, useRef, useState, useEffect } from 'react';
 import { useModel } from 'umi';
 import { useAnswerListModel } from './model';
 import style from './style.less';
@@ -22,6 +21,15 @@ const SelectorModal: React.FC<any> = (props: any) => {
       info: model.info,
     };
   });
+
+  const { highChannelList, getChannelList } = useModel('drawer' as any, (model: any) => ({
+    highChannelList: model.highChannelList,
+    getChannelList: model.getChannelList,
+  }));
+
+  useEffect(() => {
+    getChannelList(info.id);
+  }, []);
 
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -118,9 +126,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
                         {item?.channelList &&
                           item?.channelList
                             ?.map((cl: any) => {
-                              return HIGH_CONFIG_SELECT?.[0]?.children?.find(
-                                (c: any) => c.name == cl,
-                              )?.label;
+                              return highChannelList?.find((c: any) => c.name == cl)?.label;
                             })
                             ?.join(' , ')}
                       </div>

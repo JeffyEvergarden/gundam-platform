@@ -3,12 +3,26 @@ import style from './style.less';
 import React, { useImperativeHandle, useState } from 'react';
 import MyTree from '../../FAQ-manage/components/my-tree';
 import SpCheckbox from '../../question-board/components/sp-checkbox';
-import { CHANNAL_LIST } from '../../const';
+import { useModel } from 'umi';
+import { useEffect } from 'react';
 
 const ChannelModal: React.FC<any> = (props: any) => {
   const { cref } = props;
   const [visible, setVisible] = useState<boolean>(false);
   const [choose, setChoose] = useState<any>([]);
+
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
+
+  const { channelList, getChannelList } = useModel('drawer' as any, (model: any) => ({
+    channelList: model.channelList,
+    getChannelList: model.getChannelList,
+  }));
+
+  useEffect(() => {
+    getChannelList(info.id);
+  }, []);
 
   const submit = () => {};
 
@@ -43,7 +57,7 @@ const ChannelModal: React.FC<any> = (props: any) => {
       <div>
         <SpCheckbox
           value={choose}
-          list={CHANNAL_LIST}
+          list={channelList}
           onChange={(val: any[]) => {
             changeCheckbox(val);
           }}

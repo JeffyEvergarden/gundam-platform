@@ -224,22 +224,6 @@ const FAQBlackList = (props: any) => {
               >
                 <TextArea placeholder={'请输入问题名称'} maxLength={200} rows={3} />
               </Form.Item>
-
-              {/* <Form.Item
-                label="渠道"
-                name="channelCode"
-                rules={[{ required: true, message: '请选择渠道' }]}
-              >
-                <Radio.Group>
-                  {CHANNAL_LIST.map((item: any, index: number) => {
-                    return (
-                      <Radio value={item.value} key={index}>
-                        <span style={{ lineHeight: '36px' }}>{item.label}</span>
-                      </Radio>
-                    );
-                  })}
-                </Radio.Group>
-              </Form.Item> */}
             </Form>
           </div>
         </div>

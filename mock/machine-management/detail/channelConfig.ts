@@ -72,9 +72,9 @@ const getChannelConfig = (req: any, res: any) => {
 };
 
 export default {
-  'GET /aichat/robot/config/channelList': getChannelConfig, // 获取渠道列表
-  'POST /aichat/robot/config/addChannel': normalDeal, // 添加新渠道
+  'GET /aichat/robot/channel/list': getChannelConfig, // 获取渠道列表
+  'POST /aichat/robot/channel/add': normalDeal, // 添加新渠道
 
-  'POST /aichat/robot/config/updateChannel': normalDeal, // 修改渠道
-  'POST /aichat/robot/config/deleteChannel': normalDeal, // 删除渠道
+  'POST /aichat/robot/channel/update': normalDeal, // 修改渠道
+  'POST /aichat/robot/channel/delete': normalDeal, // 删除渠道
 };

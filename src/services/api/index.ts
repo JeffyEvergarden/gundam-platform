@@ -119,3 +119,10 @@ export async function queryReviewed(params?: Record<string, any>) {
     params,
   });
 }
+// 渠道列表
+export async function queryChannelList(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/channel/list`, {
+    method: 'GET',
+    params,
+  });
+}
