@@ -103,9 +103,9 @@ const QuestionList: React.FC<any> = (props: any) => {
   };
 
   const rowSelection = () => {
-    if (!hasCheckbox) {
-      return false;
-    }
+    // if (!hasCheckbox) {
+    //   return false;
+    // }
     return {
       selectedRowKeys,
       onChange: (keys: any[]) => {
@@ -365,7 +365,7 @@ const QuestionList: React.FC<any> = (props: any) => {
   };
 
   useActivate(() => {
-    CurrentPage();
+    CurrentPage({ page: current, pageSize });
   });
   useEffect(() => {
     CurrentPage();

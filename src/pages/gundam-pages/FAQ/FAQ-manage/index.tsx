@@ -1,5 +1,5 @@
 import { SettingOutlined } from '@ant-design/icons';
-import { Button, Collapse, Input, Select, Space } from 'antd';
+import { Button, Checkbox, Collapse, Input, Popconfirm, Select, Space } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
 import ChannelModal from '../components/channel-modal';
@@ -59,6 +59,7 @@ const FAQPage: React.FC<any> = (props: any) => {
     }, 1);
   };
   const [pageNo, setPageNo] = useState<number>(1);
+  const [selectAll, setSelectAll] = useState<boolean>(false);
 
   // const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
 
@@ -85,6 +86,13 @@ const FAQPage: React.FC<any> = (props: any) => {
       node: obj,
       callback,
     });
+  };
+
+  //全选
+  const checkboxChange = (val: any) => {
+    let flag = val.target.checked;
+    setSelectAll(flag);
+    (QuestionRef?.current as any)?.selectAll(flag);
   };
 
   const getTree = () => {
@@ -248,6 +256,38 @@ const FAQPage: React.FC<any> = (props: any) => {
                 <HighConfigSelect value={value} onChange={changeHighConfig} isRecycle={0} />
               </Panel>
             </Collapse>
+          </div>
+
+          {/* 全选 */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'initial' }}>
+            <div style={{ paddingTop: '4px' }}>
+              <Checkbox
+                onChange={checkboxChange}
+                style={{ marginBottom: '24px' }}
+                checked={selectAll}
+              ></Checkbox>
+              <span style={{ marginLeft: '8px' }}>全选</span>
+            </div>
+            <div className={style['box-top-del']}>
+              <Popconfirm
+                title={() => {
+                  return (
+                    <div style={{ maxWidth: '180px' }}>
+                      从问题回收站删除问题将彻底清除该问题所有相关记录，是否确认删除？
+                    </div>
+                  );
+                }}
+                getPopupContainer={(trigger: any) => trigger.parentElement}
+                okText="确定"
+                placement="topRight"
+                cancelText="取消"
+                onConfirm={() => {
+                  // _deleteRecycle();
+                }}
+              >
+                <Button>批量删除</Button>
+              </Popconfirm>
+            </div>
           </div>
 
           <QuestionList

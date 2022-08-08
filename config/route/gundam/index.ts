@@ -272,10 +272,15 @@ export default [
         name: '效果评估',
         routes: [
           {
-            path: '/gundamPages/effectEvaluation/sampleManager',
-            component: './gundam-pages/effect-evaluation/sampleManager',
+            path: '/gundamPages/effectEvaluation/sampleManager*',
+            component: './gundam-pages/effect-evaluation/sampleManager/home',
             name: '样本管理',
           },
+          // {
+          //   path: '/gundamPages/effectEvaluation/sampleDetail',
+          //   component: './gundam-pages/effect-evaluation/component/sampleDetail',
+          //   name: '样本集',
+          // },
           {
             path: '/gundamPages/effectEvaluation/modelEvaluation',
             component: './gundam-pages/effect-evaluation/modelEvaluation',
