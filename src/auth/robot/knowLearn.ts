@@ -2,12 +2,12 @@
 export default [
   {
     label: '知识学习',
-    value: 'robot_mg-report',
-    code: '001-009',
+    value: 'robot_mg-knowledge',
+    code: '001-010',
     children: [
       {
         label: '未知问题',
-        value: 'robot_mg--knowledge_unknow_learn-view',
+        value: 'robot_mg-knowledge_unknow_learn-view',
         code: '001-010-001',
       },
       {

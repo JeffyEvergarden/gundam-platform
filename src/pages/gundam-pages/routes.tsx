@@ -135,7 +135,6 @@ export default [
     icon: <ReadOutlined />,
     path: '/gundamPages/knowledgeLearn',
     name: '知识学习',
-
     routes: [
       {
         icon: <CrownOutlined />,
@@ -190,6 +189,12 @@ export default [
         name: '推荐问和澄清统计',
         code: 'robot_mg-report_recommend_and_clarify-view',
       },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/reportForm/searchAssocation',
+        name: '搜索联想统计',
+        // code: 'robot_mg-report_recommend_and_clarify-view',
+      },
     ],
   },
   {
@@ -202,11 +207,11 @@ export default [
         path: '/gundamPages/effectEvaluation/sampleManager',
         name: '样本管理',
       },
-      // {
-      //   icon: <CrownOutlined />,
-      //   path: '/gundamPages/effectEvaluation/modelEvaluation',
-      //   name: '模型评估',
-      // },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/effectEvaluation/modelEvaluation',
+        name: '模型评估',
+      },
     ],
   },
 ];

@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useModel, history } from 'umi';
-import { Popconfirm, Table, Button, message } from 'antd';
-import style from './style.less';
-import Condition from '@/components/Condition';
-import ProTable from '@ant-design/pro-table';
-import { PlusOutlined } from '@ant-design/icons';
-import InfoModal from './components/infoModal';
-import { useGlobalModel } from '../model';
 import config from '@/config/index';
+import { PlusOutlined } from '@ant-design/icons';
+import ProTable from '@ant-design/pro-table';
+import { Button, message, Popconfirm } from 'antd';
+import React, { useRef } from 'react';
+import { useModel } from 'umi';
+import { useGlobalModel } from '../model';
+import InfoModal from './components/infoModal';
+import style from './style.less';
 
 const InterfaceConfig: React.FC = (props: any) => {
   const { _deleteLabel, addGlobal, editGlobal, getTableList, configLoading } = useGlobalModel();
@@ -148,7 +147,7 @@ const InterfaceConfig: React.FC = (props: any) => {
   };
 
   return (
-    <div className={style['machine-page']}>
+    <div className={`${style['machine-page']} list-page`}>
       <ProTable<any>
         columns={columns}
         actionRef={globalTableRef}
