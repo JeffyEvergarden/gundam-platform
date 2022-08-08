@@ -19,7 +19,6 @@ import {
 } from 'antd';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
-import { CHANNAL_LIST } from '../const';
 import RemarkModal from './components/remark-modal';
 import Selector from './components/selector';
 import SelectorModal from './components/selector-modal';
@@ -85,6 +84,11 @@ const Board: React.FC<any> = (props: any) => {
     info: model.info,
   }));
 
+  const { channelList, getChannelList } = useModel('drawer' as any, (model: any) => ({
+    channelList: model.channelList,
+    getChannelList: model.getChannelList,
+  }));
+
   const [originInfo, setOriginInfo] = useState<any>({});
 
   const robotType: any = robotTypeMap[info.robotType] || '语音';
@@ -110,7 +114,8 @@ const Board: React.FC<any> = (props: any) => {
   // 打开备注
 
   useEffect(() => {
-    console.log(info);
+    // console.log(info);
+    getChannelList(info.id);
   }, [info]);
 
   useEffect(() => {
@@ -232,11 +237,13 @@ const Board: React.FC<any> = (props: any) => {
     });
     if (selectAllObj.length === 1) {
       let arr: any[] = [...newSet];
-      selectAllObj[0].channelList = CHANNAL_LIST.filter((subitem: any) => {
-        return !arr.includes(subitem.value);
-      }).map((subitem: any) => {
-        return subitem.value;
-      });
+      selectAllObj[0].channelList = channelList
+        .filter((subitem: any) => {
+          return !arr.includes(subitem.value);
+        })
+        .map((subitem: any) => {
+          return subitem.value;
+        });
     }
     form.setFieldsValue({
       answerList: [..._list],
@@ -608,7 +615,7 @@ const Board: React.FC<any> = (props: any) => {
                               ]}
                             >
                               <SpCheckbox
-                                list={CHANNAL_LIST}
+                                list={channelList}
                                 onChange={(val: any[]) => {
                                   changeCheckbox(index, val);
                                 }}

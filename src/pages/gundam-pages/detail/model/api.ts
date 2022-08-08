@@ -108,28 +108,28 @@ export async function _editFAQ(data?: { [key: string]: any }) {
 }
 
 export async function getChannelConfigList(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/robot/config/channelList`, {
+  return request(`${baseUrl}/robot/channel/list`, {
     method: 'GET',
     params,
   });
 }
 
 export async function addNewChannelConfig(data?: { [key: string]: any }) {
-  return request(`${baseUrl}/robot/config/addChannel`, {
+  return request(`${baseUrl}/robot/channel/add`, {
     method: 'POST',
     data,
   });
 }
 
 export async function editChannelConfig(data?: { [key: string]: any }) {
-  return request(`${baseUrl}/robot/config/updateChannel`, {
+  return request(`${baseUrl}/robot/channel/update`, {
     method: 'POST',
     data,
   });
 }
 
 export async function deleteChannelConfig(data?: { [key: string]: any }) {
-  return request(`${baseUrl}/robot/config/deleteChannel`, {
+  return request(`${baseUrl}/robot/channel/delete`, {
     method: 'POST',
     data,
   });
