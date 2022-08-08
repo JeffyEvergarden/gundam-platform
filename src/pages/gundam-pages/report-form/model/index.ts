@@ -1,5 +1,12 @@
 import { useState } from 'react';
-import { visitorList, session, questionMatch, reject, faqAndClareList } from './api';
+import {
+  visitorList,
+  session,
+  questionMatch,
+  reject,
+  faqAndClareList,
+  searchAssociationList,
+} from './api';
 
 export const useReportForm = () => {
   const [tableLoading, setTableLoading] = useState<boolean>(false);
@@ -39,12 +46,20 @@ export const useReportForm = () => {
     return res;
   };
 
+  const searchAssociation = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await searchAssociationList(params);
+    setTableLoading(false);
+    return res;
+  };
+
   return {
     getVisitorList,
     getDialogue,
     question,
     rejectList,
     getFaqAndClareList,
+    searchAssociation,
     tableLoading,
   };
 };

@@ -6,6 +6,7 @@ import {
   addBlackListBatch,
   getintentAddBatch,
   getfaqAddBatch,
+  deleteQuetion,
 } from './api';
 
 export const useUnknownQuestion = () => {
@@ -46,6 +47,13 @@ export const useUnknownQuestion = () => {
     return res;
   };
 
+  const delUnknownquestion = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await deleteQuetion(params);
+    setTableLoading(false);
+    return res;
+  };
+
   return {
     getList,
     tableLoading,
@@ -53,5 +61,6 @@ export const useUnknownQuestion = () => {
     addBlackBatch,
     intentAddBatch,
     faqAddBatch,
+    delUnknownquestion,
   };
 };

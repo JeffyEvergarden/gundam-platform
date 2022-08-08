@@ -1,22 +1,27 @@
 import SelectFaqModal from '@/pages/gundam-pages/FAQ-module/components/select-faq-modal';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Button, message, Modal, Popconfirm, Tooltip } from 'antd';
+import { Button, message, Modal, Popconfirm, Tooltip, Tabs } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
 import { useDetailModel, useWhiteModel } from '../../model';
 import style from './style.less';
 
+const { TabPane } = Tabs;
+
 const DetailList: React.FC = (props: any) => {
   const [detailInfo, setDetailInfo] = useState<any>();
-  const { resData, list, totalPage, getList, sampleTransfer, loading, SLoading } = useDetailModel();
+  const { resData, list, totalPage, getList, sampleTransfer, loading, SLoading, unsimilarList } =
+    useDetailModel();
   const { addWhite } = useWhiteModel();
   const DetailTableRef = useRef<any>({});
   const selectFaqModalRef = useRef<any>({});
+  const unSimilarTableRef = useRef<any>({});
 
   const [visible, setVisible] = useState<any>(false);
   const [selectInfo, setSelectInfo] = useState<any>();
   const [selectNum, setSelectNum] = useState<any>();
+  const [tabkey, setTabKey] = useState<any>('1');
 
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -125,9 +130,15 @@ const DetailList: React.FC = (props: any) => {
                   textOneType: row.textOneType == 'similar' ? 'faq' : row.textOneType,
                   textTwoType: row.textTwoType == 'similar' ? 'faq' : row.textTwoType,
                   detailId: row.id,
+                  source: row.source,
                 }).then((res: any) => {
                   if (res) {
-                    DetailTableRef?.current?.reload();
+                    if (tabkey == '1') {
+                      DetailTableRef?.current?.reload();
+                    }
+                    if (tabkey == '2') {
+                      unSimilarTableRef?.current?.reload();
+                    }
                   }
                 });
               }}
@@ -207,7 +218,12 @@ const DetailList: React.FC = (props: any) => {
     const query: any = history?.location?.state;
     console.log(history);
     setDetailInfo(query?.info);
-    DetailTableRef?.current?.reload();
+    if (tabkey == '1') {
+      DetailTableRef?.current?.reload();
+    }
+    if (tabkey == '2') {
+      unSimilarTableRef?.current?.reload();
+    }
   }, []);
 
   // 确认FAQ/意图模态框 的选择
@@ -244,7 +260,12 @@ const DetailList: React.FC = (props: any) => {
     }
     if (res) {
       setVisible(false);
-      DetailTableRef?.current?.reload();
+      if (tabkey == '1') {
+        DetailTableRef?.current?.reload();
+      }
+      if (tabkey == '2') {
+        unSimilarTableRef?.current?.reload();
+      }
       return true;
     }
     return false;
@@ -294,66 +315,34 @@ const DetailList: React.FC = (props: any) => {
     }
     if (res) {
       setVisible(false);
-      DetailTableRef?.current?.reload();
+      if (tabkey == '1') {
+        DetailTableRef?.current?.reload();
+      }
+      if (tabkey == '2') {
+        unSimilarTableRef?.current?.reload();
+      }
     }
+  };
+
+  const tabsChange = (activeKey: any) => {
+    setTabKey(activeKey);
   };
 
   return (
     <div className={`${style['machine-page']} list-page`}>
       <div className={style['page_top']}>
         <div className={style['page_top__left']}>
-          <ArrowLeftOutlined
-            className={style['blue']}
-            style={{ marginRight: '6px' }}
-            onClick={() => {
-              history.push('/gundamPages/knowledgeLearn/batchTest');
-            }}
-          />
-          检测批次ID：{(detailInfo?.id || resData?.id || history?.location?.query?.batchId) ?? '-'}
-        </div>
-      </div>
-      <ProTable<any>
-        columns={columns}
-        actionRef={DetailTableRef}
-        scroll={{ x: columns.length * 200 }}
-        request={async (params = {}, sort, filter) => {
-          // console.log(sort, filter);
-          return getList({
-            robotId: info.id,
-            page: params.current,
-            batchId: detailInfo?.id || history?.location?.query?.batchId,
-            ...params,
-          });
-          // return {};
-        }}
-        editable={{
-          type: 'multiple',
-        }}
-        columnsState={{
-          persistenceKey: 'pro-table-machine-list',
-          persistenceType: 'localStorage',
-        }}
-        rowKey="id"
-        search={{
-          labelWidth: 'auto',
-        }}
-        form={{
-          // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
-          // 查询参数转化
-          syncToUrl: (values, type) => {
-            if (type === 'get') {
-              return {
-                ...values,
-              };
-            }
-            return values;
-          },
-        }}
-        pagination={{
-          pageSize: 10,
-        }}
-        dateFormatter="string"
-        headerTitle={
+          <span>
+            <ArrowLeftOutlined
+              className={style['blue']}
+              style={{ marginRight: '6px' }}
+              onClick={() => {
+                history.push('/gundamPages/knowledgeLearn/batchTest');
+              }}
+            />
+            检测批次ID：
+            {(detailInfo?.id || resData?.id || history?.location?.query?.batchId) ?? '-'}
+          </span>
           <span>
             本次检测样本总量
             <span style={{ color: '#1890FF' }}>{resData?.sampleTotal ?? '-'}</span>
@@ -362,10 +351,107 @@ const DetailList: React.FC = (props: any) => {
             ，已复核
             <span style={{ color: '#1890FF' }}>{resData?.reviewAmount ?? '-'}</span>
           </span>
-        }
-        // toolBarRender={() => []}
-      />
-
+        </div>
+      </div>
+      <Tabs
+        defaultActiveKey="1"
+        size={'large'}
+        style={{ width: '100%', backgroundColor: '#fff', paddingLeft: '10px', marginBottom: 0 }}
+        onChange={tabsChange}
+      >
+        <TabPane tab="相似检测" key="1">
+          <ProTable<any>
+            columns={columns}
+            actionRef={DetailTableRef}
+            scroll={{ x: columns.length * 200 }}
+            request={async (params = {}, sort, filter) => {
+              // console.log(sort, filter);
+              return getList({
+                source: 0,
+                robotId: info.id,
+                page: params.current,
+                batchId: detailInfo?.id || history?.location?.query?.batchId,
+                ...params,
+              });
+              // return {};
+            }}
+            editable={{
+              type: 'multiple',
+            }}
+            columnsState={{
+              persistenceKey: 'pro-table-machine-list',
+              persistenceType: 'localStorage',
+            }}
+            rowKey="id"
+            search={{
+              labelWidth: 'auto',
+            }}
+            form={{
+              // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
+              // 查询参数转化
+              syncToUrl: (values, type) => {
+                if (type === 'get') {
+                  return {
+                    ...values,
+                  };
+                }
+                return values;
+              },
+            }}
+            pagination={{
+              pageSize: 10,
+            }}
+            dateFormatter="string"
+            toolBarRender={() => []}
+          />
+        </TabPane>
+        <TabPane tab="不相似检测" key="2">
+          <ProTable
+            columns={columns}
+            actionRef={unSimilarTableRef}
+            scroll={{ x: columns.length * 200 }}
+            request={async (params = {}, sort, filter) => {
+              // console.log(sort, filter);
+              return unsimilarList({
+                source: 1,
+                robotId: info.id,
+                page: params.current,
+                batchId: detailInfo?.id || history?.location?.query?.batchId,
+                ...params,
+              });
+              // return {};
+            }}
+            editable={{
+              type: 'multiple',
+            }}
+            columnsState={{
+              persistenceKey: 'pro-table-machine-list',
+              persistenceType: 'localStorage',
+            }}
+            rowKey="id"
+            search={{
+              labelWidth: 'auto',
+            }}
+            form={{
+              // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
+              // 查询参数转化
+              syncToUrl: (values, type) => {
+                if (type === 'get') {
+                  return {
+                    ...values,
+                  };
+                }
+                return values;
+              },
+            }}
+            pagination={{
+              pageSize: 10,
+            }}
+            dateFormatter="string"
+            toolBarRender={() => []}
+          />
+        </TabPane>
+      </Tabs>
       <SelectFaqModal
         cref={selectFaqModalRef}
         confirm={confirmUpdateSelect}

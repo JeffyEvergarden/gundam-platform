@@ -77,6 +77,8 @@ export default () => {
     );
   };
 
+  const exportSessionList = () => {};
+
   const toRecord = (row: any) => {
     chatRecordModalRef.current?.open?.(row);
   };
@@ -195,6 +197,7 @@ export default () => {
         <HeadSearch
           choseTime={choseTime}
           exportReportForm={exportReportForm}
+          exportSessionList={exportSessionList}
           pageType={'visitorSession'}
         />
         <div className={styles.Table_box}>

@@ -3,7 +3,7 @@ import ChatRecordModal from '@/pages/gundam-pages/FAQ-module/components/chat-rec
 import { throttle, toNumber } from '@/utils';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Modal, Space } from 'antd';
+import { Modal, Space, Button } from 'antd';
 import classNames from 'classnames';
 import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
@@ -306,6 +306,8 @@ export default () => {
     chatRecordModalRef.current?.open?.(row);
   };
 
+  const exportList = () => {};
+
   const columnsReject: any = [
     {
       dataIndex: 'message',
@@ -414,11 +416,17 @@ export default () => {
           destroyOnClose={true}
           title={'拒识明细'}
           footer={null}
+          wrapClassName={styles.rejectListModal}
         >
           <ProTable
             rowKey={(record: any) => record.dayId}
             headerTitle={false}
-            toolBarRender={false}
+            toolBarRender={() => [
+              <Button key="exportBtn" onClick={exportList}>
+                导出
+              </Button>,
+            ]}
+            options={false}
             bordered
             pagination={{
               pageSize: 10,

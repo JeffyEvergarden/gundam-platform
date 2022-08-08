@@ -36,3 +36,10 @@ export async function getfaqAddBatch(params?: Record<string, any>) {
     data: params,
   });
 }
+
+export async function deleteQuetion(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/deleteQuetion`, {
+    method: 'POST',
+    data: params,
+  });
+}

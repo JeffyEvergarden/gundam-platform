@@ -233,7 +233,16 @@ const LineChartPage: React.FC<any> = (props: any) => {
     arr.forEach((item: any, index: number) => {
       let label = item.seriesName;
       let value;
-      let percentName = ['明确回答率', '匹配率', '澄清确认率', '推荐确认率'];
+      let percentName = [
+        '明确回答率',
+        '匹配率',
+        '澄清确认率',
+        '推荐确认率',
+        '联想使用率',
+        '联想有结果率',
+        '联想点击率',
+        '联想Top3点击率',
+      ];
       if (percentName.includes(item.seriesName)) {
         if (item.value == 0) {
           value = '0.00%';

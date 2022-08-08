@@ -1,5 +1,5 @@
 import Condition from '@/components/Condition';
-import { Checkbox, DatePicker, Form, InputNumber, Modal, Select } from 'antd';
+import { Checkbox, DatePicker, Form, InputNumber, message, Modal, Select } from 'antd';
 import moment from 'moment';
 import React, { useImperativeHandle, useRef, useState } from 'react';
 import { useModel } from 'umi';
@@ -54,7 +54,10 @@ const TestPlanModal: React.FC<any> = (props: any) => {
       robotId: info.id,
       firstTestingTime: values?.firstTestingTime?.format('YYYY-MM-DD HH:mm:ss'),
     };
-
+    // if (values?.unThreshold >= values?.threshold) {
+    //   message.warning('【不相似阈值】必须小于【相似阈值】');
+    //   return;
+    // }
     let res: any;
     if (pageType == 'plan') {
       res = await saveTest(reqData);
@@ -156,12 +159,37 @@ const TestPlanModal: React.FC<any> = (props: any) => {
           </Condition>
 
           <div className={style['icon-box']}>
-            <FormItem style={{ marginRight: '6px' }}>相似度阈值：</FormItem>
+            <FormItem style={{ marginRight: '6px' }}>相似阈值：</FormItem>
             <FormItem
               rules={[{ required: true, message: '请输入' }]}
               name="threshold"
               style={{ width: '100px' }}
               initialValue={0.9}
+            >
+              <InputNumber min="0" max="1" step="0.01" precision={2} />
+            </FormItem>
+          </div>
+          <div className={style['icon-box']}>
+            <FormItem style={{ marginRight: '6px' }}>不相似阈值：</FormItem>
+            <FormItem
+              validateTrigger="onBlur"
+              rules={[
+                { required: true, message: '请输入' },
+                () => ({
+                  async validator(_, value) {
+                    if (value === undefined) {
+                      return;
+                    }
+                    if (value >= form.getFieldValue('threshold')) {
+                      return Promise.reject(new Error('【不相似阈值】必须小于【相似阈值】'));
+                    }
+                    return Promise.resolve();
+                  },
+                }),
+              ]}
+              name="unThreshold"
+              style={{ width: '100px' }}
+              initialValue={0.5}
             >
               <InputNumber min="0" max="1" step="0.01" precision={2} />
             </FormItem>
@@ -197,7 +225,7 @@ const TestPlanModal: React.FC<any> = (props: any) => {
                 style={{ marginRight: '6px' }}
                 rules={[{ required: check, message: '请输入' }]}
               >
-                <InputNumber min={1} max={12}></InputNumber>
+                <InputNumber min={1} max={12} />
               </FormItem>
               <FormItem>个月之前的检测结果明细数据</FormItem>
             </div>

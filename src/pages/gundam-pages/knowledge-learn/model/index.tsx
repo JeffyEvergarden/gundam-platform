@@ -126,9 +126,27 @@ export const useDetailModel = () => {
       setResData({});
     }
     setLoading(false);
-    return { data, total: res?.data?.totalPage };
+    return { data: data, total: res?.data?.totalPage };
   };
 
+  const unsimilarList = async (params: any) => {
+    setLoading(true);
+    let res = await getDetailList(params);
+    console.log(res);
+    let data: any = [];
+    if (res.resultCode == successCode) {
+      data = res?.data?.list || [];
+      setList(data);
+      setTotalPage(res?.data?.totalPage);
+      setResData(res?.data);
+    } else {
+      setList([]);
+      setTotalPage(0);
+      setResData({});
+    }
+    setLoading(false);
+    return { data: data, total: res?.data?.totalPage };
+  };
   const sampleTransfer = async (params: any) => {
     setSLoading(true);
     let res = await _sampleTransfer(params);
@@ -148,6 +166,7 @@ export const useDetailModel = () => {
     totalPage,
     sampleTransfer,
     getList,
+    unsimilarList,
     loading,
     SLoading,
   };

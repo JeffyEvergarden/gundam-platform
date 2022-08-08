@@ -41,8 +41,18 @@ const TestPages: React.FC = (props: any) => {
       width: 180,
     },
     {
-      title: '检测阈值',
+      title: '相似阈值',
       dataIndex: 'threshold',
+      search: false,
+      width: 200,
+      ellipsis: true,
+      render: (val: any, row: any) => {
+        return val;
+      },
+    },
+    {
+      title: '不相似阈值',
+      dataIndex: 'unThreshold',
       search: false,
       width: 200,
       ellipsis: true,
