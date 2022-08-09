@@ -15,3 +15,10 @@ export async function sessionList(params?: Record<string, any>) {
     params,
   });
 }
+
+export async function delStard(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/knowledgeLearn/delStard`, {
+    method: 'GET',
+    params,
+  });
+}

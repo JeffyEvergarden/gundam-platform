@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { Modal, Space } from 'antd';
+import { Button, Modal, Space } from 'antd';
 import ChatRecordModal from '@/pages/gundam-pages/FAQ-module/components/chat-record-modal';
 import ProTable from '@ant-design/pro-table';
 import { channelMap } from '@/pages/gundam-pages/FAQ/const';
 import { useSessionList } from './model';
 import { history, useModel } from 'umi';
+import styles from './index.less';
 
 export default (props: any) => {
   const { visible, onCancel, modalData } = props;
@@ -76,6 +77,8 @@ export default (props: any) => {
     },
   ];
 
+  const exportList = () => {};
+
   return (
     <Modal
       visible={visible}
@@ -84,11 +87,17 @@ export default (props: any) => {
       title={'会话明细'}
       footer={null}
       width={600}
+      wrapClassName={styles.sessionListModal}
     >
       <ProTable
         rowKey={(record: any) => record.id}
         headerTitle={false}
-        toolBarRender={false}
+        toolBarRender={() => [
+          <Button key="exportBtn" onClick={exportList}>
+            导出
+          </Button>,
+        ]}
+        options={false}
         bordered
         actionRef={actionRef}
         pagination={{

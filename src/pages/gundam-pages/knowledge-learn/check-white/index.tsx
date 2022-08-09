@@ -62,6 +62,16 @@ const WhiteListPages: React.FC = (props: any) => {
       width: 200,
     },
     {
+      title: '来源',
+      dataIndex: 'source',
+      search: false,
+      width: 200,
+      valueEnum: {
+        0: '相似检测',
+        1: '不相似检测',
+      },
+    },
+    {
       title: '添加时间',
       dataIndex: 'createTime',
       search: false,

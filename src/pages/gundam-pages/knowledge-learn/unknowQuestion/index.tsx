@@ -24,6 +24,7 @@ export default () => {
     addBlackBatch,
     intentAddBatch,
     faqAddBatch,
+    delUnknownquestion,
     tableLoading: batchLoading,
   } = useUnknownQuestion();
   // const { intentAdd } = useSampleModel();
@@ -387,6 +388,16 @@ export default () => {
     return current && current > moment().subtract(0, 'days').endOf('day');
   };
 
+  const delQustiopn = async (r: any) => {
+    let res = await delUnknownquestion({ id: r.id });
+    if (res.resultCode === config.successCode) {
+      message.success(res?.resultDesc || '成功');
+      actionRef?.current?.reloadAndRest();
+    } else {
+      message.error(res?.resultDesc || '失败');
+    }
+  };
+
   const columns: any = [
     {
       dataIndex: 'question',
@@ -472,7 +483,7 @@ export default () => {
     {
       title: '操作',
       key: 'option',
-      width: 200,
+      width: 250,
       fixed: 'right',
       valueType: 'option',
       render: (text: any, record: any, _: any, action: any) => {
@@ -499,6 +510,17 @@ export default () => {
             >
               <a key="black" style={{ color: '#FF4D4F' }}>
                 黑名单
+              </a>
+            </Popconfirm>
+            <Popconfirm
+              title="确认删除该未知问题？"
+              onConfirm={() => delQustiopn(record)}
+              onCancel={() => {}}
+              okText="确定"
+              cancelText="取消"
+            >
+              <a key="black" style={{ color: '#FF4D4F' }}>
+                删除
               </a>
             </Popconfirm>
           </Space>

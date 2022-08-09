@@ -247,10 +247,63 @@ const faqAndClarify = (req: any, res: any) => {
   });
 };
 
+const searchAssociationList = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    data: {
+      totalPage: 7,
+      pageSize: 10,
+      page: 1,
+      list: [
+        {
+          id: '1',
+          dayId: '2022-04-12',
+          dayId1: '100',
+          dayId2: '200',
+          dayId3: '300',
+          dayId4: '40.00%',
+          dayId5: '150',
+          dayId6: '75.00%',
+          dayId7: '33.33%',
+          dayId8: '3.2',
+          dayId9: '20.00%',
+        },
+        {
+          id: '2',
+          dayId: '2022-04-13',
+          dayId1: '200',
+          dayId2: '300',
+          dayId3: '400',
+          dayId4: '50.00%',
+          dayId5: '250',
+          dayId6: '85.00%',
+          dayId7: '43.33%',
+          dayId8: '5.2',
+          dayId9: '50.00%',
+        },
+        {
+          id: '3',
+          dayId: '2022-04-14',
+          dayId1: '100',
+          dayId2: '200',
+          dayId3: '300',
+          dayId4: '40.00%',
+          dayId5: '150',
+          dayId6: '75.00%',
+          dayId7: '33.33%',
+          dayId8: '3.2',
+          dayId9: '20.00%',
+        },
+      ],
+    },
+  });
+};
+
 export default {
   'GET /aichat/robot/statistics/visitor': visitor,
   'GET /aichat/robot/statistics/session': session,
   'GET /aichat/robot/statistics/questionMatch': questionMatch,
   'GET /aichat/robot/statistics/questionMatch/rejectRateDetail': reject,
   'GET /aichat/robot/statistics/faqAndClarify': faqAndClarify,
+  'GET /aichat/robot/statistics/searchAssociationList': searchAssociationList,
 };

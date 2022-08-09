@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { unknownQuestionByFaqPageList } from './api';
+import { unknownQuestionByFaqPageList, delStard } from './api';
 
 export const useStandard = () => {
   const [tableLoading, setTableLoading] = useState<boolean>(false);
@@ -12,8 +12,16 @@ export const useStandard = () => {
     return res;
   };
 
+  const delStardQuestion = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await delStard(params);
+    setTableLoading(false);
+    return res;
+  };
+
   return {
     getListUnknown,
+    delStardQuestion,
     tableLoading,
   };
 };

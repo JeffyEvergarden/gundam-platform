@@ -40,3 +40,11 @@ export async function faqAndClareList(params?: Record<string, any>) {
     params,
   });
 }
+
+/** 联想**/
+export async function searchAssociationList(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/statistics/searchAssociationList`, {
+    method: 'GET',
+    params,
+  });
+}

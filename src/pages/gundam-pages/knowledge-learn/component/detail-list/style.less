@@ -11,6 +11,9 @@
     padding-bottom: 0;
 
     &__left {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
       font-weight: 400;
       font-size: 20px;
     }
@@ -18,6 +21,16 @@
     &__right {
       display: flex;
       flex-wrap: nowrap;
+    }
+  }
+  :global {
+    .ant-tabs-top > .ant-tabs-nav {
+      margin: 0;
+    }
+    .ant-pro-table .ant-pro-table-search {
+      margin-bottom: 0;
+      padding: 24px 0 0;
+      padding-right: 24px;
     }
   }
 }

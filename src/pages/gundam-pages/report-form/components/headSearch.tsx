@@ -9,7 +9,7 @@ const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 export default (props: any) => {
-  const { choseTime, exportReportForm, pageType } = props;
+  const { choseTime, exportReportForm, exportSessionList, pageType } = props;
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -119,9 +119,16 @@ export default (props: any) => {
           })}
         </Select>
       </Space>
-      <Button type="primary" onClick={exportForm}>
-        导出报表
-      </Button>
+      <Space>
+        <Button type="primary" onClick={exportForm}>
+          导出报表
+        </Button>
+        {pageType === 'visitorSession' && (
+          <Button type="primary" onClick={exportSessionList}>
+            导出会话明细
+          </Button>
+        )}
+      </Space>
     </div>
   );
 };

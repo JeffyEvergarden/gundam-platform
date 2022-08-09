@@ -19,7 +19,7 @@ export default () => {
   const answerViewRef = useRef<any>(null);
   const selectFaqModalRef = useRef<any>();
 
-  const { getListUnknown } = useStandard();
+  const { getListUnknown, delStardQuestion } = useStandard();
   const { getSimilarList, addSimilar, tableLoading: similarLoading } = useSimilarModel();
   const { getList, intentAdd, tableLoading: intentAddLoading } = useSampleModel();
   const {
@@ -411,6 +411,16 @@ export default () => {
     }
   };
 
+  const delStard = async (r: any) => {
+    let res = await delStardQuestion({ id: r.id });
+    if (res.resultCode === config.successCode) {
+      message.success(res?.resultDesc || '成功');
+      actionRef?.current?.reloadAndRest();
+    } else {
+      message.error(res?.resultDesc || '失败');
+    }
+  };
+
   const columns: any = [
     {
       dataIndex: 'question',
@@ -484,6 +494,17 @@ export default () => {
             >
               <a key="black" style={{ color: '#FF4D4F' }}>
                 黑名单
+              </a>
+            </Popconfirm>
+            <Popconfirm
+              title="确认删除该未知问题?"
+              onConfirm={() => delStard(record)}
+              onCancel={() => {}}
+              okText="确定"
+              cancelText="取消"
+            >
+              <a key="black" style={{ color: '#FF4D4F' }}>
+                删除
               </a>
             </Popconfirm>
           </Space>
