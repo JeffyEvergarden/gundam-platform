@@ -1,3 +1,4 @@
+import config from '@/config';
 import ProTable from '@ant-design/pro-table';
 import { Button, Popconfirm } from 'antd';
 import React, { useRef } from 'react';
@@ -41,7 +42,14 @@ const DetailPages: React.FC = (props: any) => {
               type="link"
               style={{ color: '#1890ff !important' }}
               onClick={() => {
-                history.push('/gundamPages/effectEvaluation/sampleManager/sampleDetail');
+                // history.push({pathName:`/gundamPages/effectEvaluation/sampleManager/sampleDetail?sampleSetId=${row.sampleSetId}`
+                // });
+                history.push({
+                  pathname: `/gundamPages/effectEvaluation/sampleManager/sampleDetail`,
+                  state: {
+                    ...row,
+                  },
+                });
               }}
             >
               {row.sampleSetName}
@@ -91,7 +99,7 @@ const DetailPages: React.FC = (props: any) => {
               okText="确定"
               cancelText="取消"
               onConfirm={async () => {
-                await deleteSample(row).then((res) => {
+                await deleteSample({ ronotId: info.id, id: row.id }).then((res) => {
                   if (res) {
                     TableRef?.current?.reload();
                   }
@@ -112,7 +120,12 @@ const DetailPages: React.FC = (props: any) => {
               导入
             </Button>
 
-            <Button type="link" onClick={() => {}}>
+            <Button
+              type="link"
+              onClick={() => {
+                window.open(`${config.basePath}/robot/file/getFile?path=${row.failFilePath}`);
+              }}
+            >
               导出
             </Button>
           </div>

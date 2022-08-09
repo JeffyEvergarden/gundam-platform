@@ -3,6 +3,7 @@ import {
   CrownOutlined,
   DatabaseOutlined,
   FontColorsOutlined,
+  FormOutlined,
   LineChartOutlined,
   MessageOutlined,
   MonitorOutlined,
@@ -198,7 +199,7 @@ export default [
     ],
   },
   {
-    icon: <ReadOutlined />,
+    icon: <FormOutlined />,
     path: '/gundamPages/effectEvaluation',
     name: '效果评估',
     routes: [

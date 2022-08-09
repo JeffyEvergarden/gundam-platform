@@ -5,6 +5,7 @@ import { useModel } from 'umi';
 import EvaluationDetail from '../component/evaluationDetail';
 import EvaluationModal from '../component/evaluationModal';
 import { useSampleModel } from '../model';
+import style from '../sampleManager/style.less';
 
 const DetailPages: React.FC = (props: any) => {
   const TableRef = useRef<any>({});
@@ -114,7 +115,7 @@ const DetailPages: React.FC = (props: any) => {
   ];
 
   return (
-    <div>
+    <div className={`${style['machine-page']} list-page`}>
       <ProTable<any>
         columns={columns}
         actionRef={TableRef}

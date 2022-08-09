@@ -1,18 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useModel, useLocation, history } from 'umi';
-import { Table, Button, Upload, message } from 'antd';
-import ProTable from '@ant-design/pro-table';
-import style from './style.less';
-import {
-  ArrowLeftOutlined,
-  CloseOutlined,
-  DeleteOutlined,
-  DownloadOutlined,
-  PlusOutlined,
-} from '@ant-design/icons';
-import Condition from '@/components/Condition';
 import config from '@/config/index';
+import { ArrowLeftOutlined, DownloadOutlined, PlusOutlined } from '@ant-design/icons';
+import ProTable from '@ant-design/pro-table';
+import { Button, message, Upload } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
+import { history, useModel } from 'umi';
 import { useImportModal } from './model';
+import style from './style.less';
 
 // 导入列表
 const ImportPages: React.FC = (props: any) => {
@@ -115,7 +108,7 @@ const ImportPages: React.FC = (props: any) => {
                 disabled={!row.failFilePath}
                 onClick={() => {
                   // _changeStatus(row);
-                  console.log(`${config.basePath}/robot/file/getFile?path=${row.failFilePath}`);
+                  // console.log(`${config.basePath}/robot/file/getFile?path=${row.failFilePath}`);
 
                   window.open(`${config.basePath}/robot/file/getFile?path=${row.failFilePath}`);
                 }}

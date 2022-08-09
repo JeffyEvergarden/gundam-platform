@@ -50,8 +50,8 @@ const getDetailSampleList = (req: any, res: any) => {
       id: index + 1,
       robotId: '100',
       dialogueSample: '样本' + index, //对话样本
-      replyType: 1, //1明确回复 2澄清 3拒识
-      tagStatus: 1, //1未标注 2待确认 3已标注
+      replyType: Math.ceil(Math.random() * 3), //1明确回复 2澄清 3拒识
+      tagStatus: Math.ceil(Math.random() * 3), //1未标注 2待确认 3已标注
       faqIntentList: [
         {
           bizId: '1',
@@ -79,7 +79,9 @@ const getDetailSampleList = (req: any, res: any) => {
       page: 1,
       pageSize: 10,
       totalPage: 11,
-      nextTestTime: '2022-07-12',
+      tagNum: 2,
+      unTagNum: 1,
+      stayConfirmNum: 1,
       list: arr,
     },
   });
@@ -93,4 +95,9 @@ export default {
   'POST /aichat/robot/assess/sampleUpload': defaultList,
 
   'GET /aichat/robot/assess/sampleDetailListPage': getDetailSampleList,
+  'POST /aichat/robot/assess/sampleDetailAdd': defaultList,
+  'POST /aichat/robot/assess/sampleDetailBatchDelete': defaultList,
+  'POST /aichat/robot/assess/sampleDetailEdit': defaultList,
+  'POST /aichat/robot/assess/sampleDetailBatchConfirm': defaultList,
+  'POST /aichat/robot/assess/sampleDetailBatchTag': defaultList,
 };

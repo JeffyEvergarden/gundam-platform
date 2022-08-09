@@ -22,6 +22,7 @@ const ImportModal: React.FC<any> = (props: any) => {
   // const [form] = Form.useForm();
 
   const [visible, setVisible] = useState<boolean>(false);
+  const [visibleResult, setVisibleResult] = useState<boolean>(false);
   const [fileList, setFileList] = useState<any[]>([]);
   const [checkbox, setCheckbox] = useState<boolean>(false);
   const [row, setRow] = useState<any>();
@@ -86,46 +87,64 @@ const ImportModal: React.FC<any> = (props: any) => {
   };
 
   return (
-    <Modal
-      width={650}
-      title={`导入样本`}
-      visible={visible}
-      onCancel={() => {
-        setVisible(false);
-      }}
-      okText={'提交'}
-      onOk={submit}
-    >
-      <div style={{ paddingLeft: '24px' }}>
-        <Upload
-          {...option}
-          // action="localhost:8000"
-          accept={'.xlsx'}
-        >
-          <Button icon={<UploadOutlined />}>选择上传文件</Button>
-        </Upload>
-        <div className={style['form']}>
-          <div>
-            <span style={{ color: 'red' }}>*</span> 限.xlsx文件
-          </div>
-          <div>
-            <span style={{ color: 'red' }}>*</span> 单个样本集不超过10000条样本
-          </div>
-          <div className={style['checkbox']}>
-            <a>样板下载</a>
-          </div>
-          <div className={style['checkbox']}>
-            <Checkbox
-              checked={checkbox}
-              onChange={(e) => {
-                setCheckbox(e.target.checked);
-              }}
-            ></Checkbox>
-            <span className={style['cover']}>覆盖导入（导入新样本并清空样本集中原有样本）</span>
+    <div>
+      <Modal
+        width={650}
+        title={`导入样本`}
+        visible={visible}
+        onCancel={() => {
+          setVisible(false);
+        }}
+        okText={'提交'}
+        onOk={submit}
+      >
+        <div style={{ paddingLeft: '24px' }}>
+          <Upload
+            {...option}
+            // action="localhost:8000"
+            accept={'.xlsx'}
+          >
+            <Button icon={<UploadOutlined />}>选择上传文件</Button>
+          </Upload>
+          <div className={style['form']}>
+            <div>
+              <span style={{ color: 'red' }}>*</span> 限.xlsx文件
+            </div>
+            <div>
+              <span style={{ color: 'red' }}>*</span> 单个样本集不超过10000条样本
+            </div>
+            <div className={style['checkbox']}>
+              <a>样板下载</a>
+            </div>
+            <div className={style['checkbox']}>
+              <Checkbox
+                checked={checkbox}
+                onChange={(e) => {
+                  setCheckbox(e.target.checked);
+                }}
+              ></Checkbox>
+              <span className={style['cover']}>覆盖导入（导入新样本并清空样本集中原有样本）</span>
+            </div>
           </div>
         </div>
-      </div>
-    </Modal>
+      </Modal>
+
+      <Modal
+        width={650}
+        title={`导入结果`}
+        visible={visibleResult}
+        onCancel={() => {
+          setVisible(false);
+        }}
+        okText={'提交'}
+        onOk={submit}
+      >
+        <div style={{ paddingLeft: '24px' }}>
+          <div>导入完成，总样本70条，成功导入70条</div>
+          <a>结果下载</a>
+        </div>
+      </Modal>
+    </div>
   );
 };
 

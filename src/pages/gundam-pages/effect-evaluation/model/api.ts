@@ -47,3 +47,38 @@ export async function getDetailTable(params?: { [key: string]: any }) {
     params,
   });
 }
+
+export async function _addDetailSample(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/assess/sampleDetailAdd`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function _editDetailSample(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/assess/sampleDetailEdit`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function _deleteDetailSample(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/assess/sampleDetailBatchDelete`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function _confirmDetailSample(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/assess/sampleDetailBatchConfirm`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function _tagDetailSample(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/assess/sampleDetailBatchTag`, {
+    method: 'POST',
+    data,
+  });
+}
