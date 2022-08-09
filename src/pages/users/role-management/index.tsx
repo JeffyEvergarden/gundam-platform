@@ -61,15 +61,12 @@ const RoleManagement: React.FC = (props: any) => {
     let value = obj.value || [];
 
     let submitObj = {
-      root: value.map((item: any) => {
-        return {
-          operationCode: item,
-          roleCode: obj.code,
-        };
-      }),
+      roleCode: obj.code,
+      operationCodes: value,
     };
     let res = await updateAuth(submitObj);
     if (res) {
+      message.success('保存成功');
       // 操作成功返回列表
       drawerRef.current?.close?.();
       (tableRef.current as any).reload();
