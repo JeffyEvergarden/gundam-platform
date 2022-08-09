@@ -1,7 +1,18 @@
 import config from '@/config/index';
 import { message } from 'antd';
 import { useState } from 'react';
-import { getDetailTable, getTable, _addSample, _deleteSample, _editSample } from './api';
+import {
+  getDetailTable,
+  getTable,
+  _addDetailSample,
+  _addSample,
+  _confirmDetailSample,
+  _deleteDetailSample,
+  _deleteSample,
+  _editDetailSample,
+  _editSample,
+  _tagDetailSample,
+} from './api';
 
 export const successCode = config.successCode;
 
@@ -72,6 +83,9 @@ export const useSampleModel = () => {
 export const useDetailSampleModel = () => {
   const [tableList, setTableList] = useState<any>();
   const [Loading, setLoading] = useState<boolean>(false);
+  const [result, setResult] = useState<any>({});
+  const [addLoading, setAddLoading] = useState<boolean>(true);
+  const [editLoading, setEditLoading] = useState<boolean>(true);
 
   const getList = async (params?: any) => {
     setLoading(true);
@@ -79,6 +93,7 @@ export const useDetailSampleModel = () => {
 
     if (res.resultCode == successCode) {
       setTableList(res?.data?.list);
+      setResult(res?.data);
     } else {
       setTableList([]);
     }
@@ -90,8 +105,10 @@ export const useDetailSampleModel = () => {
     };
   };
 
-  const addSample = async (params?: any) => {
-    let res: any = await _addSample(params);
+  const addDetailSample = async (params?: any) => {
+    setAddLoading(false);
+    let res: any = await _addDetailSample(params);
+    setAddLoading(true);
     if (res.resultCode == successCode) {
       message.success(res.resultDesc);
       return true;
@@ -101,8 +118,10 @@ export const useDetailSampleModel = () => {
     }
   };
 
-  const editSample = async (params?: any) => {
-    let res: any = await _editSample(params);
+  const editDetailSample = async (params?: any) => {
+    setEditLoading(true);
+    let res: any = await _editDetailSample(params);
+    setEditLoading(false);
     if (res.resultCode == successCode) {
       message.success(res.resultDesc);
       return true;
@@ -112,8 +131,30 @@ export const useDetailSampleModel = () => {
     }
   };
 
-  const deleteSample = async (params?: any) => {
-    let res: any = await _deleteSample(params);
+  const deleteDetailSample = async (params?: any) => {
+    let res: any = await _deleteDetailSample(params);
+    if (res.resultCode == successCode) {
+      message.success(res.resultDesc);
+      return true;
+    } else {
+      message.error(res.resultDesc);
+      return false;
+    }
+  };
+
+  const confirmDetailSample = async (params?: any) => {
+    let res: any = await _confirmDetailSample(params);
+    if (res.resultCode == successCode) {
+      message.success(res.resultDesc);
+      return true;
+    } else {
+      message.error(res.resultDesc);
+      return false;
+    }
+  };
+
+  const tagDetailSample = async (params?: any) => {
+    let res: any = await _tagDetailSample(params);
     if (res.resultCode == successCode) {
       message.success(res.resultDesc);
       return true;
@@ -124,11 +165,16 @@ export const useDetailSampleModel = () => {
   };
 
   return {
+    addLoading,
+    result,
     tableList,
     Loading,
+    editLoading,
     getList,
-    addSample,
-    editSample,
-    deleteSample,
+    addDetailSample,
+    editDetailSample,
+    deleteDetailSample,
+    confirmDetailSample,
+    tagDetailSample,
   };
 };

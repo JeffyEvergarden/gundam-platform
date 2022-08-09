@@ -273,7 +273,7 @@ const FAQPage: React.FC<any> = (props: any) => {
                 title={() => {
                   return (
                     <div style={{ maxWidth: '180px' }}>
-                      从问题回收站删除问题将彻底清除该问题所有相关记录，是否确认删除？
+                      删除问题将会一并删除与之相关的答案、相似问法，确认删除问题？（删除的问题可在知识库回收站中找回）
                     </div>
                   );
                 }}

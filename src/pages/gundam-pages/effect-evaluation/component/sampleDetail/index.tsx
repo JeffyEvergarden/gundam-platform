@@ -1,236 +1,130 @@
-import config from '@/config';
-import { ArrowLeftOutlined, DownOutlined } from '@ant-design/icons';
+import Condition from '@/components/Condition';
+import SelectFaqModal from '@/pages/gundam-pages/FAQ-module/components/select-faq-modal';
+import {
+  ArrowLeftOutlined,
+  DownOutlined,
+  MonitorOutlined,
+  QuestionCircleOutlined,
+} from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Button, DatePicker, Dropdown, Input, Menu, message, Popconfirm, Space } from 'antd';
-import moment from 'moment';
-import React, { Fragment, useRef, useState } from 'react';
+import {
+  Button,
+  DatePicker,
+  Dropdown,
+  Form,
+  Input,
+  Menu,
+  message,
+  Modal,
+  Popconfirm,
+  Select,
+  Space,
+  Tooltip,
+} from 'antd';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
 import { useDetailSampleModel } from '../../model';
 import style from './style.less';
 
 const { RangePicker } = DatePicker;
+const { Option } = Select;
+const { Item: FormItem } = Form;
+
+const replyTypeList = [
+  {
+    key: '明确回复',
+    value: 1,
+  },
+  {
+    key: '澄清',
+    value: 2,
+  },
+  {
+    key: '拒识',
+    value: 3,
+  },
+];
+
+const tagStatusList = {
+  1: '未标注',
+  2: '待确认',
+  3: '已标注',
+};
 
 const DetailPages: React.FC = (props: any) => {
   const actionRef = useRef<any>();
   const selectFaqModalRef = useRef<any>();
+  const selectFaqModalRef1 = useRef<any>();
+  const [form] = Form.useForm();
 
-  const { getList } = useDetailSampleModel();
+  const {
+    editLoading,
+    addLoading,
+    result,
+    getList,
+    addDetailSample,
+    deleteDetailSample,
+    editDetailSample,
+    confirmDetailSample,
+    tagDetailSample,
+  } = useDetailSampleModel();
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
-
-  const [learnNum, setLearnNum] = useState<number>(0);
-  const [standardNum, setStandardNum] = useState<number>(0);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [selectRow, setSelectRow] = useState<any>([]);
-  const [menulabel, setMenuLabel] = useState<string>('批量处理');
+  const [menulabel, setMenuLabel] = useState<string>('批量确认');
 
-  const [visibleSession, setVisibleSession] = useState<boolean>(false);
-  const [modalData, setModalData] = useState<any>({});
-  // const [disaAbledData, setDisAbledData] = useState<any>();
-  const [datasource, setDataSource] = useState<any>([]);
+  const [visible, setVisible] = useState<boolean>(false);
+
   const [operation, setOperation] = useState<string>('');
-  const [paramsObj, setParamsObj] = useState<any>({ orderCode: '2', orderType: '2' });
+  const [paramsObj, setParamsObj] = useState<any>({});
+  const [outRow, setOutRow] = useState<any>();
+  const [searchText, setSearchText] = useState<string>('');
+  const [addText, setAddText] = useState<string>('');
+  const [editId, setEditId] = useState<string>('');
 
   const rowSelection = {
+    selectedRowKeys,
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
       setSelectedRowKeys(selectedRowKeys);
       setSelectRow(selectedRows);
     },
   };
 
-  const handleMenuClick = async (item: any) => {
-    if (selectRow.length > 0) {
-      if (item.key == '2') {
-        setMenuLabel('批量添加');
-        setOperation('addBatch');
-        (selectFaqModalRef.current as any)?.open({
-          selectList: [], //被选中列表
-          selectedQuestionKeys: [], // 已选问题
-          selectedWishKeys: [], // 已选意图
-          question: '批量添加',
-          operation: 'batch',
-          questionList: selectRow,
-        });
-      }
-    } else {
-      message.warning('至少选择一个问题');
-    }
-  };
-
-  const onConfirm = async () => {
-    setMenuLabel('批量加入黑名单');
-    let temp: any = [];
-    selectRow.map((item: any) => {
-      temp.push({
-        question: item.question,
-        unknownId: item.id,
-      });
-    });
-    let params = {
-      robotId: info.id,
-      blacklistQuestionList: temp,
-    };
-  };
-
-  const cancelSession = () => {
-    setVisibleSession(false);
-  };
-
-  const clarify = (r: any) => {
-    (selectFaqModalRef.current as any)?.open({
-      selectList: [], //被选中列表
-      selectedQuestionKeys: [], // 已选问题
-      selectedWishKeys: [], // 已选意图
-      question: r.question,
-    });
-    setOperation('clarify');
-    setModalData(r);
-  };
-
   const confirmUpdateSelect = async (val: any, inputValue: any) => {
+    console.log(val);
     if (!val.length) {
       message.warning('请选择FAQ/意图');
       return false;
     }
-    if (!inputValue) {
-      message.warning('请输入相似语料或者相似问');
-      return false;
-    }
-    if (operation == 'addBatch' && inputValue.some((item: any) => item.question == '')) {
-      message.warning('请输入相似语料或者相似问');
-      return false;
-    }
-    let resAdd: any = {};
-    // 澄清
-    if (operation == 'clarify') {
-      let addParams = {
-        robotId: info.id,
-        question: inputValue,
-        unknownId: modalData.id,
-        clarifyDetailList: val,
-      };
-      resAdd = await addClearItem(addParams);
-      if (resAdd) {
-        actionRef.current.reloadAndRest();
-        return true;
-      } else {
-        return false;
-      }
-    } else if (operation == 'addBatch' || operation == '') {
-      let params;
-      if (operation == 'addBatch') {
-        //批量添加
-        let temp: any = [];
-        inputValue.map((item: any) => {
-          temp.push({
-            question: item.question,
-            unknownId: item.id,
-          });
-        });
-        if (val?.[0]?.recommendType == 2) {
-          // 意图
-          params = {
-            robotId: info.id,
-            intentId: val?.[0]?.recommendId,
-            corpusTextList: temp,
-          };
-          // resAdd = await intentAddBatch(params);
-          // faq
-        } else if (val?.[0]?.recommendType == 1) {
-          params = {
-            robotId: info.id,
-            faqId: val?.[0]?.recommendId,
-            similarList: temp,
-          };
-          // resAdd = await faqAddBatch(params);
-        }
-      }
-      if (operation == '') {
-        //非意图非标准问
-        if (val?.[0]?.recommendType == 2) {
-          // 意图
-          params = {
-            robotId: info.id,
-            intentId: val?.[0]?.recommendId,
-            corpusTextList: [
-              {
-                question: inputValue,
-                unknownId: modalData.id,
-              },
-            ],
-          };
-          // resAdd = await intentAddBatch(params);
-          // faq
-        } else if (val?.[0]?.recommendType == 1) {
-          params = {
-            robotId: info.id,
-            faqId: val?.[0]?.recommendId,
-            similarList: [
-              {
-                question: inputValue,
-                unknownId: modalData.id,
-              },
-            ],
-          };
-          // resAdd = await faqAddBatch(params);
-        }
-      }
-      if (resAdd?.resultCode === config.successCode) {
-        message.success(resAdd?.resultDesc || '添加成功');
-        actionRef.current.reloadAndRest();
-        return true;
-      } else {
-        message.error(resAdd?.resultDesc || '添加失败');
-        return false;
-      }
+
+    let reqData = {
+      robotId: info.id,
+      id: editId,
+      recommendList: val,
+    };
+    let res: any = await editDetailSample(reqData);
+    if (res) {
+      actionRef?.current?.reload();
+      return true;
     }
   };
 
   const menu = (
-    <Menu onClick={handleMenuClick}>
-      {/* <Popconfirm
-        title="确认要批量加入黑名单吗？"
-        onConfirm={onConfirm}
-        onCancel={() => {}}
-        okText="确定"
-        cancelText="取消"
-      > */}
-      <Menu.Item key={'1'}>确认当前所选样本</Menu.Item>
-      {/* </Popconfirm> */}
+    <Menu>
+      <Menu.Item
+        key={'1'}
+        onClick={() => {
+          confirm();
+        }}
+      >
+        确认当前所选样本
+      </Menu.Item>
       <Menu.Item key={'2'}>确认所有待确认样本</Menu.Item>
     </Menu>
   );
-
-  // orderCode  '1'-分类  '2'-时间
-  //  orderType   '1'-升序 '2'-降序
-  const tableChange = (pagination: any, filters: any, sorter: any) => {
-    let temp = { orderCode: '2', orderType: '2' };
-    if (sorter.columnKey === 'faqTypeName' && sorter.order === 'ascend') {
-      temp.orderCode = '1';
-      temp.orderType = '1';
-    }
-    if (sorter.columnKey === 'faqTypeName' && sorter.order === 'descend') {
-      temp.orderCode = '1';
-      temp.orderType = '2';
-    }
-    if (sorter.columnKey === 'updateTime' && sorter.order === 'ascend') {
-      temp.orderCode = '2';
-      temp.orderType = '1';
-    }
-    if (sorter.columnKey === 'updateTime' && sorter.order === 'descend') {
-      temp.orderCode = '2';
-      temp.orderType = '2';
-    }
-    let tempParamsObj = JSON.parse(JSON.stringify(paramsObj));
-    let tempObj = Object.assign(tempParamsObj, temp);
-    setParamsObj(tempObj);
-  };
-
-  const disabledDate = (current: any) => {
-    return current && current > moment().subtract(0, 'days').endOf('day');
-  };
 
   const columns: any = [
     {
@@ -244,7 +138,28 @@ const DetailPages: React.FC = (props: any) => {
       dataIndex: 'replyType',
       title: '回复类型',
       search: false,
-      width: 200,
+      width: 150,
+      render: (val: any, row: any, i: any) => {
+        return (
+          <Select
+            key={row.replyType}
+            defaultValue={row.replyType}
+            bordered={false}
+            className={style['replyType']}
+            onChange={(val) => {
+              replyTypeChange(row, val);
+            }}
+          >
+            {replyTypeList.map((item: any) => {
+              return (
+                <Option key={item.key} value={item.value}>
+                  {item.key}
+                </Option>
+              );
+            })}
+          </Select>
+        );
+      },
     },
     {
       dataIndex: 'faqIntentList',
@@ -252,8 +167,35 @@ const DetailPages: React.FC = (props: any) => {
       ellipsis: true,
       search: false,
       width: 200,
-      render: () => {
-        return '';
+      render: (val: any, row: any) => {
+        let arr = row?.faqIntentList;
+        if (Array.isArray(arr)) {
+          return (
+            <div
+              className={style['question-box']}
+              onClick={() => {
+                openSelectFaqModal(row);
+              }}
+            >
+              {arr.map((item: any, i: number) => {
+                return (
+                  <Tooltip title={item.bizName} placement={'topLeft'} key={i}>
+                    <div className={style['qustion-label']} key={i}>
+                      {item.bizType == '1' ? (
+                        <QuestionCircleOutlined className={style['icon']} />
+                      ) : (
+                        <MonitorOutlined className={style['icon']} />
+                      )}
+                      {item.bizName}
+                    </div>
+                  </Tooltip>
+                );
+              })}
+            </div>
+          );
+        } else {
+          return '---';
+        }
       },
     },
     {
@@ -273,8 +215,33 @@ const DetailPages: React.FC = (props: any) => {
     {
       dataIndex: 'tagStatus',
       title: '标注状态',
-      width: 200,
+      width: 150,
       search: false,
+      valueEnum: {
+        1: { text: '未标注', status: 'Error' },
+        2: {
+          text: <span style={{ marginRight: '6px' }}>待确认</span>,
+          status: 'Warning',
+        },
+        3: { text: '已标注', status: 'Success' },
+      },
+      render: (val: any, row: any) => {
+        return (
+          <span className={style['tagStatus']}>
+            {val}
+            <Condition r-if={row.tagStatus == 2}>
+              <Button
+                type="link"
+                onClick={() => {
+                  confirm(row);
+                }}
+              >
+                确认
+              </Button>
+            </Condition>
+          </span>
+        );
+      },
     },
     {
       title: '操作',
@@ -288,23 +255,28 @@ const DetailPages: React.FC = (props: any) => {
             <Button
               type="link"
               onClick={() => {
-                // ModalRef.current?.open?.('edit', row);
+                setEditId(record.id);
+                form.setFieldsValue({ dialogueSample: record.dialogueSample });
+                setVisible(true);
               }}
             >
               编辑样本
             </Button>
 
             <Popconfirm
-              title="
-              您是否确认要删除选中的对话样本？删除后将无法恢复"
+              title={
+                <div style={{ maxWidth: '150px' }}>
+                  您是否确认要删除选中的对话样本？删除后将无法恢复
+                </div>
+              }
               okText="确定"
               cancelText="取消"
               onConfirm={async () => {
-                // await deleteSample(row).then((res) => {
-                //   if (res) {
-                //      TableRef?.current?.reload();
-                //   }
-                // });
+                await deleteDetailSample({ robotId: info.id, ids: [record.id] }).then((res) => {
+                  if (res) {
+                    actionRef?.current?.reload();
+                  }
+                });
               }}
             >
               <Button type="link" danger>
@@ -316,6 +288,116 @@ const DetailPages: React.FC = (props: any) => {
       },
     },
   ];
+
+  // 打开选择FAQ/意图模态框
+  const openSelectFaqModal = (row: any) => {
+    console.log(row);
+    setEditId(row.id);
+    if (row.replyType == 1) {
+      (selectFaqModalRef1.current as any)?.open({
+        selectList: [], //被选中列表
+        selectedQuestionKeys: [], // 已选问题
+        disabledWishKeys: [],
+        disabledQuestionKeys: [],
+        selectedWishKeys: [], // 已选意图
+        question: '',
+      });
+    } else if (row.replyType == 2) {
+      (selectFaqModalRef.current as any)?.open({
+        selectList: [], //被选中列表
+        selectedQuestionKeys: [], // 已选问题
+        disabledWishKeys: [],
+        disabledQuestionKeys: [],
+        selectedWishKeys: [], // 已选意图
+        question: '',
+      });
+    } else {
+    }
+  };
+
+  const replyTypeChange = async (row: any, val: any) => {
+    console.log(row, val);
+    let reqData = {
+      robotId: info.id,
+      id: row.id,
+      replyType: val,
+    };
+    await editDetailSample(reqData).then((res) => {
+      actionRef?.current?.reload();
+    });
+  };
+
+  const addDetailList = async () => {
+    if (!addText) {
+      return;
+    }
+    if (!addLoading) {
+      return;
+    }
+    let reqData = {
+      robotId: info.id,
+      assessSampleId: outRow?.id,
+      dialogueSample: addText,
+    };
+    await addDetailSample(reqData).then((res) => {
+      if (res) {
+        setAddText('');
+        actionRef?.current?.reload();
+      }
+    });
+  };
+
+  const editDetail = async () => {
+    const values = await form.validateFields();
+    console.log(values);
+    let reqData = {
+      robotId: info.id,
+      id: editId,
+      ...values,
+    };
+    await editDetailSample(reqData).then((res) => {
+      if (res) {
+        setVisible(false);
+        actionRef?.current?.reload();
+      }
+    });
+  };
+
+  const confirm = async (row?: any) => {
+    let reqData = {
+      robotId: info.id,
+      ids: row ? [row.id] : selectRow.map((item: any) => item.id),
+    };
+
+    await confirmDetailSample(reqData).then((res) => {
+      if (res) {
+        setSelectRow([]);
+        setSelectedRowKeys([]);
+        actionRef?.current?.reload();
+      }
+    });
+  };
+
+  const tag = async () => {
+    let reqData = {
+      robotId: info.id,
+      ids: selectRow.map((item: any) => item.id),
+    };
+    await tagDetailSample(reqData).then((res) => {
+      if (res) {
+        setSelectRow([]);
+        setSelectedRowKeys([]);
+        actionRef?.current?.reload();
+      }
+    });
+  };
+
+  useEffect(() => {
+    let historyData = history?.location?.state || {};
+    console.log(historyData);
+    setOutRow(historyData);
+  }, []);
+
   return (
     <Fragment>
       <div className={`${style['machine-page']} list-page`}>
@@ -328,20 +410,22 @@ const DetailPages: React.FC = (props: any) => {
                 history.push('/gundamPages/effectEvaluation/sampleManager');
               }}
             />
-            <span>样本集名字</span>
-            <span
-              style={{ fontSize: '16px' }}
-            >{` （共4条：已标注${'2'}条，未标注1条，待确认1条）`}</span>
+            <span>{outRow?.sampleSetName || '-'}</span>
+            <span style={{ fontSize: '16px' }}>{` （共${result?.totalPage || '-'}条：已标注${
+              result?.tagNum || '-'
+            }条，未标注${result?.unTagNum || '-'}条，待确认${
+              result?.stayConfirmNum || '-'
+            }条）`}</span>
           </div>
           <Input.Search
             // bordered={false}
             style={{ width: '280px', padding: '4px' }}
             onSearch={(text: any) => {
-              // setSearchText(text);
+              setParamsObj({ dialogueSample: text });
             }}
-            // onPressEnter={(e: any) => {
-            // setSearchText(e.target.value);
-            // }}
+            onChange={(e) => {
+              setSearchText(e.target.value);
+            }}
             placeholder={'请输入'}
             allowClear
           />
@@ -351,9 +435,13 @@ const DetailPages: React.FC = (props: any) => {
             <Input
               style={{ width: '400px' }}
               placeholder="输入对话样本后按回车添加"
-              onPressEnter={() => {
-                console.log(1);
+              value={addText}
+              allowClear
+              maxLength={200}
+              onChange={(e) => {
+                setAddText(e.target.value);
               }}
+              onPressEnter={addDetailList}
             />
           }
           rowKey={'id'}
@@ -365,18 +453,40 @@ const DetailPages: React.FC = (props: any) => {
           }}
           search={false}
           params={paramsObj}
-          onChange={tableChange}
+          // onChange={tableChange}
           rowSelection={rowSelection}
-          // tableAlertOptionRender={false}
-          // tableAlertRender={false}
           toolBarRender={() => [
-            <Button>批量删除</Button>,
-            <Button>批量预标注</Button>,
-            <Dropdown
-              overlay={menu}
-              key="Dropdown"
-              // disabled={selectRow?.length < 1}
+            <Popconfirm
+              disabled={selectRow?.length < 1}
+              title={
+                <div style={{ maxWidth: '150px' }}>
+                  您是否确认要删除选中的对话样本？删除后将无法恢复
+                </div>
+              }
+              okText="确定"
+              cancelText="取消"
+              onConfirm={async () => {
+                let reqData = { robotId: info.id, ids: selectRow.map((item: any) => item.id) };
+                await deleteDetailSample(reqData).then((res) => {
+                  if (res) {
+                    setSelectRow([]);
+                    setSelectedRowKeys([]);
+                    actionRef?.current?.reload();
+                  }
+                });
+              }}
             >
+              <Button disabled={selectRow?.length < 1}>批量删除</Button>
+            </Popconfirm>,
+            <Button
+              disabled={selectRow?.length < 1}
+              onClick={() => {
+                tag();
+              }}
+            >
+              批量预标注
+            </Button>,
+            <Dropdown overlay={menu} key="Dropdown" disabled={selectRow?.length < 1}>
               <Button type="primary">
                 <Space>
                   批量确认
@@ -390,8 +500,50 @@ const DetailPages: React.FC = (props: any) => {
               robotId: info.id,
               page: params.current,
               ...params,
+              assessSampleId: (history?.location?.state as any)?.id,
             });
           }}
+        />
+        <Modal
+          width={650}
+          title={'编辑样本'}
+          visible={visible}
+          onCancel={() => {
+            form.resetFields();
+            setVisible(false);
+          }}
+          okText={'提交'}
+          onOk={editDetail}
+        >
+          <div className={style['modal_bg']} style={{ paddingLeft: '110px' }}>
+            <Form form={form} style={{ width: '400px' }}>
+              <FormItem
+                rules={[{ required: true, message: '请填写样本名称' }]}
+                name="dialogueSample"
+                label="样本名称"
+                style={{ width: '360px' }}
+              >
+                <Input maxLength={200}></Input>
+              </FormItem>
+            </Form>
+          </div>
+        </Modal>
+
+        <SelectFaqModal
+          cref={selectFaqModalRef}
+          confirm={confirmUpdateSelect}
+          showQuestion={false}
+          tableLoading={editLoading}
+        />
+
+        <SelectFaqModal
+          cref={selectFaqModalRef1}
+          confirm={confirmUpdateSelect}
+          type={'radio'}
+          min={1}
+          max={1}
+          showQuestion={false}
+          tableLoading={editLoading}
         />
       </div>
     </Fragment>

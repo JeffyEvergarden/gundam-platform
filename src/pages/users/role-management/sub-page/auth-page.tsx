@@ -45,18 +45,15 @@ const AuthPage = (props: any) => {
   };
 
   const submit = async () => {
-    console.log('submit');
-    console.log(checkedKeys);
+    // console.log('submit');
+    // console.log(checkedKeys);
     let submitObj = {
-      root: checkedKeys.map((item: any) => {
-        return {
-          operationCode: item,
-          roleCode: roleId,
-        };
-      }),
+      roleCode: roleId,
+      operationCodes: checkedKeys,
     };
     let res = await updateAuth(submitObj);
     if (res) {
+      message.success('保存成功');
       // 操作成功返回列表
       history.push('/users/roleManagement/list');
     }
