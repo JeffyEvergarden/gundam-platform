@@ -92,11 +92,11 @@ export default (props: any) => {
       <ProTable
         rowKey={(record: any) => record.id}
         headerTitle={false}
-        toolBarRender={() => [
-          <Button key="exportBtn" onClick={exportList}>
-            导出
-          </Button>,
-        ]}
+        // toolBarRender={() => [
+        //   <Button key="exportBtn" onClick={exportList}>
+        //     导出
+        //   </Button>,
+        // ]}
         options={false}
         bordered
         actionRef={actionRef}

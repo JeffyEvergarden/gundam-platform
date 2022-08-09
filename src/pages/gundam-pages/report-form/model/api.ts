@@ -43,7 +43,7 @@ export async function faqAndClareList(params?: Record<string, any>) {
 
 /** 联想**/
 export async function searchAssociationList(params?: Record<string, any>) {
-  return request(`${baseUrl}/robot/statistics/searchAssociationList`, {
+  return request(`${baseUrl}/robot/statistics/suggest`, {
     method: 'GET',
     params,
   });

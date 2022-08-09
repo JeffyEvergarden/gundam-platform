@@ -271,6 +271,5 @@ export default {
   'POST /aichat/robot/blacklist/blacklistQuestionBatchAdd': normalDeal,
   'POST /aichat/robot/intent/intentCorpusBatchAdd': normalDeal,
   'POST /aichat/robot/faq/faqSimilarBatchAdd': normalDeal,
-  'POST /aichat/robot/faq/deleteQuetion': normalDeal,
-  'GET /aichat/robot/knowledgeLearn/delStard': normalDeal,
+  'POST /aichat/robot/knowledgeLearn/unknownQuestionDelete': normalDeal,
 };
