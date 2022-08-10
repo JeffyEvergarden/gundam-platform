@@ -91,6 +91,7 @@ const normalRes = (req: Request, res: Response) => {
     resultCode: successCode,
     resultDesc: '成功',
     success: true,
+    type: 'normal',
   });
 };
 
