@@ -256,7 +256,11 @@ export default () => {
     <div className={styles.pageContainer}>
       <div className={styles.pageComtain}>
         <div className={styles.pageTitile}>推荐问和澄清统计</div>
-        <HeadSearch choseTime={choseTime} exportReportForm={exportReportForm} />
+        <HeadSearch
+          choseTime={choseTime}
+          exportReportForm={exportReportForm}
+          permission={'robot_mg-report_recommend_and_clarify-export_bt'}
+        />
         <div className={styles.visitorBox}>
           <LineChart
             id={'faqAndClarify'}

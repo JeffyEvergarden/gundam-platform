@@ -2,18 +2,20 @@ import { Button, DatePicker, Radio, Select, Space } from 'antd';
 import moment from 'moment';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { useModel } from 'umi';
+import { useAccess, Access, useModel } from 'umi';
 import styles from './index.less';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 export default (props: any) => {
-  const { choseTime, exportReportForm, exportSessionList, pageType } = props;
+  const { choseTime, exportReportForm, exportSessionList, pageType, permission } = props;
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
+
+  const access = useAccess();
 
   const { channelList, getChannelList } = useModel('drawer' as any, (model: any) => ({
     channelList: model.channelList,
@@ -120,14 +122,16 @@ export default (props: any) => {
         </Select>
       </Space>
       <Space>
-        <Button type="primary" onClick={exportForm}>
-          导出报表
-        </Button>
-        {pageType === 'visitorSession' && (
+        <Access accessible={access.accessAuth(permission)}>
+          <Button type="primary" onClick={exportForm}>
+            导出报表
+          </Button>
+        </Access>
+        {/* {pageType === 'visitorSession' && (
           <Button type="primary" onClick={exportSessionList}>
             导出会话明细
           </Button>
-        )}
+        )} */}
       </Space>
     </div>
   );

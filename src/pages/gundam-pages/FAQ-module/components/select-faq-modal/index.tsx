@@ -95,6 +95,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     max = 5,
     readOnly = true,
     tableLoading = false,
+    showQuestion = true,
   } = props;
 
   const [showWishKey, setShowWishKey] = useState<boolean>(true);
@@ -515,44 +516,43 @@ const SelectorModal: React.FC<any> = (props: any) => {
       ]}
     >
       <div className={style['modal-bg_default']}>
-        {/* <Condition r-if={title}> */}
-        {operation == 'batch' ? (
-          <div className={style.batch_box}>
-            {questionList.map((item: any, index: any) => {
-              return (
-                <div key={item.id} className={style['title_top_batch']}>
-                  <div className={style['label']}> 问题样本{index + 1}:</div>
-                  <Input
-                    value={item.question}
-                    onChange={(e) => {
-                      editList(e.target.value, item);
-                    }}
-                    readOnly={readOnly}
-                  />
-                  <div style={{ padding: '10px' }}>
-                    <DeleteOutlined
-                      style={{ color: '#00000060', fontSize: '20px', cursor: 'pointer' }}
-                      onClick={() => delFaqOrSample(item, index)}
+        <Condition r-if={showQuestion}>
+          {operation == 'batch' ? (
+            <div className={style.batch_box}>
+              {questionList.map((item: any, index: any) => {
+                return (
+                  <div key={item.id} className={style['title_top_batch']}>
+                    <div className={style['label']}> 问题样本{index + 1}:</div>
+                    <Input
+                      value={item.question}
+                      onChange={(e) => {
+                        editList(e.target.value, item);
+                      }}
+                      readOnly={readOnly}
                     />
+                    <div style={{ padding: '10px' }}>
+                      <DeleteOutlined
+                        style={{ color: '#00000060', fontSize: '20px', cursor: 'pointer' }}
+                        onClick={() => delFaqOrSample(item, index)}
+                      />
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className={style['title_top']}>
-            <div className={style['label']}> 问题样本:</div>
-            <Input
-              value={title}
-              onChange={(e) => {
-                setTitle(e.target.value);
-              }}
-              readOnly={readOnly}
-            />
-          </div>
-        )}
-
-        {/* </Condition> */}
+                );
+              })}
+            </div>
+          ) : (
+            <div className={style['title_top']}>
+              <div className={style['label']}> 问题样本:</div>
+              <Input
+                value={title}
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                }}
+                readOnly={readOnly}
+              />
+            </div>
+          )}
+        </Condition>
 
         <div className={style['select-box']}>
           <Condition r-if={selectList.length > 0}>

@@ -206,7 +206,11 @@ export default () => {
     <div className={styles.pageContainer}>
       <div className={styles.pageComtain}>
         <div className={styles.pageTitile}>访客次数统计</div>
-        <HeadSearch choseTime={choseTime} exportReportForm={exportReportForm} />
+        <HeadSearch
+          choseTime={choseTime}
+          exportReportForm={exportReportForm}
+          permission={'robot_mg-report_visitor_count-export_bt'}
+        />
         <div className={styles.visitorBox}>
           <LineChart
             id={'visitorNumber'}

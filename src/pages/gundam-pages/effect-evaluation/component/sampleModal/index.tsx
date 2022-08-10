@@ -28,7 +28,7 @@ const SampleModal: React.FC<any> = (props: any) => {
     console.log(values);
     let reqData = {
       robotId: info.id,
-      id: row.sampleSetId || undefined,
+      id: row.id || undefined,
       ...values,
     };
     if (modalType == 'add') {
