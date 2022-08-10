@@ -76,8 +76,44 @@ export async function _confirmDetailSample(data?: { [key: string]: any }) {
   });
 }
 
+export async function _confirmAllDetailSample(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/assess/sampleDetailBatchAllConfirm`, {
+    method: 'POST',
+    data,
+  });
+}
+
 export async function _tagDetailSample(data?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/assess/sampleDetailBatchTag`, {
+    method: 'POST',
+    data,
+  });
+}
+
+//模型评估
+export async function getEvaluationTable(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/assess/modelAssessListPage`, {
+    method: 'GET',
+    params,
+  });
+}
+
+export async function _resultEvaluation(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/assess/modelAssessResultListPage`, {
+    method: 'GET',
+    params,
+  });
+}
+
+export async function _addEvaluation(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/assess/modelAssessAdd`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function _deleteEvaluation(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/assess/modelAssessDelete`, {
     method: 'POST',
     data,
   });

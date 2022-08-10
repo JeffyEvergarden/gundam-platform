@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 import { useModel } from 'umi';
 import EvaluationDetail from '../component/evaluationDetail';
 import EvaluationModal from '../component/evaluationModal';
-import { useSampleModel } from '../model';
+import { useEvaluationModel } from '../model';
 import style from '../sampleManager/style.less';
 
 const DetailPages: React.FC = (props: any) => {
@@ -17,12 +17,12 @@ const DetailPages: React.FC = (props: any) => {
     setInfo: model.setInfo,
   }));
 
-  const { tableList, Loading, getList, deleteSample } = useSampleModel();
+  const { getList, addEvaluation, getResultList, deleteEvaluation } = useEvaluationModel();
 
   const columns: any[] = [
     {
       title: '所用评估表',
-      dataIndex: 'id',
+      dataIndex: 'sampleSetName',
       search: false,
       fixed: 'left',
       ellipsis: true,
@@ -30,7 +30,7 @@ const DetailPages: React.FC = (props: any) => {
     },
     {
       title: '评估时间',
-      dataIndex: 'sampleName',
+      dataIndex: 'createTime',
       search: false,
       width: 200,
       ellipsis: true,
@@ -40,37 +40,37 @@ const DetailPages: React.FC = (props: any) => {
     },
     {
       title: '提交人',
-      dataIndex: 'markProgress',
+      dataIndex: 'creator',
       search: false,
       width: 200,
     },
     {
       title: '平均精确率',
-      dataIndex: 'markProgress',
+      dataIndex: 'averageAccurateRate',
       search: false,
       width: 200,
     },
     {
       title: '平均召回率',
-      dataIndex: 'markProgress',
+      dataIndex: 'averageRecallRate',
       search: false,
       width: 200,
     },
     {
       title: '阈值',
-      dataIndex: 'markProgress',
+      dataIndex: 'threshold',
       search: false,
       width: 200,
     },
     {
       title: '差值',
-      dataIndex: 'markProgress',
+      dataIndex: 'difference',
       search: false,
       width: 200,
     },
     {
       title: '澄清数量',
-      dataIndex: 'markProgress',
+      dataIndex: 'clarifyNum',
       search: false,
       width: 200,
     },
@@ -97,7 +97,7 @@ const DetailPages: React.FC = (props: any) => {
               okText="确定"
               cancelText="取消"
               onConfirm={async () => {
-                await deleteSample(row).then((res) => {
+                await deleteEvaluation({ robotId: info.id, id: row.id }).then((res) => {
                   if (res) {
                     TableRef?.current?.reload();
                   }
@@ -165,7 +165,12 @@ const DetailPages: React.FC = (props: any) => {
       />
 
       <EvaluationDetail cref={DetailRef}></EvaluationDetail>
-      <EvaluationModal cref={ModalRef}></EvaluationModal>
+      <EvaluationModal
+        cref={ModalRef}
+        refresh={() => {
+          TableRef?.current?.reload();
+        }}
+      ></EvaluationModal>
     </div>
   );
 };

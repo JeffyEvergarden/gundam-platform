@@ -1,19 +1,12 @@
 import Condition from '@/components/Condition';
 import SelectFaqModal from '@/pages/gundam-pages/FAQ-module/components/select-faq-modal';
-import {
-  ArrowLeftOutlined,
-  DownOutlined,
-  MonitorOutlined,
-  QuestionCircleOutlined,
-} from '@ant-design/icons';
+import { ArrowLeftOutlined, MonitorOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import {
   Button,
   DatePicker,
-  Dropdown,
   Form,
   Input,
-  Menu,
   message,
   Modal,
   Popconfirm,
@@ -67,6 +60,7 @@ const DetailPages: React.FC = (props: any) => {
     editDetailSample,
     confirmDetailSample,
     tagDetailSample,
+    confirmAllDetailSample,
   } = useDetailSampleModel();
 
   const { info } = useModel('gundam' as any, (model: any) => ({
@@ -74,11 +68,9 @@ const DetailPages: React.FC = (props: any) => {
   }));
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [selectRow, setSelectRow] = useState<any>([]);
-  const [menulabel, setMenuLabel] = useState<string>('批量确认');
 
   const [visible, setVisible] = useState<boolean>(false);
 
-  const [operation, setOperation] = useState<string>('');
   const [paramsObj, setParamsObj] = useState<any>({});
   const [outRow, setOutRow] = useState<any>();
   const [searchText, setSearchText] = useState<string>('');
@@ -111,20 +103,6 @@ const DetailPages: React.FC = (props: any) => {
       return true;
     }
   };
-
-  const menu = (
-    <Menu>
-      <Menu.Item
-        key={'1'}
-        onClick={() => {
-          confirm();
-        }}
-      >
-        确认当前所选样本
-      </Menu.Item>
-      <Menu.Item key={'2'}>确认所有待确认样本</Menu.Item>
-    </Menu>
-  );
 
   const columns: any = [
     {
@@ -486,14 +464,15 @@ const DetailPages: React.FC = (props: any) => {
             >
               批量预标注
             </Button>,
-            <Dropdown overlay={menu} key="Dropdown" disabled={selectRow?.length < 1}>
-              <Button type="primary">
-                <Space>
-                  批量确认
-                  <DownOutlined />
-                </Space>
-              </Button>
-            </Dropdown>,
+            <Button
+              type="primary"
+              disabled={selectRow?.length < 1}
+              onClick={() => {
+                confirm();
+              }}
+            >
+              批量确认
+            </Button>,
           ]}
           request={async (params) => {
             return getList({

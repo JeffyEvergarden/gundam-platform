@@ -1,7 +1,9 @@
+import { MonitorOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Button, Form, Modal, Select } from 'antd';
+import { Button, Col, Form, Modal, Row, Select, Tooltip } from 'antd';
 import React, { useImperativeHandle, useRef, useState } from 'react';
 import { useModel } from 'umi';
+import { useEvaluationModel } from '../../model';
 import style from './style.less';
 
 const { Item: FormItem } = Form;
@@ -11,7 +13,7 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
   const { cref, refresh } = props;
   const TableRef = useRef<any>({});
 
-  // const { addSample, editSample } = useSampleModel();
+  const { resultData, getResultList } = useEvaluationModel();
 
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -21,16 +23,9 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
   const [form] = Form.useForm();
 
   const [visible, setVisible] = useState<boolean>(false);
-  const [fileList, setFileList] = useState<any[]>([]);
-
-  const submit = async () => {
-    const values = await form.validateFields();
-    console.log(values);
-    let reqData = {
-      robotId: info.id,
-      ...values,
-    };
-  };
+  const [detailVisible, setDetailVisible] = useState<boolean>(false);
+  const [nluInfo, setNluInfo] = useState<string>('');
+  const temRef = useRef<any>();
 
   const close = () => {
     form.resetFields();
@@ -38,17 +33,20 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
   };
 
   useImperativeHandle(cref, () => ({
-    open: () => {
+    open: (row: any) => {
+      temRef.current = row;
       setVisible(true);
+      setTimeout(() => {
+        TableRef?.current?.reload?.();
+      }, 100);
     },
     close,
-    submit,
   }));
 
   const columns: any[] = [
     {
       title: '评估样本',
-      dataIndex: 'id',
+      dataIndex: 'assessSample',
       fieldProps: {
         placeholder: '请输入评估样本',
       },
@@ -58,57 +56,114 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
     },
     {
       title: '标注回复类型',
-      dataIndex: 'sampleName',
+      dataIndex: 'tagReplyType',
       search: false,
-      width: 200,
+      width: 150,
       ellipsis: true,
-      render: (val: any, row: any) => {
-        return val;
+      valueEnum: {
+        1: { text: '明确回复' },
+        2: { text: '澄清回复' },
+        3: { text: '拒识回复' },
       },
     },
     {
       title: '标注FAQ/意图',
-      dataIndex: 'markProgress',
+      dataIndex: 'tagFaqIntent',
       search: false,
       width: 200,
+      render: (val: any, row: any) => {
+        let arr = row?.tagFaqIntent;
+        if (Array.isArray(arr)) {
+          return (
+            <div className={style['question-box']}>
+              {arr.map((item: any, i: number) => {
+                return (
+                  <Tooltip title={item.bizName} placement={'topLeft'} key={i}>
+                    <div className={style['qustion-label']} key={i}>
+                      {item.bizType == '1' ? (
+                        <QuestionCircleOutlined className={style['icon']} />
+                      ) : (
+                        <MonitorOutlined className={style['icon']} />
+                      )}
+                      {item.bizName}
+                    </div>
+                  </Tooltip>
+                );
+              })}
+            </div>
+          );
+        } else {
+          return '---';
+        }
+      },
     },
     {
       title: '识别回复类型',
-      dataIndex: 'markProgress',
+      dataIndex: 'distinguishReplyType',
       search: false,
-      width: 200,
+      width: 150,
+      valueEnum: {
+        1: { text: '明确回复' },
+        2: { text: '澄清回复' },
+        3: { text: '拒识回复' },
+      },
     },
     {
       title: '识别FAQ/意图',
-      dataIndex: 'markProgress',
+      dataIndex: 'distinguishFaqIntent',
       search: false,
       width: 200,
+      render: (val: any, row: any) => {
+        let arr = row?.distinguishFaqIntent;
+        if (Array.isArray(arr)) {
+          return (
+            <div className={style['question-box']}>
+              {arr.map((item: any, i: number) => {
+                return (
+                  <Tooltip title={item.bizName} placement={'topLeft'} key={i}>
+                    <div className={style['qustion-label']} key={i}>
+                      {item.bizType == '1' ? (
+                        <QuestionCircleOutlined className={style['icon']} />
+                      ) : (
+                        <MonitorOutlined className={style['icon']} />
+                      )}
+                      {item.bizName}
+                    </div>
+                  </Tooltip>
+                );
+              })}
+            </div>
+          );
+        } else {
+          return '---';
+        }
+      },
     },
     {
       title: '精准率',
-      dataIndex: 'markProgress',
+      dataIndex: 'accurateRate',
       search: false,
-      width: 200,
+      width: 150,
     },
     {
       title: '召回率',
-      dataIndex: 'markProgress',
+      dataIndex: 'recallRate',
       search: false,
-      width: 200,
+      width: 150,
     },
     {
       title: '操作',
       dataIndex: 'op',
       search: false,
       fixed: 'right',
-      width: 150,
+      width: 130,
       render: (val: any, row: any, index: number) => {
         return (
           <div style={{ display: 'flex' }}>
             <Button
               type="link"
               onClick={() => {
-                // ModalRef.current?.open?.('edit', row);
+                detail(row.nluReturn);
               }}
             >
               查看详情
@@ -119,29 +174,51 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
     },
   ];
 
+  const detail = (nluInfo: string) => {
+    if (nluInfo) {
+      let temp = JSON?.parse?.(nluInfo);
+      temp = JSON?.stringify?.(temp, null, 2);
+      setNluInfo(temp);
+    }
+
+    setDetailVisible(true);
+  };
+
   return (
     <Modal
       width={'80%'}
       title={`评估详情`}
       visible={visible}
       onCancel={() => {
-        // form.resetFields();
+        TableRef.current.reset();
         setVisible(false);
       }}
       footer={false}
     >
-      <div className={style['info']}>评估集名称：xxx</div>
+      <div className={style['info']}>
+        <Row>
+          <Col span={8}>评估集名称：{resultData?.sampleSetName}</Col>
+          <Col span={8}>平均精准率：{resultData?.averageAccurateRate}</Col>
+          <Col span={8}> 样本数量：{resultData?.sampleNum} </Col>
+        </Row>
+        <Row>
+          <Col span={8}>评估时间：{resultData?.assessTime}</Col>
+          <Col span={8}>平均召回率：{resultData?.averageRecallRate}</Col>
+          <Col span={8}>有效样本数量：{resultData?.effectiveSampleNum}</Col>
+        </Row>
+      </div>
       <div className={`${style['machine-page']} list-page`}>
         <ProTable<any>
           columns={columns}
           actionRef={TableRef}
           scroll={{ x: columns.length * 200 }}
           request={async (params = {}, sort, filter) => {
-            // return getList({
-            //   robotId: info.id,
-            //   page: params.current,
-            //   ...params,
-            // });
+            return getResultList({
+              robotId: info.id,
+              page: params.current,
+              modelAssessId: temRef?.current?.id || undefined,
+              ...params,
+            });
             return {};
           }}
           editable={{
@@ -172,6 +249,18 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
           // headerTitle="模型评估列表"
           toolBarRender={() => []}
         />
+        <Modal
+          title={'详情'}
+          visible={detailVisible}
+          onCancel={() => {
+            setNluInfo('');
+            setDetailVisible(false);
+          }}
+          footer={null}
+          bodyStyle={{ maxHeight: 600, overflowY: 'auto' }}
+        >
+          <pre> {nluInfo}</pre>
+        </Modal>
       </div>
     </Modal>
   );

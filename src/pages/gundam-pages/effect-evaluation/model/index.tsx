@@ -3,14 +3,19 @@ import { message } from 'antd';
 import { useState } from 'react';
 import {
   getDetailTable,
+  getEvaluationTable,
   getTable,
   _addDetailSample,
+  _addEvaluation,
   _addSample,
+  _confirmAllDetailSample,
   _confirmDetailSample,
   _deleteDetailSample,
+  _deleteEvaluation,
   _deleteSample,
   _editDetailSample,
   _editSample,
+  _resultEvaluation,
   _tagDetailSample,
 } from './api';
 
@@ -153,6 +158,17 @@ export const useDetailSampleModel = () => {
     }
   };
 
+  const confirmAllDetailSample = async (params?: any) => {
+    let res: any = await _confirmAllDetailSample(params);
+    if (res.resultCode == successCode) {
+      message.success(res.resultDesc);
+      return true;
+    } else {
+      message.error(res.resultDesc);
+      return false;
+    }
+  };
+
   const tagDetailSample = async (params?: any) => {
     let res: any = await _tagDetailSample(params);
     if (res.resultCode == successCode) {
@@ -176,5 +192,78 @@ export const useDetailSampleModel = () => {
     deleteDetailSample,
     confirmDetailSample,
     tagDetailSample,
+    confirmAllDetailSample,
+  };
+};
+
+export const useEvaluationModel = () => {
+  const [tableList, setTableList] = useState<any>();
+  const [resultData, setResultData] = useState<any>();
+  const [Loading, setLoading] = useState<boolean>(false);
+
+  const getList = async (params?: any) => {
+    setLoading(true);
+    let res: any = await _resultEvaluation(params);
+
+    if (res.resultCode == successCode) {
+      setTableList(res?.data?.list);
+    } else {
+      setTableList([]);
+    }
+    setLoading(false);
+
+    return {
+      data: res?.data?.list || [],
+      total: res?.data?.totalPage || res?.data?.list?.length || 0,
+    };
+  };
+
+  const getResultList = async (params?: any) => {
+    setLoading(true);
+    let res: any = await getEvaluationTable(params);
+
+    if (res.resultCode == successCode) {
+      setResultData(res?.data);
+    } else {
+      setResultData([]);
+    }
+    setLoading(false);
+
+    return {
+      data: res?.data?.list || [],
+      total: res?.data?.totalPage || res?.data?.list?.length || 0,
+    };
+  };
+
+  const addEvaluation = async (params?: any) => {
+    let res: any = await _addEvaluation(params);
+    if (res.resultCode == successCode) {
+      message.success(res.resultDesc);
+      return true;
+    } else {
+      message.error(res.resultDesc);
+      return false;
+    }
+  };
+
+  const deleteEvaluation = async (params?: any) => {
+    let res: any = await _deleteEvaluation(params);
+    if (res.resultCode == successCode) {
+      message.success(res.resultDesc);
+      return true;
+    } else {
+      message.error(res.resultDesc);
+      return false;
+    }
+  };
+
+  return {
+    tableList,
+    resultData,
+    Loading,
+    getList,
+    addEvaluation,
+    getResultList,
+    deleteEvaluation,
   };
 };
