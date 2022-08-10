@@ -24,6 +24,11 @@ export const AUTH_LIST: any[] = [
     code: '001-000',
     children: [
       {
+        label: '新建机器人',
+        value: 'robot_mg-mg-add',
+        code: '001-000-005',
+      },
+      {
         label: '机器人启用/停用',
         value: 'robot_mg-mg-op',
         code: '001-000-001',

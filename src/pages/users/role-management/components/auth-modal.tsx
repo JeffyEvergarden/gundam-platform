@@ -47,6 +47,31 @@ const DrawerForm = (props: any) => {
 
   const { updatePage } = useUpdateModel();
 
+  const [check, setCheck] = useState<boolean>(false);
+
+  const onChangeCheck = (e: any) => {
+    let val = e.target.checked;
+    setCheck(val);
+    console.log(val);
+    let arr = new Array(AUTH_TREE.length).fill([]);
+    if (val) {
+      AUTH_TREE.forEach((item: any, index: number) => {
+        const hasChildren = Array.isArray(item.children) && item.children.length > 0;
+        const children: any[] = hasChildren ? item.children : [];
+        const needKey: any[] =
+          children.length > 0 ? children.map((secItem: any) => secItem.key) : [item.key];
+        arr[index] = needKey;
+      });
+    } else {
+      AUTH_TREE.forEach((item: any, index: number) => {
+        arr[index] = [];
+      });
+    }
+    form.setFieldsValue({
+      authList: arr,
+    });
+  };
+
   const onChange = () => {
     updatePage();
   };
@@ -60,7 +85,7 @@ const DrawerForm = (props: any) => {
         children.length > 0 ? children.map((secItem: any) => secItem.key) : [item.key];
       arr[index] = needKey.filter((key) => selectKey.includes(key));
     });
-    console.log(arr);
+    // console.log(arr);
     return arr;
   };
 
@@ -132,6 +157,10 @@ const DrawerForm = (props: any) => {
           <UserOutlined style={{ color: '#1890ff', fontSize: '22px' }} />
         </div>
         <span className={styles['label']}>{currentInfo.name}</span>
+
+        <Checkbox checked={check} onChange={onChangeCheck} style={{ marginLeft: '32px' }}>
+          一键全选
+        </Checkbox>
       </div>
 
       <Form form={form} className={styles['auth-page']}>

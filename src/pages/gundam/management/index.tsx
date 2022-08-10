@@ -347,16 +347,18 @@ const MachineManagement: React.FC = (props: any) => {
         dateFormatter="string"
         headerTitle=""
         toolBarRender={() => [
-          <Button
-            key="button"
-            icon={<PlusOutlined />}
-            type="primary"
-            onClick={() => {
-              modalRef.current?.open?.();
-            }}
-          >
-            新建
-          </Button>,
+          <Condition access="robot_mg-mg-add">
+            <Button
+              key="button"
+              icon={<PlusOutlined />}
+              type="primary"
+              onClick={() => {
+                modalRef.current?.open?.();
+              }}
+            >
+              新建
+            </Button>
+          </Condition>,
         ]}
       />
 

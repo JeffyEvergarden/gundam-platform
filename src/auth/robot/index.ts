@@ -68,7 +68,7 @@ export default [
   // 话术标签管理
   {
     label: '话术标签管理',
-    value: ' robot_mg-label-list',
+    value: 'robot_mg-label-list',
     code: '001-007-001',
   },
   // FAQ管理

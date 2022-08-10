@@ -349,7 +349,11 @@ export default () => {
           <span>问题匹配率统计</span>
           <span>历史累计回答:{historySumReplyNum}</span>
         </div>
-        <HeadSearch choseTime={choseTime} exportReportForm={exportReportForm} />
+        <HeadSearch
+          choseTime={choseTime}
+          exportReportForm={exportReportForm}
+          permission={'robot_mg-report_problem_match-export_bt'}
+        />
         <div className={styles.visitorBox}>
           <div style={{ width: '30%' }}>
             <PieChart

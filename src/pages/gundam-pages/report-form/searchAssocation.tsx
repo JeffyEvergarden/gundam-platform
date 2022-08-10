@@ -67,36 +67,46 @@ export default () => {
       channelCode: payload.code,
     };
     let res = await searchAssociation(params);
-    setDataSource(res?.data?.list);
+    setDataSource(res?.data);
     let day: any = [];
     let temp: any = [];
-    let dayId1: any = { name: '搜索次数', val: [] };
-    let dayId2: any = { name: '联想次数', val: [] };
-    let dayId3: any = { name: '联想点击次数', val: [] };
-    let dayId5: any = { name: '联想有结果次数', val: [] };
-    let dayId8: any = { name: '联想平均点击位置', val: [] };
-    let dayId4: any = { name: '联想使用率', val: [], isRate: true };
-    let dayId6: any = { name: '联想有结果率', val: [], isRate: true };
-    let dayId7: any = { name: '联想点击率', val: [], isRate: true };
-    let dayId9: any = { name: '联想Top3点击率', val: [], isRate: true };
-    res?.data?.list?.map((item: any) => {
+    let searchNum: any = { name: '搜索次数', val: [] };
+    let suggestNum: any = { name: '联想次数', val: [] };
+    let suggestClickNum: any = { name: '联想点击次数', val: [] };
+    let suggestResultNum: any = { name: '联想有结果次数', val: [] };
+    let suggestAvgPosition: any = { name: '联想平均点击位置', val: [] };
+    let suggestUseRate: any = { name: '联想使用率', val: [], isRate: true };
+    let suggestResultRate: any = { name: '联想有结果率', val: [], isRate: true };
+    let suggestClickRate: any = { name: '联想点击率', val: [], isRate: true };
+    let TopThreeRate: any = { name: '联想Top3点击率', val: [], isRate: true };
+    res?.data.map((item: any) => {
       day.push(item.dayId);
-      dayId1.val.push(item.dayId1);
-      dayId2.val.push(item.dayId2);
-      dayId3.val.push(item.dayId3);
-      dayId4.val.push(toNumber(item.dayId4));
-      dayId5.val.push(item.dayId5);
-      dayId6.val.push(toNumber(item.dayId6));
-      dayId7.val.push(toNumber(item.dayId7));
-      dayId8.val.push(item.dayId8);
-      dayId9.val.push(toNumber(item.dayId9));
+      searchNum.val.push(item.searchNum);
+      suggestNum.val.push(item.suggestNum);
+      suggestClickNum.val.push(item.suggestClickNum);
+      suggestUseRate.val.push(toNumber(item.suggestUseRate));
+      suggestResultNum.val.push(item.suggestResultNum);
+      suggestResultRate.val.push(toNumber(item.suggestResultRate));
+      suggestClickRate.val.push(toNumber(item.suggestClickRate));
+      suggestAvgPosition.val.push(item.suggestAvgPosition);
+      TopThreeRate.val.push(toNumber(item.TopThreeRate));
     });
-    temp.push(dayId1, dayId2, dayId3, dayId4, dayId5, dayId6, dayId7, dayId8, dayId9);
+    temp.push(
+      searchNum,
+      suggestNum,
+      suggestClickNum,
+      suggestResultNum,
+      suggestAvgPosition,
+      suggestUseRate,
+      suggestResultRate,
+      suggestClickRate,
+      TopThreeRate,
+    );
     setDayId(day);
     setList(temp);
     return {
-      data: res?.data?.list || [],
-      total: res?.data?.total,
+      data: res?.data || [],
+      total: res?.data?.length || 0,
       current: payload.current,
       pageSize: payload.pageSize,
     };
@@ -119,7 +129,7 @@ export default () => {
       endTime = yestody.format('YYYY-MM-DD');
     }
     window.open(
-      `${config.basePath}/robot/statistics/questionMatchExport?startTime=${startTime}&endTime=${endTime}&channelCode=${code}&robotId=${info.id}`,
+      `${config.basePath}/robot/statistics/suggestExport?startTime=${startTime}&endTime=${endTime}&channelCode=${code}&robotId=${info.id}`,
       '_self',
     );
   };
@@ -150,7 +160,7 @@ export default () => {
           </Space>
         );
       },
-      dataIndex: 'dayId1',
+      dataIndex: 'searchNum',
       ellipsis: true,
     },
     {
@@ -164,7 +174,7 @@ export default () => {
           </Space>
         );
       },
-      dataIndex: 'dayId2',
+      dataIndex: 'suggestNum',
       ellipsis: true,
     },
     {
@@ -178,7 +188,7 @@ export default () => {
           </Space>
         );
       },
-      dataIndex: 'dayId3',
+      dataIndex: 'suggestClickNum',
       ellipsis: true,
     },
     {
@@ -192,7 +202,7 @@ export default () => {
           </Space>
         );
       },
-      dataIndex: 'dayId4',
+      dataIndex: 'suggestUseRate',
       ellipsis: true,
     },
     {
@@ -206,7 +216,7 @@ export default () => {
           </Space>
         );
       },
-      dataIndex: 'dayId5',
+      dataIndex: 'suggestResultNum',
       ellipsis: true,
     },
     {
@@ -220,7 +230,7 @@ export default () => {
           </Space>
         );
       },
-      dataIndex: 'dayId6',
+      dataIndex: 'suggestResultRate',
       ellipsis: true,
     },
     {
@@ -234,7 +244,7 @@ export default () => {
           </Space>
         );
       },
-      dataIndex: 'dayId7',
+      dataIndex: 'suggestClickRate',
       ellipsis: true,
     },
     {
@@ -248,7 +258,7 @@ export default () => {
           </Space>
         );
       },
-      dataIndex: 'dayId8',
+      dataIndex: 'suggestAvgPosition',
       ellipsis: true,
     },
     {
@@ -262,7 +272,7 @@ export default () => {
           </Space>
         );
       },
-      dataIndex: 'dayId9',
+      dataIndex: 'TopThreeRate',
       ellipsis: true,
     },
   ];
@@ -271,7 +281,11 @@ export default () => {
     <div className={styles.pageContainer}>
       <div className={styles.pageComtain}>
         <div className={styles.pageTitile}>搜索联想统计</div>
-        <HeadSearch choseTime={choseTime} exportReportForm={exportReportForm} />
+        <HeadSearch
+          choseTime={choseTime}
+          exportReportForm={exportReportForm}
+          permission={'robot_mg-report-search-association-export_bt'}
+        />
         <div className={styles.visitorBox}>
           <LineChart
             id={'assocation'}
@@ -313,14 +327,12 @@ export default () => {
             toolBarRender={false}
             bordered
             actionRef={actionRef}
-            pagination={{
-              pageSize: 10,
-            }}
+            pagination={false}
             search={false}
             columns={columns}
             size={'small'}
             sticky={true}
-            scroll={{ y: 270 }}
+            scroll={{ y: 270, x: columns.length * 150 }}
             // dataSource={dataSource}
             params={paramsObj}
             request={async (params = {}) => {

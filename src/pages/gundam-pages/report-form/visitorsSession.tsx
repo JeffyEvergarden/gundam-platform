@@ -199,6 +199,7 @@ export default () => {
           exportReportForm={exportReportForm}
           exportSessionList={exportSessionList}
           pageType={'visitorSession'}
+          permission={'robot_mg-report_visitor_session-export_bt'}
         />
         <div className={styles.Table_box}>
           <ProTable
