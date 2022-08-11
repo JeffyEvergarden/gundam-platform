@@ -22,6 +22,7 @@ const Home = (props: any) => {
       path: '/gundamPages/effectEvaluation/sampleManager',
       component: KeepAliveFAQManage,
       name: '样本管理',
+      code: 'robot_mg-effect_sample_manager-view',
     },
     {
       path: '/gundamPages/effectEvaluation/sampleManager/sampleDetail',

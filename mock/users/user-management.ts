@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import config from '../../src/config';
 import { codeToObjMap } from '../../src/auth/util';
+import config from '../../src/config';
 
 // faq 标准模块相关
 

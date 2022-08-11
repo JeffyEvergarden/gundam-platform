@@ -1,5 +1,6 @@
-import report from './report'; // 报表统计
+import effect from './effect';
 import knowLearn from './knowLearn';
+import report from './report'; // 报表统计
 
 export default [
   // 主流程配置
@@ -106,4 +107,5 @@ export default [
   },
   ...report,
   ...knowLearn,
+  ...effect,
 ];

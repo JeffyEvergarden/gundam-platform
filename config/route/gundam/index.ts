@@ -275,6 +275,8 @@ export default [
             path: '/gundamPages/effectEvaluation/sampleManager*',
             component: './gundam-pages/effect-evaluation/sampleManager/home',
             name: '样本管理',
+            code: 'robot_mg-effect_sample_manager-view',
+            access: 'routerAuth',
           },
           // {
           //   path: '/gundamPages/effectEvaluation/sampleDetail',
@@ -285,6 +287,8 @@ export default [
             path: '/gundamPages/effectEvaluation/modelEvaluation',
             component: './gundam-pages/effect-evaluation/modelEvaluation',
             name: '模型评估',
+            code: 'robot_mg-effect_model_evaluation-view',
+            access: 'routerAuth',
           },
         ],
       },

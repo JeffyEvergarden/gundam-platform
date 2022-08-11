@@ -207,11 +207,13 @@ export default [
         icon: <CrownOutlined />,
         path: '/gundamPages/effectEvaluation/sampleManager',
         name: '样本管理',
+        code: 'robot_mg-effect_sample_manager-view',
       },
       {
         icon: <CrownOutlined />,
         path: '/gundamPages/effectEvaluation/modelEvaluation',
         name: '模型评估',
+        code: 'robot_mg-effect_model_evaluation-view',
       },
     ],
   },

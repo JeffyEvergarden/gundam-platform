@@ -91,7 +91,7 @@ const DetailPages: React.FC = (props: any) => {
                 ModalRef.current?.open?.('edit', row);
               }}
             >
-              编辑样本
+              重命名
             </Button>
 
             <Popconfirm
