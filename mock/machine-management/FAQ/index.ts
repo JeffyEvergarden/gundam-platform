@@ -202,6 +202,7 @@ export default {
 
   'POST /aichat/robot/faq/robotFaqPageList': getFaqList, // 获取问答列表
   'POST /aichat/robot/faq/robotFaqDelete': normalDeal, // 删除问题
+  'POST /aichat/robot/faq/robotFaqBatchDelete': normalDeal, // 删除问题
   'GET /aichat/robot/faqImport/listPage': getImportList, // 获取批量导入列表
   'POST /aichat/robot/faq/robotFaqRecycleDelete': normalDeal, // 删除问题
 

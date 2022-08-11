@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, Form, Row, Col, Input, Button, Select, Radio, Space, message, Spin } from 'antd';
-import { operateFormList } from './config';
-import { useIntentModel } from '../model';
 import config from '@/config/index';
+import { Form, Input, message, Modal, Radio, Select, Spin } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { useIntentModel } from '../model';
+import { operateFormList } from './config';
 const { Option } = Select;
 
 const layout = {
@@ -70,11 +70,20 @@ export default (props: any) => {
                     </Form.Item>
                   )}
 
-                  {item.type == 'radio' && (
+                  {item.name == 'headIntent' && (
                     <Form.Item name={item.name} label={item.label} rules={item.rules}>
                       <Radio.Group disabled={title == 'edit'}>
                         <Radio value={0}>头部意图</Radio>
                         <Radio value={1}>辅助意图</Radio>
+                      </Radio.Group>
+                    </Form.Item>
+                  )}
+
+                  {item.name == 'suggest' && (
+                    <Form.Item name="suggest" label="是否联想" initialValue={1}>
+                      <Radio.Group>
+                        <Radio value={1}>是</Radio>
+                        <Radio value={0}>否</Radio>
                       </Radio.Group>
                     </Form.Item>
                   )}

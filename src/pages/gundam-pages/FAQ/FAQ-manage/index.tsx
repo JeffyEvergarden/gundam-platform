@@ -1,5 +1,6 @@
+import config from '@/config';
 import { SettingOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Collapse, Input, Popconfirm, Select, Space } from 'antd';
+import { Button, Checkbox, Collapse, Input, message, Popconfirm, Select, Space } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
 import ChannelModal from '../components/channel-modal';
@@ -9,6 +10,7 @@ import HighConfigSelect from './components/high-select';
 import MyTree from './components/my-tree';
 import TypeModal from './components/type-modal';
 import { useTreeModal } from './model';
+import { batchDeleteQuestion } from './model/api';
 import style from './style.less';
 
 const { Panel } = Collapse;
@@ -44,14 +46,10 @@ const FAQPage: React.FC<any> = (props: any) => {
     console.log('选择树形组件:' + val);
     if (val[0]) {
       setSelectTree(val[0]);
-      // sessionStorage.setItem('selectTree', val[0]);
     }
-    // QuestionRef?.current?.CurrentPage({ faqTypeId: val });
   };
 
   const changeHighConfig = (val: any) => {
-    // console.log(val);
-
     setValue(val);
     //重新获取列表
     setTimeout(() => {
@@ -60,8 +58,6 @@ const FAQPage: React.FC<any> = (props: any) => {
   };
   const [pageNo, setPageNo] = useState<number>(1);
   const [selectAll, setSelectAll] = useState<boolean>(false);
-
-  // const { loading, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
 
   const { treeData, childList, getTreeData } = useTreeModal();
 
@@ -281,8 +277,22 @@ const FAQPage: React.FC<any> = (props: any) => {
                 okText="确定"
                 placement="topRight"
                 cancelText="取消"
-                onConfirm={() => {
-                  // _deleteRecycle();
+                onConfirm={async () => {
+                  let data = (QuestionRef?.current as any)?.deleteRecycle();
+                  let reqData = {
+                    faqIds: data,
+                    robotId: info.id,
+                  };
+                  await batchDeleteQuestion(reqData).then((res) => {
+                    if (res.resultCode == config.successCode) {
+                      message.success(res.resultDesc);
+                      setSelectAll(false);
+                      (QuestionRef?.current as any)?.selectAll(false);
+                    } else {
+                      message.error(res.resultDesc);
+                    }
+                    (QuestionRef?.current as any)?.CurrentPage();
+                  });
                 }}
               >
                 <Button>批量删除</Button>

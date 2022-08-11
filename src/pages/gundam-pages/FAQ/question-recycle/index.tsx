@@ -81,6 +81,7 @@ const RecyclePage: React.FC<any> = (props: any) => {
     await deleteRecycle({ faqIds: data }).then((res) => {
       if (res.resultCode == config.successCode) {
         message.success(res.resultDesc);
+        (QuestionRef?.current as any)?.selectAll(false);
         setSelectAll(false);
       } else {
         message.error(res.resultDesc);
