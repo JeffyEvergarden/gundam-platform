@@ -96,6 +96,7 @@ const DetailPages: React.FC = (props: any) => {
       robotId: info.id,
       id: editId,
       recommendList: val,
+      assessSampleId: (history?.location?.state as any)?.id,
     };
     let res: any = await editDetailSample(reqData);
     if (res) {
@@ -298,6 +299,7 @@ const DetailPages: React.FC = (props: any) => {
     let reqData = {
       robotId: info.id,
       id: row.id,
+      assessSampleId: (history?.location?.state as any)?.id,
       replyType: val,
     };
     await editDetailSample(reqData).then((res) => {
@@ -331,6 +333,7 @@ const DetailPages: React.FC = (props: any) => {
     let reqData = {
       robotId: info.id,
       id: editId,
+      assessSampleId: (history?.location?.state as any)?.id,
       ...values,
     };
     await editDetailSample(reqData).then((res) => {

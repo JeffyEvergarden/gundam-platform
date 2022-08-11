@@ -1,19 +1,12 @@
-import { useState, useEffect } from 'react';
-import { Form, Select, Button, Checkbox, Space, InputNumber, Radio, message } from 'antd';
-import {
-  PlusCircleOutlined,
-  MinusCircleOutlined,
-  SettingOutlined,
-  CaretUpOutlined,
-  AppstoreAddOutlined,
-} from '@ant-design/icons';
 import Condition from '@/components/Condition';
+import { AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { Button, Form, InputNumber, message, Radio, Select, Space, Switch } from 'antd';
+import { useEffect, useState } from 'react';
+import { useModel } from 'umi';
 import LabelSelect from '../../drawer/components/label-select';
 import CvsInput from '../components/cvs-input';
-import styles from './style.less';
 import ActionConfig from './action-config';
-import { ACTION_LIST } from '../const';
-import { useModel } from 'umi';
+import styles from './style.less';
 
 const { Item: FormItem, List: FormList } = Form;
 const { Option } = Select;
@@ -21,6 +14,8 @@ const { Option } = Select;
 const HightformTemplate: any = (props: any) => {
   const { form, name, title, showDefault, type } = props;
   const [disabled, setDisabled] = useState<boolean>(false);
+  const [switchType, setSwitchType] = useState<boolean>(false);
+
   const { nodeConfig, wishList } = useModel('drawer' as any, (model: any) => ({
     nodeConfig: model._globalNodeList,
     wishList: model._wishList,
@@ -66,6 +61,10 @@ const HightformTemplate: any = (props: any) => {
       setDisabled(false);
     }
     console.log(res);
+  };
+
+  const switchChange = (val: any) => {
+    setSwitchType(val);
   };
 
   useEffect(() => {
@@ -183,6 +182,31 @@ const HightformTemplate: any = (props: any) => {
             );
           }}
         </FormList>
+        <Condition r-if={name == 'rejectAction' && info?.robotType == 0 && type == 'config'}>
+          <div style={{ marginTop: '12px' }}>
+            <FormItem
+              // {...col}
+              label={'是否开启转人工'}
+              name={[name, 'rejectTransfer']}
+              key={name + 'rejectTransfer'}
+              valuePropName="checked"
+              initialValue={false}
+            >
+              <Switch checkedChildren="开启" unCheckedChildren="关闭" onChange={switchChange} />
+            </FormItem>
+            <Condition r-if={switchType}>
+              <FormItem
+                // {...col}
+                label={'拒识次数'}
+                name={[name, 'times']}
+                key={name + 'times'}
+                rules={[{ required: true }]}
+              >
+                <InputNumber style={{ width: 200 }} min={0} step="1" />
+              </FormItem>
+            </Condition>
+          </div>
+        </Condition>
       </Condition>
 
       {/* 未听清意图名称 */}
