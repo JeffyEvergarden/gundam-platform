@@ -212,7 +212,7 @@ export const useChannelConfigModel = () => {
     setTableLoading(true);
     let res: any = await getChannelConfigList(params);
     setTableLoading(false);
-    let { list = [], totalPage, totalSize } = res.data;
+    let list = res.data || [];
     if (!Array.isArray(list)) {
       list = [];
     }
@@ -225,7 +225,7 @@ export const useChannelConfigModel = () => {
     });
     // console.log('tableList', datas);
     setTableList(list || []);
-    return { data: list, total: totalPage };
+    return { data: list, total: list.length };
   };
 
   const addNewChannel = async (data: any) => {
