@@ -139,10 +139,10 @@ const QuestionList: React.FC<any> = (props: any) => {
         if (res.resultCode == config.successCode) {
           if (res.data.editFlag) {
             await deleteQuestion({ id: val?.id }).then((res) => {
-              // console.log(res, config);
-
               if (res.resultCode == config.successCode) {
                 message.success(res?.resultDesc || '');
+              } else {
+                message.error(res?.resultDesc || '');
               }
               CurrentPage({ page: current, pageSize });
             });

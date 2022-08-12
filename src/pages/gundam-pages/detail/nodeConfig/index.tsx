@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import { Form, Select, Button, Checkbox, Space, InputNumber, message } from 'antd';
-import HighConfig from '../../main-draw/drawerV2/child/high-config';
-import style from './style.less';
+import config from '@/config/index';
+import { Button, Form, InputNumber, message, Select, Space } from 'antd';
+import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
+import HighConfig from '../../main-draw/drawerV2/child/high-config';
+import { processForm } from '../../main-draw/drawerV2/formate';
 import { useNodeModel } from '../model';
 import { _saveNode } from '../model/api';
-import { processForm } from '../../main-draw/drawerV2/formate';
-import config from '@/config/index';
+import style from './style.less';
 
 const { Option } = Select;
 const { Item: FormItem, List: FormList } = Form;
@@ -44,6 +44,8 @@ const NodeConfig: React.FC = (props: any) => {
     if (!res) {
       return;
     }
+    console.log(res);
+
     let res1: any = await form2.validateFields();
     let _res = Nconfig.map((item: any) => {
       Object.keys(res1.systemConfigList).forEach((v) => {

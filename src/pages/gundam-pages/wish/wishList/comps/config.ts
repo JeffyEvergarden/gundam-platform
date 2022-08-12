@@ -1,4 +1,3 @@
-import { message } from 'antd';
 export const operateFormList = [
   {
     label: '意图名称',
@@ -31,6 +30,11 @@ export const operateFormList = [
     name: 'headIntent',
     type: 'radio',
     rules: [{ required: true, message: '请选择意图类型' }],
+  },
+  {
+    label: '是否联想',
+    name: 'suggest',
+    type: 'radio',
   },
   {
     label: '描述',

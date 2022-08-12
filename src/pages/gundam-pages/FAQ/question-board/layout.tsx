@@ -13,6 +13,7 @@ import {
   Form,
   Input,
   message,
+  Radio,
   Select,
   Space,
   TreeSelect,
@@ -672,6 +673,12 @@ const Board: React.FC<any> = (props: any) => {
                 );
               }}
             </FormList>
+            <Form.Item name="suggest" label="是否联想" style={{ width: '600px' }} initialValue={1}>
+              <Radio.Group>
+                <Radio value={1}>是</Radio>
+                <Radio value={0}>否</Radio>
+              </Radio.Group>
+            </Form.Item>
             <div className={style['diy-row']}>
               {/* questionRecommend  1 0 */}
               <Form.Item

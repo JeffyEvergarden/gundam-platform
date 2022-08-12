@@ -96,6 +96,7 @@ const DetailPages: React.FC = (props: any) => {
       robotId: info.id,
       id: editId,
       recommendList: val,
+      assessSampleId: (history?.location?.state as any)?.id,
     };
     let res: any = await editDetailSample(reqData);
     if (res) {
@@ -271,23 +272,42 @@ const DetailPages: React.FC = (props: any) => {
   const openSelectFaqModal = (row: any) => {
     console.log(row);
     setEditId(row.id);
+    let questionTypeList: any[] =
+      row.faqIntentList.map((item: any) => {
+        return {
+          recommendId: item.bizId,
+          recommendType: item.bizType,
+          recommendName: item.bizName,
+        };
+      }) || [];
+    questionTypeList = Array.isArray(questionTypeList) ? [...questionTypeList] : [];
+    let selectedQuestionKeys: any[] = questionTypeList
+      .filter((item: any) => {
+        return item.recommendType == '1';
+      })
+      .map((item: any) => {
+        return item.recommendId;
+      });
+    let selectedWishKeys: any[] = questionTypeList
+      .filter((item: any) => {
+        return item.recommendType == '2';
+      })
+      .map((item: any) => {
+        return item.recommendId;
+      });
     if (row.replyType == 1) {
       (selectFaqModalRef1.current as any)?.open({
-        selectList: [], //被选中列表
-        selectedQuestionKeys: [], // 已选问题
-        disabledWishKeys: [],
-        disabledQuestionKeys: [],
-        selectedWishKeys: [], // 已选意图
-        question: '',
+        selectList: questionTypeList, //被选中列表
+        selectedQuestionKeys, // 已选问题
+        selectedWishKeys, // 已选意图
       });
     } else if (row.replyType == 2) {
       (selectFaqModalRef.current as any)?.open({
-        selectList: [], //被选中列表
-        selectedQuestionKeys: [], // 已选问题
-        disabledWishKeys: [],
-        disabledQuestionKeys: [],
-        selectedWishKeys: [], // 已选意图
-        question: '',
+        selectList: questionTypeList, //被选中列表
+        // selectedQuestionKeys, // 已选问题
+        // selectedWishKeys, // 已选意图
+        disabledWishKeys: selectedWishKeys,
+        disabledQuestionKeys: selectedQuestionKeys,
       });
     } else {
     }
@@ -298,6 +318,7 @@ const DetailPages: React.FC = (props: any) => {
     let reqData = {
       robotId: info.id,
       id: row.id,
+      assessSampleId: (history?.location?.state as any)?.id,
       replyType: val,
     };
     await editDetailSample(reqData).then((res) => {
@@ -331,6 +352,7 @@ const DetailPages: React.FC = (props: any) => {
     let reqData = {
       robotId: info.id,
       id: editId,
+      assessSampleId: (history?.location?.state as any)?.id,
       ...values,
     };
     await editDetailSample(reqData).then((res) => {
@@ -512,7 +534,7 @@ const DetailPages: React.FC = (props: any) => {
           cref={selectFaqModalRef}
           confirm={confirmUpdateSelect}
           showQuestion={false}
-          tableLoading={editLoading}
+          // tableLoading={editLoading}
         />
 
         <SelectFaqModal
@@ -522,7 +544,7 @@ const DetailPages: React.FC = (props: any) => {
           min={1}
           max={1}
           showQuestion={false}
-          tableLoading={editLoading}
+          // tableLoading={editLoading}
         />
       </div>
     </Fragment>

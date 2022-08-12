@@ -34,6 +34,14 @@ export async function deleteQuestion(data?: Record<string, any>) {
   });
 }
 
+//批量删除问题
+export async function batchDeleteQuestion(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/robotFaqBatchDelete`, {
+    method: 'POST',
+    data,
+  });
+}
+
 export async function getTreeList(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/faq/typeList`, {
     method: 'GET',
