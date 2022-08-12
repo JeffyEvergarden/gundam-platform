@@ -39,13 +39,9 @@ const ChannelConfig: React.FC = (props: any) => {
   const modalRef = useRef<any>({});
 
   const deleteRow = async (row: any) => {
-    if (row?.status == 0) {
-      message.warning('请先停用该机器人');
-      return;
-    }
-
     let params: any = {
       id: row.id,
+      channelCode: row.channelCode,
       robotId,
     };
     let res: any = await deleteChannel(params);
@@ -56,6 +52,7 @@ const ChannelConfig: React.FC = (props: any) => {
 
   const confirmInfo = async (info: any) => {
     let res: any = null;
+    console.log(info);
     if (info._openType === 'new') {
       let params: any = {
         ...info?.form,
