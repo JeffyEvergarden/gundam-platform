@@ -94,8 +94,8 @@ const InfoModal: React.FC<any> = (props: any) => {
               rules={[
                 { required: true, message: '请输入渠道名称' },
                 {
-                  pattern: /^[A-Za-z0-9_]+$/g,
-                  message: '请输入汉字、字母、下划线、数字、横杠',
+                  pattern: /^[A-Za-z_]+$/g,
+                  message: '请输入字母、下划线',
                 },
               ]}
               name="channelCode"
