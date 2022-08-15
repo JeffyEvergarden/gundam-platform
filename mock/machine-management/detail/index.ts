@@ -283,6 +283,7 @@ const getNodeConfig = (req: any, res: any) => {
           ],
           responseList: [{ actionText: 'buhaoyisi', textLabels: undefined }],
           times: 3,
+          rejectTransfer: true,
         },
         silenceAction: {
           configType: 1,

@@ -123,7 +123,9 @@ const DetailPages: React.FC = (props: any) => {
             <Button
               type="link"
               onClick={() => {
-                window.open(`${config.basePath}/robot/file/getFile?path=${row.failFilePath}`);
+                window.open(
+                  `${config.basePath}/robot/access/sampleExport?sampleAssessId=${row.id}&robotId=${info.id}`,
+                );
               }}
             >
               导出

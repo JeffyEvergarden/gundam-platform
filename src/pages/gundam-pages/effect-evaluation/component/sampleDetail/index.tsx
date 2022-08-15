@@ -2,18 +2,7 @@ import Condition from '@/components/Condition';
 import SelectFaqModal from '@/pages/gundam-pages/FAQ-module/components/select-faq-modal';
 import { ArrowLeftOutlined, MonitorOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import {
-  Button,
-  DatePicker,
-  Form,
-  Input,
-  message,
-  Modal,
-  Popconfirm,
-  Select,
-  Space,
-  Tooltip,
-} from 'antd';
+import { Button, DatePicker, Form, Input, Modal, Popconfirm, Select, Space, Tooltip } from 'antd';
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
 import { useDetailSampleModel } from '../../model';
@@ -87,10 +76,10 @@ const DetailPages: React.FC = (props: any) => {
 
   const confirmUpdateSelect = async (val: any, inputValue: any) => {
     console.log(val);
-    if (!val.length) {
-      message.warning('请选择FAQ/意图');
-      return false;
-    }
+    // if (!val.length) {
+    //   message.warning('请选择FAQ/意图');
+    //   return false;
+    // }
 
     let reqData = {
       robotId: info.id,
@@ -190,12 +179,27 @@ const DetailPages: React.FC = (props: any) => {
       search: false,
       ellipsis: true,
       width: 200,
+      sorter: true,
     },
     {
       dataIndex: 'tagStatus',
       title: '标注状态',
       width: 150,
       search: false,
+      filters: [
+        {
+          text: '未标注',
+          value: 1,
+        },
+        {
+          text: '待确认',
+          value: 2,
+        },
+        {
+          text: '已标注',
+          value: 3,
+        },
+      ],
       valueEnum: {
         1: { text: '未标注', status: 'Error' },
         2: {
@@ -204,6 +208,7 @@ const DetailPages: React.FC = (props: any) => {
         },
         3: { text: '已标注', status: 'Success' },
       },
+      filterMode: 'menu',
       render: (val: any, row: any) => {
         return (
           <span className={style['tagStatus']}>
@@ -392,6 +397,20 @@ const DetailPages: React.FC = (props: any) => {
     });
   };
 
+  const tableChange = (pagination: any, filters: any, sorter: any) => {
+    console.log(filters, sorter);
+    let temp: any = {};
+    if (sorter?.columnKey === 'updateTime' && sorter?.order === 'ascend') {
+      temp.orderCode = '1';
+      temp.orderType = '1';
+    }
+    if (sorter?.columnKey === 'updateTime' && sorter?.order === 'descend') {
+      temp.orderCode = '1';
+      temp.orderType = '2';
+    }
+    setParamsObj({ ...paramsObj, ...filters, ...temp });
+  };
+
   useEffect(() => {
     let historyData = history?.location?.state || {};
     console.log(historyData);
@@ -453,7 +472,7 @@ const DetailPages: React.FC = (props: any) => {
           }}
           search={false}
           params={paramsObj}
-          // onChange={tableChange}
+          onChange={tableChange}
           rowSelection={rowSelection}
           toolBarRender={() => [
             <Popconfirm
@@ -534,7 +553,8 @@ const DetailPages: React.FC = (props: any) => {
           cref={selectFaqModalRef}
           confirm={confirmUpdateSelect}
           showQuestion={false}
-          // tableLoading={editLoading}
+          pageType={'sampleDetail'}
+          tableLoading={editLoading}
         />
 
         <SelectFaqModal
@@ -544,7 +564,7 @@ const DetailPages: React.FC = (props: any) => {
           min={1}
           max={1}
           showQuestion={false}
-          // tableLoading={editLoading}
+          tableLoading={editLoading}
         />
       </div>
     </Fragment>

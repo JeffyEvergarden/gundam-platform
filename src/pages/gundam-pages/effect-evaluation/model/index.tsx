@@ -90,7 +90,7 @@ export const useDetailSampleModel = () => {
   const [Loading, setLoading] = useState<boolean>(false);
   const [result, setResult] = useState<any>({});
   const [addLoading, setAddLoading] = useState<boolean>(true);
-  const [editLoading, setEditLoading] = useState<boolean>(true);
+  const [editLoading, setEditLoading] = useState<boolean>(false);
 
   const getList = async (params?: any) => {
     setLoading(true);

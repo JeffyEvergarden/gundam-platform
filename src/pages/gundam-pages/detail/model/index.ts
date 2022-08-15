@@ -8,10 +8,10 @@ import { addNewGlobal, deleteGlobal, editNewGlobal, getConfigCurrentList } from 
 import { _getNodeConfig, _saveNode } from './api';
 
 import {
-  getChannelConfigList,
   addNewChannelConfig,
-  editChannelConfig,
   deleteChannelConfig,
+  editChannelConfig,
+  getChannelConfigList,
 } from './api';
 
 import config from '@/config/index';
@@ -161,7 +161,7 @@ export const useNodeModel = () => {
   };
 };
 
-//变量配置
+//变量配置 faq配置
 export const useFAQModel = () => {
   const [configLoading, setConfigLoading] = useState<boolean>(false);
 

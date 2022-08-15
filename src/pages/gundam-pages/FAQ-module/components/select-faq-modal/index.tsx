@@ -96,6 +96,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     readOnly = true,
     tableLoading = false,
     showQuestion = true,
+    pageType,
   } = props;
 
   const [showWishKey, setShowWishKey] = useState<boolean>(true);
@@ -424,9 +425,16 @@ const SelectorModal: React.FC<any> = (props: any) => {
     }
     // ------------------
     if (type === 'checkbox') {
-      if (selectList.length < min || selectList.length > max) {
-        message.warning('请选择2-5项FAQ或意图用于澄清推荐问题');
-        return;
+      if (pageType == 'sampleDetail') {
+        if (!((selectList.length >= min && selectList.length <= max) || selectList.length == 0)) {
+          message.warning('请选择2-5项FAQ或意图用于澄清推荐问题');
+          return;
+        }
+      } else {
+        if (selectList.length < min || selectList.length > max) {
+          message.warning('请选择2-5项FAQ或意图用于澄清推荐问题');
+          return;
+        }
       }
     }
 
