@@ -114,7 +114,13 @@ const ImportModal: React.FC<any> = (props: any) => {
               <span style={{ color: 'red' }}>*</span> 单个样本集不超过10000条样本
             </div>
             <div className={style['checkbox']}>
-              <a>样板下载</a>
+              <a
+                onClick={() => {
+                  window.open('');
+                }}
+              >
+                样板下载
+              </a>
             </div>
             <div className={style['checkbox']}>
               <Checkbox

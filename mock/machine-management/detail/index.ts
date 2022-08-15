@@ -283,6 +283,7 @@ const getNodeConfig = (req: any, res: any) => {
           ],
           responseList: [{ actionText: 'buhaoyisi', textLabels: undefined }],
           times: 3,
+          rejectTransfer: true,
         },
         silenceAction: {
           configType: 1,
@@ -344,4 +345,6 @@ export default {
 
   'GET /aichat/robot/node/getOverConfig': getNodeConfig, // 节点
   'POST /aichat/robot/node/overConfig': editConfig, // 节点
+
+  'POST /aichat/robot/config/updateList': editConfig, // 保存FAQ配置
 };

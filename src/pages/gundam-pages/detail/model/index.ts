@@ -8,14 +8,13 @@ import { addNewGlobal, deleteGlobal, editNewGlobal, getConfigCurrentList } from 
 import { _getNodeConfig, _saveNode } from './api';
 
 import {
-  getChannelConfigList,
   addNewChannelConfig,
-  editChannelConfig,
   deleteChannelConfig,
+  editChannelConfig,
+  getChannelConfigList,
 } from './api';
 
 import config from '@/config/index';
-import { TrademarkCircleOutlined } from '@ant-design/icons';
 
 export const successCode = config.successCode;
 
@@ -147,12 +146,13 @@ export const useNodeModel = () => {
     setConfigLoading(true);
     let res: any = await _saveNode(data);
     setConfigLoading(false);
-    if (res.resultCode === successCode) {
-      message.success(res?.resultDesc || '修改标签信息成功');
-      return true;
-    } else {
-      return res?.resultDesc || '未知系统异常';
-    }
+    // if (res.resultCode === successCode) {
+    //   message.success(res?.resultDesc || '修改标签信息成功');
+    //   return true;
+    // } else {
+    //   return res?.resultDesc || '未知系统异常';
+    // }
+    return res;
   };
 
   return {
@@ -162,7 +162,7 @@ export const useNodeModel = () => {
   };
 };
 
-//变量配置
+//变量配置 faq配置
 export const useFAQModel = () => {
   const [configLoading, setConfigLoading] = useState<boolean>(false);
 

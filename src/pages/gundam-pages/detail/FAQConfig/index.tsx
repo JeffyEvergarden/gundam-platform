@@ -1,4 +1,4 @@
-import { Button, Form, Input, InputNumber, message, Space } from 'antd';
+import { Button, Form, Input, InputNumber, message, Space, Switch } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import { useFAQModel } from '../model';
@@ -13,7 +13,7 @@ const FAQConfig: React.FC = (props: any) => {
     wrapperCol: { span: 16 },
   };
 
-  const { getTableList, editFAQ } = useFAQModel();
+  const { getTableList, editFAQ, configLoading } = useFAQModel();
 
   const { info, businessFlowId, getGlobalValConfig } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -22,6 +22,7 @@ const FAQConfig: React.FC = (props: any) => {
   }));
 
   const [Nconfig, setNConfig] = useState<any>();
+  const [switchType, setSwitchType] = useState<boolean>(false);
 
   const getList = async () => {
     await getTableList({ robotId: info.id, configType: 2 }).then((res: any) => {
@@ -29,7 +30,11 @@ const FAQConfig: React.FC = (props: any) => {
       setNConfig(res?.data);
       let obj: any = {};
       res?.data?.forEach((item: any) => {
-        obj[item.configKey] = item.configValue;
+        if (item.dataType == 4) {
+          obj[item.configKey] = item.configValue == '1' ? true : false;
+        } else {
+          obj[item.configKey] = item.configValue;
+        }
       });
 
       form.setFieldsValue({ systemConfigList: { ...obj } });
@@ -47,7 +52,11 @@ const FAQConfig: React.FC = (props: any) => {
       Object.keys(res.systemConfigList).forEach((v) => {
         console.log(item.configKey, v);
         if (item?.configKey == v) {
-          item.configValue = res.systemConfigList[v];
+          if (item.dataType == 4) {
+            item.configValue = res.systemConfigList[v] ? '1' : '0';
+          } else {
+            item.configValue = res.systemConfigList[v];
+          }
         }
       });
       return item;
@@ -98,17 +107,55 @@ const FAQConfig: React.FC = (props: any) => {
                   </FormItem>
                 );
               } else if (item?.dataType == 0) {
+                if (item.configKey == 'FAQ_REJECT_RECOMMEND_TEXT' && switchType) {
+                  return (
+                    <FormItem
+                      // {...col}
+                      label={item.configName}
+                      name={['systemConfigList', item.configKey]}
+                      key={'systemConfigList' + item.configKey}
+                      rules={[{ required: true }]}
+                    >
+                      <Input.TextArea
+                        style={{ width: 300 }}
+                        maxLength={item?.validateRule?.max ?? 200}
+                      />
+                    </FormItem>
+                  );
+                } else if (item.configKey != 'FAQ_REJECT_RECOMMEND_TEXT') {
+                  return (
+                    <FormItem
+                      // {...col}
+                      label={item.configName}
+                      name={['systemConfigList', item.configKey]}
+                      key={'systemConfigList' + item.configKey}
+                      rules={[{ required: true }]}
+                    >
+                      <Input.TextArea
+                        style={{ width: 300 }}
+                        maxLength={item?.validateRule?.max ?? 200}
+                      />
+                    </FormItem>
+                  );
+                }
+              } else if (item?.dataType == 4) {
                 return (
                   <FormItem
                     // {...col}
                     label={item.configName}
                     name={['systemConfigList', item.configKey]}
                     key={'systemConfigList' + item.configKey}
-                    rules={[{ required: true }]}
+                    valuePropName="checked"
+                    initialValue={false}
+                    shouldUpdate={(prevValues, curValues) => {
+                      setSwitchType(curValues?.systemConfigList?.[item.configKey]);
+                      return true;
+                    }}
                   >
-                    <Input.TextArea
-                      style={{ width: 300 }}
-                      maxLength={item?.validateRule?.max ?? 200}
+                    <Switch
+                      checkedChildren="开启"
+                      unCheckedChildren="关闭"
+                      onChange={setSwitchType}
                     />
                   </FormItem>
                 );
@@ -116,7 +163,12 @@ const FAQConfig: React.FC = (props: any) => {
             })}
           </div>
         </Form>
-        <Button type="primary" onClick={submit} style={{ alignSelf: 'flex-end' }}>
+        <Button
+          type="primary"
+          onClick={submit}
+          style={{ alignSelf: 'flex-end' }}
+          loading={configLoading}
+        >
           保存
         </Button>
       </div>

@@ -63,10 +63,6 @@ const HightformTemplate: any = (props: any) => {
     console.log(res);
   };
 
-  const switchChange = (val: any) => {
-    setSwitchType(val);
-  };
-
   useEffect(() => {
     let res = form.getFieldsValue();
     if (res[name].configType == 1) {
@@ -191,8 +187,13 @@ const HightformTemplate: any = (props: any) => {
               key={name + 'rejectTransfer'}
               valuePropName="checked"
               initialValue={false}
+              shouldUpdate={(prevValues, curValues) => {
+                setSwitchType(curValues[name]?.rejectTransfer);
+                return true;
+                // return prevValues.additional !== curValues.additional;
+              }}
             >
-              <Switch checkedChildren="开启" unCheckedChildren="关闭" onChange={switchChange} />
+              <Switch checkedChildren="开启" unCheckedChildren="关闭" onChange={setSwitchType} />
             </FormItem>
             <Condition r-if={switchType}>
               <FormItem
