@@ -100,17 +100,17 @@ const FAQConfig: React.FC = (props: any) => {
 
     await editFAQ(_res).then(async (res) => {
       if (res) {
-        await editRejectTableList({
-          robotId: info.id,
-          faqRejectRecommends: form.getFieldValue('recommendList'),
-        }).then((item) => {
-          if (item) {
-            getList();
-          }
-        });
+        getList();
       }
     });
-    console.log(_res);
+    await editRejectTableList({
+      robotId: info.id,
+      faqRejectRecommends: form.getFieldValue('recommendList'),
+    }).then((item) => {
+      if (item) {
+        getRejectList();
+      }
+    });
   };
 
   useEffect(() => {
