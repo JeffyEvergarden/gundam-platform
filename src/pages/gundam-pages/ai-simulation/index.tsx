@@ -104,8 +104,6 @@ export default (props: any) => {
     setRobotChatData({});
     console.log('globalVarList', globalVarList);
     setRobotFormList(globalVarList);
-    console.log(RobotChatTexRef);
-
     // setRobotFormList(robotInfo); // 表单信息
     // showChatText(); // 初始化不开启会话功能
   }, [chatVisible, robotInfo]);

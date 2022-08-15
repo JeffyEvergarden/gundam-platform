@@ -81,6 +81,7 @@ export default function useDrawerModel() {
       timeObj[str] = now;
       return true;
     }
+    console.log(str + ': 取消进行重复调用');
     return false;
   };
 
@@ -234,7 +235,7 @@ export default function useDrawerModel() {
     }
     let res: any = await queryChannelList({ robotId: id });
     console.log('渠道结果', res);
-    let data: any[] = res?.data?.list || [];
+    let data: any[] = res?.data || [];
     data = Array.isArray(data) ? data : [];
     data = data.map((item: any) => {
       return {
