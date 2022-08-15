@@ -124,7 +124,7 @@ const DetailPages: React.FC = (props: any) => {
               type="link"
               onClick={() => {
                 window.open(
-                  `${config.basePath}/robot/access/sampleExport?sampleAssessId=${row.id}&robotId=${info.id}`,
+                  `${config.basePath}/robot/assess/sampleExport?sampleAssessId=${row.id}&robotId=${info.id}`,
                 );
               }}
             >
