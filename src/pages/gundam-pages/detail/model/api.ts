@@ -1,5 +1,5 @@
-import { request } from '@/services/request';
 import config from '@/config/index';
+import { request } from '@/services/request';
 
 const baseUrl: string = config.basePath;
 
@@ -102,6 +102,22 @@ export async function getFAQList(params?: { [key: string]: any }) {
 // 获取faq配置
 export async function _editFAQ(data?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/config/updateList`, {
+    method: 'POST',
+    data,
+  });
+}
+
+// 获取拒识配置
+export async function getRejectFAQList(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/config/getRejectRecommend`, {
+    method: 'GET',
+    params,
+  });
+}
+
+// 编辑拒识配置
+export async function _editRejectFAQ(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/config/updateRejectRecommend`, {
     method: 'POST',
     data,
   });
