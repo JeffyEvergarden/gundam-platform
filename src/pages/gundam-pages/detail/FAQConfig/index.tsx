@@ -150,7 +150,7 @@ const FAQConfig: React.FC = (props: any) => {
                     valuePropName="checked"
                     initialValue={false}
                     shouldUpdate={(prevValues, curValues) => {
-                      setSwitchType(curValues[item.configKey]);
+                      setSwitchType(curValues?.systemConfigList?.[item.configKey]);
                       console.log(curValues);
 
                       return true;

@@ -183,6 +183,22 @@ const configList = (req: any, res: any) => {
           dataType: 4,
           updateType: 0,
         },
+        {
+          id: '2',
+          configType: 0,
+          configName: '是否开启',
+          configValue: '1',
+          configDesc: 'var1',
+          configKey: 'FAQ_REJECT_RECOMMEND_TEXT',
+          robotId: '00000',
+          creator: 'ujiangjiahao',
+          createTime: '2022-04-11 17:16:00',
+          updateTime: '2022-04-11 17:16:00',
+          dataStatus: 0, //
+          uppdateBy: 'x',
+          dataType: 0,
+          updateType: 0,
+        },
       ],
     });
   } else {
