@@ -97,7 +97,7 @@ const Recommend: React.FC<any> = (props: any) => {
   };
 
   useEffect(() => {
-    getFaqConfig({ robotId: info.id });
+    getFaqConfig(info.id);
     console.log(query?.recommend);
 
     form.setFieldsValue({ questionRecommend: query?.recommend == 1 ? true : false });
