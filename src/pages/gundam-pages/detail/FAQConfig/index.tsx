@@ -1,3 +1,4 @@
+import Condition from '@/components/Condition';
 import { Button, Form, Input, InputNumber, message, Space, Switch } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useModel } from 'umi';
@@ -108,18 +109,36 @@ const FAQConfig: React.FC = (props: any) => {
                 );
               } else if (item?.dataType == 0) {
                 return (
-                  <FormItem
-                    // {...col}
-                    label={item.configName}
-                    name={['systemConfigList', item.configKey]}
-                    key={'systemConfigList' + item.configKey}
-                    rules={[{ required: true }]}
-                  >
-                    <Input.TextArea
-                      style={{ width: 300 }}
-                      maxLength={item?.validateRule?.max ?? 200}
-                    />
-                  </FormItem>
+                  <>
+                    <Condition r-if={item.configKey == 'FAQ_REJECT_RECOMMEND_TEXT' && switchType}>
+                      <FormItem
+                        // {...col}
+                        label={item.configName}
+                        name={['systemConfigList', item.configKey]}
+                        key={'systemConfigList' + item.configKey}
+                        rules={[{ required: true }]}
+                      >
+                        <Input.TextArea
+                          style={{ width: 300 }}
+                          maxLength={item?.validateRule?.max ?? 200}
+                        />
+                      </FormItem>
+                    </Condition>
+                    <Condition r-if={item.configKey != 'FAQ_REJECT_RECOMMEND_TEXT'}>
+                      <FormItem
+                        // {...col}
+                        label={item.configName}
+                        name={['systemConfigList', item.configKey]}
+                        key={'systemConfigList' + item.configKey}
+                        rules={[{ required: true }]}
+                      >
+                        <Input.TextArea
+                          style={{ width: 300 }}
+                          maxLength={item?.validateRule?.max ?? 200}
+                        />
+                      </FormItem>
+                    </Condition>
+                  </>
                 );
               } else if (item?.dataType == 4) {
                 return (
