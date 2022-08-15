@@ -13,7 +13,7 @@ const FAQConfig: React.FC = (props: any) => {
     wrapperCol: { span: 16 },
   };
 
-  const { getTableList, editFAQ } = useFAQModel();
+  const { getTableList, editFAQ, configLoading } = useFAQModel();
 
   const { info, businessFlowId, getGlobalValConfig } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -163,7 +163,12 @@ const FAQConfig: React.FC = (props: any) => {
             })}
           </div>
         </Form>
-        <Button type="primary" onClick={submit} style={{ alignSelf: 'flex-end' }}>
+        <Button
+          type="primary"
+          onClick={submit}
+          style={{ alignSelf: 'flex-end' }}
+          loading={configLoading}
+        >
           保存
         </Button>
       </div>

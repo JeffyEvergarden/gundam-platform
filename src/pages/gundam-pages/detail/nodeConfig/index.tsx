@@ -5,7 +5,6 @@ import { useModel } from 'umi';
 import HighConfig from '../../main-draw/drawerV2/child/high-config';
 import { processForm } from '../../main-draw/drawerV2/formate';
 import { useNodeModel } from '../model';
-import { _saveNode } from '../model/api';
 import style from './style.less';
 
 const { Option } = Select;
@@ -63,7 +62,7 @@ const NodeConfig: React.FC = (props: any) => {
       systemConfigList: _res,
     };
     if (res && res1) {
-      await _saveNode(params).then((res) => {
+      await saveNode(params).then((res) => {
         if (res.resultCode == config.successCode) {
           message.success(res.resultDesc);
           _getNodesConfig();
@@ -138,7 +137,12 @@ const NodeConfig: React.FC = (props: any) => {
             })}
           </div>
         </Form>
-        <Button type="primary" onClick={submit} style={{ alignSelf: 'flex-end' }}>
+        <Button
+          type="primary"
+          onClick={submit}
+          style={{ alignSelf: 'flex-end' }}
+          loading={configLoading}
+        >
           保存
         </Button>
       </div>

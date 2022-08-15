@@ -345,4 +345,6 @@ export default {
 
   'GET /aichat/robot/node/getOverConfig': getNodeConfig, // 节点
   'POST /aichat/robot/node/overConfig': editConfig, // 节点
+
+  'POST /aichat/robot/config/updateList': editConfig, // 保存FAQ配置
 };
