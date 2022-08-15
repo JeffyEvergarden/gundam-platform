@@ -15,6 +15,7 @@ import {
 } from './api';
 
 import config from '@/config/index';
+import { TrademarkCircleOutlined } from '@ant-design/icons';
 
 export const successCode = config.successCode;
 
@@ -212,7 +213,7 @@ export const useChannelConfigModel = () => {
     setTableLoading(true);
     let res: any = await getChannelConfigList(params);
     setTableLoading(false);
-    let { list = [], totalPage, totalSize } = res.data;
+    let list = res.data || [];
     if (!Array.isArray(list)) {
       list = [];
     }
@@ -225,10 +226,11 @@ export const useChannelConfigModel = () => {
     });
     // console.log('tableList', datas);
     setTableList(list || []);
-    return { data: list, total: totalPage };
+    return { data: list, total: list.length };
   };
 
   const addNewChannel = async (data: any) => {
+    setOpLoading(true);
     let res: any = await addNewChannelConfig(data);
     setOpLoading(false);
     if (res.resultCode === successCode) {
@@ -241,6 +243,7 @@ export const useChannelConfigModel = () => {
   };
 
   const editChannel = async (data: any) => {
+    setOpLoading(true);
     let res: any = await editChannelConfig(data);
     setOpLoading(false);
     if (res.resultCode === successCode) {
@@ -253,6 +256,7 @@ export const useChannelConfigModel = () => {
   };
 
   const deleteChannel = async (data: any) => {
+    setOpLoading(true);
     let res: any = await deleteChannelConfig(data);
     setOpLoading(false);
     if (res.resultCode === successCode) {

@@ -5,7 +5,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import { Button, message, Popconfirm } from 'antd';
 import React, { useEffect, useRef } from 'react';
-import { history, useAccess } from 'umi';
+import { history, useAccess, useModel } from 'umi';
 import style from '../style.less';
 
 import InfoModal from './components/info-modal';
@@ -27,23 +27,22 @@ const ChannelConfig: React.FC = (props: any) => {
 
   const access = useAccess();
 
-  // const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
-  //   info: model.info,
-  //   setInfo: model.setInfo,
-  // }));
+  const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+    setInfo: model.setInfo,
+  }));
+
+  const robotId = info?.id || '';
 
   const tableRef = useRef<any>({});
 
   const modalRef = useRef<any>({});
 
   const deleteRow = async (row: any) => {
-    if (row?.status == 0) {
-      message.warning('请先停用该机器人');
-      return;
-    }
-
     let params: any = {
       id: row.id,
+      channelCode: row.channelCode,
+      robotId,
     };
     let res: any = await deleteChannel(params);
     if (res) {
@@ -53,9 +52,11 @@ const ChannelConfig: React.FC = (props: any) => {
 
   const confirmInfo = async (info: any) => {
     let res: any = null;
+    console.log(info);
     if (info._openType === 'new') {
       let params: any = {
         ...info?.form,
+        robotId,
       };
       res = await addNewChannel(params);
 
@@ -68,6 +69,7 @@ const ChannelConfig: React.FC = (props: any) => {
         id: info?._originInfo?.id,
         channelName: info?.form?.channelName,
         channelCode: info?.form?.channelCode,
+        robotId,
       };
       res = await editChannel(params);
       if (res === true) {
@@ -148,7 +150,7 @@ const ChannelConfig: React.FC = (props: any) => {
         loading={tableLoading}
         scroll={{ x: columns.length * 200 }}
         request={async (params = {}, sort, filter) => {
-          return getChannelList({ ...params, page: 1, pageSize: 1000, current: 1 });
+          return getChannelList({ ...params, page: 1, pageSize: 1000, current: 1, robotId });
         }}
         editable={{
           type: 'multiple',
