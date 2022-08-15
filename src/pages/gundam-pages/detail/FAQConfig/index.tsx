@@ -70,7 +70,9 @@ const FAQConfig: React.FC = (props: any) => {
 
   const getRejectList = async () => {
     await getRejectTableList({ robotId: info.id }).then((res: any) => {
-      form.setFieldsValue({ recommendList: res });
+      if (res?.length) {
+        form.setFieldsValue({ recommendList: res });
+      }
     });
   };
 
@@ -355,7 +357,7 @@ const FAQConfig: React.FC = (props: any) => {
                           onClick={addNew}
                           style={{ paddingLeft: 0 }}
                         >
-                          新增推荐问题
+                          新增标准问
                         </Button>
                       </div>
                     </div>
