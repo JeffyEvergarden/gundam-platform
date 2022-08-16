@@ -24,6 +24,7 @@ const ImportModal: React.FC<any> = (props: any) => {
 
   const [visible, setVisible] = useState<boolean>(false);
   const [visibleResult, setVisibleResult] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [fileList, setFileList] = useState<any[]>([]);
   const [checkbox, setCheckbox] = useState<boolean>(false);
   const [row, setRow] = useState<any>();
@@ -40,8 +41,9 @@ const ImportModal: React.FC<any> = (props: any) => {
     formData.append('robotId', info.id);
     formData.append('cover', checkbox ? '1' : '0');
     formData.append('id', row?.id);
-
+    setLoading(true);
     await importSample(formData).then((res) => {
+      setLoading(false);
       if (res.resultCode == successCode) {
         message.success(res.resultDesc);
         setImportResult(res.data);
@@ -60,6 +62,7 @@ const ImportModal: React.FC<any> = (props: any) => {
     setFileList([]);
     setVisible(false);
     setCheckbox(false);
+    setLoading(false);
     refresh();
   };
 
@@ -106,6 +109,7 @@ const ImportModal: React.FC<any> = (props: any) => {
         }}
         okText={'提交'}
         onOk={submit}
+        confirmLoading={loading}
       >
         <div style={{ paddingLeft: '24px' }}>
           <Upload

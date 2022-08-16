@@ -324,10 +324,10 @@ const DetailPages: React.FC = (props: any) => {
     } else if (row.replyType == 2) {
       (selectFaqModalRef.current as any)?.open({
         selectList: questionTypeList, //被选中列表
-        // selectedQuestionKeys, // 已选问题
-        // selectedWishKeys, // 已选意图
-        disabledWishKeys: selectedWishKeys,
-        disabledQuestionKeys: selectedQuestionKeys,
+        selectedQuestionKeys, // 已选问题
+        selectedWishKeys, // 已选意图
+        // disabledWishKeys: selectedWishKeys,
+        // disabledQuestionKeys: selectedQuestionKeys,
       });
     } else {
     }

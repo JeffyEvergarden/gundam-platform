@@ -37,6 +37,7 @@ export async function importSample(data?: any) {
     method: 'POST',
     // data,
     body: data,
+    timeout: 60 * 1000,
   });
 }
 
