@@ -162,7 +162,16 @@ const DetailPages: React.FC = (props: any) => {
             </div>
           );
         } else {
-          return '---';
+          return (
+            <div
+              className={style['question-box']}
+              onClick={() => {
+                openSelectFaqModal(row);
+              }}
+            >
+              {'---'}
+            </div>
+          );
         }
       },
     },
