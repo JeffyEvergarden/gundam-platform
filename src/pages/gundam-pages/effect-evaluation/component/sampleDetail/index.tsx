@@ -137,7 +137,7 @@ const DetailPages: React.FC = (props: any) => {
       width: 200,
       render: (val: any, row: any) => {
         let arr = row?.faqIntentList;
-        if (Array.isArray(arr)) {
+        if (Array.isArray(arr) && arr?.length) {
           return (
             <div
               className={style['question-box']}
