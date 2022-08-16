@@ -46,7 +46,7 @@ const ImportModal: React.FC<any> = (props: any) => {
         message.success(res.resultDesc);
         setImportResult(res.data);
         setVisibleResult(true);
-        setVisible(false);
+        close();
 
         // refresh();
         // setVisible(false);
@@ -59,6 +59,7 @@ const ImportModal: React.FC<any> = (props: any) => {
   const close = () => {
     setFileList([]);
     setVisible(false);
+    setCheckbox(false);
   };
 
   useImperativeHandle(cref, () => ({
