@@ -39,7 +39,7 @@ const ImportModal: React.FC<any> = (props: any) => {
     formData.append('file', fileList[0]);
     formData.append('robotId', info.id);
     formData.append('cover', checkbox ? '1' : '0');
-    formData.append('id', row?.sampleSetId);
+    formData.append('id', row?.id);
 
     await importSample(formData).then((res) => {
       if (res.resultCode == successCode) {
@@ -60,6 +60,7 @@ const ImportModal: React.FC<any> = (props: any) => {
     setFileList([]);
     setVisible(false);
     setCheckbox(false);
+    refresh();
   };
 
   useImperativeHandle(cref, () => ({

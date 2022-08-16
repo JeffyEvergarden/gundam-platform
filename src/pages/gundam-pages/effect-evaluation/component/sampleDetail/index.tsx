@@ -84,7 +84,13 @@ const DetailPages: React.FC = (props: any) => {
     let reqData = {
       robotId: info.id,
       id: editId,
-      recommendList: val,
+      bizRelationList: val.map((item: any) => {
+        return {
+          bizRelation: item?.recommendId,
+          bizType: item?.recommendType,
+          bizName: item?.recommendName,
+        };
+      }),
       assessSampleId: (history?.location?.state as any)?.id,
     };
     let res: any = await editDetailSample(reqData);
