@@ -439,10 +439,10 @@ const DetailPages: React.FC = (props: any) => {
               }}
             />
             <span>{outRow?.sampleSetName || '-'}</span>
-            <span style={{ fontSize: '16px' }}>{` （共${result?.totalPage || '-'}条：已标注${
-              result?.tagNum || '-'
-            }条，未标注${result?.unTagNum || '-'}条，待确认${
-              result?.stayConfirmNum || '-'
+            <span style={{ fontSize: '16px' }}>{` （共${result?.totalPage || '0'}条：已标注${
+              result?.tagNum || '0'
+            }条，未标注${result?.unTagNum || '0'}条，待确认${
+              result?.stayConfirmNum || '0'
             }条）`}</span>
           </div>
           <Input.Search
