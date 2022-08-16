@@ -164,7 +164,7 @@ const DetailPages: React.FC = (props: any) => {
         } else {
           return (
             <div
-              className={style['question-box']}
+              className={row.replyType == 3 ? '' : style['question-box']}
               onClick={() => {
                 openSelectFaqModal(row);
               }}
