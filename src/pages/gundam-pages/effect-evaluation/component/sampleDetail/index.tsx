@@ -86,7 +86,7 @@ const DetailPages: React.FC = (props: any) => {
       id: editId,
       bizRelationList: val.map((item: any) => {
         return {
-          bizRelation: item?.recommendId,
+          bizId: item?.recommendId,
           bizType: item?.recommendType,
           bizName: item?.recommendName,
         };
