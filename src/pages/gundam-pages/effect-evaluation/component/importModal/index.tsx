@@ -157,7 +157,7 @@ const ImportModal: React.FC<any> = (props: any) => {
         <div style={{ paddingLeft: '24px' }}>
           <div>
             导入完成，总样本{importResult?.importTotal}条，成功导入
-            {importResult?.importTotal - importResult?.failNum || 0}条
+            {importResult?.importTotal - (importResult?.failNum || 0)}条
           </div>
           <Button
             type="link"
