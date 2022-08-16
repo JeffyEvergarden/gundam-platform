@@ -46,6 +46,8 @@ const ImportModal: React.FC<any> = (props: any) => {
         message.success(res.resultDesc);
         setImportResult(res.data);
         setVisibleResult(true);
+        setVisible(false);
+
         // refresh();
         // setVisible(false);
       } else {
@@ -149,8 +151,7 @@ const ImportModal: React.FC<any> = (props: any) => {
         onCancel={() => {
           setVisibleResult(false);
         }}
-        okText={'提交'}
-        onOk={submit}
+        footer={null}
       >
         <div style={{ paddingLeft: '24px' }}>
           <div>
