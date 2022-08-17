@@ -49,9 +49,6 @@ const ImportModal: React.FC<any> = (props: any) => {
         setImportResult(res.data);
         setVisibleResult(true);
         close();
-
-        // refresh();
-        // setVisible(false);
       } else {
         message.error(res.resultDesc);
       }

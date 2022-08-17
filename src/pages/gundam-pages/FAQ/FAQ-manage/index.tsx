@@ -288,6 +288,7 @@ const FAQPage: React.FC<any> = (props: any) => {
                       message.success(res.resultDesc);
                       setSelectAll(false);
                       (QuestionRef?.current as any)?.selectAll(false);
+                      getTree();
                     } else {
                       message.error(res.resultDesc);
                     }
@@ -311,6 +312,7 @@ const FAQPage: React.FC<any> = (props: any) => {
             heightSelect={value}
             isRecycle={0}
             selectTree={selectTree}
+            getTreeData={getTree}
           ></QuestionList>
         </div>
       </div>
