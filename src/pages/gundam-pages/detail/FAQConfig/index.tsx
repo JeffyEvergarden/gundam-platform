@@ -1,4 +1,5 @@
 import Condition from '@/components/Condition';
+import config from '@/config';
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, message, Space, Switch } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
@@ -96,21 +97,43 @@ const FAQConfig: React.FC = (props: any) => {
       });
       return item;
     });
-    console.log(res);
 
-    await editFAQ(_res).then(async (res) => {
-      if (res) {
-        getList();
+    let [result1, result2]: any = await Promise.all([
+      editFAQ(_res),
+      editRejectTableList({
+        robotId: info.id,
+        faqRejectRecommends: form.getFieldValue('recommendList'),
+      }),
+    ]);
+
+    if (result1?.resultCode === config.successCode && result2?.resultCode === config.successCode) {
+      message.success('成功');
+      getList();
+      getRejectList();
+    } else {
+      let str = '';
+      if (result1?.resultCode != config.successCode) {
+        str += result1?.resultDesc;
       }
-    });
-    await editRejectTableList({
-      robotId: info.id,
-      faqRejectRecommends: form.getFieldValue('recommendList'),
-    }).then((item) => {
-      if (item) {
-        getRejectList();
+      if (result2?.resultCode != config.successCode) {
+        if (str) {
+          str += ',';
+        }
+        str += result2?.resultDesc;
       }
-    });
+      message.error(str);
+    }
+
+    // await .then(async (res) => {
+    //   if (res) {
+    //     getList();
+    //   }
+    // });
+    // await .then((item) => {
+    //   if (item) {
+    //     getRejectList();
+    //   }
+    // });
   };
 
   useEffect(() => {
@@ -133,6 +156,8 @@ const FAQConfig: React.FC = (props: any) => {
 
   const getRecommendItem = () => {
     const _item = form.getFieldsValue();
+    console.log(_item);
+
     return _item?.['recommendList'] || [];
   };
 
@@ -142,13 +167,13 @@ const FAQConfig: React.FC = (props: any) => {
     // 找出被选过的问题  （不能再选，设置为禁用项）
     const disabledQuestionKeys = _list
       .filter((item: any, i: number) => {
-        return item.recommendBizType === '1' && item.recommendId && i !== index;
+        return item.recommendBizType == 1 && item.recommendId && i !== index;
       })
       .map((item: any) => item.recommendId);
     // 找出被选过的流程  （不能再选，设置为禁用项）
     const disabledFlowKeys = _list
       .filter((item: any, i: number) => {
-        return item.recommendBizType === '2' && item.recommendId && i !== index;
+        return item.recommendBizType == 2 && item.recommendId && i !== index;
       })
       .map((item: any) => item.recommendId);
 
@@ -166,9 +191,9 @@ const FAQConfig: React.FC = (props: any) => {
       selectedFlowKeys: [],
     };
     // 找到已选的
-    if (_list[index]?.questionType === '2') {
+    if (_list[index]?.questionType == 2) {
       openInfo.selectedFlowKeys = [_list[index].recommendId];
-    } else if (_list[index]?.questionType === '1') {
+    } else if (_list[index]?.questionType == 1) {
       openInfo.selectedQuestionKeys = [_list[index].recommendId];
     }
     (selectModalRef.current as any).open(openInfo);
@@ -178,11 +203,10 @@ const FAQConfig: React.FC = (props: any) => {
       const repeatFlag = _list.findIndex((item: any, i: number) => {
         return (
           i !== index &&
-          item.recommendId === obj.recommendId &&
-          item.recommendBizType === obj.recommendBizType
+          item.recommendId == obj.recommendId &&
+          item.recommendBizType == obj.recommendBizType
         );
       });
-      // console.log(repeatFlag, index, obj, _list[repeatFlag]);
       if (repeatFlag > -1) {
         message.warning('已添加过重复');
         return;
@@ -318,7 +342,15 @@ const FAQConfig: React.FC = (props: any) => {
                         return (
                           <Form.Item
                             {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-                            label={index === 0 ? '猜你想问配置' : ''}
+                            label={
+                              index === 0 ? (
+                                <span>
+                                  <span style={{ color: 'red' }}>*</span> 猜你想问配置
+                                </span>
+                              ) : (
+                                ''
+                              )
+                            }
                             className={style['faq_zy-row_sp']}
                             // rules={[{ required: true, message: '请选择' }]}
                             key={field.key}

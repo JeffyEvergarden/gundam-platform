@@ -38,6 +38,7 @@ const QuestionList: React.FC<any> = (props: any) => {
     isRecycle,
     deleteRecycle,
     selectTree,
+    getTreeData,
   } = props;
   const { loading, resData, faqList, totalSize, getFaqList, getMoreFaqList } = useFaqModal();
   const [form] = Form.useForm();
@@ -141,6 +142,7 @@ const QuestionList: React.FC<any> = (props: any) => {
             await deleteQuestion({ id: val?.id }).then((res) => {
               if (res.resultCode == config.successCode) {
                 message.success(res?.resultDesc || '');
+                getTreeData();
               } else {
                 message.error(res?.resultDesc || '');
               }

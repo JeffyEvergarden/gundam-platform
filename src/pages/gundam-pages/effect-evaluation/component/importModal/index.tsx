@@ -49,9 +49,6 @@ const ImportModal: React.FC<any> = (props: any) => {
         setImportResult(res.data);
         setVisibleResult(true);
         close();
-
-        // refresh();
-        // setVisible(false);
       } else {
         message.error(res.resultDesc);
       }
@@ -107,7 +104,7 @@ const ImportModal: React.FC<any> = (props: any) => {
         onCancel={() => {
           close();
         }}
-        okText={'提交'}
+        okText={loading ? '导入中' : '提交'}
         onOk={submit}
         confirmLoading={loading}
       >

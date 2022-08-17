@@ -423,7 +423,9 @@ const DetailPages: React.FC = (props: any) => {
       temp.orderCode = '1';
       temp.orderType = '2';
     }
-    setParamsObj({ ...paramsObj, ...filters, ...temp });
+    let filterList = filters?.tagStatus ? filters : {};
+
+    setParamsObj({ ...paramsObj, ...filterList, ...temp });
   };
 
   useEffect(() => {
