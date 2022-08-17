@@ -77,6 +77,7 @@ export default (props: any) => {
       //   return;
       // }
       if (inputVal.length >= 20 || !inputVal.length) {
+        setFocus(false);
         return;
       }
       // ----------------
