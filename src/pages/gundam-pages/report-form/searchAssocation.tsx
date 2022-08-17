@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useModel } from 'umi';
-import { throttle, toNumber } from '@/utils';
-import { Space } from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import moment from 'moment';
 import config from '@/config/index';
+import { throttle, toNumber } from '@/utils';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
+import { Space } from 'antd';
+import moment from 'moment';
+import { useEffect, useRef, useState } from 'react';
+import { useModel } from 'umi';
 import HeadSearch from './components/headSearch';
 import LineChart from './components/lineCharts';
 import styles from './index.less';

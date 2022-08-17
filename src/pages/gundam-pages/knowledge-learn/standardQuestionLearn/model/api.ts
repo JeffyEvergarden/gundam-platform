@@ -1,5 +1,5 @@
-import { request } from '@/services/request';
 import config from '@/config/index';
+import { request } from '@/services/request';
 const baseUrl: string = config.basePath;
 
 export async function unknownQuestionByFaqPageList(params?: Record<string, any>) {

@@ -1,9 +1,8 @@
-import React, { useState, useImperativeHandle } from 'react';
-import { Form, Input, Button, Modal, message } from 'antd';
-import { useTreeModal } from '../../model';
-import { useRef } from 'react';
-import style from './style.less';
+import { Form, Input, message, Modal } from 'antd';
+import { useImperativeHandle, useRef, useState } from 'react';
 import { useModel } from 'umi';
+import { useTreeModal } from '../../model';
+import style from './style.less';
 
 const TypeModal = (props: any) => {
   const { cref, confirm, getTree } = props;
@@ -80,7 +79,7 @@ const TypeModal = (props: any) => {
       form.resetFields();
       if (obj.type === 'edit') {
         form.setFieldsValue({
-          typeName: obj.node?.title,
+          typeName: obj.node?.classify,
         });
       }
       setVisible(true);

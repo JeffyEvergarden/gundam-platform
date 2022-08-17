@@ -1,5 +1,5 @@
-import robotPhoto from '@/asset/image/robot.png';
 import customerPhoto from '@/asset/image/customer.png';
+import robotPhoto from '@/asset/image/robot.png';
 import { Button, Input, message, Modal, Popover, Radio, Space } from 'antd';
 import React, { Fragment, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useModel } from 'umi';
@@ -76,7 +76,10 @@ export default (props: any) => {
       // if (timeFn.current.inputVal === inputVal) {
       //   return;
       // }
-      if (inputVal.length >= 20) {
+
+      console.log('调用');
+      if (inputVal.length >= 20 || !inputVal.length) {
+        setFocus(false);
         return;
       }
       // ----------------
@@ -92,7 +95,7 @@ export default (props: any) => {
         timeFn.current.inputVal = inputVal;
       }
     };
-    return debounce(fn, 0.8);
+    return debounce(fn, 0.3);
   }, [modalData]);
   // 弹窗显示
   const PopoverVisible = useMemo(() => {
@@ -122,7 +125,7 @@ export default (props: any) => {
       setChatEvent('dialogue');
     }
     // 触发级联搜索
-    if (!opLoading && chatEvent === 'dialogue') {
+    if (chatEvent === 'dialogue') {
       getAssociation(val);
     }
   };
@@ -200,7 +203,7 @@ export default (props: any) => {
   };
 
   // 发送按钮
-  const sendMessage = async (text?: any) => {
+  const sendMessage = async (text?: any, skipCheck?: any) => {
     if (loading) {
       return;
     }
@@ -208,11 +211,12 @@ export default (props: any) => {
       message.warning('请点击‘开始对话’按钮启动对话');
       return;
     }
-    if (textMessage?.length == 0 || textMessage.trim().length == 0) {
+
+    if (!skipCheck && (textMessage?.length == 0 || textMessage.trim().length == 0)) {
       message.warning('不能发送空白文字');
       return;
     }
-    if (textMessage?.length > 200 || textMessage.trim().length > 200) {
+    if (!skipCheck && (textMessage?.length > 200 || textMessage.trim().length > 200)) {
       message.warning('最多发送200字');
       return;
     }
@@ -394,6 +398,10 @@ export default (props: any) => {
     </div>
   );
 
+  const submit = (text: any) => {
+    sendMessage(text);
+  };
+
   useImperativeHandle(cref, () => ({
     setChatVisible,
   }));
@@ -474,7 +482,17 @@ export default (props: any) => {
                               {item.recommendQuestion.map((el: any) => {
                                 return (
                                   <Fragment key={el.number}>
-                                    <div>{el.number + ':' + el.askText}</div>
+                                    <div
+                                      style={{ color: '#1890ff', cursor: 'pointer' }}
+                                      onClick={() => {
+                                        setTextMessage(el.askText);
+                                        timeFn.current.inputVal = el.askText;
+                                        setAssociationList([]);
+                                        sendMessage(el.askText, true);
+                                      }}
+                                    >
+                                      {el.number + ':' + el.askText}
+                                    </div>
                                   </Fragment>
                                 );
                               })}

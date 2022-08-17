@@ -2,6 +2,7 @@ import config from '@/config';
 import ProTable from '@ant-design/pro-table';
 import { Button, Popconfirm } from 'antd';
 import React, { useRef } from 'react';
+import { useActivate } from 'react-activation';
 import { history, useModel } from 'umi';
 import ImportModal from '../component/importModal';
 import SampleModal from '../component/sampleModal';
@@ -143,6 +144,10 @@ const DetailPages: React.FC = (props: any) => {
   const refresh = () => {
     TableRef?.current?.reload();
   };
+
+  useActivate(() => {
+    refresh();
+  });
 
   return (
     <div className={`${style['machine-page']} list-page`}>

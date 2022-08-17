@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { message } from 'antd';
+import { message, Button } from 'antd';
 import { useModel } from 'umi';
 import DrawerForm from './drawerV2';
 import SpDrawerForm from './drawerV2/sp-index';
@@ -10,6 +10,25 @@ import eventbus from './flow/utils/eventbus';
 import { useNodeOpsModel } from './model';
 import { processType } from './model/const';
 import style from './style.less';
+import { useState } from 'react';
+
+const debounce = (fn: (...arr: any[]) => void, second: number) => {
+  let timer: any = null;
+  // let content = this;
+
+  return (...args: any[]) => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    // let flag = !timer;
+
+    timer = setTimeout(() => {
+      timer = null;
+      fn.apply(fn, args);
+    }, second * 1000);
+  };
+};
 
 const MainDraw = (props: any) => {
   const { type = 'main' } = props;
@@ -246,7 +265,7 @@ const MainDraw = (props: any) => {
       sourceType: processType((fake.current as any)?.find(info.source)?._nodetype),
       targetType: processType((fake.current as any)?.find(info.target)?._nodetype),
     };
-    console.log((fake.current as any)?.find(info.target));
+    // console.log((fake.current as any)?.find(info.target));
 
     // console.log(config);
 
@@ -280,14 +299,50 @@ const MainDraw = (props: any) => {
     }); // 获取机器人主流程信息
   }, [businessFlowId]);
 
+  const [key, setKey] = useState(0);
+  const infoRef: any = useRef({});
+
+  useEffect(() => {
+    const timeFn = () => {
+      // 定时储存
+      const _info = fake.current?.getInfo?.() || {};
+      infoRef.current.info = _info || {};
+      if (!infoRef.current.key) {
+        infoRef.current.key = 0;
+      } else if (infoRef.current.key > 1000) {
+        infoRef.current.key = 0;
+      }
+      infoRef.current.key++;
+    };
+    const tf = setInterval(() => {
+      timeFn();
+    }, 1500);
+
+    // resize 防抖
+    const fn = debounce(() => {
+      setKey(infoRef.current.key);
+      // console.log(infoRef.current.key);
+      fake.current?.init(infoRef.current.info || {});
+    }, 0.8);
+
+    window.addEventListener('resize', fn);
+
+    return () => {
+      clearInterval(tf);
+      window.removeEventListener('resize', fn);
+    };
+  }, []);
+
   // -- end-----
 
   return (
     <div className={style['main-draw']}>
+      <div></div>
       <div className={style['container']}>
         <div className={style['container_right']}>
           <FlowPage
             type={type} // 流程图类型
+            key={key}
             insertNode={insertNode}
             removeNode={removeNode}
             openSetting={openSetting}

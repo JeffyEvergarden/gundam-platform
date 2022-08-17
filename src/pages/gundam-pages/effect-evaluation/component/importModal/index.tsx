@@ -46,9 +46,10 @@ const ImportModal: React.FC<any> = (props: any) => {
       setLoading(false);
       if (res.resultCode == successCode) {
         message.success(res.resultDesc);
-        setImportResult(res.data);
-        setVisibleResult(true);
+        setImportResult(res.data); //结果
+        setVisibleResult(true); //结果下载弹窗
         close();
+        refresh();
       } else {
         message.error(res.resultDesc);
       }
@@ -60,7 +61,6 @@ const ImportModal: React.FC<any> = (props: any) => {
     setVisible(false);
     setCheckbox(false);
     setLoading(false);
-    refresh();
   };
 
   useImperativeHandle(cref, () => ({
