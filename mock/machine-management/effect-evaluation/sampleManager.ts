@@ -78,7 +78,7 @@ const getDetailSampleList = (req: any, res: any) => {
     data: {
       page: 1,
       pageSize: 10,
-      totalPage: 11,
+      totalPage: 100,
       tagNum: 2,
       unTagNum: 1,
       stayConfirmNum: 1,
