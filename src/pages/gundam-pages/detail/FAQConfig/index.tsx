@@ -1,4 +1,5 @@
 import Condition from '@/components/Condition';
+import config from '@/config';
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, message, Space, Switch } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
@@ -96,21 +97,43 @@ const FAQConfig: React.FC = (props: any) => {
       });
       return item;
     });
-    console.log(res);
 
-    await editFAQ(_res).then(async (res) => {
-      if (res) {
-        getList();
+    let [result1, result2]: any = await Promise.all([
+      editFAQ(_res),
+      editRejectTableList({
+        robotId: info.id,
+        faqRejectRecommends: form.getFieldValue('recommendList'),
+      }),
+    ]);
+
+    if (result1?.resultCode === config.successCode && result2?.resultCode === config.successCode) {
+      message.success('成功');
+      getList();
+      getRejectList();
+    } else {
+      let str = '';
+      if (result1?.resultCode != config.successCode) {
+        str += result1?.resultDesc;
       }
-    });
-    await editRejectTableList({
-      robotId: info.id,
-      faqRejectRecommends: form.getFieldValue('recommendList'),
-    }).then((item) => {
-      if (item) {
-        getRejectList();
+      if (result2?.resultCode != config.successCode) {
+        if (str) {
+          str += ',';
+        }
+        str += result2?.resultDesc;
       }
-    });
+      message.error(str);
+    }
+
+    // await .then(async (res) => {
+    //   if (res) {
+    //     getList();
+    //   }
+    // });
+    // await .then((item) => {
+    //   if (item) {
+    //     getRejectList();
+    //   }
+    // });
   };
 
   useEffect(() => {
@@ -318,7 +341,7 @@ const FAQConfig: React.FC = (props: any) => {
                         return (
                           <Form.Item
                             {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-                            label={index === 0 ? '猜你想问配置' : ''}
+                            label={index === 0 ? <span>猜你想问配置</span> : ''}
                             className={style['faq_zy-row_sp']}
                             // rules={[{ required: true, message: '请选择' }]}
                             key={field.key}
