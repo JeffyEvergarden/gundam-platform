@@ -1,5 +1,5 @@
-import robotPhoto from '@/asset/image/robot.png';
 import customerPhoto from '@/asset/image/customer.png';
+import robotPhoto from '@/asset/image/robot.png';
 import { Button, Input, message, Modal, Popover, Radio, Space } from 'antd';
 import React, { Fragment, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useModel } from 'umi';
@@ -76,7 +76,7 @@ export default (props: any) => {
       // if (timeFn.current.inputVal === inputVal) {
       //   return;
       // }
-      if (inputVal.length >= 20) {
+      if (inputVal.length >= 20 || !inputVal.length) {
         return;
       }
       // ----------------
