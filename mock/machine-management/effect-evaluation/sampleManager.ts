@@ -87,7 +87,7 @@ const getDetailSampleList = (req: any, res: any) => {
   });
 };
 
-const getResultEvaluationList = (req: any, res: any) => {
+const getEvaluationList = (req: any, res: any) => {
   let arr = new Array(11).fill(1);
   let _date = Date.now();
 
@@ -121,7 +121,7 @@ const getResultEvaluationList = (req: any, res: any) => {
   });
 };
 
-const getEvaluationList = (req: any, res: any) => {
+const getResultEvaluationList = (req: any, res: any) => {
   let arr = new Array(11).fill(1);
   let _date = Date.now();
 
