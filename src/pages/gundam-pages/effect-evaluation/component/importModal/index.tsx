@@ -1,3 +1,4 @@
+import config from '@/config';
 import { UploadOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, message, Modal, Select, Upload } from 'antd';
 import React, { useImperativeHandle, useState } from 'react';
@@ -23,9 +24,11 @@ const ImportModal: React.FC<any> = (props: any) => {
 
   const [visible, setVisible] = useState<boolean>(false);
   const [visibleResult, setVisibleResult] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [fileList, setFileList] = useState<any[]>([]);
   const [checkbox, setCheckbox] = useState<boolean>(false);
   const [row, setRow] = useState<any>();
+  const [importResult, setImportResult] = useState<any>();
 
   const submit = async () => {
     if (!fileList.length) {
@@ -37,13 +40,15 @@ const ImportModal: React.FC<any> = (props: any) => {
     formData.append('file', fileList[0]);
     formData.append('robotId', info.id);
     formData.append('cover', checkbox ? '1' : '0');
-    formData.append('id', row?.sampleSetId);
-
+    formData.append('id', row?.id);
+    setLoading(true);
     await importSample(formData).then((res) => {
+      setLoading(false);
       if (res.resultCode == successCode) {
         message.success(res.resultDesc);
-        refresh();
-        setVisible(false);
+        setImportResult(res.data);
+        setVisibleResult(true);
+        close();
       } else {
         message.error(res.resultDesc);
       }
@@ -51,7 +56,11 @@ const ImportModal: React.FC<any> = (props: any) => {
   };
 
   const close = () => {
+    setFileList([]);
     setVisible(false);
+    setCheckbox(false);
+    setLoading(false);
+    refresh();
   };
 
   useImperativeHandle(cref, () => ({
@@ -93,10 +102,11 @@ const ImportModal: React.FC<any> = (props: any) => {
         title={`导入样本`}
         visible={visible}
         onCancel={() => {
-          setVisible(false);
+          close();
         }}
-        okText={'提交'}
+        okText={loading ? '导入中' : '提交'}
         onOk={submit}
+        confirmLoading={loading}
       >
         <div style={{ paddingLeft: '24px' }}>
           <Upload
@@ -116,7 +126,9 @@ const ImportModal: React.FC<any> = (props: any) => {
             <div className={style['checkbox']}>
               <a
                 onClick={() => {
-                  window.open('');
+                  window.open(
+                    `${config.basePath}/robot/file/getLocalFile?fileName=样本管理导入模板.xlsx`,
+                  );
                 }}
               >
                 样板下载
@@ -136,18 +148,31 @@ const ImportModal: React.FC<any> = (props: any) => {
       </Modal>
 
       <Modal
-        width={650}
+        width={350}
         title={`导入结果`}
         visible={visibleResult}
         onCancel={() => {
-          setVisible(false);
+          setVisibleResult(false);
         }}
-        okText={'提交'}
-        onOk={submit}
+        footer={null}
       >
         <div style={{ paddingLeft: '24px' }}>
-          <div>导入完成，总样本70条，成功导入70条</div>
-          <a>结果下载</a>
+          <div>
+            导入完成，总样本{importResult?.importTotal}条，成功导入
+            {importResult?.importTotal - (importResult?.failNum || 0)}条
+          </div>
+          <Button
+            type="link"
+            onClick={() => {
+              window.open(
+                `${config.basePath}/robot/file/getFile?path=${importResult?.errorExcelPath}`,
+              );
+            }}
+            style={{ padding: 0 }}
+            disabled={!importResult?.errorExcelPath}
+          >
+            结果下载
+          </Button>
         </div>
       </Modal>
     </div>

@@ -95,7 +95,11 @@ const DetailPages: React.FC = (props: any) => {
             </Button>
 
             <Popconfirm
-              title="删除将不可恢复，确认删除？"
+              title={
+                <div
+                  style={{ maxWidth: '150px' }}
+                >{`你确定要删除以下样本集吗？删除将不可恢复：${row?.sampleSetName}`}</div>
+              }
               okText="确定"
               cancelText="取消"
               onConfirm={async () => {
@@ -124,7 +128,7 @@ const DetailPages: React.FC = (props: any) => {
               type="link"
               onClick={() => {
                 window.open(
-                  `${config.basePath}/robot/access/sampleExport?sampleAssessId=${row.id}&robotId=${info.id}`,
+                  `${config.basePath}/robot/assess/sampleExport?sampleAssessId=${row.id}&robotId=${info.id}`,
                 );
               }}
             >

@@ -77,18 +77,18 @@ const SelectorModal: React.FC<any> = (props: any) => {
       return;
     }
     setCurrent1(val);
-    if (classType) {
-      getFaqList({
-        page: val,
-        pageSize: 10,
-        queryType: 0,
-        robotId: info.id,
-        faqTypeId: classType == '0' ? null : classType,
-        searchText: searchText1,
-      });
-    } else {
-      setFaqList([]);
-    }
+    // if (classType) {
+    getFaqList({
+      page: val,
+      pageSize: 10,
+      queryType: 0,
+      robotId: info.id,
+      faqTypeId: classType == '0' ? null : classType,
+      searchText: searchText1,
+    });
+    // } else {
+    //   setFaqList([]);
+    // }
   };
   const onChange2 = (val: any) => {
     setCurrent2(val);
@@ -108,9 +108,9 @@ const SelectorModal: React.FC<any> = (props: any) => {
   };
 
   const onSearch1 = () => {
-    if (!classType) {
-      return;
-    }
+    // if (!classType) {
+    //   return;
+    // }
     getFaqList({
       page: 1,
       pageSize: 10,

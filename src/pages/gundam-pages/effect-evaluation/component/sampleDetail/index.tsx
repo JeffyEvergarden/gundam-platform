@@ -84,7 +84,13 @@ const DetailPages: React.FC = (props: any) => {
     let reqData = {
       robotId: info.id,
       id: editId,
-      recommendList: val,
+      bizRelationList: val.map((item: any) => {
+        return {
+          bizId: item?.recommendId,
+          bizType: item?.recommendType,
+          bizName: item?.recommendName,
+        };
+      }),
       assessSampleId: (history?.location?.state as any)?.id,
     };
     let res: any = await editDetailSample(reqData);
@@ -137,7 +143,7 @@ const DetailPages: React.FC = (props: any) => {
       width: 200,
       render: (val: any, row: any) => {
         let arr = row?.faqIntentList;
-        if (Array.isArray(arr)) {
+        if (Array.isArray(arr) && arr?.length) {
           return (
             <div
               className={style['question-box']}
@@ -162,7 +168,16 @@ const DetailPages: React.FC = (props: any) => {
             </div>
           );
         } else {
-          return '---';
+          return (
+            <div
+              className={row.replyType == 3 ? '' : style['question-box']}
+              onClick={() => {
+                openSelectFaqModal(row);
+              }}
+            >
+              {'---'}
+            </div>
+          );
         }
       },
     },
@@ -309,10 +324,10 @@ const DetailPages: React.FC = (props: any) => {
     } else if (row.replyType == 2) {
       (selectFaqModalRef.current as any)?.open({
         selectList: questionTypeList, //被选中列表
-        // selectedQuestionKeys, // 已选问题
-        // selectedWishKeys, // 已选意图
-        disabledWishKeys: selectedWishKeys,
-        disabledQuestionKeys: selectedQuestionKeys,
+        selectedQuestionKeys, // 已选问题
+        selectedWishKeys, // 已选意图
+        // disabledWishKeys: selectedWishKeys,
+        // disabledQuestionKeys: selectedQuestionKeys,
       });
     } else {
     }
@@ -399,7 +414,7 @@ const DetailPages: React.FC = (props: any) => {
 
   const tableChange = (pagination: any, filters: any, sorter: any) => {
     console.log(filters, sorter);
-    let temp: any = {};
+    let temp: any = { orderCode: undefined, orderType: undefined };
     if (sorter?.columnKey === 'updateTime' && sorter?.order === 'ascend') {
       temp.orderCode = '1';
       temp.orderType = '1';
@@ -408,7 +423,9 @@ const DetailPages: React.FC = (props: any) => {
       temp.orderCode = '1';
       temp.orderType = '2';
     }
-    setParamsObj({ ...paramsObj, ...filters, ...temp });
+    let filterList = filters?.tagStatus ? filters : { tagStatus: undefined };
+
+    setParamsObj({ ...paramsObj, ...filterList, ...temp });
   };
 
   useEffect(() => {
@@ -430,10 +447,10 @@ const DetailPages: React.FC = (props: any) => {
               }}
             />
             <span>{outRow?.sampleSetName || '-'}</span>
-            <span style={{ fontSize: '16px' }}>{` （共${result?.totalPage || '-'}条：已标注${
-              result?.tagNum || '-'
-            }条，未标注${result?.unTagNum || '-'}条，待确认${
-              result?.stayConfirmNum || '-'
+            <span style={{ fontSize: '16px' }}>{` （共${result?.totalPage || '0'}条：已标注${
+              result?.tagNum || '0'
+            }条，未标注${result?.unTagNum || '0'}条，待确认${
+              result?.stayConfirmNum || '0'
             }条）`}</span>
           </div>
           <Input.Search

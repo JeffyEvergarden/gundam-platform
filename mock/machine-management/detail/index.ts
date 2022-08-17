@@ -336,6 +336,25 @@ const getNodeConfig = (req: any, res: any) => {
   });
 };
 
+//faq拒识配置
+const getRejectConfig = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    requestId: 'xx',
+    resultDesc: '成功',
+    success: true,
+    data: [
+      {
+        robotId: 100,
+        recommendId: 101,
+        recommend: '问题',
+        recommendType: 1,
+        recommendBizType: 1,
+      },
+    ],
+  });
+};
+
 export default {
   'GET /aichat/robot/interface/listPage': getInterface, // 接口配置分页列表
   'GET /aichat/robot/interface/param': getInterfaceDetail, // 接口配置详情
@@ -347,4 +366,7 @@ export default {
   'POST /aichat/robot/node/overConfig': editConfig, // 节点
 
   'POST /aichat/robot/config/updateList': editConfig, // 保存FAQ配置
+
+  'GET /aichat/robot/config/getRejectRecommend': getRejectConfig, // 节点
+  'POST /aichat/robot/config/updateRejectRecommend': editConfig, // 节点
 };

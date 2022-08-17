@@ -1,6 +1,11 @@
+import Condition from '@/components/Condition';
+import config from '@/config';
+import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, message, Space, Switch } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useModel } from 'umi';
+import Selector from '../../FAQ/question-board/components/selector';
+import SelectorModal from '../../FAQ/question-board/components/selector-modal';
 import { useFAQModel } from '../model';
 import style from './style.less';
 
@@ -13,16 +18,39 @@ const FAQConfig: React.FC = (props: any) => {
     wrapperCol: { span: 16 },
   };
 
-  const { getTableList, editFAQ, configLoading } = useFAQModel();
+  const formItemLayout = {
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 4 },
+    },
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 20 },
+    },
+  };
+  const formItemLayoutWithOutLabel = {
+    wrapperCol: {
+      xs: { span: 24, offset: 0 },
+      sm: { span: 20, offset: 4 },
+    },
+  };
+
+  const { getTableList, editFAQ, configLoading, getRejectTableList, editRejectTableList } =
+    useFAQModel();
 
   const { info, businessFlowId, getGlobalValConfig } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     businessFlowId: model.businessFlowId,
     getGlobalValConfig: model.getGlobalValConfig,
   }));
+  const { _getTreeData } = useModel('drawer' as any, (model: any) => ({
+    _getTreeData: model.getTreeData,
+  }));
 
   const [Nconfig, setNConfig] = useState<any>();
   const [switchType, setSwitchType] = useState<boolean>(false);
+  const selectModalRef = useRef<any>();
+  const opRecordRef = useRef<any>({});
 
   const getList = async () => {
     await getTableList({ robotId: info.id, configType: 2 }).then((res: any) => {
@@ -38,6 +66,14 @@ const FAQConfig: React.FC = (props: any) => {
       });
 
       form.setFieldsValue({ systemConfigList: { ...obj } });
+    });
+  };
+
+  const getRejectList = async () => {
+    await getRejectTableList({ robotId: info.id }).then((res: any) => {
+      if (res?.length) {
+        form.setFieldsValue({ recommendList: res });
+      }
     });
   };
 
@@ -62,15 +98,131 @@ const FAQConfig: React.FC = (props: any) => {
       return item;
     });
 
-    await editFAQ(_res).then((res) => {
+    let [result1, result2]: any = await Promise.all([
+      editFAQ(_res),
+      editRejectTableList({
+        robotId: info.id,
+        faqRejectRecommends: form.getFieldValue('recommendList'),
+      }),
+    ]);
+
+    if (result1?.resultCode === config.successCode && result2?.resultCode === config.successCode) {
+      message.success('成功');
       getList();
-    });
-    console.log(_res);
+      getRejectList();
+    } else {
+      let str = '';
+      if (result1?.resultCode != config.successCode) {
+        str += result1?.resultDesc;
+      }
+      if (result2?.resultCode != config.successCode) {
+        if (str) {
+          str += ',';
+        }
+        str += result2?.resultDesc;
+      }
+      message.error(str);
+    }
+
+    // await .then(async (res) => {
+    //   if (res) {
+    //     getList();
+    //   }
+    // });
+    // await .then((item) => {
+    //   if (item) {
+    //     getRejectList();
+    //   }
+    // });
   };
 
   useEffect(() => {
+    _getTreeData(info.id);
+    const _item = form.getFieldsValue();
+    if (!_item?.['recommendList']?.length) {
+      _item.recommendList = [
+        {
+          recommendBizType: null,
+          recommendId: null,
+          recommend: null,
+          recommendType: 1,
+        },
+      ];
+      form.setFieldsValue(_item);
+    }
     getList();
+    getRejectList();
   }, []);
+
+  const getRecommendItem = () => {
+    const _item = form.getFieldsValue();
+    console.log(_item);
+
+    return _item?.['recommendList'] || [];
+  };
+
+  // 打开弹窗
+  const openModal = (index: number) => {
+    const _list = getRecommendItem();
+    // 找出被选过的问题  （不能再选，设置为禁用项）
+    const disabledQuestionKeys = _list
+      .filter((item: any, i: number) => {
+        return item.recommendBizType == 1 && item.recommendId && i !== index;
+      })
+      .map((item: any) => item.recommendId);
+    // 找出被选过的流程  （不能再选，设置为禁用项）
+    const disabledFlowKeys = _list
+      .filter((item: any, i: number) => {
+        return item.recommendBizType == 2 && item.recommendId && i !== index;
+      })
+      .map((item: any) => item.recommendId);
+
+    // console.log(disabledQuestionKeys, disabledFlowKeys);
+    // 编辑模式、要排除自己也不能被选
+    // if (questionId) {
+    //   disabledQuestionKeys.push(questionId);
+    // }
+    let openInfo: any = {
+      showFlow: false,
+      info: _list[index],
+      disabledQuestionKeys,
+      disabledFlowKeys,
+      selectedQuestionKeys: [],
+      selectedFlowKeys: [],
+    };
+    // 找到已选的
+    if (_list[index]?.questionType == 2) {
+      openInfo.selectedFlowKeys = [_list[index].recommendId];
+    } else if (_list[index]?.questionType == 1) {
+      openInfo.selectedQuestionKeys = [_list[index].recommendId];
+    }
+    (selectModalRef.current as any).open(openInfo);
+    // 回调函数，不能重复添加、以及更改后刷新
+    opRecordRef.current.callback = (obj: any) => {
+      const _list = getRecommendItem();
+      const repeatFlag = _list.findIndex((item: any, i: number) => {
+        return (
+          i !== index &&
+          item.recommendId == obj.recommendId &&
+          item.recommendBizType == obj.recommendBizType
+        );
+      });
+      if (repeatFlag > -1) {
+        message.warning('已添加过重复');
+        return;
+      }
+
+      _list[index] = { ...obj };
+      form.setFieldsValue({
+        recommendList: [..._list],
+      });
+    };
+  };
+
+  const confirm = (obj: any) => {
+    console.log(obj);
+    opRecordRef.current?.callback?.(obj);
+  };
 
   return (
     <div className={style['machine-page']}>
@@ -161,6 +313,90 @@ const FAQConfig: React.FC = (props: any) => {
                 );
               }
             })}
+            <Condition r-if={switchType}>
+              <FormList name="recommendList">
+                {(fields, { add, remove }) => {
+                  const addNew = () => {
+                    let length = fields.length;
+                    console.log(length);
+                    // if (length >= maxRecommendLength) {
+                    //   message.warning('推荐设置不能超过faq全局配置限制数量');
+                    //   return;
+                    // }
+                    add(
+                      {
+                        recommendBizType: null,
+                        recommendId: null,
+                        recommend: null,
+                        recommendType: 1,
+                      },
+                      length,
+                    );
+                  };
+
+                  return (
+                    <div>
+                      {fields.map((field: any, index: number) => {
+                        // const currentItem = getItem();
+                        // const _showTime = currentItem?.[index]?.timeFlag;
+                        return (
+                          <Form.Item
+                            {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
+                            label={
+                              index === 0 ? (
+                                <span>
+                                  <span style={{ color: 'red' }}>*</span> 猜你想问配置
+                                </span>
+                              ) : (
+                                ''
+                              )
+                            }
+                            className={style['faq_zy-row_sp']}
+                            // rules={[{ required: true, message: '请选择' }]}
+                            key={field.key}
+                          >
+                            {fields.length > 1 ? (
+                              <MinusCircleOutlined
+                                className={style['del-bt']}
+                                onClick={() => {
+                                  remove(index);
+                                }}
+                              />
+                            ) : null}
+
+                            <Form.Item
+                              name={[field.name, 'recommend']}
+                              fieldKey={[field.fieldKey, 'recommend']}
+                              validateTrigger={['onChange', 'onBlur']}
+                              rules={[{ required: true, message: '请选择' }]}
+                              // {...field}
+                              noStyle
+                            >
+                              <Selector
+                                openModal={() => {
+                                  openModal(index);
+                                }}
+                              />
+                            </Form.Item>
+                          </Form.Item>
+                        );
+                      })}
+
+                      <div className={style['recommend-box']}>
+                        <Button
+                          type="link"
+                          icon={<PlusCircleOutlined />}
+                          onClick={addNew}
+                          style={{ paddingLeft: 0 }}
+                        >
+                          新增标准问
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                }}
+              </FormList>
+            </Condition>
           </div>
         </Form>
         <Button
@@ -171,6 +407,7 @@ const FAQConfig: React.FC = (props: any) => {
         >
           保存
         </Button>
+        <SelectorModal cref={selectModalRef} confirm={confirm} />
       </div>
     </div>
   );

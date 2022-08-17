@@ -2,7 +2,7 @@ import config from '@/config/index';
 import { ArrowLeftOutlined, DownloadOutlined, PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import { Button, message, Upload } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { history, useModel } from 'umi';
 import { useImportModal } from './model';
 import style from './style.less';
@@ -16,6 +16,10 @@ const ImportPages: React.FC = (props: any) => {
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     setInfo: model.setInfo,
+  }));
+
+  const { getShowBadgeTotal } = useModel('drawer' as any, (model: any) => ({
+    getShowBadgeTotal: model.getShowBadgeTotal,
   }));
 
   const columns: any[] = [
@@ -122,12 +126,6 @@ const ImportPages: React.FC = (props: any) => {
     },
   ];
 
-  useEffect(() => {
-    // _getImportList({
-    //   robotId: info.id,
-    // });
-  }, []);
-
   return (
     <div className={style['machine-page']}>
       <ProTable<any>
@@ -194,6 +192,7 @@ const ImportPages: React.FC = (props: any) => {
                     if (res.file.response.resultCode == config.successCode) {
                       message.success(res?.file?.response?.resultDesc);
                       importTableRef?.current?.reload();
+                      getShowBadgeTotal(info.id);
                     } else {
                       message.error(res?.file?.response?.resultDesc);
                     }

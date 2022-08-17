@@ -1,4 +1,4 @@
-import { Form, InputNumber, Modal, Select } from 'antd';
+import { Form, InputNumber, Modal, Select, Tooltip } from 'antd';
 import React, { useImperativeHandle, useState } from 'react';
 import { useModel } from 'umi';
 import { useEvaluationModel, useSampleModel } from '../../model';
@@ -75,7 +75,19 @@ const EvaluationModal: React.FC<any> = (props: any) => {
               {tableList?.map((item: any) => {
                 return (
                   <Option key={item.id} value={item.id}>
-                    {item.sampleSetName}
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Tooltip title={item.sampleSetName}>
+                        <span className={style['select_left']}>{item.sampleSetName}</span>
+                      </Tooltip>
+
+                      <span>{item.tagProgress}</span>
+                    </div>
                   </Option>
                 );
               })}

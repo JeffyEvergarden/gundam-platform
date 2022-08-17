@@ -1,7 +1,15 @@
 import { message } from 'antd';
 import { useState } from 'react';
 
-import { editConfig, getConfig, getFAQList, getInterfaceCurrentList, _editFAQ } from './api';
+import {
+  editConfig,
+  getConfig,
+  getFAQList,
+  getInterfaceCurrentList,
+  getRejectFAQList,
+  _editFAQ,
+  _editRejectFAQ,
+} from './api';
 //变量配置接口
 import { addNewGlobal, deleteGlobal, editNewGlobal, getConfigCurrentList } from './api';
 //节点配置
@@ -188,10 +196,31 @@ export const useFAQModel = () => {
     let res: any = await _editFAQ(data);
     setConfigLoading(false);
     if (res.resultCode === successCode) {
-      message.success(res?.resultDesc);
-      return true;
+      // message.success(res?.resultDesc);
+      return res;
     } else {
-      message.error(res?.resultDesc || '未知系统异常');
+      // message.error(res?.resultDesc || '未知系统异常');
+      return false;
+    }
+  };
+
+  const getRejectTableList = async (params: any) => {
+    setConfigLoading(true);
+    let res: any = await getRejectFAQList(params);
+    setConfigLoading(false);
+    console.log(res);
+    return res.data;
+  };
+
+  const editRejectTableList = async (data: any) => {
+    setConfigLoading(true);
+    let res: any = await _editRejectFAQ(data);
+    setConfigLoading(false);
+    if (res.resultCode === successCode) {
+      // message.success(res?.resultDesc);
+      return res;
+    } else {
+      // message.error(res?.resultDesc || '未知系统异常');
       return false;
     }
   };
@@ -200,6 +229,8 @@ export const useFAQModel = () => {
     editFAQ,
     getTableList,
     configLoading,
+    getRejectTableList,
+    editRejectTableList,
   };
 };
 

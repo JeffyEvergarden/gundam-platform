@@ -78,7 +78,7 @@ const getDetailSampleList = (req: any, res: any) => {
     data: {
       page: 1,
       pageSize: 10,
-      totalPage: 11,
+      totalPage: 100,
       tagNum: 2,
       unTagNum: 1,
       stayConfirmNum: 1,
@@ -185,12 +185,24 @@ const getEvaluationList = (req: any, res: any) => {
   });
 };
 
+const sampleUpload = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    resultDesc: '成功',
+    data: {
+      errorExcelPath: '/',
+      failNum: 5,
+      importTotal: 5,
+    },
+  });
+};
+
 export default {
   'GET /aichat/robot/assess/sampleListPage': getSampleList,
   'POST /aichat/robot/assess/sampleAdd': defaultList,
   'POST /aichat/robot/assess/sampleUpdate': defaultList,
   'POST /aichat/robot/assess/sampleDelete': defaultList,
-  'POST /aichat/robot/assess/sampleUpload': defaultList,
+  'POST /aichat/robot/assess/sampleUpload': sampleUpload,
 
   'GET /aichat/robot/assess/sampleDetailListPage': getDetailSampleList,
   'POST /aichat/robot/assess/sampleDetailAdd': defaultList,
