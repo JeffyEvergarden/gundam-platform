@@ -201,7 +201,7 @@ export default (props: any) => {
   };
 
   // 发送按钮
-  const sendMessage = async (text?: any) => {
+  const sendMessage = async (text?: any, skipCheck?: any) => {
     if (loading) {
       return;
     }
@@ -209,11 +209,12 @@ export default (props: any) => {
       message.warning('请点击‘开始对话’按钮启动对话');
       return;
     }
-    if (textMessage?.length == 0 || textMessage.trim().length == 0) {
+
+    if (!skipCheck && (textMessage?.length == 0 || textMessage.trim().length == 0)) {
       message.warning('不能发送空白文字');
       return;
     }
-    if (textMessage?.length > 200 || textMessage.trim().length > 200) {
+    if (!skipCheck && (textMessage?.length > 200 || textMessage.trim().length > 200)) {
       message.warning('最多发送200字');
       return;
     }
@@ -395,6 +396,10 @@ export default (props: any) => {
     </div>
   );
 
+  const submit = (text: any) => {
+    sendMessage(text);
+  };
+
   useImperativeHandle(cref, () => ({
     setChatVisible,
   }));
@@ -475,7 +480,17 @@ export default (props: any) => {
                               {item.recommendQuestion.map((el: any) => {
                                 return (
                                   <Fragment key={el.number}>
-                                    <div>{el.number + ':' + el.askText}</div>
+                                    <div
+                                      style={{ color: '#1890ff', cursor: 'pointer' }}
+                                      onClick={() => {
+                                        setTextMessage(el.askText);
+                                        timeFn.current.inputVal = el.askText;
+                                        setAssociationList([]);
+                                        sendMessage(el.askText, true);
+                                      }}
+                                    >
+                                      {el.number + ':' + el.askText}
+                                    </div>
                                   </Fragment>
                                 );
                               })}
