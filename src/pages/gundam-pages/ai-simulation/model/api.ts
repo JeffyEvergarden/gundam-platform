@@ -4,6 +4,10 @@ import config from '@/config/index';
 
 const baseUrl: string = config.basePath;
 
+const CancelToken = request.CancelToken;
+
+export const cancelObj: any = {};
+
 /** 对话初始化接口 **/
 export async function getChatInitData(params?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/dialogueUrl`, {
@@ -42,5 +46,8 @@ export async function getAssociationText(params?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/faq/searchSuggest`, {
     method: 'POST',
     data: params,
+    cancelToken: new CancelToken((c) => {
+      cancelObj.cancel = c;
+    }),
   });
 }

@@ -1,7 +1,12 @@
 import { useState } from 'react';
-import { message } from 'antd';
 
-import { getChatInitData, textDialogData, soundRobotDialogueText, getAssociationText } from './api';
+import {
+  cancelObj,
+  getAssociationText,
+  getChatInitData,
+  soundRobotDialogueText,
+  textDialogData,
+} from './api';
 
 import config from '@/config/index';
 
@@ -28,8 +33,12 @@ export const useChatModel = () => {
   const [opLoading, setOpLoading] = useState<boolean>(false);
 
   const getAssociationTextList = async (params: any) => {
+    // 去取消
+    let fn = cancelObj.cancel;
+    fn && fn();
     setOpLoading(true);
     let res: any = await getAssociationText(params);
+    console.log(res);
     setOpLoading(false);
     if (res.resultCode === successCode) {
       let list: any = res?.data || [];

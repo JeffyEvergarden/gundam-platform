@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useModel } from 'umi';
-import { throttle, toNumber } from '@/utils';
-import { Space } from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import moment from 'moment';
 import config from '@/config/index';
+import { throttle, toNumber } from '@/utils';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
+import { Space } from 'antd';
+import moment from 'moment';
+import { useEffect, useRef, useState } from 'react';
+import { useModel } from 'umi';
 import HeadSearch from './components/headSearch';
 import LineChart from './components/lineCharts';
 import styles from './index.less';
@@ -78,7 +78,7 @@ export default () => {
     let suggestUseRate: any = { name: '联想使用率', val: [], isRate: true };
     let suggestResultRate: any = { name: '联想有结果率', val: [], isRate: true };
     let suggestClickRate: any = { name: '联想点击率', val: [], isRate: true };
-    let TopThreeRate: any = { name: '联想Top3点击率', val: [], isRate: true };
+    let topThreeRate: any = { name: '联想Top3点击率', val: [], isRate: true };
     res?.data.map((item: any) => {
       day.push(item.dayId);
       searchNum.val.push(item.searchNum);
@@ -89,7 +89,7 @@ export default () => {
       suggestResultRate.val.push(toNumber(item.suggestResultRate));
       suggestClickRate.val.push(toNumber(item.suggestClickRate));
       suggestAvgPosition.val.push(item.suggestAvgPosition);
-      TopThreeRate.val.push(toNumber(item.TopThreeRate));
+      topThreeRate.val.push(toNumber(item.topThreeRate));
     });
     temp.push(
       searchNum,
@@ -100,7 +100,7 @@ export default () => {
       suggestUseRate,
       suggestResultRate,
       suggestClickRate,
-      TopThreeRate,
+      topThreeRate,
     );
     setDayId(day);
     setList(temp);
@@ -272,7 +272,7 @@ export default () => {
           </Space>
         );
       },
-      dataIndex: 'TopThreeRate',
+      dataIndex: 'topThreeRate',
       ellipsis: true,
     },
   ];

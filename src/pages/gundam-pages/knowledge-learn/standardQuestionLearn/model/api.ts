@@ -1,5 +1,5 @@
-import { request } from '@/services/request';
 import config from '@/config/index';
+import { request } from '@/services/request';
 const baseUrl: string = config.basePath;
 
 export async function unknownQuestionByFaqPageList(params?: Record<string, any>) {
@@ -19,6 +19,6 @@ export async function sessionList(params?: Record<string, any>) {
 export async function delStard(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/knowledgeLearn/unknownQuestionDelete`, {
     method: 'POST',
-    params,
+    data: params,
   });
 }

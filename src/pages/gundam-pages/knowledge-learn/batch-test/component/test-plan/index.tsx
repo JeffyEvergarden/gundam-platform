@@ -1,5 +1,5 @@
 import Condition from '@/components/Condition';
-import { Checkbox, DatePicker, Form, InputNumber, message, Modal, Select } from 'antd';
+import { Checkbox, DatePicker, Form, InputNumber, Modal, Select } from 'antd';
 import moment from 'moment';
 import React, { useImperativeHandle, useRef, useState } from 'react';
 import { useModel } from 'umi';
@@ -77,13 +77,15 @@ const TestPlanModal: React.FC<any> = (props: any) => {
       getTestTaskInfo({ robotId: info.id, temporaryTest: type == 'plan' ? 0 : 1 }).then(
         (res: any) => {
           let formData = res;
-          formData.autoClear =
-            formData?.autoClear == 1 ? true : formData?.autoClear == 0 ? false : undefined;
-          formData.firstTestingTime = formData?.firstTestingTime
-            ? moment(formData?.firstTestingTime)
-            : undefined;
+          if (type == 'plan') {
+            formData.autoClear =
+              formData?.autoClear == 1 ? true : formData?.autoClear == 0 ? false : undefined;
+            formData.firstTestingTime = formData?.firstTestingTime
+              ? moment(formData?.firstTestingTime)
+              : undefined;
+            setCheck(formData.autoClear);
+          }
           form.setFieldsValue(formData);
-          setCheck(formData.autoClear);
         },
       );
       // }
