@@ -19,6 +19,6 @@ export async function sessionList(params?: Record<string, any>) {
 export async function delStard(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/knowledgeLearn/unknownQuestionDelete`, {
     method: 'POST',
-    params,
+    data: params,
   });
 }
