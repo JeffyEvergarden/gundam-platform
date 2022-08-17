@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { message } from 'antd';
 
 import {
-  getChatInitData,
-  textDialogData,
-  soundRobotDialogueText,
-  getAssociationText,
   cancelObj,
+  getAssociationText,
+  getChatInitData,
+  soundRobotDialogueText,
+  textDialogData,
 } from './api';
 
 import config from '@/config/index';

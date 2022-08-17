@@ -103,6 +103,7 @@ export async function _allApprovalPass(data?: Record<string, any>) {
   return request(`${baseUrl}/robot/faq/batchApprovalAdopt`, {
     method: 'POST',
     data,
+    timeout: 1000 * 120,
   });
 }
 

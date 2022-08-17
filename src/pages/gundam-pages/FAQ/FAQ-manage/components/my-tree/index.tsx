@@ -222,6 +222,8 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
     console.log('打开编辑事件');
     // 编辑回调
     const editCallback = (obj: any) => {
+      console.log(obj);
+
       if (obj.title) {
         nodeData.title = obj.title;
         nodeData.key = obj.title;

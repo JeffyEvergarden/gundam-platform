@@ -51,7 +51,7 @@ const getDetailSampleList = (req: any, res: any) => {
       robotId: '100',
       dialogueSample: '样本' + index, //对话样本
       replyType: Math.ceil(Math.random() * 3), //1明确回复 2澄清 3拒识
-      tagStatus: Math.ceil(Math.random() * 3), //1未标注 2待确认 3已标注
+      tagStatus: Math.ceil(Math.random() * 3), //1待标注 2待确认 3已标注
       faqIntentList: [
         {
           bizId: '1',
@@ -87,7 +87,7 @@ const getDetailSampleList = (req: any, res: any) => {
   });
 };
 
-const getResultEvaluationList = (req: any, res: any) => {
+const getEvaluationList = (req: any, res: any) => {
   let arr = new Array(11).fill(1);
   let _date = Date.now();
 
@@ -121,7 +121,7 @@ const getResultEvaluationList = (req: any, res: any) => {
   });
 };
 
-const getEvaluationList = (req: any, res: any) => {
+const getResultEvaluationList = (req: any, res: any) => {
   let arr = new Array(11).fill(1);
   let _date = Date.now();
 

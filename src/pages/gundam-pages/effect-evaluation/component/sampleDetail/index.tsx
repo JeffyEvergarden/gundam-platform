@@ -28,7 +28,7 @@ const replyTypeList = [
 ];
 
 const tagStatusList = {
-  1: '未标注',
+  1: '待标注',
   2: '待确认',
   3: '已标注',
 };
@@ -203,7 +203,7 @@ const DetailPages: React.FC = (props: any) => {
       search: false,
       filters: [
         {
-          text: '未标注',
+          text: '待标注',
           value: 1,
         },
         {
@@ -216,7 +216,7 @@ const DetailPages: React.FC = (props: any) => {
         },
       ],
       valueEnum: {
-        1: { text: '未标注', status: 'Error' },
+        1: { text: '待标注', status: 'Error' },
         2: {
           text: <span style={{ marginRight: '6px' }}>待确认</span>,
           status: 'Warning',
@@ -449,7 +449,7 @@ const DetailPages: React.FC = (props: any) => {
             <span>{outRow?.sampleSetName || '-'}</span>
             <span style={{ fontSize: '16px' }}>{` （共${result?.totalPage || '0'}条：已标注${
               result?.tagNum || '0'
-            }条，未标注${result?.unTagNum || '0'}条，待确认${
+            }条，待标注${result?.unTagNum || '0'}条，待确认${
               result?.stayConfirmNum || '0'
             }条）`}</span>
           </div>

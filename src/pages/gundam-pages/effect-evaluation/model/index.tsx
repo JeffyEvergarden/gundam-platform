@@ -203,7 +203,7 @@ export const useEvaluationModel = () => {
 
   const getList = async (params?: any) => {
     setLoading(true);
-    let res: any = await _resultEvaluation(params);
+    let res: any = await getEvaluationTable(params);
 
     if (res.resultCode == successCode) {
       setTableList(res?.data?.list);
@@ -220,7 +220,7 @@ export const useEvaluationModel = () => {
 
   const getResultList = async (params?: any) => {
     setLoading(true);
-    let res: any = await getEvaluationTable(params);
+    let res: any = await _resultEvaluation(params);
 
     if (res.resultCode == successCode) {
       setResultData(res?.data);
