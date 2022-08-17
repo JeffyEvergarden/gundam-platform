@@ -129,6 +129,7 @@ export const useTreeModal = () => {
           children: data,
           count: res?.data?.faqTotal || 0,
           deep: 0,
+          classify: '全部分类',
         },
       ];
       setTreeData(root || []);
