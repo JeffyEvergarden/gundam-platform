@@ -414,7 +414,7 @@ const DetailPages: React.FC = (props: any) => {
 
   const tableChange = (pagination: any, filters: any, sorter: any) => {
     console.log(filters, sorter);
-    let temp: any = {};
+    let temp: any = { orderCode: undefined, orderType: undefined };
     if (sorter?.columnKey === 'updateTime' && sorter?.order === 'ascend') {
       temp.orderCode = '1';
       temp.orderType = '1';
@@ -423,7 +423,7 @@ const DetailPages: React.FC = (props: any) => {
       temp.orderCode = '1';
       temp.orderType = '2';
     }
-    let filterList = filters?.tagStatus ? filters : {};
+    let filterList = filters?.tagStatus ? filters : { tagStatus: undefined };
 
     setParamsObj({ ...paramsObj, ...filterList, ...temp });
   };
