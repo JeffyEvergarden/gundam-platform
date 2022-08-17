@@ -102,11 +102,13 @@ const getAssociationText = (req: any, res: any) => {
       suggestQuery: '孤独患者',
     },
   ];
-  res.json({
-    resultCode: config.successCode,
-    resultDesc: '成功',
-    data: arr,
-  });
+  setTimeout(() => {
+    res.json({
+      resultCode: config.successCode,
+      resultDesc: '成功',
+      data: arr,
+    });
+  }, 2000);
 };
 
 // 机器人模拟对话

@@ -76,6 +76,7 @@ export default (props: any) => {
       // if (timeFn.current.inputVal === inputVal) {
       //   return;
       // }
+      console.log('调用');
       if (inputVal.length >= 20) {
         return;
       }
@@ -92,7 +93,7 @@ export default (props: any) => {
         timeFn.current.inputVal = inputVal;
       }
     };
-    return debounce(fn, 0.8);
+    return debounce(fn, 0.3);
   }, [modalData]);
   // 弹窗显示
   const PopoverVisible = useMemo(() => {
@@ -122,7 +123,7 @@ export default (props: any) => {
       setChatEvent('dialogue');
     }
     // 触发级联搜索
-    if (!opLoading && chatEvent === 'dialogue') {
+    if (chatEvent === 'dialogue') {
       getAssociation(val);
     }
   };
