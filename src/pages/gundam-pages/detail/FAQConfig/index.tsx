@@ -167,13 +167,13 @@ const FAQConfig: React.FC = (props: any) => {
     // 找出被选过的问题  （不能再选，设置为禁用项）
     const disabledQuestionKeys = _list
       .filter((item: any, i: number) => {
-        return item.recommendBizType == '1' && item.recommendId && i !== index;
+        return item.recommendBizType == 1 && item.recommendId && i !== index;
       })
       .map((item: any) => item.recommendId);
     // 找出被选过的流程  （不能再选，设置为禁用项）
     const disabledFlowKeys = _list
       .filter((item: any, i: number) => {
-        return item.recommendBizType == '2' && item.recommendId && i !== index;
+        return item.recommendBizType == 2 && item.recommendId && i !== index;
       })
       .map((item: any) => item.recommendId);
 
@@ -191,9 +191,9 @@ const FAQConfig: React.FC = (props: any) => {
       selectedFlowKeys: [],
     };
     // 找到已选的
-    if (_list[index]?.questionType == '2') {
+    if (_list[index]?.questionType == 2) {
       openInfo.selectedFlowKeys = [_list[index].recommendId];
-    } else if (_list[index]?.questionType == '1') {
+    } else if (_list[index]?.questionType == 1) {
       openInfo.selectedQuestionKeys = [_list[index].recommendId];
     }
     (selectModalRef.current as any).open(openInfo);
@@ -207,7 +207,6 @@ const FAQConfig: React.FC = (props: any) => {
           item.recommendBizType == obj.recommendBizType
         );
       });
-      // console.log(repeatFlag, index, obj, _list[repeatFlag]);
       if (repeatFlag > -1) {
         message.warning('已添加过重复');
         return;
