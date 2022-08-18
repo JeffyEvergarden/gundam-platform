@@ -443,9 +443,9 @@ const QuestionList: React.FC<any> = (props: any) => {
                               unCheckedChildren="关闭"
                               onChange={(val) => {
                                 console.log(val);
-                                editQ({ id: item.id, suggest: val ? 1 : 0 });
+                                editQ({ id: item?.id, suggest: val ? 1 : 0 });
                               }}
-                              checked={item.suggest == 1 ? true : false}
+                              checked={item?.suggest == 1 ? true : false}
                               disabled={isRecycle == 1}
                             ></Switch>
                           </div>
