@@ -76,6 +76,13 @@ const EditorView = (props: PageViewProps) => {
       const propsAPI = getPropsAPI();
       return propsAPI?.find(id)?.getModel() || null;
     },
+    getInfo: () => {
+      const [nodes, edges] = getAllNode();
+      return {
+        nodes,
+        edges,
+      };
+    },
   }));
 
   // 刷新
