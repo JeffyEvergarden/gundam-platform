@@ -1,4 +1,3 @@
-import { MonitorOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import { Button, Col, Form, Modal, Row, Select, Tooltip } from 'antd';
 import React, { useImperativeHandle, useRef, useState } from 'react';
@@ -78,14 +77,9 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
             <div className={style['question-box']}>
               {arr.map((item: any, i: number) => {
                 return (
-                  <Tooltip title={item.bizName} placement={'topLeft'} key={i}>
+                  <Tooltip title={item} placement={'topLeft'} key={i}>
                     <div className={style['qustion-label']} key={i}>
-                      {item.bizType == '1' ? (
-                        <QuestionCircleOutlined className={style['icon']} />
-                      ) : (
-                        <MonitorOutlined className={style['icon']} />
-                      )}
-                      {item.bizName}
+                      {item}
                     </div>
                   </Tooltip>
                 );
@@ -120,14 +114,9 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
             <div className={style['question-box']}>
               {arr.map((item: any, i: number) => {
                 return (
-                  <Tooltip title={item.bizName} placement={'topLeft'} key={i}>
+                  <Tooltip title={item} placement={'topLeft'} key={i}>
                     <div className={style['qustion-label']} key={i}>
-                      {item.bizType == '1' ? (
-                        <QuestionCircleOutlined className={style['icon']} />
-                      ) : (
-                        <MonitorOutlined className={style['icon']} />
-                      )}
-                      {item.bizName}
+                      {item}
                     </div>
                   </Tooltip>
                 );
