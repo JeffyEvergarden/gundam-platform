@@ -20,7 +20,7 @@ const getSampleList = (req: any, res: any) => {
       robotId: '100',
       sampleSetId: index + 1,
       sampleSetName: '样本' + index,
-      tagProgress: '1/1',
+      tagProgress: `${Math.ceil(Math.random() * 10)}/${Math.ceil(Math.random() * 10)}`,
       creator: 'jiangjiahao',
       createTime: moment(new Date(_date + 60 * 60 * 1000 * index)).format('YYYY-MM—DD hh:mm'),
       updateTime: moment(new Date(_date + 60 * 60 * 1000 * index)).format('YYYY-MM—DD hh:mm'),
@@ -131,31 +131,9 @@ const getResultEvaluationList = (req: any, res: any) => {
       robotId: '100',
       assessSample: '评估样本' + index,
       tagReplyType: Math.ceil(Math.random() * 3),
-      tagFaqIntent: [
-        {
-          bizId: '1',
-          bizName: 'name1',
-          bizType: '1', //1标准问 2意图
-        },
-        {
-          bizId: '2',
-          bizName: '那么',
-          bizType: '2',
-        },
-      ],
+      tagFaqIntent: ['name1', 'name2'],
       distinguishReplyType: Math.ceil(Math.random() * 3),
-      distinguishFaqIntent: [
-        {
-          bizId: '1',
-          bizName: 'name1',
-          bizType: '1', //1标准问 2意图
-        },
-        {
-          bizId: '2',
-          bizName: '那么',
-          bizType: '2',
-        },
-      ],
+      distinguishFaqIntent: ['name1', 'name2'],
       accurateRate: Math.ceil(Math.random() * 100) + '%',
       recallRate: Math.ceil(Math.random() * 100) + '%',
       clarifyNum: Math.ceil(Math.random() * 10),
