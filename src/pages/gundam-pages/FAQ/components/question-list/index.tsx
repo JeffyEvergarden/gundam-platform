@@ -74,7 +74,7 @@ const QuestionList: React.FC<any> = (props: any) => {
   const [pageSize, setPageSize] = useState<any>(10);
   const [more, setMore] = useState<any>([]); //更多答案
   const [edit, setEdit] = useState<any>([]); //编辑名字
-  const [suggest, setSuggest] = useState<any>([]); //编辑是否联想
+  const [editQLoading, setEditQLoading] = useState<any>(false); //编辑是否联想
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
 
   const listRef = useRef<any>({});
@@ -340,7 +340,9 @@ const QuestionList: React.FC<any> = (props: any) => {
       robotId: info.id,
       ...params,
     };
+    setEditQLoading(true);
     await editQuestion(reqData).then((res) => {
+      setEditQLoading(false);
       if (res.resultCode == config.successCode) {
         message.success(res.resultDesc);
         CurrentPage({ page: current, pageSize });
@@ -447,6 +449,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                               }}
                               checked={item?.suggest == 1 ? true : false}
                               disabled={isRecycle == 1}
+                              loading={editQLoading}
                             ></Switch>
                           </div>
                           <Divider type="vertical" />
