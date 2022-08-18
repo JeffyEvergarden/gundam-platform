@@ -4,6 +4,11 @@ import { Button, Input, message, Modal, Popover, Radio, Space } from 'antd';
 import React, { Fragment, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { useChatModel } from './model';
+import {
+  textRobotRecommendDialogue,
+  textRobotSearchEvent,
+  textRobotSuggestClick,
+} from './model/api';
 import styles from './style.less';
 const { TextArea } = Input;
 
@@ -235,7 +240,10 @@ export default (props: any) => {
       actionType: '',
     };
     let res: any;
+
     if (info.robotType === 0) {
+      //埋点
+      textRobotSearchEvent(params);
       //文本机器人
       res = await textRobotDialogueText(params);
     }
@@ -388,6 +396,24 @@ export default (props: any) => {
               setTextMessage(item.label);
               timeFn.current.inputVal = item.label;
               setAssociationList([]);
+              //埋点
+              let newDay = new Date().toLocaleDateString();
+              let occurDay = newDay.replace(/\//g, '-');
+              let newTime = new Date().toLocaleTimeString('en-GB');
+              if (info.robotType === 0) {
+                textRobotSuggestClick({
+                  requestId: modalData?.requestId,
+                  occurTime: occurDay + ' ' + newTime,
+                  systemCode: modalData?.systemCode,
+                  sessionId: modalData?.sessionId,
+                  num: i + 1,
+                  type: item?.type,
+                  stdQueryId: item?.stdQueryId,
+                  suggestQuery: item?.suggestQuery,
+                  id: item?.id,
+                });
+              }
+
               sendMessage(item.label);
             }}
           >
@@ -488,6 +514,22 @@ export default (props: any) => {
                                         setTextMessage(el.askText);
                                         timeFn.current.inputVal = el.askText;
                                         setAssociationList([]);
+                                        let newDay = new Date().toLocaleDateString();
+                                        let occurDay = newDay.replace(/\//g, '-');
+                                        let newTime = new Date().toLocaleTimeString('en-GB');
+                                        let params = {
+                                          requestId: modalData?.requestId,
+                                          occurTime: occurDay + ' ' + newTime,
+                                          systemCode: modalData?.systemCode,
+                                          sessionId: modalData?.sessionId,
+                                          number: el.number,
+                                          question: el.askText,
+                                        };
+                                        //推荐
+                                        if (info.robotType === 0) {
+                                          textRobotRecommendDialogue(params);
+                                        }
+
                                         sendMessage(el.askText, true);
                                       }}
                                     >
