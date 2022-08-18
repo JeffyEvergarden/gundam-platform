@@ -175,7 +175,7 @@ const DetailPages: React.FC = (props: any) => {
                 openSelectFaqModal(row);
               }}
             >
-              {'---'}
+              {row.replyType == 3 ? '' : '请选择标准问/意图'}
             </div>
           );
         }
