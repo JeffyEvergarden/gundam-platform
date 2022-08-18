@@ -19,7 +19,7 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
     setInfo: model.setInfo,
   }));
 
-  const [form] = Form.useForm();
+  // const [form] = Form.useForm();
 
   const [visible, setVisible] = useState<boolean>(false);
   const [detailVisible, setDetailVisible] = useState<boolean>(false);
@@ -27,7 +27,8 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
   const temRef = useRef<any>();
 
   const close = () => {
-    form.resetFields();
+    TableRef?.current?.reset();
+    // form.resetFields();
     setVisible(false);
   };
 
@@ -179,10 +180,10 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
       title={`评估详情`}
       visible={visible}
       onCancel={() => {
-        TableRef.current.reset();
-        setVisible(false);
+        close();
       }}
       footer={false}
+      destroyOnClose={true}
     >
       <div className={style['info']}>
         <Row>
@@ -220,16 +221,6 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
           rowKey="id"
           search={{
             labelWidth: 'auto',
-          }}
-          form={{
-            syncToUrl: (values: any, type: any) => {
-              if (type === 'get') {
-                return {
-                  ...values,
-                };
-              }
-              return values;
-            },
           }}
           pagination={{
             pageSize: 10,

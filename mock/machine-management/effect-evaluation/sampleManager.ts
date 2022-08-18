@@ -122,7 +122,7 @@ const getEvaluationList = (req: any, res: any) => {
 };
 
 const getResultEvaluationList = (req: any, res: any) => {
-  let arr = new Array(11).fill(1);
+  let arr = new Array(10).fill(1);
   let _date = Date.now();
 
   arr = arr.map((item: any, index: number) => {
@@ -151,7 +151,7 @@ const getResultEvaluationList = (req: any, res: any) => {
     data: {
       page: 1,
       pageSize: 10,
-      totalPage: 11,
+      totalPage: 15,
       sampleSetName: '样本',
       assessTime: moment(new Date(_date + 60 * 60 * 1000)).format('YYYY-MM-DD hh:mm'),
       averageAccurateRate: Math.ceil(Math.random() * 100) + '%',
