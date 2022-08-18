@@ -46,7 +46,7 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
   const columns: any[] = [
     {
       title: '评估样本',
-      dataIndex: 'assessSample',
+      dataIndex: 'dialogueSample',
       fieldProps: {
         placeholder: '请输入评估样本',
       },
