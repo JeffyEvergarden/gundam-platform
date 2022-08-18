@@ -233,7 +233,7 @@ export default (props: any) => {
     let params = {
       requestId: modalData.requestId,
       occurTime: occurDay + ' ' + newTime,
-      systemCode: modalData.systemCode,
+      systemCode: 'test',
       sessionId: modalData.sessionId,
       message: text || textMessage,
       event: chatEvent, // 事件类型
@@ -242,7 +242,7 @@ export default (props: any) => {
     let res: any;
 
     if (info.robotType === 0) {
-      //埋点
+      //发送埋点
       textRobotSearchEvent(params);
       //文本机器人
       res = await textRobotDialogueText(params);
@@ -396,7 +396,7 @@ export default (props: any) => {
               setTextMessage(item.label);
               timeFn.current.inputVal = item.label;
               setAssociationList([]);
-              //埋点
+              //联想埋点
               let newDay = new Date().toLocaleDateString();
               let occurDay = newDay.replace(/\//g, '-');
               let newTime = new Date().toLocaleTimeString('en-GB');
@@ -404,7 +404,7 @@ export default (props: any) => {
                 textRobotSuggestClick({
                   requestId: modalData?.requestId,
                   occurTime: occurDay + ' ' + newTime,
-                  systemCode: modalData?.systemCode,
+                  systemCode: 'test',
                   sessionId: modalData?.sessionId,
                   num: i + 1,
                   type: item?.type,
@@ -520,12 +520,12 @@ export default (props: any) => {
                                         let params = {
                                           requestId: modalData?.requestId,
                                           occurTime: occurDay + ' ' + newTime,
-                                          systemCode: modalData?.systemCode,
+                                          systemCode: 'test',
                                           sessionId: modalData?.sessionId,
                                           number: el.number,
                                           question: el.askText,
                                         };
-                                        //推荐
+                                        //推荐埋点
                                         if (info.robotType === 0) {
                                           textRobotRecommendDialogue(params);
                                         }
