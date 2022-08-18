@@ -95,6 +95,7 @@ const getEvaluationList = (req: any, res: any) => {
     let obj = {
       id: index + 1,
       robotId: '100',
+      assessStatus: Math.ceil(Math.random() * 3),
       sampleSetName: '样本' + index,
       averageAccurateRate: Math.ceil(Math.random() * 100) + '%',
       averageRecallRate: Math.ceil(Math.random() * 100) + '%',
