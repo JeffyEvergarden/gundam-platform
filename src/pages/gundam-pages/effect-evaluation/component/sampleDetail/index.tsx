@@ -174,6 +174,7 @@ const DetailPages: React.FC = (props: any) => {
               onClick={() => {
                 openSelectFaqModal(row);
               }}
+              style={{ color: '#52C41A' }}
             >
               {row.replyType == 3 ? '' : '请选择标准问/意图'}
             </div>
