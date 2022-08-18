@@ -98,6 +98,7 @@ const EvaluationModal: React.FC<any> = (props: any) => {
             name="threshold"
             label="阈值"
             style={{ width: '360px' }}
+            initialValue={0.9}
           >
             <InputNumber placeholder={'请输入'} min="0" max="1" step="0.01" precision={2} />
           </FormItem>
@@ -106,6 +107,7 @@ const EvaluationModal: React.FC<any> = (props: any) => {
             name="difference"
             label="得分差值"
             style={{ width: '360px' }}
+            initialValue={0.01}
           >
             <InputNumber placeholder={'请输入'} min="0" max="1" step="0.01" precision={2} />
           </FormItem>
@@ -114,6 +116,7 @@ const EvaluationModal: React.FC<any> = (props: any) => {
             name="clarifyNum"
             label="澄清数量"
             style={{ width: '360px' }}
+            initialValue={3}
           >
             <InputNumber placeholder={'请输入'} min={1} max={99} step="1" precision={0} />
           </FormItem>
