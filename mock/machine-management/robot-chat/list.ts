@@ -117,7 +117,8 @@ export default {
   'POST /aichat/robot/textRobotDialogueText': textRobotDialogueText, // 文本接口
   'POST /aichat/robot/soundRobotDialogueText': soundRobotDialogueText, // 文本接口
   'POST /aichat/robot/faq/searchSuggest': getAssociationText, // 文本接口
-  'POST /aichat/robot/textRobotSuggestClick': getChatInitData, // 文本接口
-  'POST /aichat/robot/textRobotSearchEvent': getChatInitData, // 文本接口
-  'POST /aichat/robot/textRobotRecommendDialogue': getChatInitData, // 文本接口
+
+  'POST /aichat/robot/textRobotSuggestClick': getChatInitData, // 埋点
+  'POST /aichat/robot/textRobotSearchEvent': getChatInitData, // 埋点
+  'POST /aichat/robot/textRobotRecommendDialogue': textRobotDialogueText, // 埋点
 };

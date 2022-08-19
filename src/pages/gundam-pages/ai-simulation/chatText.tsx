@@ -208,7 +208,7 @@ export default (props: any) => {
   };
 
   // 发送按钮
-  const sendMessage = async (text?: any, skipCheck?: any) => {
+  const sendMessage = async (text?: any, skipCheck?: any, reqData?: any) => {
     if (loading) {
       return;
     }
@@ -243,9 +243,13 @@ export default (props: any) => {
 
     if (info.robotType === 0) {
       //发送埋点
-      textRobotSearchEvent(params);
-      //文本机器人
-      res = await textRobotDialogueText(params);
+      if (skipCheck) {
+        res = await textRobotRecommendDialogue(params);
+      } else {
+        textRobotSearchEvent(params);
+        //文本机器人
+        res = await textRobotDialogueText(params);
+      }
     }
     if (info.robotType === 1) {
       //语音机器人
@@ -525,12 +529,8 @@ export default (props: any) => {
                                           number: el.number,
                                           question: el.askText,
                                         };
-                                        //推荐埋点
-                                        if (info.robotType === 0) {
-                                          textRobotRecommendDialogue(params);
-                                        }
 
-                                        sendMessage(el.askText, true);
+                                        sendMessage(el.askText, true, params);
                                       }}
                                     >
                                       {el.number + ':' + el.askText}

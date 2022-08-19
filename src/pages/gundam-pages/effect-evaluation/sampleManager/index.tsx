@@ -13,7 +13,6 @@ const DetailPages: React.FC = (props: any) => {
   const TableRef = useRef<any>({});
   const ModalRef = useRef<any>({});
   const ImportRef = useRef<any>({});
-
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     setInfo: model.setInfo,
@@ -36,28 +35,30 @@ const DetailPages: React.FC = (props: any) => {
       search: false,
       width: 200,
       ellipsis: true,
-      render: (val: any, row: any) => {
+      render: (val: any, row: any, index: any) => {
         return (
-          <div>
-            <Tooltip title={row.sampleSetName}>
-              <div>
-                <Button
-                  type="link"
-                  style={{ color: '#1890ff !important', maxWidth: '100%' }}
-                  onClick={() => {
-                    history.push({
-                      pathname: `/gundamPages/effectEvaluation/sampleManager/sampleDetail`,
-                      state: {
-                        ...row,
-                      },
-                    });
-                  }}
-                >
-                  <span className={style['sampleSetName']}>{row.sampleSetName}</span>
-                </Button>
-              </div>
-            </Tooltip>
-          </div>
+          <Tooltip
+            overlayClassName="hidTooltip"
+            title={row.sampleSetName}
+            placement={'topLeft'}
+            getPopupContainer={(trigger: any) => trigger.parentElement}
+          >
+            <Button
+              type="link"
+              style={{ color: '#1890ff !important', maxWidth: '100%' }}
+              onClick={(e) => {
+                history.push({
+                  pathname: `/gundamPages/effectEvaluation/sampleManager/sampleDetail`,
+                  state: {
+                    ...row,
+                  },
+                });
+              }}
+              // title={row.sampleSetName}
+            >
+              <span className={style['sampleSetName']}>{row.sampleSetName}</span>
+            </Button>
+          </Tooltip>
         );
       },
     },
@@ -149,6 +150,11 @@ const DetailPages: React.FC = (props: any) => {
 
   useActivate(() => {
     refresh();
+    setTimeout(() => {
+      document.querySelectorAll('.hidTooltip').forEach((item) => {
+        item.style.left = '-999px';
+      });
+    }, 1);
   });
 
   return (
