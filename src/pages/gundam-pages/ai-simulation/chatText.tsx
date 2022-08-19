@@ -509,9 +509,7 @@ export default (props: any) => {
                           <img className={styles['head-robot']} alt="robot" src={robotPhoto} />
                           <div className={styles['words']}>
                             {/* {item.message === '' && ( */}
-                            <div style={{ fontWeight: 'bold' }}>
-                              {item?.recommendText || '您是否还想咨询以下问题：'}
-                            </div>
+                            <div style={{ fontWeight: 'bold' }}>{item?.recommendText}</div>
                             {/* )} */}
                             {item.recommendQuestion.map((el: any) => {
                               return (

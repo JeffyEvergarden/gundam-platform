@@ -32,11 +32,9 @@ const TestPages: React.FC = (props: any) => {
   const columns: any[] = [
     {
       title: '检测批次ID',
-      dataIndex: 'id',
+      dataIndex: 'batchId',
       fixed: 'left',
-      fieldProps: {
-        placeholder: '请输入标签名称',
-      },
+      search: false,
       ellipsis: true,
       width: 180,
     },
