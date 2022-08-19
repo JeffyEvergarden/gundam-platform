@@ -244,7 +244,7 @@ export default (props: any) => {
     if (info.robotType === 0) {
       //发送埋点
       if (skipCheck) {
-        res = await textRobotRecommendDialogue(params);
+        res = await textRobotRecommendDialogue(reqData);
       } else {
         textRobotSearchEvent(params);
         //文本机器人
