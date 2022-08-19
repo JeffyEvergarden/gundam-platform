@@ -1,6 +1,6 @@
 import config from '@/config';
 import ProTable from '@ant-design/pro-table';
-import { Button, Popconfirm } from 'antd';
+import { Button, Popconfirm, Tooltip } from 'antd';
 import React, { useRef } from 'react';
 import { useActivate } from 'react-activation';
 import { history, useModel } from 'umi';
@@ -39,22 +39,24 @@ const DetailPages: React.FC = (props: any) => {
       render: (val: any, row: any) => {
         return (
           <div>
-            <Button
-              type="link"
-              style={{ color: '#1890ff !important' }}
-              onClick={() => {
-                // history.push({pathName:`/gundamPages/effectEvaluation/sampleManager/sampleDetail?sampleSetId=${row.sampleSetId}`
-                // });
-                history.push({
-                  pathname: `/gundamPages/effectEvaluation/sampleManager/sampleDetail`,
-                  state: {
-                    ...row,
-                  },
-                });
-              }}
-            >
-              {row.sampleSetName}
-            </Button>
+            <Tooltip title={row.sampleSetName}>
+              <div>
+                <Button
+                  type="link"
+                  style={{ color: '#1890ff !important', width: '100%' }}
+                  onClick={() => {
+                    history.push({
+                      pathname: `/gundamPages/effectEvaluation/sampleManager/sampleDetail`,
+                      state: {
+                        ...row,
+                      },
+                    });
+                  }}
+                >
+                  <span className={style['nameBox']}>{row.sampleSetName}</span>
+                </Button>
+              </div>
+            </Tooltip>
           </div>
         );
       },

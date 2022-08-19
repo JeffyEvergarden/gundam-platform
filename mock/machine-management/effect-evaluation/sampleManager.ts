@@ -19,7 +19,19 @@ const getSampleList = (req: any, res: any) => {
       id: index + 1,
       robotId: '100',
       sampleSetId: index + 1,
-      sampleSetName: '样本' + index,
+      sampleSetName:
+        '样本' +
+        index +
+        '样本' +
+        index +
+        '样本' +
+        index +
+        '样本' +
+        index +
+        '样本' +
+        index +
+        '样本' +
+        index,
       tagProgress: `${Math.ceil(Math.random() * 10)}/${Math.ceil(Math.random() * 10)}`,
       creator: 'jiangjiahao',
       createTime: moment(new Date(_date + 60 * 60 * 1000 * index)).format('YYYY-MM—DD hh:mm'),
