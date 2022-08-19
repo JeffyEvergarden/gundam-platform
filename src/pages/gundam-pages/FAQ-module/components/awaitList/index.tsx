@@ -101,6 +101,8 @@ const AwaitList: React.FC<any> = (props: any) => {
     let res: any = await allApprovalPass({ idList: selectedRowKeys });
 
     if (res) {
+      setSelectAll(false);
+      setSelectedRowKeys([]);
       CurrentPage({ page: current, pageSize });
     }
   };
@@ -188,7 +190,7 @@ const AwaitList: React.FC<any> = (props: any) => {
               <Checkbox onChange={checkboxChange} checked={selectAll}></Checkbox>
               <span style={{ marginLeft: '8px' }}>全选</span>
             </div>
-            <Button type="primary" onClick={allPass}>
+            <Button type="primary" onClick={allPass} loading={loading}>
               批量审核通过
             </Button>
           </div>
