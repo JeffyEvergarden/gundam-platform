@@ -196,6 +196,7 @@ export default (props: any) => {
         type: 'robot',
         askText: img(res?.data?.askText),
         message: res?.data?.actionMessage,
+        recommendText: res?.data?.recommendText,
         recommendQuestion: res?.data?.recommendQuestion,
       });
       setTimeout(() => {
@@ -268,6 +269,7 @@ export default (props: any) => {
           type: 'robot',
           askText: img(res?.data?.askText),
           message: res?.data?.actionMessage,
+          recommendText: res?.data?.recommendText,
           recommendQuestion: res?.data?.recommendQuestion,
         },
       );
@@ -350,6 +352,7 @@ export default (props: any) => {
           type: 'robot',
           askText: img(res?.data?.askText),
           message: res?.data?.actionMessage,
+          recommendText: res?.data?.recommendText,
           recommendQuestion: res?.data?.recommendQuestion,
         },
       );
@@ -505,11 +508,11 @@ export default (props: any) => {
                         <div className={styles['robot-part']}>
                           <img className={styles['head-robot']} alt="robot" src={robotPhoto} />
                           <div className={styles['words']}>
-                            {item.message === '' && (
-                              <div style={{ fontWeight: 'bold' }}>
-                                {item.recommendText || '您是否还想咨询以下问题：'}
-                              </div>
-                            )}
+                            {/* {item.message === '' && ( */}
+                            <div style={{ fontWeight: 'bold' }}>
+                              {item?.recommendText || '您是否还想咨询以下问题：'}
+                            </div>
+                            {/* )} */}
                             {item.recommendQuestion.map((el: any) => {
                               return (
                                 <Fragment key={el.number}>
