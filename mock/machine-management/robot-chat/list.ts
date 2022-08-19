@@ -41,6 +41,7 @@ const textRobotDialogueText = (req: any, res: any) => {
           askText: '循环产品利率？',
         },
       ],
+      recommendText: '您是否还想咨询以下问题：',
     },
   });
 };

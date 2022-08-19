@@ -504,41 +504,41 @@ export default (props: any) => {
                       {item.recommendQuestion && item.recommendQuestion.length > 0 && (
                         <div className={styles['robot-part']}>
                           <img className={styles['head-robot']} alt="robot" src={robotPhoto} />
-                          <div>
-                            <div className={styles['words']}>
-                              {item.message === '' && (
-                                <div style={{ fontWeight: 'bold' }}>您是否还想咨询以下问题：</div>
-                              )}
-                              {item.recommendQuestion.map((el: any) => {
-                                return (
-                                  <Fragment key={el.number}>
-                                    <div
-                                      style={{ color: '#1890ff', cursor: 'pointer' }}
-                                      onClick={() => {
-                                        setTextMessage(el.askText);
-                                        timeFn.current.inputVal = el.askText;
-                                        setAssociationList([]);
-                                        let newDay = new Date().toLocaleDateString();
-                                        let occurDay = newDay.replace(/\//g, '-');
-                                        let newTime = new Date().toLocaleTimeString('en-GB');
-                                        let params = {
-                                          requestId: modalData?.requestId,
-                                          occurTime: occurDay + ' ' + newTime,
-                                          systemCode: 'test',
-                                          sessionId: modalData?.sessionId,
-                                          number: el.number,
-                                          question: el.askText,
-                                        };
+                          <div className={styles['words']}>
+                            {item.message === '' && (
+                              <div style={{ fontWeight: 'bold' }}>
+                                {item.recommendText || '您是否还想咨询以下问题：'}
+                              </div>
+                            )}
+                            {item.recommendQuestion.map((el: any) => {
+                              return (
+                                <Fragment key={el.number}>
+                                  <div
+                                    style={{ color: '#1890ff', cursor: 'pointer' }}
+                                    onClick={() => {
+                                      setTextMessage(el.askText);
+                                      timeFn.current.inputVal = el.askText;
+                                      setAssociationList([]);
+                                      let newDay = new Date().toLocaleDateString();
+                                      let occurDay = newDay.replace(/\//g, '-');
+                                      let newTime = new Date().toLocaleTimeString('en-GB');
+                                      let params = {
+                                        requestId: modalData?.requestId,
+                                        occurTime: occurDay + ' ' + newTime,
+                                        systemCode: 'test',
+                                        sessionId: modalData?.sessionId,
+                                        number: el.number,
+                                        question: el.askText,
+                                      };
 
-                                        sendMessage(el.askText, true, params);
-                                      }}
-                                    >
-                                      {el.number + ':' + el.askText}
-                                    </div>
-                                  </Fragment>
-                                );
-                              })}
-                            </div>
+                                      sendMessage(el.askText, true, params);
+                                    }}
+                                  >
+                                    {el.number + ':' + el.askText}
+                                  </div>
+                                </Fragment>
+                              );
+                            })}
                           </div>
                         </div>
                       )}
