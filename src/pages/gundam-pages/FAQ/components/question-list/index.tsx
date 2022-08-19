@@ -134,10 +134,12 @@ const QuestionList: React.FC<any> = (props: any) => {
         CurrentPage({ page: current, pageSize });
       });
     } else if (isRecycle == 0) {
+      setEditQLoading(true);
       await isAdd({ faqId: val.id, robotId: info.id }).then(async (res) => {
         if (res.resultCode == config.successCode) {
           if (res.data.editFlag) {
             await deleteQuestion({ id: val?.id }).then((res) => {
+              setEditQLoading(false);
               if (res.resultCode == config.successCode) {
                 message.success(res?.resultDesc || '');
                 getTreeData();
@@ -366,7 +368,7 @@ const QuestionList: React.FC<any> = (props: any) => {
     <div className={style['box']}>
       <div id="scrollContent" className={style['content-list']}>
         <ProList
-          loading={loading}
+          loading={loading || editQLoading}
           actionRef={listRef}
           dataSource={faqList}
           request={async (params = {}, sort, filter) => {
@@ -449,7 +451,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                               }}
                               checked={item?.suggest == 1 ? true : false}
                               disabled={isRecycle == 1}
-                              loading={editQLoading}
+                              // loading={editQLoading}
                             ></Switch>
                           </div>
                           <Divider type="vertical" />

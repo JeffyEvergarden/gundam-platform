@@ -8,7 +8,6 @@ import {
   _addDetailSample,
   _addEvaluation,
   _addSample,
-  _confirmAllDetailSample,
   _confirmDetailSample,
   _deleteDetailSample,
   _deleteEvaluation,
@@ -88,6 +87,7 @@ export const useSampleModel = () => {
 export const useDetailSampleModel = () => {
   const [tableList, setTableList] = useState<any>();
   const [Loading, setLoading] = useState<boolean>(false);
+  const [btnLoading, setBtnLoading] = useState<boolean>(false);
   const [result, setResult] = useState<any>({});
   const [addLoading, setAddLoading] = useState<boolean>(true);
   const [editLoading, setEditLoading] = useState<boolean>(false);
@@ -137,7 +137,9 @@ export const useDetailSampleModel = () => {
   };
 
   const deleteDetailSample = async (params?: any) => {
+    setBtnLoading(true);
     let res: any = await _deleteDetailSample(params);
+    setBtnLoading(false);
     if (res.resultCode == successCode) {
       message.success(res.resultDesc);
       return true;
@@ -148,18 +150,9 @@ export const useDetailSampleModel = () => {
   };
 
   const confirmDetailSample = async (params?: any) => {
+    setBtnLoading(true);
     let res: any = await _confirmDetailSample(params);
-    if (res.resultCode == successCode) {
-      message.success(res.resultDesc);
-      return true;
-    } else {
-      message.error(res.resultDesc);
-      return false;
-    }
-  };
-
-  const confirmAllDetailSample = async (params?: any) => {
-    let res: any = await _confirmAllDetailSample(params);
+    setBtnLoading(false);
     if (res.resultCode == successCode) {
       message.success(res.resultDesc);
       return true;
@@ -170,7 +163,9 @@ export const useDetailSampleModel = () => {
   };
 
   const tagDetailSample = async (params?: any) => {
+    setBtnLoading(true);
     let res: any = await _tagDetailSample(params);
+    setBtnLoading(false);
     if (res.resultCode == successCode) {
       message.success(res.resultDesc);
       return true;
@@ -185,6 +180,7 @@ export const useDetailSampleModel = () => {
     result,
     tableList,
     Loading,
+    btnLoading,
     editLoading,
     getList,
     addDetailSample,
@@ -192,7 +188,6 @@ export const useDetailSampleModel = () => {
     deleteDetailSample,
     confirmDetailSample,
     tagDetailSample,
-    confirmAllDetailSample,
   };
 };
 
