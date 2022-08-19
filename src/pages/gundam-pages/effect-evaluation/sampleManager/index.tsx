@@ -43,7 +43,7 @@ const DetailPages: React.FC = (props: any) => {
               <div>
                 <Button
                   type="link"
-                  style={{ color: '#1890ff !important', width: '100%' }}
+                  style={{ color: '#1890ff !important', maxWidth: '100%' }}
                   onClick={() => {
                     history.push({
                       pathname: `/gundamPages/effectEvaluation/sampleManager/sampleDetail`,
@@ -53,7 +53,7 @@ const DetailPages: React.FC = (props: any) => {
                     });
                   }}
                 >
-                  <span className={style['nameBox']}>{row.sampleSetName}</span>
+                  <span className={style['sampleSetName']}>{row.sampleSetName}</span>
                 </Button>
               </div>
             </Tooltip>
