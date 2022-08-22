@@ -100,7 +100,7 @@ const DetailPages: React.FC = (props: any) => {
             <Popconfirm
               title={
                 <div
-                  style={{ maxWidth: '150px' }}
+                  style={{ maxWidth: '150px', wordBreak: 'break-all' }}
                 >{`你确定要删除以下样本集吗？删除将不可恢复：${row?.sampleSetName}`}</div>
               }
               okText="确定"

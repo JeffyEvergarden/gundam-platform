@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useModel, history } from 'umi';
-import { useTableModel } from './model';
-import { useRoleModel } from '../role-management/model';
-import { Table, Button, Tooltip } from 'antd';
-import {} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import style from './style.less';
+import { Tooltip } from 'antd';
+import React, { useEffect, useRef } from 'react';
+import { useRoleModel } from '../role-management/model';
+import { useTableModel } from './model';
 import RoleModal from './role-modal';
+import style from './style.less';
 
 // 机器人列表
 const UserManagement: React.FC = (props: any) => {
@@ -75,7 +73,7 @@ const UserManagement: React.FC = (props: any) => {
     {
       title: '账号',
       dataIndex: 'account',
-      search: false,
+      // search: false,
       width: 200,
     },
     {
