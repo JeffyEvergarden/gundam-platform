@@ -444,7 +444,8 @@ const DetailPages: React.FC = (props: any) => {
               className={style['blue']}
               style={{ marginRight: '6px' }}
               onClick={() => {
-                history.push('/gundamPages/effectEvaluation/sampleManager');
+                // history.push('/gundamPages/effectEvaluation/sampleManager');
+                history.go(-1);
               }}
             />
             <span>{outRow?.sampleSetName || '-'}</span>
