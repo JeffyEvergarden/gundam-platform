@@ -114,7 +114,7 @@ const TestPages: React.FC = (props: any) => {
                       state: {
                         info: row,
                       },
-                      search: `?batchId=${row.batchId}`,
+                      search: `?batchId=${row.batchId ? row.batchId : '-'}`,
                     });
                     // history.push(`/gundamPages/knowledgeLearn/batchTest/detailList?id=${row.id}`);
                   }}
