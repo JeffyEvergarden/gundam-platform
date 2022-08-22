@@ -1,7 +1,7 @@
 import SelectFaqModal from '@/pages/gundam-pages/FAQ-module/components/select-faq-modal';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Button, message, Modal, Popconfirm, Tooltip, Tabs } from 'antd';
+import { Button, message, Modal, Popconfirm, Tabs, Tooltip } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
 import { useDetailModel, useWhiteModel } from '../../model';
@@ -243,7 +243,7 @@ const DetailList: React.FC = (props: any) => {
         transferType: list?.[0]?.recommendType == 1 ? 'faq' : 'intent',
         transferId: list?.[0]?.recommendId,
         sample: selectInfo.textOneName,
-        batchId: detailInfo?.id || resData?.id || history?.location?.query?.batchId,
+        batchId: detailInfo?.batchId || resData?.batchId || history?.location?.query?.batchId,
       });
     }
     if (selectNum == 4) {
@@ -255,7 +255,7 @@ const DetailList: React.FC = (props: any) => {
         transferType: list?.[0]?.recommendType == 1 ? 'faq' : 'intent',
         transferId: list?.[0]?.recommendId,
         sample: selectInfo.textTwoName,
-        batchId: detailInfo?.id || resData?.id || history?.location?.query?.batchId,
+        batchId: detailInfo?.batchId || resData?.batchId || history?.location?.query?.batchId,
       });
     }
     if (res) {
@@ -291,7 +291,7 @@ const DetailList: React.FC = (props: any) => {
     let res: any;
     if (selectNum == 1) {
       res = await sampleTransfer({
-        batchId: detailInfo?.id || resData?.id || history?.location?.query?.batchId,
+        batchId: detailInfo?.batchId || resData?.batchId || history?.location?.query?.batchId,
         robotId: info.id,
         detailId: selectInfo.id,
         sampleId: selectInfo.textTwoId,
@@ -303,7 +303,7 @@ const DetailList: React.FC = (props: any) => {
     }
     if (selectNum == 2) {
       res = await sampleTransfer({
-        batchId: detailInfo?.id || resData?.id || history?.location?.query?.batchId,
+        batchId: detailInfo?.batchId || resData?.batchId || history?.location?.query?.batchId,
         robotId: info.id,
         detailId: selectInfo.id,
         sampleId: selectInfo.textOneId,
@@ -341,7 +341,7 @@ const DetailList: React.FC = (props: any) => {
               }}
             />
             检测批次ID：
-            {(detailInfo?.id || resData?.id || history?.location?.query?.batchId) ?? '-'}
+            {(detailInfo?.batchId || resData?.batchId || history?.location?.query?.batchId) ?? '-'}
           </span>
           <span>
             本次检测样本总量
@@ -370,7 +370,7 @@ const DetailList: React.FC = (props: any) => {
                 source: 0,
                 robotId: info.id,
                 page: params.current,
-                batchId: detailInfo?.id || history?.location?.query?.batchId,
+                batchId: detailInfo?.batchId || history?.location?.query?.batchId,
                 ...params,
               });
               // return {};
@@ -416,7 +416,7 @@ const DetailList: React.FC = (props: any) => {
                 source: 1,
                 robotId: info.id,
                 page: params.current,
-                batchId: detailInfo?.id || history?.location?.query?.batchId,
+                batchId: detailInfo?.batchId || history?.location?.query?.batchId,
                 ...params,
               });
               // return {};
