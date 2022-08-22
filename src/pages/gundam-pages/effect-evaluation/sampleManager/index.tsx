@@ -2,7 +2,6 @@ import config from '@/config';
 import ProTable from '@ant-design/pro-table';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import React, { useRef } from 'react';
-import { useActivate } from 'react-activation';
 import { history, useModel } from 'umi';
 import ImportModal from '../component/importModal';
 import SampleModal from '../component/sampleModal';
@@ -148,14 +147,14 @@ const DetailPages: React.FC = (props: any) => {
     TableRef?.current?.reload();
   };
 
-  useActivate(() => {
-    refresh();
-    // setTimeout(() => {
-    //   document.querySelectorAll('.hidTooltip').forEach((item) => {
-    //     item.style.left = '-999px';
-    //   });
-    // }, 1);
-  });
+  // useActivate(() => {
+  //   refresh();
+  // setTimeout(() => {
+  //   document.querySelectorAll('.hidTooltip').forEach((item) => {
+  //     item.style.left = '-999px';
+  //   });
+  // }, 1);
+  // });
 
   return (
     <div className={`${style['machine-page']} list-page`}>
@@ -178,7 +177,7 @@ const DetailPages: React.FC = (props: any) => {
           persistenceType: 'localStorage',
         }}
         rowKey="id"
-        search={false}
+        search={{ optionRender: false }}
         form={{
           // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
           // 查询参数转化
