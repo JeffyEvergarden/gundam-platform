@@ -157,7 +157,7 @@ const DetailPages: React.FC = (props: any) => {
   // });
 
   return (
-    <div className={`${style['machine-page']} list-page`}>
+    <div className={`${style['sampleManager-page']} list-page`}>
       <ProTable<any>
         columns={columns}
         actionRef={TableRef}

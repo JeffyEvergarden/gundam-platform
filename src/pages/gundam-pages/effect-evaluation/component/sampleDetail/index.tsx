@@ -431,7 +431,6 @@ const DetailPages: React.FC = (props: any) => {
 
   useEffect(() => {
     let historyData = history?.location?.state || {};
-    console.log(historyData);
     setOutRow(historyData);
   }, []);
 
@@ -444,11 +443,17 @@ const DetailPages: React.FC = (props: any) => {
               className={style['blue']}
               style={{ marginRight: '6px' }}
               onClick={() => {
-                // history.push('/gundamPages/effectEvaluation/sampleManager');
-                history.go(-1);
+                if ((history?.location?.state as any)?.id) {
+                  history.go(-1);
+                } else {
+                  history.push('/gundamPages/effectEvaluation/sampleManager');
+                }
               }}
             />
-            <span>{outRow?.sampleSetName || '-'}</span>
+            <Tooltip title={outRow?.sampleSetName || '-'}>
+              <span className={style['title']}>{outRow?.sampleSetName || '-'}</span>
+            </Tooltip>
+
             <span style={{ fontSize: '16px' }}>{` （共${result?.totalPage || '0'}条：已标注${
               result?.tagNum || '0'
             }条，待标注${result?.unTagNum || '0'}条，待确认${

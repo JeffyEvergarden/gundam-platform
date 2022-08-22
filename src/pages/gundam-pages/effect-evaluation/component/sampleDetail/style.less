@@ -11,6 +11,8 @@
     padding-bottom: 12px;
 
     &__left {
+      display: flex;
+      align-items: center;
       font-weight: 400;
       font-size: 20px;
     }
@@ -56,4 +58,12 @@
 .tagStatus {
   display: flex;
   align-items: center;
+}
+
+.title {
+  display: inline-block;
+  max-width: 400px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
