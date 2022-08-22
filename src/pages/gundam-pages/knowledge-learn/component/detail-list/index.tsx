@@ -88,38 +88,40 @@ const DetailList: React.FC = (props: any) => {
       render: (val: any, row: any) => {
         return (
           <div className={style['lf']}>
-            <div className={style['tb']}>
-              <Button
-                type="link"
-                disabled={
-                  row.handleStatus == 2 || row.textTwoType == 'faq' || resData?.batchExpired
-                    ? true
-                    : false
-                }
-                onClick={() => {
-                  setVisible(true);
-                  setSelectInfo(row);
-                  setSelectNum(1);
-                }}
-              >
-                合并到本项
-              </Button>
-              <Button
-                type="link"
-                disabled={
-                  row.handleStatus == 2 || row.textOneType == 'faq' || resData?.batchExpired
-                    ? true
-                    : false
-                }
-                onClick={() => {
-                  setVisible(true);
-                  setSelectInfo(row);
-                  setSelectNum(2);
-                }}
-              >
-                合并到本项
-              </Button>
-            </div>
+            {tabkey == '1' && (
+              <div className={style['tb']}>
+                <Button
+                  type="link"
+                  disabled={
+                    row.handleStatus == 2 || row.textTwoType == 'faq' || resData?.batchExpired
+                      ? true
+                      : false
+                  }
+                  onClick={() => {
+                    setVisible(true);
+                    setSelectInfo(row);
+                    setSelectNum(1);
+                  }}
+                >
+                  合并到本项
+                </Button>
+                <Button
+                  type="link"
+                  disabled={
+                    row.handleStatus == 2 || row.textOneType == 'faq' || resData?.batchExpired
+                      ? true
+                      : false
+                  }
+                  onClick={() => {
+                    setVisible(true);
+                    setSelectInfo(row);
+                    setSelectNum(2);
+                  }}
+                >
+                  合并到本项
+                </Button>
+              </div>
+            )}
             <Popconfirm
               title="是否添加到白名单"
               okText="确定"
@@ -244,6 +246,7 @@ const DetailList: React.FC = (props: any) => {
         transferId: list?.[0]?.recommendId,
         sample: selectInfo.textOneName,
         batchId: detailInfo?.batchId || resData?.batchId || history?.location?.query?.batchId,
+        source: tabkey == '1' ? '0' : tabkey == '2' ? '1' : '',
       });
     }
     if (selectNum == 4) {
@@ -256,6 +259,7 @@ const DetailList: React.FC = (props: any) => {
         transferId: list?.[0]?.recommendId,
         sample: selectInfo.textTwoName,
         batchId: detailInfo?.batchId || resData?.batchId || history?.location?.query?.batchId,
+        source: tabkey == '1' ? '0' : tabkey == '2' ? '1' : '',
       });
     }
     if (res) {
@@ -299,6 +303,7 @@ const DetailList: React.FC = (props: any) => {
         transferType: selectInfo.textOneType == 'similar' ? 'faq' : selectInfo.textOneType,
         transferId: selectInfo.textOneValue,
         sample: selectInfo.textTwoName,
+        source: tabkey == '1' ? '0' : tabkey == '2' ? '1' : '',
       });
     }
     if (selectNum == 2) {
@@ -311,6 +316,7 @@ const DetailList: React.FC = (props: any) => {
         transferType: selectInfo.textTwoType == 'similar' ? 'faq' : selectInfo.textTwoType,
         transferId: selectInfo.textTwoValue,
         sample: selectInfo.textOneName,
+        source: tabkey == '1' ? '0' : tabkey == '2' ? '1' : '',
       });
     }
     if (res) {
