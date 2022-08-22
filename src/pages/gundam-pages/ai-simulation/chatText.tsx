@@ -198,6 +198,7 @@ export default (props: any) => {
         message: res?.data?.actionMessage,
         recommendText: res?.data?.recommendText,
         recommendQuestion: res?.data?.recommendQuestion,
+        isClear: res?.data?.aiTextHitType == 2 || res?.data?.aiTextHitType == 6 ? true : false,
       });
       setTimeout(() => {
         setDialogList(newData);
@@ -271,6 +272,7 @@ export default (props: any) => {
           message: res?.data?.actionMessage,
           recommendText: res?.data?.recommendText,
           recommendQuestion: res?.data?.recommendQuestion,
+          isClear: res?.data?.aiTextHitType == 2 || res?.data?.aiTextHitType == 6 ? true : false,
         },
       );
       setTextMessage('');
