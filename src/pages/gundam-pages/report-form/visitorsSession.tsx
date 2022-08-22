@@ -66,8 +66,8 @@ export default () => {
       startTime = begin;
       endTime = end;
     } else {
-      let sevenDays = moment().subtract(7, 'days');
-      let yestody = moment().subtract(1, 'days');
+      let sevenDays = moment().subtract(6, 'days');
+      let yestody = moment().subtract(0, 'days');
       startTime = sevenDays.format('YYYY-MM-DD');
       endTime = yestody.format('YYYY-MM-DD');
     }
