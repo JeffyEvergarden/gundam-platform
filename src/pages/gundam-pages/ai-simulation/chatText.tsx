@@ -4,6 +4,11 @@ import { Button, Input, message, Modal, Popover, Radio, Space } from 'antd';
 import React, { Fragment, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { useChatModel } from './model';
+import {
+  textRobotRecommendDialogue,
+  textRobotSearchEvent,
+  textRobotSuggestClick,
+} from './model/api';
 import styles from './style.less';
 const { TextArea } = Input;
 
@@ -191,6 +196,7 @@ export default (props: any) => {
         type: 'robot',
         askText: img(res?.data?.askText),
         message: res?.data?.actionMessage,
+        recommendText: res?.data?.recommendText,
         recommendQuestion: res?.data?.recommendQuestion,
       });
       setTimeout(() => {
@@ -203,7 +209,7 @@ export default (props: any) => {
   };
 
   // 发送按钮
-  const sendMessage = async (text?: any, skipCheck?: any) => {
+  const sendMessage = async (text?: any, skipCheck?: any, reqData?: any) => {
     if (loading) {
       return;
     }
@@ -228,16 +234,23 @@ export default (props: any) => {
     let params = {
       requestId: modalData.requestId,
       occurTime: occurDay + ' ' + newTime,
-      systemCode: modalData.systemCode,
+      systemCode: 'test',
       sessionId: modalData.sessionId,
       message: text || textMessage,
       event: chatEvent, // 事件类型
       actionType: '',
     };
     let res: any;
+
     if (info.robotType === 0) {
-      //文本机器人
-      res = await textRobotDialogueText(params);
+      //发送埋点
+      if (skipCheck) {
+        res = await textRobotRecommendDialogue(reqData);
+      } else {
+        textRobotSearchEvent(params);
+        //文本机器人
+        res = await textRobotDialogueText(params);
+      }
     }
     if (info.robotType === 1) {
       //语音机器人
@@ -256,6 +269,7 @@ export default (props: any) => {
           type: 'robot',
           askText: img(res?.data?.askText),
           message: res?.data?.actionMessage,
+          recommendText: res?.data?.recommendText,
           recommendQuestion: res?.data?.recommendQuestion,
         },
       );
@@ -338,6 +352,7 @@ export default (props: any) => {
           type: 'robot',
           askText: img(res?.data?.askText),
           message: res?.data?.actionMessage,
+          recommendText: res?.data?.recommendText,
           recommendQuestion: res?.data?.recommendQuestion,
         },
       );
@@ -388,6 +403,24 @@ export default (props: any) => {
               setTextMessage(item.label);
               timeFn.current.inputVal = item.label;
               setAssociationList([]);
+              //联想埋点
+              let newDay = new Date().toLocaleDateString();
+              let occurDay = newDay.replace(/\//g, '-');
+              let newTime = new Date().toLocaleTimeString('en-GB');
+              if (info.robotType === 0) {
+                textRobotSuggestClick({
+                  requestId: modalData?.requestId,
+                  occurTime: occurDay + ' ' + newTime,
+                  systemCode: 'test',
+                  sessionId: modalData?.sessionId,
+                  num: i + 1,
+                  type: item?.type,
+                  stdQueryId: item?.stdQueryId,
+                  suggestQuery: item?.suggestQuery,
+                  id: item?.id,
+                });
+              }
+
               sendMessage(item.label);
             }}
           >
@@ -474,29 +507,39 @@ export default (props: any) => {
                       {item.recommendQuestion && item.recommendQuestion.length > 0 && (
                         <div className={styles['robot-part']}>
                           <img className={styles['head-robot']} alt="robot" src={robotPhoto} />
-                          <div>
-                            <div className={styles['words']}>
-                              {item.message === '' && (
-                                <div style={{ fontWeight: 'bold' }}>您是否还想咨询以下问题：</div>
-                              )}
-                              {item.recommendQuestion.map((el: any) => {
-                                return (
-                                  <Fragment key={el.number}>
-                                    <div
-                                      style={{ color: '#1890ff', cursor: 'pointer' }}
-                                      onClick={() => {
-                                        setTextMessage(el.askText);
-                                        timeFn.current.inputVal = el.askText;
-                                        setAssociationList([]);
-                                        sendMessage(el.askText, true);
-                                      }}
-                                    >
-                                      {el.number + ':' + el.askText}
-                                    </div>
-                                  </Fragment>
-                                );
-                              })}
-                            </div>
+                          <div className={styles['words']}>
+                            {/* {item.message === '' && ( */}
+                            <div style={{ fontWeight: 'bold' }}>{item?.recommendText}</div>
+                            {/* )} */}
+                            {item.recommendQuestion.map((el: any) => {
+                              return (
+                                <Fragment key={el.number}>
+                                  <div
+                                    style={{ color: '#1890ff', cursor: 'pointer' }}
+                                    onClick={() => {
+                                      setTextMessage(el.askText);
+                                      timeFn.current.inputVal = el.askText;
+                                      setAssociationList([]);
+                                      let newDay = new Date().toLocaleDateString();
+                                      let occurDay = newDay.replace(/\//g, '-');
+                                      let newTime = new Date().toLocaleTimeString('en-GB');
+                                      let params = {
+                                        requestId: modalData?.requestId,
+                                        occurTime: occurDay + ' ' + newTime,
+                                        systemCode: 'test',
+                                        sessionId: modalData?.sessionId,
+                                        number: el.number,
+                                        question: el.askText,
+                                      };
+
+                                      sendMessage(el.askText, true, params);
+                                    }}
+                                  >
+                                    {el.number + ':' + el.askText}
+                                  </div>
+                                </Fragment>
+                              );
+                            })}
                           </div>
                         </div>
                       )}

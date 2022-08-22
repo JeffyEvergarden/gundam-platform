@@ -41,6 +41,7 @@ const textRobotDialogueText = (req: any, res: any) => {
           askText: '循环产品利率？',
         },
       ],
+      recommendText: '您是否还想咨询以下问题：',
     },
   });
 };
@@ -117,4 +118,8 @@ export default {
   'POST /aichat/robot/textRobotDialogueText': textRobotDialogueText, // 文本接口
   'POST /aichat/robot/soundRobotDialogueText': soundRobotDialogueText, // 文本接口
   'POST /aichat/robot/faq/searchSuggest': getAssociationText, // 文本接口
+
+  'POST /aichat/robot/textRobotSuggestClick': getChatInitData, // 埋点
+  'POST /aichat/robot/textRobotSearchEvent': getChatInitData, // 埋点
+  'POST /aichat/robot/textRobotRecommendDialogue': textRobotDialogueText, // 埋点
 };

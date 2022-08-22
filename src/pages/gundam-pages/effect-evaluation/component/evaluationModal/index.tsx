@@ -1,3 +1,4 @@
+import Condition from '@/components/Condition';
 import { Form, InputNumber, Modal, Select, Tooltip } from 'antd';
 import React, { useImperativeHandle, useState } from 'react';
 import { useModel } from 'umi';
@@ -21,6 +22,7 @@ const EvaluationModal: React.FC<any> = (props: any) => {
   const [form] = Form.useForm();
 
   const [visible, setVisible] = useState<boolean>(false);
+  const [showTip, setShowTip] = useState<boolean>(false);
 
   const submit = async () => {
     const values = await form.validateFields();
@@ -39,6 +41,7 @@ const EvaluationModal: React.FC<any> = (props: any) => {
 
   const close = () => {
     form.resetFields();
+    setShowTip(false);
     setVisible(false);
   };
 
@@ -57,8 +60,7 @@ const EvaluationModal: React.FC<any> = (props: any) => {
       title={'提交评估'}
       visible={visible}
       onCancel={() => {
-        form.resetFields();
-        setVisible(false);
+        close();
       }}
       okText={'提交'}
       onOk={submit}
@@ -71,10 +73,21 @@ const EvaluationModal: React.FC<any> = (props: any) => {
             label="样本集"
             style={{ width: '360px' }}
           >
-            <Select placeholder={'请选择样本集'}>
+            <Select
+              placeholder={'请选择样本集'}
+              onChange={(a: any, b: any) => {
+                console.log(a, b);
+                let list = b?.item?.tagProgress?.split('/');
+                if (list?.[0] == list?.[1]) {
+                  setShowTip(false);
+                } else {
+                  setShowTip(true);
+                }
+              }}
+            >
               {tableList?.map((item: any) => {
                 return (
-                  <Option key={item.id} value={item.id}>
+                  <Option key={item.id} value={item.id} item={item}>
                     <div
                       style={{
                         display: 'flex',
@@ -98,6 +111,7 @@ const EvaluationModal: React.FC<any> = (props: any) => {
             name="threshold"
             label="阈值"
             style={{ width: '360px' }}
+            initialValue={0.9}
           >
             <InputNumber placeholder={'请输入'} min="0" max="1" step="0.01" precision={2} />
           </FormItem>
@@ -106,6 +120,7 @@ const EvaluationModal: React.FC<any> = (props: any) => {
             name="difference"
             label="得分差值"
             style={{ width: '360px' }}
+            initialValue={0.01}
           >
             <InputNumber placeholder={'请输入'} min="0" max="1" step="0.01" precision={2} />
           </FormItem>
@@ -114,9 +129,15 @@ const EvaluationModal: React.FC<any> = (props: any) => {
             name="clarifyNum"
             label="澄清数量"
             style={{ width: '360px' }}
+            initialValue={3}
           >
             <InputNumber placeholder={'请输入'} min={1} max={99} step="1" precision={0} />
           </FormItem>
+          <Condition r-if={showTip}>
+            <span style={{ color: 'red' }}>
+              检测到存在待标注的样本，可能会影响最终的评估结果，建议标注后再进行评估
+            </span>
+          </Condition>
         </Form>
       </div>
     </Modal>

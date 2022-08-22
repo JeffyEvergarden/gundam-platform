@@ -14,13 +14,23 @@ import {
   UpOutlined,
 } from '@ant-design/icons';
 import ProList from '@ant-design/pro-list';
-import { Button, Divider, Form, Input, message, Pagination, Popconfirm, Select } from 'antd';
+import {
+  Button,
+  Divider,
+  Form,
+  Input,
+  message,
+  Pagination,
+  Popconfirm,
+  Select,
+  Switch,
+} from 'antd';
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useActivate } from 'react-activation';
 import { history, useModel } from 'umi';
 import { useFaqModal } from '../../FAQ-manage/model';
 import { deleteQuestion } from '../../FAQ-manage/model/api';
-import { deleteAnswer, editAnswer, editQuestion, isAdd } from '../../question-board/model/api';
+import { deleteAnswer, editQuestion, isAdd } from '../../question-board/model/api';
 import style from './style.less';
 
 const { Option } = Select;
@@ -64,6 +74,7 @@ const QuestionList: React.FC<any> = (props: any) => {
   const [pageSize, setPageSize] = useState<any>(10);
   const [more, setMore] = useState<any>([]); //更多答案
   const [edit, setEdit] = useState<any>([]); //编辑名字
+  const [editQLoading, setEditQLoading] = useState<any>(false); //编辑是否联想
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
 
   const listRef = useRef<any>({});
@@ -88,14 +99,6 @@ const QuestionList: React.FC<any> = (props: any) => {
     faqExport,
   }));
 
-  useEffect(() => {
-    // getFaqList({ pageNo: 1 });
-    console.log(childList);
-
-    // listRef.current.reload();
-    // console.log(listRef);
-  }, [childList]);
-
   const faqExport = () => {
     let params = {
       robotId: info.id,
@@ -105,9 +108,6 @@ const QuestionList: React.FC<any> = (props: any) => {
       faqTypeId: selectTree == '0' ? null : selectTree,
       ...heightSelect,
     };
-    // const reqData = new URLSearchParams(Object.entries(params)).toString();
-    // console.log(reqData);
-
     window.open(`${config.basePath}/robot/faq/robotFaqExport?${ObjToSearch(params)}`);
   };
 
@@ -118,14 +118,12 @@ const QuestionList: React.FC<any> = (props: any) => {
     return {
       selectedRowKeys,
       onChange: (keys: any[]) => {
-        // console.log(keys);
         return setSelectedRowKeys(keys);
       },
     };
   };
 
   const deleteList = async (val: any) => {
-    // console.log(val);
     if (isRecycle == 1) {
       await deleteRecycle({ faqIds: [val.id] }).then((res: any) => {
         if (res.resultCode == config.successCode) {
@@ -136,10 +134,12 @@ const QuestionList: React.FC<any> = (props: any) => {
         CurrentPage({ page: current, pageSize });
       });
     } else if (isRecycle == 0) {
+      setEditQLoading(true);
       await isAdd({ faqId: val.id, robotId: info.id }).then(async (res) => {
         if (res.resultCode == config.successCode) {
           if (res.data.editFlag) {
             await deleteQuestion({ id: val?.id }).then((res) => {
+              setEditQLoading(false);
               if (res.resultCode == config.successCode) {
                 message.success(res?.resultDesc || '');
                 getTreeData();
@@ -342,7 +342,9 @@ const QuestionList: React.FC<any> = (props: any) => {
       robotId: info.id,
       ...params,
     };
+    setEditQLoading(true);
     await editQuestion(reqData).then((res) => {
+      setEditQLoading(false);
       if (res.resultCode == config.successCode) {
         message.success(res.resultDesc);
         CurrentPage({ page: current, pageSize });
@@ -350,25 +352,6 @@ const QuestionList: React.FC<any> = (props: any) => {
       } else {
         message.error(res.resultDesc);
         CurrentPage({ page: current, pageSize });
-        return false;
-      }
-    });
-  };
-
-  const editA = async (params: any) => {
-    let reqData = {
-      robotId: info.id,
-      ...params,
-    };
-    console.log(reqData);
-    await editAnswer(reqData).then((res) => {
-      if (res.resultCode == config.successCode) {
-        message.success(res.resultDesc);
-        CurrentPage();
-        return true;
-      } else {
-        message.error(res.resultDesc);
-        CurrentPage();
         return false;
       }
     });
@@ -385,12 +368,10 @@ const QuestionList: React.FC<any> = (props: any) => {
     <div className={style['box']}>
       <div id="scrollContent" className={style['content-list']}>
         <ProList
-          // itemLayout="vertical"
-          loading={loading}
+          loading={loading || editQLoading}
           actionRef={listRef}
           dataSource={faqList}
           request={async (params = {}, sort, filter) => {
-            // console.log(params);
             return {};
             // return CurrentPage({ page: current, pageSize, robotId: info.id });
           }}
@@ -458,6 +439,23 @@ const QuestionList: React.FC<any> = (props: any) => {
                         </div>
                         {/* 问题删除 */}
                         <div className={style['box-top-del']}>
+                          <div className={style['box-top-del']}>
+                            是否联想：
+                            <Switch
+                              size="small"
+                              checkedChildren="开启"
+                              unCheckedChildren="关闭"
+                              onChange={(val) => {
+                                console.log(val);
+                                editQ({ id: item?.id, suggest: val ? 1 : 0 });
+                              }}
+                              checked={item?.suggest == 1 ? true : false}
+                              disabled={isRecycle == 1}
+                              // loading={editQLoading}
+                            ></Switch>
+                          </div>
+                          <Divider type="vertical" />
+
                           <Popconfirm
                             title={() => {
                               return (

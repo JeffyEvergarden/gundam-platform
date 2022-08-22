@@ -283,6 +283,10 @@ const FAQPage: React.FC<any> = (props: any) => {
                     faqIds: data,
                     robotId: info.id,
                   };
+                  if (!data?.length) {
+                    message.warning('请选择标准问');
+                    return;
+                  }
                   await batchDeleteQuestion(reqData).then((res) => {
                     if (res.resultCode == config.successCode) {
                       message.success(res.resultDesc);

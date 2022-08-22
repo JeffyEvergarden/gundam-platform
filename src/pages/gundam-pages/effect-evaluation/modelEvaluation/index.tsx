@@ -81,35 +81,43 @@ const DetailPages: React.FC = (props: any) => {
       fixed: 'right',
       width: 150,
       render: (val: any, row: any, index: number) => {
-        return (
-          <div style={{ display: 'flex' }}>
-            <Button
-              type="link"
-              onClick={() => {
-                DetailRef.current?.open?.(row);
-              }}
-            >
-              查看详情
-            </Button>
-
-            <Popconfirm
-              title="删除将不可恢复，确认删除？"
-              okText="确定"
-              cancelText="取消"
-              onConfirm={async () => {
-                await deleteEvaluation({ robotId: info.id, id: row.id }).then((res) => {
-                  if (res) {
-                    TableRef?.current?.reload();
-                  }
-                });
-              }}
-            >
-              <Button type="link" danger>
-                删除
+        if (row.assessStatus == 2) {
+          return (
+            <div style={{ display: 'flex' }}>
+              <Button
+                type="link"
+                onClick={() => {
+                  DetailRef.current?.open?.(row);
+                }}
+              >
+                查看详情
               </Button>
-            </Popconfirm>
-          </div>
-        );
+
+              <Popconfirm
+                title="删除将不可恢复，确认删除？"
+                okText="确定"
+                cancelText="取消"
+                onConfirm={async () => {
+                  await deleteEvaluation({ robotId: info.id, id: row.id }).then((res) => {
+                    if (res) {
+                      TableRef?.current?.reload();
+                    }
+                  });
+                }}
+              >
+                <Button type="link" danger>
+                  删除
+                </Button>
+              </Popconfirm>
+            </div>
+          );
+        } else if (row.assessStatus == 1) {
+          return <div className={style['btn']}>评估中</div>;
+        } else if (row.assessStatus == 0) {
+          return <div className={style['btn']}>待评估</div>;
+        } else if (row.assessStatus == 3) {
+          return <div className={style['btn']}>评估失败</div>;
+        }
       },
     },
   ];

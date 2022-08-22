@@ -71,6 +71,7 @@ const getFaqList = (req: any, res: any, next: any) => {
       times: 100 + index,
       id: index + 1 + page * 100,
       recycle: index % 2 == 0 ? 0 : 1,
+      suggest: Math.floor(Math.random() * 100) > 50 ? 0 : 1,
     };
   });
 

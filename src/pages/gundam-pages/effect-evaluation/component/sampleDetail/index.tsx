@@ -42,6 +42,7 @@ const DetailPages: React.FC = (props: any) => {
   const {
     editLoading,
     addLoading,
+    btnLoading,
     result,
     getList,
     addDetailSample,
@@ -49,7 +50,6 @@ const DetailPages: React.FC = (props: any) => {
     editDetailSample,
     confirmDetailSample,
     tagDetailSample,
-    confirmAllDetailSample,
   } = useDetailSampleModel();
 
   const { info } = useModel('gundam' as any, (model: any) => ({
@@ -174,8 +174,9 @@ const DetailPages: React.FC = (props: any) => {
               onClick={() => {
                 openSelectFaqModal(row);
               }}
+              style={{ color: '#52C41A' }}
             >
-              {'---'}
+              {row.replyType == 3 ? '' : '请选择标准问/意图'}
             </div>
           );
         }
@@ -512,13 +513,16 @@ const DetailPages: React.FC = (props: any) => {
                 });
               }}
             >
-              <Button disabled={selectRow?.length < 1}>批量删除</Button>
+              <Button disabled={selectRow?.length < 1} loading={btnLoading}>
+                批量删除
+              </Button>
             </Popconfirm>,
             <Button
               disabled={selectRow?.length < 1}
               onClick={() => {
                 tag();
               }}
+              loading={btnLoading}
             >
               批量预标注
             </Button>,
@@ -528,6 +532,7 @@ const DetailPages: React.FC = (props: any) => {
               onClick={() => {
                 confirm();
               }}
+              loading={btnLoading}
             >
               批量确认
             </Button>,

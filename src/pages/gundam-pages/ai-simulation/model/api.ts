@@ -51,3 +51,27 @@ export async function getAssociationText(params?: { [key: string]: any }) {
     }),
   });
 }
+
+/** 联想点击埋点 **/
+export async function textRobotSuggestClick(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/textRobotSuggestClick`, {
+    method: 'POST',
+    data: data,
+  });
+}
+
+/** 发送埋点 **/
+export async function textRobotSearchEvent(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/textRobotSearchEvent`, {
+    method: 'POST',
+    data: data,
+  });
+}
+
+/** 推荐问埋点 **/
+export async function textRobotRecommendDialogue(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/textRobotRecommendDialogue`, {
+    method: 'POST',
+    data: data,
+  });
+}

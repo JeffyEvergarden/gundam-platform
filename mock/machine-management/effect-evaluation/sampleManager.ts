@@ -19,8 +19,20 @@ const getSampleList = (req: any, res: any) => {
       id: index + 1,
       robotId: '100',
       sampleSetId: index + 1,
-      sampleSetName: '样本' + index,
-      tagProgress: '1/1',
+      sampleSetName:
+        '样本' +
+        index +
+        '样本' +
+        index +
+        '样本' +
+        index +
+        '样本' +
+        index +
+        '样本' +
+        index +
+        '样本' +
+        index,
+      tagProgress: `${Math.ceil(Math.random() * 10)}/${Math.ceil(Math.random() * 10)}`,
       creator: 'jiangjiahao',
       createTime: moment(new Date(_date + 60 * 60 * 1000 * index)).format('YYYY-MM—DD hh:mm'),
       updateTime: moment(new Date(_date + 60 * 60 * 1000 * index)).format('YYYY-MM—DD hh:mm'),
@@ -95,6 +107,7 @@ const getEvaluationList = (req: any, res: any) => {
     let obj = {
       id: index + 1,
       robotId: '100',
+      assessStatus: Math.ceil(Math.random() * 3),
       sampleSetName: '样本' + index,
       averageAccurateRate: Math.ceil(Math.random() * 100) + '%',
       averageRecallRate: Math.ceil(Math.random() * 100) + '%',
@@ -122,7 +135,7 @@ const getEvaluationList = (req: any, res: any) => {
 };
 
 const getResultEvaluationList = (req: any, res: any) => {
-  let arr = new Array(11).fill(1);
+  let arr = new Array(10).fill(1);
   let _date = Date.now();
 
   arr = arr.map((item: any, index: number) => {
@@ -131,31 +144,9 @@ const getResultEvaluationList = (req: any, res: any) => {
       robotId: '100',
       assessSample: '评估样本' + index,
       tagReplyType: Math.ceil(Math.random() * 3),
-      tagFaqIntent: [
-        {
-          bizId: '1',
-          bizName: 'name1',
-          bizType: '1', //1标准问 2意图
-        },
-        {
-          bizId: '2',
-          bizName: '那么',
-          bizType: '2',
-        },
-      ],
+      tagFaqIntent: ['name1', 'name2'],
       distinguishReplyType: Math.ceil(Math.random() * 3),
-      distinguishFaqIntent: [
-        {
-          bizId: '1',
-          bizName: 'name1',
-          bizType: '1', //1标准问 2意图
-        },
-        {
-          bizId: '2',
-          bizName: '那么',
-          bizType: '2',
-        },
-      ],
+      distinguishFaqIntent: ['name1', 'name2'],
       accurateRate: Math.ceil(Math.random() * 100) + '%',
       recallRate: Math.ceil(Math.random() * 100) + '%',
       clarifyNum: Math.ceil(Math.random() * 10),
@@ -173,7 +164,7 @@ const getResultEvaluationList = (req: any, res: any) => {
     data: {
       page: 1,
       pageSize: 10,
-      totalPage: 11,
+      totalPage: 15,
       sampleSetName: '样本',
       assessTime: moment(new Date(_date + 60 * 60 * 1000)).format('YYYY-MM-DD hh:mm'),
       averageAccurateRate: Math.ceil(Math.random() * 100) + '%',

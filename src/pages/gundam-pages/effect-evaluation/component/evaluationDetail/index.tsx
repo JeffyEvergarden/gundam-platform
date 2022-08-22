@@ -1,4 +1,3 @@
-import { MonitorOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import { Button, Col, Form, Modal, Row, Select, Tooltip } from 'antd';
 import React, { useImperativeHandle, useRef, useState } from 'react';
@@ -20,7 +19,7 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
     setInfo: model.setInfo,
   }));
 
-  const [form] = Form.useForm();
+  // const [form] = Form.useForm();
 
   const [visible, setVisible] = useState<boolean>(false);
   const [detailVisible, setDetailVisible] = useState<boolean>(false);
@@ -28,7 +27,8 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
   const temRef = useRef<any>();
 
   const close = () => {
-    form.resetFields();
+    TableRef?.current?.reset();
+    // form.resetFields();
     setVisible(false);
   };
 
@@ -46,7 +46,7 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
   const columns: any[] = [
     {
       title: '评估样本',
-      dataIndex: 'assessSample',
+      dataIndex: 'dialogueSample',
       fieldProps: {
         placeholder: '请输入评估样本',
       },
@@ -78,14 +78,9 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
             <div className={style['question-box']}>
               {arr.map((item: any, i: number) => {
                 return (
-                  <Tooltip title={item.bizName} placement={'topLeft'} key={i}>
+                  <Tooltip title={item} placement={'topLeft'} key={i}>
                     <div className={style['qustion-label']} key={i}>
-                      {item.bizType == '1' ? (
-                        <QuestionCircleOutlined className={style['icon']} />
-                      ) : (
-                        <MonitorOutlined className={style['icon']} />
-                      )}
-                      {item.bizName}
+                      {item}
                     </div>
                   </Tooltip>
                 );
@@ -120,14 +115,9 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
             <div className={style['question-box']}>
               {arr.map((item: any, i: number) => {
                 return (
-                  <Tooltip title={item.bizName} placement={'topLeft'} key={i}>
+                  <Tooltip title={item} placement={'topLeft'} key={i}>
                     <div className={style['qustion-label']} key={i}>
-                      {item.bizType == '1' ? (
-                        <QuestionCircleOutlined className={style['icon']} />
-                      ) : (
-                        <MonitorOutlined className={style['icon']} />
-                      )}
-                      {item.bizName}
+                      {item}
                     </div>
                   </Tooltip>
                 );
@@ -190,10 +180,10 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
       title={`评估详情`}
       visible={visible}
       onCancel={() => {
-        TableRef.current.reset();
-        setVisible(false);
+        close();
       }}
       footer={false}
+      destroyOnClose={true}
     >
       <div className={style['info']}>
         <Row>
@@ -231,16 +221,6 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
           rowKey="id"
           search={{
             labelWidth: 'auto',
-          }}
-          form={{
-            syncToUrl: (values: any, type: any) => {
-              if (type === 'get') {
-                return {
-                  ...values,
-                };
-              }
-              return values;
-            },
           }}
           pagination={{
             pageSize: 10,

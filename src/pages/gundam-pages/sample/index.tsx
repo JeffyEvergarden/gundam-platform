@@ -625,20 +625,21 @@ export default () => {
                     添加
                   </Button>
                 )}
-
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    (selectFaqModalRef.current as any)?.open({
-                      selectList: [], //被选中列表
-                      selectedQuestionKeys: [], // 已选问题
-                      selectedWishKeys: [], // 已选意图
-                      question: inputValue,
-                    });
-                  }}
-                >
-                  其他意图/FAQ
-                </Button>
+                {tableInfo?.recycle != 1 && (
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      (selectFaqModalRef.current as any)?.open({
+                        selectList: [], //被选中列表
+                        selectedQuestionKeys: [], // 已选问题
+                        selectedWishKeys: [], // 已选意图
+                        question: inputValue,
+                      });
+                    }}
+                  >
+                    其他意图/FAQ
+                  </Button>
+                )}
               </Space>
             </Col>
             <Col span={6}>
