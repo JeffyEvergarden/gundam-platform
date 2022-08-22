@@ -21,7 +21,7 @@ const TestPages: React.FC = (props: any) => {
   const deleteRow = async (row: any) => {
     let params: any = {
       robotId: info.id,
-      batchId: row.id,
+      batchId: row.batchId,
     };
     let res: any = await deleteBatch(params);
     if (res) {
@@ -114,7 +114,7 @@ const TestPages: React.FC = (props: any) => {
                       state: {
                         info: row,
                       },
-                      search: `?batchId=${row.id}`,
+                      search: `?batchId=${row.batchId}`,
                     });
                     // history.push(`/gundamPages/knowledgeLearn/batchTest/detailList?id=${row.id}`);
                   }}
