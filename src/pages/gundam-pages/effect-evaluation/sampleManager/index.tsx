@@ -38,10 +38,10 @@ const DetailPages: React.FC = (props: any) => {
       render: (val: any, row: any, index: any) => {
         return (
           <Tooltip
-            overlayClassName="hidTooltip"
+            // overlayClassName="hidTooltip"
             title={row.sampleSetName}
-            placement={'topLeft'}
-            getPopupContainer={(trigger: any) => trigger.parentElement}
+            // placement={'topLeft'}
+            // getPopupContainer={(trigger: any) => trigger.parentElement}
           >
             <Button
               type="link"
@@ -150,11 +150,11 @@ const DetailPages: React.FC = (props: any) => {
 
   useActivate(() => {
     refresh();
-    setTimeout(() => {
-      document.querySelectorAll('.hidTooltip').forEach((item) => {
-        item.style.left = '-999px';
-      });
-    }, 1);
+    // setTimeout(() => {
+    //   document.querySelectorAll('.hidTooltip').forEach((item) => {
+    //     item.style.left = '-999px';
+    //   });
+    // }, 1);
   });
 
   return (
@@ -180,6 +180,8 @@ const DetailPages: React.FC = (props: any) => {
         rowKey="id"
         search={false}
         form={{
+          // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
+          // 查询参数转化
           syncToUrl: (values, type) => {
             if (type === 'get') {
               return {

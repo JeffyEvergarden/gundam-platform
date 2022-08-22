@@ -1,7 +1,7 @@
 import Route from '@/components/Route';
 import Switch from '@/components/Route/Switch';
 import Page404 from '@/pages/404';
-import KeepAlive, { AliveScope } from 'react-activation';
+import { AliveScope } from 'react-activation';
 
 import SampleDetail from '../component/sampleDetail';
 import SampleManager from '../sampleManager';
@@ -11,9 +11,9 @@ const Home = (props: any) => {
 
   const KeepAliveFAQManage = () => {
     return (
-      <KeepAlive>
-        <SampleManager />
-      </KeepAlive>
+      // <KeepAlive>
+      <SampleManager />
+      // </KeepAlive>
     );
   };
 
