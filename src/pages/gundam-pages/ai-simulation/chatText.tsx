@@ -198,6 +198,7 @@ export default (props: any) => {
         message: res?.data?.actionMessage,
         recommendText: res?.data?.recommendText,
         recommendQuestion: res?.data?.recommendQuestion,
+        isClear: res?.data?.aiTextHitType == 2 || res?.data?.aiTextHitType == 6 ? true : false,
       });
       setTimeout(() => {
         setDialogList(newData);
@@ -271,6 +272,7 @@ export default (props: any) => {
           message: res?.data?.actionMessage,
           recommendText: res?.data?.recommendText,
           recommendQuestion: res?.data?.recommendQuestion,
+          isClear: res?.data?.aiTextHitType == 2 || res?.data?.aiTextHitType == 6 ? true : false,
         },
       );
       setTextMessage('');
@@ -354,6 +356,7 @@ export default (props: any) => {
           message: res?.data?.actionMessage,
           recommendText: res?.data?.recommendText,
           recommendQuestion: res?.data?.recommendQuestion,
+          isClear: res?.data?.aiTextHitType == 2 || res?.data?.aiTextHitType == 6 ? true : false,
         },
       );
     } else {
@@ -496,7 +499,7 @@ export default (props: any) => {
                           </div>
                         </div>
                       )}
-                      {item.message && (
+                      {item.message && !item.isClear && (
                         <div className={styles['robot-part']}>
                           <img className={styles['head-robot']} alt="robot" src={robotPhoto} />
                           <div>
@@ -509,7 +512,12 @@ export default (props: any) => {
                           <img className={styles['head-robot']} alt="robot" src={robotPhoto} />
                           <div className={styles['words']}>
                             {/* {item.message === '' && ( */}
-                            <div style={{ fontWeight: 'bold' }}>{item?.recommendText}</div>
+                            {!item.isClear && (
+                              <div style={{ fontWeight: 'bold' }}>{item?.recommendText}</div>
+                            )}
+                            {item.isClear && (
+                              <div style={{ fontWeight: 'bold' }}>{item?.message}</div>
+                            )}
                             {/* )} */}
                             {item.recommendQuestion.map((el: any) => {
                               return (
