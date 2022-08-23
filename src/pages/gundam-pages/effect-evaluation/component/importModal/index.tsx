@@ -83,11 +83,11 @@ const ImportModal: React.FC<any> = (props: any) => {
       console.log(fileList, file);
       if (fileList.length) {
         message.warning('最多上传一个文件');
-        return;
+        return false;
       }
       if (file?.name?.slice(-5) != '.xlsx') {
         message.warning('只能上传xlsx格式文件');
-        return;
+        return false;
       }
       setFileList([...fileList, file]);
       return false;
