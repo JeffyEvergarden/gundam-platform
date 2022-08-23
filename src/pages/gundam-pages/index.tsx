@@ -27,16 +27,22 @@ const deepProcess = (arr: any[], info: any = {}, userAuth: any[]) => {
     if (Array.isArray(item.routes)) {
       deepProcess(item.routes, info, userAuth);
     }
+
     const hideFn = item.hideFn;
 
     if (item?.routes?.length > 0) {
       // 查看子菜单是否存在一个有权限的
       let index = item.routes.findIndex((_item: any) => {
-        return !_item.code || (_item.code && access(userAuth, _item.code));
+        let flag = true;
+        const _hideFn = _item.hideFn;
+        if (_hideFn) {
+          flag = !_hideFn(info);
+        }
+
+        return (!_item.code || (_item.code && access(userAuth, _item.code))) && flag;
       });
 
       item.hideInMenu = !(index > -1);
-      return;
     }
 
     if (item.code) {
@@ -45,7 +51,6 @@ const deepProcess = (arr: any[], info: any = {}, userAuth: any[]) => {
         return;
       }
     }
-
     if (hideFn && typeof hideFn === 'function') {
       item.hideInMenu = hideFn(info);
     }

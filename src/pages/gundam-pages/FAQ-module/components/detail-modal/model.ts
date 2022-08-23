@@ -65,6 +65,7 @@ export const useSessionModel = () => {
               ? '您是否要想咨询以下问题：'
               : ''
             : '', //如果非澄清情况且存在答案和推荐要添加询问
+        recommendText: item?.recommendText || '',
         labels,
         index,
       };
