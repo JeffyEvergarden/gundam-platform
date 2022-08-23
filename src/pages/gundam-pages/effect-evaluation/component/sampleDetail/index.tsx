@@ -123,6 +123,7 @@ const DetailPages: React.FC = (props: any) => {
             onChange={(val) => {
               replyTypeChange(row, val);
             }}
+            placeholder={'请选择回复类型'}
           >
             {replyTypeList.map((item: any) => {
               return (
