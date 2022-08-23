@@ -118,12 +118,12 @@ const DetailPages: React.FC = (props: any) => {
           <Select
             key={row.replyType}
             defaultValue={row.replyType}
-            bordered={false}
+            // bordered={false}
             className={style['replyType']}
             onChange={(val) => {
               replyTypeChange(row, val);
             }}
-            placeholder={'请选择回复类型'}
+            placeholder={'请选择'}
           >
             {replyTypeList.map((item: any) => {
               return (
