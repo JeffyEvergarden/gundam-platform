@@ -232,10 +232,12 @@ const DetailPages: React.FC = (props: any) => {
             {val}
             <Condition r-if={row.tagStatus == 2}>
               <Button
-                type="link"
+                style={{ marginLeft: '6px' }}
+                type="primary"
                 onClick={() => {
                   confirm(row);
                 }}
+                size={'small'}
               >
                 确认
               </Button>
