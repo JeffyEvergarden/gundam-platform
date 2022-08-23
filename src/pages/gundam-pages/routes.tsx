@@ -194,7 +194,7 @@ export default [
         icon: <CrownOutlined />,
         path: '/gundamPages/reportForm/searchAssocation',
         name: '搜索联想统计',
-        // code: 'robot_mg-report_recommend_and_clarify-view',
+        code: 'robot_mg-report_recommend_and_clarify-view',
       },
     ],
   },
