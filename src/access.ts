@@ -27,7 +27,7 @@ export default function access(initialState: {
       let authValue = route.code;
       let code = valueToCodeMap[authValue] || '';
       let authFlag = userAuth?.includes?.(code);
-      console.log(authValue, code, authFlag);
+      // console.log(authValue, code, authFlag);
       // console.log(`判断当前页面权限： ${authFlag ? '有' : '无'}`);
       return authFlag;
     },
