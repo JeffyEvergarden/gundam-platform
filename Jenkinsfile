@@ -100,7 +100,7 @@ pipeline {
     }
 
     parameters{
-        choice(name: 'projectEnv', choices: ['default'], description: '请选择前端打包环境 npm run build方式')
+        choice(name: 'projectEnv', choices: ['default', 'sit'], description: '请选择前端打包环境 npm run build方式')
         gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'branch', type: 'PT_BRANCH'
         choice(name: 'packageOnEnv', choices: ['SIT', 'UAT'], description: '请选择部署环境')
     }

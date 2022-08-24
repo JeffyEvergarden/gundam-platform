@@ -14,6 +14,8 @@ console.log('process.env.NODE_ENV:' + process.env.NODE_ENV);
 
 const isProd = process.env.NODE_ENV === 'production';
 
+const needConsole = REACT_APP_ENV !== 'production';
+
 export default defineConfig({
   // mock: false,
   hash: true,
@@ -74,10 +76,10 @@ export default defineConfig({
   mfsu: {},
   webpack5: {},
   exportStatic: {},
-  // extraBabelPlugins: isProd
-  //   ? ['transform-remove-console', 'react-activation/babel']
-  //   : ['react-activation/babel'],
-  extraBabelPlugins: ['react-activation/babel'],
+  extraBabelPlugins: needConsole
+    ? ['transform-remove-console', 'react-activation/babel']
+    : ['react-activation/babel'],
+  // extraBabelPlugins: ['react-activation/babel'],
   // 开启gzip压缩
   chainWebpack: function (config: any) {
     if (isProd) {

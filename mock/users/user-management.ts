@@ -1,10 +1,22 @@
 import { Request, Response } from 'express';
-import { codeToObjMap } from '../../src/auth/util';
 import config from '../../src/config';
 
 // faq 标准模块相关
 
+const obj = require('../../src/auth/util');
+const { codeToObjMap } = obj;
+
+// const { codeToObjMap } = { codeToObjMap: {} };
+
 const successCode = config.successCode;
+
+const waitFn = (s: number) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(1);
+    }, s * 1000);
+  });
+};
 
 const getUsers = (req: Request, res: Response) => {
   res.json({
@@ -83,10 +95,12 @@ const getUsers = (req: Request, res: Response) => {
   });
 };
 
-const normalDeal = (req: Request, res: Response) => {
+const normalDeal = async (req: Request, res: Response) => {
+  let a = await waitFn(2);
   const list: any = Object.keys(codeToObjMap).map((key: any) => {
     return {
       roleCode: '001',
+      // operationCode: key === '000-001-000' ? '' : key,
       operationCode: key,
     };
   });
