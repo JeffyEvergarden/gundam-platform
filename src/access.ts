@@ -17,8 +17,9 @@ export default function access(initialState: {
       if (!route.code) {
         return true;
       }
-      if (route?.children?.length > 0) {
-        let index = route.children.findIndex((item: any) => {
+      // console.log(route);
+      if (route?.routes?.length > 0) {
+        let index = route.routes.findIndex((item: any) => {
           return !item.code || (item.code && userAuth?.includes?.(item.code));
         });
         return index > -1;
@@ -26,7 +27,7 @@ export default function access(initialState: {
       let authValue = route.code;
       let code = valueToCodeMap[authValue] || '';
       let authFlag = userAuth?.includes?.(code);
-      // console.log(authValue, code, authFlag);
+      console.log(authValue, code, authFlag);
       // console.log(`判断当前页面权限： ${authFlag ? '有' : '无'}`);
       return authFlag;
     },

@@ -1,8 +1,8 @@
 // https://umijs.org/config/
-import { defineConfig } from 'umi';
-import { join } from 'path';
-import defaultSettings from './defaultSettings';
 import CompressionPlugin from 'compression-webpack-plugin';
+import { join } from 'path';
+import { defineConfig } from 'umi';
+import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
 
@@ -74,10 +74,10 @@ export default defineConfig({
   mfsu: {},
   webpack5: {},
   exportStatic: {},
-  extraBabelPlugins: isProd
-    ? ['transform-remove-console', 'react-activation/babel']
-    : ['react-activation/babel'],
-
+  // extraBabelPlugins: isProd
+  //   ? ['transform-remove-console', 'react-activation/babel']
+  //   : ['react-activation/babel'],
+  extraBabelPlugins: ['react-activation/babel'],
   // 开启gzip压缩
   chainWebpack: function (config: any) {
     if (isProd) {
