@@ -100,8 +100,8 @@ const normalDeal = async (req: Request, res: Response) => {
   const list: any = Object.keys(codeToObjMap).map((key: any) => {
     return {
       roleCode: '001',
-      // operationCode: key === '000-001-000' ? '' : key,
-      operationCode: key,
+      operationCode: key === '000-001-000' ? '' : key,
+      // operationCode: key,
     };
   });
   res.json({
