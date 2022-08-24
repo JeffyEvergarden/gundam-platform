@@ -78,15 +78,15 @@ const InfoModal: React.FC<any> = (props: any) => {
             rules={[
               { required: true, message: '请输入渠道名称' },
               {
-                pattern: /^[A-Za-z0-9_\u4e00-\u9fa5]+$/g,
-                message: '请输入汉字、字母、下划线、数字',
+                pattern: /^[A-Za-z0-9_\u4e00-\u9fa5]{2,20}$/g,
+                message: '请输入2-20个汉字、字母、下划线、数字',
               },
             ]}
             name="channelName"
             label="渠道名称"
             style={{ width: '360px' }}
           >
-            <Input placeholder="请填写渠道名称" {...extra} maxLength={150} />
+            <Input placeholder="请填写渠道名称" {...extra} maxLength={20} />
           </FormItem>
 
           <Condition r-if={openType === 'new'}>
