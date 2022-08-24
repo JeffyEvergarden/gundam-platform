@@ -76,7 +76,7 @@ export default defineConfig({
   mfsu: {},
   webpack5: {},
   exportStatic: {},
-  extraBabelPlugins: needConsole
+  extraBabelPlugins: !needConsole
     ? ['transform-remove-console', 'react-activation/babel']
     : ['react-activation/babel'],
   // extraBabelPlugins: ['react-activation/babel'],
