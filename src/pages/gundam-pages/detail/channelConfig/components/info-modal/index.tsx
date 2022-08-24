@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useImperativeHandle } from 'react';
-import { Modal, Form, Button, InputNumber, Radio, Select, Input, Upload, message } from 'antd';
-import style from './style.less';
 import Condition from '@/components/Condition';
+import { Form, Input, Modal, Radio, Select } from 'antd';
+import React, { useImperativeHandle, useState } from 'react';
+import style from './style.less';
 
 const { Item: FormItem } = Form;
 const { Option } = Select;
@@ -78,8 +78,8 @@ const InfoModal: React.FC<any> = (props: any) => {
             rules={[
               { required: true, message: '请输入渠道名称' },
               {
-                pattern: /^[A-Za-z0-9_\-\u4e00-\u9fa5]+$/g,
-                message: '请输入汉字、字母、下划线、数字、横杠',
+                pattern: /^[A-Za-z0-9_\u4e00-\u9fa5]+$/g,
+                message: '请输入汉字、字母、下划线、数字',
               },
             ]}
             name="channelName"

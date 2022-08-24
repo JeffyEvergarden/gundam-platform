@@ -51,7 +51,7 @@ const deepProcess = (arr: any[], info: any = {}, userAuth: any[]) => {
         return;
       }
     }
-    if (hideFn && typeof hideFn === 'function') {
+    if (!item.hideInMenu && hideFn && typeof hideFn === 'function') {
       item.hideInMenu = hideFn(info);
     }
   });
