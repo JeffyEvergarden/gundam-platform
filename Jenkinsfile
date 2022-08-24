@@ -100,6 +100,7 @@ pipeline {
     }
 
     parameters{
+        booleanParam(name: 'needInstall', defaultValue: false, description: '是否需要重新 npm install')
         choice(name: 'projectEnv', choices: ['default', 'sit'], description: '请选择前端打包环境 npm run build方式')
         gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'branch', type: 'PT_BRANCH'
         choice(name: 'packageOnEnv', choices: ['SIT', 'UAT'], description: '请选择部署环境')
@@ -136,8 +137,17 @@ pipeline {
                           echo 'not has node_modules dir'
                         fi
                     """
-                    echo "npm install"
-                    sh "npm install"
+                    if (!fileExists("./node_modules")) {
+                        println "不存在node_modules目录,所以进行安装"
+                        println "npm install"
+                        sh "npm install"
+                    } else if (needInstall == 'true') {
+                        println "强制需要重新安装依赖"
+                        sh "rm -rf ./node_modules"
+                        sh "rm -rf ./src/.umi"
+                        sh "rm -rf ./src/.umi-production"
+                        sh "npm install"
+                    }
                 }
             }
         }
