@@ -229,8 +229,10 @@ const DetailList: React.FC = (props: any) => {
   }, []);
 
   // 确认FAQ/意图模态框 的选择
-  const confirmUpdateSelect = async (list: any[]) => {
+  const confirmUpdateSelect = async (list: any[], inputValue: any) => {
     console.log(list);
+    console.log(inputValue);
+
     if (!list.length) {
       message.warning('请选择有效的标准问/意图');
       return false;
@@ -244,9 +246,9 @@ const DetailList: React.FC = (props: any) => {
         sampleType: selectInfo.textOneType,
         transferType: list?.[0]?.recommendType == 1 ? 'faq' : 'intent',
         transferId: list?.[0]?.recommendId,
-        sample: selectInfo.textOneName,
+        sample: inputValue,
         batchId: detailInfo?.batchId || resData?.batchId || history?.location?.query?.batchId,
-        source: tabkey == '1' ? '0' : tabkey == '2' ? '1' : '',
+        source: selectInfo?.source,
       });
     }
     if (selectNum == 4) {
@@ -257,9 +259,9 @@ const DetailList: React.FC = (props: any) => {
         sampleType: selectInfo.textTwoType,
         transferType: list?.[0]?.recommendType == 1 ? 'faq' : 'intent',
         transferId: list?.[0]?.recommendId,
-        sample: selectInfo.textTwoName,
+        sample: inputValue,
         batchId: detailInfo?.batchId || resData?.batchId || history?.location?.query?.batchId,
-        source: tabkey == '1' ? '0' : tabkey == '2' ? '1' : '',
+        source: selectInfo?.source,
       });
     }
     if (res) {
@@ -303,7 +305,7 @@ const DetailList: React.FC = (props: any) => {
         transferType: selectInfo.textOneType == 'similar' ? 'faq' : selectInfo.textOneType,
         transferId: selectInfo.textOneValue,
         sample: selectInfo.textTwoName,
-        source: tabkey == '1' ? '0' : tabkey == '2' ? '1' : '',
+        source: selectInfo?.source,
       });
     }
     if (selectNum == 2) {
@@ -316,7 +318,7 @@ const DetailList: React.FC = (props: any) => {
         transferType: selectInfo.textTwoType == 'similar' ? 'faq' : selectInfo.textTwoType,
         transferId: selectInfo.textTwoValue,
         sample: selectInfo.textOneName,
-        source: tabkey == '1' ? '0' : tabkey == '2' ? '1' : '',
+        source: selectInfo?.source,
       });
     }
     if (res) {
