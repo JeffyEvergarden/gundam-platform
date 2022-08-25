@@ -67,6 +67,7 @@ export async function _deleteDetailSample(data?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/assess/sampleDetailBatchDelete`, {
     method: 'POST',
     data,
+    timeout: 180 * 1000,
   });
 }
 
@@ -74,6 +75,7 @@ export async function _confirmDetailSample(data?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/assess/sampleDetailBatchConfirm`, {
     method: 'POST',
     data,
+    timeout: 180 * 1000,
   });
 }
 
@@ -81,6 +83,7 @@ export async function _confirmAllDetailSample(data?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/assess/sampleDetailBatchAllConfirm`, {
     method: 'POST',
     data,
+    timeout: 180 * 1000,
   });
 }
 
