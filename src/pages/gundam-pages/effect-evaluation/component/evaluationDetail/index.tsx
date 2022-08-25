@@ -73,7 +73,7 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
       width: 200,
       render: (val: any, row: any) => {
         let arr = row?.tagFaqIntent;
-        if (Array.isArray(arr)) {
+        if (Array.isArray(arr) && arr.length) {
           return (
             <div className={style['question-box']}>
               {arr.map((item: any, i: number) => {
@@ -88,7 +88,7 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
             </div>
           );
         } else {
-          return '---';
+          return '-';
         }
       },
     },
@@ -110,7 +110,7 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
       width: 200,
       render: (val: any, row: any) => {
         let arr = row?.distinguishFaqIntent;
-        if (Array.isArray(arr)) {
+        if (Array.isArray(arr) && arr.length) {
           return (
             <div className={style['question-box']}>
               {arr.map((item: any, i: number) => {
@@ -125,7 +125,7 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
             </div>
           );
         } else {
-          return '---';
+          return '-';
         }
       },
     },
