@@ -63,7 +63,7 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
       valueEnum: {
         1: { text: '明确回复' },
         2: { text: '澄清回复' },
-        3: { text: '拒识回复' },
+        3: { text: '拒识' },
       },
     },
     {
@@ -100,7 +100,7 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
       valueEnum: {
         1: { text: '明确回复' },
         2: { text: '澄清回复' },
-        3: { text: '拒识回复' },
+        3: { text: '拒识' },
       },
     },
     {
