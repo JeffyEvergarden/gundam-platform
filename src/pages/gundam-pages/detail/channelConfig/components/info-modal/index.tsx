@@ -107,7 +107,7 @@ const InfoModal: React.FC<any> = (props: any) => {
 
             {/* 业务编码 */}
             <Condition r-if={list.length > 0}>
-              <FormItem name="copyCode" label="复制渠道" style={{ width: '460px' }}>
+              <FormItem name="copyChannelCode" label="复制渠道" style={{ width: '460px' }}>
                 <Radio.Group>
                   {list?.map?.((item: any, index: number) => {
                     return (
