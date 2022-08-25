@@ -2,7 +2,18 @@ import Condition from '@/components/Condition';
 import SelectFaqModal from '@/pages/gundam-pages/FAQ-module/components/select-faq-modal';
 import { ArrowLeftOutlined, MonitorOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Button, DatePicker, Form, Input, Modal, Popconfirm, Select, Space, Tooltip } from 'antd';
+import {
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  message,
+  Modal,
+  Popconfirm,
+  Select,
+  Space,
+  Tooltip,
+} from 'antd';
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
 import { useDetailSampleModel } from '../../model';
@@ -189,6 +200,9 @@ const DetailPages: React.FC = (props: any) => {
       search: false,
       ellipsis: true,
       width: 100,
+      render: (val: any, row: any, i: any) => {
+        return row.updateBy || row.creator || '-';
+      },
     },
     {
       dataIndex: 'updateTime',
@@ -352,6 +366,7 @@ const DetailPages: React.FC = (props: any) => {
 
   const addDetailList = async () => {
     if (!addText) {
+      message.warning('请输入对话样本后再按回车添加');
       return;
     }
     if (!addLoading) {
