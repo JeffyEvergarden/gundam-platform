@@ -1,8 +1,8 @@
 import { Button, DatePicker, Radio, Select, Space } from 'antd';
 import moment from 'moment';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { useAccess, Access, useModel } from 'umi';
+import 'moment/locale/zh-cn'; //RangePicker月份中文
+import { useEffect, useState } from 'react';
+import { Access, useAccess, useModel } from 'umi';
 import styles from './index.less';
 
 const { RangePicker } = DatePicker;
