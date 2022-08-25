@@ -426,9 +426,9 @@ export default () => {
             rowKey={(record: any) => record.dayId}
             headerTitle={false}
             toolBarRender={() => [
-              <Button key="exportBtn" onClick={exportList}>
-                导出
-              </Button>,
+              // <Button key="exportBtn" onClick={exportList}>
+              //   导出
+              // </Button>,
             ]}
             options={false}
             bordered
