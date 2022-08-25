@@ -189,12 +189,12 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
         <Row>
           <Col span={8}>评估集名称：{resultData?.sampleSetName || '-'}</Col>
           <Col span={8}>平均精准率：{resultData?.averageAccurateRate || '-'}</Col>
-          <Col span={8}> 样本数量：{resultData?.sampleNum || '-'} </Col>
+          <Col span={8}> 样本数量：{resultData?.sampleNum ?? '-'} </Col>
         </Row>
         <Row>
           <Col span={8}>评估时间：{resultData?.assessTime || '-'}</Col>
           <Col span={8}>平均召回率：{resultData?.averageRecallRate || '-'}</Col>
-          <Col span={8}>有效样本数量：{resultData?.effectiveSampleNum || '-'}</Col>
+          <Col span={8}>有效样本数量：{resultData?.effectiveSampleNum ?? '-'}</Col>
         </Row>
       </div>
       <div className={`${style['machine-page']} list-page`}>
