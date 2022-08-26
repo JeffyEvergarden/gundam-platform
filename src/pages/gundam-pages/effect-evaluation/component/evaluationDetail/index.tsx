@@ -239,7 +239,7 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
           footer={null}
           bodyStyle={{ maxHeight: 600, overflowY: 'auto' }}
         >
-          <pre> {nluInfo}</pre>
+          <pre> {nluInfo || '暂无数据'}</pre>
         </Modal>
       </div>
     </Modal>
