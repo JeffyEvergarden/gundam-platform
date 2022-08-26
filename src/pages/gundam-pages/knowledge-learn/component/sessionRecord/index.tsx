@@ -14,8 +14,9 @@ export default (props: any) => {
     info: model.info,
   }));
 
-  const { channelList } = useModel('drawer' as any, (model: any) => ({
+  const { channelList, getChannelList } = useModel('drawer' as any, (model: any) => ({
     channelList: model.channelList,
+    getChannelList: model.getChannelList,
   }));
 
   const chatRecordModalRef = useRef<any>({});
@@ -83,6 +84,10 @@ export default (props: any) => {
   ];
 
   const exportList = () => {};
+
+  useEffect(() => {
+    getChannelList(info.id);
+  }, []);
 
   return (
     <Modal

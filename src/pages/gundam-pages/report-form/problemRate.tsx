@@ -3,7 +3,7 @@ import ChatRecordModal from '@/pages/gundam-pages/FAQ-module/components/chat-rec
 import { throttle, toNumber } from '@/utils';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Modal, Space, Button } from 'antd';
+import { Modal, Space } from 'antd';
 import classNames from 'classnames';
 import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
@@ -11,7 +11,6 @@ import { useModel } from 'umi';
 import HeadSearch from './components/headSearch';
 import LineChart from './components/lineCharts';
 import PieChart from './components/pieCharts';
-import { CODE } from './enum';
 import styles from './index.less';
 import { useReportForm } from './model';
 
@@ -23,11 +22,17 @@ export default () => {
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
+
+  const { channelList, getChannelList } = useModel('drawer' as any, (model: any) => ({
+    channelList: model.channelList,
+    getChannelList: model.getChannelList,
+  }));
   // 比率计算
   const rate = document.body.clientWidth / 1366;
   const [base, setBase] = useState<number>(rate);
 
   useEffect(() => {
+    getChannelList(info.id);
     resize();
     const fn = throttle(() => {
       resize();
@@ -328,7 +333,9 @@ export default () => {
       ellipsis: true,
       search: false,
       render: (t: any, r: any, i: any) => {
-        return <span>{CODE[r.channelCode]}</span>;
+        return (
+          <span>{channelList?.find((item: any) => item.value == r.channelCode)?.label || ''}</span>
+        );
       },
     },
     {
