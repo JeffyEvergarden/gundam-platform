@@ -84,6 +84,12 @@ const EvaluationModal: React.FC<any> = (props: any) => {
                   setShowTip(true);
                 }
               }}
+              showSearch
+              filterOption={(input, option) =>
+                (option?.item?.sampleSetName as unknown as string)
+                  ?.toLowerCase()
+                  ?.includes(input.toLowerCase())
+              }
             >
               {tableList?.map((item: any) => {
                 return (
