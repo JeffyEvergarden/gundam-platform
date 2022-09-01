@@ -183,7 +183,7 @@ const FAQConfig: React.FC = (props: any) => {
     //   disabledQuestionKeys.push(questionId);
     // }
     let openInfo: any = {
-      showFlow: false,
+      showFlow: true,
       info: _list[index],
       disabledQuestionKeys,
       disabledFlowKeys,
