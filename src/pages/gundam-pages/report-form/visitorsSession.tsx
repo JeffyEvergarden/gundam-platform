@@ -4,10 +4,9 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import { Space } from 'antd';
 import moment from 'moment';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import HeadSearch from './components/headSearch';
-import { CODE } from './enum';
 import styles from './index.less';
 import { useReportForm } from './model';
 
@@ -17,6 +16,11 @@ export default () => {
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
+  }));
+
+  const { channelList, getChannelList } = useModel('drawer' as any, (model: any) => ({
+    channelList: model.channelList,
+    getChannelList: model.getChannelList,
   }));
 
   const { getDialogue } = useReportForm();
@@ -140,7 +144,9 @@ export default () => {
       dataIndex: 'channelCode',
       ellipsis: true,
       render: (t: any, r: any, i: any) => {
-        return <span>{CODE[r.channelCode]}</span>;
+        return (
+          <span>{channelList?.find((item: any) => item.value == r.channelCode)?.label || ''}</span>
+        );
       },
     },
     {
@@ -189,6 +195,10 @@ export default () => {
       ellipsis: true,
     },
   ];
+
+  useEffect(() => {
+    getChannelList(info.id);
+  }, []);
 
   return (
     <div className={styles.pageContainer}>
