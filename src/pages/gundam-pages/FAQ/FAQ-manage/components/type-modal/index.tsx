@@ -34,6 +34,7 @@ const TypeModal = (props: any) => {
           robotId: info.id,
           parentId: tmpObj.current.node?.key, //当前节点id
           name: res.typeName,
+          type: tmpObj.current.node?.type,
         };
         let _res = await addLeaf(data);
         if (_res) {

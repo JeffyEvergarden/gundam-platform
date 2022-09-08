@@ -99,6 +99,7 @@ export const useTreeModal = () => {
         deep: parent?.deep + 1 || 1,
         count: item.faqCount,
         classify: item.title,
+        type: item.type || 1,
       };
       let children: any = processTreeData(item.children, obj);
 
@@ -130,6 +131,7 @@ export const useTreeModal = () => {
           count: res?.data?.faqTotal || 0,
           deep: 0,
           classify: '全部分类',
+          type: 1,
         },
       ];
       setTreeData(root || []);
