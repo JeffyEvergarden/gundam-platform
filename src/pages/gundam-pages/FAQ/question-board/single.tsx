@@ -80,8 +80,8 @@ const Board: React.FC<any> = (props: any) => {
 
   const { getFlowList, getTreeData, treeData } = useModel('drawer' as any, (model: any) => ({
     getFlowList: model.getFlowList,
-    getTreeData: model.getTreeData,
-    treeData: model.treeData,
+    getTreeData: model.getTreeDataOther,
+    treeData: model.treeDataOther,
   }));
 
   // 推荐启用按钮

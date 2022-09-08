@@ -99,8 +99,8 @@ const Board: React.FC<any> = (props: any) => {
     (model: any) => ({
       getShowBadgeTotal: model.getShowBadgeTotal,
       getFlowList: model.getFlowList,
-      getTreeData: model.getTreeData,
-      treeData: model.treeData,
+      getTreeData: model.getTreeDataOther,
+      treeData: model.treeDataOther,
     }),
   );
 

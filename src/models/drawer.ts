@@ -48,6 +48,7 @@ export default function useDrawerModel() {
 
   // faq 问题树形结构
   const [treeData, setTreeData] = useState<any[]>([]);
+  const [treeDataOther, setTreeDataOther] = useState<any[]>([]);
   const [userList, setUserList] = useState<any[]>([]);
 
   const allowRequest = (str: any, id?: any, t?: number) => {
@@ -305,6 +306,36 @@ export default function useDrawerModel() {
     }
   };
 
+  const getTreeDataOther = async (id?: any) => {
+    console.log('questiontree:------');
+    if (!allowRequest('questiontree', id)) {
+      console.log('短时间调用获取问题分类树结构_中断');
+      return;
+    } else {
+      console.log('可以调用获取问题分类树结构');
+    }
+    if (!id) {
+      console.log('问题分类接口获取不到机器人id');
+      return;
+    }
+    let res: any = await queryTreeList({ robotId: id });
+    if (res.resultCode === config.successCode) {
+      let data: any = Array.isArray(res?.data?.list) ? res?.data?.list : [];
+      // 数据加工
+      let _data = processTreeData(data); // 设置了parents会造成model层报错， 这里的数据不能进行delete操作
+      let root: any[] = [
+        {
+          title: res?.data?.faqTotal ? `全部分类 [${res?.data?.faqTotal}]` : '全部分类',
+          key: '0',
+          parent: undefined,
+          children: _data,
+          count: res?.data?.faqTotal || 0,
+        },
+      ];
+      setTreeDataOther(root);
+    }
+  };
+
   const getCreateUser = async (id?: any, isRecycle?: any) => {
     let res: any = await queryCreateUser({ robotId: id, recycle: isRecycle });
     if (res.resultCode === config.successCode) {
@@ -344,6 +375,7 @@ export default function useDrawerModel() {
     _setMessageList,
     _originFlowList,
     treeData,
+    treeDataOther,
     userList,
     getMessageList, // 短信模版
     getWishList, // 意图
@@ -351,7 +383,8 @@ export default function useDrawerModel() {
     getFlowList, // 业务流程
     getLabelList, // 话术标签
     getGlobalConfig, //高级配置 节点
-    getTreeData, // 获取faq问题分类树形结构
+    getTreeData, // 获取faq问题分类树形结构（不带其他分类）
+    getTreeDataOther, // 获取faq问题分类树形结构(带其他分类)
     getCreateUser,
     selectBody,
     getShowBadgeTotal, //获取待审核 待处理
