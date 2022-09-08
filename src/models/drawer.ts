@@ -1,5 +1,6 @@
 import config from '@/config/index';
 import {
+  queryChannelList,
   queryCreateUser,
   queryFlowList,
   queryLabelList,
@@ -10,7 +11,6 @@ import {
   queryTreeList,
   queryWishList,
   queryWordSlotTableList,
-  queryChannelList,
 } from '@/services/api';
 import { message } from 'antd';
 import { useRef, useState } from 'react';
@@ -287,7 +287,7 @@ export default function useDrawerModel() {
       console.log('问题分类接口获取不到机器人id');
       return;
     }
-    let res: any = await queryTreeList({ robotId: id });
+    let res: any = await queryTreeList({ robotId: id, type: 1 });
     if (res.resultCode === config.successCode) {
       let data: any = Array.isArray(res?.data?.list) ? res?.data?.list : [];
       // 数据加工
