@@ -722,6 +722,7 @@ export default () => {
         min={1}
         max={1}
         readOnly={false}
+        showOther={true}
       />
     </Fragment>
   );

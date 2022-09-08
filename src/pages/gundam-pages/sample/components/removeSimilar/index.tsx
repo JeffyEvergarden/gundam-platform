@@ -35,8 +35,8 @@ const SelectorModal: React.FC<any> = (props: any) => {
   // 业务流程列表
   const { getTreeData, treeData } = useModel('drawer' as any, (model: any) => {
     return {
-      treeData: model?.treeData || [],
-      getTreeData: model?.getTreeData || [],
+      treeData: model?.treeDataOther || [],
+      getTreeData: model?.getTreeDataOther || [],
     };
   });
 
