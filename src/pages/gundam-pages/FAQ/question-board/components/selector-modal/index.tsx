@@ -85,6 +85,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       robotId: info.id,
       faqTypeId: classType == '0' ? null : classType,
       searchText: searchText1,
+      type: 1,
     });
     // } else {
     //   setFaqList([]);
@@ -117,6 +118,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       robotId: info.id,
       faqTypeId: classType == '0' ? null : classType,
       searchText: searchText1,
+      type: 1,
     });
   };
 
@@ -158,6 +160,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       pageSize: 10,
       robotId: info.id,
       faqTypeId: val[0] == '0' ? null : val[0],
+      type: 1,
     });
   };
 
@@ -211,6 +214,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
         page: 1,
         pageSize: 10,
         robotId: info.id,
+        type: 1,
       });
 
       // 显示
