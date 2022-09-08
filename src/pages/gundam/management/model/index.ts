@@ -61,7 +61,10 @@ export const useOpModel = () => {
     let res = await getMachineInfo(params);
     if (res.resultCode === successCode) {
       let data: any = res?.data || {};
-      return data;
+      let obj: any = {
+        robotTypeLabel: res?.data?.robotType ? 'voice' : 'text',
+      };
+      return { ...data, ...obj };
     } else {
       message.warning('获取不到机器人信息');
       return null;

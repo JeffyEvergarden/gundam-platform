@@ -98,6 +98,7 @@ export default (props: any) => {
 
   useEffect(() => {
     getChannelList(info.id);
+    console.log('info', info);
   }, [info]);
 
   useEffect(() => {

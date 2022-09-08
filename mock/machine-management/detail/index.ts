@@ -345,11 +345,11 @@ const getRejectConfig = (req: any, res: any) => {
     success: true,
     data: [
       {
-        robotId: 100,
-        recommendId: 101,
-        recommend: '问题',
+        // robotId: 100,
+        // recommendId: 101,
+        // recommend: '问题',
         recommendType: 1,
-        recommendBizType: 1,
+        // recommendBizType: 1,
       },
     ],
   });

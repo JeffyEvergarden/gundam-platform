@@ -34,7 +34,12 @@ export const operateFormList = [
   {
     label: '是否联想',
     name: 'suggest',
-    type: 'radio',
+    type: 'radio2',
+  },
+  {
+    label: '是否澄清',
+    name: 'clarify',
+    type: 'radio2',
   },
   {
     label: '描述',

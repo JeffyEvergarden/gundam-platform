@@ -79,8 +79,8 @@ export default (props: any) => {
                     </Form.Item>
                   )}
 
-                  {item.name == 'suggest' && (
-                    <Form.Item name="suggest" label="是否联想" initialValue={1}>
+                  {item.type == 'radio2' && (
+                    <Form.Item name={item.name} label={item.label} initialValue={1}>
                       <Radio.Group>
                         <Radio value={1}>是</Radio>
                         <Radio value={0}>否</Radio>

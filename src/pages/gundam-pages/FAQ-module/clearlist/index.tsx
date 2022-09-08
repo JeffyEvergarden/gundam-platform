@@ -1,4 +1,10 @@
-import { MonitorOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import {
+  MinusCircleOutlined,
+  MonitorOutlined,
+  PlusCircleOutlined,
+  PlusOutlined,
+  QuestionCircleOutlined,
+} from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import { Button, Form, Input, message, Modal, Popconfirm, Tooltip } from 'antd';
 import { useEffect, useRef, useState } from 'react';
@@ -10,6 +16,7 @@ import { useTableModel } from './model';
 import style from './style.less';
 
 const { TextArea } = Input;
+const { Item: FormItem, List: FormList } = Form;
 
 const FAQClearList = (props: any) => {
   const {
@@ -28,6 +35,23 @@ const FAQClearList = (props: any) => {
       info: model.info,
     };
   });
+
+  const formItemLayout = {
+    labelCol: {
+      xs: { span: 6 },
+      sm: { span: 6 },
+    },
+    wrapperCol: {
+      xs: { span: 16 },
+      sm: { span: 16 },
+    },
+  };
+  const formItemLayoutWithOutLabel = {
+    wrapperCol: {
+      xs: { span: 16, offset: 6 },
+      sm: { span: 16, offset: 6 },
+    },
+  };
 
   const tableRef = useRef<any>({});
 
@@ -259,6 +283,11 @@ const FAQClearList = (props: any) => {
   const [form] = Form.useForm();
   const openModal = () => {
     form.resetFields();
+    const _item = form.getFieldsValue();
+    if (!_item?.['questionList']?.length) {
+      _item.questionList = [''];
+      form.setFieldsValue(_item);
+    }
     setVisible(true);
   };
   // 关闭弹窗
@@ -391,16 +420,78 @@ const FAQClearList = (props: any) => {
         <div className={style['modal-page']}>
           <div className={style['modal-form']}>
             <Form form={form} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }} autoComplete="off">
-              <Form.Item
-                label="客户问题/标准问"
-                name="question"
-                rules={[
-                  { required: true, message: '请输入客户问题/标准问' },
-                  { max: 200, message: '不能超过200个文字' },
-                ]}
-              >
-                <TextArea placeholder={'请输入客户问题/标准问'} maxLength={200} rows={3} />
-              </Form.Item>
+              <FormList name={'questionList'}>
+                {(fields, { add, remove }) => {
+                  const addNew = () => {
+                    let length = fields.length;
+                    console.log(length);
+                    // if (length >= maxRecommendLength) {
+                    //   message.warning('推荐设置不能超过faq全局配置限制数量');
+                    //   return;
+                    // }
+                    add('', length);
+                  };
+
+                  return (
+                    <div className={style['questionList']}>
+                      {fields.map((field: any, index: number) => {
+                        return (
+                          <Form.Item
+                            {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
+                            label={
+                              index === 0 ? (
+                                <span>
+                                  <span style={{ color: 'red' }}>*</span> 客户问题/标准问
+                                </span>
+                              ) : (
+                                ''
+                              )
+                            }
+                            className={style['faq_zy-row_sp']}
+                            // rules={[{ required: true, message: '请选择' }]}
+                            key={field.key}
+                          >
+                            {fields.length > 1 ? (
+                              <MinusCircleOutlined
+                                className={style['del-bt']}
+                                onClick={() => {
+                                  remove(index);
+                                }}
+                              />
+                            ) : null}
+                            <Form.Item
+                              name={[field.name]}
+                              fieldKey={[field.fieldKey]}
+                              rules={[
+                                { required: true, message: '请输入客户问题/标准问' },
+                                { max: 200, message: '不能超过200个文字' },
+                              ]}
+                            >
+                              <TextArea
+                                style={{ width: '100%' }}
+                                placeholder={'请输入客户问题/标准问'}
+                                maxLength={200}
+                                rows={1}
+                              />
+                            </Form.Item>
+                          </Form.Item>
+                        );
+                      })}
+
+                      <div className={style['recommend-box']}>
+                        <Button
+                          type="link"
+                          icon={<PlusCircleOutlined />}
+                          onClick={addNew}
+                          style={{ paddingLeft: '138px' }}
+                        >
+                          新增客户问题/标准问
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                }}
+              </FormList>
 
               <Form.Item
                 label="标准问/意图"

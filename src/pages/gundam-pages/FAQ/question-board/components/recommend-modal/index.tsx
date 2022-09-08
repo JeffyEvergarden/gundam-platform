@@ -1,6 +1,6 @@
 import Condition from '@/components/Condition';
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, message } from 'antd';
+import { Button, Checkbox, Form, message, Space, Switch } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
 import { useQuestionModel } from '../../model';
@@ -96,6 +96,18 @@ const Recommend: React.FC<any> = (props: any) => {
     opRecordRef.current?.callback?.(obj);
   };
 
+  const intelRecommend = (flag: any, index: number) => {
+    console.log(flag);
+
+    let formData: any = form.getFieldsValue();
+    formData.recommendList[index].recommendBizType = undefined;
+    formData.recommendList[index].recommendId = undefined;
+    formData.recommendList[index].recommend = undefined;
+    formData.recommendList[index].recommendType = flag ? 1 : 0;
+
+    form.setFieldsValue({ ...formData });
+  };
+
   useEffect(() => {
     getFaqConfig(info.id);
     console.log(query?.recommend);
@@ -134,7 +146,7 @@ const Recommend: React.FC<any> = (props: any) => {
                   recommendBizType: null,
                   recommendId: null,
                   recommend: null,
-                  recommendType: 1,
+                  recommendType: 0,
                 },
                 length,
               );
@@ -146,10 +158,13 @@ const Recommend: React.FC<any> = (props: any) => {
                   // const currentItem = getItem();
 
                   // const _showTime = currentItem?.[index]?.timeFlag;
+                  const formData: any = form.getFieldsValue();
+                  const intelFlag = formData?.recommendList?.[index]?.recommendType;
 
                   return (
-                    <div key={field.key} className={style['diy-row']}>
-                      <div className={style['zy-row_sp']} style={{ paddingBottom: '6px' }}>
+                    <Form.Item key={field.key} className={style['diy-row']}>
+                      {/* <div className={style['zy-row_sp']} style={{ paddingBottom: '6px' }}> */}
+                      <Space align="baseline">
                         {query.recycle == 0 && (
                           <span
                             className={style['del-bt']}
@@ -164,16 +179,41 @@ const Recommend: React.FC<any> = (props: any) => {
                         <Form.Item
                           name={[field.name, 'recommend']}
                           fieldKey={[field.fieldKey, 'recommend']}
-                          rules={[{ required: true, message: '请选择' }]}
+                          rules={[{ required: info.robotTypeLabel === 'text' ? !intelFlag : true }]}
                         >
                           <Selector
+                            disabled={info.robotTypeLabel === 'text' ? intelFlag : false}
                             openModal={() => {
                               openModal(index);
                             }}
                           />
                         </Form.Item>
-                      </div>
-                    </div>
+                        {/* <Condition r-if={true}> */}
+                        <Condition r-if={info.robotTypeLabel === 'text'}>
+                          <span style={{ marginLeft: '16px' }}>智能推荐</span>
+                        </Condition>
+
+                        <Condition r-if={info.robotTypeLabel === 'text'}>
+                          <Form.Item
+                            name={[field.name, 'recommendType']}
+                            fieldKey={[field.fieldKey, 'recommendType']}
+                            key={field.fieldKey + 'recommendType'}
+                            valuePropName="checked"
+                            style={{ marginBottom: 0 }}
+                          >
+                            <Switch
+                              style={{ display: 'flex', alignItems: 'center' }}
+                              checkedChildren="开启"
+                              unCheckedChildren="关闭"
+                              onChange={(checked: any) => {
+                                intelRecommend(checked, index);
+                              }}
+                            ></Switch>
+                          </Form.Item>
+                        </Condition>
+                      </Space>
+                      {/* </div> */}
+                    </Form.Item>
                   );
                 })}
 

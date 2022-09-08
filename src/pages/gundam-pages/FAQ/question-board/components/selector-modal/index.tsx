@@ -234,6 +234,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
           recommendBizType: activeKey,
           recommendId: selectedFlowKeys[0],
           recommend: list[0],
+          recommendType: 0,
         });
       }
     } else if (activeKey === '1') {
@@ -247,6 +248,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
           recommendBizType: activeKey,
           recommendId: selectedQuestionKeys[0],
           recommend: list[0],
+          recommendType: 0,
         });
       }
     }

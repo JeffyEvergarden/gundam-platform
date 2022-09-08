@@ -43,7 +43,8 @@ const FAQConfig: React.FC = (props: any) => {
     businessFlowId: model.businessFlowId,
     getGlobalValConfig: model.getGlobalValConfig,
   }));
-  const { _getTreeData } = useModel('drawer' as any, (model: any) => ({
+  const { getFlowList, _getTreeData } = useModel('drawer' as any, (model: any) => ({
+    getFlowList: model.getFlowList,
     _getTreeData: model.getTreeData,
   }));
 
@@ -54,7 +55,7 @@ const FAQConfig: React.FC = (props: any) => {
 
   const getList = async () => {
     await getTableList({ robotId: info.id, configType: 2 }).then((res: any) => {
-      console.log(res);
+      // console.log(res);
       setNConfig(res?.data);
       let obj: any = {};
       res?.data?.forEach((item: any) => {
@@ -84,6 +85,8 @@ const FAQConfig: React.FC = (props: any) => {
     if (!res) {
       return;
     }
+    console.log(res);
+
     let _res = Nconfig.map((item: any) => {
       Object.keys(res.systemConfigList).forEach((v) => {
         console.log(item.configKey, v);
@@ -137,6 +140,7 @@ const FAQConfig: React.FC = (props: any) => {
   };
 
   useEffect(() => {
+    getFlowList(info.id);
     _getTreeData(info.id);
     const _item = form.getFieldsValue();
     if (!_item?.['recommendList']?.length) {
@@ -145,7 +149,7 @@ const FAQConfig: React.FC = (props: any) => {
           recommendBizType: null,
           recommendId: null,
           recommend: null,
-          recommendType: 1,
+          recommendType: 0,
         },
       ];
       form.setFieldsValue(_item);
@@ -211,7 +215,6 @@ const FAQConfig: React.FC = (props: any) => {
         message.warning('已添加过重复');
         return;
       }
-
       _list[index] = { ...obj };
       form.setFieldsValue({
         recommendList: [..._list],
@@ -222,6 +225,18 @@ const FAQConfig: React.FC = (props: any) => {
   const confirm = (obj: any) => {
     console.log(obj);
     opRecordRef.current?.callback?.(obj);
+  };
+
+  const intelRecommend = (flag: any, index: number) => {
+    console.log(flag);
+
+    let formData: any = form.getFieldsValue();
+    formData.recommendList[index].recommendBizType = undefined;
+    formData.recommendList[index].recommendId = undefined;
+    formData.recommendList[index].recommend = undefined;
+    formData.recommendList[index].recommendType = flag ? 1 : 0;
+
+    form.setFieldsValue({ ...formData });
   };
 
   return (
@@ -255,6 +270,7 @@ const FAQConfig: React.FC = (props: any) => {
                       step="1"
                       precision={0}
                       stringMode
+                      disabled={item?.validateRule?.disabled ? true : false}
                     />
                   </FormItem>
                 );
@@ -328,7 +344,7 @@ const FAQConfig: React.FC = (props: any) => {
                         recommendBizType: null,
                         recommendId: null,
                         recommend: null,
-                        recommendType: 1,
+                        recommendType: 0,
                       },
                       length,
                     );
@@ -337,8 +353,9 @@ const FAQConfig: React.FC = (props: any) => {
                   return (
                     <div>
                       {fields.map((field: any, index: number) => {
-                        // const currentItem = getItem();
-                        // const _showTime = currentItem?.[index]?.timeFlag;
+                        const formData: any = form.getFieldsValue();
+                        const intelFlag = formData?.recommendList?.[index]?.recommendType;
+
                         return (
                           <Form.Item
                             {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
@@ -355,29 +372,57 @@ const FAQConfig: React.FC = (props: any) => {
                             // rules={[{ required: true, message: '请选择' }]}
                             key={field.key}
                           >
-                            {fields.length > 1 ? (
-                              <MinusCircleOutlined
-                                className={style['del-bt']}
-                                onClick={() => {
-                                  remove(index);
-                                }}
-                              />
-                            ) : null}
-
-                            <Form.Item
-                              name={[field.name, 'recommend']}
-                              fieldKey={[field.fieldKey, 'recommend']}
-                              validateTrigger={['onChange', 'onBlur']}
-                              rules={[{ required: true, message: '请选择' }]}
-                              // {...field}
-                              noStyle
-                            >
-                              <Selector
-                                openModal={() => {
-                                  openModal(index);
-                                }}
-                              />
-                            </Form.Item>
+                            <Space align="baseline">
+                              {fields.length > 1 ? (
+                                <MinusCircleOutlined
+                                  className={style['del-bt']}
+                                  onClick={() => {
+                                    remove(index);
+                                  }}
+                                />
+                              ) : null}
+                              <Form.Item
+                                name={[field.name, 'recommend']}
+                                fieldKey={[field.fieldKey, 'recommend']}
+                                key={field.fieldKey + 'recommend'}
+                                validateTrigger={['onChange', 'onBlur']}
+                                rules={[
+                                  {
+                                    required: info.robotTypeLabel === 'text' ? !intelFlag : true,
+                                    message: '请选择',
+                                  },
+                                ]}
+                                // {...field}
+                                noStyle
+                              >
+                                <Selector
+                                  disabled={info.robotTypeLabel === 'text' ? intelFlag : false}
+                                  openModal={() => {
+                                    openModal(index);
+                                  }}
+                                />
+                              </Form.Item>
+                              <Condition r-if={info.robotTypeLabel === 'text'}>
+                                <span style={{ marginLeft: '16px' }}>智能推荐</span>{' '}
+                              </Condition>
+                              <Condition r-if={info.robotTypeLabel === 'text'}>
+                                <Form.Item
+                                  name={[field.name, 'recommendType']}
+                                  fieldKey={[field.fieldKey, 'recommendType']}
+                                  key={field.fieldKey + 'recommendType'}
+                                  valuePropName="checked"
+                                  style={{ marginBottom: 0 }}
+                                >
+                                  <Switch
+                                    checkedChildren="开启"
+                                    unCheckedChildren="关闭"
+                                    onChange={(checked: any) => {
+                                      intelRecommend(checked, index);
+                                    }}
+                                  ></Switch>
+                                </Form.Item>
+                              </Condition>
+                            </Space>
                           </Form.Item>
                         );
                       })}
