@@ -136,8 +136,8 @@ const SelectorModal: React.FC<any> = (props: any) => {
     (model: any) => {
       return {
         wishList: model?._wishList || [],
-        treeData: model?.treeData || [],
-        getTreeData: model?.getTreeData,
+        treeData: model?.treeDataOther || [],
+        getTreeData: model?.getTreeDataOther,
         getWishList: model?.getWishList,
       };
     },
