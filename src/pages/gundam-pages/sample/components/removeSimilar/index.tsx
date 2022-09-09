@@ -1,12 +1,12 @@
-import { Input, Modal, Table } from 'antd';
+import { Divider, Input, message, Modal, Table } from 'antd';
 import { useEffect, useImperativeHandle, useState } from 'react';
 
 import { useModel } from 'umi';
 
 import MyTree from '@/pages/gundam-pages/FAQ/FAQ-manage/components/my-tree';
 import { useFaqModal } from '@/pages/gundam-pages/FAQ/FAQ-manage/model';
+import { DeleteOutlined } from '@ant-design/icons';
 import style from './style.less';
-
 const columns1: any[] = [
   // 问题列表-列
   {
@@ -16,14 +16,8 @@ const columns1: any[] = [
 ];
 
 const { Search } = Input;
-
 const SelectorModal: React.FC<any> = (props: any) => {
-  const { cref, onSubmit } = props;
-
-  const [showFlowKey, setShowFlowKey] = useState<boolean>(true);
-  // tabs 操作
-  const [activeKey, setActivekey] = useState<string>('1');
-
+  const { cref, onSubmit, onBatchSubmit } = props;
   const [disabledQuestionKeys, setDisabledQuestionKeys] = useState<any[]>([]);
 
   const { info } = useModel('gundam' as any, (model: any) => {
@@ -31,7 +25,6 @@ const SelectorModal: React.FC<any> = (props: any) => {
       info: model.info,
     };
   });
-
   // 业务流程列表
   const { getTreeData, treeData } = useModel('drawer' as any, (model: any) => {
     return {
@@ -39,22 +32,17 @@ const SelectorModal: React.FC<any> = (props: any) => {
       getTreeData: model?.getTreeDataOther || [],
     };
   });
-
-  const [classType, setClassType] = useState<string>('');
   const { loading, faqList, getFaqList, totalSize, setFaqList } = useFaqModal();
-
+  const [classType, setClassType] = useState<string>('');
   const [visible, setVisible] = useState<boolean>(false);
   // 页码, 分页相关
   const [current1, setCurrent1] = useState<number>(1);
 
   const onChange1 = (val: any) => {
-    console.log(classType);
-
     if (loading) {
       return;
     }
     setCurrent1(val);
-
     getFaqList({
       page: val,
       pageSize: 10,
@@ -65,8 +53,9 @@ const SelectorModal: React.FC<any> = (props: any) => {
   };
 
   const [searchText1, setSearchText1] = useState<any>('');
-
+  const [pageType, setPageType] = useState<any>('');
   const [similarInfo, setSimilarInfo] = useState<any>([]);
+
   // 选中key值
   const [selectedQuestionKeys, setSelectedQuestionKeys] = useState<any[]>([]);
 
@@ -96,11 +85,15 @@ const SelectorModal: React.FC<any> = (props: any) => {
   };
 
   useImperativeHandle(cref, () => ({
-    open: (obj: any) => {
+    open: (obj: any, type?: any) => {
       setDisabledQuestionKeys(obj?.faqId || []);
       console.log(obj);
       getTreeData(info.id);
       setSimilarInfo(obj);
+      setPageType('');
+      if (type) {
+        setPageType(type);
+      }
       // 显示
       setVisible(true);
     },
@@ -111,6 +104,14 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   const submit = () => {
     console.log(selectedQuestionKeys);
+    if (pageType == 'batch') {
+      onBatchSubmit(
+        similarInfo.map((i: any) => i.id),
+        selectedQuestionKeys?.[0],
+        similarInfo?.[0]?.faqId,
+      );
+      return;
+    }
     onSubmit(similarInfo?.id, selectedQuestionKeys?.[0]);
     // setVisible(false);
   };
@@ -134,8 +135,39 @@ const SelectorModal: React.FC<any> = (props: any) => {
       onOk={submit}
     >
       <div className={style['zy-row']}>
-        <span style={{ marginBottom: '8px' }}>样本内容：{similarInfo?.similarText}</span>
-        <span style={{ marginBottom: '8px' }}>原标准问：{similarInfo?.question}</span>
+        <div style={{ marginBottom: '8px', display: 'flex' }}>
+          <div style={{ whiteSpace: 'nowrap' }}>样本内容：</div>
+
+          {pageType == 'batch' ? (
+            <div className={style['spamleText']}>
+              {similarInfo.map((item: any, index: any) => {
+                return (
+                  <span key={index}>
+                    <span style={{ marginRight: '6px' }}>{item?.similarText}</span>
+                    <DeleteOutlined
+                      style={{ cursor: 'pointer', color: '#00000060' }}
+                      onClick={() => {
+                        if (similarInfo.length < 2) {
+                          message.warning('至少保留一个相似问');
+                          return;
+                        }
+                        let obj = similarInfo?.filter((i: any, idx: any) => idx != index);
+                        setSimilarInfo(obj);
+                      }}
+                    />
+                    <Divider type="vertical"></Divider>
+                  </span>
+                );
+              })}
+            </div>
+          ) : (
+            similarInfo?.similarText
+          )}
+        </div>
+        <span style={{ marginBottom: '8px' }}>
+          <span style={{ width: '100px' }}>原标准问：</span>
+          {pageType == 'batch' ? similarInfo?.[0]?.question : similarInfo?.question}
+        </span>
         转移到：
         <div style={{ display: 'flex' }}>
           <div className={style['page_left']}>

@@ -1,5 +1,5 @@
-import { request } from '@/services/request';
 import config from '@/config/index';
+import { request } from '@/services/request';
 const baseUrl: string = config.basePath;
 
 export async function listSample(params?: Record<string, any>) {
@@ -74,6 +74,20 @@ export async function _deleteSimilar(data?: Record<string, any>) {
 
 export async function _addSimilar(data?: Record<string, any>) {
   return request(`${baseUrl}/robot/faq/faqSimilarAdd`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function batchDelete(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/faqSimilarBatchDelete`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function batchTransfer(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/faqSimilarBatchTransfer`, {
     method: 'POST',
     data,
   });
