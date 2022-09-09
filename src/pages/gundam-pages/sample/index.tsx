@@ -708,13 +708,14 @@ export default () => {
                         question: inputValue,
                       });
                     }}
+                    loading={pageType == 'wish' ? loadingAdd : addLoading}
                   >
                     其他意图/FAQ
                   </Button>
                 )}
                 {tableInfo?.recycle != 1 && (
                   <Dropdown overlay={menu} key="Dropdown" disabled={selectRow?.length < 1}>
-                    <Button>
+                    <Button loading={pageType == 'wish' ? loadingAdd : addLoading}>
                       <Space>
                         批量操作
                         <DownOutlined />
