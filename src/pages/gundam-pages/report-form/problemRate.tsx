@@ -3,7 +3,7 @@ import ChatRecordModal from '@/pages/gundam-pages/FAQ-module/components/chat-rec
 import { throttle, toNumber } from '@/utils';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Modal, Space } from 'antd';
+import { Modal, Space, Button } from 'antd';
 import classNames from 'classnames';
 import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
@@ -13,6 +13,7 @@ import LineChart from './components/lineCharts';
 import PieChart from './components/pieCharts';
 import styles from './index.less';
 import { useReportForm } from './model';
+import { codeToStr } from '@/utils/index';
 
 export default () => {
   const actionRef = useRef<any>();
@@ -285,7 +286,11 @@ export default () => {
       endTime = yestody.format('YYYY-MM-DD');
     }
     window.open(
-      `${config.basePath}/robot/statistics/questionMatchExport?startTime=${startTime}&endTime=${endTime}&channelCode=${code}&robotId=${info.id}`,
+      `${
+        config.basePath
+      }/robot/statistics/questionMatchExport?startTime=${startTime}&endTime=${endTime}${codeToStr(
+        code,
+      )}&robotId=${info.id}`,
       '_self',
     );
   };
@@ -311,7 +316,14 @@ export default () => {
     chatRecordModalRef.current?.open?.(row);
   };
 
-  const exportList = () => {};
+  const exportList = () => {
+    window.open(
+      `${config.basePath}/robot/dialog/rejectSessionDialogueExport?dayId=${
+        modalData?.dayId ?? ''
+      }${codeToStr(paramsObj?.code)}&robotId=${info?.id ?? ''}`,
+      '_self',
+    );
+  };
 
   const columnsReject: any = [
     {
@@ -433,9 +445,9 @@ export default () => {
             rowKey={(record: any) => record.dayId}
             headerTitle={false}
             toolBarRender={() => [
-              // <Button key="exportBtn" onClick={exportList}>
-              //   导出
-              // </Button>,
+              <Button key="exportBtn" onClick={exportList}>
+                导出
+              </Button>,
             ]}
             options={false}
             bordered

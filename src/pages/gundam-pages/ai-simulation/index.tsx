@@ -151,6 +151,14 @@ export default (props: any) => {
                   </React.Fragment>
                 );
               })}
+              <Form.Item
+                label="客户ID"
+                name="customerId"
+                rules={[{ required: true, message: '请输入客户ID' }]}
+              >
+                <Input maxLength={50} />
+              </Form.Item>
+
               <Form.Item {...tailLayout}>
                 <Button type="primary" onClick={showChatText}>
                   开始对话

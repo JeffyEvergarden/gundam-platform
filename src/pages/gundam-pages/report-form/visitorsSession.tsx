@@ -9,6 +9,7 @@ import { useModel } from 'umi';
 import HeadSearch from './components/headSearch';
 import styles from './index.less';
 import { useReportForm } from './model';
+import { codeToStr } from '@/utils/index';
 
 export default () => {
   const actionRef = useRef<any>();
@@ -76,12 +77,36 @@ export default () => {
       endTime = yestody.format('YYYY-MM-DD');
     }
     window.open(
-      `${config.basePath}/robot/statistics/sessionExport?startTime=${startTime}&endTime=${endTime}&channelCode=${code}&robotId=${info.id}&orderCode=${paramsObj.orderCode}&orderType=${paramsObj.orderType}`,
+      `${
+        config.basePath
+      }/robot/statistics/sessionExport?startTime=${startTime}&endTime=${endTime}${codeToStr(
+        code,
+      )}&robotId=${info.id}&orderCode=${paramsObj.orderCode}&orderType=${paramsObj.orderType}`,
       '_self',
     );
   };
 
-  const exportSessionList = () => {};
+  const exportSessionList = (begin: string, end: string, code: string) => {
+    let startTime = '';
+    let endTime = '';
+    if (begin && end) {
+      startTime = begin;
+      endTime = end;
+    } else {
+      let sevenDays = moment().subtract(6, 'days');
+      let yestody = moment().subtract(0, 'days');
+      startTime = sevenDays.format('YYYY-MM-DD');
+      endTime = yestody.format('YYYY-MM-DD');
+    }
+    window.open(
+      `${
+        config.basePath
+      }/robot/dialog/sessionDialogueExport?startTime=${startTime}&endTime=${endTime}${codeToStr(
+        code,
+      )}&robotId=${info.id}&orderCode=${paramsObj.orderCode}&orderType=${paramsObj.orderType}`,
+      '_self',
+    );
+  };
 
   const toRecord = (row: any) => {
     chatRecordModalRef.current?.open?.(row);
@@ -126,9 +151,25 @@ export default () => {
       title: '会话ID',
       dataIndex: 'id',
       ellipsis: true,
+      search: false,
       render: (t: any, r: any, i: any) => {
         return <a onClick={() => toRecord(r)}>{r.id}</a>;
       },
+    },
+    {
+      title: () => {
+        return (
+          <Space>
+            客户ID
+            <span>
+              <QuestionCircleOutlined />
+            </span>
+          </Space>
+        );
+      },
+      search: true,
+      dataIndex: 'customerId',
+      ellipsis: true,
     },
     {
       title: () => {
@@ -142,6 +183,7 @@ export default () => {
         );
       },
       dataIndex: 'channelCode',
+      search: false,
       ellipsis: true,
       render: (t: any, r: any, i: any) => {
         return (
@@ -160,6 +202,7 @@ export default () => {
           </Space>
         );
       },
+      search: false,
       sorter: true,
       dataIndex: 'dialogueTurn',
       ellipsis: true,
@@ -175,6 +218,7 @@ export default () => {
           </Space>
         );
       },
+      search: false,
       sorter: true,
       dataIndex: 'durationFormat',
       ellipsis: true,
@@ -190,6 +234,7 @@ export default () => {
           </Space>
         );
       },
+      search: false,
       sorter: true,
       dataIndex: 'createTime',
       ellipsis: true,
@@ -212,27 +257,28 @@ export default () => {
           permission={'robot_mg-report_visitor_session-export_bt'}
         />
         <div className={styles.Table_box}>
-          <ProTable
-            rowKey={'id'}
-            headerTitle={false}
-            toolBarRender={false}
-            bordered
-            actionRef={actionRef}
-            pagination={{
-              pageSize: 10,
-            }}
-            onChange={tableChange}
-            search={false}
-            columns={columns}
-            scroll={{ x: columns.length * 200 }}
-            // dataSource={dataSource}
-            params={paramsObj}
-            request={async (params = {}) => {
-              return initialTable(params);
-            }}
-          />
+          <div className={styles.visitSession_table}>
+            <ProTable
+              rowKey={'id'}
+              headerTitle={false}
+              toolBarRender={false}
+              bordered
+              actionRef={actionRef}
+              pagination={{
+                pageSize: 10,
+              }}
+              onChange={tableChange}
+              columns={columns}
+              scroll={{ x: columns.length * 200 }}
+              // dataSource={dataSource}
+              params={paramsObj}
+              request={async (params = {}) => {
+                return initialTable(params);
+              }}
+            />
+          </div>
+          <ChatRecordModal cref={chatRecordModalRef} />
         </div>
-        <ChatRecordModal cref={chatRecordModalRef} />
       </div>
     </div>
   );
