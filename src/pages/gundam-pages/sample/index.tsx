@@ -801,7 +801,7 @@ export default () => {
         cref={RemoveSRef}
         onSubmit={editRemove}
         onBatchSubmit={similarBatchRemove}
-        loading={loadingAdd}
+        loading={addLoading}
       />
       <SelectFaqModal
         cref={selectFaqModalRef}
