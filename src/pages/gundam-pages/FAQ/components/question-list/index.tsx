@@ -450,7 +450,7 @@ const QuestionList: React.FC<any> = (props: any) => {
                                 editQ({ id: item?.id, suggest: val ? 1 : 0 });
                               }}
                               checked={item?.suggest == 1 ? true : false}
-                              disabled={isRecycle == 1 || item?.type == 2}
+                              disabled={isRecycle == 1 || item?.faqType == 2}
                               // loading={editQLoading}
                             ></Switch>
                           </div>
