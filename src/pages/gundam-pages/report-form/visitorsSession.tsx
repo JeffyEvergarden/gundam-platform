@@ -13,6 +13,7 @@ import { codeToStr } from '@/utils/index';
 
 export default () => {
   const actionRef = useRef<any>();
+  const formRef = useRef<any>();
   const chatRecordModalRef = useRef<any>({});
 
   const { info } = useModel('gundam' as any, (model: any) => ({
@@ -77,12 +78,15 @@ export default () => {
       startTime = sevenDays.format('YYYY-MM-DD');
       endTime = yestody.format('YYYY-MM-DD');
     }
+    let customerId = formRef?.current?.getFieldValue('customerId');
     window.open(
       `${
         config.basePath
       }/robot/statistics/sessionExport?startTime=${startTime}&endTime=${endTime}${codeToStr(
         code,
-      )}&robotId=${info.id}&orderCode=${paramsObj.orderCode}&orderType=${paramsObj.orderType}`,
+      )}&robotId=${info.id}&orderCode=${paramsObj.orderCode}&orderType=${
+        paramsObj.orderType
+      }&customerId=${customerId}`,
       '_self',
     );
   };
@@ -99,12 +103,15 @@ export default () => {
       startTime = sevenDays.format('YYYY-MM-DD');
       endTime = yestody.format('YYYY-MM-DD');
     }
+    let customerId = formRef?.current?.getFieldValue('customerId');
     window.open(
       `${
         config.basePath
       }/robot/dialog/sessionDialogueExport?startTime=${startTime}&endTime=${endTime}${codeToStr(
         code,
-      )}&robotId=${info.id}&orderCode=${paramsObj.orderCode}&orderType=${paramsObj.orderType}`,
+      )}&robotId=${info.id}&orderCode=${paramsObj.orderCode}&orderType=${
+        paramsObj.orderType
+      }&customerId=${customerId}`,
       '_self',
     );
   };
@@ -264,6 +271,7 @@ export default () => {
               headerTitle={false}
               toolBarRender={false}
               bordered
+              formRef={formRef}
               actionRef={actionRef}
               pagination={{
                 pageSize: 10,
