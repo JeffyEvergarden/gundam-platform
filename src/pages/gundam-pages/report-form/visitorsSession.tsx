@@ -52,6 +52,7 @@ export default () => {
       channelCode: payload.code,
       orderCode: payload.orderCode, //排序code 1-时长  2-轮次
       orderType: payload.orderType, //1-正序 2-倒序
+      customerId: payload.customerId,
       page: payload.current,
       pageSize: payload.pageSize,
     };
