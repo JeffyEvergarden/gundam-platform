@@ -17,7 +17,7 @@ const columns1: any[] = [
 
 const { Search } = Input;
 const SelectorModal: React.FC<any> = (props: any) => {
-  const { cref, onSubmit, onBatchSubmit } = props;
+  const { cref, onSubmit, onBatchSubmit, loading: btnLoading } = props;
   const [disabledQuestionKeys, setDisabledQuestionKeys] = useState<any[]>([]);
 
   const { info } = useModel('gundam' as any, (model: any) => {
@@ -93,6 +93,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       setPageType('');
       if (type) {
         setPageType(type);
+        setDisabledQuestionKeys(obj?.[0]?.faqId || []);
       }
       // 显示
       setVisible(true);
@@ -130,6 +131,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       width={850}
       title={'转移到其他标准问'}
       visible={visible}
+      confirmLoading={btnLoading}
       onCancel={() => setVisible(false)}
       okText={'确定'}
       onOk={submit}

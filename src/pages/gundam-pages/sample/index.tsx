@@ -797,7 +797,12 @@ export default () => {
         saveSame={saveSame}
         pageType={pageType}
       />
-      <RemoveSimilar cref={RemoveSRef} onSubmit={editRemove} onBatchSubmit={similarBatchRemove} />
+      <RemoveSimilar
+        cref={RemoveSRef}
+        onSubmit={editRemove}
+        onBatchSubmit={similarBatchRemove}
+        loading={loadingAdd}
+      />
       <SelectFaqModal
         cref={selectFaqModalRef}
         confirm={confirmUpdateSelect}
