@@ -9,6 +9,7 @@ import HeadSearch from './components/headSearch';
 import LineChart from './components/lineCharts';
 import styles from './index.less';
 import { useReportForm } from './model';
+import { codeToStr } from '@/utils/index';
 
 const { Text } = Typography;
 
@@ -121,7 +122,11 @@ export default () => {
       endTime = yestody.format('YYYY-MM-DD');
     }
     window.open(
-      `${config.basePath}/robot/statistics/faqAndClarifyExport?startTime=${startTime}&endTime=${endTime}&channelCode=${code}&robotId=${info.id}`,
+      `${
+        config.basePath
+      }/robot/statistics/faqAndClarifyExport?startTime=${startTime}&endTime=${endTime}${codeToStr(
+        code,
+      )}&robotId=${info.id}`,
       '_self',
     );
   };

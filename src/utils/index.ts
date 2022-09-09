@@ -82,3 +82,17 @@ export function ObjToSearch(params: any) {
   });
   return str.replace('&', '');
 }
+
+// 导出-数组转字符串 拼接成  &channelCode=val
+
+export const codeToStr = (codeArr: any) => {
+  let codeStr = '';
+  if (codeArr?.length == 0) {
+    return codeStr;
+  } else {
+    codeArr?.map((item: any) => {
+      codeStr += `&channelCode=${item}`;
+    });
+  }
+  return codeStr;
+};
