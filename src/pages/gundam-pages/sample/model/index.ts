@@ -1,16 +1,20 @@
+import config from '@/config';
+import { message } from 'antd';
 import { useState } from 'react';
 import {
+  batchDelete,
+  batchTransfer,
+  delIntentFeature,
+  intentAddList,
+  intentCorpusEdit,
+  intentSame,
   listSample,
   similarList,
-  intentCorpusEdit,
-  delIntentFeature,
-  intentSame,
-  intentAddList,
   similarSame,
 } from './api';
 
 //相似问接口
-import { _getSimilarList, _editSimilar, _deleteSimilar, _addSimilar } from './api';
+import { _addSimilar, _deleteSimilar, _editSimilar, _getSimilarList } from './api';
 
 export const useSampleModel = () => {
   const [tableLoading, setTableLoading] = useState<boolean>(false);
@@ -116,12 +120,40 @@ export const useSimilarModel = () => {
     return res;
   };
 
+  const batchDeleteSimilar = async (params?: any) => {
+    setAddLoading(true);
+    let res: any = await batchDelete(params);
+    setAddLoading(false);
+    if (res.resultCode == config.successCode) {
+      message.success(res.resultDesc || '成功');
+      return true;
+    } else {
+      message.error(res.resultDesc || '失败');
+      return false;
+    }
+  };
+
+  const batchTransferSimilar = async (params?: any) => {
+    setAddLoading(true);
+    let res: any = await batchTransfer(params);
+    setAddLoading(false);
+    if (res.resultCode == config.successCode) {
+      message.success(res.resultDesc || '成功');
+      return true;
+    } else {
+      message.error(res.resultDesc || '失败');
+      return false;
+    }
+  };
+
   return {
     getSimilarList,
     checkSimilar,
     editSimilar,
     deleteSimilar,
     addSimilar,
+    batchDeleteSimilar,
+    batchTransferSimilar,
     addLoading,
     tableLoading,
   };

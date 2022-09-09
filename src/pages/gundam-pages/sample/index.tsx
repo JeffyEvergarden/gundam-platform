@@ -1,7 +1,7 @@
 import config from '@/config';
-import { ArrowLeftOutlined, EyeOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, DownOutlined, EyeOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Button, Col, Input, message, Popconfirm, Row, Space } from 'antd';
+import { Button, Dropdown, Input, Menu, message, Popconfirm, Space } from 'antd';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
 import SelectFaqModal from '../FAQ-module/components/select-faq-modal';
@@ -37,6 +37,9 @@ export default () => {
 
   const [similarTableData, setSimilarTableData] = useState<any>({});
 
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
+  const [selectRow, setSelectRow] = useState<any>([]);
+
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
@@ -44,8 +47,16 @@ export default () => {
   const { getList, intentEdit, deleteIntentFeature, checkIntent, intentAdd, loadingAdd } =
     useSampleModel();
 
-  const { getSimilarList, checkSimilar, editSimilar, deleteSimilar, addSimilar, addLoading } =
-    useSimilarModel();
+  const {
+    getSimilarList,
+    checkSimilar,
+    editSimilar,
+    deleteSimilar,
+    addSimilar,
+    batchDeleteSimilar,
+    batchTransferSimilar,
+    addLoading,
+  } = useSimilarModel();
 
   useEffect(() => {
     let historyData = history?.location || {};
@@ -77,6 +88,43 @@ export default () => {
     actionRef?.current?.reload();
     console.log(tableInfo, pageType);
   }, [tableInfo, pageType]);
+
+  const handleMenuClick = async (item: any) => {
+    if (selectRow.length > 0) {
+      if (item.key == '1') {
+        RemoveSRef?.current?.open(selectRow, 'batch');
+      }
+    } else {
+      message.warning('至少选择一个问题');
+    }
+  };
+
+  const onConfirm = async () => {
+    await batchDeleteSimilar({
+      ids: selectedRowKeys,
+      faqId: pageUrl === 'unknownQustion' ? tableInfo.recommendId : tableInfo.id,
+    }).then((res) => {
+      if (res) {
+        setSelectedRowKeys([]);
+        setSelectRow([]);
+        actionRef.current.reload();
+      }
+    });
+  };
+
+  const menu = (
+    <Menu onClick={handleMenuClick}>
+      <Menu.Item key={'1'}>批量转移</Menu.Item>
+      <Popconfirm
+        title="确认要批量删除选中的相似问吗？"
+        onConfirm={onConfirm}
+        okText="确定"
+        cancelText="取消"
+      >
+        <Menu.Item key={'2'}>批量删除</Menu.Item>
+      </Popconfirm>
+    </Menu>
+  );
 
   const getInitTable = async (payload: any) => {
     let res: any;
@@ -357,6 +405,23 @@ export default () => {
     });
   };
 
+  const similarBatchRemove = async (id: any, faqId: any, oldFaqId: any) => {
+    if (!faqId) {
+      message.warning('请选择问题');
+      return;
+    }
+    await batchTransferSimilar({ similarIds: id, faqId, oldFaqId, robotId: info.id }).then(
+      (res) => {
+        if (res) {
+          setSelectedRowKeys([]);
+          setSelectRow([]);
+          RemoveSRef?.current?.close();
+          actionRef?.current?.reload();
+        }
+      },
+    );
+  };
+
   //添加到其他意图/FAQ
   const confirmUpdateSelect = async (val: any, inputValue: any) => {
     console.log(val);
@@ -557,6 +622,14 @@ export default () => {
     },
   ];
 
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
+      setSelectedRowKeys(selectedRowKeys);
+      setSelectRow(selectedRows);
+    },
+  };
+
   return (
     <Fragment>
       <div className={styles.sample}>
@@ -594,8 +667,8 @@ export default () => {
               </div>
             )}
           </div>
-          <Row className={styles.search_box}>
-            <Col span={12}>
+          <div className={styles.search_box}>
+            <div style={{ flex: 1 }}>
               {tableInfo?.recycle != 1 && (
                 <Input
                   ref={input}
@@ -613,8 +686,8 @@ export default () => {
                   onChange={changeCorpusText}
                 />
               )}
-            </Col>
-            <Col span={5}>
+            </div>
+            <div style={{ margin: '0 16px' }}>
               <Space>
                 {tableInfo?.recycle != 1 && (
                   <Button
@@ -627,7 +700,6 @@ export default () => {
                 )}
                 {tableInfo?.recycle != 1 && (
                   <Button
-                    type="primary"
                     onClick={() => {
                       (selectFaqModalRef.current as any)?.open({
                         selectList: [], //被选中列表
@@ -640,9 +712,19 @@ export default () => {
                     其他意图/FAQ
                   </Button>
                 )}
+                {tableInfo?.recycle != 1 && (
+                  <Dropdown overlay={menu} key="Dropdown" disabled={selectRow?.length < 1}>
+                    <Button>
+                      <Space>
+                        批量操作
+                        <DownOutlined />
+                      </Space>
+                    </Button>
+                  </Dropdown>
+                )}
               </Space>
-            </Col>
-            <Col span={6}>
+            </div>
+            <div>
               <Search
                 placeholder={
                   pageType === 'wish'
@@ -655,13 +737,14 @@ export default () => {
                 onChange={onChange}
                 allowClear
               />
-            </Col>
-          </Row>
+            </div>
+          </div>
           <ProTable
             rowKey={'id'}
             key={'id'}
             scroll={{ x: columns.length * 200 }}
             actionRef={actionRef}
+            rowSelection={pageType == 'FAQ' ? rowSelection : false}
             columns={columns}
             pagination={{
               pageSize: 10,
@@ -714,7 +797,12 @@ export default () => {
         saveSame={saveSame}
         pageType={pageType}
       />
-      <RemoveSimilar cref={RemoveSRef} onSubmit={editRemove} />
+      <RemoveSimilar
+        cref={RemoveSRef}
+        onSubmit={editRemove}
+        onBatchSubmit={similarBatchRemove}
+        loading={addLoading}
+      />
       <SelectFaqModal
         cref={selectFaqModalRef}
         confirm={confirmUpdateSelect}
