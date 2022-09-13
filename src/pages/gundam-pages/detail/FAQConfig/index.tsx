@@ -139,7 +139,7 @@ const FAQConfig: React.FC = (props: any) => {
     // });
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     getFlowList(info.id);
     _getTreeData(info.id);
     const _item = form.getFieldsValue();
@@ -154,8 +154,8 @@ const FAQConfig: React.FC = (props: any) => {
       ];
       form.setFieldsValue(_item);
     }
-    getList();
-    getRejectList();
+    await getList();
+    await getRejectList();
   }, []);
 
   const getRecommendItem = () => {
