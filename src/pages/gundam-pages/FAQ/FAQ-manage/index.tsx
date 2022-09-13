@@ -135,6 +135,8 @@ const FAQPage: React.FC<any> = (props: any) => {
 
   const changeClassify = (params: any) => {
     QuestionRef?.current?.editQ(params);
+    _getTreeData(info.id);
+    getTree();
   };
 
   const changeQueryType = (val: any) => {
