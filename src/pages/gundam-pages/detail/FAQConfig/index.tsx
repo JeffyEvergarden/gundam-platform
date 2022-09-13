@@ -354,7 +354,9 @@ const FAQConfig: React.FC = (props: any) => {
                     <div>
                       {fields.map((field: any, index: number) => {
                         const formData: any = form.getFieldsValue();
-                        const intelFlag = formData?.recommendList?.[index]?.recommendType;
+                        const intelFlag = formData?.recommendList?.[index]?.recommendType
+                          ? true
+                          : false;
 
                         return (
                           <Form.Item

@@ -97,6 +97,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     tableLoading = false,
     showQuestion = true,
     pageType,
+    showOther = false,
   } = props;
 
   const [showWishKey, setShowWishKey] = useState<boolean>(true);
@@ -136,8 +137,8 @@ const SelectorModal: React.FC<any> = (props: any) => {
     (model: any) => {
       return {
         wishList: model?._wishList || [],
-        treeData: model?.treeDataOther || [],
-        getTreeData: model?.getTreeDataOther,
+        treeData: showOther ? model?.treeDataOther : model?.treeData || [],
+        getTreeData: showOther ? model?.getTreeDataOther : model?.getTreeData,
         getWishList: model?.getWishList,
       };
     },
@@ -165,6 +166,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
         robotId: info.id,
         faqTypeId: classType == '0' ? null : classType,
         searchText: searchText1,
+        faqType: showOther ? undefined : 1,
       });
     } else {
       setFaqList([]);
@@ -203,6 +205,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       queryType: 0,
       faqTypeId: classType == '0' ? null : classType,
       searchText: searchText1,
+      faqType: showOther ? undefined : 1,
     });
   };
 
@@ -250,6 +253,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       faqTypeId: val[0] == '0' ? null : val[0],
       queryType: 0,
       searchText: searchText1,
+      faqType: showOther ? undefined : 1,
     });
   };
 

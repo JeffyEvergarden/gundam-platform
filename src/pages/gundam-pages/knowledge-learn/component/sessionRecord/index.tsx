@@ -1,6 +1,7 @@
 import ChatRecordModal from '@/pages/gundam-pages/FAQ-module/components/chat-record-modal';
+import config from '@/config/index';
 import ProTable from '@ant-design/pro-table';
-import { Modal } from 'antd';
+import { Modal, Button } from 'antd';
 import { useEffect, useRef } from 'react';
 import { useModel } from 'umi';
 import styles from './index.less';
@@ -83,7 +84,12 @@ export default (props: any) => {
     },
   ];
 
-  const exportList = () => {};
+  const exportList = () => {
+    window.open(
+      `${config.basePath}/robot/dialog/unknownSessionDialogueExport?unknownId=${modalData?.id}&robotId=${info?.id}`,
+      '_self',
+    );
+  };
 
   useEffect(() => {
     getChannelList(info.id);
@@ -102,11 +108,11 @@ export default (props: any) => {
       <ProTable
         rowKey={(record: any) => record.id}
         headerTitle={false}
-        // toolBarRender={() => [
-        //   <Button key="exportBtn" onClick={exportList}>
-        //     导出
-        //   </Button>,
-        // ]}
+        toolBarRender={() => [
+          <Button key="exportBtn" onClick={exportList}>
+            导出
+          </Button>,
+        ]}
         options={false}
         bordered
         actionRef={actionRef}

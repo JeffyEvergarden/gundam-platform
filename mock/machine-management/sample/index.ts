@@ -149,25 +149,31 @@ const similarList = (req: any, res: any) => {
 };
 
 const getSimilarList = (req: any, res: any) => {
+  let arr = new Array(11).fill(1);
+  let _date = Date.now();
+
+  arr = arr.map((item: any, index: number) => {
+    let obj = {
+      dataStatus: index,
+      faqId: index,
+      id: index,
+      question: '问题' + index,
+      robotId: index,
+      similarText: '相似问' + index,
+      viewNum: index,
+      updateTime: _date,
+    };
+    return obj;
+  });
+
   res.json({
     resultCode: successCode,
     resultDesc: '成功',
     data: {
       pageSize: 10,
-      totalPage: 2,
+      totalPage: 11,
       page: 1,
-      list: [
-        {
-          dataStatus: 0,
-          faqId: '1',
-          id: '123',
-          question: '问题',
-          robotId: '100',
-          similarText: '148',
-          viewNum: 0,
-          updateTime: '2022-05-20 13:14:15',
-        },
-      ],
+      list: arr,
     },
   });
 };
@@ -241,4 +247,6 @@ export default {
   'POST /aichat/robot/faq/faqSimilarDelete': normalDeal,
   'POST /aichat/robot/faq/faqSimilarAdd': normalDeal,
   'POST /aichat/robot/faq/faqSimilarCheck': faqSimilarCheck,
+  'POST /aichat/robot/faq/faqSimilarBatchDelete': normalDeal,
+  'POST /aichat/robot/faq/faqSimilarBatchTransfer': normalDeal,
 };

@@ -1,4 +1,32 @@
+.scrollbar(@width, @color: #f5f5f5) {
+  ::-webkit-scrollbar {
+    width: @width * 4;
+    height: @width * 4;
+    background: transparent;
+    visibility: hidden;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    width: @width * 4;
+    height: @width * 4;
+    background: @color;
+    border-radius: 30px;
+    // visibility: hidden;
+  }
+
+  :hover {
+    ::-webkit-scrollbar {
+      visibility: visible;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      visibility: visible;
+    }
+  }
+}
+
 .modal-bg {
+  .scrollbar(1.5px, rgba(0, 0, 0, 0.3));
   :global {
     .ant-modal-body {
       padding: 12px;
@@ -35,4 +63,11 @@
   right: 0;
   display: flex;
   justify-content: flex-end;
+}
+
+.spamleText {
+  max-height: 67px;
+  overflow-y: auto;
+  word-break: keep-all;
+  .scrollbar(1.5px, rgba(0, 0, 0, 0.3));
 }

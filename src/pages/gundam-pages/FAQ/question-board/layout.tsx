@@ -53,8 +53,10 @@ const processTreeData = (data: any[], parent?: any) => {
     let obj: any = {
       title: item?.title,
       value: item?.key,
+      type: item?.type,
       // parent: parent,
     };
+
     let children: any = processTreeData(item?.children, obj);
     obj.children = children;
     if (obj.children && obj.children.length > 0) {
@@ -112,6 +114,8 @@ const Board: React.FC<any> = (props: any) => {
   const [similarData, setSimilarData] = useState<any>({});
   const [pageUrl, setPageUrl] = useState<string>('');
   const [payloadData, setpayload] = useState<any>({});
+
+  const [editSuggest, setEditSuggest] = useState<any>(false);
   // 打开备注
 
   useEffect(() => {
@@ -514,6 +518,14 @@ const Board: React.FC<any> = (props: any) => {
                   treeData={typeList}
                   treeDefaultExpandedKeys={defaultExpend}
                   getPopupContainer={(trigger) => trigger.parentElement}
+                  onSelect={(v: any, r: any) => {
+                    if (r?.type == 2) {
+                      form.setFieldsValue({ suggest: 0 });
+                      setEditSuggest(true);
+                    } else {
+                      setEditSuggest(false);
+                    }
+                  }}
                 />
               </Form.Item>
             </div>
@@ -674,7 +686,7 @@ const Board: React.FC<any> = (props: any) => {
               }}
             </FormList>
             <Form.Item name="suggest" label="是否联想" style={{ width: '600px' }} initialValue={1}>
-              <Radio.Group>
+              <Radio.Group disabled={editSuggest}>
                 <Radio value={1}>是</Radio>
                 <Radio value={0}>否</Radio>
               </Radio.Group>

@@ -65,7 +65,7 @@ export default (props: any) => {
       occurTime: occurDay + ' ' + newTime,
       systemCode: '5678',
       data: { ...newData },
-      customerId: '9012',
+      customerId: data?.customerId,
       // validity: '',
       robotId: envirValue == 'prod' ? info.id : 'test_' + info.id,
       businessCode: info.businessCode,
@@ -151,6 +151,14 @@ export default (props: any) => {
                   </React.Fragment>
                 );
               })}
+              <Form.Item
+                label="客户ID"
+                name="customerId"
+                rules={[{ required: true, message: '请输入客户ID' }]}
+              >
+                <Input maxLength={50} />
+              </Form.Item>
+
               <Form.Item {...tailLayout}>
                 <Button type="primary" onClick={showChatText}>
                   开始对话

@@ -30,7 +30,7 @@ export default (props: any) => {
   const [startTime, setStart] = useState<string>('');
   const [endTime, setEnd] = useState<string>('');
   const [keyValue, setKeyValue] = useState<any>(''); //给rangePicker控件添加key属性，点击重置时，修改key的值，如new Date()，相当于重新渲染控件，达到让控件重置的功能
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState<any>(['']);
 
   const changeTime = (e: any) => {
     let val = e.target.value;
@@ -80,13 +80,32 @@ export default (props: any) => {
     }
   };
 
-  const changeWay = (val: any) => {
-    setCode(val);
-    choseTime(startTime, endTime, val);
+  const onSelect = (val: any) => {
+    if (val !== '') {
+      let temp = [...code];
+      temp = temp.filter((item: any) => item !== '');
+      temp.push(val);
+      setCode(temp);
+      choseTime(startTime, endTime, temp);
+    } else if (val == '') {
+      setCode(['']);
+      choseTime(startTime, endTime, ['']);
+    }
+  };
+
+  const onDeselect = (val: any) => {
+    let temp = [...code];
+    temp = temp.filter((item: any) => item !== val);
+    setCode(temp);
+    choseTime(startTime, endTime, temp);
   };
 
   const exportForm = () => {
     exportReportForm(startTime, endTime, code);
+  };
+
+  const exportSession = () => {
+    exportSessionList(startTime, endTime, code);
   };
 
   const disabledDate = (current: any) => {
@@ -108,7 +127,15 @@ export default (props: any) => {
           disabledDate={disabledDate}
           key={keyValue}
         />
-        <Select style={{ width: '120px' }} defaultValue="" onChange={changeWay}>
+        <Select
+          style={{ maxWidth: '400px', minWidth: '120px' }}
+          onSelect={onSelect}
+          onDeselect={onDeselect}
+          mode="multiple"
+          allowClear
+          maxTagCount={3}
+          value={code}
+        >
           <Option key={''} value="">
             全部渠道
           </Option>
@@ -127,11 +154,11 @@ export default (props: any) => {
             导出报表
           </Button>
         </Access>
-        {/* {pageType === 'visitorSession' && (
-          <Button type="primary" onClick={exportSessionList}>
+        {pageType === 'visitorSession' && (
+          <Button type="primary" onClick={exportSession}>
             导出会话明细
           </Button>
-        )} */}
+        )}
       </Space>
     </div>
   );

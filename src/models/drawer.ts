@@ -267,6 +267,7 @@ export default function useDrawerModel() {
         title: item.faqCount ? `${item.title} [${item.faqCount}]` : item.title,
         key: item?.key,
         count: item?.faqCount,
+        type: item?.type,
         // parent: parent,
       };
       let children: any = processTreeData(item?.children, obj);
@@ -308,12 +309,6 @@ export default function useDrawerModel() {
 
   const getTreeDataOther = async (id?: any) => {
     console.log('questiontree:------');
-    if (!allowRequest('questiontree', id)) {
-      console.log('短时间调用获取问题分类树结构_中断');
-      return;
-    } else {
-      console.log('可以调用获取问题分类树结构');
-    }
     if (!id) {
       console.log('问题分类接口获取不到机器人id');
       return;
@@ -330,6 +325,7 @@ export default function useDrawerModel() {
           parent: undefined,
           children: _data,
           count: res?.data?.faqTotal || 0,
+          type: 1,
         },
       ];
       setTreeDataOther(root);
