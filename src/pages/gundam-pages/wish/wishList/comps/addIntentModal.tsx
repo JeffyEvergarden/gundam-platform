@@ -1,6 +1,8 @@
+import Condition from '@/components/Condition';
 import config from '@/config/index';
 import { Form, Input, message, Modal, Radio, Select, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { useModel } from 'umi';
 import { useIntentModel } from '../model';
 import { operateFormList } from './config';
 const { Option } = Select;
@@ -18,6 +20,11 @@ export default (props: any) => {
   const [form] = Form.useForm();
   const [spinning, handleSpinning] = useState<boolean>(false);
   const { addIntentItem, editIntentItem } = useIntentModel();
+
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
+
   useEffect(() => {
     if (visible) {
       if (title == 'edit') {
@@ -80,12 +87,14 @@ export default (props: any) => {
                   )}
 
                   {item.type == 'radio2' && (
-                    <Form.Item name={item.name} label={item.label} initialValue={1}>
-                      <Radio.Group>
-                        <Radio value={1}>是</Radio>
-                        <Radio value={0}>否</Radio>
-                      </Radio.Group>
-                    </Form.Item>
+                    <Condition r-if={!item.show ? true : info.robotTypeLabel == 'text'}>
+                      <Form.Item name={item.name} label={item.label} initialValue={1}>
+                        <Radio.Group>
+                          <Radio value={1}>是</Radio>
+                          <Radio value={0}>否</Radio>
+                        </Radio.Group>
+                      </Form.Item>
+                    </Condition>
                   )}
                 </React.Fragment>
               );

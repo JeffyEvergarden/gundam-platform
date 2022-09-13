@@ -40,6 +40,7 @@ export const operateFormList = [
     label: '是否澄清',
     name: 'clarify',
     type: 'radio2',
+    show: true,
   },
   {
     label: '描述',
