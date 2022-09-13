@@ -292,6 +292,13 @@ export default [
           },
         ],
       },
+      {
+        path: '/gundamPages/soundRecord',
+        component: './gundam-pages/sound-record',
+        name: '录音管理',
+        // code: 'robot_mg-label-list',
+        // access: 'routerAuth',
+      },
       { redirect: '/gundamPages/mainDraw' },
       { component: './404' },
     ],
