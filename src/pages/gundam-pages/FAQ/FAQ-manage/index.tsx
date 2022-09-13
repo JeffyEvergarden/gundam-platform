@@ -96,7 +96,7 @@ const FAQPage: React.FC<any> = (props: any) => {
   };
 
   useEffect(() => {
-    _getTreeData(info.id);
+    // _getTreeData(info.id);
     getTree();
     getCreateUser(info.id, 0);
     getGlobalValConfig(info.id);
@@ -135,8 +135,6 @@ const FAQPage: React.FC<any> = (props: any) => {
 
   const changeClassify = (params: any) => {
     QuestionRef?.current?.editQ(params);
-    _getTreeData(info.id);
-    getTree();
   };
 
   const changeQueryType = (val: any) => {
