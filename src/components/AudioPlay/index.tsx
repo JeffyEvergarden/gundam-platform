@@ -179,6 +179,11 @@ const AudioPlay: React.FC<dataProp> = (props) => {
   // 播放中更新显示时间
   const updateProgress = () => {
     const audio = audioRef.current;
+    const bufferedObj = audio.buffered;
+
+    const buffered = bufferedObj?.end(bufferedObj.length - 1) || 0;
+
+    setLoadTime(buffered);
     setCurTime(audio.currentTime);
     setTotalTime(audio.duration);
   };
