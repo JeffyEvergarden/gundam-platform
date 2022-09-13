@@ -44,9 +44,9 @@ export default [
         path: '/gundamPages/detail/FAQConfig',
         name: 'FAQ配置',
         code: 'robot_mg-global-faq_conf',
-        // hideFn: (info: any) => {
-        //   return !(info?.robotType === 0 && info?.soundType === 0); // 呼入 文本
-        // },
+        hideFn: (info: any) => {
+          return !(info?.robotType === 0 && info?.soundType === 0); // 呼入 文本
+        },
       },
       {
         path: '/gundamPages/detail/channelConfig',
@@ -92,9 +92,9 @@ export default [
     path: '/gundamPages/module',
     name: 'FAQ管理',
 
-    // hideFn: (info: any) => {
-    //   return !(info?.robotType === 0 && info?.soundType === 0); // 呼入 文本
-    // },
+    hideFn: (info: any) => {
+      return !(info?.robotType === 0 && info?.soundType === 0); // 呼入 文本
+    },
     routes: [
       {
         icon: <CrownOutlined />,
@@ -162,9 +162,9 @@ export default [
     path: '/gundamPages/reportForm',
     name: '报表管理',
 
-    // hideFn: (info: any) => {
-    //   return !(info?.robotType === 0 && info?.soundType === 0); // 呼入 文本
-    // },
+    hideFn: (info: any) => {
+      return !(info?.robotType === 0 && info?.soundType === 0); // 呼入 文本
+    },
     routes: [
       {
         icon: <CrownOutlined />,
