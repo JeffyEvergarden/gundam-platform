@@ -286,7 +286,7 @@ export default () => {
               }}
             />
           </div>
-          <ChatRecordModal cref={chatRecordModalRef} />
+          <ChatRecordModal cref={chatRecordModalRef} pageType={'visitorsSession'} />
         </div>
       </div>
     </div>

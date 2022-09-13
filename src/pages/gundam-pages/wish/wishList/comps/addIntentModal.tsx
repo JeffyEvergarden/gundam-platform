@@ -3,6 +3,7 @@ import { Form, Input, message, Modal, Radio, Select, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useIntentModel } from '../model';
 import { operateFormList } from './config';
+import { useModel } from 'umi';
 const { Option } = Select;
 
 const layout = {
@@ -18,6 +19,11 @@ export default (props: any) => {
   const [form] = Form.useForm();
   const [spinning, handleSpinning] = useState<boolean>(false);
   const { addIntentItem, editIntentItem } = useIntentModel();
+
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
+
   useEffect(() => {
     if (visible) {
       if (title == 'edit') {
@@ -79,7 +85,15 @@ export default (props: any) => {
                     </Form.Item>
                   )}
 
-                  {item.type == 'radio2' && (
+                  {item.type == 'radio2' && item.name == 'suggest' && info?.robotType == 0 && (
+                    <Form.Item name={item.name} label={item.label} initialValue={1}>
+                      <Radio.Group>
+                        <Radio value={1}>是</Radio>
+                        <Radio value={0}>否</Radio>
+                      </Radio.Group>
+                    </Form.Item>
+                  )}
+                  {item.type == 'radio2' && item.name == 'clarify' && (
                     <Form.Item name={item.name} label={item.label} initialValue={1}>
                       <Radio.Group>
                         <Radio value={1}>是</Radio>
