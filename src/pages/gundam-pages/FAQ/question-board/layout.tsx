@@ -354,6 +354,7 @@ const Board: React.FC<any> = (props: any) => {
         ...otherObj,
         unknownId: (history?.location?.state as any)?.payload?.id,
       };
+      data.recommendList = data?.questionRecommend ? data?.recommendList : undefined;
       let response = await addNewQuestion(data);
       if (response === true) {
         // 回到主页
@@ -377,6 +378,7 @@ const Board: React.FC<any> = (props: any) => {
         robotId: info.id,
         ...otherObj,
       };
+      data.recommendList = data?.questionRecommend ? data?.recommendList : undefined;
       let response = await updateQuestion(data);
       if (response === true) {
         // 回到主页
