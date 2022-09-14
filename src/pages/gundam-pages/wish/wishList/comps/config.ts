@@ -65,7 +65,7 @@ export const tableList: any = [
     title: '意图类型',
     search: true,
     ellipsis: true,
-    width: 160,
+    width: 100,
     initialValue: '',
     valueEnum: {
       0: { text: '头部意图', status: 0 },
@@ -78,6 +78,30 @@ export const tableList: any = [
     search: false,
     ellipsis: true,
     width: 200,
+  },
+  {
+    dataIndex: 'suggest',
+    title: '是否联想',
+    search: false,
+    ellipsis: true,
+    width: 100,
+    initialValue: '',
+    valueEnum: {
+      0: { text: '否', status: 0 },
+      1: { text: '是', status: 1 },
+    },
+  },
+  {
+    dataIndex: 'clarify',
+    title: '是否澄清',
+    search: false,
+    ellipsis: true,
+    width: 100,
+    initialValue: '',
+    valueEnum: {
+      0: { text: '否', status: 0 },
+      1: { text: '是', status: 1 },
+    },
   },
   // {
   //   dataIndex: 'headIntent',
