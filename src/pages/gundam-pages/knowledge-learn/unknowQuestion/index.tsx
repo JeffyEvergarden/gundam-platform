@@ -573,7 +573,7 @@ export default () => {
         confirm={confirmUpdateSelect}
         type={operation == 'clarify' ? 'checkbox' : 'radio'}
         min={operation == 'clarify' ? 2 : 1}
-        max={operation == 'clarify' ? 5 : 1}
+        max={operation == 'clarify' ? (info.robotType == 1 ? 2 : 5) : 1}
         readOnly={false}
         tableLoading={addClearLoading || batchLoading}
       />
