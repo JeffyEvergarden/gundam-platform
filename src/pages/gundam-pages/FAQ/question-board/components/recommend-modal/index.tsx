@@ -179,7 +179,12 @@ const Recommend: React.FC<any> = (props: any) => {
                         <Form.Item
                           name={[field.name, 'recommend']}
                           fieldKey={[field.fieldKey, 'recommend']}
-                          rules={[{ required: info.robotTypeLabel === 'text' ? !intelFlag : true }]}
+                          rules={[
+                            {
+                              required: info.robotTypeLabel === 'text' ? !intelFlag : true,
+                              message: '请选择',
+                            },
+                          ]}
                         >
                           <Selector
                             disabled={info.robotTypeLabel === 'text' ? intelFlag : false}
