@@ -1,17 +1,23 @@
 import ProTable from '@ant-design/pro-table';
-import { Button, Popconfirm, Tabs } from 'antd';
+import { Button, Popconfirm, Tabs, Tooltip } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { useModel } from 'umi';
+import AuditionModal from './component/auditionModal';
+import ReplaceModal from './component/replaceModal';
 import { useSoundModel } from './model';
+import style from './style.less';
 
 const { TabPane } = Tabs;
 
 const SoundRecord: React.FC = (props: any) => {
   const [activeKey, setActiveKey] = useState('1');
-  const tableRef = useRef();
-  const tableRef2 = useRef();
-  const tableRef3 = useRef();
-  const tableRef4 = useRef();
+  const tableRef = useRef<any>();
+  const tableRef2 = useRef<any>();
+  const tableRef3 = useRef<any>();
+  const tableRef4 = useRef<any>();
+  const auditionRef = useRef<any>();
+  const replaceRef = useRef<any>();
+
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     setInfo: model.setInfo,
@@ -38,11 +44,31 @@ const SoundRecord: React.FC = (props: any) => {
       },
       width: 200,
       ellipsis: true,
+      render: (v: any, r: any, i: any) => {
+        return (
+          <div className={style['apply']}>
+            <div>{`${1}.${r?.applyNames?.[0]}`}</div>
+            <Tooltip
+              title={
+                <div key={i}>
+                  {r?.applyNames.map((item: any, index: any) => (
+                    <div key={index + item}>{`${index + 1}.${item}`}</div>
+                  ))}
+                </div>
+              }
+            >
+              <span style={{ color: '#1890ff' }}>查看更多</span>
+            </Tooltip>
+          </div>
+        );
+      },
     },
     {
       title: '转写文本',
       dataIndex: 'text',
-      search: false,
+      fieldProps: {
+        placeholder: '请输入转写文本',
+      },
       width: 200,
       ellipsis: true,
     },
@@ -71,7 +97,7 @@ const SoundRecord: React.FC = (props: any) => {
             <Button
               type="link"
               onClick={() => {
-                // labelModalRef.current?.open?.(row);
+                auditionRef.current?.open?.(r);
               }}
             >
               试听
@@ -89,7 +115,7 @@ const SoundRecord: React.FC = (props: any) => {
             <Button
               type="link"
               onClick={() => {
-                // labelModalRef.current?.open?.(row);
+                replaceRef.current?.open?.(r, 'edit');
               }}
             >
               替换
@@ -113,12 +139,23 @@ const SoundRecord: React.FC = (props: any) => {
     },
   ];
 
-  useEffect(() => {
+  const refresh = () => {
     if (activeKey == '1') {
       (tableRef?.current as any)?.reload();
-    } else {
+    }
+    if (activeKey == '2') {
       (tableRef2?.current as any)?.reload();
     }
+    if (activeKey == '3') {
+      (tableRef3?.current as any)?.reload();
+    }
+    if (activeKey == '4') {
+      (tableRef4?.current as any)?.reload();
+    }
+  };
+
+  useEffect(() => {
+    refresh();
   }, [activeKey]);
 
   return (
@@ -140,6 +177,7 @@ const SoundRecord: React.FC = (props: any) => {
                 robotId: info.id,
                 page: params.current,
                 ...params,
+                type: 1,
               });
               // return {};
             }}
@@ -170,7 +208,17 @@ const SoundRecord: React.FC = (props: any) => {
               pageSize: 10,
             }}
             dateFormatter="string"
-            toolBarRender={() => []}
+            toolBarRender={() => [
+              <Button
+                key="button"
+                type="primary"
+                onClick={() => {
+                  replaceRef.current?.open?.({}, 'add');
+                }}
+              >
+                上传录音
+              </Button>,
+            ]}
           />
         </TabPane>
         <TabPane tab="FAQ录音" key="2">
@@ -183,6 +231,7 @@ const SoundRecord: React.FC = (props: any) => {
                 robotId: info.id,
                 page: params.current,
                 ...params,
+                type: 2,
               });
               return {};
             }}
@@ -213,7 +262,17 @@ const SoundRecord: React.FC = (props: any) => {
               pageSize: 10,
             }}
             dateFormatter="string"
-            toolBarRender={() => []}
+            toolBarRender={() => [
+              <Button
+                key="button"
+                type="primary"
+                onClick={() => {
+                  replaceRef.current?.open?.({}, 'add');
+                }}
+              >
+                上传录音
+              </Button>,
+            ]}
           />
         </TabPane>
         <TabPane tab="节点-TTS" key="3">
@@ -226,6 +285,7 @@ const SoundRecord: React.FC = (props: any) => {
                 robotId: info.id,
                 page: params.current,
                 ...params,
+                type: 3,
               });
               return {};
             }}
@@ -256,7 +316,17 @@ const SoundRecord: React.FC = (props: any) => {
               pageSize: 10,
             }}
             dateFormatter="string"
-            toolBarRender={() => []}
+            toolBarRender={() => [
+              <Button
+                key="button"
+                type="primary"
+                onClick={() => {
+                  replaceRef.current?.open?.({}, 'add');
+                }}
+              >
+                上传录音
+              </Button>,
+            ]}
           />
         </TabPane>
         <TabPane tab="FAQ-TTS" key="4">
@@ -269,6 +339,7 @@ const SoundRecord: React.FC = (props: any) => {
                 robotId: info.id,
                 page: params.current,
                 ...params,
+                type: 4,
               });
               return {};
             }}
@@ -299,10 +370,23 @@ const SoundRecord: React.FC = (props: any) => {
               pageSize: 10,
             }}
             dateFormatter="string"
-            toolBarRender={() => []}
+            toolBarRender={() => [
+              <Button
+                key="button"
+                type="primary"
+                onClick={() => {
+                  replaceRef.current?.open?.({}, 'add');
+                }}
+              >
+                上传录音
+              </Button>,
+            ]}
           />
         </TabPane>
       </Tabs>
+
+      <AuditionModal cref={auditionRef}></AuditionModal>
+      <ReplaceModal cref={replaceRef} refresh={refresh}></ReplaceModal>
     </div>
   );
 };

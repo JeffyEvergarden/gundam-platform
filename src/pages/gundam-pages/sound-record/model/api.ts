@@ -9,3 +9,11 @@ export async function getList(params?: { [key: string]: any }) {
     params,
   });
 }
+
+export async function uploadSound(data?: any) {
+  return request(`${baseUrl}/robot/sound/upload`, {
+    method: 'POST',
+    body: data,
+    timeout: 180 * 1000,
+  });
+}

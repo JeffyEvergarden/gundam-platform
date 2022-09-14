@@ -1,4 +1,5 @@
 import {
+  AudioOutlined,
   BuildOutlined,
   CrownOutlined,
   DatabaseOutlined,
@@ -218,7 +219,7 @@ export default [
     ],
   },
   {
-    icon: <FontColorsOutlined />,
+    icon: <AudioOutlined />,
     path: '/gundamPages/soundRecord',
     name: '录音管理',
     // code: 'robot_mg-label-list',
