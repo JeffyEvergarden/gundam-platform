@@ -715,7 +715,7 @@ const Board: React.FC<any> = (props: any) => {
                 <Checkbox onChange={changeAdvise}>启用</Checkbox>
               </Form.Item>
             </div>
-            <Condition r-if={showAdvise}>
+            <Condition r-show={showAdvise}>
               <FormList name="recommendList">
                 {(fields, { add, remove }) => {
                   const addNew = () => {

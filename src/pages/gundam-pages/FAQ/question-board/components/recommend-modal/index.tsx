@@ -24,6 +24,8 @@ const Recommend: React.FC<any> = (props: any) => {
     useQuestionModel();
 
   const changeAdvise = (e: any) => {
+    form.setFieldsValue(form.getFieldsValue());
+    console.log(form.getFieldsValue());
     setShowAdvise(e.target.checked);
   };
 
@@ -127,11 +129,14 @@ const Recommend: React.FC<any> = (props: any) => {
           valuePropName="checked"
           // style={{ width: '180px' }}
           // initialValue={true}
+          shouldUpdate={(a, b) => {
+            return true;
+          }}
         >
           <Checkbox onChange={changeAdvise}>启用</Checkbox>
         </Form.Item>
       </div>
-      <Condition r-if={showAdvise}>
+      <Condition r-show={showAdvise}>
         <FormList name="recommendList">
           {(fields, { add, remove }) => {
             const addNew = () => {
@@ -158,7 +163,10 @@ const Recommend: React.FC<any> = (props: any) => {
                   // const currentItem = getItem();
 
                   // const _showTime = currentItem?.[index]?.timeFlag;
+
                   const formData: any = form.getFieldsValue();
+                  console.log(formData);
+
                   const intelFlag = formData?.recommendList?.[index]?.recommendType;
 
                   return (
@@ -185,6 +193,7 @@ const Recommend: React.FC<any> = (props: any) => {
                               message: '请选择',
                             },
                           ]}
+                          shouldUpdate={true}
                         >
                           <Selector
                             disabled={info.robotTypeLabel === 'text' ? intelFlag : false}

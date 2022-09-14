@@ -199,6 +199,23 @@ const configList = (req: any, res: any) => {
           dataType: 0,
           updateType: 0,
         },
+        {
+          id: '1',
+          configType: 0,
+          configName: 'FAQ_RECOMMEND_LIMIT',
+          configValue: '3',
+          configDesc: 'var1',
+          configKey: 'FAQ_RECOMMEND_LIMIT',
+          robotId: '00000',
+          creator: 'jeffy',
+          createTime: '2022-04-11 17:16:00',
+          updateTime: '2022-04-11 17:16:00',
+          dataStatus: 0, //
+          uppdateBy: 'x',
+          dataType: 1,
+          updateType: 0,
+          validateRule: '{"min":0,"max":99}',
+        },
       ],
     });
   } else {
