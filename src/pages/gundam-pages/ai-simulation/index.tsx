@@ -65,7 +65,7 @@ export default (props: any) => {
       occurTime: occurDay + ' ' + newTime,
       systemCode: '5678',
       data: { ...newData },
-      customerId: data?.customerId,
+      customerId: data?.customerId ?? '',
       // validity: '',
       robotId: envirValue == 'prod' ? info.id : 'test_' + info.id,
       businessCode: info.businessCode,
