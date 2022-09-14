@@ -347,6 +347,7 @@ const QuestionList: React.FC<any> = (props: any) => {
       setEditQLoading(false);
       if (res.resultCode == config.successCode) {
         message.success(res.resultDesc);
+        getTreeData();
         CurrentPage({ page: current, pageSize });
         return true;
       } else {

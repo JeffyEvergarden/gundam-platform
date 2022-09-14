@@ -1,9 +1,10 @@
+import Condition from '@/components/Condition';
 import config from '@/config/index';
 import { Form, Input, message, Modal, Radio, Select, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { useModel } from 'umi';
 import { useIntentModel } from '../model';
 import { operateFormList } from './config';
-import { useModel } from 'umi';
 const { Option } = Select;
 
 const layout = {

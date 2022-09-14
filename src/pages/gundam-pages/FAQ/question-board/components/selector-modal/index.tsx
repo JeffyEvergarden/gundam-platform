@@ -57,10 +57,11 @@ const SelectorModal: React.FC<any> = (props: any) => {
   });
 
   // 业务流程列表
-  const { flowList, treeData } = useModel('drawer' as any, (model: any) => {
+  const { flowList, treeData, getTreeData } = useModel('drawer' as any, (model: any) => {
     return {
       flowList: model?._flowListWithHand || [],
       treeData: model?.treeData || [],
+      getTreeData: model.getTreeData,
     };
   });
 
@@ -224,6 +225,10 @@ const SelectorModal: React.FC<any> = (props: any) => {
       setVisible(false);
     },
   }));
+
+  useEffect(() => {
+    getTreeData(info.id);
+  }, []);
 
   const submit = () => {
     let list: any = [];
