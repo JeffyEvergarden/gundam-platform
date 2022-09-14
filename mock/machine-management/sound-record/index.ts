@@ -1,4 +1,4 @@
-import config from '@/config/index';
+import config from '../../../src/config';
 const successCode = config.successCode;
 
 const getList = (req: any, res: any) => {
@@ -7,14 +7,18 @@ const getList = (req: any, res: any) => {
 
   arr = arr.map((item: any, index: number) => {
     let obj = {
-      dataStatus: index,
-      faqId: index,
       id: index,
-      question: '问题' + index,
       robotId: index,
-      similarText: '相似问' + index,
-      viewNum: index,
+      type: '',
+      applyNames: ['1-1-1', '2-2-2', '3-3-3', '4-4-4'],
+      text: '转写文本' + index,
+      soundPath: '/',
+      name: '录音名称' + index + '录音名称' + index + '录音名称' + index,
+      ststus: '',
+      creator: 'jiangjiahao',
+      createTime: _date,
       updateTime: _date,
+      updateBy: 'jiangjiahao',
     };
     return obj;
   });

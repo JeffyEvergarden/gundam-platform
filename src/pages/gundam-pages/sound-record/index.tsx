@@ -1,6 +1,6 @@
 import ProTable from '@ant-design/pro-table';
 import { Button, Popconfirm, Tabs } from 'antd';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { useSoundModel } from './model';
 
@@ -10,6 +10,8 @@ const SoundRecord: React.FC = (props: any) => {
   const [activeKey, setActiveKey] = useState('1');
   const tableRef = useRef();
   const tableRef2 = useRef();
+  const tableRef3 = useRef();
+  const tableRef4 = useRef();
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
     setInfo: model.setInfo,
@@ -29,10 +31,10 @@ const SoundRecord: React.FC = (props: any) => {
       width: 180,
     },
     {
-      title: activeKey == '1' ? '应用节点' : '应用FAQ',
+      title: activeKey == '1' || activeKey == '3' ? '应用节点' : '应用FAQ',
       dataIndex: 'applyNames',
       fieldProps: {
-        placeholder: activeKey == '1' ? '请输入应用节点' : '请输入应用FAQ',
+        placeholder: activeKey == '1' || activeKey == '3' ? '请输入应用节点' : '请输入应用FAQ',
       },
       width: 200,
       ellipsis: true,
@@ -111,8 +113,16 @@ const SoundRecord: React.FC = (props: any) => {
     },
   ];
 
+  useEffect(() => {
+    if (activeKey == '1') {
+      (tableRef?.current as any)?.reload();
+    } else {
+      (tableRef2?.current as any)?.reload();
+    }
+  }, [activeKey]);
+
   return (
-    <div>
+    <div className="list-page">
       <Tabs
         defaultActiveKey="1"
         size={'large'}
@@ -169,13 +179,97 @@ const SoundRecord: React.FC = (props: any) => {
             actionRef={tableRef2}
             scroll={{ x: columns.length * 200 }}
             request={async (params = {}, sort, filter) => {
-              // return getList({
-              //   source: 0,
-              //   robotId: info.id,
-              //   page: params.current,
-              //   batchId: detailInfo?.batchId || history?.location?.query?.batchId,
-              //   ...params,
-              // });
+              return getTableList({
+                robotId: info.id,
+                page: params.current,
+                ...params,
+              });
+              return {};
+            }}
+            editable={{
+              type: 'multiple',
+            }}
+            columnsState={{
+              persistenceKey: 'pro-table-machine-list',
+              persistenceType: 'localStorage',
+            }}
+            rowKey="id"
+            search={{
+              labelWidth: 'auto',
+            }}
+            form={{
+              // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
+              // 查询参数转化
+              syncToUrl: (values, type) => {
+                if (type === 'get') {
+                  return {
+                    ...values,
+                  };
+                }
+                return values;
+              },
+            }}
+            pagination={{
+              pageSize: 10,
+            }}
+            dateFormatter="string"
+            toolBarRender={() => []}
+          />
+        </TabPane>
+        <TabPane tab="节点-TTS" key="3">
+          <ProTable<any>
+            columns={columns}
+            actionRef={tableRef3}
+            scroll={{ x: columns.length * 200 }}
+            request={async (params = {}, sort, filter) => {
+              return getTableList({
+                robotId: info.id,
+                page: params.current,
+                ...params,
+              });
+              return {};
+            }}
+            editable={{
+              type: 'multiple',
+            }}
+            columnsState={{
+              persistenceKey: 'pro-table-machine-list',
+              persistenceType: 'localStorage',
+            }}
+            rowKey="id"
+            search={{
+              labelWidth: 'auto',
+            }}
+            form={{
+              // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
+              // 查询参数转化
+              syncToUrl: (values, type) => {
+                if (type === 'get') {
+                  return {
+                    ...values,
+                  };
+                }
+                return values;
+              },
+            }}
+            pagination={{
+              pageSize: 10,
+            }}
+            dateFormatter="string"
+            toolBarRender={() => []}
+          />
+        </TabPane>
+        <TabPane tab="FAQ-TTS" key="4">
+          <ProTable<any>
+            columns={columns}
+            actionRef={tableRef4}
+            scroll={{ x: columns.length * 200 }}
+            request={async (params = {}, sort, filter) => {
+              return getTableList({
+                robotId: info.id,
+                page: params.current,
+                ...params,
+              });
               return {};
             }}
             editable={{

@@ -217,4 +217,10 @@ export default [
       },
     ],
   },
+  {
+    icon: <FontColorsOutlined />,
+    path: '/gundamPages/soundRecord',
+    name: '录音管理',
+    // code: 'robot_mg-label-list',
+  },
 ];
