@@ -156,7 +156,7 @@ export default (props: any) => {
                 name="customerId"
                 rules={[{ required: true, message: '请输入客户ID' }]}
               >
-                <Input maxLength={50} />
+                <Input maxLength={50} defaultValue={'test'} />
               </Form.Item>
 
               <Form.Item {...tailLayout}>
