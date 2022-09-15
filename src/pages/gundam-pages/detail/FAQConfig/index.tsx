@@ -103,30 +103,35 @@ const FAQConfig: React.FC = (props: any) => {
       return item;
     });
 
-    let [result1, result2]: any = await Promise.all([
-      editFAQ(_res),
-      editRejectTableList({
+    let result1: any = await editFAQ(_res);
+    let result2: any;
+    if (flag) {
+      result2 = await editRejectTableList({
         robotId: info.id,
         faqRejectRecommends: flag ? form.getFieldValue('recommendList') : undefined,
-      }),
-    ]);
+      });
+    }
 
-    if (result1?.resultCode === config.successCode && result2?.resultCode === config.successCode) {
+    if (
+      (result1?.resultCode === config.successCode && result2?.resultCode === config.successCode) ||
+      (result1?.resultCode === config.successCode && !result2)
+    ) {
       message.success('成功');
       getList();
       getRejectList();
     } else {
       let str = '';
       if (result1?.resultCode != config.successCode) {
-        str += result1?.resultDesc;
+        str += result1?.resultDesc || '';
       }
       if (result2?.resultCode != config.successCode) {
-        if (str) {
+        if (str && result2?.resultDesc) {
           str += ',';
         }
-        str += result2?.resultDesc;
+        str += result2?.resultDesc || '';
       }
       message.error(str);
+      return;
     }
 
     // await .then(async (res) => {
