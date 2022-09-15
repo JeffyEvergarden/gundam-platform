@@ -129,9 +129,6 @@ const Recommend: React.FC<any> = (props: any) => {
           valuePropName="checked"
           // style={{ width: '180px' }}
           // initialValue={true}
-          shouldUpdate={(a, b) => {
-            return true;
-          }}
         >
           <Checkbox onChange={changeAdvise}>启用</Checkbox>
         </Form.Item>

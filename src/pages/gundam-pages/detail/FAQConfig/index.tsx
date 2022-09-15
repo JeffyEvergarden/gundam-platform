@@ -329,7 +329,7 @@ const FAQConfig: React.FC = (props: any) => {
                 );
               }
             })}
-            <Condition r-if={switchType}>
+            <Condition r-show={switchType}>
               <FormList name="recommendList">
                 {(fields, { add, remove }) => {
                   const addNew = () => {
