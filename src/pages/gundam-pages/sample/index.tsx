@@ -713,9 +713,9 @@ export default () => {
                     其他意图/FAQ
                   </Button>
                 )}
-                {tableInfo?.recycle != 1 && (
+                {tableInfo?.recycle != 1 && pageType === 'FAQ' && (
                   <Dropdown overlay={menu} key="Dropdown" disabled={selectRow?.length < 1}>
-                    <Button loading={pageType == 'wish' ? loadingAdd : addLoading}>
+                    <Button loading={addLoading}>
                       <Space>
                         批量操作
                         <DownOutlined />

@@ -86,12 +86,14 @@ const FAQConfig: React.FC = (props: any) => {
       return;
     }
     console.log(res);
+    let flag;
 
     let _res = Nconfig.map((item: any) => {
       Object.keys(res.systemConfigList).forEach((v) => {
         console.log(item.configKey, v);
         if (item?.configKey == v) {
           if (item.dataType == 4) {
+            flag = res.systemConfigList[v];
             item.configValue = res.systemConfigList[v] ? '1' : '0';
           } else {
             item.configValue = res.systemConfigList[v];
@@ -105,7 +107,7 @@ const FAQConfig: React.FC = (props: any) => {
       editFAQ(_res),
       editRejectTableList({
         robotId: info.id,
-        faqRejectRecommends: form.getFieldValue('recommendList'),
+        faqRejectRecommends: flag ? form.getFieldValue('recommendList') : undefined,
       }),
     ]);
 
@@ -390,10 +392,11 @@ const FAQConfig: React.FC = (props: any) => {
                                 validateTrigger={['onChange', 'onBlur']}
                                 rules={[
                                   {
-                                    required:
-                                      switchType && info.robotTypeLabel === 'text'
+                                    required: switchType
+                                      ? info.robotTypeLabel === 'text'
                                         ? !intelFlag
-                                        : true,
+                                        : true
+                                      : false,
                                     message: '请选择',
                                   },
                                 ]}
