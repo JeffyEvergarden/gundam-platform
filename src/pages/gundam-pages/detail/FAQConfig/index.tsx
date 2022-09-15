@@ -390,7 +390,10 @@ const FAQConfig: React.FC = (props: any) => {
                                 validateTrigger={['onChange', 'onBlur']}
                                 rules={[
                                   {
-                                    required: info.robotTypeLabel === 'text' ? !intelFlag : true,
+                                    required:
+                                      switchType && info.robotTypeLabel === 'text'
+                                        ? !intelFlag
+                                        : true,
                                     message: '请选择',
                                   },
                                 ]}

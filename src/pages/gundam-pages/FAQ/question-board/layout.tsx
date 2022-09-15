@@ -767,7 +767,10 @@ const Board: React.FC<any> = (props: any) => {
                                 fieldKey={[field.fieldKey, 'recommend']}
                                 rules={[
                                   {
-                                    required: info.robotTypeLabel === 'text' ? !intelFlag : true,
+                                    required:
+                                      showAdvise && info.robotTypeLabel === 'text'
+                                        ? !intelFlag
+                                        : true,
                                     message: '请选择',
                                   },
                                 ]}
