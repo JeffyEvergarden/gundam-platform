@@ -150,3 +150,24 @@ export async function deleteChannelConfig(data?: { [key: string]: any }) {
     data,
   });
 }
+
+export async function getTTSList(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/tts/getConfig`, {
+    method: 'GET',
+    params,
+  });
+}
+
+export async function editTTSList(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/tts/updateConfig`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function parseTTS(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/tts/parse`, {
+    method: 'GET',
+    params,
+  });
+}

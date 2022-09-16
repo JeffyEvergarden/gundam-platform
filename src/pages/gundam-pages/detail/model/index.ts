@@ -1,12 +1,15 @@
 import { message } from 'antd';
 import { useState } from 'react';
-
+//faq
 import {
   editConfig,
+  editTTSList,
   getConfig,
   getFAQList,
   getInterfaceCurrentList,
   getRejectFAQList,
+  getTTSList,
+  parseTTS,
   _editFAQ,
   _editRejectFAQ,
 } from './api';
@@ -14,7 +17,7 @@ import {
 import { addNewGlobal, deleteGlobal, editNewGlobal, getConfigCurrentList } from './api';
 //节点配置
 import { _getNodeConfig, _saveNode } from './api';
-
+//渠道
 import {
   addNewChannelConfig,
   deleteChannelConfig,
@@ -309,5 +312,49 @@ export const useChannelConfigModel = () => {
     addNewChannel,
     editChannel,
     deleteChannel,
+  };
+};
+
+export const useTTSConfigModel = () => {
+  const [loading, setLoading] = useState<any>(false);
+  const getTTS = async (params: any) => {
+    setLoading(true);
+    let res: any = await getTTSList(params);
+    setLoading(false);
+    let data: any = res?.data || {};
+    return data;
+  };
+
+  const editTTS = async (data: any) => {
+    setLoading(true);
+    let res: any = await editTTSList(data);
+    setLoading(false);
+    if (res.resultCode === successCode) {
+      message.success(res?.resultDesc);
+      return res;
+    } else {
+      message.error(res?.resultDesc || '未知系统异常');
+      return false;
+    }
+  };
+
+  const auditionTTS = async (data: any) => {
+    setLoading(true);
+    let res: any = await parseTTS(data);
+    setLoading(false);
+    if (res.resultCode === successCode) {
+      message.success(res?.resultDesc);
+      return res;
+    } else {
+      message.error(res?.resultDesc || '未知系统异常');
+      return false;
+    }
+  };
+
+  return {
+    getTTS,
+    editTTS,
+    auditionTTS,
+    loading,
   };
 };

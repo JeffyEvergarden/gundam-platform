@@ -45,7 +45,7 @@ const TablePage: React.FC = (props: any) => {
             <Tooltip
               title={
                 <div key={i}>
-                  {r?.applyNames.map((item: any, index: any) => (
+                  {r?.applyNames?.map((item: any, index: any) => (
                     <div key={index + item}>{`${index + 1}.${item}`}</div>
                   ))}
                 </div>

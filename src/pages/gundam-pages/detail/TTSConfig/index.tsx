@@ -1,8 +1,8 @@
-import { Button, Form, InputNumber, message, Select } from 'antd';
+import { Button, Form, Input, InputNumber, message, Select } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import style from '../FAQConfig/style.less';
-import { useFAQModel } from '../model';
+import { useTTSConfigModel } from '../model';
 
 const TTSConfig: React.FC = (props: any) => {
   const [form] = Form.useForm();
@@ -37,29 +37,20 @@ const TTSConfig: React.FC = (props: any) => {
     ali: ['xiaoyun', 'aishuo', 'aiya', 'aixia', 'aijing', 'xiaomei', 'xiaogang', 'aimei'],
   };
 
-  const { getTableList, editFAQ, configLoading, getRejectTableList, editRejectTableList } =
-    useFAQModel();
+  const { getTTS, editTTS, auditionTTS, loading } = useTTSConfigModel();
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
 
-  const [Nconfig, setNConfig] = useState<any>();
+  const [tts, setTts] = useState<any>('');
+  const [videoUrl, setVideoUrl] = useState<any>('');
 
   const getList = async () => {
-    await getTableList({ robotId: info.id, configType: 2 }).then((res: any) => {
-      // console.log(res);
-      // setNConfig(res?.data);
-      let obj: any = {};
-      res?.data?.forEach((item: any) => {
-        if (item.dataType == 4) {
-          obj[item.configKey] = item.configValue == '1' ? true : false;
-        } else {
-          obj[item.configKey] = item.configValue;
-        }
-      });
-
-      form.setFieldsValue({ systemConfigList: { ...obj } });
+    await getTTS({ robotId: info.id }).then((res: any) => {
+      console.log(res);
+      setTts(res?.manufacturer || '');
+      form.setFieldsValue(res || {});
     });
   };
 
@@ -73,8 +64,19 @@ const TTSConfig: React.FC = (props: any) => {
     console.log(res);
   };
 
+  const soundPlay = async () => {
+    let res = await form.validateFields();
+    console.log(res);
+    if (!res?.text) {
+      message.warning('请输入试听文本');
+      return false;
+    }
+
+    auditionTTS(res).then((i) => {});
+  };
+
   useEffect(() => {
-    // getList();
+    getList();
   }, []);
 
   return (
@@ -87,7 +89,13 @@ const TTSConfig: React.FC = (props: any) => {
             key={'manufacturer'}
             rules={[{ required: true, message: '请选择' }]}
           >
-            <Select style={{ width: 200 }}>
+            <Select
+              style={{ width: 200 }}
+              onChange={(v) => {
+                form.setFieldsValue({ timbre: undefined });
+                setTts(v);
+              }}
+            >
               <Option key={'ali'} value={'ali'}>
                 阿里
               </Option>
@@ -106,7 +114,7 @@ const TTSConfig: React.FC = (props: any) => {
             }}
           >
             <Select style={{ width: 200 }}>
-              {timbreList?.[form.getFieldValue('manufacturer')]?.map((item: any) => {
+              {timbreList?.[tts]?.map((item: any) => {
                 return (
                   <Option key={item} value={item}>
                     {item}
@@ -133,13 +141,21 @@ const TTSConfig: React.FC = (props: any) => {
           >
             <InputNumber style={{ width: 200 }} step="1" precision={1} />
           </FormItem>
+          <FormItem
+            // {...col}
+            label={'试听'}
+            name={'text'}
+            key={'text'}
+          >
+            <Input.TextArea style={{ width: 300 }} placeholder={'请输入试听文本'} />
+            <FormItem>
+              <Button type="link" onClick={soundPlay} style={{ padding: 0 }}>
+                点击播放
+              </Button>
+            </FormItem>
+          </FormItem>
         </Form>
-        <Button
-          type="primary"
-          onClick={submit}
-          style={{ alignSelf: 'flex-end' }}
-          loading={configLoading}
-        >
+        <Button type="primary" onClick={submit} style={{ alignSelf: 'flex-end' }} loading={loading}>
           保存
         </Button>
       </div>
