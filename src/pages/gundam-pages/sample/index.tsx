@@ -311,7 +311,7 @@ export default () => {
       await deleteSimilar(reqData).then((res) => {
         if (res.resultCode == config.successCode) {
           message.success(res.resultDesc);
-          actionRef.current.reload();
+          actionRef.current.reloadAndRest();
         } else {
           message.error(res.resultDesc);
         }
@@ -346,9 +346,6 @@ export default () => {
         faqId: tableInfo?.id,
       };
       await editSimilar(reqData).then((res) => {
-        console.log(res);
-        console.log(config);
-
         if (res.resultCode == config.successCode) {
           message.success(res?.resultDesc || '成功');
           actionRef?.current?.cancelEditable?.(record.id);
@@ -628,6 +625,11 @@ export default () => {
       setSelectedRowKeys(selectedRowKeys);
       setSelectRow(selectedRows);
     },
+    getCheckboxProps: (record: any) => {
+      return {
+        // disabled: disaAbledData && record.recommendType !== disaAbledData,
+      };
+    },
   };
 
   return (
@@ -746,6 +748,8 @@ export default () => {
             scroll={{ x: columns.length * 200 }}
             actionRef={actionRef}
             rowSelection={pageType == 'FAQ' ? rowSelection : false}
+            tableAlertOptionRender={false}
+            tableAlertRender={false}
             columns={columns}
             pagination={{
               pageSize: 10,
