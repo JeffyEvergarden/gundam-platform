@@ -108,7 +108,7 @@ const DetailPages: React.FC = (props: any) => {
               onConfirm={async () => {
                 await deleteSample({ ronotId: info.id, id: row.id }).then((res) => {
                   if (res) {
-                    TableRef?.current?.reload();
+                    TableRef?.current?.reloadAndRest();
                   }
                 });
               }}
