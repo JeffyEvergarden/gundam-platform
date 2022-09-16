@@ -58,6 +58,13 @@ export default [
             code: 'robot_mg-global-channel_conf',
             access: 'routerAuth',
           },
+          {
+            path: '/gundamPages/detail/TTSConfig',
+            component: './gundam-pages/detail/TTSConfig',
+            name: 'TTS配置',
+            // code: 'robot_mg-global-channel_conf',
+            // access: 'routerAuth',
+          },
           { redirect: '/gundamPages/detail' },
         ],
       },

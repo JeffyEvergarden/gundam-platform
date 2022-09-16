@@ -54,6 +54,11 @@ export default [
         name: '渠道配置',
         code: 'robot_mg-global-channel_conf',
       },
+      {
+        path: '/gundamPages/detail/TTSConfig',
+        name: 'TTS配置',
+        // code: 'robot_mg-global-inteface_conf',
+      },
     ],
   },
   {

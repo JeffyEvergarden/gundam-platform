@@ -1,22 +1,21 @@
 import Condition from '@/components/Condition';
-import { Button, Popconfirm, Tabs, Tooltip } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
-import AuditionModal from './component/auditionModal';
-import ReplaceModal from './component/replaceModal';
-import TablePage from './component/tablePage';
-import { useSoundModel } from './model';
+import ProTable from '@ant-design/pro-table';
+import { Button, Popconfirm, Tooltip } from 'antd';
+import { useImperativeHandle, useRef } from 'react';
+import { useModel } from 'umi';
+import { useSoundModel } from '../../model';
+import AuditionModal from '../auditionModal';
+import ReplaceModal from '../replaceModal';
 import style from './style.less';
 
-const { TabPane } = Tabs;
-
-const SoundRecord: React.FC = (props: any) => {
-  const [activeKey, setActiveKey] = useState('1');
+const TablePage: React.FC = (props: any) => {
+  const { cref, activeKey } = props;
   const tableRef = useRef<any>();
-  const tableRef2 = useRef<any>();
-  const tableRef3 = useRef<any>();
-  const tableRef4 = useRef<any>();
   const auditionRef = useRef<any>();
   const replaceRef = useRef<any>();
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
 
   const { getTableList, deleteSound, loading, opLoading, tableList } = useSoundModel();
 
@@ -139,52 +138,72 @@ const SoundRecord: React.FC = (props: any) => {
     },
   ];
 
+  useImperativeHandle(cref, () => ({
+    refresh,
+  }));
+
   const refresh = () => {
-    if (activeKey == '1') {
-      (tableRef?.current as any)?.refresh();
-    }
-    if (activeKey == '2') {
-      (tableRef2?.current as any)?.refresh();
-    }
-    if (activeKey == '3') {
-      (tableRef3?.current as any)?.refresh();
-    }
-    if (activeKey == '4') {
-      (tableRef4?.current as any)?.refresh();
-    }
+    tableRef?.current?.reload();
   };
 
-  useEffect(() => {
-    refresh();
-  }, [activeKey]);
-
   return (
-    <div className="list-page">
-      <Tabs
-        defaultActiveKey="1"
-        size={'large'}
-        style={{ width: '100%', backgroundColor: '#fff', paddingLeft: '10px', marginBottom: 0 }}
-        onChange={setActiveKey}
-        activeKey={activeKey}
-      >
-        <TabPane tab="流程节点录音" key="1">
-          <TablePage cref={tableRef} activeKey={1} />
-        </TabPane>
-        <TabPane tab="FAQ录音" key="2">
-          <TablePage cref={tableRef2} activeKey={2} />
-        </TabPane>
-        <TabPane tab="节点-TTS" key="3">
-          <TablePage cref={tableRef3} activeKey={3} />
-        </TabPane>
-        <TabPane tab="FAQ-TTS" key="4">
-          <TablePage cref={tableRef4} activeKey={4} />
-        </TabPane>
-      </Tabs>
-
+    <div>
+      <ProTable<any>
+        columns={columns}
+        actionRef={tableRef}
+        scroll={{ x: columns.length * 200 }}
+        request={async (params = {}, sort, filter) => {
+          return getTableList({
+            robotId: info.id,
+            page: params.current,
+            ...params,
+            type: Number(activeKey) || undefined,
+          });
+          // return {};
+        }}
+        editable={{
+          type: 'multiple',
+        }}
+        columnsState={{
+          persistenceKey: 'pro-table-machine-list',
+          persistenceType: 'localStorage',
+        }}
+        rowKey="id"
+        search={{
+          labelWidth: 'auto',
+        }}
+        form={{
+          // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
+          // 查询参数转化
+          syncToUrl: (values, type) => {
+            if (type === 'get') {
+              return {
+                ...values,
+              };
+            }
+            return values;
+          },
+        }}
+        pagination={{
+          pageSize: 10,
+        }}
+        dateFormatter="string"
+        toolBarRender={() => [
+          <Button
+            key="button"
+            type="primary"
+            onClick={() => {
+              replaceRef.current?.open?.({}, 'add');
+            }}
+          >
+            上传录音
+          </Button>,
+        ]}
+      />
       <AuditionModal cref={auditionRef}></AuditionModal>
       <ReplaceModal cref={replaceRef} refresh={refresh}></ReplaceModal>
     </div>
   );
 };
 
-export default SoundRecord;
+export default TablePage;

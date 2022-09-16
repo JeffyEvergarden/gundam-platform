@@ -17,3 +17,10 @@ export async function uploadSound(data?: any) {
     timeout: 180 * 1000,
   });
 }
+
+export async function _deleteSound(data?: any) {
+  return request(`${baseUrl}/robot/sound/delete`, {
+    method: 'POST',
+    data,
+  });
+}

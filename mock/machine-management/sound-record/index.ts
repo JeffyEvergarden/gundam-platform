@@ -35,6 +35,15 @@ const getList = (req: any, res: any) => {
   });
 };
 
+const normalDeal = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    resultDesc: '成功',
+  });
+};
+
 export default {
   'GET /aichat/robot/sound/pageList': getList,
+  'POST /aichat/robot/sound/upload': normalDeal,
+  'POST /aichat/robot/sound/delete': normalDeal,
 };

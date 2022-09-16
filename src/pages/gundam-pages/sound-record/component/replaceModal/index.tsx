@@ -1,10 +1,11 @@
 import Condition from '@/components/Condition';
 import config from '@/config';
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Form, message, Modal, Radio, Upload } from 'antd';
+import { Button, Form, message, Modal, Radio, Tooltip, Upload } from 'antd';
 import React, { useImperativeHandle, useState } from 'react';
 import { useModel } from 'umi';
 import { uploadSound } from '../../model/api';
+import style from './style.less';
 
 const successCode = config.successCode;
 
@@ -69,7 +70,9 @@ const ReplaceModal: React.FC = (props: any) => {
       setLoading(false);
       if (res.resultCode == successCode) {
         message.success(res.resultDesc);
+        setFileList([]);
         setVisible(false);
+        form.resetFields();
         refresh();
       } else {
         message.error(res.resultDesc);
@@ -82,9 +85,16 @@ const ReplaceModal: React.FC = (props: any) => {
       width={650}
       title={
         <>
-          {pageType == 'edit'
-            ? `替换录音${(<span style={{ color: '#1890FF' }}>{soundInfo?.name || ''}</span>)}`
-            : '上传录音'}
+          {pageType == 'edit' ? (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              替换录音{' '}
+              <Tooltip title={soundInfo?.name || ''}>
+                <span className={style['modalTitle']}>{soundInfo?.name || ''}</span>
+              </Tooltip>
+            </div>
+          ) : (
+            '上传录音'
+          )}
         </>
       }
       visible={visible}
