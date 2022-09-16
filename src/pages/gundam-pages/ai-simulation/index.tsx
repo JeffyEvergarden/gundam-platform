@@ -178,6 +178,7 @@ export default (props: any) => {
             talkingFlag={beginTalking}
             resetTalking={resetTalking}
             clearDialogFlag={clearDialogFlag}
+            envirValue={envirValue}
           />
         </Col>
       </Row>
