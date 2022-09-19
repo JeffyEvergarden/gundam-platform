@@ -33,6 +33,7 @@ const RecommendPage: React.FC<any> = (props: any) => {
     let res = await form.validateFields();
     let reqData = { ...form.getFieldsValue() };
     reqData.questionRecommend = reqData?.questionRecommend ? 1 : 0;
+    reqData.recommendList = reqData?.questionRecommend ? reqData.recommendList : undefined;
     editRecommend({ ...reqData });
   };
 

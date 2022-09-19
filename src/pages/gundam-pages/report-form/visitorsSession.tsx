@@ -1,5 +1,6 @@
 import config from '@/config/index';
 import ChatRecordModal from '@/pages/gundam-pages/FAQ-module/components/chat-record-modal';
+import { codeToStr } from '@/utils/index';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import { Space } from 'antd';
@@ -9,7 +10,6 @@ import { useModel } from 'umi';
 import HeadSearch from './components/headSearch';
 import styles from './index.less';
 import { useReportForm } from './model';
-import { codeToStr } from '@/utils/index';
 
 export default () => {
   const actionRef = useRef<any>();
@@ -86,7 +86,7 @@ export default () => {
         code,
       )}&robotId=${info.id}&orderCode=${paramsObj.orderCode}&orderType=${
         paramsObj.orderType
-      }&customerId=${customerId}`,
+      }&customerId=${customerId ?? ''}`,
       '_self',
     );
   };
@@ -111,7 +111,7 @@ export default () => {
         code,
       )}&robotId=${info.id}&orderCode=${paramsObj.orderCode}&orderType=${
         paramsObj.orderType
-      }&customerId=${customerId}`,
+      }&customerId=${customerId ?? ''}`,
       '_self',
     );
   };

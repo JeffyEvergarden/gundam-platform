@@ -291,7 +291,7 @@ const DetailPages: React.FC = (props: any) => {
               onConfirm={async () => {
                 await deleteDetailSample({ robotId: info.id, ids: [record.id] }).then((res) => {
                   if (res) {
-                    actionRef?.current?.reload();
+                    actionRef?.current?.reloadAndRest();
                   }
                 });
               }}

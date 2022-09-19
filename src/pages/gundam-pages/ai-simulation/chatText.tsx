@@ -44,6 +44,7 @@ export default (props: any) => {
     resetTalking,
     talkingFlag, // 开启会话标志
     clearDialogFlag,
+    envirValue, //环境
   } = props;
   const [dialogList, setDialogList] = useState<any>([]); // 对话内容
   const [textMessage, setTextMessage] = useState<string>(''); // 输入的信息，发送成功之后立马清空
@@ -91,7 +92,7 @@ export default (props: any) => {
       let res = await getAssociationTextList({
         query: inputVal,
         suggestNumber: 8,
-        robotId: info.id,
+        robotId: envirValue == 'prod' ? info.id : `test_${info.id}`,
         sessionId: modalData.sessionId,
         formData,
       });
