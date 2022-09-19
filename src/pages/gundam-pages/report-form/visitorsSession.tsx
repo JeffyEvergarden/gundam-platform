@@ -87,7 +87,6 @@ export default () => {
       )}&robotId=${info.id}&orderCode=${paramsObj.orderCode}&orderType=${
         paramsObj.orderType
       }&customerId=${customerId}`,
-      '_self',
     );
   };
 
@@ -112,7 +111,6 @@ export default () => {
       )}&robotId=${info.id}&orderCode=${paramsObj.orderCode}&orderType=${
         paramsObj.orderType
       }&customerId=${customerId}`,
-      '_self',
     );
   };
 

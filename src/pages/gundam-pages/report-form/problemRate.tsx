@@ -315,7 +315,6 @@ export default () => {
       }/robot/statistics/questionMatchExport?startTime=${startTime}&endTime=${endTime}${codeToStr(
         code,
       )}&robotId=${info.id}`,
-      '_self',
     );
   };
 
@@ -345,7 +344,6 @@ export default () => {
       `${config.basePath}/robot/dialog/rejectSessionDialogueExport?dayId=${
         modalData?.dayId ?? ''
       }${codeToStr(paramsObj?.code)}&robotId=${info?.id ?? ''}`,
-      '_self',
     );
   };
 

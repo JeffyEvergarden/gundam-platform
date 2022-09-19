@@ -135,7 +135,6 @@ export default () => {
       }/robot/statistics/suggestExport?startTime=${startTime}&endTime=${endTime}${codeToStr(
         code,
       )}&robotId=${info.id}`,
-      '_self',
     );
   };
 
