@@ -84,6 +84,7 @@ const TablePage: React.FC = (props: any) => {
       title: '操作',
       dataIndex: 'op',
       search: false,
+      fixed: 'right',
       width: activeKey == '1' || activeKey == '2' ? 200 : 100,
       render: (v: any, r: any, i: any) => {
         return (

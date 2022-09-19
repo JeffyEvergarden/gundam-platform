@@ -1,12 +1,10 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { CloudDownloadOutlined } from '@ant-design/icons';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
-import playBt from './img/play.svg';
-import pauseBt from './img/pause.svg';
-import VoiceBt from './img/voice.svg';
-import downloadBt from './img/download.svg';
-import style from './style.less';
 import Condition from '../Condition';
+import pauseBt from './img/pause.svg';
+import playBt from './img/play.svg';
+import VoiceBt from './img/voice.svg';
+import style from './style.less';
 
 interface dataProp {
   children?: any;
@@ -94,9 +92,9 @@ const AudioPlay: React.FC<dataProp> = (props) => {
 
     const barPos = bar.getBoundingClientRect();
     let x = e.pageX - barPos.x;
-    let w = bar.clientWidth;
+    let w = bar?.clientWidth;
     // console.log(x, w, this.dragFlag)
-    audio.currentTime = (x / w) * audio.duration;
+    audio.currentTime = (x / w) * audio?.duration || 0;
   };
 
   // 进度条拖动相关 ----------------------------------------------------
@@ -132,7 +130,7 @@ const AudioPlay: React.FC<dataProp> = (props) => {
       info.dragFlag = false;
     }, 200);
     const audio = audioRef.current;
-    audio.currentTime = computedWidth * audio.duration;
+    audio.currentTime = computedWidth * audio?.duration || 0;
 
     window.removeEventListener('mousemove', info.mousemove);
     window.removeEventListener('mouseup', info.mouseup);
@@ -179,13 +177,14 @@ const AudioPlay: React.FC<dataProp> = (props) => {
   // 播放中更新显示时间
   const updateProgress = () => {
     const audio = audioRef.current;
-    const bufferedObj = audio.buffered;
+    const bufferedObj = audio?.buffered;
+    if (bufferedObj.length != 0) {
+      const buffered = bufferedObj?.end?.(bufferedObj?.length - 1) || 0;
 
-    const buffered = bufferedObj?.end(bufferedObj.length - 1) || 0;
-
-    setLoadTime(buffered);
-    setCurTime(audio.currentTime);
-    setTotalTime(audio.duration);
+      setLoadTime(buffered);
+      setCurTime(audio?.currentTime || 0);
+      setTotalTime(audio?.duration || 0);
+    }
   };
   // 播放停止
   const playEnd = () => {

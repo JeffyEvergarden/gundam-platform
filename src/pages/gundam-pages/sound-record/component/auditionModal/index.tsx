@@ -1,4 +1,5 @@
 import AudioPlay from '@/components/AudioPlay';
+import config from '@/config';
 import { Modal } from 'antd';
 import React, { useImperativeHandle, useState } from 'react';
 
@@ -24,7 +25,7 @@ const AuditionModal: React.FC = (props: any) => {
       }}
       footer={null}
     >
-      <AudioPlay musicSrc={soundInfo?.soundPath} />
+      <AudioPlay musicSrc={`${config.basePath}/robot/file/getFile?path=${soundInfo?.soundPath}`} />
     </Modal>
   );
 };

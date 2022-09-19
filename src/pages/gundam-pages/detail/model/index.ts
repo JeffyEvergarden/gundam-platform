@@ -9,7 +9,6 @@ import {
   getInterfaceCurrentList,
   getRejectFAQList,
   getTTSList,
-  parseTTS,
   _editFAQ,
   _editRejectFAQ,
 } from './api';
@@ -338,23 +337,9 @@ export const useTTSConfigModel = () => {
     }
   };
 
-  const auditionTTS = async (data: any) => {
-    setLoading(true);
-    let res: any = await parseTTS(data);
-    setLoading(false);
-    if (res.resultCode === successCode) {
-      message.success(res?.resultDesc);
-      return res;
-    } else {
-      message.error(res?.resultDesc || '未知系统异常');
-      return false;
-    }
-  };
-
   return {
     getTTS,
     editTTS,
-    auditionTTS,
     loading,
   };
 };

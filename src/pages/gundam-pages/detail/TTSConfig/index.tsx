@@ -1,3 +1,6 @@
+import AudioPlay from '@/components/AudioPlay';
+import config from '@/config';
+import { ObjToSearch } from '@/utils';
 import { Button, Form, Input, InputNumber, message, Select } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useModel } from 'umi';
@@ -37,7 +40,7 @@ const TTSConfig: React.FC = (props: any) => {
     ali: ['xiaoyun', 'aishuo', 'aiya', 'aixia', 'aijing', 'xiaomei', 'xiaogang', 'aimei'],
   };
 
-  const { getTTS, editTTS, auditionTTS, loading } = useTTSConfigModel();
+  const { getTTS, editTTS, loading } = useTTSConfigModel();
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -72,7 +75,7 @@ const TTSConfig: React.FC = (props: any) => {
       return false;
     }
 
-    auditionTTS(res).then((i) => {});
+    setVideoUrl(`${config.basePath}/robot/tts/parse?${ObjToSearch(res)}`);
   };
 
   useEffect(() => {
@@ -82,7 +85,13 @@ const TTSConfig: React.FC = (props: any) => {
   return (
     <div className={style['machine-page']}>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <Form form={form} {...layout}>
+        <Form
+          form={form}
+          {...layout}
+          onFieldsChange={() => {
+            setVideoUrl('');
+          }}
+        >
           <FormItem
             label={'TTS厂商'}
             name={'manufacturer'}
@@ -129,6 +138,7 @@ const TTSConfig: React.FC = (props: any) => {
             name={'speed'}
             key={'speed'}
             rules={[{ required: true, message: '请输入' }]}
+            initialValue={5}
           >
             <InputNumber style={{ width: 200 }} step="1" precision={1} />
           </FormItem>
@@ -138,21 +148,39 @@ const TTSConfig: React.FC = (props: any) => {
             name={'tone'}
             key={'tone'}
             rules={[{ required: true, message: '请输入' }]}
+            initialValue={5}
+          >
+            <InputNumber style={{ width: 200 }} step="1" precision={1} />
+          </FormItem>
+          <FormItem
+            // {...col}
+            label={'音量'}
+            name={'volume'}
+            key={'volume'}
+            rules={[{ required: true, message: '请输入' }]}
+            initialValue={5}
           >
             <InputNumber style={{ width: 200 }} step="1" precision={1} />
           </FormItem>
           <FormItem
             // {...col}
             label={'试听'}
-            name={'text'}
-            key={'text'}
           >
-            <Input.TextArea style={{ width: 300 }} placeholder={'请输入试听文本'} />
-            <FormItem>
+            <FormItem
+              // {...col}
+              // label={'试听'}
+              name={'text'}
+              key={'text'}
+            >
+              <Input.TextArea style={{ width: 300 }} placeholder={'请输入试听文本'} />
+            </FormItem>
+            <div>
               <Button type="link" onClick={soundPlay} style={{ padding: 0 }}>
                 点击播放
               </Button>
-            </FormItem>
+            </div>
+
+            {videoUrl && <AudioPlay musicSrc={videoUrl} />}
           </FormItem>
         </Form>
         <Button type="primary" onClick={submit} style={{ alignSelf: 'flex-end' }} loading={loading}>
