@@ -1,13 +1,10 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { CloudDownloadOutlined } from '@ant-design/icons';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
-import playBt from './img/play.svg';
-import pauseBt from './img/pause.svg';
-import VoiceBt from './img/voice.svg';
-import downloadBt from './img/download.svg';
-import style from './style.less';
 import Condition from '../Condition';
-import { message } from 'antd';
+import pauseBt from './img/pause.svg';
+import playBt from './img/play.svg';
+import VoiceBt from './img/voice.svg';
+import style from './style.less';
 
 interface dataProp {
   children?: any;
@@ -73,10 +70,10 @@ const AudioPlay: React.FC<dataProp> = (props) => {
   // 播放 or 暂停
   const changeType = () => {
     const audio = audioRef.current;
-    if (errorFlag) {
-      message.warning('暂无可播放的音频');
-      return;
-    }
+    // if (errorFlag) {
+    //   message.warning('暂无可播放的音频');
+    //   return;
+    // }
     //
     if (type === 'init' || type === 'play') {
       setType('pause');
@@ -198,10 +195,12 @@ const AudioPlay: React.FC<dataProp> = (props) => {
     const bufferedObj = audio.buffered || {};
     // console.log('bufferedObj', bufferedObj);
     const _end = (bufferedObj.length || 0) - 1;
+    if (bufferedObj.length != 0) {
+      const buffered = bufferedObj?.end?.(_end) || 0;
 
-    const buffered = bufferedObj?.end?.(_end) || 0;
+      setLoadTime(buffered);
+    }
 
-    setLoadTime(buffered);
     setCurTime(audio.currentTime);
     setTotalTime(audio.duration);
   };
