@@ -96,7 +96,7 @@ const FAQPage: React.FC<any> = (props: any) => {
   };
 
   useEffect(() => {
-    _getTreeData(info.id);
+    // _getTreeData(info.id);
     getTree();
     getCreateUser(info.id, 0);
     getGlobalValConfig(info.id);

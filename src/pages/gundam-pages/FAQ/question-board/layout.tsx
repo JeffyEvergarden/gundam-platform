@@ -16,6 +16,7 @@ import {
   Radio,
   Select,
   Space,
+  Switch,
   TreeSelect,
 } from 'antd';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -353,6 +354,7 @@ const Board: React.FC<any> = (props: any) => {
         ...otherObj,
         unknownId: (history?.location?.state as any)?.payload?.id,
       };
+      data.recommendList = data?.questionRecommend ? data?.recommendList : undefined;
       let response = await addNewQuestion(data);
       if (response === true) {
         // 回到主页
@@ -376,6 +378,7 @@ const Board: React.FC<any> = (props: any) => {
         robotId: info.id,
         ...otherObj,
       };
+      data.recommendList = data?.questionRecommend ? data?.recommendList : undefined;
       let response = await updateQuestion(data);
       if (response === true) {
         // 回到主页
@@ -424,6 +427,7 @@ const Board: React.FC<any> = (props: any) => {
       message.warning('请填写问题');
       return false;
     });
+
     if (!_res) {
       return;
     }
@@ -458,6 +462,16 @@ const Board: React.FC<any> = (props: any) => {
   const saveSame = async () => {
     //检测通过新增
     openRemarkModal();
+  };
+
+  const intelRecommend = (flag: any, index: number) => {
+    let formData: any = form.getFieldsValue();
+    formData.recommendList[index].recommendBizType = undefined;
+    formData.recommendList[index].recommendId = undefined;
+    formData.recommendList[index].recommend = undefined;
+    formData.recommendList[index].recommendType = flag ? 1 : 0;
+
+    form.setFieldsValue({ ...formData });
   };
 
   return (
@@ -703,7 +717,7 @@ const Board: React.FC<any> = (props: any) => {
                 <Checkbox onChange={changeAdvise}>启用</Checkbox>
               </Form.Item>
             </div>
-            <Condition r-if={showAdvise}>
+            <Condition r-show={showAdvise}>
               <FormList name="recommendList">
                 {(fields, { add, remove }) => {
                   const addNew = () => {
@@ -718,7 +732,7 @@ const Board: React.FC<any> = (props: any) => {
                         recommendBizType: null,
                         recommendId: null,
                         recommend: null,
-                        recommendType: 1,
+                        recommendType: 0,
                       },
                       length,
                     );
@@ -730,32 +744,71 @@ const Board: React.FC<any> = (props: any) => {
                         // const currentItem = getItem();
 
                         // const _showTime = currentItem?.[index]?.timeFlag;
+                        const formData: any = form.getFieldsValue();
+                        const intelFlag = formData?.recommendList?.[index]?.recommendType;
 
                         return (
-                          <div key={field.key} className={style['diy-row']}>
-                            <div className={style['zy-row_sp']} style={{ paddingBottom: '6px' }}>
-                              <span
-                                className={style['del-bt']}
-                                onClick={() => {
-                                  remove(index);
-                                }}
-                              >
-                                <MinusCircleOutlined />
-                              </span>
+                          <Form.Item key={field.key} className={style['diy-row']}>
+                            {/* <div className={style['zy-row_sp']} style={{ paddingBottom: '6px' }}> */}
+                            <Space align="baseline">
+                              {query.recycle == 0 && (
+                                <span
+                                  className={style['del-bt']}
+                                  onClick={() => {
+                                    remove(index);
+                                  }}
+                                >
+                                  <MinusCircleOutlined />
+                                </span>
+                              )}
 
                               <Form.Item
                                 name={[field.name, 'recommend']}
                                 fieldKey={[field.fieldKey, 'recommend']}
-                                rules={[{ required: true, message: '请选择' }]}
+                                rules={[
+                                  {
+                                    required: showAdvise
+                                      ? info.robotTypeLabel === 'text'
+                                        ? !intelFlag
+                                        : true
+                                      : false,
+                                    message: '请选择',
+                                  },
+                                ]}
                               >
                                 <Selector
+                                  disabled={info.robotTypeLabel === 'text' ? intelFlag : false}
                                   openModal={() => {
                                     openModal(index);
                                   }}
                                 />
                               </Form.Item>
-                            </div>
-                          </div>
+                              {/* <Condition r-if={true}> */}
+                              <Condition r-if={info.robotTypeLabel === 'text'}>
+                                <span style={{ marginLeft: '16px' }}>智能推荐</span>
+                              </Condition>
+
+                              <Condition r-if={info.robotTypeLabel === 'text'}>
+                                <Form.Item
+                                  name={[field.name, 'recommendType']}
+                                  fieldKey={[field.fieldKey, 'recommendType']}
+                                  key={field.fieldKey + 'recommendType'}
+                                  valuePropName="checked"
+                                  style={{ marginBottom: 0 }}
+                                >
+                                  <Switch
+                                    style={{ display: 'flex', alignItems: 'center' }}
+                                    checkedChildren="开启"
+                                    unCheckedChildren="关闭"
+                                    onChange={(checked: any) => {
+                                      intelRecommend(checked, index);
+                                    }}
+                                  ></Switch>
+                                </Form.Item>
+                              </Condition>
+                            </Space>
+                            {/* </div> */}
+                          </Form.Item>
                         );
                       })}
 

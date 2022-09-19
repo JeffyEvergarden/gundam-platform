@@ -209,7 +209,7 @@ export const useFAQModel = () => {
     let res: any = await getRejectFAQList(params);
     setConfigLoading(false);
     console.log(res);
-    return res.data;
+    return res?.data || [];
   };
 
   const editRejectTableList = async (data: any) => {

@@ -86,12 +86,14 @@ const FAQConfig: React.FC = (props: any) => {
       return;
     }
     console.log(res);
+    let flag;
 
     let _res = Nconfig.map((item: any) => {
       Object.keys(res.systemConfigList).forEach((v) => {
         console.log(item.configKey, v);
         if (item?.configKey == v) {
           if (item.dataType == 4) {
+            flag = res.systemConfigList[v];
             item.configValue = res.systemConfigList[v] ? '1' : '0';
           } else {
             item.configValue = res.systemConfigList[v];
@@ -101,30 +103,35 @@ const FAQConfig: React.FC = (props: any) => {
       return item;
     });
 
-    let [result1, result2]: any = await Promise.all([
-      editFAQ(_res),
-      editRejectTableList({
+    let result1: any = await editFAQ(_res);
+    let result2: any;
+    if (flag) {
+      result2 = await editRejectTableList({
         robotId: info.id,
-        faqRejectRecommends: form.getFieldValue('recommendList'),
-      }),
-    ]);
+        faqRejectRecommends: flag ? form.getFieldValue('recommendList') : undefined,
+      });
+    }
 
-    if (result1?.resultCode === config.successCode && result2?.resultCode === config.successCode) {
+    if (
+      (result1?.resultCode === config.successCode && result2?.resultCode === config.successCode) ||
+      (result1?.resultCode === config.successCode && !result2)
+    ) {
       message.success('成功');
       getList();
       getRejectList();
     } else {
       let str = '';
       if (result1?.resultCode != config.successCode) {
-        str += result1?.resultDesc;
+        str += result1?.resultDesc || '';
       }
       if (result2?.resultCode != config.successCode) {
-        if (str) {
+        if (str && result2?.resultDesc) {
           str += ',';
         }
-        str += result2?.resultDesc;
+        str += result2?.resultDesc || '';
       }
       message.error(str);
+      return;
     }
 
     // await .then(async (res) => {
@@ -139,7 +146,7 @@ const FAQConfig: React.FC = (props: any) => {
     // });
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     getFlowList(info.id);
     _getTreeData(info.id);
     const _item = form.getFieldsValue();
@@ -154,8 +161,8 @@ const FAQConfig: React.FC = (props: any) => {
       ];
       form.setFieldsValue(_item);
     }
-    getList();
-    getRejectList();
+    await getList();
+    await getRejectList();
   }, []);
 
   const getRecommendItem = () => {
@@ -329,7 +336,7 @@ const FAQConfig: React.FC = (props: any) => {
                 );
               }
             })}
-            <Condition r-if={switchType}>
+            <Condition r-show={switchType}>
               <FormList name="recommendList">
                 {(fields, { add, remove }) => {
                   const addNew = () => {
@@ -390,7 +397,11 @@ const FAQConfig: React.FC = (props: any) => {
                                 validateTrigger={['onChange', 'onBlur']}
                                 rules={[
                                   {
-                                    required: info.robotTypeLabel === 'text' ? !intelFlag : true,
+                                    required: switchType
+                                      ? info.robotTypeLabel === 'text'
+                                        ? !intelFlag
+                                        : true
+                                      : false,
                                     message: '请选择',
                                   },
                                 ]}
