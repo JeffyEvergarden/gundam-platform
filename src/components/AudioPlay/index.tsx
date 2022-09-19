@@ -7,6 +7,7 @@ import VoiceBt from './img/voice.svg';
 import downloadBt from './img/download.svg';
 import style from './style.less';
 import Condition from '../Condition';
+import { message } from 'antd';
 
 interface dataProp {
   children?: any;
@@ -52,6 +53,8 @@ const AudioPlay: React.FC<dataProp> = (props) => {
 
   const [computedWidth, setComputedWidth] = useState<number>(0);
 
+  const [errorFlag, setErrorFlag] = useState<boolean>(false);
+
   // 播放百分比
   const curWidth = useMemo(() => {
     return ((curTime / totalTime) * 100).toFixed(6) + '%';
@@ -70,6 +73,10 @@ const AudioPlay: React.FC<dataProp> = (props) => {
   // 播放 or 暂停
   const changeType = () => {
     const audio = audioRef.current;
+    if (errorFlag) {
+      message.warning('暂无可播放的音频');
+      return;
+    }
     //
     if (type === 'init' || type === 'play') {
       setType('pause');
@@ -82,6 +89,9 @@ const AudioPlay: React.FC<dataProp> = (props) => {
 
   // 调整滚动条
   const touchTime = (e: any) => {
+    if (errorFlag) {
+      return;
+    }
     // console.log(e.offsetX)
     // console.log(e.target.clientWidth)
     const info = infoRef.current;
@@ -124,6 +134,9 @@ const AudioPlay: React.FC<dataProp> = (props) => {
   };
   // 拖动进度滚动条抬起
   const mouseup = (e: any) => {
+    if (errorFlag) {
+      return;
+    }
     e.stopPropagation();
     console.log('up');
     const info = infoRef.current;
@@ -140,6 +153,9 @@ const AudioPlay: React.FC<dataProp> = (props) => {
 
   const mousedown = (e: any) => {
     console.log('down', e.clientX);
+    if (errorFlag) {
+      return;
+    }
     // 阻止点击时间
     // console.log(e.pageX)
     const bar = barRef.current;
@@ -173,15 +189,17 @@ const AudioPlay: React.FC<dataProp> = (props) => {
       window.removeEventListener('mousemove', info.mousemove);
       window.removeEventListener('mouseup', info.mouseup);
     };
-  }, [dragFlag, computedWidth]);
+  }, [dragFlag, computedWidth, errorFlag]);
 
   // 初始化 --------------------------------------------
   // 播放中更新显示时间
   const updateProgress = () => {
     const audio = audioRef.current;
-    const bufferedObj = audio.buffered;
+    const bufferedObj = audio.buffered || {};
+    // console.log('bufferedObj', bufferedObj);
+    const _end = (bufferedObj.length || 0) - 1;
 
-    const buffered = bufferedObj?.end(bufferedObj.length - 1) || 0;
+    const buffered = bufferedObj?.end?.(_end) || 0;
 
     setLoadTime(buffered);
     setCurTime(audio.currentTime);
@@ -343,7 +361,7 @@ const AudioPlay: React.FC<dataProp> = (props) => {
   useEffect(() => {
     const info: any = infoRef.current;
     if (voiceDragFlag) {
-      console.log('------------');
+      // console.log('------------');
       info.voiceMousemove = voiceMousemove;
       info.voiceMouseup = voiceMouseup;
       window.addEventListener('mousemove', voiceMousemove, false);
@@ -355,6 +373,10 @@ const AudioPlay: React.FC<dataProp> = (props) => {
       window.removeEventListener('mouseup', info.voiceMouseup);
     };
   }, [voiceDragFlag, computedVoiceHeight]);
+
+  const error = () => {
+    setErrorFlag(true);
+  };
 
   return (
     <>
@@ -411,7 +433,18 @@ const AudioPlay: React.FC<dataProp> = (props) => {
 
         <a className={style['downbt']} download href={musicSrc}></a>
       </div>
-      <audio id="audio" src={musicSrc} controls ref={audioRef} className={style['hiden-audio']} />
+      <audio
+        id="audio"
+        src={musicSrc}
+        controls
+        ref={audioRef}
+        className={style['hiden-audio']}
+        onLoadStart={() => {
+          console.log('播放开始加载');
+          setErrorFlag(false);
+        }}
+        onError={error}
+      />
     </>
   );
 };
