@@ -3,7 +3,7 @@ import { throttle, toNumber, twoDecimal_f } from '@/utils';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Space, Spin, Table, Typography } from 'antd';
 import moment from 'moment';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import HeadSearch from './components/headSearch';
 import LineChart from './components/lineCharts';
@@ -91,16 +91,30 @@ export default () => {
       clarifyReplyRate.val.push(toNumber(item.clarifyReplyRate));
       recommendReplyConfimRate.val.push(toNumber(item.recommendReplyConfirmRate));
     });
-    temp.push(
-      clarifyReplyNum,
-      clarifyConfirmDistinctNum,
-      clarifyUnconfirmedReplyNum,
-      recommendReplyNum,
-      recommendDistinctConfirmNum,
-      recommendReplyUnconfirmedNum,
-      clarifyReplyRate,
-      recommendReplyConfimRate,
-    );
+    if (info.robotType == 0) {
+      temp.push(
+        clarifyReplyNum,
+        clarifyConfirmDistinctNum,
+        clarifyUnconfirmedReplyNum,
+        recommendReplyNum,
+        recommendDistinctConfirmNum,
+        recommendReplyUnconfirmedNum,
+        clarifyReplyRate,
+        recommendReplyConfimRate,
+      );
+    } else if (info.robotType == 1) {
+      temp.push(
+        clarifyReplyNum,
+        clarifyConfirmDistinctNum,
+        clarifyUnconfirmedReplyNum,
+        // recommendReplyNum,
+        // recommendDistinctConfirmNum,
+        // recommendReplyUnconfirmedNum,
+        clarifyReplyRate,
+        // recommendReplyConfimRate,
+      );
+    }
+
     setDayId(day);
     setList(temp);
   };
@@ -127,11 +141,10 @@ export default () => {
       }/robot/statistics/faqAndClarifyExport?startTime=${startTime}&endTime=${endTime}${codeToStr(
         code,
       )}&robotId=${info.id}`,
-      '_self',
     );
   };
 
-  const columns: any = [
+  const columns_text: any = [
     { title: '日期', dataIndex: 'dayId', ellipsis: true },
     {
       title: '澄清统计',
@@ -257,6 +270,71 @@ export default () => {
     },
   ];
 
+  const columns_sound: any = [
+    { title: '日期', dataIndex: 'dayId', ellipsis: true },
+    {
+      title: '澄清统计',
+      children: [
+        {
+          title: () => {
+            return (
+              <Space>
+                回复数
+                <span>
+                  <QuestionCircleOutlined />
+                </span>
+              </Space>
+            );
+          },
+          dataIndex: 'clarifyReplyNum',
+          ellipsis: true,
+        },
+        {
+          title: () => {
+            return (
+              <Space>
+                确认数
+                <span>
+                  <QuestionCircleOutlined />
+                </span>
+              </Space>
+            );
+          },
+          dataIndex: 'clarifyConfirmDistinctNum',
+          ellipsis: true,
+        },
+        {
+          title: () => {
+            return (
+              <Space>
+                未确认数
+                <span>
+                  <QuestionCircleOutlined />
+                </span>
+              </Space>
+            );
+          },
+          dataIndex: 'clarifyUnconfirmedReplyNum',
+          ellipsis: true,
+        },
+        {
+          title: () => {
+            return (
+              <Space>
+                确认率
+                <span>
+                  <QuestionCircleOutlined />
+                </span>
+              </Space>
+            );
+          },
+          dataIndex: 'clarifyReplyRate',
+          ellipsis: true,
+        },
+      ],
+    },
+  ];
+
   return (
     <div className={styles.pageContainer}>
       <div className={styles.pageComtain}>
@@ -275,26 +353,36 @@ export default () => {
             dataSource={dataSource}
             columns={dayId}
             data={lineList}
-            color={[
-              '#6395F9',
-              '#62DAAB',
-              '#657798',
-              '#F6C022',
-              '#7666F9',
-              '#78D3F8',
-              '#9661BC',
-              '#F6903D',
-            ]}
-            legendData={[
-              '澄清回复数',
-              '澄清确认数',
-              '澄清未确认数',
-              '推荐回复数',
-              '推荐确认数',
-              '推荐未确认数',
-              '澄清确认率',
-              '推荐确认率',
-            ]}
+            color={
+              info.robotType == 0
+                ? [
+                    '#6395F9',
+                    '#62DAAB',
+                    '#657798',
+                    '#F6C022',
+                    '#7666F9',
+                    '#78D3F8',
+                    '#9661BC',
+                    '#F6903D',
+                  ]
+                : ['#6395F9', '#62DAAB', '#657798', '#9661BC']
+            }
+            legendData={
+              info.robotType == 0
+                ? [
+                    '澄清回复数',
+                    '澄清确认数',
+                    '澄清未确认数',
+                    '推荐回复数',
+                    '推荐确认数',
+                    '推荐未确认数',
+                    '澄清确认率',
+                    '推荐确认率',
+                  ]
+                : info.robotType == 1
+                ? ['澄清回复数', '澄清确认数', '澄清未确认数', '澄清确认率']
+                : []
+            }
             className={styles.visitorBox}
           />
         </div>
@@ -302,7 +390,9 @@ export default () => {
           <Spin spinning={tableLoading}>
             <Table
               rowKey={(record: any) => record.dayId}
-              columns={columns}
+              columns={
+                info.robotType == 0 ? columns_text : info.robotType == 1 ? columns_sound : []
+              }
               dataSource={dataSource}
               pagination={false}
               bordered
@@ -374,18 +464,22 @@ export default () => {
                         <Table.Summary.Cell index={4}>
                           <Text>{totalclarifyReplyRate}</Text>
                         </Table.Summary.Cell>
-                        <Table.Summary.Cell index={5}>
-                          <Text>{totalrecommendReplyNum}</Text>
-                        </Table.Summary.Cell>
-                        <Table.Summary.Cell index={6}>
-                          <Text>{totalrecommendDistinctConfirmNum}</Text>
-                        </Table.Summary.Cell>
-                        <Table.Summary.Cell index={7}>
-                          <Text>{totalrecommendReplyUnconfirmedNum}</Text>
-                        </Table.Summary.Cell>
-                        <Table.Summary.Cell index={8}>
-                          <Text>{totalrecommendReplyConfimRate}</Text>
-                        </Table.Summary.Cell>
+                        {info.robotType == 0 && (
+                          <Fragment>
+                            <Table.Summary.Cell index={5}>
+                              <Text>{totalrecommendReplyNum}</Text>
+                            </Table.Summary.Cell>
+                            <Table.Summary.Cell index={6}>
+                              <Text>{totalrecommendDistinctConfirmNum}</Text>
+                            </Table.Summary.Cell>
+                            <Table.Summary.Cell index={7}>
+                              <Text>{totalrecommendReplyUnconfirmedNum}</Text>
+                            </Table.Summary.Cell>
+                            <Table.Summary.Cell index={8}>
+                              <Text>{totalrecommendReplyConfimRate}</Text>
+                            </Table.Summary.Cell>
+                          </Fragment>
+                        )}
                       </Table.Summary.Row>
                     </Table.Summary>
                   );

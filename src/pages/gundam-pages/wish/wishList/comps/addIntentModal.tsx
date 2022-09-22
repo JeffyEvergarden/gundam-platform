@@ -86,15 +86,21 @@ export default (props: any) => {
                     </Form.Item>
                   )}
 
-                  {item.type == 'radio2' && (
-                    <Condition r-if={!item.show ? true : info.robotTypeLabel == 'text'}>
-                      <Form.Item name={item.name} label={item.label} initialValue={1}>
-                        <Radio.Group>
-                          <Radio value={1}>是</Radio>
-                          <Radio value={0}>否</Radio>
-                        </Radio.Group>
-                      </Form.Item>
-                    </Condition>
+                  {item.type == 'radio2' && item.name == 'suggest' && info?.robotType == 0 && (
+                    <Form.Item name={item.name} label={item.label} initialValue={1}>
+                      <Radio.Group>
+                        <Radio value={1}>是</Radio>
+                        <Radio value={0}>否</Radio>
+                      </Radio.Group>
+                    </Form.Item>
+                  )}
+                  {item.type == 'radio2' && item.name == 'clarify' && (
+                    <Form.Item name={item.name} label={item.label} initialValue={1}>
+                      <Radio.Group>
+                        <Radio value={1}>是</Radio>
+                        <Radio value={0}>否</Radio>
+                      </Radio.Group>
+                    </Form.Item>
                   )}
                 </React.Fragment>
               );

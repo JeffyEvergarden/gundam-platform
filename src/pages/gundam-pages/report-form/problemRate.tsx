@@ -153,6 +153,7 @@ export default () => {
       // sorter: (a: any, b: any) => a.dialogueTurn - b.dialogueTurn,
       dataIndex: 'recommendReplyConfirmRate',
       ellipsis: true,
+      hideInTable: info.robotType == 1,
     },
     {
       title: () => {
@@ -227,43 +228,66 @@ export default () => {
       matchRate.val.push(toNumber(item.matchRate));
       day.push(item.dayId);
     });
-    temp.push(
-      directReplyNum,
-      clarifyReplyNum,
-      clarifyConfirmReplyNum,
-      recommendReplyConfirmNum,
-      discernReplyNum,
-      matchRate,
-    );
+    if (info.robotType == 0) {
+      temp.push(
+        directReplyNum,
+        clarifyReplyNum,
+        clarifyConfirmReplyNum,
+        recommendReplyConfirmNum,
+        discernReplyNum,
+        matchRate,
+      );
+    } else if (info.robotType == 1) {
+      temp.push(
+        directReplyNum,
+        clarifyReplyNum,
+        clarifyConfirmReplyNum,
+        // recommendReplyConfirmNum,
+        discernReplyNum,
+        matchRate,
+      );
+    }
+
     setDayId(day);
     setList(temp);
 
     // 饼图数据处理
-    // [
-    //   { value: 1048, name: '明确回答数', percent: '80%' },
-    //   { value: 735, name: '澄清回复数', percent: '60%' },
-    //   { value: 580, name: '澄清确认数', percent: '70%' },
-    //   { value: 484, name: '推荐确认数', percent: '50%' },
-    //   { value: 300, name: '拒识总数', percent: '40%' },
-    // ]
     setsumReplyNum(res?.data?.sum?.sumReplyNum);
     sethistorySumReplyNum(res?.data?.sum?.historySumReplyNum);
     let sumData = res?.data?.sum;
-    setPieList([
-      { value: sumData.directReplyNum, name: '明确回答数', percent: sumData.directReplyRate },
-      { value: sumData.clarifyReplyNum, name: '澄清回复数', percent: sumData.clarifyReplyRate },
-      {
-        value: sumData.clarifyConfirmReplyNum,
-        name: '澄清确认数',
-        percent: sumData.clarifyConfirmReplyRate,
-      },
-      {
-        value: sumData.recommendReplyConfirmNum,
-        name: '推荐确认数',
-        percent: sumData.recommendReplyConfirmRate,
-      },
-      { value: sumData.discernReplyNum, name: '拒识总数', percent: sumData.discernReplyRate },
-    ]);
+    if (info.robotType == 0) {
+      setPieList([
+        { value: sumData.directReplyNum, name: '明确回答数', percent: sumData.directReplyRate },
+        { value: sumData.clarifyReplyNum, name: '澄清回复数', percent: sumData.clarifyReplyRate },
+        {
+          value: sumData.clarifyConfirmReplyNum,
+          name: '澄清确认数',
+          percent: sumData.clarifyConfirmReplyRate,
+        },
+        {
+          value: sumData.recommendReplyConfirmNum,
+          name: '推荐确认数',
+          percent: sumData.recommendReplyConfirmRate,
+        },
+        { value: sumData.discernReplyNum, name: '拒识总数', percent: sumData.discernReplyRate },
+      ]);
+    } else if (info.robotType == 1) {
+      setPieList([
+        { value: sumData.directReplyNum, name: '明确回答数', percent: sumData.directReplyRate },
+        { value: sumData.clarifyReplyNum, name: '澄清回复数', percent: sumData.clarifyReplyRate },
+        {
+          value: sumData.clarifyConfirmReplyNum,
+          name: '澄清确认数',
+          percent: sumData.clarifyConfirmReplyRate,
+        },
+        // {
+        //   value: sumData.recommendReplyConfirmNum,
+        //   name: '推荐确认数',
+        //   percent: sumData.recommendReplyConfirmRate,
+        // },
+        { value: sumData.discernReplyNum, name: '拒识总数', percent: sumData.discernReplyRate },
+      ]);
+    }
 
     return {
       data: res?.data?.list || [],
@@ -291,7 +315,6 @@ export default () => {
       }/robot/statistics/questionMatchExport?startTime=${startTime}&endTime=${endTime}${codeToStr(
         code,
       )}&robotId=${info.id}`,
-      '_self',
     );
   };
 
@@ -321,7 +344,6 @@ export default () => {
       `${config.basePath}/robot/dialog/rejectSessionDialogueExport?dayId=${
         modalData?.dayId ?? ''
       }${codeToStr(paramsObj?.code)}&robotId=${info?.id ?? ''}`,
-      '_self',
     );
   };
 
@@ -383,8 +405,16 @@ export default () => {
               dataSource={dataSource}
               loading={tableLoading}
               title={'问题回答比例'}
-              color={['#6395F9', '#62DAAB', '#657798', '#F6C022', '#7666F9']}
-              legendData={['明确回答数', '澄清回复数', '澄清确认数', '推荐确认数', '拒识总数']}
+              color={
+                info.robotType == 0
+                  ? ['#6395F9', '#62DAAB', '#657798', '#F6C022', '#7666F9']
+                  : ['#6395F9', '#62DAAB', '#657798', '#7666F9']
+              }
+              legendData={
+                info.robotType == 0
+                  ? ['明确回答数', '澄清回复数', '澄清确认数', '推荐确认数', '拒识总数']
+                  : ['明确回答数', '澄清回复数', '澄清确认数', '拒识总数']
+              }
             />
           </div>
           <div style={{ width: '70%' }}>
@@ -397,15 +427,16 @@ export default () => {
               dataSource={dataSource}
               columns={dayId}
               data={lineList}
-              color={['#6395F9', '#62DAAB', '#657798', '#F6C022', '#7666F9', '#B382D6']}
-              legendData={[
-                '明确回答率',
-                '澄清回复数',
-                '澄清确认数',
-                '推荐确认数',
-                '拒识总数',
-                '匹配率',
-              ]}
+              color={
+                info.robotType == 0
+                  ? ['#6395F9', '#62DAAB', '#657798', '#F6C022', '#7666F9', '#B382D6']
+                  : ['#6395F9', '#62DAAB', '#657798', '#7666F9', '#B382D6']
+              }
+              legendData={
+                info.robotType == 0
+                  ? ['明确回答率', '澄清回复数', '澄清确认数', '推荐确认数', '拒识总数', '匹配率']
+                  : ['明确回答率', '澄清回复数', '澄清确认数', '拒识总数', '匹配率']
+              }
               className={styles.visitorBox}
             />
           </div>

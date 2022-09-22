@@ -436,7 +436,11 @@ const SelectorModal: React.FC<any> = (props: any) => {
         }
       } else {
         if (selectList.length < min || selectList.length > max) {
-          message.warning('请选择2-5项FAQ或意图用于澄清推荐问题');
+          if (info.robotType == 1) {
+            message.warning('请选择2项FAQ或意图用于澄清推荐问题');
+          } else {
+            message.warning('请选择2-5项FAQ或意图用于澄清推荐问题');
+          }
           return;
         }
       }
