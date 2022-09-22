@@ -40,7 +40,7 @@ const TTSConfig: React.FC = (props: any) => {
     ali: ['xiaoyun', 'aishuo', 'aiya', 'aixia', 'aijing', 'xiaomei', 'xiaogang', 'aimei'],
   };
 
-  const { getTTS, editTTS, loading } = useTTSConfigModel();
+  const { getTTS, editTTS, auditionTTS, loading } = useTTSConfigModel();
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -80,8 +80,13 @@ const TTSConfig: React.FC = (props: any) => {
       message.warning('请输入试听文本');
       return false;
     }
-
-    setVideoUrl(`${config.basePath}/robot/tts/parse?${ObjToSearch(res)}`);
+    await auditionTTS(res).then((i) => {
+      if (i) {
+        setVideoUrl(`${config.basePath}/robot/tts/parse?${ObjToSearch(res)}`);
+      } else {
+        setVideoUrl('');
+      }
+    });
   };
 
   useEffect(() => {

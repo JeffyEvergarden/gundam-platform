@@ -243,6 +243,26 @@ const HightformTemplate: any = (props: any) => {
             disabled={disabled}
           />
         </FormItem>
+        {/* 静默超时时间 */}
+        <Condition r-if={title == '静默'}>
+          <FormItem
+            name={[name, 'timeout']}
+            label={title + '超时时间'}
+            style={{ marginTop: '8px' }}
+            rules={[{ required: true, message: '请输入静默超时时间' }]}
+            initialValue={5}
+          >
+            <InputNumber
+              max={10}
+              min={1}
+              step="1"
+              precision={0}
+              style={{ width: '161px' }}
+              placeholder={'请输入' + title + '次数'}
+              disabled={disabled}
+            />
+          </FormItem>
+        </Condition>
 
         {/* 超限动作 */}
         <div className={'label_sp'} style={{ marginTop: '8px' }}>
