@@ -5,7 +5,8 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { history, useLocation, useModel } from 'umi';
 import RobotChatBox from './ai-simulation';
 
-import ProLayout, { RouteContext, RouteContextType } from '@ant-design/pro-layout';
+import type { RouteContextType } from '@ant-design/pro-layout';
+import ProLayout, { RouteContext } from '@ant-design/pro-layout';
 
 import { valueToCodeMap } from '@/auth/util';
 import Condition from '@/components/Condition';

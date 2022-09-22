@@ -135,7 +135,7 @@ const EvaluationModal: React.FC<any> = (props: any) => {
             name="clarifyNum"
             label="澄清数量"
             style={{ width: '360px' }}
-            initialValue={3}
+            initialValue={info.robotType == 1 ? 2 : 3}
           >
             <InputNumber placeholder={'请输入'} min={1} max={99} step="1" precision={0} />
           </FormItem>

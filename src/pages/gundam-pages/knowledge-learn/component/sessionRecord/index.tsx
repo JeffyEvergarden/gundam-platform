@@ -87,7 +87,6 @@ export default (props: any) => {
   const exportList = () => {
     window.open(
       `${config.basePath}/robot/dialog/unknownSessionDialogueExport?unknownId=${modalData?.id}&robotId=${info?.id}`,
-      '_self',
     );
   };
 

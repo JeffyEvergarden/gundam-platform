@@ -1,11 +1,11 @@
 import Condition from '@/components/Condition';
 import { UserOutlined } from '@ant-design/icons';
-import { Drawer, Input, message } from 'antd';
+import { Drawer, Input, message, Space } from 'antd';
 import { useImperativeHandle, useState } from 'react';
 import { useModel } from 'umi';
 import { useSessionModel } from '../detail-modal/model';
 import style from './style.less';
-
+import AudioPlay from '@/components/AudioPlay';
 import robotAvator from './img/robot.png';
 
 const { Search } = Input;
@@ -77,6 +77,14 @@ const RecordModal: React.FC<any> = (props: any) => {
       onClose={close}
       destroyOnClose={true}
       // maskClosable={false}
+      footer={
+        pageType == 'visitorsSession' && info?.robotType == 1 ? (
+          <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
+            <div style={{ width: '100px' }}>全程会话录音</div>
+            <AudioPlay musicSrc={'/aichat/mp3/bluebird.mp3'} />
+          </div>
+        ) : null
+      }
     >
       <div id="scrollableDiv" className={style['record-bg']}>
         {recordList.map((item: any, index: number) => {
