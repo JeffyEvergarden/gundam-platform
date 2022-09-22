@@ -64,6 +64,21 @@ const soundRobotDialogueText = (req: any, res: any) => {
       askTextSound: '111111',
       nluInfo:
         '{"resultCode":"0000","data":{"id":"100","flowId":"100","robotName":"命运官位指定阿尔托莉亚潘多拉","robotType":0,"soundType":0}}',
+      recommendQuestion: [
+        {
+          number: 1,
+          askType: 'faq',
+          askKey: '111111',
+          askText: '请问你是要询问还款吗？',
+        },
+        {
+          number: 2,
+          askType: 'faq',
+          askKey: '111111',
+          askText: '循环产品利率？',
+        },
+      ],
+      recommendText: '您是否还想咨询以下问题：',
     },
   });
 };

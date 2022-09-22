@@ -513,9 +513,11 @@ export default (props: any) => {
                               className={styles['askText']}
                               dangerouslySetInnerHTML={{ __html: item?.askText }}
                             />
-                            <div className={styles['words-type-audio']}>
-                              <AudioPlay musicSrc={'/aichat/mp3/bluebird.mp3'} />
-                            </div>
+                            {/* {info?.robotType == 1 && (
+                              <div className={styles['words-type-audio']}>
+                                <AudioPlay musicSrc={'/aichat/mp3/bluebird.mp3'} />
+                              </div>
+                            )} */}
                           </div>
                         </div>
                       )}
@@ -524,9 +526,11 @@ export default (props: any) => {
                           <img className={styles['head-robot']} alt="robot" src={robotPhoto} />
                           <div className={styles['wordsbox-robot']}>
                             <div className={styles['words']}>{item?.message}</div>
-                            <div className={styles['words-type-audio']}>
-                              <AudioPlay musicSrc={'/aichat/mp3/bluebird.mp3'} />
-                            </div>
+                            {info?.robotType == 1 && (
+                              <div className={styles['words-type-audio']}>
+                                <AudioPlay musicSrc={'/aichat/mp3/bluebird.mp3'} />
+                              </div>
+                            )}
                           </div>
                         </div>
                       )}
@@ -573,9 +577,11 @@ export default (props: any) => {
                                 );
                               })}
                             </div>
-                            <div className={styles['words-type-audio']}>
-                              <AudioPlay musicSrc={'/aichat/mp3/bluebird.mp3'} />
-                            </div>
+                            {/* {info?.robotType == 0 && (
+                              <div className={styles['words-type-audio']}>
+                                <AudioPlay musicSrc={'/aichat/mp3/bluebird.mp3'} />
+                              </div>
+                            )} */}
                           </div>
                         </div>
                       )}

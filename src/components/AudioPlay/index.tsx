@@ -390,14 +390,14 @@ const AudioPlay: React.FC<dataProp> = (props) => {
         </div>
 
         <div className={style['barbg']} ref={barRef} onClick={touchTime}>
-          <div className={style['loadbar']} style={{ width: loadWidth }}></div>
-          <div className={style['curbar']} style={{ width: dragFlag ? ballWidth : curWidth }}></div>
+          <div className={style['loadbar']} style={{ width: loadWidth }} />
+          <div className={style['curbar']} style={{ width: dragFlag ? ballWidth : curWidth }} />
 
           <div
             className={style['curball']}
             style={{ left: dragFlag ? ballWidth : curWidth }}
             onMouseDown={mousedown}
-          ></div>
+          />
         </div>
 
         <span className={style['time-span']}>
@@ -418,19 +418,18 @@ const AudioPlay: React.FC<dataProp> = (props) => {
                 <div
                   className={style['voicebar']}
                   style={{ height: voiceDragFlag ? voiceComputedHeight : voiceBallWidth }}
-                ></div>
+                />
 
                 <div
                   className={style['voiceball']}
                   style={{ bottom: voiceDragFlag ? voiceComputedHeight : voiceBallWidth }}
                   onMouseDown={voiceMousedown}
-                ></div>
+                />
               </div>
             </div>
           </Condition>
         </div>
-
-        <a className={style['downbt']} download href={musicSrc}></a>
+        <a className={style['downbt']} download href={musicSrc} />
       </div>
       <audio
         id="audio"
