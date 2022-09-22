@@ -40,6 +40,11 @@ export default [
         value: 'robot_mg-global-channel_conf',
         code: '001-002-005',
       },
+      {
+        label: 'TTS配置',
+        value: 'robot_mg-global-tts_conf',
+        code: '001-002-006',
+      },
     ],
   },
   // 意图管理
@@ -104,6 +109,12 @@ export default [
         code: '001-008-005',
       },
     ],
+  },
+  //录音管理
+  {
+    label: '录音管理',
+    value: 'robot_mg-sound-list',
+    code: '001-012-001',
   },
   ...report,
   ...knowLearn,

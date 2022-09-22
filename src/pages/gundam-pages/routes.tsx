@@ -1,3 +1,4 @@
+import config from '@/config';
 import {
   AudioOutlined,
   BuildOutlined,
@@ -57,7 +58,10 @@ export default [
       {
         path: '/gundamPages/detail/TTSConfig',
         name: 'TTS配置',
-        // code: 'robot_mg-global-inteface_conf',
+        code: 'robot_mg-global-tts_conf',
+        hideFn: (info: any) => {
+          return config.robotTypeMap[info?.robotType] === '文本'; //文本隐藏
+        },
       },
     ],
   },
@@ -242,6 +246,9 @@ export default [
     icon: <AudioOutlined />,
     path: '/gundamPages/soundRecord',
     name: '录音管理',
-    // code: 'robot_mg-label-list',
+    code: 'robot_mg-sound-list',
+    hideFn: (info: any) => {
+      return config.robotTypeMap[info?.robotType] === '文本'; //
+    },
   },
 ];
