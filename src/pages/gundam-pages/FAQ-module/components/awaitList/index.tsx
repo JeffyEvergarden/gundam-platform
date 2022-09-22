@@ -98,7 +98,7 @@ const AwaitList: React.FC<any> = (props: any) => {
       message.warning('请选择待审核问题');
       return;
     }
-    let res: any = await allApprovalPass({ idList: selectedRowKeys });
+    let res: any = await allApprovalPass({ idList: selectedRowKeys, robotId: info.id });
 
     if (res) {
       setSelectAll(false);
