@@ -55,13 +55,14 @@ const soundRobotDialogueText = (req: any, res: any) => {
     // actionEvent: 'talking',
     // actionSound: '',
     data: {
-      actionMessage: '',
+      actionMessage: '语音机器人回答',
       actionEvent: 'talking',
       askType: 'faq',
       actionSound: '11111111',
       askText: '<p>1212123</p>',
       askKey: '意图类型',
       askTextSound: '111111',
+      aiTextHitType: 1,
       nluInfo:
         '{"resultCode":"0000","data":{"id":"100","flowId":"100","robotName":"命运官位指定阿尔托莉亚潘多拉","robotType":0,"soundType":0}}',
       recommendQuestion: [

@@ -66,6 +66,8 @@ export default (props: any) => {
     info: model.info,
   }));
 
+  const audioPlayRef = useRef<any>(null);
+
   const {
     textRobotDialogueText,
     soundRobotDialogue,
@@ -441,8 +443,16 @@ export default (props: any) => {
     sendMessage(text);
   };
 
+  //关闭语音播放
+  const closeAudio = () => {
+    audioPlayRef?.current?.close?.();
+  };
+
   useImperativeHandle(cref, () => ({
     setChatVisible,
+    close: () => {
+      closeAudio();
+    },
   }));
 
   useEffect(() => {
@@ -528,7 +538,10 @@ export default (props: any) => {
                             <div className={styles['words']}>{item?.message}</div>
                             {info?.robotType == 1 && (
                               <div className={styles['words-type-audio']}>
-                                <AudioPlay musicSrc={'/aichat/mp3/bluebird.mp3'} />
+                                <AudioPlay
+                                  musicSrc={'/aichat/mp3/bluebird.mp3'}
+                                  cref={audioPlayRef}
+                                />
                               </div>
                             )}
                           </div>

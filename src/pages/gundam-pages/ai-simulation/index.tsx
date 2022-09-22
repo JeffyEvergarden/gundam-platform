@@ -89,6 +89,7 @@ export default (props: any) => {
 
   const setChatVisible = (flag: any) => {
     RobotChatTexRef?.current?.setChatVisible(flag);
+    RobotChatTexRef?.current?.close();
   };
   const fieldValueChange = () => {};
 
