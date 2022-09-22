@@ -48,11 +48,13 @@ const TTSConfig: React.FC = (props: any) => {
 
   const [tts, setTts] = useState<any>('');
   const [videoUrl, setVideoUrl] = useState<any>('');
+  const [ttsId, setTtsId] = useState<any>('');
 
   const getList = async () => {
     await getTTS({ robotId: info.id }).then((res: any) => {
       console.log(res);
       setTts(res?.manufacturer || '');
+      setTtsId(res?.id || '');
       form.setFieldsValue(res || {});
     });
   };
@@ -64,7 +66,11 @@ const TTSConfig: React.FC = (props: any) => {
     if (!res) {
       return;
     }
-    console.log(res);
+    await editTTS({ robotId: info.id, id: ttsId, ...res }).then((i) => {
+      if (i) {
+        getList();
+      }
+    });
   };
 
   const soundPlay = async () => {
