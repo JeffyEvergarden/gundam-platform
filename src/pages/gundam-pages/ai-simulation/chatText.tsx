@@ -463,8 +463,63 @@ export default (props: any) => {
     }
   }, [associationList]);
 
-  const handleMenuClick = (item: any) => {
+  const handleMenuClick = async (item: any) => {
     if (item.key == '2') {
+      if (loading) {
+        return;
+      }
+      if (!talkingFlag) {
+        message.warning('请点击‘开始对话’按钮启动对话');
+        return;
+      }
+      setLoading(true);
+      let data = [...dialogList];
+      let newDay = new Date().toLocaleDateString();
+      let occurDay = newDay.replace(/\//g, '-');
+      let newTime = new Date().toLocaleTimeString('en-GB');
+      let params = {
+        requestId: modalData.requestId,
+        occurTime: occurDay + ' ' + newTime,
+        systemCode: modalData.systemCode,
+        sessionId: modalData.sessionId,
+        message: '',
+        event: chatEvent, // 事件类型
+        actionType: '',
+        buttonText: textMessage,
+      };
+      let res = await soundRobotDialogue(params);
+      if (res?.resultCode == '100') {
+        data.push(
+          {
+            type: 'customer',
+            message: repEnter(textMessage),
+            askKey: res?.data?.askKey,
+            nluInfo: res?.data?.nluInfo,
+          },
+          {
+            type: 'robot',
+            askText: img(res?.data?.askText),
+            message: res?.data?.actionMessage,
+            recommendText: res?.data?.recommendText,
+            recommendQuestion: res?.data?.recommendQuestion,
+            isClear: res?.data?.aiTextHitType == 2 || res?.data?.aiTextHitType == 6 ? true : false,
+          },
+        );
+        setTextMessage('');
+        setFocus(false);
+        setAssociationList([]);
+        setChatEvent('dialogue');
+      } else {
+        data.push({
+          type: 'customer',
+          message: repEnter(textMessage),
+          askKey: res?.data?.askKey,
+          nluInfo: res?.data?.nluInfo,
+        });
+        message.error(res?.resultDesc);
+      }
+      setLoading(false);
+      setDialogList(data);
     }
   };
 

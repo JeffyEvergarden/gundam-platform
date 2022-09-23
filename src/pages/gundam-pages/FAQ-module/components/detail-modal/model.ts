@@ -41,8 +41,8 @@ export const useSessionModel = () => {
     let res: any = await getRecordList(params);
     setRecordLoading(false);
     // let { list = [], totalPage, pageSize } = res.data || {};
-    let list = res.data || [];
-    let totalPage = res.data?.length || 0;
+    let list = res.data?.list || [];
+    let totalPage = res.data?.list?.length || 0;
     if (!Array.isArray(list)) {
       list = [];
     }
