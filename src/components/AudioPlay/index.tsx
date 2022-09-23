@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState, useImperativeHandle } from 'react';
 
 import Condition from '../Condition';
 import pauseBt from './img/pause.svg';
@@ -10,6 +10,7 @@ interface dataProp {
   children?: any;
   musicSrc?: string;
   'r-show'?: any;
+  cref?: any;
 }
 
 function formate(time: any) {
@@ -25,7 +26,7 @@ function formate(time: any) {
 }
 
 const AudioPlay: React.FC<dataProp> = (props) => {
-  const { musicSrc } = props;
+  const { musicSrc, cref } = props;
   // 状态类型   init / play / pause
   const [type, setType] = useState<string>('init');
 
@@ -51,6 +52,15 @@ const AudioPlay: React.FC<dataProp> = (props) => {
   const [computedWidth, setComputedWidth] = useState<number>(0);
 
   const [errorFlag, setErrorFlag] = useState<boolean>(false);
+
+  useImperativeHandle(cref, () => ({
+    close: () => {
+      const audio = audioRef.current;
+      playEnd();
+      setType('play');
+      audio.pause();
+    },
+  }));
 
   // 播放百分比
   const curWidth = useMemo(() => {
@@ -390,14 +400,14 @@ const AudioPlay: React.FC<dataProp> = (props) => {
         </div>
 
         <div className={style['barbg']} ref={barRef} onClick={touchTime}>
-          <div className={style['loadbar']} style={{ width: loadWidth }}></div>
-          <div className={style['curbar']} style={{ width: dragFlag ? ballWidth : curWidth }}></div>
+          <div className={style['loadbar']} style={{ width: loadWidth }} />
+          <div className={style['curbar']} style={{ width: dragFlag ? ballWidth : curWidth }} />
 
           <div
             className={style['curball']}
             style={{ left: dragFlag ? ballWidth : curWidth }}
             onMouseDown={mousedown}
-          ></div>
+          />
         </div>
 
         <span className={style['time-span']}>
@@ -418,19 +428,18 @@ const AudioPlay: React.FC<dataProp> = (props) => {
                 <div
                   className={style['voicebar']}
                   style={{ height: voiceDragFlag ? voiceComputedHeight : voiceBallWidth }}
-                ></div>
+                />
 
                 <div
                   className={style['voiceball']}
                   style={{ bottom: voiceDragFlag ? voiceComputedHeight : voiceBallWidth }}
                   onMouseDown={voiceMousedown}
-                ></div>
+                />
               </div>
             </div>
           </Condition>
         </div>
-
-        <a className={style['downbt']} download href={musicSrc}></a>
+        <a className={style['downbt']} download href={musicSrc} />
       </div>
       <audio
         id="audio"

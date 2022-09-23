@@ -150,7 +150,10 @@ const getRecordList = (req: any, res: any) => {
     //   page: 1,
     //   list: arr,
     // },
-    data: arr,
+    data: {
+      list: arr,
+      soundInfo: 'xxx/xxx/',
+    },
   });
 };
 

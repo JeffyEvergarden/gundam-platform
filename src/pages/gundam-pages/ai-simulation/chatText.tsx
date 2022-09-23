@@ -3,6 +3,7 @@ import robotPhoto from '@/asset/image/robot.png';
 import { Button, Input, message, Modal, Popover, Radio, Space, Dropdown, Menu } from 'antd';
 import React, { Fragment, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useModel } from 'umi';
+import config from '@/config';
 import { useChatModel } from './model';
 import AudioPlay from '@/components/AudioPlay';
 import { DownOutlined } from '@ant-design/icons';
@@ -65,6 +66,8 @@ export default (props: any) => {
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
+
+  const audioPlayRef = useRef<any>(null);
 
   const {
     textRobotDialogueText,
@@ -202,6 +205,7 @@ export default (props: any) => {
         recommendText: res?.data?.recommendText,
         recommendQuestion: res?.data?.recommendQuestion,
         isClear: res?.data?.aiTextHitType == 2 || res?.data?.aiTextHitType == 6 ? true : false,
+        actionTextSplitList: res?.data?.actionTextSplitList,
       });
       setTimeout(() => {
         setDialogList(newData);
@@ -441,8 +445,16 @@ export default (props: any) => {
     sendMessage(text);
   };
 
+  //关闭语音播放
+  const closeAudio = () => {
+    audioPlayRef?.current?.close?.();
+  };
+
   useImperativeHandle(cref, () => ({
     setChatVisible,
+    close: () => {
+      closeAudio();
+    },
   }));
 
   useEffect(() => {
@@ -451,16 +463,68 @@ export default (props: any) => {
     }
   }, [associationList]);
 
-  const handleMenuClick = (item: any) => {
-    if (item.key == '1') {
-      sendMessage();
-    } else if (item.key == '2') {
+  const handleMenuClick = async (item: any) => {
+    if (item.key == '2') {
+      if (loading) {
+        return;
+      }
+      if (!talkingFlag) {
+        message.warning('请点击‘开始对话’按钮启动对话');
+        return;
+      }
+      setLoading(true);
+      let data = [...dialogList];
+      let newDay = new Date().toLocaleDateString();
+      let occurDay = newDay.replace(/\//g, '-');
+      let newTime = new Date().toLocaleTimeString('en-GB');
+      let params = {
+        requestId: modalData.requestId,
+        occurTime: occurDay + ' ' + newTime,
+        systemCode: modalData.systemCode,
+        sessionId: modalData.sessionId,
+        message: '',
+        event: chatEvent, // 事件类型
+        actionType: '',
+        buttonText: textMessage,
+      };
+      let res = await soundRobotDialogue(params);
+      if (res?.resultCode == '100') {
+        data.push(
+          {
+            type: 'customer',
+            message: repEnter(textMessage),
+            askKey: res?.data?.askKey,
+            nluInfo: res?.data?.nluInfo,
+          },
+          {
+            type: 'robot',
+            askText: img(res?.data?.askText),
+            message: res?.data?.actionMessage,
+            recommendText: res?.data?.recommendText,
+            recommendQuestion: res?.data?.recommendQuestion,
+            isClear: res?.data?.aiTextHitType == 2 || res?.data?.aiTextHitType == 6 ? true : false,
+          },
+        );
+        setTextMessage('');
+        setFocus(false);
+        setAssociationList([]);
+        setChatEvent('dialogue');
+      } else {
+        data.push({
+          type: 'customer',
+          message: repEnter(textMessage),
+          askKey: res?.data?.askKey,
+          nluInfo: res?.data?.nluInfo,
+        });
+        message.error(res?.resultDesc);
+      }
+      setLoading(false);
+      setDialogList(data);
     }
   };
 
   const menu = (
     <Menu onClick={handleMenuClick}>
-      <Menu.Item key={'1'}>发送</Menu.Item>
       <Menu.Item key={'2'}>发送按键</Menu.Item>
     </Menu>
   );
@@ -505,7 +569,7 @@ export default (props: any) => {
                   )}
                   {item.type == 'robot' && (
                     <Fragment>
-                      {item.askText && (
+                      {item.askText && info?.robotType == 0 && (
                         <div className={styles['robot-part']}>
                           <img className={styles['head-robot']} alt="robot" src={robotPhoto} />
                           <div className={styles['wordsbox-robot']}>
@@ -513,9 +577,11 @@ export default (props: any) => {
                               className={styles['askText']}
                               dangerouslySetInnerHTML={{ __html: item?.askText }}
                             />
-                            <div className={styles['words-type-audio']}>
-                              <AudioPlay musicSrc={'/aichat/mp3/bluebird.mp3'} />
-                            </div>
+                            {/* {info?.robotType == 1 && (
+                              <div className={styles['words-type-audio']}>
+                                <AudioPlay musicSrc={'/aichat/mp3/bluebird.mp3'} />
+                              </div>
+                            )} */}
                           </div>
                         </div>
                       )}
@@ -524,61 +590,70 @@ export default (props: any) => {
                           <img className={styles['head-robot']} alt="robot" src={robotPhoto} />
                           <div className={styles['wordsbox-robot']}>
                             <div className={styles['words']}>{item?.message}</div>
-                            <div className={styles['words-type-audio']}>
-                              <AudioPlay musicSrc={'/aichat/mp3/bluebird.mp3'} />
-                            </div>
+                            {info?.robotType == 1 && (
+                              <div className={styles['words-type-audio']}>
+                                <AudioPlay
+                                  musicSrc={`${config.basePath}/robot/sound/mergeSound?soundStr={robotId:${info.id},voiceList:${item?.actionTextSplitList}}`}
+                                  cref={audioPlayRef}
+                                />
+                              </div>
+                            )}
                           </div>
                         </div>
                       )}
-                      {item.recommendQuestion && item.recommendQuestion.length > 0 && (
-                        <div className={styles['robot-part']}>
-                          <img className={styles['head-robot']} alt="robot" src={robotPhoto} />
-                          <div className={styles['wordsbox-robot']}>
-                            <div className={styles['words']}>
-                              {/* {item.message === '' && ( */}
-                              {!item.isClear && (
-                                <div style={{ fontWeight: 'bold' }}>{item?.recommendText}</div>
-                              )}
-                              {item.isClear && (
-                                <div style={{ fontWeight: 'bold' }}>{item?.message}</div>
-                              )}
-                              {/* )} */}
-                              {item.recommendQuestion.map((el: any) => {
-                                return (
-                                  <Fragment key={el.number}>
-                                    <div
-                                      style={{ color: '#1890ff', cursor: 'pointer' }}
-                                      onClick={() => {
-                                        setTextMessage(el.askText);
-                                        timeFn.current.inputVal = el.askText;
-                                        setAssociationList([]);
-                                        let newDay = new Date().toLocaleDateString();
-                                        let occurDay = newDay.replace(/\//g, '-');
-                                        let newTime = new Date().toLocaleTimeString('en-GB');
-                                        let params = {
-                                          requestId: modalData?.requestId,
-                                          occurTime: occurDay + ' ' + newTime,
-                                          systemCode: 'test',
-                                          sessionId: modalData?.sessionId,
-                                          number: el.number,
-                                          question: el.askText,
-                                        };
+                      {info?.robotType == 0 &&
+                        item.recommendQuestion &&
+                        item.recommendQuestion.length > 0 && (
+                          <div className={styles['robot-part']}>
+                            <img className={styles['head-robot']} alt="robot" src={robotPhoto} />
+                            <div className={styles['wordsbox-robot']}>
+                              <div className={styles['words']}>
+                                {/* {item.message === '' && ( */}
+                                {!item.isClear && (
+                                  <div style={{ fontWeight: 'bold' }}>{item?.recommendText}</div>
+                                )}
+                                {item.isClear && (
+                                  <div style={{ fontWeight: 'bold' }}>{item?.message}</div>
+                                )}
+                                {/* )} */}
+                                {item.recommendQuestion.map((el: any) => {
+                                  return (
+                                    <Fragment key={el.number}>
+                                      <div
+                                        style={{ color: '#1890ff', cursor: 'pointer' }}
+                                        onClick={() => {
+                                          setTextMessage(el.askText);
+                                          timeFn.current.inputVal = el.askText;
+                                          setAssociationList([]);
+                                          let newDay = new Date().toLocaleDateString();
+                                          let occurDay = newDay.replace(/\//g, '-');
+                                          let newTime = new Date().toLocaleTimeString('en-GB');
+                                          let params = {
+                                            requestId: modalData?.requestId,
+                                            occurTime: occurDay + ' ' + newTime,
+                                            systemCode: 'test',
+                                            sessionId: modalData?.sessionId,
+                                            number: el.number,
+                                            question: el.askText,
+                                          };
 
-                                        sendMessage(el.askText, true, params);
-                                      }}
-                                    >
-                                      {el.number + ':' + el.askText}
-                                    </div>
-                                  </Fragment>
-                                );
-                              })}
-                            </div>
-                            <div className={styles['words-type-audio']}>
-                              <AudioPlay musicSrc={'/aichat/mp3/bluebird.mp3'} />
+                                          sendMessage(el.askText, true, params);
+                                        }}
+                                      >
+                                        {el.number + ':' + el.askText}
+                                      </div>
+                                    </Fragment>
+                                  );
+                                })}
+                              </div>
+                              {/* {info?.robotType == 0 && (
+                              <div className={styles['words-type-audio']}>
+                                <AudioPlay musicSrc={'/aichat/mp3/bluebird.mp3'} />
+                              </div>
+                            )} */}
                             </div>
                           </div>
-                        </div>
-                      )}
+                        )}
                     </Fragment>
                   )}
                 </React.Fragment>
@@ -611,14 +686,15 @@ export default (props: any) => {
               }}
             />
             {info?.robotType == 1 && (
-              <Dropdown overlay={menu} key="Dropdown" className={styles['send-btn-dropdown']}>
-                <Button type="primary">
-                  <Space>
-                    发送
-                    <DownOutlined />
-                  </Space>
-                </Button>
-              </Dropdown>
+              <Dropdown.Button
+                overlay={menu}
+                placement="topRight"
+                key="Dropdown"
+                className={styles['send-btn-dropdown']}
+                onClick={() => sendMessage()}
+              >
+                发送
+              </Dropdown.Button>
             )}
 
             {info?.robotType == 0 && (

@@ -209,7 +209,7 @@ export default () => {
       channelCode: payload.code,
     };
     let res = await question(params);
-    setDataSource(res?.data?.list);
+    let tempData: any = [];
     // 折线图数据处理
     let temp: any = [];
     let directReplyNum: any = { name: '明确回答数', val: [] };
@@ -220,13 +220,18 @@ export default () => {
     let matchRate: any = { name: '匹配率', val: [], isRate: true };
     let day: any = [];
     res?.data?.list?.map((item: any) => {
-      directReplyNum.val.push(item.directReplyNum);
-      clarifyReplyNum.val.push(item.clarifyReplyNum);
-      clarifyConfirmReplyNum.val.push(item.clarifyConfirmReplyNum);
-      recommendReplyConfirmNum.val.push(item.recommendReplyConfirmNum);
-      discernReplyNum.val.push(item.discernReplyNum);
-      matchRate.val.push(toNumber(item.matchRate));
-      day.push(item.dayId);
+      if (item.dayId == '总计') {
+        return;
+      } else {
+        directReplyNum.val.push(item.directReplyNum);
+        clarifyReplyNum.val.push(item.clarifyReplyNum);
+        clarifyConfirmReplyNum.val.push(item.clarifyConfirmReplyNum);
+        recommendReplyConfirmNum.val.push(item.recommendReplyConfirmNum);
+        discernReplyNum.val.push(item.discernReplyNum);
+        matchRate.val.push(toNumber(item.matchRate));
+        day.push(item.dayId);
+        tempData.push(item);
+      }
     });
     if (info.robotType == 0) {
       temp.push(
@@ -247,7 +252,7 @@ export default () => {
         matchRate,
       );
     }
-
+    setDataSource(tempData);
     setDayId(day);
     setList(temp);
 

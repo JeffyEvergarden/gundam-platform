@@ -3,6 +3,7 @@ import { UserOutlined } from '@ant-design/icons';
 import { Drawer, Input, message, Space } from 'antd';
 import { useImperativeHandle, useState } from 'react';
 import { useModel } from 'umi';
+import config from '@/config';
 import { useSessionModel } from '../detail-modal/model';
 import style from './style.less';
 import AudioPlay from '@/components/AudioPlay';
@@ -21,7 +22,8 @@ const RecordModal: React.FC<any> = (props: any) => {
     };
   });
 
-  const { recordLoading, recordList, recordTotal, getSessionRecordList } = useSessionModel();
+  const { recordLoading, recordList, recordTotal, getSessionRecordList, soundInfo } =
+    useSessionModel();
 
   const [visible, setVisible] = useState<boolean>(false);
   const [heightLihgt, setHeightLihgt] = useState<any>({});
@@ -81,7 +83,7 @@ const RecordModal: React.FC<any> = (props: any) => {
         pageType == 'visitorsSession' && info?.robotType == 1 ? (
           <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
             <div style={{ width: '100px' }}>全程会话录音</div>
-            <AudioPlay musicSrc={'/aichat/mp3/bluebird.mp3'} />
+            <AudioPlay musicSrc={`${config.basePath}/robot/file/getFile?path=${soundInfo}`} />
           </div>
         ) : null
       }

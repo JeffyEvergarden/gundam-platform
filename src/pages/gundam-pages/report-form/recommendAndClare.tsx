@@ -338,7 +338,9 @@ export default () => {
   return (
     <div className={styles.pageContainer}>
       <div className={styles.pageComtain}>
-        <div className={styles.pageTitile}>推荐问和澄清统计</div>
+        <div className={styles.pageTitile}>
+          {info?.robotType == 1 ? '澄清统计' : '推荐问和澄清统计'}
+        </div>
         <HeadSearch
           choseTime={choseTime}
           exportReportForm={exportReportForm}

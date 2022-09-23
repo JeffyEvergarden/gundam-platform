@@ -55,15 +55,38 @@ const soundRobotDialogueText = (req: any, res: any) => {
     // actionEvent: 'talking',
     // actionSound: '',
     data: {
-      actionMessage: '',
+      actionMessage: '语音机器人回答',
       actionEvent: 'talking',
       askType: 'faq',
       actionSound: '11111111',
       askText: '<p>1212123</p>',
       askKey: '意图类型',
       askTextSound: '111111',
+      aiTextHitType: 1,
       nluInfo:
         '{"resultCode":"0000","data":{"id":"100","flowId":"100","robotName":"命运官位指定阿尔托莉亚潘多拉","robotType":0,"soundType":0}}',
+      recommendQuestion: [
+        {
+          number: 1,
+          askType: 'faq',
+          askKey: '111111',
+          askText: '请问你是要询问还款吗？',
+        },
+        {
+          number: 2,
+          askType: 'faq',
+          askKey: '111111',
+          askText: '循环产品利率？',
+        },
+      ],
+      recommendText: '您是否还想咨询以下问题：',
+      actionTextSplitList: [
+        {
+          type: '1',
+          text: '你好',
+        },
+        { type: '1', text: '您好', urlPath: '/xxx/xxx.wmb' },
+      ],
     },
   });
 };

@@ -13,6 +13,7 @@ export const useSessionModel = () => {
   const [recordList, setRecordList] = useState<any[]>([]);
   const [recordTotal, setRecordTotal] = useState<number>(0);
   const [recordLoading, setRecordLoading] = useState<boolean>(false);
+  const [soundInfo, setSoundInfo] = useState<string>('');
 
   // 获取表格
   const getTableList = async (params?: any) => {
@@ -40,8 +41,8 @@ export const useSessionModel = () => {
     let res: any = await getRecordList(params);
     setRecordLoading(false);
     // let { list = [], totalPage, pageSize } = res.data || {};
-    let list = res.data || [];
-    let totalPage = res.data?.length || 0;
+    let list = res.data?.list || [];
+    let totalPage = res.data?.list?.length || 0;
     if (!Array.isArray(list)) {
       list = [];
     }
@@ -72,6 +73,7 @@ export const useSessionModel = () => {
     });
     setRecordList(list || []);
     setRecordTotal(totalPage || 0);
+    setSoundInfo(res?.data?.soundInfo);
     return { data: list, total: totalPage };
   };
 
@@ -84,6 +86,7 @@ export const useSessionModel = () => {
     setRecordList,
     recordTotal,
     recordLoading,
+    soundInfo,
     getSessionRecordList,
   };
 };
