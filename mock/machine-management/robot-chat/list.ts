@@ -80,6 +80,13 @@ const soundRobotDialogueText = (req: any, res: any) => {
         },
       ],
       recommendText: '您是否还想咨询以下问题：',
+      actionTextSplitList: [
+        {
+          type: '1',
+          text: '你好',
+        },
+        { type: '1', text: '您好', urlPath: '/xxx/xxx.wmb' },
+      ],
     },
   });
 };
