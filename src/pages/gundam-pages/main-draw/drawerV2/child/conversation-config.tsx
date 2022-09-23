@@ -1,15 +1,15 @@
-import { Form, Input, Select, Button, Checkbox, Space, Radio } from 'antd';
-import { PlusCircleOutlined, MinusCircleOutlined, AppstoreAddOutlined } from '@ant-design/icons';
+import { AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { Button, Form, Radio, Select } from 'antd';
 import LabelSelect from '../../drawer/components/label-select';
 import CvsInput from '../components/cvs-input';
-import Condition from '@/components/Condition';
+import SoundRadio from '../components/sound-radio';
 import styles from './style.less';
 
 const { Item: FormItem, List: FormList } = Form;
 const { Option } = Select;
 
 const ConversationConfig = (props: any) => {
-  const { name, title = '答复配置', placeholder = '答复内容', required } = props;
+  const { form, name, title = '答复配置', placeholder = '答复内容', required } = props;
   return (
     <div className={styles['conversation-list']}>
       <FormList name={name}>
@@ -33,46 +33,83 @@ const ConversationConfig = (props: any) => {
               </div>
 
               <div className={styles['cvs-box']}>
-                {fields.map((field: any, index: number) => (
-                  <div key={field.key} className={styles['list-box']}>
-                    <div style={{ lineHeight: '32px' }}>
-                      <span
-                        className={styles['del-bt']}
-                        onClick={() => {
-                          remove(index);
-                        }}
-                      >
-                        <MinusCircleOutlined />
-                      </span>
-                      <span className={styles['cvs-num']}>{index + 1}.</span>
-                    </div>
-                    <div style={{ flex: '1 1 auto' }}>
-                      {/* 类型 */}
-                      <Form.Item
-                        name={[field.name, 'actionText']}
-                        fieldKey={[field.fieldKey, 'actionText']}
-                        rules={[{ required: true, message: `请输入${placeholder}` }]}
-                      >
-                        <CvsInput
-                          placeholder={`请输入${placeholder}`}
-                          title={`${placeholder}：`}
-                          type="textarea"
-                          style={{ width: '100%' }}
-                          autoComplete="off"
-                          required
-                        />
-                      </Form.Item>
+                {fields.map((field: any, index: number) => {
+                  const sound = () => {
+                    return (
+                      <div style={{ display: 'flex' }}>
+                        <Form.Item
+                          name={[field.name, 'soundType']}
+                          fieldKey={[field.fieldKey, 'soundType']}
+                          initialValue={1}
+                        >
+                          <Radio.Group>
+                            <Radio value={1}>全合成</Radio>
+                            <Radio value={2}>录音半合成</Radio>
+                          </Radio.Group>
+                        </Form.Item>
+                        <Button
+                          type="link"
+                          onClick={() => {
+                            console.log(
+                              form.getFieldsValue()['strategyList'][0]['conversationList'][index],
+                            );
+                          }}
+                        >
+                          试听
+                        </Button>
+                      </div>
+                    );
+                  };
+                  return (
+                    <div key={field.key} className={styles['list-box']}>
+                      <div style={{ lineHeight: '32px' }}>
+                        <span
+                          className={styles['del-bt']}
+                          onClick={() => {
+                            remove(index);
+                          }}
+                        >
+                          <MinusCircleOutlined />
+                        </span>
+                        <span className={styles['cvs-num']}>{index + 1}.</span>
+                      </div>
+                      <div style={{ flex: '1 1 auto' }}>
+                        {/* 类型 */}
+                        <Form.Item
+                          name={[field.name, 'actionText']}
+                          fieldKey={[field.fieldKey, 'actionText']}
+                          rules={[{ required: true, message: `请输入${placeholder}` }]}
+                        >
+                          <CvsInput
+                            placeholder={`请输入${placeholder}`}
+                            title={`${placeholder}：`}
+                            type="textarea"
+                            style={{ width: '100%' }}
+                            autoComplete="off"
+                            required
+                            sound={sound}
+                          />
+                        </Form.Item>
 
-                      <Form.Item
-                        name={[field.name, 'textLabels']}
-                        fieldKey={[field.fieldKey, 'textLabels']}
-                        label="选择标签"
-                      >
-                        <LabelSelect color="magenta"></LabelSelect>
-                      </Form.Item>
+                        <SoundRadio
+                          name={name}
+                          form={form}
+                          index={index}
+                          field={field}
+                          formName={['strategyList', 0, 'conversationList', index]}
+                        />
+
+                        <Form.Item
+                          name={[field.name, 'textLabels']}
+                          fieldKey={[field.fieldKey, 'textLabels']}
+                          label="选择标签"
+                        >
+                          <LabelSelect color="magenta"></LabelSelect>
+                        </Form.Item>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
 
                 <div>
                   <Button

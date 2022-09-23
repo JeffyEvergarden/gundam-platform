@@ -102,7 +102,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
             style={{ width: '400px' }}
           >
             <Select placeholder="请选择词槽名称">
-              {list.map((item: any, index: number) => {
+              {list?.map((item: any, index: number) => {
                 return (
                   <Option key={index} value={item.id} opt={item}>
                     {item.label}

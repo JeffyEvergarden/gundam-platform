@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import LabelSelect from '../../drawer/components/label-select';
 import CvsInput from '../components/cvs-input';
+import SoundRadio from '../components/sound-radio';
 import ActionConfig from './action-config';
 import styles from './style.less';
 
@@ -34,6 +35,8 @@ const HightformTemplate: any = (props: any) => {
           actionText: '',
           actionType: null,
           textLabels: [],
+          userInputType: '10',
+          allowInterrupt: 1,
         },
         messageList: [],
         configType: 1,
@@ -51,6 +54,8 @@ const HightformTemplate: any = (props: any) => {
           actionText: '',
           actionType: null,
           textLabels: [],
+          userInputType: '10',
+          allowInterrupt: 1,
         },
         messageList: [],
         configType: 2,
@@ -111,56 +116,106 @@ const HightformTemplate: any = (props: any) => {
                 </div>
 
                 <div className={styles['cvs-box']}>
-                  {fields.map((field: any, index: number) => (
-                    <div key={field.key} className={styles['list-box']}>
-                      <div style={{ lineHeight: '32px' }}>
-                        <span
-                          className={styles['del-bt']}
-                          onClick={() => {
-                            if (!disabled) {
-                              if (
-                                length == 1 &&
-                                (name == 'silenceAction' || name == 'rejectAction')
-                              ) {
-                                message.warning('至少保留一条话术');
-                                return;
-                              }
-                              remove(index);
-                            }
-                          }}
-                        >
-                          <MinusCircleOutlined disabled={disabled} />
-                        </span>
-                        <span className={styles['cvs-num']}>{index + 1}.</span>
-                      </div>
-                      <div style={{ flex: '1 1 auto' }}>
-                        {/* 类型 */}
-                        <Form.Item
-                          name={[field.name, 'actionText']}
-                          fieldKey={[field.fieldKey, 'actionText']}
-                          rules={[{ required: true, message: '请输入响应话术' }]}
-                        >
-                          <CvsInput
-                            placeholder="请输入响应话术"
-                            title={'响应话术：'}
-                            type="textarea"
-                            style={{ width: '100%' }}
-                            autoComplete="off"
-                            canEdit={disabled}
-                            required={true}
-                          />
-                        </Form.Item>
+                  {fields.map((field: any, index: number) => {
+                    //试听
+                    const sound = () => {
+                      return (
+                        <div style={{ display: 'flex' }}>
+                          <Form.Item
+                            name={[field.name, 'soundType']}
+                            fieldKey={[field.fieldKey, 'soundType']}
+                            initialValue={1}
+                          >
+                            <Radio.Group disabled={disabled}>
+                              <Radio value={1}>全合成</Radio>
+                              <Radio value={2}>录音半合成</Radio>
+                            </Radio.Group>
+                          </Form.Item>
+                          <Button
+                            type="link"
+                            onClick={() => {
+                              console.log(form.getFieldsValue()?.[name]?.responseList[index]);
+                            }}
+                          >
+                            试听
+                          </Button>
+                        </div>
+                      );
+                    };
 
-                        <Form.Item
-                          name={[field.name, 'textLabels']}
-                          fieldKey={[field.fieldKey, 'textLabels']}
-                          label="选择标签"
-                        >
-                          <LabelSelect color="magenta" canEdit={disabled}></LabelSelect>
-                        </Form.Item>
+                    return (
+                      <div key={field.key} className={styles['list-box']}>
+                        <div style={{ lineHeight: '32px' }}>
+                          <span
+                            className={styles['del-bt']}
+                            onClick={() => {
+                              if (!disabled) {
+                                if (
+                                  length == 1 &&
+                                  (name == 'silenceAction' || name == 'rejectAction')
+                                ) {
+                                  message.warning('至少保留一条话术');
+                                  return;
+                                }
+                                remove(index);
+                              }
+                            }}
+                          >
+                            <MinusCircleOutlined disabled={disabled} />
+                          </span>
+                          <span className={styles['cvs-num']}>{index + 1}.</span>
+                        </div>
+                        <div style={{ flex: '1 1 auto' }}>
+                          {/* 类型 */}
+                          <Form.Item
+                            name={[field.name, 'actionText']}
+                            fieldKey={[field.fieldKey, 'actionText']}
+                            rules={[{ required: true, message: '请输入响应话术' }]}
+                          >
+                            <CvsInput
+                              placeholder="请输入响应话术"
+                              title={'响应话术：'}
+                              type="textarea"
+                              style={{ width: '100%' }}
+                              autoComplete="off"
+                              canEdit={disabled}
+                              required={true}
+                              sound={sound}
+                            />
+                          </Form.Item>
+
+                          <SoundRadio
+                            name={name}
+                            form={form}
+                            index={index}
+                            disabled={disabled}
+                            field={field}
+                            formName={[name, 'responseList', index]}
+                          />
+
+                          <Form.Item
+                            name={[field.name, 'allowInterrupt']}
+                            fieldKey={[field.fieldKey, 'allowInterrupt']}
+                            initialValue={1}
+                            label={'允许打断'}
+                          >
+                            <Radio.Group disabled={disabled}>
+                              <Radio value={1}>是</Radio>
+                              <Radio value={0}>否</Radio>
+                            </Radio.Group>
+                          </Form.Item>
+
+                          <Form.Item
+                            name={[field.name, 'textLabels']}
+                            fieldKey={[field.fieldKey, 'textLabels']}
+                            label="选择标签"
+                          >
+                            <LabelSelect color="magenta" canEdit={disabled}></LabelSelect>
+                          </Form.Item>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
 
                   <div>
                     <Button

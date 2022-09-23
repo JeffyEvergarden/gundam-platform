@@ -1,12 +1,10 @@
-import { useState, useImperativeHandle, useEffect, useRef } from 'react';
-import { Drawer, Form, Input, Select, Button, Tag, message } from 'antd';
-import { PlusOutlined, DiffOutlined } from '@ant-design/icons';
-import GlobalVarModal from '../../drawer/components/global-var-modal';
-import WordSlotModal from './wordslot-select-modal';
-import styles from './style.less';
 import Condition from '@/components/Condition';
+import { Button, Input, message, Select } from 'antd';
+import { useRef, useState } from 'react';
+import GlobalVarModal from '../../drawer/components/global-var-modal';
 import Preview from './preview';
-import { useModel } from 'umi';
+import styles from './style.less';
+import WordSlotModal from './wordslot-select-modal';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -22,6 +20,7 @@ const CvsInput: React.FC<any> = (props: any) => {
     rows,
     canEdit,
     required = false,
+    sound,
     ...res
   } = props;
 
@@ -45,11 +44,8 @@ const CvsInput: React.FC<any> = (props: any) => {
   };
 
   const confirm = (val: any, type: any = '变量') => {
-    console.log(val);
     let target = '';
     let tmp: any = value || '';
-    console.log(value);
-    console.log(startPos);
 
     val.forEach((item: any) => {
       if (type === '变量') {
@@ -70,10 +66,6 @@ const CvsInput: React.FC<any> = (props: any) => {
       tmp = tmp + target;
     }
     onChange(tmp);
-  };
-
-  const confirm2 = (val: any) => {
-    console.log(val);
   };
 
   const blurEvent = (e: any) => {
@@ -110,7 +102,10 @@ const CvsInput: React.FC<any> = (props: any) => {
             {'{#}'}添加词槽
           </Button>
         </div>
-        <Preview text={value}></Preview>
+        <div id={styles['soundType']}>
+          {sound && sound()}
+          <Preview text={value}></Preview>
+        </div>
       </div>
       <Condition r-if={type === 'input'}>
         <Input

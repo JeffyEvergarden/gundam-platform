@@ -1,16 +1,15 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import config from '@/config';
+import { useTableModel } from '@/pages/gundam-pages/FAQ-module/clearlist/model';
+import SelectFaqModal from '@/pages/gundam-pages/FAQ-module/components/select-faq-modal';
+import { DownOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
+import { Button, DatePicker, Dropdown, Menu, message, Popconfirm, Space, Tooltip } from 'antd';
+import moment from 'moment';
+import React, { Fragment, useRef, useState } from 'react';
+import { history, useModel } from 'umi';
+import SessionRecord from './../component/sessionRecord';
 import styles from './index.less';
 import { useUnknownQuestion } from './model';
-import { useSampleModel, useSimilarModel } from '@/pages/gundam-pages/sample/model';
-import { useTableModel } from '@/pages/gundam-pages/FAQ-module/clearlist/model';
-import { history, useModel } from 'umi';
-import { Space, Tooltip, Dropdown, Button, Menu, message, Popconfirm, DatePicker } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
-import SessionRecord from './../component/sessionRecord';
-import config from '@/config';
-import SelectFaqModal from '@/pages/gundam-pages/FAQ-module/components/select-faq-modal';
-import moment from 'moment';
 
 const { RangePicker } = DatePicker;
 
@@ -263,7 +262,7 @@ export default () => {
     if (operation == 'clarify') {
       let addParams = {
         robotId: info.id,
-        question: inputValue,
+        questionList: [inputValue],
         unknownId: modalData.id,
         clarifyDetailList: val,
       };

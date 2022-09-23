@@ -1,13 +1,12 @@
-import { useState, useMemo, useEffect } from 'react';
-import { Form, Input, Select, Button, Space, DatePicker, InputNumber, Cascader } from 'antd';
-import { MinusCircleOutlined, AppstoreAddOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import Condition from '@/components/Condition';
-import CvsInput from '../components/cvs-input';
-import LabelSelect from '../../drawer/components/label-select';
+import { AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { Button, Cascader, Checkbox, Form, InputNumber, Radio, Select, Space } from 'antd';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useModel } from 'umi';
-import styles from './style.less';
+import LabelSelect from '../../drawer/components/label-select';
+import CvsInput from '../components/cvs-input';
 import { ACTION_LIST } from '../const';
-import { useCallback } from 'react';
+import styles from './style.less';
 
 const { Item: FormItem, List: FormList } = Form;
 const { Option } = Select;
@@ -30,6 +29,7 @@ const ActionConfig = (props: any) => {
   }));
 
   const [num, setNum] = useState<number>(1);
+  const [inputType, setInputType] = useState<any>('10');
 
   const update = useCallback(() => {
     setNum(num + 1);
@@ -155,6 +155,37 @@ const ActionConfig = (props: any) => {
 
   const _flowdisabled = drawType === 'business';
 
+  const sound = () => {
+    return (
+      <div style={{ display: 'flex' }}>
+        <Form.Item
+          name={getFormName(['action', 'soundType'])}
+          fieldKey={getFormName(['action', 'soundType'])}
+          initialValue={1}
+        >
+          <Radio.Group disabled={canEdit}>
+            <Radio value={1}>全合成</Radio>
+            <Radio value={2}>录音半合成</Radio>
+          </Radio.Group>
+        </Form.Item>
+        <Button
+          type="link"
+          onClick={() => {
+            console.log(form.getFieldsValue()?.[name]?.action);
+          }}
+        >
+          试听
+        </Button>
+      </div>
+    );
+  };
+
+  useEffect(() => {
+    if (canEdit) {
+      setInputType('10');
+    }
+  }, [canEdit]);
+
   const innerHtml = (
     <div className={styles['action-config']}>
       <div className={styles['zy-row']} style={{ marginBottom: '10px' }}>
@@ -223,8 +254,94 @@ const ActionConfig = (props: any) => {
               rows={3}
               maxlength={maxlength}
               canEdit={canEdit}
+              sound={sound}
             />
           </FormItem>
+
+          <div className={styles['functionkey']}>
+            <Form.Item
+              name={getFormName(['action', 'userInputType'])}
+              fieldKey={getFormName(['action', 'userInputType'])}
+              initialValue={'10'}
+              label={'输入方式'}
+            >
+              <Radio.Group
+                onChange={(e) => {
+                  let formData: any = getItem();
+                  // formData[name].action.userInputType = e.target.value;
+                  // if (e.target.value == '10') {
+                  //   formData[name].action.functionKeyStart = undefined;
+                  //   formData[name].action.functionKeyWell = undefined;
+                  //   formData[name].action.buttonInputSize = undefined;
+                  // }
+                  setInputType(deep ? formData?.action?.userInputType : formData?.userInputType);
+                  // form.setFieldsValue({ ...formData });
+                }}
+                disabled={canEdit}
+              >
+                <Radio value={'10'}>语音</Radio>
+                <Radio value={'01'}>按键</Radio>
+              </Radio.Group>
+            </Form.Item>
+
+            <Condition r-if={inputType == '01'}>
+              <div className={styles['functionkey']}>
+                <div className={styles['functionkey']} style={{ marginRight: '16px' }}>
+                  <Form.Item
+                    name={getFormName(['action', 'functionKeyStart'])}
+                    fieldKey={getFormName(['action', 'functionKeyStart'])}
+                    initialValue={1}
+                    valuePropName="checked"
+                  >
+                    <Checkbox disabled={canEdit}></Checkbox>
+                  </Form.Item>
+                  <Form.Item style={{ marginLeft: '8px' }}>#号确认</Form.Item>
+                </div>
+                <div className={styles['functionkey']} style={{ marginRight: '16px' }}>
+                  <Form.Item
+                    name={getFormName(['action', 'functionKeyWell'])}
+                    fieldKey={getFormName(['action', 'functionKeyWell'])}
+                    initialValue={1}
+                    valuePropName="checked"
+                  >
+                    <Checkbox disabled={canEdit}></Checkbox>
+                  </Form.Item>
+                  <Form.Item style={{ marginLeft: '8px' }}>*号取消</Form.Item>
+                </div>
+
+                <div className={styles['functionkey']}>
+                  <Form.Item>按键长度：</Form.Item>
+                  <Form.Item
+                    name={getFormName(['action', 'buttonInputSize'])}
+                    fieldKey={getFormName(['action', 'buttonInputSize'])}
+                    initialValue={10}
+                    rules={[{ required: true, message: '请输入按键长度' }]}
+                  >
+                    <InputNumber
+                      max={40}
+                      min={1}
+                      step="1"
+                      precision={0}
+                      style={{ width: '161px' }}
+                      placeholder="请输入按键长度"
+                      disabled={canEdit}
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+            </Condition>
+          </div>
+          <Form.Item
+            name={getFormName(['action', 'allowInterrupt'])}
+            fieldKey={getFormName(['action', 'allowInterrupt'])}
+            initialValue={1}
+            label={'允许打断'}
+          >
+            <Radio.Group disabled={canEdit}>
+              <Radio value={1}>是</Radio>
+              <Radio value={0}>否</Radio>
+            </Radio.Group>
+          </Form.Item>
         </Condition>
         <Condition r-if={_actionType}>
           <FormItem name={getFormName(['action', 'textLabels'])} label="选择标签">

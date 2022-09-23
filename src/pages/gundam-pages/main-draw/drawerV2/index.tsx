@@ -1,15 +1,15 @@
 //版本2
-import { useState, useRef, useImperativeHandle, useEffect } from 'react';
-import { Modal, Drawer, Form, Input, Select, Button, message } from 'antd';
 import { AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import ConversationConfig from './child/conversation-config';
-import RuleConfig from './child/rule-config';
-import ActionConfig from './child/action-config';
-import HighConfig from './child/high-config';
+import { Button, Drawer, Form, Input, message, Modal, Select } from 'antd';
+import { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { useNodeOpsModel } from '../model';
+import ActionConfig from './child/action-config';
+import ConversationConfig from './child/conversation-config';
+import HighConfig from './child/high-config';
+import RuleConfig from './child/rule-config';
+import { parserBody, processRequest } from './formate';
 import styles from './style.less';
-import { processRequest, parserBody } from './formate';
 
 const { Item: FormItem, List: FormList } = Form;
 const { TextArea } = Input;
@@ -106,7 +106,7 @@ const DrawerForm = (props: any) => {
       return false;
     });
 
-    if (res === false) {
+    if (res === false || res2 === false) {
       return;
     } else {
       let body: any = processRequest(res, res2);
@@ -246,7 +246,10 @@ const DrawerForm = (props: any) => {
 
                                 {/* 内容组 */}
                                 <div style={{ paddingTop: '8px' }}>
-                                  <ConversationConfig name={[outFields.name, 'conversationList']} />
+                                  <ConversationConfig
+                                    form={form}
+                                    name={[outFields.name, 'conversationList']}
+                                  />
                                 </div>
 
                                 {/* 动作组 */}

@@ -374,7 +374,7 @@ export default () => {
       // 澄清
       let addParams = {
         robotId: info.id,
-        question: inputValue,
+        questionList: [inputValue],
         unknownId: modalData.id,
         clarifyDetailList: val,
       };

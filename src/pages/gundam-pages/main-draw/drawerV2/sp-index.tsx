@@ -1,13 +1,11 @@
-import { useState, useImperativeHandle, useRef } from 'react';
-import { Modal, Drawer, Form, Input, Select, Button, message } from 'antd';
-import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import styles from './style.less';
+import { Button, Drawer, Form, Input, message, Modal, Select } from 'antd';
+import { useImperativeHandle, useRef, useState } from 'react';
 import { useModel } from 'umi';
+import styles from './style.less';
 
-import { useNodeOpsModel } from '../model';
-import { useEffect } from 'react';
 import Condition from '@/components/Condition';
-import config from '@/config/index';
+import { useEffect } from 'react';
+import { useNodeOpsModel } from '../model';
 
 const { Item: FormItem, List: FormList } = Form;
 const { TextArea } = Input;
@@ -219,6 +217,17 @@ const DrawerForm = (props: any) => {
           >
             <TextArea rows={4} placeholder="请输入节点描述" maxLength={150} />
           </FormItem>
+
+          <Condition r-if={nodetype === 'sp_business'}>
+            <FormItem
+              name="agentGroup"
+              label="坐席技能组"
+              style={{ width: '400px' }}
+              rules={[{ required: true, message: '请输入坐席技能组' }]}
+            >
+              <Input placeholder="请输入坐席技能组"></Input>
+            </FormItem>
+          </Condition>
         </div>
       </Form>
     </Drawer>
