@@ -1,5 +1,5 @@
-import { request } from '@/services/request';
 import config from '@/config/index';
+import { request } from '@/services/request';
 
 const baseUrl: string = config.basePath;
 
@@ -112,5 +112,20 @@ export async function getFlowList(data?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/flow/flowInfo`, {
     method: 'POST',
     data,
+  });
+}
+
+//获取试听文件(全合成)
+export async function getTotalSynthesis(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/tts/ttsByConfig`, {
+    method: 'GET',
+    params,
+  });
+}
+//半合成
+export async function getSemisynthesis(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/tts/ttsMerge`, {
+    method: 'GET',
+    params,
   });
 }

@@ -1,7 +1,7 @@
 import Condition from '@/components/Condition';
 import ProTable from '@ant-design/pro-table';
-import { Button, Popconfirm, Tooltip } from 'antd';
-import { useImperativeHandle, useRef } from 'react';
+import { Button, message, Popconfirm, Tooltip } from 'antd';
+import { useImperativeHandle, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { useSoundModel } from '../../model';
 import AuditionModal from '../auditionModal';
@@ -9,17 +9,21 @@ import ReplaceModal from '../replaceModal';
 import style from './style.less';
 
 const TablePage: React.FC = (props: any) => {
-  const { cref, activeKey } = props;
+  const { cref, activeKey, select = false } = props;
   const tableRef = useRef<any>();
   const auditionRef = useRef<any>();
   const replaceRef = useRef<any>();
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
+  const [selectRow, setSelectRow] = useState<any>([]);
+
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
 
   const { getTableList, deleteSound, loading, opLoading, tableList } = useSoundModel();
 
-  const columns: any = [
+  const column: any = [
     {
       title: '录音名称',
       dataIndex: 'name',
@@ -139,12 +143,33 @@ const TablePage: React.FC = (props: any) => {
     },
   ];
 
+  const columns: any = !select ? column : column.filter((item: any) => item.dataIndex != 'op');
+
   useImperativeHandle(cref, () => ({
     refresh,
+    getSelect: () => {
+      return selectRow;
+    },
+    setSelectedRowKeys,
+    setSelectRow,
   }));
 
   const refresh = () => {
     tableRef?.current?.reload();
+  };
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
+      if (selectedRowKeys?.length > 5) {
+        selectedRowKeys.length = 5;
+        selectedRows.length = 5;
+        message.warning('最多只能勾选5个');
+      } else {
+        setSelectedRowKeys(selectedRowKeys);
+        setSelectRow(selectedRows);
+      }
+    },
   };
 
   return (
@@ -152,6 +177,7 @@ const TablePage: React.FC = (props: any) => {
       <ProTable<any>
         columns={columns}
         actionRef={tableRef}
+        rowSelection={select ? rowSelection : false}
         scroll={{ x: columns.length * 200 }}
         request={async (params = {}, sort, filter) => {
           return getTableList({

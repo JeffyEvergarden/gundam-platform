@@ -1,11 +1,13 @@
 import Condition from '@/components/Condition';
 import { AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Button, Form, InputNumber, message, Radio, Select, Space, Switch } from 'antd';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import LabelSelect from '../../drawer/components/label-select';
 import CvsInput from '../components/cvs-input';
 import SoundRadio from '../components/sound-radio';
+import SoundSelectModal from '../components/sound-select-modal';
+import SoundVarModal from '../components/sound-var-modal';
 import ActionConfig from './action-config';
 import styles from './style.less';
 
@@ -14,8 +16,12 @@ const { Option } = Select;
 
 const HightformTemplate: any = (props: any) => {
   const { form, name, title, showDefault, type } = props;
+
+  const soundRef = useRef<any>();
+  const auditionRef = useRef<any>();
   const [disabled, setDisabled] = useState<boolean>(false);
   const [switchType, setSwitchType] = useState<boolean>(false);
+  const sType: any = Form.useWatch(name, form);
 
   const { nodeConfig, wishList } = useModel('drawer' as any, (model: any) => ({
     nodeConfig: model._globalNodeList,
@@ -126,19 +132,67 @@ const HightformTemplate: any = (props: any) => {
                             fieldKey={[field.fieldKey, 'soundType']}
                             initialValue={1}
                           >
-                            <Radio.Group disabled={disabled}>
+                            <Radio.Group
+                              disabled={disabled}
+                              onChange={() => {
+                                console.log(sType);
+                              }}
+                            >
                               <Radio value={1}>全合成</Radio>
                               <Radio value={2}>录音半合成</Radio>
                             </Radio.Group>
                           </Form.Item>
+                          <Form.Item
+                            name={[field.name, 'soundRecordList']}
+                            fieldKey={[field.fieldKey, 'soundRecordList']}
+                            rules={[
+                              {
+                                required:
+                                  sType?.responseList?.[index]?.soundType == 1 ? false : true,
+                                message: '请选择',
+                              },
+                            ]}
+                          >
+                            <Button
+                              type="link"
+                              onClick={() => {
+                                console.log(form.getFieldsValue()?.[name]?.responseList[index]);
+                                console.log(sType);
+                                if (sType?.responseList?.[index]?.soundType == 2) {
+                                  soundRef?.current?.open(
+                                    form.getFieldsValue()?.[name]?.responseList[index]
+                                      ?.soundRecordList || [],
+                                  );
+                                }
+                              }}
+                            >
+                              选择
+                            </Button>
+                          </Form.Item>
+
                           <Button
                             type="link"
                             onClick={() => {
                               console.log(form.getFieldsValue()?.[name]?.responseList[index]);
+                              auditionRef?.current?.open(
+                                form.getFieldsValue()?.[name]?.responseList[index],
+                              );
                             }}
                           >
                             试听
                           </Button>
+                          <SoundVarModal cref={auditionRef}></SoundVarModal>
+                          <SoundSelectModal
+                            cref={soundRef}
+                            setform={(list: any) => {
+                              let formData = form.getFieldsValue();
+                              formData[name].responseList[index].soundRecordList = list;
+                              formData[name].responseList[index].actionText = list
+                                ?.map((item: any) => item?.text)
+                                ?.join(';');
+                              form.setFieldsValue(formData);
+                            }}
+                          ></SoundSelectModal>
                         </div>
                       );
                     };

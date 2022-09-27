@@ -1,10 +1,12 @@
 import Condition from '@/components/Condition';
 import { AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import { Button, Cascader, Checkbox, Form, InputNumber, Radio, Select, Space } from 'antd';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Button, Cascader, Checkbox, Form, Input, InputNumber, Radio, Select, Space } from 'antd';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import LabelSelect from '../../drawer/components/label-select';
 import CvsInput from '../components/cvs-input';
+import SoundSelectModal from '../components/sound-select-modal';
+import SoundVarModal from '../components/sound-var-modal';
 import { ACTION_LIST } from '../const';
 import styles from './style.less';
 
@@ -30,6 +32,9 @@ const ActionConfig = (props: any) => {
 
   const [num, setNum] = useState<number>(1);
   const [inputType, setInputType] = useState<any>('10');
+  const soundRef = useRef<any>();
+  const auditionRef = useRef<any>();
+  const sType: any = Form.useWatch(name, form);
 
   const update = useCallback(() => {
     setNum(num + 1);
@@ -168,14 +173,42 @@ const ActionConfig = (props: any) => {
             <Radio value={2}>录音半合成</Radio>
           </Radio.Group>
         </Form.Item>
+        <Form.Item
+          name={getFormName(['action', 'soundRecordList'])}
+          fieldKey={getFormName(['action', 'soundRecordList'])}
+          rules={[{ required: sType?.action?.soundType == 1 ? false : true, message: '请选择' }]}
+        >
+          <Button
+            type="link"
+            onClick={() => {
+              console.log(form.getFieldsValue()?.[name]?.action);
+              if (sType?.action?.soundType == 2) {
+                soundRef?.current?.open(
+                  form.getFieldsValue()?.[name]?.action?.soundRecordList || [],
+                );
+              }
+            }}
+          >
+            选择
+          </Button>
+        </Form.Item>
         <Button
           type="link"
           onClick={() => {
-            console.log(form.getFieldsValue()?.[name]?.action);
+            auditionRef?.current?.open(form.getFieldsValue()?.[name]?.action);
           }}
         >
           试听
         </Button>
+        <SoundVarModal cref={auditionRef}></SoundVarModal>
+        <SoundSelectModal
+          cref={soundRef}
+          setform={(list: any) => {
+            let formData = form.getFieldsValue();
+            formData[name].action.soundRecordList = list;
+            form.setFieldsValue(formData);
+          }}
+        ></SoundSelectModal>
       </div>
     );
   };
@@ -241,6 +274,14 @@ const ActionConfig = (props: any) => {
                   );
                 })}
               </Select>
+            </FormItem>
+          </Condition>
+          <Condition r-if={_actionType === 4}>
+            <FormItem
+              name={getFormName(['action', 'toFlowId'])}
+              rules={[{ required: true, message: '请选择' }]}
+            >
+              <Input placeholder="请输入" style={{ width: '220px' }} disabled={canEdit}></Input>
             </FormItem>
           </Condition>
         </Space>

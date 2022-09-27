@@ -75,7 +75,7 @@ const CvsInput: React.FC<any> = (props: any) => {
 
   return (
     <div className={''}>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div className={styles['zy-row']}>
           <div>
             <Condition r-if={required}>
@@ -107,6 +107,7 @@ const CvsInput: React.FC<any> = (props: any) => {
           <Preview text={value}></Preview>
         </div>
       </div>
+
       <Condition r-if={type === 'input'}>
         <Input
           maxLength={maxlength}

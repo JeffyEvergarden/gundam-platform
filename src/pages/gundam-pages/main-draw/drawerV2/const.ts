@@ -11,6 +11,10 @@ export const ACTION_LIST: any = [
     name: 3,
     label: '转人工服务流程',
   },
+  {
+    name: 4,
+    label: '转按键IVR服务',
+  },
 ];
 
 // 普通规则

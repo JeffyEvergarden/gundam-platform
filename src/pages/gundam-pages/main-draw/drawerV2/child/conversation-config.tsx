@@ -1,8 +1,11 @@
 import { AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Button, Form, Radio, Select } from 'antd';
+import { useRef } from 'react';
 import LabelSelect from '../../drawer/components/label-select';
 import CvsInput from '../components/cvs-input';
 import SoundRadio from '../components/sound-radio';
+import SoundSelectModal from '../components/sound-select-modal';
+import SoundVarModal from '../components/sound-var-modal';
 import styles from './style.less';
 
 const { Item: FormItem, List: FormList } = Form;
@@ -10,6 +13,9 @@ const { Option } = Select;
 
 const ConversationConfig = (props: any) => {
   const { form, name, title = '答复配置', placeholder = '答复内容', required } = props;
+  const soundRef = useRef<any>();
+  const auditionRef = useRef<any>();
+  const sType: any = Form.useWatch('strategyList', form);
   return (
     <div className={styles['conversation-list']}>
       <FormList name={name}>
@@ -47,16 +53,59 @@ const ConversationConfig = (props: any) => {
                             <Radio value={2}>录音半合成</Radio>
                           </Radio.Group>
                         </Form.Item>
+                        <Form.Item
+                          name={[field.name, 'soundRecordList']}
+                          fieldKey={[field.fieldKey, 'soundRecordList']}
+                          rules={[
+                            {
+                              required:
+                                sType?.[0]?.['conversationList']?.[index]?.soundType == 1
+                                  ? false
+                                  : true,
+                              message: '请选择',
+                            },
+                          ]}
+                        >
+                          <Button
+                            type="link"
+                            onClick={() => {
+                              console.log(
+                                form.getFieldsValue()['strategyList'][0]['conversationList'][index],
+                              );
+                              if (sType?.[0]?.['conversationList']?.[index]?.soundType == 2) {
+                                soundRef?.current?.open(
+                                  form.getFieldsValue()?.['strategyList']?.[0]?.[
+                                    'conversationList'
+                                  ]?.[index]?.soundRecordList || [],
+                                );
+                              }
+                            }}
+                          >
+                            选择
+                          </Button>
+                        </Form.Item>
                         <Button
                           type="link"
                           onClick={() => {
-                            console.log(
-                              form.getFieldsValue()['strategyList'][0]['conversationList'][index],
+                            auditionRef?.current?.open(
+                              form.getFieldsValue()?.['strategyList']?.[0]?.['conversationList']?.[
+                                index
+                              ],
                             );
                           }}
                         >
                           试听
                         </Button>
+                        <SoundVarModal cref={auditionRef}></SoundVarModal>
+                        <SoundSelectModal
+                          cref={soundRef}
+                          setform={(list: any) => {
+                            let formData = form.getFieldsValue();
+                            formData['strategyList'][0]['conversationList'][index].soundRecordList =
+                              list;
+                            form.setFieldsValue(formData);
+                          }}
+                        ></SoundSelectModal>
                       </div>
                     );
                   };
