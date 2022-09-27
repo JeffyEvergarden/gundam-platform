@@ -43,7 +43,7 @@ const TablePage: React.FC = (props: any) => {
       width: 200,
       ellipsis: true,
       render: (v: any, r: any, i: any) => {
-        return (
+        return r?.applyNames ? (
           <div>
             <div className={style['applyNode']}>{`${1}.${r?.applyNames?.[0]}`}</div>
             <Tooltip
@@ -58,6 +58,8 @@ const TablePage: React.FC = (props: any) => {
               <span style={{ color: '#1890ff' }}>查看更多</span>
             </Tooltip>
           </div>
+        ) : (
+          '-'
         );
       },
     },
