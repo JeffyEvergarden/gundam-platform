@@ -66,7 +66,7 @@ const SoundVarModal: React.FC = (props: any) => {
         robotId: info.id,
         soundRecordList: row?.soundRecordList?.map((item: any) => item?.id) || [],
         actionText: row?.actionText || '',
-        varListStr: JSON?.stringify?.(values) || '',
+        varMapStr: JSON?.stringify?.(values) || '',
       };
       await getSemisynthesis(params).then((res) => {
         console.log(`${config.basePath}/robot/tts/ttsMerge?${ObjToSearch(params)}`);
@@ -81,6 +81,7 @@ const SoundVarModal: React.FC = (props: any) => {
   return (
     <Modal
       width={650}
+      title={'录音试听'}
       visible={visible}
       onCancel={() => {
         form.resetFields();
@@ -101,10 +102,10 @@ const SoundVarModal: React.FC = (props: any) => {
             </Form.Item>
           ))}
         </Form>
-        <Button type="primary" onClick={getUrl}>
+        <Button type="primary" onClick={getUrl} style={{ alignSelf: 'flex-end' }}>
           立即播放
         </Button>
-        {url && <AudioPlay musicSrc={url} />}
+        <div style={{ marginTop: '16px' }}>{url && <AudioPlay musicSrc={url} />}</div>
       </div>
     </Modal>
   );
