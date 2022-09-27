@@ -66,7 +66,7 @@ const SoundVarModal: React.FC = (props: any) => {
         robotId: info.id,
         soundRecordList: row?.soundRecordList?.map((item: any) => item?.id) || [],
         actionText: row?.actionText || '',
-        varList: JSON?.stringify?.(values) || '',
+        varListStr: JSON?.stringify?.(values) || '',
       };
       await getSemisynthesis(params).then((res) => {
         console.log(`${config.basePath}/robot/tts/ttsMerge?${ObjToSearch(params)}`);
