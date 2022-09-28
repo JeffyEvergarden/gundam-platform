@@ -95,7 +95,7 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
       footer={false}
     >
       <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-        <Form form={form} style={{ marginTop: '36px', alignSelf: 'flex-start', width: '100%' }}>
+        <Form form={form} style={{ alignSelf: 'flex-start', width: '100%' }}>
           {varList?.map((item: any, index: any) => (
             <Form.Item
               name={item}
