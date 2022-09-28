@@ -8,8 +8,10 @@ const CancelToken = request.CancelToken;
 
 export const cancelObj: any = {};
 
+import { stringify } from 'qs';
+
 /** 对话初始化接口 **/
-export async function getChatInitData(params?: { [key: string]: any }) {
+export async function getChatInitData(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/dialogueUrl`, {
     method: 'POST',
     data: params,
@@ -20,7 +22,7 @@ export async function getChatInitData(params?: { [key: string]: any }) {
 }
 
 /** 文本对话接口 **/
-export async function textDialogData(params?: { [key: string]: any }) {
+export async function textDialogData(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/textRobotDialogueText`, {
     method: 'POST',
     data: params,
@@ -31,7 +33,7 @@ export async function textDialogData(params?: { [key: string]: any }) {
 }
 
 /** 语音对话接口 **/
-export async function soundRobotDialogueText(params?: { [key: string]: any }) {
+export async function soundRobotDialogueText(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/soundRobotDialogueText`, {
     method: 'POST',
     data: params,
@@ -42,7 +44,7 @@ export async function soundRobotDialogueText(params?: { [key: string]: any }) {
 }
 
 /** 语音对话接口 **/
-export async function getAssociationText(params?: { [key: string]: any }) {
+export async function getAssociationText(params?: Record<string, any>) {
   return request(`${baseUrl}/robot/faq/searchSuggest`, {
     method: 'POST',
     data: params,
@@ -53,7 +55,7 @@ export async function getAssociationText(params?: { [key: string]: any }) {
 }
 
 /** 联想点击埋点 **/
-export async function textRobotSuggestClick(data?: { [key: string]: any }) {
+export async function textRobotSuggestClick(data?: Record<string, any>) {
   return request(`${baseUrl}/robot/textRobotSuggestClick`, {
     method: 'POST',
     data: data,
@@ -61,7 +63,7 @@ export async function textRobotSuggestClick(data?: { [key: string]: any }) {
 }
 
 /** 发送埋点 **/
-export async function textRobotSearchEvent(data?: { [key: string]: any }) {
+export async function textRobotSearchEvent(data?: Record<string, any>) {
   return request(`${baseUrl}/robot/textRobotSearchEvent`, {
     method: 'POST',
     data: data,
@@ -69,9 +71,15 @@ export async function textRobotSearchEvent(data?: { [key: string]: any }) {
 }
 
 /** 推荐问埋点 **/
-export async function textRobotRecommendDialogue(data?: { [key: string]: any }) {
+export async function textRobotRecommendDialogue(data?: Record<string, any>) {
   return request(`${baseUrl}/robot/textRobotRecommendDialogue`, {
     method: 'POST',
     data: data,
   });
 }
+
+// export async function testAction(params?: Record<string, any>) {
+//   return request(`${baseUrl}/robot/sound/mergeSound?${JSON.stringify(params)}`, {
+//     method: 'GET',
+//   });
+// }

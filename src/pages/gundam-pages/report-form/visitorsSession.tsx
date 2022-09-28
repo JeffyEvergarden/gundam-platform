@@ -56,6 +56,7 @@ export default () => {
       customerId: payload.customerId,
       page: payload.current,
       pageSize: payload.pageSize,
+      sessionId: payload.id,
     };
     let res = await getDialogue(params);
     return {
@@ -79,6 +80,7 @@ export default () => {
       endTime = yestody.format('YYYY-MM-DD');
     }
     let customerId = formRef?.current?.getFieldValue('customerId');
+    let sessionId = formRef?.current?.getFieldValue('id');
     window.open(
       `${
         config.basePath
@@ -86,7 +88,7 @@ export default () => {
         code,
       )}&robotId=${info.id}&orderCode=${paramsObj.orderCode}&orderType=${
         paramsObj.orderType
-      }&customerId=${customerId ?? ''}`,
+      }&customerId=${customerId ?? ''}&sessionId=${sessionId ?? ''}`,
       '_self',
     );
   };
@@ -104,6 +106,7 @@ export default () => {
       endTime = yestody.format('YYYY-MM-DD');
     }
     let customerId = formRef?.current?.getFieldValue('customerId');
+    let sessionId = formRef?.current?.getFieldValue('id');
     window.open(
       `${
         config.basePath
@@ -111,7 +114,7 @@ export default () => {
         code,
       )}&robotId=${info.id}&orderCode=${paramsObj.orderCode}&orderType=${
         paramsObj.orderType
-      }&customerId=${customerId ?? ''}`,
+      }&customerId=${customerId ?? ''}&sessionId=${sessionId ?? ''}`,
       '_self',
     );
   };
@@ -159,7 +162,7 @@ export default () => {
       title: '会话ID',
       dataIndex: 'id',
       ellipsis: true,
-      search: false,
+      search: true,
       render: (t: any, r: any, i: any) => {
         return <a onClick={() => toRecord(r)}>{r.id}</a>;
       },
