@@ -11,6 +11,7 @@ import {
   textRobotRecommendDialogue,
   textRobotSearchEvent,
   textRobotSuggestClick,
+  // testAction,
 } from './model/api';
 import styles from './style.less';
 const { TextArea } = Input;
@@ -529,6 +530,20 @@ export default (props: any) => {
     </Menu>
   );
 
+  // const test = async () => {
+  //   let params = {
+  //     robotId: info?.id,
+  //     voiceList: [
+  //       {
+  //         type: '1',
+  //         text: '你好',
+  //       },
+  //       { type: '1', text: '您好', urlPath: '/xxx/xxx.wmb' },
+  //     ],
+  //   };
+  //   let res = await testAction(params);
+  //   debugger;
+  // };
   return (
     <div>
       <div className={styles['chat-topTitle']}>
@@ -593,7 +608,14 @@ export default (props: any) => {
                             {info?.robotType == 1 && (
                               <div className={styles['words-type-audio']}>
                                 <AudioPlay
-                                  musicSrc={`${config.basePath}/robot/sound/mergeSound?soundStr={robotId:${info.id},voiceList:${item?.actionTextSplitList}}`}
+                                  musicSrc={`${
+                                    config.basePath
+                                  }/robot/sound/mergeSound?soundStr=${encodeURIComponent(
+                                    JSON.stringify({
+                                      robotId: info.id ?? '',
+                                      voiceList: item?.actionTextSplitList ?? [],
+                                    }),
+                                  )}`}
                                   cref={audioPlayRef}
                                 />
                               </div>
@@ -686,15 +708,18 @@ export default (props: any) => {
               }}
             />
             {info?.robotType == 1 && (
-              <Dropdown.Button
-                overlay={menu}
-                placement="topRight"
-                key="Dropdown"
-                className={styles['send-btn-dropdown']}
-                onClick={() => sendMessage()}
-              >
-                发送
-              </Dropdown.Button>
+              <Fragment>
+                <Dropdown.Button
+                  overlay={menu}
+                  placement="topRight"
+                  key="Dropdown"
+                  className={styles['send-btn-dropdown']}
+                  onClick={() => sendMessage()}
+                >
+                  发送
+                </Dropdown.Button>
+                {/* <Button onClick={test}>测试语音</Button> */}
+              </Fragment>
             )}
 
             {info?.robotType == 0 && (
