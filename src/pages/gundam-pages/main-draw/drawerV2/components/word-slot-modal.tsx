@@ -151,10 +151,12 @@ const WordSlotModal: React.FC<any> = (props: any) => {
           <Condition r-if={show}>
             <div style={{ paddingTop: '8px' }}>
               <ConversationConfig
+                form={form}
                 name={'clearList'}
                 title="澄清话术"
                 placeholder="话术"
                 required={true}
+                formName={'clearList'}
               />
             </div>
 

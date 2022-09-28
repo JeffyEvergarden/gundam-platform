@@ -23,7 +23,7 @@ const SoundRadio: React.FC<any> = (props: any) => {
       item.buttonInputSize = undefined;
     }
 
-    const list = form.getFieldValue(key);
+    const list = form?.getFieldValue(key);
     if (isArray && list instanceof Array) {
       form.setFieldsValue({
         [key]: [...list],
@@ -62,7 +62,7 @@ const SoundRadio: React.FC<any> = (props: any) => {
     if (isArray) {
       _formName.forEach((key: any, index: number) => {
         if (index === 0) {
-          item = form.getFieldValue(key);
+          item = form?.getFieldValue(key);
         } else {
           item = item?.[key] || {};
         }

@@ -1,3 +1,4 @@
+import Condition from '@/components/Condition';
 import { AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Button, Form, Radio, Select } from 'antd';
 import { useRef } from 'react';
@@ -12,10 +13,18 @@ const { Item: FormItem, List: FormList } = Form;
 const { Option } = Select;
 
 const ConversationConfig = (props: any) => {
-  const { form, name, title = '答复配置', placeholder = '答复内容', required } = props;
+  const {
+    form,
+    name,
+    title = '答复配置',
+    placeholder = '答复内容',
+    required,
+    formName,
+    deep = false,
+  } = props;
   const soundRef = useRef<any>();
   const auditionRef = useRef<any>();
-  const sType: any = Form.useWatch('strategyList', form);
+  const sType: any = Form.useWatch(formName, form);
   return (
     <div className={styles['conversation-list']}>
       <FormList name={name}>
@@ -53,44 +62,49 @@ const ConversationConfig = (props: any) => {
                             <Radio value={2}>录音半合成</Radio>
                           </Radio.Group>
                         </Form.Item>
-                        <Form.Item
-                          name={[field.name, 'soundRecordList']}
-                          fieldKey={[field.fieldKey, 'soundRecordList']}
-                          rules={[
-                            {
-                              required:
-                                sType?.[0]?.['conversationList']?.[index]?.soundType == 1
-                                  ? false
-                                  : true,
-                              message: '请选择',
-                            },
-                          ]}
+                        <Condition
+                          r-if={
+                            deep
+                              ? sType?.[0]?.['conversationList']?.[index]?.soundType == 2
+                              : sType?.[index]?.soundType == 2
+                          }
                         >
-                          <Button
-                            type="link"
-                            onClick={() => {
-                              console.log(
-                                form.getFieldsValue()['strategyList'][0]['conversationList'][index],
-                              );
-                              if (sType?.[0]?.['conversationList']?.[index]?.soundType == 2) {
-                                soundRef?.current?.open(
-                                  form.getFieldsValue()?.['strategyList']?.[0]?.[
-                                    'conversationList'
-                                  ]?.[index]?.soundRecordList || [],
-                                );
-                              }
-                            }}
+                          <Form.Item
+                            name={[field.name, 'soundRecordList']}
+                            fieldKey={[field.fieldKey, 'soundRecordList']}
+                            rules={[
+                              {
+                                required: true,
+                                message: '请选择',
+                              },
+                            ]}
                           >
-                            选择
-                          </Button>
-                        </Form.Item>
+                            <Button
+                              type="link"
+                              onClick={() => {
+                                console.log(form.getFieldsValue(formName));
+                                soundRef?.current?.open(
+                                  deep
+                                    ? form.getFieldsValue()?.[formName]?.[0]?.[
+                                        'conversationList'
+                                      ]?.[index]?.soundRecordList
+                                    : form.getFieldsValue()?.[formName]?.[index]?.soundRecordList,
+                                );
+                              }}
+                            >
+                              选择
+                            </Button>
+                          </Form.Item>
+                        </Condition>
                         <Button
                           type="link"
                           onClick={() => {
                             auditionRef?.current?.open(
-                              form.getFieldsValue()?.['strategyList']?.[0]?.['conversationList']?.[
-                                index
-                              ],
+                              deep
+                                ? form.getFieldsValue()?.[formName]?.[0]?.['conversationList']?.[
+                                    index
+                                  ]
+                                : form.getFieldsValue()?.[formName]?.[index],
                             );
                           }}
                         >
@@ -101,8 +115,19 @@ const ConversationConfig = (props: any) => {
                           cref={soundRef}
                           setform={(list: any) => {
                             let formData = form.getFieldsValue();
-                            formData['strategyList'][0]['conversationList'][index].soundRecordList =
-                              list;
+                            if (deep) {
+                              formData[formName][0]['conversationList'][index].soundRecordList =
+                                list;
+                              formData[formName][0]['conversationList'][index].actionText = list
+                                ?.map((item: any) => item?.text)
+                                ?.join(';');
+                            } else {
+                              formData[formName][index].soundRecordList = list;
+                              formData[formName][index].actionText = list
+                                ?.map((item: any) => item?.text)
+                                ?.join(';');
+                            }
+
                             form.setFieldsValue(formData);
                           }}
                         ></SoundSelectModal>

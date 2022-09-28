@@ -249,6 +249,8 @@ const DrawerForm = (props: any) => {
                                   <ConversationConfig
                                     form={form}
                                     name={[outFields.name, 'conversationList']}
+                                    formName={'strategyList'}
+                                    deep={true}
                                   />
                                 </div>
 

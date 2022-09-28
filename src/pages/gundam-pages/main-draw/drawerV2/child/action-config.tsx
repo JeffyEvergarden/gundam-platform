@@ -173,25 +173,27 @@ const ActionConfig = (props: any) => {
             <Radio value={2}>录音半合成</Radio>
           </Radio.Group>
         </Form.Item>
-        <Form.Item
-          name={getFormName(['action', 'soundRecordList'])}
-          fieldKey={getFormName(['action', 'soundRecordList'])}
-          rules={[{ required: sType?.action?.soundType == 1 ? false : true, message: '请选择' }]}
-        >
-          <Button
-            type="link"
-            onClick={() => {
-              console.log(form.getFieldsValue()?.[name]?.action);
-              if (sType?.action?.soundType == 2) {
+        <Condition r-if={sType?.action?.soundType == 2}>
+          <Form.Item
+            name={getFormName(['action', 'soundRecordList'])}
+            fieldKey={getFormName(['action', 'soundRecordList'])}
+            rules={[{ required: true, message: '请选择' }]}
+          >
+            <Button
+              type="link"
+              onClick={() => {
+                console.log(form.getFieldsValue()?.[name]?.action);
+                // if (sType?.action?.soundType == 2) {
                 soundRef?.current?.open(
                   form.getFieldsValue()?.[name]?.action?.soundRecordList || [],
                 );
-              }
-            }}
-          >
-            选择
-          </Button>
-        </Form.Item>
+                // }
+              }}
+            >
+              选择
+            </Button>
+          </Form.Item>
+        </Condition>
         <Button
           type="link"
           onClick={() => {

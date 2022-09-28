@@ -144,33 +144,34 @@ const HightformTemplate: any = (props: any) => {
                               <Radio value={2}>录音半合成</Radio>
                             </Radio.Group>
                           </Form.Item>
-                          <Form.Item
-                            name={[field.name, 'soundRecordList']}
-                            fieldKey={[field.fieldKey, 'soundRecordList']}
-                            rules={[
-                              {
-                                required:
-                                  sType?.responseList?.[index]?.soundType == 1 ? false : true,
-                                message: '请选择',
-                              },
-                            ]}
-                          >
-                            <Button
-                              type="link"
-                              onClick={() => {
-                                console.log(form.getFieldsValue()?.[name]?.responseList[index]);
-                                console.log(sType);
-                                if (sType?.responseList?.[index]?.soundType == 2) {
+                          <Condition r-if={sType?.responseList?.[index]?.soundType == 2}>
+                            <Form.Item
+                              name={[field.name, 'soundRecordList']}
+                              fieldKey={[field.fieldKey, 'soundRecordList']}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: '请选择',
+                                },
+                              ]}
+                            >
+                              <Button
+                                type="link"
+                                onClick={() => {
+                                  console.log(form.getFieldsValue()?.[name]?.responseList[index]);
+                                  console.log(sType);
+                                  // if (sType?.responseList?.[index]?.soundType == 2) {
                                   soundRef?.current?.open(
                                     form.getFieldsValue()?.[name]?.responseList[index]
                                       ?.soundRecordList || [],
                                   );
-                                }
-                              }}
-                            >
-                              选择
-                            </Button>
-                          </Form.Item>
+                                  // }
+                                }}
+                              >
+                                选择
+                              </Button>
+                            </Form.Item>
+                          </Condition>
 
                           <Button
                             type="link"
