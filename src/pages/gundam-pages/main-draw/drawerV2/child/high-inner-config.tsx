@@ -17,8 +17,8 @@ const { Option } = Select;
 const HightformTemplate: any = (props: any) => {
   const { form, name, title, showDefault, type } = props;
 
-  const soundRef = useRef<any>();
-  const auditionRef = useRef<any>();
+  const soundRef = useRef<any>({});
+  const auditionRef = useRef<any>({});
   const [disabled, setDisabled] = useState<boolean>(false);
   const [switchType, setSwitchType] = useState<boolean>(false);
   const sType: any = Form.useWatch(name, form);
@@ -164,6 +164,7 @@ const HightformTemplate: any = (props: any) => {
                                   soundRef?.current?.open(
                                     form.getFieldsValue()?.[name]?.responseList[index]
                                       ?.soundRecordList || [],
+                                    index,
                                   );
                                   // }
                                 }}
@@ -187,7 +188,7 @@ const HightformTemplate: any = (props: any) => {
                           <SoundVarModal cref={auditionRef}></SoundVarModal>
                           <SoundSelectModal
                             cref={soundRef}
-                            setform={(list: any) => {
+                            setform={(list: any, index: any) => {
                               let formData = form.getFieldsValue();
                               formData[name].responseList[index].soundRecordList = list;
                               formData[name].responseList[index].actionText = list

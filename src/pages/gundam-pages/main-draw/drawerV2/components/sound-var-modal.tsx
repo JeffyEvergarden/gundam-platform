@@ -6,7 +6,12 @@ import React, { useImperativeHandle, useState } from 'react';
 import { useModel } from 'umi';
 import { getSemisynthesis, getTotalSynthesis } from '../../model/api';
 
-const SoundVarModal: React.FC = (props: any) => {
+interface baseProps {
+  cref?: any;
+  confirm?: any;
+}
+
+const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
   const { cref, confirm } = props;
 
   const { info } = useModel('gundam' as any, (model: any) => ({

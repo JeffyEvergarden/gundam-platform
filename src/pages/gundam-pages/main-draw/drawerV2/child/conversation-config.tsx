@@ -89,6 +89,7 @@ const ConversationConfig = (props: any) => {
                                         'conversationList'
                                       ]?.[index]?.soundRecordList
                                     : form.getFieldsValue()?.[formName]?.[index]?.soundRecordList,
+                                  index,
                                 );
                               }}
                             >
@@ -113,7 +114,7 @@ const ConversationConfig = (props: any) => {
                         <SoundVarModal cref={auditionRef}></SoundVarModal>
                         <SoundSelectModal
                           cref={soundRef}
-                          setform={(list: any) => {
+                          setform={(list: any, index: any) => {
                             let formData = form.getFieldsValue();
                             if (deep) {
                               formData[formName][0]['conversationList'][index].soundRecordList =
@@ -172,6 +173,17 @@ const ConversationConfig = (props: any) => {
                           field={field}
                           formName={['strategyList', 0, 'conversationList', index]}
                         />
+                        <Form.Item
+                          name={[field.name, 'allowInterrupt']}
+                          fieldKey={[field.fieldKey, 'allowInterrupt']}
+                          initialValue={1}
+                          label={'允许打断'}
+                        >
+                          <Radio.Group>
+                            <Radio value={1}>是</Radio>
+                            <Radio value={0}>否</Radio>
+                          </Radio.Group>
+                        </Form.Item>
 
                         <Form.Item
                           name={[field.name, 'textLabels']}

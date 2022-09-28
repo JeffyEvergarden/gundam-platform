@@ -252,8 +252,8 @@ const getNodeConfig = (req: any, res: any) => {
     data: {
       robotId: 'xxx',
       highConfig: {
-        allowFlows: ['front_mock_id_1'],
-        configType: 2,
+        // allowFlows: ['front_mock_id_1'],
+        configType: 1,
         clearAction: {
           configType: 1,
           // action: {
@@ -305,7 +305,7 @@ const getNodeConfig = (req: any, res: any) => {
             textLabels: ['话术标签3'],
           },
           messageList: undefined,
-          responseList: [],
+          responseList: [{}, {}, {}],
           times: 3,
         },
         unclearAction: {
