@@ -11,6 +11,7 @@ interface dataProp {
   musicSrc?: string;
   'r-show'?: any;
   cref?: any;
+  size?: any;
 }
 
 function formate(time: any) {
@@ -26,7 +27,7 @@ function formate(time: any) {
 }
 
 const AudioPlay: React.FC<dataProp> = (props) => {
-  const { musicSrc, cref } = props;
+  const { musicSrc, cref, size = 'default' } = props;
   // 状态类型   init / play / pause
   const [type, setType] = useState<string>('init');
 
@@ -440,7 +441,7 @@ const AudioPlay: React.FC<dataProp> = (props) => {
           />
         </div>
 
-        <span className={style['time-span']}>
+        <span className={style['time-span' + `${size === 'default' ? '' : '_' + size}`]}>
           {formate(curTime)} / {formate(totalTime)}
         </span>
 
