@@ -6,7 +6,12 @@ import React, { useImperativeHandle, useState } from 'react';
 import { useModel } from 'umi';
 import { getSemisynthesis, getTotalSynthesis } from '../../model/api';
 
-const SoundVarModal: React.FC = (props: any) => {
+interface baseProps {
+  cref?: any;
+  confirm?: any;
+}
+
+const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
   const { cref, confirm } = props;
 
   const { info } = useModel('gundam' as any, (model: any) => ({
@@ -90,7 +95,7 @@ const SoundVarModal: React.FC = (props: any) => {
       footer={false}
     >
       <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-        <Form form={form} style={{ marginTop: '36px', alignSelf: 'flex-start', width: '100%' }}>
+        <Form form={form} style={{ alignSelf: 'flex-start', width: '100%' }}>
           {varList?.map((item: any, index: any) => (
             <Form.Item
               name={item}

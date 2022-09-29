@@ -476,7 +476,7 @@ const Board: React.FC<any> = (props: any) => {
 
   return (
     <div className={style['board-page']}>
-      <div className={style['board_left']}>
+      <div className={style['board_left']} style={{ width: '100%' }}>
         <div className={style['board-title']}>
           <Button
             icon={<ArrowLeftOutlined style={{ fontSize: '20px' }} />}

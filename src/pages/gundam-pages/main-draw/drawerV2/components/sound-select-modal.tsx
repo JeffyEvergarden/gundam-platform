@@ -5,14 +5,16 @@ import { Button, Modal, Tooltip } from 'antd';
 import React, { useImperativeHandle, useRef, useState } from 'react';
 import style from './style.less';
 
-const SoundSelectModal: React.FC = (props: any) => {
+const SoundSelectModal: React.FC<any> = (props: any) => {
   const { cref, setform } = props;
   const soundRef = useRef<any>();
   const [visible, setVisible] = useState<any>(false);
   const [selectList, setSelectList] = useState<any>([]);
+  const [listIndex, setListIndex] = useState<any>();
 
   useImperativeHandle(cref, () => ({
-    open: (list: any) => {
+    open: (list: any, index: any) => {
+      setListIndex(index);
       setVisible(true);
       setSelectList(list || []);
     },
@@ -51,7 +53,7 @@ const SoundSelectModal: React.FC = (props: any) => {
         setVisible(false);
       }}
       onOk={() => {
-        setform(selectList);
+        setform(selectList, listIndex);
         setVisible(false);
       }}
     >
