@@ -3,7 +3,7 @@ import config from '@/config';
 import { Modal } from 'antd';
 import React, { useImperativeHandle, useState } from 'react';
 
-const AuditionModal: React.FC = (props: any) => {
+const AuditionModal: React.FC<any> = (props: any) => {
   const { cref } = props;
   const [visible, setVisible] = useState<any>(false);
   const [soundInfo, setSoundInfo] = useState<any>({});

@@ -33,6 +33,8 @@ import style from './style.less';
 import SameModal from '@/pages/gundam-pages/sample/components/sameModal';
 import SimilarCom from '@/pages/gundam-pages/sample/components/similarCom';
 import { useSimilarModel } from '@/pages/gundam-pages/sample/model';
+import SoundSelectModal from '../../main-draw/drawerV2/components/sound-select-modal';
+import SoundVarModal from '../../main-draw/drawerV2/components/sound-var-modal';
 
 const { Option } = Select;
 
@@ -83,6 +85,9 @@ const Board: React.FC<any> = (props: any) => {
   const pageType = questionId ? 'edit' : 'create';
 
   const [form] = Form.useForm();
+  const soundRef = useRef<any>({});
+  const auditionRef = useRef<any>({});
+  const sType: any = Form.useWatch('answerList', form);
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -346,6 +351,8 @@ const Board: React.FC<any> = (props: any) => {
     if (!res) {
       return;
     }
+    console.log(res);
+
     res = processRequest(res);
     if (pageType === 'create') {
       let data: any = {
@@ -571,19 +578,83 @@ const Board: React.FC<any> = (props: any) => {
 
                         return (
                           <div key={field.key} className={style['diy-row']}>
-                            <div className={style['zy-row']} style={{ paddingBottom: '6px' }}>
-                              <span
-                                className={style['del-bt']}
-                                onClick={() => {
-                                  remove(index);
-                                }}
-                              >
-                                <MinusCircleOutlined />
-                              </span>
-                              <div className={style['circle-num']}>{index + 1}</div>
-                              <span className={'ant-form-item-label'}>
-                                <label className={'ant-form-item-required'}>答案内容</label>
-                              </span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                              <div className={style['zy-row']} style={{ paddingBottom: '6px' }}>
+                                <span
+                                  className={style['del-bt']}
+                                  onClick={() => {
+                                    remove(index);
+                                  }}
+                                >
+                                  <MinusCircleOutlined />
+                                </span>
+                                <div className={style['circle-num']}>{index + 1}</div>
+                                <span className={'ant-form-item-label'}>
+                                  <label className={'ant-form-item-required'}>答案内容</label>
+                                </span>
+                              </div>
+                              <Condition r-if={robotType === '语音'}>
+                                <div id={style['soundType']}>
+                                  <Form.Item
+                                    name={[field.name, 'soundType']}
+                                    fieldKey={[field.fieldKey, 'soundType']}
+                                    initialValue={1}
+                                  >
+                                    <Radio.Group>
+                                      <Radio value={1}>全合成</Radio>
+                                      <Radio value={2}>录音半合成</Radio>
+                                    </Radio.Group>
+                                  </Form.Item>
+                                  <Condition r-if={sType?.[index]?.soundType == 2}>
+                                    <Form.Item
+                                      name={[field.name, 'soundRecordList']}
+                                      fieldKey={[field.fieldKey, 'soundRecordList']}
+                                      rules={[{ required: true, message: '请选择' }]}
+                                    >
+                                      <Button
+                                        type="link"
+                                        onClick={() => {
+                                          console.log(form.getFieldsValue());
+                                          console.log(sType);
+
+                                          if (sType?.[index]?.soundType == 2) {
+                                            soundRef?.current?.open(
+                                              form.getFieldsValue()?.['answerList'][index]
+                                                ?.soundRecordList || [],
+                                              index,
+                                            );
+                                          }
+                                        }}
+                                      >
+                                        选择
+                                      </Button>
+                                    </Form.Item>
+                                  </Condition>
+                                  <Button
+                                    type="link"
+                                    onClick={() => {
+                                      console.log(form.getFieldsValue());
+                                      // auditionRef?.current?.open(
+                                      //   form.getFieldsValue()?.[name]?.responseList[index],
+                                      // );
+                                    }}
+                                  >
+                                    试听
+                                  </Button>
+                                  <SoundVarModal cref={auditionRef}></SoundVarModal>
+                                  <SoundSelectModal
+                                    cref={soundRef}
+                                    setform={(list: any, index: any) => {
+                                      let formData = form.getFieldsValue();
+                                      formData['answerList'][index].soundRecordId = list?.[0]?.id;
+                                      formData['answerList'][index].soundRecordList = list;
+                                      formData['answerList'][index].answer = list?.[0]?.text;
+                                      form.setFieldsValue(formData);
+                                    }}
+                                    type={'radio'}
+                                  ></SoundSelectModal>
+                                </div>
+                              </Condition>
                             </div>
 
                             {/* <div>富文本编辑待定</div> */}
@@ -627,6 +698,18 @@ const Board: React.FC<any> = (props: any) => {
                                   placeholder={'请输入答案'}
                                   showCount
                                 />
+                              </Form.Item>
+
+                              <Form.Item
+                                name={[field.name, 'allowInterrupt']}
+                                fieldKey={[field.fieldKey, 'allowInterrupt']}
+                                initialValue={1}
+                                label={'允许打断'}
+                              >
+                                <Radio.Group>
+                                  <Radio value={1}>是</Radio>
+                                  <Radio value={0}>否</Radio>
+                                </Radio.Group>
                               </Form.Item>
                             </Condition>
 
@@ -699,12 +782,19 @@ const Board: React.FC<any> = (props: any) => {
                 );
               }}
             </FormList>
-            <Form.Item name="suggest" label="是否联想" style={{ width: '600px' }} initialValue={1}>
-              <Radio.Group disabled={editSuggest}>
-                <Radio value={1}>是</Radio>
-                <Radio value={0}>否</Radio>
-              </Radio.Group>
-            </Form.Item>
+            <Condition r-if={robotType === '文本'}>
+              <Form.Item
+                name="suggest"
+                label="是否联想"
+                style={{ width: '600px' }}
+                initialValue={1}
+              >
+                <Radio.Group disabled={editSuggest}>
+                  <Radio value={1}>是</Radio>
+                  <Radio value={0}>否</Radio>
+                </Radio.Group>
+              </Form.Item>
+            </Condition>
             <div className={style['diy-row']}>
               {/* questionRecommend  1 0 */}
               <Form.Item

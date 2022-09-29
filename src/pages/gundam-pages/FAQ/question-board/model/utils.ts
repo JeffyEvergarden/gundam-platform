@@ -1,5 +1,5 @@
-import { Editor, Range, Transforms } from 'slate';
 import moment from 'moment';
+import { Transforms } from 'slate';
 
 export function replaceSymbols(str: string) {
   return str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -100,6 +100,8 @@ export const processAnswerRequest = (data: any) => {
   let reg = new RegExp('/aichat/robot/file/getFile', 'g');
   data.answer = data.answer || '';
   data.answer = data.answer.replace(reg, '${getResoureUrl}');
+
+  data.soundRecordId = data?.soundRecordList?.[0]?.id;
 
   let enableTime = data.enableTime;
   // 生效时间

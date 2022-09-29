@@ -8,12 +8,15 @@ import {
   Form,
   Input,
   message,
+  Radio,
   Select,
   Space,
   TreeSelect,
 } from 'antd';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
+import SoundSelectModal from '../../main-draw/drawerV2/components/sound-select-modal';
+import SoundVarModal from '../../main-draw/drawerV2/components/sound-var-modal';
 import RemarkModal from './components/remark-modal';
 import SpCheckbox from './components/sp-checkbox';
 import EditBoard from './index';
@@ -64,6 +67,9 @@ const Board: React.FC<any> = (props: any) => {
   const batchNumber = query.batchNumber || '';
 
   const [form] = Form.useForm();
+  const soundRef = useRef<any>({});
+  const auditionRef = useRef<any>({});
+  const sType: any = Form.useWatch('soundType', form);
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -165,7 +171,10 @@ const Board: React.FC<any> = (props: any) => {
     if (!res) {
       return;
     }
+    console.log(res);
+
     res = processAnswerRequest(res);
+
     if (pageType === 'create') {
       let data: any = {
         robotId: info.id,
@@ -275,12 +284,67 @@ const Board: React.FC<any> = (props: any) => {
             <div>
               <div className={style['answer-box']}>
                 <div className={style['diy-row']}>
-                  <div className={style['zy-row']} style={{ paddingBottom: '6px' }}>
-                    <span className={'ant-form-item-label'}>
-                      <label className={'ant-form-item-required'}>答案内容</label>
-                    </span>
-                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <div className={style['zy-row']} style={{ paddingBottom: '6px' }}>
+                      <span className={'ant-form-item-label'}>
+                        <label className={'ant-form-item-required'}>答案内容</label>
+                      </span>
+                    </div>
+                    <Condition r-if={robotType === '语音'}>
+                      <div id={style['soundType']}>
+                        <Form.Item name={'soundType'} fieldKey={'soundType'} initialValue={1}>
+                          <Radio.Group>
+                            <Radio value={1}>全合成</Radio>
+                            <Radio value={2}>录音半合成</Radio>
+                          </Radio.Group>
+                        </Form.Item>
+                        <Condition r-if={sType == 2}>
+                          <Form.Item
+                            name={'soundRecordList'}
+                            fieldKey={'soundRecordList'}
+                            rules={[{ required: true, message: '请选择' }]}
+                          >
+                            <Button
+                              type="link"
+                              onClick={() => {
+                                console.log(form.getFieldsValue());
+                                console.log(sType);
 
+                                if (sType == 2) {
+                                  soundRef?.current?.open(
+                                    form.getFieldsValue()?.soundRecordList || [],
+                                  );
+                                }
+                              }}
+                            >
+                              选择
+                            </Button>
+                          </Form.Item>
+                        </Condition>
+                        <Button
+                          type="link"
+                          onClick={() => {
+                            console.log(form.getFieldsValue());
+                            auditionRef?.current?.open(form.getFieldsValue());
+                          }}
+                        >
+                          试听
+                        </Button>
+                        <SoundVarModal cref={auditionRef}></SoundVarModal>
+                        <SoundSelectModal
+                          cref={soundRef}
+                          setform={(list: any, index: any) => {
+                            let formData = form.getFieldsValue();
+                            formData.soundRecordList = list;
+                            formData.answer = list?.[0]?.text;
+                            form.setFieldsValue(formData);
+                            console.log(formData);
+                          }}
+                          type={'radio'}
+                        ></SoundSelectModal>
+                      </div>
+                    </Condition>
+                  </div>
                   {/* <div>富文本编辑待定</div> */}
                   {/* <Form.Item name={'answer'}>
                   <EditBoard />
@@ -326,6 +390,17 @@ const Board: React.FC<any> = (props: any) => {
                       ]}
                     >
                       <TextArea maxLength={2000} rows={5} placeholder={'请输入答案'} showCount />
+                    </Form.Item>
+                    <Form.Item
+                      name={'allowInterrupt'}
+                      fieldKey={'allowInterrupt'}
+                      initialValue={1}
+                      label={'允许打断'}
+                    >
+                      <Radio.Group>
+                        <Radio value={1}>是</Radio>
+                        <Radio value={0}>否</Radio>
+                      </Radio.Group>
                     </Form.Item>
                   </Condition>
 

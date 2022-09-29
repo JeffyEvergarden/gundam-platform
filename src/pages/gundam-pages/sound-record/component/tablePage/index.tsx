@@ -9,7 +9,7 @@ import ReplaceModal from '../replaceModal';
 import style from './style.less';
 
 const TablePage: React.FC = (props: any) => {
-  const { cref, activeKey, select = false } = props;
+  const { cref, activeKey, select = false, type = 'checkbox' } = props;
   const tableRef = useRef<any>();
   const auditionRef = useRef<any>();
   const replaceRef = useRef<any>();
@@ -161,6 +161,7 @@ const TablePage: React.FC = (props: any) => {
   };
 
   const rowSelection = {
+    type: type === 'radio' ? 'radio' : 'checkbox',
     selectedRowKeys,
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
       if (selectedRowKeys?.length > 5) {
@@ -179,6 +180,7 @@ const TablePage: React.FC = (props: any) => {
       <ProTable<any>
         columns={columns}
         actionRef={tableRef}
+        tableAlertRender={false}
         rowSelection={select ? rowSelection : false}
         scroll={{ x: columns.length * 200 }}
         request={async (params = {}, sort, filter) => {

@@ -9,7 +9,7 @@ import style from './style.less';
 
 const successCode = config.successCode;
 
-const ReplaceModal: React.FC = (props: any) => {
+const ReplaceModal: React.FC<any> = (props: any) => {
   const { cref, refresh } = props;
   const [visible, setVisible] = useState<any>(false);
   const [soundInfo, setSoundInfo] = useState<any>({});
