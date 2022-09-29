@@ -56,7 +56,7 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
     if (row.soundType == 1) {
       let params: any = {
         robotId: info.id,
-        actionText: replaceVar(row?.actionText, values) || '',
+        actionText: replaceVar(row?.actionText, values) || row?.answer || '',
       };
       await getTotalSynthesis(params).then((res) => {
         console.log(`${config.basePath}/robot/tts/ttsByConfig?${ObjToSearch(params)}`);
@@ -70,7 +70,7 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
       let params: any = {
         robotId: info.id,
         soundRecordIdList: row?.soundRecordList?.map((item: any) => item?.id) || [],
-        actionText: row?.actionText || '',
+        actionText: row?.actionText || row?.answer || '',
         varMapStr: JSON?.stringify?.(values) || '',
       };
       await getSemisynthesis(params).then((res) => {

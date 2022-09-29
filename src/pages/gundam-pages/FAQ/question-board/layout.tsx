@@ -632,7 +632,7 @@ const Board: React.FC<any> = (props: any) => {
                                   </Condition>
                                   <Button
                                     type="link"
-                                    onClick={() => {
+                                    onClick={async () => {
                                       console.log(form.getFieldsValue());
                                       auditionRef?.current?.open(
                                         form.getFieldsValue()?.['answerList']?.[index],
