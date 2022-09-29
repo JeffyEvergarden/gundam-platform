@@ -96,6 +96,6 @@ export default defineConfig({
   },
   define: {
     'process.env.UMI_ENV': process.env.UMI_ENV,
-    'process.env.mock': isProd,
+    'process.env.mock': !isProd,
   },
 });

@@ -90,6 +90,7 @@ const RecordModal: React.FC<any> = (props: any) => {
                   : `${config.basePath}/robot/file/getFile?path=${soundInfo}`
               }
             />
+            {/* <AudioPlay musicSrc={soundInfo} /> */}
           </div>
         ) : null
       }
