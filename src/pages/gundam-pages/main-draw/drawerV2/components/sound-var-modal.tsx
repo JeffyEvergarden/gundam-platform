@@ -58,13 +58,17 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
         robotId: info.id,
         actionText: replaceVar(row?.actionText, values) || row?.answer || '',
       };
-      await getTotalSynthesis(params).then((res) => {
-        console.log(`${config.basePath}/robot/tts/ttsByConfig?${ObjToSearch(params)}`);
+      try {
+        await getTotalSynthesis(params).then((res) => {
+          console.log(`${config.basePath}/robot/tts/ttsByConfig?${ObjToSearch(params)}`);
 
-        if (!res.resultCode) {
-          setUrl(`${config.basePath}/robot/tts/ttsByConfig?${ObjToSearch(params)}`);
-        }
-      });
+          if (!res.resultCode) {
+            setUrl(`${config.basePath}/robot/tts/ttsByConfig?${ObjToSearch(params)}`);
+          }
+        });
+      } catch (e) {
+        console.log('失败');
+      }
     }
     if (row.soundType == 2) {
       let params: any = {
@@ -73,13 +77,17 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
         actionText: row?.actionText || row?.answer || '',
         varMapStr: JSON?.stringify?.(values) || '',
       };
-      await getSemisynthesis(params).then((res) => {
-        console.log(`${config.basePath}/robot/tts/ttsMerge?${ObjToSearch(params)}`);
+      try {
+        await getSemisynthesis(params).then((res) => {
+          console.log(`${config.basePath}/robot/tts/ttsMerge?${ObjToSearch(params)}`);
 
-        if (!res.resultCode) {
-          setUrl(`${config.basePath}/robot/tts/ttsMerge?${ObjToSearch(params)}`);
-        }
-      });
+          if (!res.resultCode) {
+            setUrl(`${config.basePath}/robot/tts/ttsMerge?${ObjToSearch(params)}`);
+          }
+        });
+      } catch (e) {
+        console.log('失败');
+      }
     }
   };
 
