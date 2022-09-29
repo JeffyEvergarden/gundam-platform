@@ -67,7 +67,7 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
           }
         });
       } catch (e) {
-        console.log('失败');
+        console.log('获取录音失败');
       }
     }
     if (row.soundType == 2) {
@@ -86,7 +86,7 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
           }
         });
       } catch (e) {
-        console.log('失败');
+        console.log('获取录音失败');
       }
     }
   };
