@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState, useImperativeHandle } from 'react';
-
+import { useModel } from 'umi';
 import Condition from '../Condition';
 import pauseBt from './img/pause.svg';
 import playBt from './img/play.svg';
@@ -33,6 +33,18 @@ const AudioPlay: React.FC<dataProp> = (props) => {
   // 记录dom
   const audioRef = useRef<any>(null);
   const barRef = useRef<any>(null);
+
+  // 用以记录当前组件标识 给外部listener 用 挂个暂停方法
+  const listenerRef = useRef<any>({});
+
+  const { addListener, removeListener, stopOtherListener } = useModel(
+    'gundam' as any,
+    (model: any) => ({
+      addListener: model.addListener,
+      removeListener: model.removeListener,
+      stopOtherListener: model.stopOtherListener,
+    }),
+  );
 
   // 全局记录
   const infoRef = useRef<any>({});
@@ -87,11 +99,18 @@ const AudioPlay: React.FC<dataProp> = (props) => {
     //
     if (type === 'init' || type === 'play') {
       setType('pause');
+      stopOtherListener(listenerRef.current);
       audio.play();
     } else {
       setType('play');
       audio.pause();
     }
+  };
+
+  const pause = () => {
+    const audio = audioRef.current;
+    setType('play');
+    audio.pause();
   };
 
   // 调整滚动条
@@ -264,7 +283,7 @@ const AudioPlay: React.FC<dataProp> = (props) => {
     // ------------------
     setVoiceBtFlag(!voiceBtFlag);
   };
-
+  // 直接点击调整音频声音大小
   const touchVoiceBar = (e: any) => {
     const info = infoRef.current;
     // 拖动是不可以触发的
@@ -314,6 +333,7 @@ const AudioPlay: React.FC<dataProp> = (props) => {
     };
   }, [voiceDragFlag, voiceBtFlag]);
 
+  // 点击声音大小滚动条 按下动作
   const voiceMousedown = (e: any) => {
     const progress = progressRef.current;
     // 阻止点击时间
@@ -382,10 +402,20 @@ const AudioPlay: React.FC<dataProp> = (props) => {
       window.removeEventListener('mouseup', info.voiceMouseup);
     };
   }, [voiceDragFlag, computedVoiceHeight]);
-
+  // 报错事件
   const error = () => {
     setErrorFlag(true);
   };
+
+  // 初始化全局挂载listen
+
+  useEffect(() => {
+    listenerRef.current.pause = pause;
+    addListener(listenerRef.current);
+    return () => {
+      removeListener(listenerRef.current);
+    };
+  }, []);
 
   return (
     <>
