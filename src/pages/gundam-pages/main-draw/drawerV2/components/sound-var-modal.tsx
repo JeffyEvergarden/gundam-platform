@@ -69,7 +69,7 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
     if (row.soundType == 2) {
       let params: any = {
         robotId: info.id,
-        soundRecordList: row?.soundRecordList?.map((item: any) => item?.id) || [],
+        soundRecordIdList: row?.soundRecordList?.map((item: any) => item?.id) || [],
         actionText: row?.actionText || '',
         varMapStr: JSON?.stringify?.(values) || '',
       };

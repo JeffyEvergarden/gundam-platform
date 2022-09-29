@@ -634,9 +634,9 @@ const Board: React.FC<any> = (props: any) => {
                                     type="link"
                                     onClick={() => {
                                       console.log(form.getFieldsValue());
-                                      // auditionRef?.current?.open(
-                                      //   form.getFieldsValue()?.[name]?.responseList[index],
-                                      // );
+                                      auditionRef?.current?.open(
+                                        form.getFieldsValue()?.['answerList']?.[index],
+                                      );
                                     }}
                                   >
                                     试听
