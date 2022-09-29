@@ -61,6 +61,8 @@ const QuestionList: React.FC<any> = (props: any) => {
     highChannelList: model.highChannelList,
     getChannelList: model.getChannelList,
   }));
+  const robotTypeMap = config.robotTypeMap;
+  const robotType: any = robotTypeMap[info.robotType] || '语音';
   useEffect(() => {
     getChannelList(info.id);
   }, []);
@@ -440,22 +442,24 @@ const QuestionList: React.FC<any> = (props: any) => {
                         </div>
                         {/* 问题删除 */}
                         <div className={style['box-top-del']}>
-                          <div className={style['box-top-del']}>
-                            是否联想：
-                            <Switch
-                              size="small"
-                              checkedChildren="开启"
-                              unCheckedChildren="关闭"
-                              onChange={(val) => {
-                                console.log(val);
-                                editQ({ id: item?.id, suggest: val ? 1 : 0 });
-                              }}
-                              checked={item?.suggest == 1 ? true : false}
-                              disabled={isRecycle == 1 || item?.faqType == 2}
-                              // loading={editQLoading}
-                            ></Switch>
-                          </div>
-                          <Divider type="vertical" />
+                          <Condition r-if={robotType == '文本'}>
+                            <div className={style['box-top-del']}>
+                              是否联想：
+                              <Switch
+                                size="small"
+                                checkedChildren="开启"
+                                unCheckedChildren="关闭"
+                                onChange={(val) => {
+                                  console.log(val);
+                                  editQ({ id: item?.id, suggest: val ? 1 : 0 });
+                                }}
+                                checked={item?.suggest == 1 ? true : false}
+                                disabled={isRecycle == 1 || item?.faqType == 2}
+                                // loading={editQLoading}
+                              ></Switch>
+                            </div>
+                            <Divider type="vertical" />
+                          </Condition>
 
                           <Popconfirm
                             title={() => {

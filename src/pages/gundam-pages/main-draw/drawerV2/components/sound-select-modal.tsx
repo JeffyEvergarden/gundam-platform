@@ -6,7 +6,7 @@ import React, { useImperativeHandle, useRef, useState } from 'react';
 import style from './style.less';
 
 const SoundSelectModal: React.FC<any> = (props: any) => {
-  const { cref, setform } = props;
+  const { cref, setform, type = 'checkbox' } = props;
   const soundRef = useRef<any>();
   const [visible, setVisible] = useState<any>(false);
   const [selectList, setSelectList] = useState<any>([]);
@@ -112,7 +112,7 @@ const SoundSelectModal: React.FC<any> = (props: any) => {
         </div>
       </div>
 
-      <SoundListModal cref={soundRef} confirm={getSelect}></SoundListModal>
+      <SoundListModal cref={soundRef} confirm={getSelect} type={type}></SoundListModal>
     </Modal>
   );
 };
