@@ -118,7 +118,9 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
         <Button type="primary" onClick={getUrl} style={{ alignSelf: 'flex-end' }}>
           立即播放
         </Button>
-        <div style={{ marginTop: '16px' }}>{url && <AudioPlay musicSrc={url} />}</div>
+        <div style={{ marginTop: '16px', width: '100%' }}>
+          {url && <AudioPlay musicSrc={url} />}
+        </div>
       </div>
     </Modal>
   );

@@ -239,6 +239,10 @@ const getMessageList = (req: any, res: any) => {
   });
 };
 
+const sound = (req: any, res: any) => {
+  res.json('1213wqsdqwd');
+};
+
 // 菜单管理相关
 export default {
   // 主流程管理相关
@@ -255,8 +259,8 @@ export default {
   'POST /aichat/robot/mainDraw/lineSave': nodeOps, // 保存线配置
   'POST /aichat/robot/mainDraw/lineRuleInfo': getLineConfig, // 获取线配置
   'GET /aichat/notification/templateListPage': getMessageList,
-  'GET /aichat/robot/tts/ttsMerge': nodeOps, // 获取试听录音
-  'GET /aichat/robot/tts/ttsByConfig': nodeOps, // 获取试听录音
+  'GET /aichat/robot/tts/ttsMerge': sound, // 获取试听录音
+  'GET /aichat/robot/tts/ttsByConfig': sound, // 获取试听录音
 };
 
 // 接口1、获取机器人信息 传robotid
