@@ -473,6 +473,14 @@ export default (props: any) => {
         message.warning('请点击‘开始对话’按钮启动对话');
         return;
       }
+      if (textMessage?.length == 0 || textMessage.trim().length == 0) {
+        message.warning('不能发送空白文字');
+        return;
+      }
+      if (textMessage?.length > 200 || textMessage.trim().length > 200) {
+        message.warning('最多发送200字');
+        return;
+      }
       setLoading(true);
       let data = [...dialogList];
       let newDay = new Date().toLocaleDateString();
@@ -608,14 +616,18 @@ export default (props: any) => {
                             {info?.robotType == 1 && (
                               <div className={styles['words-type-audio']}>
                                 <AudioPlay
-                                  musicSrc={`${
-                                    config.basePath
-                                  }/robot/sound/mergeSound?soundStr=${encodeURIComponent(
-                                    JSON.stringify({
-                                      robotId: info.id ?? '',
-                                      voiceList: item?.actionTextSplitList ?? [],
-                                    }),
-                                  )}`}
+                                  musicSrc={
+                                    process.env.mock
+                                      ? '/aichat/mp3/bluebird.mp3'
+                                      : `${
+                                          config.basePath
+                                        }/robot/sound/mergeSound?soundStr=${encodeURIComponent(
+                                          JSON.stringify({
+                                            robotId: info.id ?? '',
+                                            voiceList: item?.actionTextSplitList ?? [],
+                                          }),
+                                        )}`
+                                  }
                                   cref={audioPlayRef}
                                 />
                               </div>

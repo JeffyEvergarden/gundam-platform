@@ -83,7 +83,14 @@ const RecordModal: React.FC<any> = (props: any) => {
         pageType == 'visitorsSession' && info?.robotType == 1 ? (
           <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
             <div style={{ width: '100px' }}>全程会话录音</div>
-            <AudioPlay musicSrc={`${config.basePath}/robot/file/getFile?path=${soundInfo}`} />
+            <AudioPlay
+              musicSrc={
+                process.env.mock
+                  ? soundInfo
+                  : `${config.basePath}/robot/file/getFile?path=${soundInfo}`
+              }
+            />
+            {/* <AudioPlay musicSrc={soundInfo} /> */}
           </div>
         ) : null
       }
