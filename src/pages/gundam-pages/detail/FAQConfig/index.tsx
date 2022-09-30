@@ -121,8 +121,8 @@ const FAQConfig: React.FC = (props: any) => {
             if (robotType === '语音') {
               if (item.configKey == 'FAQ_INVALID_ANSWER') {
                 item.configValue = res?.systemConfigList?.[v]?.answer || '';
-                item.soundType = res?.systemConfigList?.[v]?.soundType || 1;
-                item.allowInterrupt = res?.systemConfigList?.[v]?.allowInterrupt || 1;
+                item.soundType = res?.systemConfigList?.[v]?.soundType ?? 1;
+                item.allowInterrupt = res?.systemConfigList?.[v]?.allowInterrupt ?? 1;
                 item.soundRecordList = res?.systemConfigList?.[v]?.soundRecordList || [];
               }
             }
