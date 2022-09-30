@@ -6,13 +6,15 @@ const SoundListModal: React.FC<any> = (props: any) => {
   const { cref, confirm, type } = props;
   const tableRef = useRef<any>();
   const [visible, setVisible] = useState<any>(false);
+  const [activeKey, setActiveKey] = useState<any>(1);
 
   useImperativeHandle(cref, () => ({
-    open: (list: any) => {
+    open: (list: any, num?: any) => {
       // tableRef?.current?.refresh();
       tableRef?.current?.setSelectedRowKeys(list.map((item: any) => item.id) || []);
       tableRef?.current?.setSelectRow(list || []);
       setVisible(true);
+      setActiveKey(num || 1);
     },
   }));
 
@@ -31,7 +33,7 @@ const SoundListModal: React.FC<any> = (props: any) => {
       maskClosable={false}
     >
       <div className="list-page">
-        <TablePage cref={tableRef} activeKey={1} select={true} type={type}></TablePage>
+        <TablePage cref={tableRef} activeKey={activeKey} select={true} type={type}></TablePage>
       </div>
     </Modal>
   );

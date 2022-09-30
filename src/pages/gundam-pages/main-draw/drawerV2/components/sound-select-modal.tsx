@@ -62,7 +62,7 @@ const SoundSelectModal: React.FC<any> = (props: any) => {
         <div style={{ flex: 1 }}>
           <Button
             onClick={() => {
-              soundRef?.current?.open(selectList);
+              soundRef?.current?.open(selectList, type == 'radio' ? 2 : 1);
             }}
             size={'small'}
           >
