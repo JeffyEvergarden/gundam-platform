@@ -1,7 +1,9 @@
 import Condition from '@/components/Condition';
+import config from '@/config';
 import { EditOutlined, MonitorOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 import { useRef } from 'react';
+import { useModel } from 'umi';
 import SelectFaqModal from '../../components/select-faq-modal';
 import style from '../style.less';
 
@@ -9,8 +11,13 @@ const FaqSelect = (props: any) => {
   const { value, onChange } = props;
 
   const hasValue = Array.isArray(value) && value.length > 0;
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
 
   const selectFaqModalRef = useRef<any>({});
+  const robotTypeMap = config.robotTypeMap;
+  const robotType: any = robotTypeMap[info.robotType] || '语音';
 
   // 打开选择FAQ/意图模态框
   const openSelectFaqModal = (row: any) => {
@@ -88,7 +95,11 @@ const FaqSelect = (props: any) => {
         />
       </div>
 
-      <SelectFaqModal cref={selectFaqModalRef} confirm={confirmUpdateSelect} />
+      <SelectFaqModal
+        cref={selectFaqModalRef}
+        confirm={confirmUpdateSelect}
+        max={robotType == '语音' ? 2 : 5}
+      />
     </>
   );
 };
