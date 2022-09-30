@@ -1,7 +1,7 @@
 import AudioPlay from '@/components/AudioPlay';
 import config from '@/config';
 import { ObjToSearch } from '@/utils';
-import { Button, Form, Input, Modal } from 'antd';
+import { Button, Form, Input, message, Modal } from 'antd';
 import React, { useImperativeHandle, useState } from 'react';
 import { useModel } from 'umi';
 import { getSemisynthesis, getTotalSynthesis } from '../../model/api';
@@ -42,6 +42,11 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
 
   useImperativeHandle(cref, () => ({
     open: (row: any) => {
+      console.log(row);
+      if (row?.soundType == 2 && !row?.soundRecordList?.length) {
+        message.warning('请选择录音');
+        return;
+      }
       setUrl('');
       let list = getVarLength(row?.actionText || '');
       setVisible(true);
@@ -62,8 +67,10 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
         await getTotalSynthesis(params).then((res) => {
           console.log(`${config.basePath}/robot/tts/ttsByConfig?${ObjToSearch(params)}`);
 
-          if (!res.resultCode) {
+          if (!res?.resultCode) {
             setUrl(`${config.basePath}/robot/tts/ttsByConfig?${ObjToSearch(params)}`);
+          } else {
+            setUrl('');
           }
         });
       } catch (e) {
@@ -81,8 +88,10 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
         await getSemisynthesis(params).then((res) => {
           console.log(`${config.basePath}/robot/tts/ttsMerge?${ObjToSearch(params)}`);
 
-          if (!res.resultCode) {
+          if (!res?.resultCode) {
             setUrl(`${config.basePath}/robot/tts/ttsMerge?${ObjToSearch(params)}`);
+          } else {
+            setUrl('');
           }
         });
       } catch (e) {

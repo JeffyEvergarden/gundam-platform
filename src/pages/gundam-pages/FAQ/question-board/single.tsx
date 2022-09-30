@@ -234,7 +234,7 @@ const Board: React.FC<any> = (props: any) => {
 
   return (
     <div className={style['board-page']}>
-      <div>
+      <div style={{ width: '100%' }}>
         <div className={style['board-title']}>
           <Button
             icon={<ArrowLeftOutlined style={{ fontSize: '20px' }} />}
@@ -348,7 +348,7 @@ const Board: React.FC<any> = (props: any) => {
                   {/* <div>富文本编辑待定</div> */}
                   {/* <Form.Item name={'answer'}>
                   <EditBoard />
-                </Form.Item> */}
+                  </Form.Item> */}
 
                   {/* <div>富文本编辑待定</div> */}
                   <Condition r-if={robotType === '文本'}>

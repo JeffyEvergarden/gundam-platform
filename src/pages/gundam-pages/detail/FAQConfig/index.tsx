@@ -1,17 +1,23 @@
 import Condition from '@/components/Condition';
 import config from '@/config';
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { Button, Form, Input, InputNumber, message, Space, Switch } from 'antd';
+import { Button, Form, Input, InputNumber, message, Radio, Space, Switch } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import Selector from '../../FAQ/question-board/components/selector';
 import SelectorModal from '../../FAQ/question-board/components/selector-modal';
+import SoundSelectModal from '../../main-draw/drawerV2/components/sound-select-modal';
+import SoundVarModal from '../../main-draw/drawerV2/components/sound-var-modal';
 import { useFAQModel } from '../model';
 import style from './style.less';
 
 const FAQConfig: React.FC = (props: any) => {
   const [form] = Form.useForm();
   const { Item: FormItem, List: FormList } = Form;
+
+  const soundRef = useRef<any>({});
+  const auditionRef = useRef<any>({});
+  const sType: any = Form.useWatch(['systemConfigList', 'FAQ_INVALID_ANSWER', 'soundType'], form);
 
   const layout = {
     labelCol: { span: 4 },
@@ -79,24 +85,30 @@ const FAQConfig: React.FC = (props: any) => {
   };
 
   const submit = async () => {
+    console.log(form.getFieldsValue());
+
     let res: any = await form.validateFields().catch(() => {
       message.warning('存在未填写项目');
     });
+    console.log(res);
     if (!res) {
       return;
     }
-    console.log(res);
+
     let flag;
 
     let _res = Nconfig.map((item: any) => {
       Object.keys(res.systemConfigList).forEach((v) => {
-        console.log(item.configKey, v);
         if (item?.configKey == v) {
           if (item.dataType == 4) {
             flag = res.systemConfigList[v];
             item.configValue = res.systemConfigList[v] ? '1' : '0';
           } else {
             item.configValue = res.systemConfigList[v];
+            if (item.configKey == 'FAQ_INVALID_ANSWER') {
+              console.log(item?.configValue);
+              item.configValue.soundRecordId = item?.configValue?.soundRecordList?.[0]?.id;
+            }
           }
         }
       });
@@ -282,6 +294,115 @@ const FAQConfig: React.FC = (props: any) => {
                   </FormItem>
                 );
               } else if (item?.dataType == 0) {
+                if (item.configKey == 'FAQ_INVALID_ANSWER') {
+                  return (
+                    <FormItem
+                      label={item.configName}
+                      key={item.configName}
+                      rules={[{ required: true }]}
+                    >
+                      <div className={style['diy-box']}>
+                        <div className={style['diy-row']}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <div className={style['zy-row']} style={{ paddingBottom: '6px' }}></div>
+
+                            <div id={style['soundType']}>
+                              <Form.Item
+                                name={['systemConfigList', item.configKey, 'soundType']}
+                                key={item.configKey + 'soundType'}
+                                initialValue={1}
+                              >
+                                <Radio.Group>
+                                  <Radio value={1}>全合成</Radio>
+                                  <Radio value={2}>录音半合成</Radio>
+                                </Radio.Group>
+                              </Form.Item>
+                              <Condition r-if={sType == 2}>
+                                <Form.Item
+                                  name={['systemConfigList', item.configKey, 'soundRecordList']}
+                                  key={item.configKey + 'soundRecordList'}
+                                  rules={[{ required: true, message: '请选择' }]}
+                                >
+                                  <Button
+                                    type="link"
+                                    onClick={() => {
+                                      console.log(form.getFieldsValue());
+                                      console.log(sType);
+
+                                      if (sType == 2) {
+                                        soundRef?.current?.open(
+                                          form.getFieldsValue()['systemConfigList'][item.configKey]
+                                            ?.soundRecordList || [],
+                                        );
+                                      }
+                                    }}
+                                  >
+                                    选择
+                                  </Button>
+                                </Form.Item>
+                              </Condition>
+                              <Button
+                                type="link"
+                                onClick={() => {
+                                  console.log(form.getFieldsValue());
+                                  auditionRef?.current?.open(
+                                    form.getFieldsValue()['systemConfigList'][item.configKey],
+                                  );
+                                }}
+                              >
+                                试听
+                              </Button>
+                              <SoundVarModal cref={auditionRef}></SoundVarModal>
+                              <SoundSelectModal
+                                cref={soundRef}
+                                setform={(list: any, index: any) => {
+                                  let formData = form.getFieldsValue();
+                                  formData['systemConfigList'][item.configKey].soundRecordList =
+                                    list;
+                                  formData['systemConfigList'][item.configKey].actionText =
+                                    list?.[0]?.text;
+                                  form.setFieldsValue(formData);
+                                  console.log(formData);
+                                }}
+                                type={'radio'}
+                              ></SoundSelectModal>
+                            </div>
+                          </div>
+
+                          <Form.Item
+                            name={['systemConfigList', item.configKey, 'actionText']}
+                            key={item.configKey + 'actionText'}
+                            rules={[
+                              {
+                                message: '请输入',
+                                required: true,
+                                validateTrigger: 'onBlur',
+                              },
+                            ]}
+                          >
+                            <Input.TextArea
+                              maxLength={item?.validateRule?.max ?? 200}
+                              rows={5}
+                              placeholder={'请输入'}
+                              showCount
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            name={['systemConfigList', item.configKey, 'allowInterrupt']}
+                            key={item.configKey + 'allowInterrupt'}
+                            initialValue={1}
+                            label={'允许打断'}
+                          >
+                            <Radio.Group>
+                              <Radio value={1}>是</Radio>
+                              <Radio value={0}>否</Radio>
+                            </Radio.Group>
+                          </Form.Item>
+                        </div>
+                      </div>
+                    </FormItem>
+                  );
+                }
                 if (item.configKey == 'FAQ_REJECT_RECOMMEND_TEXT' && switchType) {
                   return (
                     <FormItem

@@ -160,10 +160,10 @@ const TablePage: React.FC = (props: any) => {
     tableRef?.current?.reload();
   };
 
-  const rowSelection = {
+  const rowSelection: any = {
     type: type === 'radio' ? 'radio' : 'checkbox',
     selectedRowKeys,
-    onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
+    onChange: (selectedRowKeys: any[], selectedRows: any[]) => {
       if (selectedRowKeys?.length > 5) {
         selectedRowKeys.length = 5;
         selectedRows.length = 5;
@@ -220,19 +220,21 @@ const TablePage: React.FC = (props: any) => {
         }}
         dateFormatter="string"
         toolBarRender={() => [
-          <Button
-            key="button"
-            type="primary"
-            onClick={() => {
-              replaceRef.current?.open?.({}, 'add');
-            }}
-          >
-            上传录音
-          </Button>,
+          (activeKey == 1 || activeKey == 2) && (
+            <Button
+              key="button"
+              type="primary"
+              onClick={() => {
+                replaceRef.current?.open?.({}, 'add');
+              }}
+            >
+              上传录音
+            </Button>
+          ),
         ]}
       />
       <AuditionModal cref={auditionRef}></AuditionModal>
-      <ReplaceModal cref={replaceRef} refresh={refresh}></ReplaceModal>
+      <ReplaceModal cref={replaceRef} refresh={refresh} activeKey={activeKey}></ReplaceModal>
     </div>
   );
 };
