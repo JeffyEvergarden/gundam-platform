@@ -83,7 +83,7 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
         robotId: info.id,
         soundRecordIdList: row?.soundRecordList?.map((item: any) => item?.id) || [],
         actionText: row?.actionText || row?.answer || '',
-        varMapStr: encodeURIComponent(values) || '',
+        varMapStr: encodeURIComponent(JSON.stringify(values)) || '',
       };
       try {
         await getSemisynthesis(params).then((res) => {
