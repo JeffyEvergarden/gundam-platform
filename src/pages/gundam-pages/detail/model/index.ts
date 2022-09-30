@@ -180,18 +180,21 @@ export const useFAQModel = () => {
   const getTableList = async (params: any) => {
     setConfigLoading(true);
     let res: any = await getFAQList(params);
-    console.log(res);
-    let data: any = res.data;
-    data.map((item: any) => {
-      if (item.validateRule) {
-        item.validateRule = JSON?.parse?.(item?.validateRule);
-      }
-      return item;
-    });
-
     setConfigLoading(false);
-
-    return { data };
+    console.log(res);
+    let data: any = res?.data || [];
+    if (res?.resultCode == successCode) {
+      data?.map((item: any) => {
+        if (item.validateRule) {
+          item.validateRule = JSON?.parse?.(item?.validateRule);
+        }
+        return item;
+      });
+      return { data };
+    } else {
+      message.error(res?.resultDesc);
+      return { data: [] };
+    }
   };
 
   const editFAQ = async (data: any) => {
@@ -212,7 +215,12 @@ export const useFAQModel = () => {
     let res: any = await getRejectFAQList(params);
     setConfigLoading(false);
     console.log(res);
-    return res?.data || [];
+    if (res.resultCode == successCode) {
+      return res?.data || [];
+    } else {
+      message.error(res?.resultDesc);
+      return [];
+    }
   };
 
   const editRejectTableList = async (data: any) => {
