@@ -75,7 +75,7 @@ const FAQConfig: React.FC = (props: any) => {
           if (robotType === '语音') {
             if (item.configKey == 'FAQ_INVALID_ANSWER') {
               obj[item.configKey] = {
-                actionText: item?.configValue || '',
+                answer: item?.configValue || '',
                 soundType: item?.soundType || 1,
                 allowInterrupt: item?.allowInterrupt || 1,
                 soundRecordList: item?.soundRecordList || [],
@@ -120,7 +120,7 @@ const FAQConfig: React.FC = (props: any) => {
             item.configValue = res.systemConfigList[v];
             if (robotType === '语音') {
               if (item.configKey == 'FAQ_INVALID_ANSWER') {
-                item.configValue = res?.systemConfigList?.[v]?.actionText || '';
+                item.configValue = res?.systemConfigList?.[v]?.answer || '';
                 item.soundType = res?.systemConfigList?.[v]?.soundType || 1;
                 item.allowInterrupt = res?.systemConfigList?.[v]?.allowInterrupt || 1;
                 item.soundRecordList = res?.systemConfigList?.[v]?.soundRecordList || [];
@@ -376,7 +376,7 @@ const FAQConfig: React.FC = (props: any) => {
                                   let formData = form.getFieldsValue();
                                   formData['systemConfigList'][item.configKey].soundRecordList =
                                     list;
-                                  formData['systemConfigList'][item.configKey].actionText =
+                                  formData['systemConfigList'][item.configKey].answer =
                                     list?.[0]?.text;
                                   form.setFieldsValue(formData);
                                   console.log(formData);
@@ -387,8 +387,8 @@ const FAQConfig: React.FC = (props: any) => {
                           </div>
 
                           <Form.Item
-                            name={['systemConfigList', item.configKey, 'actionText']}
-                            key={item.configKey + 'actionText'}
+                            name={['systemConfigList', item.configKey, 'answer']}
+                            key={item.configKey + 'answer'}
                             rules={[
                               {
                                 message: '请输入',
