@@ -88,12 +88,12 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
       let paramsUrl: any = {
         robotId: info.id,
         soundRecordIdList: row?.soundRecordList?.map((item: any) => item?.id) || [],
-        actionText: row?.actionText || row?.answer || '',
+        actionText: encodeURIComponent(JSON.stringify(row?.actionText || row?.answer || '')),
         varMapStr: encodeURIComponent(JSON.stringify(values)) || '',
       };
       try {
         await getSemisynthesis(params).then((res) => {
-          console.log(`${config.basePath}/robot/tts/ttsMerge?${ObjToSearch(params)}`);
+          console.log(`${config.basePath}/robot/tts/ttsMerge?${ObjToSearch(paramsUrl)}`);
 
           if (!res?.resultCode) {
             setUrl(`${config.basePath}/robot/tts/ttsMerge?${ObjToSearch(paramsUrl)}`);
