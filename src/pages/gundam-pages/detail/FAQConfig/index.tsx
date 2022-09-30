@@ -76,8 +76,8 @@ const FAQConfig: React.FC = (props: any) => {
             if (item.configKey == 'FAQ_INVALID_ANSWER') {
               obj[item.configKey] = {
                 answer: item?.configValue || '',
-                soundType: item?.soundType || 1,
-                allowInterrupt: item?.allowInterrupt || 1,
+                soundType: item?.soundType ?? 1,
+                allowInterrupt: item?.allowInterrupt ?? 1,
                 soundRecordList: item?.soundRecordList || [],
               };
             }
