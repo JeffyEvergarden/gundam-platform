@@ -30,8 +30,6 @@ const { List: FormList } = Form;
 
 const { TextArea } = Input;
 
-const robotTypeMap = config.robotTypeMap;
-
 const regEnd = /^(\<p\>\<br\>\<\/p\>)+$/;
 
 // 树形结构加工
@@ -82,13 +80,14 @@ const Board: React.FC<any> = (props: any) => {
 
   const [originInfo, setOriginInfo] = useState<any>({});
 
-  const robotType: any = robotTypeMap[info.robotType] || '语音';
-
   const { getFlowList, getTreeData, treeData } = useModel('drawer' as any, (model: any) => ({
     getFlowList: model.getFlowList,
     getTreeData: model.getTreeDataOther,
     treeData: model.treeDataOther,
   }));
+
+  const robotTypeMap = config.robotTypeMap;
+  const robotType: any = robotTypeMap[info.robotType] || '语音';
 
   // 推荐启用按钮
   const [showTime, setShowTime] = useState<boolean>(false);

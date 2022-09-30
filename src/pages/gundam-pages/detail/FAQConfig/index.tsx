@@ -54,6 +54,9 @@ const FAQConfig: React.FC = (props: any) => {
     _getTreeData: model.getTreeData,
   }));
 
+  const robotTypeMap = config.robotTypeMap;
+  const robotType: any = robotTypeMap[info.robotType] || '语音';
+
   const [Nconfig, setNConfig] = useState<any>();
   const [switchType, setSwitchType] = useState<boolean>(false);
   const selectModalRef = useRef<any>();
@@ -69,6 +72,16 @@ const FAQConfig: React.FC = (props: any) => {
           obj[item.configKey] = item.configValue == '1' ? true : false;
         } else {
           obj[item.configKey] = item.configValue;
+          if (robotType === '语音') {
+            if (item.configKey == 'FAQ_INVALID_ANSWER') {
+              obj[item.configKey] = {
+                actionText: item?.configValue || '',
+                soundType: item?.soundType || 1,
+                allowInterrupt: item?.allowInterrupt || 1,
+                soundRecordList: item?.soundRecordList || [],
+              };
+            }
+          }
         }
       });
 
@@ -105,9 +118,13 @@ const FAQConfig: React.FC = (props: any) => {
             item.configValue = res.systemConfigList[v] ? '1' : '0';
           } else {
             item.configValue = res.systemConfigList[v];
-            if (item.configKey == 'FAQ_INVALID_ANSWER') {
-              console.log(item?.configValue);
-              item.configValue.soundRecordId = item?.configValue?.soundRecordList?.[0]?.id;
+            if (robotType === '语音') {
+              if (item.configKey == 'FAQ_INVALID_ANSWER') {
+                item.configValue = res?.systemConfigList?.[v]?.actionText || '';
+                item.soundType = res?.systemConfigList?.[v]?.soundType || 1;
+                item.allowInterrupt = res?.systemConfigList?.[v]?.allowInterrupt || 1;
+                item.soundRecordList = res?.systemConfigList?.[v]?.soundRecordList || [];
+              }
             }
           }
         }

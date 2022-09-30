@@ -155,11 +155,11 @@ const configList = (req: any, res: any) => {
           id: '2',
           configType: 0,
           configName: '答案失效话术',
-          configValue: {
-            actionText: '223131',
-            soundType: 1,
-            allowInterrupt: 1,
-          },
+          configValue: '撒娇大家卢卡斯建档立卡就',
+
+          soundType: 1,
+          allowInterrupt: 1,
+
           configDesc: 'var1',
           configKey: 'FAQ_INVALID_ANSWER',
           robotId: '00000',
