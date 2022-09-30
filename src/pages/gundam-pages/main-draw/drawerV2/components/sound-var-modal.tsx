@@ -71,6 +71,7 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
             setUrl(`${config.basePath}/robot/tts/ttsByConfig?${ObjToSearch(params)}`);
           } else {
             setUrl('');
+            message.error(res.resultDesc);
           }
         });
       } catch (e) {
@@ -82,7 +83,7 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
         robotId: info.id,
         soundRecordIdList: row?.soundRecordList?.map((item: any) => item?.id) || [],
         actionText: row?.actionText || row?.answer || '',
-        varMapStr: JSON?.stringify?.(values) || '',
+        varMapStr: encodeURIComponent(values) || '',
       };
       try {
         await getSemisynthesis(params).then((res) => {
@@ -92,6 +93,7 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
             setUrl(`${config.basePath}/robot/tts/ttsMerge?${ObjToSearch(params)}`);
           } else {
             setUrl('');
+            message.error(res.resultDesc);
           }
         });
       } catch (e) {
