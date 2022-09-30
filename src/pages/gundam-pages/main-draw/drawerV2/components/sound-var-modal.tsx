@@ -83,6 +83,12 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
         robotId: info.id,
         soundRecordIdList: row?.soundRecordList?.map((item: any) => item?.id) || [],
         actionText: row?.actionText || row?.answer || '',
+        varMapStr: values || '',
+      };
+      let paramsUrl: any = {
+        robotId: info.id,
+        soundRecordIdList: row?.soundRecordList?.map((item: any) => item?.id) || [],
+        actionText: row?.actionText || row?.answer || '',
         varMapStr: encodeURIComponent(JSON.stringify(values)) || '',
       };
       try {
@@ -90,7 +96,7 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
           console.log(`${config.basePath}/robot/tts/ttsMerge?${ObjToSearch(params)}`);
 
           if (!res?.resultCode) {
-            setUrl(`${config.basePath}/robot/tts/ttsMerge?${ObjToSearch(params)}`);
+            setUrl(`${config.basePath}/robot/tts/ttsMerge?${ObjToSearch(paramsUrl)}`);
           } else {
             setUrl('');
             message.error(res.resultDesc);
