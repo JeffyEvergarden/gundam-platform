@@ -108,7 +108,6 @@ const TablePage: React.FC<any> = (props: any) => {
             <Button
               type="link"
               onClick={() => {
-                // labelModalRef.current?.open?.(row);
                 window.open(`${config.basePath}/robot/file/getFile?path=${r?.soundPath}`);
               }}
             >
@@ -158,8 +157,6 @@ const TablePage: React.FC<any> = (props: any) => {
   }));
 
   const setSelect = (list: any) => {
-    console.log(list);
-
     let rowKeys = list.map((item: any) => item.id) || [];
     setSelectedRowKeys(rowKeys);
     setSelectRow(list || []);

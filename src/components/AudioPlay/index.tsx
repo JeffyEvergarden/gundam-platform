@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState, useImperativeHandle } from 'react';
+import React, { useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import Condition from '../Condition';
 import pauseBt from './img/pause.svg';
@@ -73,6 +73,7 @@ const AudioPlay: React.FC<dataProp> = (props) => {
       setType('play');
       audio.pause();
     },
+    play,
   }));
 
   // 播放百分比
@@ -99,6 +100,8 @@ const AudioPlay: React.FC<dataProp> = (props) => {
     // }
     //
     if (type === 'init' || type === 'play') {
+      console.log('ksishi');
+
       setType('pause');
       stopOtherListener(listenerRef.current);
       audio.play();
@@ -106,6 +109,13 @@ const AudioPlay: React.FC<dataProp> = (props) => {
       setType('play');
       audio.pause();
     }
+  };
+
+  const play = () => {
+    const audio = audioRef.current;
+    setType('pause');
+    stopOtherListener(listenerRef.current);
+    audio.play();
   };
 
   const pause = () => {

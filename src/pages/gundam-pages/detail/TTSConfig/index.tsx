@@ -2,7 +2,7 @@ import AudioPlay from '@/components/AudioPlay';
 import config from '@/config';
 import { ObjToSearch } from '@/utils';
 import { Button, Form, Input, InputNumber, message, Select } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import style from '../FAQConfig/style.less';
 import { useTTSConfigModel } from '../model';
@@ -49,6 +49,7 @@ const TTSConfig: React.FC = (props: any) => {
   const [tts, setTts] = useState<any>('');
   const [videoUrl, setVideoUrl] = useState<any>('');
   const [ttsId, setTtsId] = useState<any>('');
+  const audioRef = useRef<any>();
 
   const getList = async () => {
     await getTTS({ robotId: info.id }).then((res: any) => {
@@ -83,6 +84,7 @@ const TTSConfig: React.FC = (props: any) => {
     await auditionTTS(res).then((i) => {
       if (i) {
         setVideoUrl(`${config.basePath}/robot/tts/parse?${ObjToSearch(res)}`);
+        audioRef?.current?.play();
       } else {
         setVideoUrl('');
       }
@@ -191,7 +193,7 @@ const TTSConfig: React.FC = (props: any) => {
               </Button>
             </div>
 
-            {videoUrl && <AudioPlay musicSrc={videoUrl} />}
+            {videoUrl && <AudioPlay cref={audioRef} musicSrc={videoUrl} />}
           </FormItem>
         </Form>
         <Button type="primary" onClick={submit} style={{ alignSelf: 'flex-end' }} loading={loading}>

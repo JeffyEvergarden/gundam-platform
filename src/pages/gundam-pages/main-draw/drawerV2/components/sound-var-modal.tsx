@@ -2,7 +2,7 @@ import AudioPlay from '@/components/AudioPlay';
 import config from '@/config';
 import { ObjToSearch } from '@/utils';
 import { Button, Form, Input, message, Modal } from 'antd';
-import React, { useImperativeHandle, useState } from 'react';
+import React, { useImperativeHandle, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { getSemisynthesis, getTotalSynthesis } from '../../model/api';
 
@@ -24,6 +24,7 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
   const [varList, setVarList] = useState<any>([]);
   const [row, setRow] = useState<any>([]);
   const [url, setUrl] = useState<any>('');
+  const audioRef = useRef<any>();
 
   const getVarLength = (text: any) => {
     let list = text.match(/(\$|#)\{[^({|}|\$|#)]+\}/g);
@@ -69,6 +70,7 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
 
           if (!res?.resultCode) {
             setUrl(`${config.basePath}/robot/tts/ttsByConfig?${ObjToSearch(params)}`);
+            audioRef?.current?.play();
           } else {
             setUrl('');
             message.error(res.resultDesc);
@@ -97,6 +99,7 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
 
           if (!res?.resultCode) {
             setUrl(`${config.basePath}/robot/tts/ttsMerge?${ObjToSearch(paramsUrl)}`);
+            audioRef?.current?.play();
           } else {
             setUrl('');
             message.error(res.resultDesc);
@@ -136,7 +139,7 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
           立即播放
         </Button>
         <div style={{ marginTop: '16px', width: '100%' }}>
-          {url && <AudioPlay musicSrc={url} />}
+          {url && <AudioPlay cref={audioRef} musicSrc={url} />}
         </div>
       </div>
     </Modal>
