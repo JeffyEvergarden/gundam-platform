@@ -281,6 +281,7 @@ export default (props: any) => {
           recommendText: res?.data?.recommendText,
           recommendQuestion: res?.data?.recommendQuestion,
           isClear: res?.data?.aiTextHitType == 2 || res?.data?.aiTextHitType == 6 ? true : false,
+          actionTextSplitList: res?.data?.actionTextSplitList,
         },
       );
       setTextMessage('');
@@ -493,7 +494,7 @@ export default (props: any) => {
         sessionId: modalData.sessionId,
         message: '',
         event: chatEvent, // 事件类型
-        actionType: '',
+        actionType: 'text',
         buttonText: textMessage,
       };
       let res = await soundRobotDialogue(params);
@@ -512,6 +513,7 @@ export default (props: any) => {
             recommendText: res?.data?.recommendText,
             recommendQuestion: res?.data?.recommendQuestion,
             isClear: res?.data?.aiTextHitType == 2 || res?.data?.aiTextHitType == 6 ? true : false,
+            actionTextSplitList: res?.data?.actionTextSplitList,
           },
         );
         setTextMessage('');
