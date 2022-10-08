@@ -1,6 +1,6 @@
 import Condition from '@/components/Condition';
 import { AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import { Button, Cascader, Checkbox, Form, Input, InputNumber, Radio, Select, Space } from 'antd';
+import { Button, Cascader, Form, Input, Radio, Select, Space } from 'antd';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import LabelSelect from '../../drawer/components/label-select';
@@ -301,7 +301,7 @@ const ActionConfig = (props: any) => {
             />
           </FormItem>
 
-          <div className={styles['functionkey']}>
+          {/* <div className={styles['functionkey']}>
             <Form.Item
               name={getFormName(['action', 'userInputType'])}
               fieldKey={getFormName(['action', 'userInputType'])}
@@ -373,7 +373,7 @@ const ActionConfig = (props: any) => {
                 </div>
               </div>
             </Condition>
-          </div>
+</div> */}
           <Form.Item
             name={getFormName(['action', 'allowInterrupt'])}
             fieldKey={getFormName(['action', 'allowInterrupt'])}

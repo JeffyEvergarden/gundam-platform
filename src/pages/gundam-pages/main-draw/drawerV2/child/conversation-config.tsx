@@ -165,14 +165,16 @@ const ConversationConfig = (props: any) => {
                             sound={sound}
                           />
                         </Form.Item>
+                        <Condition r-if={formName == 'clearList'}>
+                          <SoundRadio
+                            name={name}
+                            form={form}
+                            index={index}
+                            field={field}
+                            formName={[formName, index]}
+                          />
+                        </Condition>
 
-                        <SoundRadio
-                          name={name}
-                          form={form}
-                          index={index}
-                          field={field}
-                          formName={['strategyList', 0, 'conversationList', index]}
-                        />
                         <Form.Item
                           name={[field.name, 'allowInterrupt']}
                           fieldKey={[field.fieldKey, 'allowInterrupt']}

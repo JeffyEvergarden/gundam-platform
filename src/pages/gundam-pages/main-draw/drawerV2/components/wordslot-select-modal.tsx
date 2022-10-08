@@ -1,9 +1,8 @@
-import { useState, useImperativeHandle, useEffect, useMemo } from 'react';
-import { Modal, Button, Table, Tooltip } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
-import style from './style.less';
+import { Modal, Table, Tooltip } from 'antd';
+import { useImperativeHandle, useMemo, useState } from 'react';
 import { useModel } from 'umi';
 import { wordSlotSourceMap } from '../const';
+import style from './style.less';
 
 const WordSlotSelectModal: React.FC<any> = (props: any) => {
   const { cref, onConfirm } = props;

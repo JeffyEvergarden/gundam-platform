@@ -59,6 +59,8 @@ const SoundRadio: React.FC<any> = (props: any) => {
 
   const getItem = () => {
     let item: any = form?.getFieldsValue?.() || {};
+    console.log(item);
+
     if (isArray) {
       _formName.forEach((key: any, index: number) => {
         if (index === 0) {

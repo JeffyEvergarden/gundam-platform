@@ -86,7 +86,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
 
   return (
     <Modal
-      width={700}
+      width={800}
       title={'选择词槽'}
       visible={visible}
       onCancel={() => setVisible(false)}
