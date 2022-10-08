@@ -291,6 +291,13 @@ const getNodeConfig = (req: any, res: any) => {
               allowInterrupt: 1,
               buttonInputSize: 11,
               userInputType: '01',
+              soundRecordList: [
+                {
+                  id: 0,
+                  name: '录音名称0录音名称0录音名称0',
+                  text: '转写文本0',
+                },
+              ],
             },
           ],
           times: 3,

@@ -618,6 +618,7 @@ export default (props: any) => {
                             {info?.robotType == 1 && (
                               <div className={styles['words-type-audio']}>
                                 <AudioPlay
+                                  size="small"
                                   musicSrc={
                                     process.env.mock
                                       ? '/aichat/mp3/bluebird.mp3'

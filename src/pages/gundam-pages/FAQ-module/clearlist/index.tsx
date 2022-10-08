@@ -1,3 +1,4 @@
+import config from '@/config';
 import {
   MinusCircleOutlined,
   MonitorOutlined,
@@ -35,6 +36,8 @@ const FAQClearList = (props: any) => {
       info: model.info,
     };
   });
+  const robotTypeMap = config.robotTypeMap;
+  const robotType: any = robotTypeMap[info.robotType] || '语音';
 
   const formItemLayout = {
     labelCol: {
@@ -406,7 +409,11 @@ const FAQClearList = (props: any) => {
 
       <DetailModal cref={modalRef} />
 
-      <SelectFaqModal cref={selectFaqModalRef} confirm={confirmUpdateSelect} />
+      <SelectFaqModal
+        cref={selectFaqModalRef}
+        confirm={confirmUpdateSelect}
+        max={robotType == '语音' ? 2 : 5}
+      />
 
       <Modal
         title={'新增FAQ-澄清'}

@@ -2,17 +2,19 @@ import { Modal } from 'antd';
 import React, { useImperativeHandle, useRef, useState } from 'react';
 import TablePage from '../tablePage';
 
-const SoundListModal: React.FC = (props: any) => {
-  const { cref, confirm } = props;
+const SoundListModal: React.FC<any> = (props: any) => {
+  const { cref, confirm, type } = props;
   const tableRef = useRef<any>();
   const [visible, setVisible] = useState<any>(false);
+  const [activeKey, setActiveKey] = useState<any>(1);
 
   useImperativeHandle(cref, () => ({
-    open: (list: any) => {
-      // tableRef?.current?.refresh();
-      tableRef?.current?.setSelectedRowKeys(list.map((item: any) => item.id) || []);
-      tableRef?.current?.setSelectRow(list || []);
+    open: (list: any, num?: any) => {
+      setActiveKey(num || 1);
       setVisible(true);
+      setTimeout(() => {
+        tableRef?.current?.setSelect?.(list);
+      }, 100);
     },
   }));
 
@@ -31,7 +33,7 @@ const SoundListModal: React.FC = (props: any) => {
       maskClosable={false}
     >
       <div className="list-page">
-        <TablePage cref={tableRef} activeKey={1} select={true}></TablePage>
+        <TablePage cref={tableRef} activeKey={activeKey} select={true} type={type}></TablePage>
       </div>
     </Modal>
   );

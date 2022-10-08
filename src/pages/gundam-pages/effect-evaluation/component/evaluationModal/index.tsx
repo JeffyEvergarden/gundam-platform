@@ -1,4 +1,5 @@
 import Condition from '@/components/Condition';
+import config from '@/config';
 import { Form, InputNumber, Modal, Select, Tooltip } from 'antd';
 import React, { useImperativeHandle, useState } from 'react';
 import { useModel } from 'umi';
@@ -18,6 +19,9 @@ const EvaluationModal: React.FC<any> = (props: any) => {
     info: model.info,
     setInfo: model.setInfo,
   }));
+
+  const robotTypeMap = config.robotTypeMap;
+  const robotType: any = robotTypeMap[info.robotType] || '语音';
 
   const [form] = Form.useForm();
 
@@ -135,9 +139,16 @@ const EvaluationModal: React.FC<any> = (props: any) => {
             name="clarifyNum"
             label="澄清数量"
             style={{ width: '360px' }}
-            initialValue={info.robotType == 1 ? 2 : 3}
+            initialValue={robotType == '语音' ? 2 : 3}
           >
-            <InputNumber placeholder={'请输入'} min={1} max={99} step="1" precision={0} />
+            <InputNumber
+              placeholder={'请输入'}
+              min={1}
+              max={99}
+              step="1"
+              precision={0}
+              disabled={robotType == '语音'}
+            />
           </FormItem>
           <Condition r-if={showTip}>
             <span style={{ color: 'red' }}>

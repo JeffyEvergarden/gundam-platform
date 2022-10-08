@@ -1,7 +1,6 @@
-import Condition from '@/components/Condition';
 import config from '@/config';
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Form, message, Modal, Radio, Tooltip, Upload } from 'antd';
+import { Button, message, Modal, Tooltip, Upload } from 'antd';
 import React, { useImperativeHandle, useState } from 'react';
 import { useModel } from 'umi';
 import { uploadSound } from '../../model/api';
@@ -9,14 +8,14 @@ import style from './style.less';
 
 const successCode = config.successCode;
 
-const ReplaceModal: React.FC = (props: any) => {
-  const { cref, refresh } = props;
+const ReplaceModal: React.FC<any> = (props: any) => {
+  const { cref, refresh, activeKey } = props;
   const [visible, setVisible] = useState<any>(false);
   const [soundInfo, setSoundInfo] = useState<any>({});
   const [fileList, setFileList] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [pageType, setPageType] = useState<any>('add');
-  const [form] = Form.useForm();
+  // const [form] = Form.useForm();
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
@@ -57,12 +56,12 @@ const ReplaceModal: React.FC = (props: any) => {
     if (pageType == 'edit') {
       formData.append('file', fileList[0]);
       formData.append('robotId', info.id);
-      formData.append('type', soundInfo?.type);
+      formData.append('type', activeKey);
       formData.append('id', soundInfo?.id);
     } else {
       formData.append('file', fileList[0]);
       formData.append('robotId', info.id);
-      formData.append('type', form.getFieldValue('type'));
+      formData.append('type', activeKey);
     }
 
     setLoading(true);
@@ -72,7 +71,7 @@ const ReplaceModal: React.FC = (props: any) => {
         message.success(res.resultDesc);
         setFileList([]);
         setVisible(false);
-        form.resetFields();
+        // form.resetFields();
         refresh();
       } else {
         message.error(res.resultDesc);
@@ -99,7 +98,9 @@ const ReplaceModal: React.FC = (props: any) => {
       }
       visible={visible}
       onCancel={() => {
+        setFileList([]);
         setVisible(false);
+        // form.resetFields();
       }}
       okText={loading ? (pageType == 'edit' ? '替换中' : '上传中') : '提交'}
       onOk={submit}
@@ -112,7 +113,7 @@ const ReplaceModal: React.FC = (props: any) => {
         >
           <Button icon={<UploadOutlined />}>点击选择录音</Button>
         </Upload>
-        <Condition r-if={pageType == 'add'}>
+        {/* <Condition r-if={pageType == 'add'}>
           <Form form={form} style={{ marginTop: '16px' }}>
             <Form.Item name="type" label="录音类型" initialValue={1}>
               <Radio.Group>
@@ -121,7 +122,7 @@ const ReplaceModal: React.FC = (props: any) => {
               </Radio.Group>
             </Form.Item>
           </Form>
-        </Condition>
+        </Condition> */}
       </div>
     </Modal>
   );

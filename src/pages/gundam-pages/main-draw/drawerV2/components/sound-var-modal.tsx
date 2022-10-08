@@ -1,8 +1,8 @@
 import AudioPlay from '@/components/AudioPlay';
 import config from '@/config';
 import { ObjToSearch } from '@/utils';
-import { Button, Form, Input, Modal } from 'antd';
-import React, { useImperativeHandle, useState } from 'react';
+import { Button, Form, Input, message, Modal } from 'antd';
+import React, { useImperativeHandle, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { getSemisynthesis, getTotalSynthesis } from '../../model/api';
 
@@ -24,6 +24,7 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
   const [varList, setVarList] = useState<any>([]);
   const [row, setRow] = useState<any>([]);
   const [url, setUrl] = useState<any>('');
+  const audioRef = useRef<any>();
 
   const getVarLength = (text: any) => {
     let list = text.match(/(\$|#)\{[^({|}|\$|#)]+\}/g);
@@ -42,6 +43,11 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
 
   useImperativeHandle(cref, () => ({
     open: (row: any) => {
+      console.log(row);
+      if (row?.soundType == 2 && !row?.soundRecordList?.length) {
+        message.warning('请选择录音');
+        return;
+      }
       setUrl('');
       let list = getVarLength(row?.actionText || '');
       setVisible(true);
@@ -56,30 +62,52 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
     if (row.soundType == 1) {
       let params: any = {
         robotId: info.id,
-        actionText: replaceVar(row?.actionText, values) || '',
+        actionText: replaceVar(row?.actionText, values) || row?.answer || '',
       };
-      await getTotalSynthesis(params).then((res) => {
-        console.log(`${config.basePath}/robot/tts/ttsByConfig?${ObjToSearch(params)}`);
+      try {
+        await getTotalSynthesis(params).then((res) => {
+          console.log(`${config.basePath}/robot/tts/ttsByConfig?${ObjToSearch(params)}`);
 
-        if (!res.resultCode) {
-          setUrl(`${config.basePath}/robot/tts/ttsByConfig?${ObjToSearch(params)}`);
-        }
-      });
+          if (!res?.resultCode) {
+            setUrl(`${config.basePath}/robot/tts/ttsByConfig?${ObjToSearch(params)}`);
+            audioRef?.current?.play();
+          } else {
+            setUrl('');
+            message.error(res.resultDesc);
+          }
+        });
+      } catch (e) {
+        console.log('获取录音失败');
+      }
     }
     if (row.soundType == 2) {
       let params: any = {
         robotId: info.id,
-        soundRecordList: row?.soundRecordList?.map((item: any) => item?.id) || [],
-        actionText: row?.actionText || '',
-        varMapStr: JSON?.stringify?.(values) || '',
+        soundRecordIdList: row?.soundRecordList?.map((item: any) => item?.id) || [],
+        actionText: row?.actionText || row?.answer || '',
+        varMapStr: values || '',
       };
-      await getSemisynthesis(params).then((res) => {
-        console.log(`${config.basePath}/robot/tts/ttsMerge?${ObjToSearch(params)}`);
+      let paramsUrl: any = {
+        robotId: info.id,
+        soundRecordIdList: row?.soundRecordList?.map((item: any) => item?.id) || [],
+        actionText: encodeURIComponent(JSON.stringify(row?.actionText || row?.answer || '')),
+        varMapStr: encodeURIComponent(JSON.stringify(values)) || '',
+      };
+      try {
+        await getSemisynthesis(params).then((res) => {
+          console.log(`${config.basePath}/robot/tts/ttsMerge?${ObjToSearch(paramsUrl)}`);
 
-        if (!res.resultCode) {
-          setUrl(`${config.basePath}/robot/tts/ttsMerge?${ObjToSearch(params)}`);
-        }
-      });
+          if (!res?.resultCode) {
+            setUrl(`${config.basePath}/robot/tts/ttsMerge?${ObjToSearch(paramsUrl)}`);
+            audioRef?.current?.play();
+          } else {
+            setUrl('');
+            message.error(res.resultDesc);
+          }
+        });
+      } catch (e) {
+        console.log('获取录音失败');
+      }
     }
   };
 
@@ -110,7 +138,9 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
         <Button type="primary" onClick={getUrl} style={{ alignSelf: 'flex-end' }}>
           立即播放
         </Button>
-        <div style={{ marginTop: '16px' }}>{url && <AudioPlay musicSrc={url} />}</div>
+        <div style={{ marginTop: '16px', width: '100%' }}>
+          {url && <AudioPlay cref={audioRef} musicSrc={url} />}
+        </div>
       </div>
     </Modal>
   );
