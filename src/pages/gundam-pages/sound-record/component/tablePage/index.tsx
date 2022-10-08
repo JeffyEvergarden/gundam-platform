@@ -1,4 +1,5 @@
 import Condition from '@/components/Condition';
+import config from '@/config';
 import ProTable from '@ant-design/pro-table';
 import { Button, message, Popconfirm, Tooltip } from 'antd';
 import { useImperativeHandle, useRef, useState } from 'react';
@@ -108,6 +109,7 @@ const TablePage: React.FC<any> = (props: any) => {
               type="link"
               onClick={() => {
                 // labelModalRef.current?.open?.(row);
+                window.open(`${config.basePath}/robot/file/getFile?path=${r?.soundPath}`);
               }}
             >
               下载
