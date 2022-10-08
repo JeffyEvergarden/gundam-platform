@@ -8,7 +8,7 @@ import AuditionModal from '../auditionModal';
 import ReplaceModal from '../replaceModal';
 import style from './style.less';
 
-const TablePage: React.FC = (props: any) => {
+const TablePage: React.FC<any> = (props: any) => {
   const { cref, activeKey, select = false, type = 'checkbox' } = props;
   const tableRef = useRef<any>();
   const auditionRef = useRef<any>();
@@ -152,9 +152,16 @@ const TablePage: React.FC = (props: any) => {
     getSelect: () => {
       return selectRow;
     },
-    setSelectedRowKeys,
-    setSelectRow,
+    setSelect,
   }));
+
+  const setSelect = (list: any) => {
+    console.log(list);
+
+    let rowKeys = list.map((item: any) => item.id) || [];
+    setSelectedRowKeys(rowKeys);
+    setSelectRow(list || []);
+  };
 
   const refresh = () => {
     tableRef?.current?.reload();

@@ -10,11 +10,11 @@ const SoundListModal: React.FC<any> = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     open: (list: any, num?: any) => {
-      // tableRef?.current?.refresh();
-      tableRef?.current?.setSelectedRowKeys(list.map((item: any) => item.id) || []);
-      tableRef?.current?.setSelectRow(list || []);
-      setVisible(true);
       setActiveKey(num || 1);
+      setVisible(true);
+      setTimeout(() => {
+        tableRef?.current?.setSelect?.(list);
+      }, 100);
     },
   }));
 
