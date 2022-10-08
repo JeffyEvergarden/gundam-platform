@@ -1,17 +1,15 @@
 import customerPhoto from '@/asset/image/customer.png';
 import robotPhoto from '@/asset/image/robot.png';
-import { Button, Input, message, Modal, Popover, Radio, Space, Dropdown, Menu } from 'antd';
+import AudioPlay from '@/components/AudioPlay';
+import config from '@/config';
+import { Button, Dropdown, Input, Menu, message, Modal, Popover, Radio, Space } from 'antd';
 import React, { Fragment, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useModel } from 'umi';
-import config from '@/config';
 import { useChatModel } from './model';
-import AudioPlay from '@/components/AudioPlay';
-import { DownOutlined } from '@ant-design/icons';
 import {
   textRobotRecommendDialogue,
   textRobotSearchEvent,
   textRobotSuggestClick,
-  // testAction,
 } from './model/api';
 import styles from './style.less';
 const { TextArea } = Input;
@@ -88,6 +86,9 @@ export default (props: any) => {
       // if (timeFn.current.inputVal === inputVal) {
       //   return;
       // }
+      if (config.robotTypeMap[info?.robotType] === '语音') {
+        return; //语音不要联想
+      }
 
       console.log('调用');
       if (inputVal.length >= 20 || !inputVal.length) {
