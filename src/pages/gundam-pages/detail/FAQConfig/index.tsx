@@ -11,7 +11,7 @@ import SoundVarModal from '../../main-draw/drawerV2/components/sound-var-modal';
 import { useFAQModel } from '../model';
 import style from './style.less';
 
-const FAQConfig: React.FC = (props: any) => {
+const FAQConfig: React.FC<any> = (props: any) => {
   const [form] = Form.useForm();
   const { Item: FormItem, List: FormList } = Form;
 

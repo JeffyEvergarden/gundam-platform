@@ -206,7 +206,7 @@ export const useFAQModel = () => {
       return res;
     } else {
       // message.error(res?.resultDesc || '未知系统异常');
-      return false;
+      return res;
     }
   };
 
@@ -232,7 +232,7 @@ export const useFAQModel = () => {
       return res;
     } else {
       // message.error(res?.resultDesc || '未知系统异常');
-      return false;
+      return res;
     }
   };
 
