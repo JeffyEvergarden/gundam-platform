@@ -14,6 +14,7 @@ export const useSessionModel = () => {
   const [recordTotal, setRecordTotal] = useState<number>(0);
   const [recordLoading, setRecordLoading] = useState<boolean>(false);
   const [soundInfo, setSoundInfo] = useState<string>('');
+  const [systemCode, setSystemCode] = useState<string>('');
 
   // 获取表格
   const getTableList = async (params?: any) => {
@@ -74,6 +75,7 @@ export const useSessionModel = () => {
     setRecordList(list || []);
     setRecordTotal(totalPage || 0);
     setSoundInfo(res?.data?.soundInfo);
+    setSystemCode(res?.data?.systemCode);
     return { data: list, total: totalPage };
   };
 
@@ -87,6 +89,7 @@ export const useSessionModel = () => {
     recordTotal,
     recordLoading,
     soundInfo,
+    systemCode,
     getSessionRecordList,
   };
 };

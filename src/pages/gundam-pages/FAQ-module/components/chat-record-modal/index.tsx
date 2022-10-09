@@ -22,7 +22,7 @@ const RecordModal: React.FC<any> = (props: any) => {
     };
   });
 
-  const { recordLoading, recordList, recordTotal, getSessionRecordList, soundInfo } =
+  const { recordLoading, recordList, recordTotal, getSessionRecordList, soundInfo, systemCode } =
     useSessionModel();
 
   const [visible, setVisible] = useState<boolean>(false);
@@ -74,13 +74,15 @@ const RecordModal: React.FC<any> = (props: any) => {
     <Drawer
       className={style['drawer']}
       width={850}
-      title={`会话记录（${heightLihgt?.sessionId || heightLihgt?.id}）`}
+      title={`会话记录（${heightLihgt?.sessionId || heightLihgt?.id}）${
+        systemCode == 'test' ? '-机器人测试' : null
+      }`}
       visible={visible}
       onClose={close}
       destroyOnClose={true}
       // maskClosable={false}
       footer={
-        pageType == 'visitorsSession' && info?.robotType == 1 ? (
+        pageType == 'visitorsSession' && info?.robotType == 1 && systemCode !== 'test' ? (
           <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
             <div style={{ width: '100px' }}>全程会话录音</div>
             <AudioPlay
