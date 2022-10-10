@@ -1,4 +1,5 @@
 import Condition from '@/components/Condition';
+import config from '@/config';
 import { AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Button, Form, InputNumber, message, Radio, Select, Space, Switch } from 'antd';
 import { useEffect, useRef, useState } from 'react';
@@ -127,7 +128,7 @@ const HightformTemplate: any = (props: any) => {
                   {fields.map((field: any, index: number) => {
                     //试听
                     const sound = () => {
-                      return (
+                      return config.robotTypeMap[info?.robotType] === '语音' ? (
                         <div style={{ display: 'flex' }}>
                           <Form.Item
                             name={[field.name, 'soundType']}
@@ -198,6 +199,8 @@ const HightformTemplate: any = (props: any) => {
                             }}
                           ></SoundSelectModal>
                         </div>
+                      ) : (
+                        <></>
                       );
                     };
 
@@ -242,26 +245,28 @@ const HightformTemplate: any = (props: any) => {
                             />
                           </Form.Item>
 
-                          <SoundRadio
-                            name={name}
-                            form={form}
-                            index={index}
-                            disabled={disabled}
-                            field={field}
-                            formName={[name, 'responseList', index]}
-                          />
+                          <Condition r-if={config.robotTypeMap[info?.robotType] === '语音'}>
+                            <SoundRadio
+                              name={name}
+                              form={form}
+                              index={index}
+                              disabled={disabled}
+                              field={field}
+                              formName={[name, 'responseList', index]}
+                            />
 
-                          <Form.Item
-                            name={[field.name, 'allowInterrupt']}
-                            fieldKey={[field.fieldKey, 'allowInterrupt']}
-                            initialValue={1}
-                            label={'允许打断'}
-                          >
-                            <Radio.Group disabled={disabled}>
-                              <Radio value={1}>是</Radio>
-                              <Radio value={0}>否</Radio>
-                            </Radio.Group>
-                          </Form.Item>
+                            <Form.Item
+                              name={[field.name, 'allowInterrupt']}
+                              fieldKey={[field.fieldKey, 'allowInterrupt']}
+                              initialValue={1}
+                              label={'允许打断'}
+                            >
+                              <Radio.Group disabled={disabled}>
+                                <Radio value={1}>是</Radio>
+                                <Radio value={0}>否</Radio>
+                              </Radio.Group>
+                            </Form.Item>
+                          </Condition>
 
                           <Form.Item
                             name={[field.name, 'textLabels']}

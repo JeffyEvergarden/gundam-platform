@@ -1,7 +1,9 @@
 import Condition from '@/components/Condition';
+import config from '@/config';
 import { AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Button, Form, Radio, Select } from 'antd';
 import { useRef } from 'react';
+import { useModel } from 'umi';
 import LabelSelect from '../../drawer/components/label-select';
 import CvsInput from '../components/cvs-input';
 import SoundRadio from '../components/sound-radio';
@@ -25,6 +27,11 @@ const ConversationConfig = (props: any) => {
   const soundRef = useRef<any>();
   const auditionRef = useRef<any>();
   const sType: any = Form.useWatch(formName, form);
+
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
+
   return (
     <div className={styles['conversation-list']}>
       <FormList name={name}>
@@ -50,7 +57,7 @@ const ConversationConfig = (props: any) => {
               <div className={styles['cvs-box']}>
                 {fields.map((field: any, index: number) => {
                   const sound = () => {
-                    return (
+                    return config.robotTypeMap[info?.robotType] === '语音' ? (
                       <div style={{ display: 'flex' }}>
                         <Form.Item
                           name={[field.name, 'soundType']}
@@ -133,6 +140,8 @@ const ConversationConfig = (props: any) => {
                           }}
                         ></SoundSelectModal>
                       </div>
+                    ) : (
+                      <></>
                     );
                   };
                   return (
@@ -165,27 +174,29 @@ const ConversationConfig = (props: any) => {
                             sound={sound}
                           />
                         </Form.Item>
-                        <Condition r-if={formName == 'clearList'}>
-                          <SoundRadio
-                            name={name}
-                            form={form}
-                            index={index}
-                            field={field}
-                            formName={[formName, index]}
-                          />
-                        </Condition>
+                        <Condition r-if={config.robotTypeMap[info?.robotType] === '语音'}>
+                          <Condition r-if={formName == 'clearList'}>
+                            <SoundRadio
+                              name={name}
+                              form={form}
+                              index={index}
+                              field={field}
+                              formName={[formName, index]}
+                            />
+                          </Condition>
 
-                        <Form.Item
-                          name={[field.name, 'allowInterrupt']}
-                          fieldKey={[field.fieldKey, 'allowInterrupt']}
-                          initialValue={1}
-                          label={'允许打断'}
-                        >
-                          <Radio.Group>
-                            <Radio value={1}>是</Radio>
-                            <Radio value={0}>否</Radio>
-                          </Radio.Group>
-                        </Form.Item>
+                          <Form.Item
+                            name={[field.name, 'allowInterrupt']}
+                            fieldKey={[field.fieldKey, 'allowInterrupt']}
+                            initialValue={1}
+                            label={'允许打断'}
+                          >
+                            <Radio.Group>
+                              <Radio value={1}>是</Radio>
+                              <Radio value={0}>否</Radio>
+                            </Radio.Group>
+                          </Form.Item>
+                        </Condition>
 
                         <Form.Item
                           name={[field.name, 'textLabels']}

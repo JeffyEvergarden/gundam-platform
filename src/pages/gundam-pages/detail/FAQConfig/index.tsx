@@ -311,7 +311,10 @@ const FAQConfig: React.FC<any> = (props: any) => {
                   </FormItem>
                 );
               } else if (item?.dataType == 0) {
-                if (item.configKey == 'FAQ_INVALID_ANSWER') {
+                if (
+                  item.configKey == 'FAQ_INVALID_ANSWER' &&
+                  config.robotTypeMap[info?.robotType] === '语音'
+                ) {
                   return (
                     <FormItem
                       label={item.configName}

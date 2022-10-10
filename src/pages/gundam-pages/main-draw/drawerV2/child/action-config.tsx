@@ -166,7 +166,7 @@ const ActionConfig = (props: any) => {
   const _flowdisabled = drawType === 'business';
 
   const sound = () => {
-    return (
+    return config.robotTypeMap[info?.robotType] === '语音' ? (
       <div style={{ display: 'flex' }}>
         <Form.Item
           name={getFormName(['action', 'soundType'])}
@@ -217,6 +217,8 @@ const ActionConfig = (props: any) => {
           }}
         ></SoundSelectModal>
       </div>
+    ) : (
+      <></>
     );
   };
 
@@ -314,7 +316,19 @@ const ActionConfig = (props: any) => {
               sound={sound}
             />
           </FormItem>
-
+          <Condition r-if={config.robotTypeMap[info?.robotType] === '语音'}>
+            <Form.Item
+              name={getFormName(['action', 'allowInterrupt'])}
+              fieldKey={getFormName(['action', 'allowInterrupt'])}
+              initialValue={1}
+              label={'允许打断'}
+            >
+              <Radio.Group disabled={canEdit}>
+                <Radio value={1}>是</Radio>
+                <Radio value={0}>否</Radio>
+              </Radio.Group>
+            </Form.Item>
+          </Condition>
           {/* <div className={styles['functionkey']}>
             <Form.Item
               name={getFormName(['action', 'userInputType'])}
@@ -387,18 +401,7 @@ const ActionConfig = (props: any) => {
                 </div>
               </div>
             </Condition>
-</div> */}
-          <Form.Item
-            name={getFormName(['action', 'allowInterrupt'])}
-            fieldKey={getFormName(['action', 'allowInterrupt'])}
-            initialValue={1}
-            label={'允许打断'}
-          >
-            <Radio.Group disabled={canEdit}>
-              <Radio value={1}>是</Radio>
-              <Radio value={0}>否</Radio>
-            </Radio.Group>
-          </Form.Item>
+            </div> */}
         </Condition>
         <Condition r-if={_actionType}>
           <FormItem name={getFormName(['action', 'textLabels'])} label="选择标签">
