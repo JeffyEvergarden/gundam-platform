@@ -1,4 +1,5 @@
 import Condition from '@/components/Condition';
+import config from '@/config';
 import { AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Button, Cascader, Form, Input, Radio, Select, Space } from 'antd';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -7,7 +8,7 @@ import LabelSelect from '../../drawer/components/label-select';
 import CvsInput from '../components/cvs-input';
 import SoundSelectModal from '../components/sound-select-modal';
 import SoundVarModal from '../components/sound-var-modal';
-import { ACTION_LIST } from '../const';
+import { ACTION_LIST, ACTION_LIST_TEXT } from '../const';
 import styles from './style.less';
 
 const { Item: FormItem, List: FormList } = Form;
@@ -24,6 +25,10 @@ const ActionConfig = (props: any) => {
     canEdit,
     deep = true,
   } = props;
+
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
 
   const { drawType, businessFlowId } = useModel('gundam' as any, (model: any) => ({
     businessFlowId: model.businessFlowId,
@@ -241,13 +246,21 @@ const ActionConfig = (props: any) => {
               disabled={canEdit}
               getPopupContainer={(trigger) => trigger.parentElement}
             >
-              {ACTION_LIST.map((item: any, index: number) => {
-                return (
-                  <Option key={index} value={item.name} opt={item}>
-                    {item.label}
-                  </Option>
-                );
-              })}
+              {config.robotTypeMap[info?.robotType] === '语音'
+                ? ACTION_LIST.map((item: any, index: number) => {
+                    return (
+                      <Option key={index} value={item.name} opt={item}>
+                        {item.label}
+                      </Option>
+                    );
+                  })
+                : ACTION_LIST_TEXT.map((item: any, index: number) => {
+                    return (
+                      <Option key={index} value={item.name} opt={item}>
+                        {item.label}
+                      </Option>
+                    );
+                  })}
             </Select>
           </FormItem>
           <Condition r-if={_actionType === 2}>
@@ -280,8 +293,9 @@ const ActionConfig = (props: any) => {
           </Condition>
           <Condition r-if={_actionType === 4}>
             <FormItem
+              label={'IVR菜单编码'}
               name={getFormName(['action', 'toFlowId'])}
-              rules={[{ required: true, message: '请选择' }]}
+              rules={[{ required: true, message: '请输入' }]}
             >
               <Input placeholder="请输入" style={{ width: '220px' }} disabled={canEdit}></Input>
             </FormItem>
