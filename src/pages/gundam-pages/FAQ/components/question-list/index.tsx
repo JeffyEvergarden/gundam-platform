@@ -265,7 +265,7 @@ const QuestionList: React.FC<any> = (props: any) => {
       if (res.resultCode == config.successCode) {
         if (res.data.editFlag) {
           //删除答案
-          await deleteAnswer({ id: A.answerId }).then((res) => {
+          await deleteAnswer({ id: A.answerId, robotId: info.id }).then((res) => {
             if (res.resultCode == config.successCode) {
               message.success(res.resultDesc);
             } else {
