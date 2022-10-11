@@ -74,6 +74,17 @@ const TablePage: React.FC<any> = (props: any) => {
       ellipsis: true,
     },
     {
+      title: '同步状态',
+      dataIndex: 'status',
+      valueEnum: {
+        1: { text: '未同步' },
+        2: { text: '成功' },
+        3: { text: '失败' },
+      },
+      width: 200,
+      ellipsis: true,
+    },
+    {
       title: '更新人',
       dataIndex: 'updateBy',
       search: false,
