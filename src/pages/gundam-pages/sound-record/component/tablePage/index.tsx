@@ -24,7 +24,7 @@ const TablePage: React.FC<any> = (props: any) => {
 
   const { getTableList, deleteSound, loading, opLoading, tableList } = useSoundModel();
 
-  const column: any = [
+  let column: any = [
     {
       title: '录音名称',
       dataIndex: 'name',
@@ -157,7 +157,12 @@ const TablePage: React.FC<any> = (props: any) => {
     },
   ];
 
-  const columns: any = !select ? column : column.filter((item: any) => item.dataIndex != 'op');
+  let _column: any =
+    config.soundTypeMap[info?.soundType] === '呼出'
+      ? column.filter((item: any) => item.dataIndex != 'status')
+      : column;
+
+  const columns: any = !select ? _column : _column.filter((item: any) => item.dataIndex != 'op');
 
   useImperativeHandle(cref, () => ({
     refresh,
