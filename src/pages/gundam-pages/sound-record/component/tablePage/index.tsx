@@ -37,7 +37,7 @@ const TablePage: React.FC<any> = (props: any) => {
     },
     {
       title: activeKey == '1' || activeKey == '3' ? '应用节点' : '应用FAQ',
-      dataIndex: 'applyNames',
+      dataIndex: 'applyName',
       fieldProps: {
         placeholder: activeKey == '1' || activeKey == '3' ? '请输入应用节点' : '请输入应用FAQ',
       },
@@ -209,18 +209,20 @@ const TablePage: React.FC<any> = (props: any) => {
         search={{
           labelWidth: 'auto',
         }}
-        form={{
-          // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
-          // 查询参数转化
-          syncToUrl: (values, type) => {
-            if (type === 'get') {
-              return {
-                ...values,
-              };
-            }
-            return values;
-          },
-        }}
+        form={
+          {
+            // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
+            // 查询参数转化
+            // syncToUrl: (values, type) => {
+            //   if (type === 'get') {
+            //     return {
+            //       ...values,
+            //     };
+            //   }
+            //   return values;
+            // },
+          }
+        }
         pagination={{
           pageSize: 10,
         }}

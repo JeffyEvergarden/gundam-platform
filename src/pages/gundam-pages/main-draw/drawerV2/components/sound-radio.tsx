@@ -23,6 +23,12 @@ const SoundRadio: React.FC<any> = (props: any) => {
       item.buttonInputSize = undefined;
     }
 
+    if (item.userInputType == '01') {
+      item.functionKeyStart = 1;
+      item.functionKeyWell = 1;
+      item.buttonInputSize = 10;
+    }
+
     const list = form?.getFieldValue(key);
     if (isArray && list instanceof Array) {
       form.setFieldsValue({
