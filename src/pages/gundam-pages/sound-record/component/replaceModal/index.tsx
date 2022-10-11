@@ -41,6 +41,10 @@ const ReplaceModal: React.FC<any> = (props: any) => {
         message.warning('最多上传一个文件');
         return false;
       }
+      if (file?.name?.slice(-4) != '.wav') {
+        message.warning('只能上传wav格式文件');
+        return false;
+      }
       setFileList([...fileList, file]);
       return false;
     },
