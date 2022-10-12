@@ -795,18 +795,20 @@ const Board: React.FC<any> = (props: any) => {
                 </Radio.Group>
               </Form.Item>
             </Condition>
-            <div className={style['diy-row']}>
-              {/* questionRecommend  1 0 */}
-              <Form.Item
-                name={'questionRecommend'}
-                fieldKey={'questionRecommend'}
-                label="推荐设置"
-                valuePropName="checked"
-                style={{ width: '180px' }}
-              >
-                <Checkbox onChange={changeAdvise}>启用</Checkbox>
-              </Form.Item>
-            </div>
+            <Condition r-if={robotTypeMap[info.robotType] == '文本'}>
+              <div className={style['diy-row']}>
+                {/* questionRecommend  1 0 */}
+                <Form.Item
+                  name={'questionRecommend'}
+                  fieldKey={'questionRecommend'}
+                  label="推荐设置"
+                  valuePropName="checked"
+                  style={{ width: '180px' }}
+                >
+                  <Checkbox onChange={changeAdvise}>启用</Checkbox>
+                </Form.Item>
+              </div>
+            </Condition>
             <Condition r-show={showAdvise}>
               <FormList name="recommendList">
                 {(fields, { add, remove }) => {

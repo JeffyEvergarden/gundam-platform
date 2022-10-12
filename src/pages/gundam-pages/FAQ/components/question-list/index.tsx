@@ -510,21 +510,23 @@ const QuestionList: React.FC<any> = (props: any) => {
                           >
                             {item?.similarNum || 0}个相似问法
                           </Button>
-                          <Divider type="vertical" />
-                          <Button
-                            type="link"
-                            onClick={() => {
-                              history.push(
-                                `/gundamPages/faq/recommend?faqId=${item.id}&question=${
-                                  item.question
-                                }&treeId=${selectTree == '0' ? '' : selectTree}&recommend=${
-                                  item.questionRecommend
-                                }&recycle=${item.recycle}`,
-                              );
-                            }}
-                          >
-                            推荐问设置
-                          </Button>
+                          <Condition r-if={robotTypeMap[info.robotType] == '文本'}>
+                            <Divider type="vertical" />
+                            <Button
+                              type="link"
+                              onClick={() => {
+                                history.push(
+                                  `/gundamPages/faq/recommend?faqId=${item.id}&question=${
+                                    item.question
+                                  }&treeId=${selectTree == '0' ? '' : selectTree}&recommend=${
+                                    item.questionRecommend
+                                  }&recycle=${item.recycle}`,
+                                );
+                              }}
+                            >
+                              推荐问设置
+                            </Button>
+                          </Condition>
                         </div>
 
                         <div
