@@ -16,7 +16,7 @@ const Demo = (props: any) => {
   return (
     <div className={`${styles['div-content']}`}>
       <div className={styles['box']}>
-        <AudioPlay musicSrc={'/aichat/'} />
+        <AudioPlay musicSrc={'/aichat/mp3/bluebird.mp3'} />
       </div>
     </div>
   );

@@ -100,7 +100,7 @@ const AudioPlay: React.FC<dataProp> = (props) => {
     // }
     //
     if (type === 'init' || type === 'play') {
-      console.log('ksishi');
+      // console.log('kishi');
 
       setType('pause');
       stopOtherListener(listenerRef.current);
@@ -144,6 +144,11 @@ const AudioPlay: React.FC<dataProp> = (props) => {
     let w = bar?.clientWidth;
     // console.log(x, w, this.dragFlag)
     audio.currentTime = (x / w) * audio?.duration || 0;
+    setCurTime(audio.currentTime); // 设置成当前进度
+    let val = audio.currentTime / (audio?.duration || 1);
+    if (val <= 1 && val >= 0) {
+      setComputedWidth(val);
+    }
   };
 
   // 进度条拖动相关 ----------------------------------------------------
