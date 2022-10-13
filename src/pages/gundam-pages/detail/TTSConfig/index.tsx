@@ -185,7 +185,12 @@ const TTSConfig: React.FC = (props: any) => {
               name={'text'}
               key={'text'}
             >
-              <Input.TextArea style={{ width: 300 }} placeholder={'请输入试听文本'} />
+              <Input.TextArea
+                maxLength={200}
+                showCount
+                style={{ width: 300 }}
+                placeholder={'请输入试听文本'}
+              />
             </FormItem>
             <div>
               <Button type="link" onClick={soundPlay} style={{ padding: 0 }}>
