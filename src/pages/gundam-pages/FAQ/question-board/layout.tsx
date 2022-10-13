@@ -693,7 +693,7 @@ const Board: React.FC<any> = (props: any) => {
                                 rules={[{ message: '请输入答案', required: true }]}
                               >
                                 <TextArea
-                                  maxLength={2000}
+                                  maxLength={200}
                                   rows={5}
                                   placeholder={'请输入答案'}
                                   showCount
