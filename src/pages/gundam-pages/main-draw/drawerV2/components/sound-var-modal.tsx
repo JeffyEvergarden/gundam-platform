@@ -121,6 +121,7 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
         setVisible(false);
       }}
       footer={false}
+      destroyOnClose={true}
     >
       <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
         <Form form={form} style={{ alignSelf: 'flex-start', width: '100%' }}>
