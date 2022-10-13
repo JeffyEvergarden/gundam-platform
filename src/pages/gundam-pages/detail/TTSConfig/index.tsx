@@ -114,8 +114,14 @@ const TTSConfig: React.FC = (props: any) => {
             <Select
               style={{ width: 200 }}
               onChange={(v) => {
-                form.setFieldsValue({ timbre: undefined });
                 setTts(v);
+                form.setFieldsValue({ timbre: undefined });
+                if (v == 'ali') {
+                  form.setFieldsValue({ speed: 0, tone: 0, volume: 50 });
+                }
+                if (v == 'yizhi') {
+                  form.setFieldsValue({ speed: 5, tone: 5, volume: 5 });
+                }
               }}
             >
               <Option key={'ali'} value={'ali'}>
@@ -151,9 +157,15 @@ const TTSConfig: React.FC = (props: any) => {
             name={'speed'}
             key={'speed'}
             rules={[{ required: true, message: '请输入' }]}
-            initialValue={5}
+            initialValue={tts == 'ali' ? 0 : 5}
           >
-            <InputNumber style={{ width: 200 }} step="1" precision={1} />
+            <InputNumber
+              style={{ width: 200 }}
+              step="1"
+              precision={tts == 'ali' ? 0 : 1}
+              max={tts == 'ali' ? 500 : 9}
+              min={tts == 'ali' ? -500 : 0}
+            />
           </FormItem>
           <FormItem
             // {...col}
@@ -161,9 +173,15 @@ const TTSConfig: React.FC = (props: any) => {
             name={'tone'}
             key={'tone'}
             rules={[{ required: true, message: '请输入' }]}
-            initialValue={5}
+            initialValue={tts == 'ali' ? 0 : 5}
           >
-            <InputNumber style={{ width: 200 }} step="1" precision={1} />
+            <InputNumber
+              style={{ width: 200 }}
+              step="1"
+              precision={tts == 'ali' ? 0 : 1}
+              max={tts == 'ali' ? 500 : 9}
+              min={tts == 'ali' ? -500 : 0}
+            />
           </FormItem>
           <FormItem
             // {...col}
@@ -171,9 +189,15 @@ const TTSConfig: React.FC = (props: any) => {
             name={'volume'}
             key={'volume'}
             rules={[{ required: true, message: '请输入' }]}
-            initialValue={5}
+            initialValue={tts == 'ali' ? 50 : 5}
           >
-            <InputNumber style={{ width: 200 }} step="1" precision={1} />
+            <InputNumber
+              style={{ width: 200 }}
+              step="1"
+              precision={tts == 'ali' ? 0 : 1}
+              max={tts == 'ali' ? 100 : 9}
+              min={tts == 'ali' ? 0 : 0}
+            />
           </FormItem>
           <FormItem
             // {...col}
@@ -193,7 +217,7 @@ const TTSConfig: React.FC = (props: any) => {
               />
             </FormItem>
             <div>
-              <Button type="link" onClick={soundPlay} style={{ padding: 0 }}>
+              <Button type="link" onClick={soundPlay} style={{ padding: 0 }} loading={loading}>
                 点击播放
               </Button>
             </div>

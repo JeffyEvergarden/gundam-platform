@@ -347,9 +347,9 @@ export const useTTSConfigModel = () => {
   };
 
   const auditionTTS = async (data: any) => {
-    // setLoading(true);
+    setLoading(true);
     let res: any = await parseTTS(data);
-    // setLoading(false);
+    setLoading(false);
     if (res?.resultCode) {
       message.error(res?.resultDesc || '错误');
       return false;
