@@ -388,7 +388,7 @@ const Board: React.FC<any> = (props: any) => {
                         },
                       ]}
                     >
-                      <TextArea maxLength={2000} rows={5} placeholder={'请输入答案'} showCount />
+                      <TextArea maxLength={200} rows={5} placeholder={'请输入答案'} showCount />
                     </Form.Item>
                     <Form.Item
                       name={'allowInterrupt'}
