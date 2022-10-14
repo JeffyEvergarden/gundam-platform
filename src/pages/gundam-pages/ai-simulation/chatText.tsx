@@ -367,6 +367,7 @@ export default (props: any) => {
           recommendText: res?.data?.recommendText,
           recommendQuestion: res?.data?.recommendQuestion,
           isClear: res?.data?.aiTextHitType == 2 || res?.data?.aiTextHitType == 6 ? true : false,
+          actionTextSplitList: res?.data?.actionTextSplitList,
         },
       );
     } else {
