@@ -44,20 +44,30 @@ const TablePage: React.FC<any> = (props: any) => {
       width: 200,
       ellipsis: true,
       render: (v: any, r: any, i: any) => {
-        return r?.applyNames ? (
+        return r?.applyNames?.length ? (
           <div>
-            <div className={style['applyNode']}>{`${1}.${r?.applyNames?.[0]}`}</div>
-            <Tooltip
-              title={
-                <div key={i}>
-                  {r?.applyNames?.map((item: any, index: any) => (
-                    <div key={index + item}>{`${index + 1}.${item}`}</div>
-                  ))}
-                </div>
-              }
-            >
-              <span style={{ color: '#1890ff' }}>查看更多</span>
-            </Tooltip>
+            <Condition r-if={r?.applyNames?.length > 1}>
+              <div className={style['applyNode']}>{`${1}.${r?.applyNames?.[0]}`}</div>
+            </Condition>
+            <Condition r-if={r?.applyNames?.length == 1}>
+              <Tooltip title={`${1}.${r?.applyNames?.[0]}`} placement={'topLeft'}>
+                <div className={style['applyNode']}>{`${1}.${r?.applyNames?.[0]}`}</div>
+              </Tooltip>
+            </Condition>
+
+            <Condition r-if={r?.applyNames?.length > 1}>
+              <Tooltip
+                title={
+                  <div key={i}>
+                    {r?.applyNames?.map((item: any, index: any) => (
+                      <div key={index + item}>{`${index + 1}.${item}`}</div>
+                    ))}
+                  </div>
+                }
+              >
+                <span style={{ color: '#1890ff' }}>查看更多</span>
+              </Tooltip>
+            </Condition>
           </div>
         ) : (
           '-'
