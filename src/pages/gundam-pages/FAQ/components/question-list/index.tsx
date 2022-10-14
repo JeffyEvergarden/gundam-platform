@@ -151,12 +151,15 @@ const QuestionList: React.FC<any> = (props: any) => {
               CurrentPage({ page: current, pageSize });
             });
           } else {
+            setEditQLoading(false);
             message.warning('已有在途待处理的答案，不可编辑/新增/删除');
           }
         } else {
+          setEditQLoading(false);
           message.error(res.resultDesc);
         }
       });
+      setEditQLoading(false);
     }
   };
 
