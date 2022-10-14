@@ -153,7 +153,7 @@ const TTSConfig: React.FC = (props: any) => {
           </FormItem>
           <FormItem
             // {...col}
-            label={'音速'}
+            label={'语速'}
             name={'speed'}
             key={'speed'}
             rules={[{ required: true, message: '请输入' }]}
