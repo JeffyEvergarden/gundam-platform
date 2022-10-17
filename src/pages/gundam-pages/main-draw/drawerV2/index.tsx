@@ -95,7 +95,7 @@ const DrawerForm = (props: any) => {
 
   // 保存节点
   const saveNode = async () => {
-    // console.log(form.getFieldsValue());
+    console.log(form.getFieldsValue());
     let res: any = await form.validateFields().catch(() => {
       message.warning('存在未填写完全的配置');
       return false;

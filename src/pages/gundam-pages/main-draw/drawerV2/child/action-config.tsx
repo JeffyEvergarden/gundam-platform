@@ -39,7 +39,7 @@ const ActionConfig = (props: any) => {
   const [inputType, setInputType] = useState<any>('10');
   const soundRef = useRef<any>();
   const auditionRef = useRef<any>();
-  const sType: any = Form.useWatch(name, form);
+  const sType: any = Form.useWatch(deep ? name : _formName[0], form);
 
   const update = useCallback(() => {
     setNum(num + 1);
@@ -173,12 +173,18 @@ const ActionConfig = (props: any) => {
           fieldKey={getFormName(['action', 'soundType'])}
           initialValue={1}
         >
-          <Radio.Group disabled={canEdit}>
+          <Radio.Group
+            disabled={canEdit}
+            onChange={() => {
+              console.log(sType);
+              console.log(currentItem);
+            }}
+          >
             <Radio value={1}>全合成</Radio>
             <Radio value={2}>录音半合成</Radio>
           </Radio.Group>
         </Form.Item>
-        <Condition r-if={sType?.action?.soundType == 2}>
+        <Condition r-if={deep ? currentItem?.action?.soundType == 2 : currentItem?.soundType == 2}>
           <Form.Item
             name={getFormName(['action', 'soundRecordList'])}
             fieldKey={getFormName(['action', 'soundRecordList'])}
@@ -187,10 +193,12 @@ const ActionConfig = (props: any) => {
             <Button
               type="link"
               onClick={() => {
-                console.log(form.getFieldsValue()?.[name]?.action);
+                console.log(currentItem);
                 // if (sType?.action?.soundType == 2) {
                 soundRef?.current?.open(
-                  form.getFieldsValue()?.[name]?.action?.soundRecordList || [],
+                  deep
+                    ? currentItem?.action?.soundRecordList || []
+                    : currentItem?.soundRecordList || [],
                 );
                 // }
               }}
@@ -211,9 +219,19 @@ const ActionConfig = (props: any) => {
         <SoundSelectModal
           cref={soundRef}
           setform={(list: any) => {
-            let formData = form.getFieldsValue();
-            formData[name].action.soundRecordList = list;
-            form.setFieldsValue(formData);
+            if (deep) {
+              let formData = getItem();
+              console.log(formData);
+              formData.action.soundRecordList = list || [];
+              formData.action.actionText = list?.map((item: any) => item?.text)?.join(';');
+              form.setFieldsValue({ ...formData });
+            } else {
+              let formData = getItem();
+              console.log(formData);
+              formData.soundRecordList = list || [];
+              formData.actionText = list?.map((item: any) => item?.text)?.join(';');
+              form.setFieldsValue({ ...formData });
+            }
           }}
         ></SoundSelectModal>
       </div>
