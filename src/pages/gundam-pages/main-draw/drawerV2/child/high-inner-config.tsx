@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import LabelSelect from '../../drawer/components/label-select';
 import CvsInput from '../components/cvs-input';
-import SoundRadio from '../components/sound-radio';
 import SoundSelectModal from '../components/sound-select-modal';
 import SoundVarModal from '../components/sound-var-modal';
 import ActionConfig from './action-config';
@@ -246,14 +245,14 @@ const HightformTemplate: any = (props: any) => {
                           </Form.Item>
 
                           <Condition r-if={config.robotTypeMap[info?.robotType] === '语音'}>
-                            <SoundRadio
+                            {/* <SoundRadio
                               name={name}
                               form={form}
                               index={index}
                               disabled={disabled}
                               field={field}
                               formName={[name, 'responseList', index]}
-                            />
+                            /> */}
 
                             <Form.Item
                               name={[field.name, 'allowInterrupt']}
