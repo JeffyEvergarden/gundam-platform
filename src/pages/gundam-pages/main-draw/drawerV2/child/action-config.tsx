@@ -210,7 +210,8 @@ const ActionConfig = (props: any) => {
         <Button
           type="link"
           onClick={() => {
-            auditionRef?.current?.open(form.getFieldsValue()?.[name]?.action);
+            let formData = getItem();
+            auditionRef?.current?.open(deep ? formData.action : formData);
           }}
         >
           试听
