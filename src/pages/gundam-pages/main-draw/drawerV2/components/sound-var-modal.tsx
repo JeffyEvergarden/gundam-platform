@@ -35,8 +35,13 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
     let str = text;
 
     Object?.keys(obj)?.forEach((item: any) => {
-      let reg = new RegExp(item, 'g');
-      str = str.replace(reg, obj[item]);
+      if (item[0] == '$') {
+        let reg = new RegExp('\\' + item, 'g');
+        str = str.replace(reg, obj[item]);
+      } else {
+        let reg = new RegExp(item, 'g');
+        str = str.replace(reg, obj[item]);
+      }
     });
     return str;
   };
