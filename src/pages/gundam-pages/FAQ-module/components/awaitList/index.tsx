@@ -217,7 +217,7 @@ const AwaitList: React.FC<any> = (props: any) => {
                       <div className={style['list-item']}>
                         <div className={style['box-top']}>
                           {/* 问题名 label */}
-                          <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <div style={{ display: 'flex', alignItems: 'baseline' }}>
                             {/* 问题名字 */}
                             <Condition r-if={pageType == 'reviewed'}>
                               <Condition r-if={item.operationStatus == 3}>
