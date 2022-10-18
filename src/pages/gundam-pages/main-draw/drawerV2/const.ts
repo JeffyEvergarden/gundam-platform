@@ -99,7 +99,16 @@ export const RUlE_LIST: any[] = [
   {
     name: 4,
     label: '变量',
-    list: [],
+    list: [
+      {
+        name: 'fill',
+        label: '已填充', // 没有后续输入
+      },
+      {
+        name: 'unfill',
+        label: '未填充', // 没有后续输入
+      },
+    ],
   },
 ];
 
