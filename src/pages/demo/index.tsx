@@ -18,6 +18,9 @@ const Demo = (props: any) => {
       <div className={styles['box']}>
         <AudioPlay musicSrc={'/aichat/mp3/bluebird.mp3'} />
       </div>
+      <div className={styles['box']}>
+        <AudioPlay musicSrc={'/aichat/mp3/bluebird.mp3'} />
+      </div>
     </div>
   );
 };

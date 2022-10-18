@@ -374,7 +374,7 @@ const AudioPlay: React.FC<dataProp> = (props) => {
     }
     let h = progressPos.h;
     // 正常范围
-    let top = e.pageY;
+    let top = e.clientY;
     let cvh = 1;
     // 移动
     if (top <= progressPos.maxH && top >= progressPos.minH) {
