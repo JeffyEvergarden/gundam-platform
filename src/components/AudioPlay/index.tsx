@@ -259,8 +259,11 @@ const AudioPlay: React.FC<dataProp> = (props) => {
   useEffect(() => {
     const audio = audioRef.current;
     setTimeout(() => {
-      setTotalTime(audio.duration);
-    }, 200);
+      audio.load();
+      audio.oncanplay = () => {
+        setTotalTime(audio.duration);
+      };
+    }, 100);
     // 进度条变动
     audio.addEventListener('timeupdate', updateProgress, false);
     // 播放结束
@@ -270,7 +273,7 @@ const AudioPlay: React.FC<dataProp> = (props) => {
       audio.removeEventListener('timeupdate', updateProgress);
       audio.removeEventListener('ended', playEnd);
     };
-  }, []);
+  }, [musicSrc]);
 
   // 声音控制相关 ----------------------------------------
   const progressRef = useRef<any>(null);
@@ -489,6 +492,7 @@ const AudioPlay: React.FC<dataProp> = (props) => {
       </div>
       <audio
         id="audio"
+        preload="auto"
         src={musicSrc}
         controls
         ref={audioRef}
