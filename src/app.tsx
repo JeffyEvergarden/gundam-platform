@@ -53,7 +53,7 @@ export async function getInitialState(): Promise<{
   // 抓去用户信息
   const fetchUserInfo = async () => {
     try {
-      const msg = await queryCurrentUser();
+      const msg = await queryCurrentUser({ skipErrorHandler: true });
       return msg || {};
     } catch (error) {
       // 回登陆界面
@@ -69,7 +69,7 @@ export async function getInitialState(): Promise<{
   // 抓去用户权限
   const fetchAuthInfo = async () => {
     try {
-      const result: any = await queryAuthInfo();
+      const result: any = await queryAuthInfo({ skipErrorHandler: true });
       let data: any = result.data || [];
       data = Array.isArray(data)
         ? data.map((item: any) => {
@@ -107,7 +107,9 @@ export async function getInitialState(): Promise<{
   // let res2: any = [];
   // let [currentUser, userAuth] = await Promise.all([res1]);
   // 需要抓取用户信息
-  let [userMsg, userAuth]: any[] = await Promise.all([res1, res2]);
+  let [userMsg, userAuth]: any[] = await Promise.all([res1, res2]).then((_arr: any[]) => {
+    return _arr;
+  });
   // console.log('userAuth');
   // console.log(userAuth);
 
@@ -136,7 +138,12 @@ export const request: RequestConfig = {
   errorConfig: {},
   middlewares: [],
   requestInterceptors: [],
-  responseInterceptors: [],
+  responseInterceptors: [
+    (res: any) => {
+      console.log('responseInterceptors', res);
+      return res;
+    },
+  ],
 };
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout

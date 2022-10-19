@@ -97,6 +97,7 @@ const getUsers = (req: Request, res: Response) => {
 
 const normalDeal = async (req: Request, res: Response) => {
   let a = await waitFn(2);
+  // res.sendStatus(401);
   const list: any = Object.keys(codeToObjMap).map((key: any) => {
     return {
       roleCode: '001',

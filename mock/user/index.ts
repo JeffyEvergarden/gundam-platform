@@ -32,6 +32,7 @@ const getAccess = () => {
 export default {
   // 支持值为 Object 和 Array
   'GET /aichat/me': (req: Request, res: Response) => {
+    // res.sendStatus(401);
     res.send({
       authorities: ['ROLE_ADMIN'],
       principal: {
