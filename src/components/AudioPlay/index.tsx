@@ -259,7 +259,6 @@ const AudioPlay: React.FC<dataProp> = (props) => {
   useEffect(() => {
     const audio = audioRef.current;
     setTimeout(() => {
-      audio.load();
       audio.oncanplay = () => {
         setTotalTime(audio.duration);
       };
