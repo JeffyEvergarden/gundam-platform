@@ -100,6 +100,9 @@ const TablePage: React.FC<any> = (props: any) => {
       search: false,
       width: 200,
       ellipsis: true,
+      render: (v: any, r: any, i: any) => {
+        return r.updateBy || r.creator || '-';
+      },
     },
     {
       title: '更新时间',
