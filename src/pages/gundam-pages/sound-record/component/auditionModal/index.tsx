@@ -24,6 +24,7 @@ const AuditionModal: React.FC<any> = (props: any) => {
         setVisible(false);
       }}
       footer={null}
+      destroyOnClose={true}
     >
       <AudioPlay musicSrc={`${config.basePath}/robot/file/getFile?path=${soundInfo?.soundPath}`} />
     </Modal>
