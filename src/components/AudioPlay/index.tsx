@@ -83,6 +83,9 @@ const AudioPlay: React.FC<dataProp> = (props) => {
 
   // 加载百分比
   const loadWidth = useMemo(() => {
+    if (!totalTime) {
+      return 0 + '%';
+    }
     return ((loadTime / totalTime) * 100).toFixed(6) + '%';
   }, [loadTime, totalTime]);
 
