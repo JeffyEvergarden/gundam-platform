@@ -352,6 +352,7 @@ export default (props: any) => {
         onCancel={cancel}
         onOk={submit}
         destroyOnClose={true}
+        // bodyStyle={{ maxHeight: '800px', overflowY: 'auto' }}
       >
         <Spin spinning={spinning}>
           <Form form={form} {...layout}>

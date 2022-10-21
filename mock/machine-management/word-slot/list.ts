@@ -31,6 +31,26 @@ const getWordSlotList = (req: any, res: any) => {
                 sourceType: 0,
                 value: '1',
               },
+              {
+                id: '112',
+                sourceType: 0,
+                value: '1',
+              },
+              {
+                id: '112',
+                sourceType: 0,
+                value: '1',
+              },
+              {
+                id: '112',
+                sourceType: 0,
+                value: '1',
+              },
+              {
+                id: '112',
+                sourceType: 0,
+                value: '1',
+              },
             ],
             outputParamId: '11245',
           },
