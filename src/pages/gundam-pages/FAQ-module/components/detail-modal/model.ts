@@ -56,7 +56,7 @@ export const useSessionModel = () => {
         recordTime: item.createTime,
         message: img(
           (item.role === 1
-            ? item.message
+            ? item.message || item.buttonText
             : item?.aiTextHitType == 2 || item?.aiTextHitType == 6 //为澄清情况直接message
             ? item.message
             : item.answerText || item.message) || '',
