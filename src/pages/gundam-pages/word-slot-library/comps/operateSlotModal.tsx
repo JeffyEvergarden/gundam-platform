@@ -510,7 +510,7 @@ export default (props: any) => {
                             </Form.Item>
                           )}
                           {formListVal?.ruleClips?.[index]?.sourceType == 0 && (
-                            <Form.Item name={[name, 'sourceType_val']} label={'词槽'}>
+                            <Form.Item name={[name, 'value']} label={'词槽'}>
                               <Select placeholder={''} disabled={title == 'edit'}>
                                 {slotList?.map((itex: any) => {
                                   return (
