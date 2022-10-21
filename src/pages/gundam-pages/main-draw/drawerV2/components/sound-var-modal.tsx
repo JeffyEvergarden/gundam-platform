@@ -137,7 +137,7 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
               label={`第${index + 1}参数配置`}
               rules={[{ required: true, message: '请输入' }]}
             >
-              <Input></Input>
+              <Input maxLength={30}></Input>
             </Form.Item>
           ))}
         </Form>
