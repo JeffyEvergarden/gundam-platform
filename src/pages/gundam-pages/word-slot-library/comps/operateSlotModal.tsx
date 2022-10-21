@@ -102,7 +102,7 @@ export default (props: any) => {
           }
         });
         if (modalData?.slotInfo?.id) {
-          paramListIn({ interfaceId: modalData?.slotInfo?.id, paramType: 0 });
+          paramListIn({ interfaceId: modalData?.slotInfo?.id, paramType: 0 }, 'edit');
           paramListOut({ interfaceId: modalData?.slotInfo?.id, paramType: 1 });
         }
         form.setFieldsValue({
@@ -144,14 +144,20 @@ export default (props: any) => {
     }
   };
 
-  const paramListIn = async (datas: any) => {
+  const paramListIn = async (datas: any, type: string) => {
     const resIn = await getparamList(datas); //入参枚举
     if (resIn.resultCode === config.successCode) {
       setInparams(resIn?.data);
     }
-    form.setFieldsValue({
-      ruleClips: resIn?.data,
-    });
+    if (type == 'edit') {
+      form.setFieldsValue({
+        ruleClips: modalData?.slotInfo?.inputParamList,
+      });
+    } else if (type == 'change') {
+      form.setFieldsValue({
+        ruleClips: resIn?.data,
+      });
+    }
   };
   const paramListOut = async (datas: any) => {
     const resOut = await getparamList(datas); //出参枚举
@@ -162,7 +168,7 @@ export default (props: any) => {
 
   const interfaceChange = async (val: any, option: any) => {
     setinterfaceDesc(option?.itemobj?.interfaceDesc);
-    paramListIn({ interfaceId: val, paramType: 0 });
+    paramListIn({ interfaceId: val, paramType: 0 }, 'change');
     paramListOut({ interfaceId: val, paramType: 1 });
     // setInval_val('');
     form.setFieldsValue({
@@ -467,11 +473,7 @@ export default (props: any) => {
                       {fields.map(({ key, name, ...restField }, index) => (
                         <div key={key}>
                           <Form.Item name={[name, 'id']} label={'入参字段名'}>
-                            <Select
-                              placeholder={''}
-                              disabled={title == 'edit'}
-                              onChange={changeInparams}
-                            >
+                            <Select placeholder={''} disabled onChange={changeInparams}>
                               {inParams?.map((itex: any) => {
                                 return (
                                   <Option
