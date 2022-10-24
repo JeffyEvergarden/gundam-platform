@@ -37,7 +37,7 @@ const inVal = [
 ];
 
 export default (props: any) => {
-  const { visible, title, modalData, onSubmit, onCancel } = props;
+  const { visible, title, modalData, onSubmit, onCancel, name } = props;
   const [diffSourceData, setDiffSourceData] = useState<string>(''); // 控制 不同意图来源 显示 不同 的框
   const [spinning, handleSpinning] = useState<boolean>(false);
   const [fieldSelectData, setFieldSelectData] = useState<any>({
@@ -45,6 +45,7 @@ export default (props: any) => {
   });
   const [slotSource, setSource] = useState<number>(-1);
   const [form] = Form.useForm();
+  const formListVal: any = Form.useWatch(name, form);
   const {
     addWordSlot,
     editWordSlot,
@@ -59,11 +60,12 @@ export default (props: any) => {
   const [realList, setRealList] = useState<any>([]);
   const [enumList, setEnumList] = useState<any>([]);
   const [interfaceListInfo, setInterfaceList] = useState<any>([]);
-  const [inValList, setinValList] = useState<any>([]);
-  const [inval_val, setInval_val] = useState<string>('');
+  const [configListData, setconfigList] = useState<any>([]);
+  const [slotList, setSlotList] = useState<any>('');
   const [interfaceDesc, setinterfaceDesc] = useState<string>('');
   const [inParams, setInparams] = useState<any>([]);
   const [outVal, setOutVal] = useState<any>([]);
+  const [chosePrams, setChoseParams] = useState<any>([]);
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -73,6 +75,19 @@ export default (props: any) => {
     getRealList();
     getEnumList();
     getInterFaceList();
+    getConfigList();
+    slotInfoList();
+    return () => {
+      setRealList([]);
+      setEnumList([]);
+      setInterfaceList([]);
+      setconfigList([]);
+      setSlotList([]);
+      setinterfaceDesc('');
+      setInparams([]);
+      setOutVal([]);
+      setChoseParams([]);
+    };
   }, [visible]);
 
   useEffect(() => {
@@ -87,15 +102,8 @@ export default (props: any) => {
           }
         });
         if (modalData?.slotInfo?.id) {
-          paramListIn({ interfaceId: modalData?.slotInfo?.id, paramType: 0 });
+          paramListIn({ interfaceId: modalData?.slotInfo?.id, paramType: 0 }, 'edit');
           paramListOut({ interfaceId: modalData?.slotInfo?.id, paramType: 1 });
-        }
-        if (modalData?.slotInfo?.inputParamList[0]?.sourceType == 1) {
-          setInval_val('变量');
-          getConfigList();
-        } else if (modalData?.slotInfo?.inputParamList[0]?.sourceType == 0) {
-          setInval_val('词槽');
-          slotInfoList();
         }
         form.setFieldsValue({
           slot: modalData?.slot,
@@ -105,18 +113,7 @@ export default (props: any) => {
           dataType: modalData?.dataType,
           slotSourceId: modalData?.slotSourceId,
           interfaceChangeId: modalData?.slotInfo?.id,
-          inParams:
-            modalData?.slotInfo?.inputParamList?.length > 0
-              ? modalData?.slotInfo?.inputParamList[0]?.id
-              : null,
-          sourceType:
-            modalData?.slotInfo?.inputParamList?.length > 0
-              ? modalData?.slotInfo?.inputParamList[0]?.sourceType
-              : null,
-          sourceType_val:
-            modalData?.slotInfo?.inputParamList?.length > 0
-              ? modalData?.slotInfo?.inputParamList[0]?.value
-              : null,
+          ruleClips: modalData?.slotInfo?.inputParamList,
           outputParamId: modalData?.slotInfo?.outputParamId,
         });
       }
@@ -147,10 +144,19 @@ export default (props: any) => {
     }
   };
 
-  const paramListIn = async (datas: any) => {
+  const paramListIn = async (datas: any, type: string) => {
     const resIn = await getparamList(datas); //入参枚举
     if (resIn.resultCode === config.successCode) {
       setInparams(resIn?.data);
+    }
+    if (type == 'edit') {
+      form.setFieldsValue({
+        ruleClips: modalData?.slotInfo?.inputParamList,
+      });
+    } else if (type == 'change') {
+      form.setFieldsValue({
+        ruleClips: resIn?.data,
+      });
     }
   };
   const paramListOut = async (datas: any) => {
@@ -162,9 +168,9 @@ export default (props: any) => {
 
   const interfaceChange = async (val: any, option: any) => {
     setinterfaceDesc(option?.itemobj?.interfaceDesc);
-    paramListIn({ interfaceId: val, paramType: 0 });
+    paramListIn({ interfaceId: val, paramType: 0 }, 'change');
     paramListOut({ interfaceId: val, paramType: 1 });
-    setInval_val('');
+    // setInval_val('');
     form.setFieldsValue({
       inParams: null,
       sourceType: null,
@@ -177,43 +183,64 @@ export default (props: any) => {
   const getConfigList = async () => {
     const invalChild = await configList({ robotId: info.id, configType: 1 }); //入参值
     if (invalChild.resultCode === config.successCode) {
-      setinValList(invalChild?.data);
+      setconfigList(invalChild?.data);
     } else {
       message.warning(invalChild.resultDesc);
-      setinValList([]);
+      setconfigList([]);
     }
   };
 
   const slotInfoList = async () => {
     const invalChild = await getslotInfo({ robotId: info.id }); //入参值
     if (invalChild.resultCode === config.successCode) {
-      setinValList(invalChild?.data);
+      setSlotList(invalChild?.data);
     } else {
       message.warning(invalChild.resultDesc);
-      setinValList([]);
+      setSlotList([]);
     }
   };
-  const inValChange = async (val: number, option: any) => {
-    if (option.key == 1) {
-      setInval_val('变量');
-      getConfigList();
-    } else if (option.key == 0) {
-      setInval_val('词槽');
-      slotInfoList();
-    }
-    form.setFieldsValue({
-      sourceType_val: null,
-    });
-  };
+  // const inValChange = async (val: number, option: any, index: any, el: any) => {
+  //   let temp: any = [...inParams];
+  //   let inputParamList_temp = [...inputParamList];
+  //   if (option.key == 1) {
+  //     // setInval_val('变量');
+  //     temp[index].inval_val = '变量';
+  //     // getConfigList();
+  //   } else if (option.key == 0) {
+  //     // setInval_val('词槽');
+  //     temp[index].inval_val = '词槽';
+  //     // slotInfoList();
+  //   }
+  //   form.setFieldsValue({
+  //     sourceType_val: null,
+  //   });
+  //   setInparams(temp);
+  //   inputParamList_temp[index].sourceType = val;
+  //   setInputParamList(inputParamList_temp);
+  // };
+
+  // const slotOrConfigChange = (val: any, option: any, index: any, el: any) => {
+  //   let inputParamList_temp = [...inputParamList];
+  //   inputParamList_temp[index].value = val;
+  //   setInputParamList(inputParamList_temp);
+  // };
 
   const cancel = () => {
     onCancel();
     // form.resetFields();
-    setInval_val('');
+    // setInval_val('');
   };
 
   const submit = async () => {
     const values = await form.validateFields();
+    let inputParamListTemp: any = [];
+    values?.ruleClips?.map((item: any) => {
+      inputParamListTemp.push({
+        id: item?.id,
+        sourceType: item?.sourceType,
+        value: item?.value,
+      });
+    });
     let res: any;
     let params: any = {
       robotId: modalData?.robotId,
@@ -225,9 +252,7 @@ export default (props: any) => {
       slotSourceId: values?.slotSourceId,
       slotInfo: {
         id: values?.interfaceChangeId,
-        inputParamList: [
-          { id: values?.inParams, sourceType: values?.sourceType, value: values?.sourceType_val },
-        ],
+        inputParamList: inputParamListTemp,
         outputParamId: values?.outputParamId,
       },
     };
@@ -313,6 +338,12 @@ export default (props: any) => {
     form?.setFieldsValue({ dataType: option?.itemObj?.dataType });
   };
 
+  const changeInparams = (val: any) => {
+    let temp = [...chosePrams];
+    temp.push(val);
+    setChoseParams(temp);
+  };
+
   return (
     <React.Fragment>
       <Modal
@@ -320,6 +351,8 @@ export default (props: any) => {
         title={title == 'add' ? '新增' : '编辑'}
         onCancel={cancel}
         onOk={submit}
+        destroyOnClose={true}
+        // bodyStyle={{ maxHeight: '800px', overflowY: 'auto' }}
       >
         <Spin spinning={spinning}>
           <Form form={form} {...layout}>
@@ -435,6 +468,142 @@ export default (props: any) => {
                     </span>
                   </Tooltip>
                 </div>
+                <Form.List name="ruleClips">
+                  {(fields, { add, remove }) => (
+                    <Fragment>
+                      {fields.map(({ key, name, ...restField }, index) => (
+                        <div key={key}>
+                          <Form.Item name={[name, 'id']} label={'入参字段名'}>
+                            <Select placeholder={''} disabled onChange={changeInparams}>
+                              {inParams?.map((itex: any) => {
+                                return (
+                                  <Option
+                                    key={itex?.id}
+                                    value={itex?.id}
+                                    disabled={chosePrams.includes(itex.id) ? true : false}
+                                  >
+                                    {itex?.paramName}
+                                  </Option>
+                                );
+                              })}
+                            </Select>
+                          </Form.Item>
+                          <Form.Item name={[name, 'sourceType']} label={'入参值'}>
+                            <Select placeholder={''} disabled={title == 'edit'}>
+                              {inVal?.map((itex: any) => {
+                                return (
+                                  <Option key={itex?.value} value={itex?.value}>
+                                    {itex?.intentName}
+                                  </Option>
+                                );
+                              })}
+                            </Select>
+                          </Form.Item>
+                          {formListVal?.ruleClips?.[index]?.sourceType == 1 && (
+                            <Form.Item name={[name, 'value']} label={'变量'}>
+                              <Select placeholder={''} disabled={title == 'edit'}>
+                                {configListData?.map((itex: any) => {
+                                  return (
+                                    <Option key={itex?.id} value={itex?.id}>
+                                      {itex?.slotName || itex?.configName}
+                                    </Option>
+                                  );
+                                })}
+                              </Select>
+                            </Form.Item>
+                          )}
+                          {formListVal?.ruleClips?.[index]?.sourceType == 0 && (
+                            <Form.Item name={[name, 'value']} label={'词槽'}>
+                              <Select placeholder={''} disabled={title == 'edit'}>
+                                {slotList?.map((itex: any) => {
+                                  return (
+                                    <Option key={itex?.id} value={itex?.id}>
+                                      {itex?.slotName || itex?.configName}
+                                    </Option>
+                                  );
+                                })}
+                              </Select>
+                            </Form.Item>
+                          )}
+                        </div>
+                      ))}
+                    </Fragment>
+                  )}
+                </Form.List>
+                {/* {inParams?.map((el: any, index: any) => {
+                  return (
+                    <Fragment key={index + el.value}>
+                      <Form.Item
+                        name={'sourceType' + index}
+                        label={el?.paramName}
+                        rules={[{ required: true, message: '请选择' }]}
+                      >
+                        <Select
+                          placeholder={''}
+                          onChange={(val: number, option: any) =>
+                            inValChange(val, option, index, el)
+                          }
+                          disabled={title == 'edit'}
+                        >
+                          {inVal?.map((itex: any) => {
+                            return (
+                              <Option key={itex?.value} value={itex?.value}>
+                                {itex?.intentName}
+                              </Option>
+                            );
+                          })}
+                        </Select>
+                      </Form.Item>
+                      {el?.inval_val == '变量' && (
+                        <Form.Item
+                          name={'sourceType_val' + index}
+                          label={el.inval_val}
+                          rules={[{ required: true, message: '请选择' }]}
+                        >
+                          <Select
+                            placeholder={''}
+                            disabled={title == 'edit'}
+                            onChange={(val: number, option: any) =>
+                              slotOrConfigChange(val, option, index, el)
+                            }
+                          >
+                            {configListData?.map((itex: any) => {
+                              return (
+                                <Option key={itex?.id} value={itex?.id}>
+                                  {itex?.slotName || itex?.configName}
+                                </Option>
+                              );
+                            })}
+                          </Select>
+                        </Form.Item>
+                      )}
+                      {el?.inval_val == '词槽' && (
+                        <Form.Item
+                          name={'sourceType_val' + index}
+                          label={el.inval_val}
+                          rules={[{ required: true, message: '请选择' }]}
+                        >
+                          <Select
+                            placeholder={''}
+                            disabled={title == 'edit'}
+                            onChange={(val: number, option: any) =>
+                              slotOrConfigChange(val, option, index, el)
+                            }
+                          >
+                            {slotList?.map((itex: any) => {
+                              return (
+                                <Option key={itex?.id} value={itex?.id}>
+                                  {itex?.slotName || itex?.configName}
+                                </Option>
+                              );
+                            })}
+                          </Select>
+                        </Form.Item>
+                      )}
+                    </Fragment>
+                  );
+                })} */}
+                {/* 
                 <Form.Item name={'inParams'} label={'入参字段名'}>
                   <Select placeholder={''} disabled={title == 'edit'}>
                     {inParams?.map((itex: any) => {
@@ -469,7 +638,8 @@ export default (props: any) => {
                       })}
                     </Select>
                   </Form.Item>
-                )}
+                )} */}
+
                 <Form.Item name={'outputParamId'} label={'出参字段名'}>
                   <Select placeholder={''} onChange={outValChange} disabled={title == 'edit'}>
                     {outVal?.map((itex: any) => {

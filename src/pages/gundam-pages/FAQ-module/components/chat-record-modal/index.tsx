@@ -75,7 +75,7 @@ const RecordModal: React.FC<any> = (props: any) => {
       className={style['drawer']}
       width={850}
       title={`会话记录（${heightLihgt?.sessionId || heightLihgt?.id}）${
-        systemCode == 'test' ? '-机器人测试' : null
+        systemCode == 'test' ? '-机器人测试' : systemCode
       }`}
       visible={visible}
       onClose={close}

@@ -200,7 +200,7 @@ export default [
         name: '推荐问和澄清统计',
         code: 'robot_mg-report_recommend_and_clarify-view',
         hideFn: (info: any) => {
-          return !(info?.robotType === 0 && info?.soundType === 0); // 呼入 文本
+          return !(info?.robotType === 0); // 呼入 文本
         },
       },
       {
@@ -209,7 +209,7 @@ export default [
         name: '澄清统计',
         code: 'robot_mg-report_recommend_and_clarify-view',
         hideFn: (info: any) => {
-          return !(info?.robotType === 1 && info?.soundType === 0); // 呼入 语音
+          return !(info?.robotType === 1); // 呼入 语音
         },
       },
       {
@@ -218,7 +218,7 @@ export default [
         name: '搜索联想统计',
         code: 'robot_mg-report-search-association-view',
         hideFn: (info: any) => {
-          return !(info?.robotType === 0 && info?.soundType === 0); // 呼入 文本
+          return !(info?.robotType === 0); // 呼入 文本
         },
       },
     ],

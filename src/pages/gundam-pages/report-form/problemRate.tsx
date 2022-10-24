@@ -358,6 +358,9 @@ export default () => {
       title: '客户问题',
       ellipsis: true,
       search: false,
+      render: (t: any, r: any, i: any) => {
+        return <span>{r.message || r.buttonText}</span>;
+      },
     },
     {
       dataIndex: 'createTime',
