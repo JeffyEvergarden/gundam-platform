@@ -13,7 +13,7 @@ export const useSessionModel = () => {
   const [recordList, setRecordList] = useState<any[]>([]);
   const [recordTotal, setRecordTotal] = useState<number>(0);
   const [recordLoading, setRecordLoading] = useState<boolean>(false);
-  const [soundInfo, setSoundInfo] = useState<string>('');
+  const [callId, setCallId] = useState<string>('');
   const [systemCode, setSystemCode] = useState<string>('');
 
   // 获取表格
@@ -74,7 +74,7 @@ export const useSessionModel = () => {
     });
     setRecordList(list || []);
     setRecordTotal(totalPage || 0);
-    setSoundInfo(res?.data?.soundInfo);
+    setCallId(res?.data?.callId);
     setSystemCode(res?.data?.systemCode);
     return { data: list, total: totalPage };
   };
@@ -88,7 +88,7 @@ export const useSessionModel = () => {
     setRecordList,
     recordTotal,
     recordLoading,
-    soundInfo,
+    callId,
     systemCode,
     getSessionRecordList,
   };

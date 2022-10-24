@@ -152,7 +152,7 @@ const getRecordList = (req: any, res: any) => {
     // },
     data: {
       list: arr,
-      soundInfo: '/aichat/mp3/bluebird.mp3',
+      callId: '12345callId',
     },
   });
 };
