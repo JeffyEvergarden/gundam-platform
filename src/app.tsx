@@ -1,15 +1,14 @@
-import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
-import { PageLoading, ProBreadcrumb } from '@ant-design/pro-layout';
-import type { RunTimeLayoutConfig } from 'umi';
-import { history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
+import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
+import { PageLoading } from '@ant-design/pro-layout';
+import type { RunTimeLayoutConfig } from 'umi';
+import { history } from 'umi';
 // import Footer from '@/components/Footer';
 import Page403 from '@/pages/403';
+import type { RequestConfig } from 'umi';
+import routers from '../config/routes';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import { queryAuthInfo } from './services/api';
-import type { RequestConfig } from 'umi';
-import { BookOutlined, LinkOutlined } from '@ant-design/icons';
-import routers from '../config/routes';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/aichat/login';
@@ -140,7 +139,7 @@ export const request: RequestConfig = {
   requestInterceptors: [],
   responseInterceptors: [
     (res: any) => {
-      console.log('responseInterceptors', res);
+      // console.log('responseInterceptors', res);
       return res;
     },
   ],

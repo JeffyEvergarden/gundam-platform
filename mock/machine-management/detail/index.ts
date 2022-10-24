@@ -308,7 +308,7 @@ const getNodeConfig = (req: any, res: any) => {
           action: {
             actionText: '2',
             actionType: 1,
-
+            soundType: 2,
             textLabels: ['话术标签3'],
           },
           messageList: undefined,

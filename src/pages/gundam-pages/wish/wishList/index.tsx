@@ -183,7 +183,17 @@ const DetailPages: React.FC = (props: any) => {
         headerTitle={'意图列表'}
         rowKey={(record) => record?.id}
         scroll={{ x: tableList.length * 200 }}
-        columns={[...tableList, ...operation]}
+        columns={[
+          ...tableList.map((item: any) => {
+            if (config.robotTypeMap[info?.robotType] === '语音') {
+              if (item.dataIndex == 'suggest') {
+                item.hideInTable = true;
+              }
+            }
+            return item;
+          }),
+          ...operation,
+        ]}
         actionRef={actionRef}
         style={{ backgroundColor: 'white' }}
         pagination={{
