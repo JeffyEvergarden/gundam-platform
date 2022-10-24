@@ -99,22 +99,6 @@ const SoundRadio: React.FC<any> = (props: any) => {
         <div className={styles['functionkey']}>
           <div className={styles['functionkey']} style={{ marginRight: '16px' }}>
             <Form.Item
-              name={[field.name, 'functionKeyStart']}
-              fieldKey={[field.fieldKey, 'functionKeyStart']}
-              initialValue={1}
-              valuePropName="checked"
-            >
-              <Checkbox
-                disabled={disabled}
-                onChange={(e) => {
-                  checkChange(e, 'functionKeyStart');
-                }}
-              ></Checkbox>
-            </Form.Item>
-            <Form.Item style={{ marginLeft: '8px' }}>#号确认</Form.Item>
-          </div>
-          <div className={styles['functionkey']} style={{ marginRight: '16px' }}>
-            <Form.Item
               name={[field.name, 'functionKeyWell']}
               fieldKey={[field.fieldKey, 'functionKeyWell']}
               initialValue={1}
@@ -124,6 +108,22 @@ const SoundRadio: React.FC<any> = (props: any) => {
                 disabled={disabled}
                 onChange={(e) => {
                   checkChange(e, 'functionKeyWell');
+                }}
+              ></Checkbox>
+            </Form.Item>
+            <Form.Item style={{ marginLeft: '8px' }}>#号确认</Form.Item>
+          </div>
+          <div className={styles['functionkey']} style={{ marginRight: '16px' }}>
+            <Form.Item
+              name={[field.name, 'functionKeyStart']}
+              fieldKey={[field.fieldKey, 'functionKeyStart']}
+              initialValue={1}
+              valuePropName="checked"
+            >
+              <Checkbox
+                disabled={disabled}
+                onChange={(e) => {
+                  checkChange(e, 'functionKeyStart');
                 }}
               ></Checkbox>
             </Form.Item>
