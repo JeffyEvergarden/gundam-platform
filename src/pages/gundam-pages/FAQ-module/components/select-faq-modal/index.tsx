@@ -429,21 +429,21 @@ const SelectorModal: React.FC<any> = (props: any) => {
     }
     // ------------------
     if (type === 'checkbox') {
-      if (pageType == 'sampleDetail') {
-        if (!((selectList.length >= min && selectList.length <= max) || selectList.length == 0)) {
+      // if (pageType == 'sampleDetail') {
+      //   if (!((selectList.length >= min && selectList.length <= max) || selectList.length == 0)) {
+      //     message.warning('请选择2-5项FAQ或意图用于澄清推荐问题');
+      //     return;
+      //   }
+      // } else {
+      if (selectList.length < min || selectList.length > max) {
+        if (info.robotType == 1) {
+          message.warning('请选择2项FAQ或意图用于澄清问题');
+        } else {
           message.warning('请选择2-5项FAQ或意图用于澄清推荐问题');
-          return;
         }
-      } else {
-        if (selectList.length < min || selectList.length > max) {
-          if (info.robotType == 1) {
-            message.warning('请选择2项FAQ或意图用于澄清问题');
-          } else {
-            message.warning('请选择2-5项FAQ或意图用于澄清推荐问题');
-          }
-          return;
-        }
+        return;
       }
+      // }
     }
 
     let res: any;

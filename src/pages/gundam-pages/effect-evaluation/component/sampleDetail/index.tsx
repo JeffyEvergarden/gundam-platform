@@ -1,4 +1,5 @@
 import Condition from '@/components/Condition';
+import config from '@/config';
 import SelectFaqModal from '@/pages/gundam-pages/FAQ-module/components/select-faq-modal';
 import { ArrowLeftOutlined, MonitorOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
@@ -602,6 +603,7 @@ const DetailPages: React.FC = (props: any) => {
           showQuestion={false}
           pageType={'sampleDetail'}
           tableLoading={editLoading}
+          max={config.robotTypeMap[info.robotType] == '语音' ? 2 : undefined}
         />
 
         <SelectFaqModal
