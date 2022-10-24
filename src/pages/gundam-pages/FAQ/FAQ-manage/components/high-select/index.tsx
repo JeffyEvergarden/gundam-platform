@@ -1,3 +1,4 @@
+import config from '@/config';
 import { Button } from 'antd';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
@@ -57,7 +58,19 @@ const HighConfigSelect = (props: HighConfigProps) => {
 
         const val = value?.[_key];
 
-        const children = listItem.children || [];
+        let children = listItem.children || [];
+        if (config.robotTypeMap[info?.robotType] === '语音') {
+          console.log('语音');
+
+          if (listItem.name == 'orderType') {
+            children = children.filter((item: any) => {
+              if ([5, 6, 7, 8].includes(item.name) == false) {
+                return item;
+              }
+            });
+            console.log(children);
+          }
+        }
 
         const type = listItem.type || 'single';
 
