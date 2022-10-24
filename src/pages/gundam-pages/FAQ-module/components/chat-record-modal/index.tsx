@@ -22,7 +22,7 @@ const RecordModal: React.FC<any> = (props: any) => {
     };
   });
 
-  const { recordLoading, recordList, recordTotal, getSessionRecordList, soundInfo, systemCode } =
+  const { recordLoading, recordList, recordTotal, getSessionRecordList, callId, systemCode } =
     useSessionModel();
 
   const [visible, setVisible] = useState<boolean>(false);
@@ -88,8 +88,8 @@ const RecordModal: React.FC<any> = (props: any) => {
             <AudioPlay
               musicSrc={
                 process.env.mock
-                  ? soundInfo
-                  : `${config.basePath}/robot/file/getFile?path=${soundInfo}`
+                  ? '/aichat/mp3/bluebird.mp3'
+                  : `${config.basePath}/robot/sound/getRecord?callId=${callId}`
               }
             />
             {/* <AudioPlay musicSrc={soundInfo} /> */}
