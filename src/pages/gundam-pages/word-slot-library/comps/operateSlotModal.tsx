@@ -1,12 +1,12 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import { useModel } from 'umi';
-import { Modal, Form, Input, Select, Space, Button, message, Spin, Tooltip } from 'antd';
-import { operateSlotFormList, slotSourceFormList } from './config';
-import { QuestionCircleFilled } from '@ant-design/icons';
-import { useKeyWordModel } from '../model';
-import { useIntentModel } from '../../wish/wishList/model';
-import styles from './../../style.less';
 import config from '@/config/index';
+import { QuestionCircleFilled } from '@ant-design/icons';
+import { Form, Input, message, Modal, Select, Spin, Tooltip } from 'antd';
+import React, { Fragment, useEffect, useState } from 'react';
+import { useModel } from 'umi';
+import { useIntentModel } from '../../wish/wishList/model';
+import { useKeyWordModel } from '../model';
+import styles from './../../style.less';
+import { slotSourceFormList } from './config';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -363,7 +363,7 @@ export default (props: any) => {
                 { required: true, message: '请输入名称' },
                 { max: 50, min: 1 },
                 {
-                  pattern: /^[A-zA-Z0-9_]+$/g,
+                  pattern: /^[a-zA-Z0-9_]+$/g,
                   message: '仅支持英文大小写、数字与下划线"_"',
                 },
               ]}

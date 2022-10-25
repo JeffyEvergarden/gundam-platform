@@ -518,6 +518,7 @@ const DetailPages: React.FC = (props: any) => {
           params={paramsObj}
           onChange={tableChange}
           rowSelection={rowSelection}
+          tableAlertRender={false}
           toolBarRender={() => [
             <Popconfirm
               disabled={selectRow?.length < 1}
