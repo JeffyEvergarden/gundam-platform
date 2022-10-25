@@ -365,7 +365,7 @@ const HightformTemplate: any = (props: any) => {
         {/* 静默超时时间 */}
         <Condition r-if={title == '静默'}>
           <FormItem
-            name={[name, 'silenceTimeout']}
+            name={[name, 'timeout']}
             label={title + '超时时间'}
             style={{ marginTop: '8px' }}
             rules={[{ required: true, message: '请输入静默超时时间' }]}
