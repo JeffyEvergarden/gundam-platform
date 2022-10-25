@@ -123,45 +123,46 @@ export default (props: any) => {
           <div className={styles['box-title']}>变量配置</div>
           <div className={styles['variable-box']}>
             <Form form={form} {...layout} onFieldsChange={fieldValueChange}>
-              {robotFormList?.map((item: any) => {
-                return (
-                  <React.Fragment key={item.name}>
-                    <Condition r-if={item.name != 'CHANNEL_CODE'}>
-                      <Form.Item
-                        name={item?.configName || item?.name}
-                        label={item?.configValue || item?.label}
-                      >
-                        <Input placeholder={item?.placeholder} />
-                      </Form.Item>
-                    </Condition>
-                    <Condition r-if={item.name == 'CHANNEL_CODE'}>
-                      <Form.Item
-                        name={item?.configName || item?.name}
-                        label={item?.configValue || item?.label}
-                        rules={[{ required: true, message: '请选择' }]}
-                      >
-                        <Select placeholder={item?.placeholder}>
-                          {channelList?.map((item: any, index: any) => (
-                            <Option key={index} value={item.value}>
-                              {item.label}
-                            </Option>
-                          ))}
-                        </Select>
-                      </Form.Item>
-                    </Condition>
-                  </React.Fragment>
-                );
-              })}
-              <Form.Item
-                label="客户ID"
-                name="customerId"
-                initialValue={'test'}
-                rules={[{ required: true, message: '请输入客户ID' }]}
-              >
-                <Input maxLength={50} />
-              </Form.Item>
-
-              <Form.Item {...tailLayout}>
+              <div className={styles['globalConfig']}>
+                {robotFormList?.map((item: any) => {
+                  return (
+                    <React.Fragment key={item.name}>
+                      <Condition r-if={item.name != 'CHANNEL_CODE'}>
+                        <Form.Item
+                          name={item?.configName || item?.name}
+                          label={item?.configValue || item?.label}
+                        >
+                          <Input placeholder={item?.placeholder} />
+                        </Form.Item>
+                      </Condition>
+                      <Condition r-if={item.name == 'CHANNEL_CODE'}>
+                        <Form.Item
+                          name={item?.configName || item?.name}
+                          label={item?.configValue || item?.label}
+                          rules={[{ required: true, message: '请选择' }]}
+                        >
+                          <Select placeholder={item?.placeholder}>
+                            {channelList?.map((item: any, index: any) => (
+                              <Option key={index} value={item.value}>
+                                {item.label}
+                              </Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </Condition>
+                    </React.Fragment>
+                  );
+                })}
+                <Form.Item
+                  label="客户ID"
+                  name="customerId"
+                  initialValue={'test'}
+                  rules={[{ required: true, message: '请输入客户ID' }]}
+                >
+                  <Input maxLength={50} />
+                </Form.Item>
+              </div>
+              <Form.Item {...tailLayout} style={{ marginTop: '16px' }}>
                 <Button type="primary" onClick={showChatText}>
                   开始对话
                 </Button>
