@@ -1,16 +1,12 @@
-import { Col, Row, message } from 'antd';
-import GGEditor, { Flow, Item } from 'gg-editor';
+import { Col, message, Row } from 'antd';
+import GGEditor, { Flow } from 'gg-editor';
 
-import EditorMinimap from './components/EditorMinimap';
+import { useEffect, useImperativeHandle, useRef } from 'react';
 import { FlowContextMenu } from './components/EditorContextMenu';
-import { FlowDetailPanel } from '../EditorDetailPanel'; //
-import { FlowItemPanel } from './components/EditorItemPanel';
 import { FlowToolbar } from './components/EditorToolbar';
 import styles from './index.less';
-import { useEffect, useMemo, useRef } from 'react';
-import { judgeLineByNode } from './utils/util';
 import eventbus from './utils/eventbus';
-import { useImperativeHandle } from 'react';
+import { judgeLineByNode } from './utils/util';
 
 GGEditor.setTrackable(false);
 
@@ -299,7 +295,7 @@ const EditorView = (props: PageViewProps) => {
       }
     });
     if (illegalNode.length > 0 && nodes.length > 1) {
-      let labels = illegalNode.map((item) => item.label).join('、');
+      let labels = illegalNode.map((item) => item._name).join('、');
       message.warning(`节点${labels}需补全连接关系`);
       return;
     }
@@ -364,7 +360,7 @@ const EditorView = (props: PageViewProps) => {
       } else if (event.action === 'update') {
         // 更新事件 影响节点是node 且存在label 则更新
         if (
-          Object.prototype.hasOwnProperty.call(event.updateModel, 'label') &&
+          Object.prototype.hasOwnProperty.call(event.updateModel, '_name') &&
           event?.item.type === 'node'
         ) {
           // console.log('更新事件刷新');

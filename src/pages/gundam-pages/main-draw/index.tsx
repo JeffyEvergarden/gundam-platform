@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 
-import { message, Button } from 'antd';
+import { message } from 'antd';
+import { useState } from 'react';
 import { useModel } from 'umi';
 import DrawerForm from './drawerV2';
 import SpDrawerForm from './drawerV2/sp-index';
@@ -10,7 +11,6 @@ import eventbus from './flow/utils/eventbus';
 import { useNodeOpsModel } from './model';
 import { processType } from './model/const';
 import style from './style.less';
-import { useState } from 'react';
 
 const debounce = (fn: (...arr: any[]) => void, second: number) => {
   let timer: any = null;
@@ -104,7 +104,7 @@ const MainDraw = (props: any) => {
     let params: any = {
       ...preParams,
       frontId: node.id, // 前端id
-      nodeName: node.label, // 节点名称
+      nodeName: node._name, // 节点名称
       nodeType: processType(node._nodetype),
       x: node.x, // 节点位置 横坐标
       y: node.y, // 节点位置 纵坐标
@@ -222,9 +222,9 @@ const MainDraw = (props: any) => {
       _nodetype: info._nodetype,
     };
 
-    const callBack = (name: string) => {
+    const callBack = (obj: any) => {
       (fake.current as any)?.updateNode(info.id, {
-        label: name || info.label,
+        ...obj,
       });
       eventbus.$emit('refresh');
     };
@@ -374,7 +374,7 @@ export default MainDraw;
 
 // id: 前端节点id,
 // _id: 后端节点id,
-// label: 节点名称
+// _name: 节点名称
 // type: node / edge     节点或者线
 // _type:  copy   表示是复制节点
 // _nodetype:  start / normal / business     开始节点/普通节点/ 业务流程节点

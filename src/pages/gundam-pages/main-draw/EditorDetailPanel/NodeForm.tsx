@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
-import { Card, Input, Select, Form, Button } from 'antd';
-import { withPropsAPI } from 'gg-editor';
+import Condition from '@/components/Condition';
 import { SettingOutlined } from '@ant-design/icons';
-import style from './index.less';
+import { Button, Card, Form, Input } from 'antd';
+import { withPropsAPI } from 'gg-editor';
+import React, { useEffect, useState } from 'react';
 import { useModel } from 'umi';
-import { useEffect } from 'react';
+import eventbus from '../flow/utils/eventbus';
 import { useNodeOpsModel } from '../model';
 import { processType } from '../model/const';
-import eventbus from '../flow/utils/eventbus';
-import Condition from '@/components/Condition';
+import style from './index.less';
 
 const upperFirst = (str: string) =>
   str.toLowerCase().replace(/( |^)[a-z]/g, (l: string) => l.toUpperCase());
@@ -113,7 +112,7 @@ const NodeForm: React.FC<DetailFormProps> = (props: DetailFormProps) => {
     // console.log('item:', model);
     if (type === 'node') {
       form.setFieldsValue({
-        label: model?.label || '',
+        label: model?._label || '',
       });
     } else {
       form.setFieldsValue({

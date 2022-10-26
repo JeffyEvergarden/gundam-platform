@@ -117,9 +117,15 @@ const DrawerForm = (props: any) => {
         id: recordInfo.current.info?.id,
         nodeType: recordInfo.current.info?.nodeType,
       });
+
+      let label;
+      if (res?.name?.length > 10) {
+        label = res?.name.slice(0, 10) + '...';
+      }
+
       if (result === true) {
         setAutoCloseTipsFlag(false);
-        recordInfo.current?.callback?.(res?.name); // 成功回调修改名称
+        recordInfo.current?.callback?.({ label, _name: res?.name }); // 成功回调修改名称
         setVisible(false);
       }
     }

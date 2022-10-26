@@ -29,7 +29,7 @@ const getConfig = (req: any, res: any) => {
           frontId: '02',
           id: '02',
           nodeType: 0,
-          label: '普通节点1',
+          label: '普通节点1普通节点1普通节点1普通节点1',
           x: 500,
           y: 500,
         },

@@ -1,30 +1,30 @@
-import { useState } from 'react';
-import { message } from 'antd';
 import config from '@/config/index';
-import {
-  normalNode,
-  startNode,
-  businessNode,
-  spBusinessNode,
-  parserType,
-  processType,
-} from './const';
+import { message } from 'antd';
+import { useState } from 'react';
 import {
   addNode,
   deleteNode,
-  updateNode,
-  getMachineMainDraw,
-  getIntentList,
-  getWordSlotTableList,
-  getFlowList,
-  saveMachineMainDraw,
-  getNodesConfig,
-  saveNode,
-  saveLine,
-  getLineConfig,
-  saveBizNode,
   getBizNodesConfig,
+  getFlowList,
+  getIntentList,
+  getLineConfig,
+  getMachineMainDraw,
+  getNodesConfig,
+  getWordSlotTableList,
+  saveBizNode,
+  saveLine,
+  saveMachineMainDraw,
+  saveNode,
+  updateNode,
 } from './api';
+import {
+  businessNode,
+  normalNode,
+  parserType,
+  processType,
+  spBusinessNode,
+  startNode,
+} from './const';
 
 // 获取默认节点参数
 const getDefaultNode = (type: string) => {
@@ -152,10 +152,19 @@ export const useNodeOpsModel = () => {
         map[item.frontId] = true;
       }
       _map[item.id] = item.frontId;
+
+      let label = item.label || item.nodeName || '';
+
+      if (label?.length > 10) {
+        label = label.slice(0, 10) + '...';
+        console.log(label);
+      }
+
       return {
         id: item.frontId ? String(item.frontId) : String(item.id),
         _id: item.id,
-        label: item.label || item.nodeName || '',
+        label: label,
+        _name: item.label || item.nodeName || '',
         x: typeof item.x === 'number' ? item.x : 100,
         y: typeof item.y === 'number' ? item.y : 100,
         _nodetype: type, // 节点类型
@@ -228,7 +237,7 @@ export const useNodeOpsModel = () => {
       return {
         nodeType: processType(item._nodetype), // 节点类型
         frontId: item.id, // 前端id
-        nodeName: item.label,
+        nodeName: item._name,
         id: item._id, // 后端id
         x: item.x,
         y: item.y,
