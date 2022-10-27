@@ -58,7 +58,9 @@ def generateStage(projectEnv) {
                       sudo mkdir -p /home/appuser/cooperation-${projectEnv}
                   fi
                   """
+              println "递归文件创建成功"
               sshPut remote: remote, from: "./gundam-${projectEnv}.tar.gz", into: "/home/appuser/cooperation-${projectEnv}/"
+              println "ssh 传输文件成功"
               sshCommand remote: remote, command: """
                   cd /home/appuser/cooperation-${projectEnv}
                   tar -xvf gundam-${projectEnv}.tar.gz
