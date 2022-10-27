@@ -155,9 +155,33 @@ export const useNodeOpsModel = () => {
 
       let label = item.label || item.nodeName || '';
 
+      console.log(item);
+
       //初始回显
-      if (label?.length > 10) {
-        label = label.slice(0, 10) + '...';
+      if (item.nodeType == 1) {
+        label = item?.label
+          ?.split('\n')
+          ?.map((item: any) => {
+            return item
+              ?.split(':')
+              ?.map((val: any, index: any) => {
+                if (index == 1) {
+                  if (val?.length > 10) {
+                    val = val?.slice(0, 10) + '...';
+                  } else {
+                    val = val;
+                  }
+                }
+                return val;
+              })
+              ?.join(':');
+          })
+          ?.join('\n');
+        console.log(label);
+      } else {
+        if (label?.length > 10) {
+          label = label.slice(0, 10) + '...';
+        }
       }
 
       return {
