@@ -159,7 +159,7 @@ export const useNodeOpsModel = () => {
 
       //初始回显
       if (item.nodeType == 1) {
-        label = item?.label
+        label = label
           ?.split('\n')
           ?.map((item: any) => {
             return item
