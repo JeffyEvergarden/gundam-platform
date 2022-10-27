@@ -297,7 +297,7 @@ const EditorView = (props: PageViewProps) => {
       }
     });
     if (illegalNode.length > 0 && nodes.length > 1) {
-      let labels = illegalNode.map((item) => item._name).join('、');
+      let labels = illegalNode.map((item) => item.label).join('、');
       message.warning(`节点${labels}需补全连接关系`);
       return;
     }
@@ -362,7 +362,7 @@ const EditorView = (props: PageViewProps) => {
       } else if (event.action === 'update') {
         // 更新事件 影响节点是node 且存在label 则更新
         if (
-          Object.prototype.hasOwnProperty.call(event.updateModel, '_name') &&
+          Object.prototype.hasOwnProperty.call(event.updateModel, 'label') &&
           event?.item.type === 'node'
         ) {
           // console.log('更新事件刷新');

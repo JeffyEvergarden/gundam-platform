@@ -106,6 +106,8 @@ const DrawerForm = (props: any) => {
       return false;
     });
 
+    console.log(res);
+
     if (res === false || res2 === false) {
       return;
     } else {
@@ -121,6 +123,8 @@ const DrawerForm = (props: any) => {
       let label;
       if (res?.name?.length > 10) {
         label = res?.name.slice(0, 10) + '...';
+      } else {
+        label = res?.name;
       }
 
       if (result === true) {

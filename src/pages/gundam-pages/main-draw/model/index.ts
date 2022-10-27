@@ -155,9 +155,9 @@ export const useNodeOpsModel = () => {
 
       let label = item.label || item.nodeName || '';
 
+      //初始回显
       if (label?.length > 10) {
         label = label.slice(0, 10) + '...';
-        console.log(label);
       }
 
       return {
