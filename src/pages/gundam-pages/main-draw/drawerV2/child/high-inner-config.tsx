@@ -372,12 +372,11 @@ const HightformTemplate: any = (props: any) => {
             initialValue={5}
           >
             <InputNumber
-              max={10}
               min={1}
               step="1"
               precision={0}
               style={{ width: '161px' }}
-              placeholder={'请输入' + title + '次数'}
+              placeholder={'请输入' + title + '超时时间'}
               disabled={disabled}
             />
           </FormItem>
