@@ -55,7 +55,7 @@ def generateStage(projectEnv) {
               println "操作地址: ${remote.host} /data/robot/robot_chatWeb/static/"
               sshCommand remote: remote, command: """
                   if [ ! -d "/home/appuser/cooperation-${projectEnv}" ];then
-                      mkdir -p /home/appuser/cooperation-${projectEnv}
+                      sudo mkdir -p /home/appuser/cooperation-${projectEnv}
                   fi
                   """
               sshPut remote: remote, from: "./gundam-${projectEnv}.tar.gz", into: "/home/appuser/cooperation-${projectEnv}/"
