@@ -114,6 +114,8 @@ const EditorView = (props: PageViewProps) => {
       // 插入前是没有item的，插入后追加的
       if (event?.item.type === 'node') {
         // 节点是 node （节点随便插入）
+        console.log(event.model);
+
         insertNode?.(event.model);
         refreshOtherPane();
       } else if (event?.item.type === 'edge') {

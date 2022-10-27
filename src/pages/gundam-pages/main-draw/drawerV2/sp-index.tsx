@@ -112,6 +112,14 @@ const DrawerForm = (props: any) => {
         (businessName ? '流程:' + businessName : '业务流程节点') +
         (wishName ? '\n' + '意图:' + wishName : '');
 
+      let label =
+        (businessName
+          ? '流程:' + (businessName.length > 10 ? businessName.slice(0, 10) + '...' : businessName)
+          : '业务流程节点') +
+        (wishName
+          ? '\n' + '意图:' + (wishName.length > 10 ? wishName.slice(0, 10) + '...' : wishName)
+          : '');
+
       let result: any = await _saveNode({
         ...res,
         name,
@@ -122,8 +130,7 @@ const DrawerForm = (props: any) => {
       });
       if (result === true) {
         setAutoCloseTipsFlag(false);
-
-        recordInfo.current?.callback?.(name); // 成功回调修改名称
+        recordInfo.current?.callback?.({ label, _name: name }); // 成功回调修改名称
         setVisible(false);
       }
     }
