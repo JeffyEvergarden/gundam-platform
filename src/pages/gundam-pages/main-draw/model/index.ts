@@ -257,11 +257,13 @@ export const useNodeOpsModel = () => {
   // 加工画布参数
   const process = (obj: any) => {
     let { nodes = [], edges = [], ...preParams }: any = obj;
+    console.log(nodes);
+
     nodes = nodes.map((item: any) => {
       return {
         nodeType: processType(item._nodetype), // 节点类型
         frontId: item.id, // 前端id
-        nodeName: item._name,
+        nodeName: item._name || item.label,
         id: item._id, // 后端id
         x: item.x,
         y: item.y,

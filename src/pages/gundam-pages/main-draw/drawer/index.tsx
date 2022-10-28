@@ -1,19 +1,14 @@
-import { useState, useImperativeHandle, useRef } from 'react';
-import { Drawer, Form, Input, Select, Button, message } from 'antd';
-import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import styles from './style.less';
+import { Button, Drawer, Form, Input, message, Select } from 'antd';
+import { useImperativeHandle, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import ConversationConfig from './child/conversation-config';
 import HighConfig from './child/high-config';
 import WordSlotTable from './components/word-slot-table';
+import styles from './style.less';
 
-import { useSelectModel, useNodeOpsModel } from '../model';
-import { useEffect } from 'react';
 import Condition from '@/components/Condition';
-
-import LabelSelect from './components/label-select';
-import GlobalVarButton from './components/global-var-button';
-import config from '@/config/index';
+import { useEffect } from 'react';
+import { useNodeOpsModel } from '../model';
 
 const { Item: FormItem, List: FormList } = Form;
 const { TextArea } = Input;
