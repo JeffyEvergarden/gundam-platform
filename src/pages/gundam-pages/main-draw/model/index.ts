@@ -155,9 +155,33 @@ export const useNodeOpsModel = () => {
 
       let label = item.label || item.nodeName || '';
 
-      if (label?.length > 10) {
-        label = label.slice(0, 10) + '...';
+      console.log(item);
+
+      //初始回显
+      if (item.nodeType == 1) {
+        label = label
+          ?.split('\n')
+          ?.map((item: any) => {
+            return item
+              ?.split(':')
+              ?.map((val: any, index: any) => {
+                if (index == 1) {
+                  if (val?.length > 10) {
+                    val = val?.slice(0, 10) + '...';
+                  } else {
+                    val = val;
+                  }
+                }
+                return val;
+              })
+              ?.join(':');
+          })
+          ?.join('\n');
         console.log(label);
+      } else {
+        if (label?.length > 10) {
+          label = label.slice(0, 10) + '...';
+        }
       }
 
       return {
@@ -233,11 +257,13 @@ export const useNodeOpsModel = () => {
   // 加工画布参数
   const process = (obj: any) => {
     let { nodes = [], edges = [], ...preParams }: any = obj;
+    console.log(nodes);
+
     nodes = nodes.map((item: any) => {
       return {
         nodeType: processType(item._nodetype), // 节点类型
         frontId: item.id, // 前端id
-        nodeName: item._name,
+        nodeName: item._name || item.label,
         id: item._id, // 后端id
         x: item.x,
         y: item.y,

@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useModel, history } from 'umi';
+import React, { useEffect, useRef, useState } from 'react';
+import { history, useModel } from 'umi';
 
-import ProTable from '@ant-design/pro-table';
-import type { ActionType } from '@ant-design/pro-table';
-import { businessTableColumnsList } from './config';
-import { Button, message, Space, Popconfirm } from 'antd';
-import { useTableModel } from './model';
-import OperateFlowModal from './comps/operateFlowModal';
-import { InfoCircleFilled } from '@ant-design/icons';
 import config from '@/config/index';
+import type { ActionType } from '@ant-design/pro-table';
+import ProTable from '@ant-design/pro-table';
+import { Button, message, Popconfirm, Space } from 'antd';
+import OperateFlowModal from './comps/operateFlowModal';
+import { businessTableColumnsList } from './config';
+import { useTableModel } from './model';
 
 // 机器人列表
 const DetailPages: React.FC = (props: any) => {
@@ -82,7 +81,7 @@ const DetailPages: React.FC = (props: any) => {
             operateBusiness(record, 'edit');
           }}
           style={{ padding: 0 }}
-          disabled={record?.flowType == 3}
+          // disabled={record?.flowType == 3}
         >
           编辑
         </Button>
@@ -95,24 +94,20 @@ const DetailPages: React.FC = (props: any) => {
         >
           配置
         </Button>
-        {record?.flowType != 3 ? (
-          <Popconfirm
-            title="删除将不可恢复，确认删除？"
-            okText="确定"
-            cancelText="取消"
-            onConfirm={() => {
-              deleteFlowFunc(record);
-            }}
-          >
-            <Button type={'link'} style={{ color: 'red', padding: 0 }}>
-              删除
-            </Button>
-          </Popconfirm>
-        ) : (
-          <Button type={'link'} disabled={true} style={{ padding: 0 }}>
+
+        <Popconfirm
+          title="删除将不可恢复，确认删除？"
+          okText="确定"
+          cancelText="取消"
+          onConfirm={() => {
+            deleteFlowFunc(record);
+          }}
+          disabled={record?.flowType == 3}
+        >
+          <Button disabled={record?.flowType == 3} type={'link'} style={{ padding: 0 }} danger>
             删除
           </Button>
-        )}
+        </Popconfirm>
       </Space>
     ),
   };

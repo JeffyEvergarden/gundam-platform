@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Modal, Form, Input, Select, Space, Button, message, Spin } from 'antd';
+import config from '@/config/index';
+import { Form, Input, message, Modal, Select, Spin } from 'antd';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useModel } from 'umi';
 import { operateFlowFormList } from '../config';
 import { useTableModel } from '../model';
 import style from './style.less';
-import { useModel } from 'umi';
-import config from '@/config/index';
 
 const { Option } = Select;
 const selectOptList = [
@@ -102,7 +102,11 @@ export default (props: any) => {
                         rules={item.rules}
                         style={{ width: '360px' }}
                       >
-                        <Input maxLength={150} placeholder={item.placeholder} />
+                        <Input
+                          maxLength={150}
+                          placeholder={item.placeholder}
+                          disabled={item.name == 'flowName' && modalData?.flowType == '3'}
+                        />
                       </Form.Item>
                     )}
                     {item.type == 'select' && (

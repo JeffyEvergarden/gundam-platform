@@ -220,6 +220,8 @@ const EditorView = (props: PageViewProps) => {
     // 保存时条件
     // 需每个节点都有关系
     const [nodes, lines] = getAllNode();
+    console.log(nodes);
+
     if (nodes.length === 0) {
       message.warning('并未新建任务节点');
       return;
@@ -297,7 +299,7 @@ const EditorView = (props: PageViewProps) => {
       }
     });
     if (illegalNode.length > 0 && nodes.length > 1) {
-      let labels = illegalNode.map((item) => item._name).join('、');
+      let labels = illegalNode.map((item) => item.label || item._name).join('、');
       message.warning(`节点${labels}需补全连接关系`);
       return;
     }
