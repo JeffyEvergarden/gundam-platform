@@ -73,7 +73,7 @@ export async function queryWordSlotTableList(params?: { [key: string]: any }) {
 export async function queryWordSlotInfoList(params?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/slot/slotInfo`, {
     method: 'POST',
-    params: {
+    data: {
       ...params,
     },
   });
