@@ -59,7 +59,7 @@ export const useSessionModel = () => {
             ? item.message || item.buttonText
             : item?.aiTextHitType == 2 || item?.aiTextHitType == 6 //为澄清情况直接message
             ? item.message
-            : item.answerText || '' + item.message || '' + item.buttonText || '') || '',
+            : (item.answerText || '') + (item.message || '') + (item.buttonText || '')) || '',
         ),
         recommendQuestion:
           item?.aiTextHitType != 2 && item?.aiTextHitType != 6 && item?.answerText
