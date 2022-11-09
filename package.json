@@ -2,7 +2,7 @@
   "name": "gundam-platform",
   "version": "1.0.0",
   "private": true,
-  "description": "中邮消费金融-外呼机器人平台",
+  "description": "中邮消费金融-呼入机器人平台",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
     "build": "cross-env REACT_APP_ENV=production umi build",
