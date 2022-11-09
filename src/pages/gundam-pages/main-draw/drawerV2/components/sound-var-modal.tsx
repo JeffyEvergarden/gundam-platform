@@ -8,11 +8,11 @@ import { getSemisynthesis, getTotalSynthesis } from '../../model/api';
 
 interface baseProps {
   cref?: any;
-  confirm?: any;
+  isClear?: any;
 }
 
 const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
-  const { cref, confirm } = props;
+  const { cref, isClear = false } = props;
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -27,16 +27,35 @@ const SoundVarModal: React.FC<baseProps> = (props: baseProps) => {
   const audioRef = useRef<any>();
 
   const getVarLength = (text: any) => {
-    let list = text.match(/(\$|#)\{[^({|}|\$|#)]+\}/g);
-    return list;
+    let num = 0;
+    let arr: any = [];
+    if (isClear) {
+      let list = text?.match(/((\$|#)\{[^({|}|\$|#)]+\})|{}/g);
+      list.forEach((item: any) => {
+        if (item == '{}') {
+          arr.push(`{${num}}`);
+          num++;
+          return;
+        }
+        arr.push(item);
+      });
+      return arr;
+    } else {
+      let list = text?.match(/(\$|#)\{[^({|}|\$|#)]+\}/g);
+      return list;
+    }
   };
 
   const replaceVar = (text: any, obj: any) => {
     let str = text;
+    console.log(obj);
 
     Object?.keys(obj)?.forEach((item: any) => {
       if (item[0] == '$') {
         let reg = new RegExp('\\' + item, 'g');
+        str = str.replace(reg, obj[item]);
+      } else if (item[0] == '{') {
+        let reg = new RegExp('\\' + '{}');
         str = str.replace(reg, obj[item]);
       } else {
         let reg = new RegExp(item, 'g');
