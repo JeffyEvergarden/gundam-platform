@@ -27,9 +27,9 @@ const EditorView = (props: PageViewProps) => {
   const editorRef = useRef<any>(null);
 
   // 可以输出看看有啥方法
-  // useEffect(() => {
-  //   console.log(editorRef.current?.propsAPI);
-  // }, []);
+  useEffect(() => {
+    console.log('propsAPI', editorRef.current?.propsAPI);
+  }, []);
 
   // 获取 propsAPI
   const getPropsAPI = () => {

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 
-import { message } from 'antd';
+import Condition from '@/components/Condition';
+import { message, Select } from 'antd';
 import { useState } from 'react';
 import { useModel } from 'umi';
 import DrawerForm from './drawerV2';
@@ -38,6 +39,8 @@ const MainDraw = (props: any) => {
   const drawerRef = useRef<any>(null);
   const edgeDrawerRef = useRef<any>(null);
   const spNodeDrawerRef = useRef<any>(null);
+  const operationNodeDrawerRef = useRef<any>(null);
+  const [bFlowId, setBFlowId] = useState('');
 
   // 历史遗留问题
   // 话术标签、业务流程列表
@@ -59,6 +62,7 @@ const MainDraw = (props: any) => {
   // 意图列表、词槽列表
   // 短信模版列表
   const {
+    flowList,
     getMessageList,
     wishList,
     wordSlotList,
@@ -68,6 +72,7 @@ const MainDraw = (props: any) => {
     getFlowList,
     getGlobalConfig,
   } = useModel('drawer' as any, (model: any) => ({
+    flowList: model._flowList || [],
     wishList: model._wishList || [],
     wordSlotList: model._wordSlotList || [],
     getMessageList: model.getMessageList || [],
@@ -232,7 +237,11 @@ const MainDraw = (props: any) => {
     };
     if (['sp_business', 'business'].includes(info._nodetype)) {
       (spNodeDrawerRef.current as any).open(config, callBack);
-    } else {
+    }
+    // else if (info._nodetype == 'operation') {
+    //   (operationNodeDrawerRef.current as any).open(config, callBack);
+    // }
+    else {
       (drawerRef.current as any).open(config, callBack);
     }
   };
@@ -295,6 +304,7 @@ const MainDraw = (props: any) => {
   }, []);
 
   useEffect(() => {
+    setBFlowId(businessFlowId);
     getMachineInfo().then((res) => {
       fake.current?.executeCommand?.('autoZoom');
       fake.current?.executeCommand?.('resetZoom');
@@ -339,7 +349,24 @@ const MainDraw = (props: any) => {
 
   return (
     <div className={style['main-draw']}>
-      <div></div>
+      <Condition r-if={type == 'business'}>
+        <Select
+          size="small"
+          style={{ marginBottom: '16px', width: '200px' }}
+          value={bFlowId}
+          onChange={(val) => {
+            setBFlowId(val);
+          }}
+        >
+          {flowList.map((item: any) => {
+            return (
+              <Select.Option value={item.id} key={item.id}>
+                {item.flowName}
+              </Select.Option>
+            );
+          })}
+        </Select>
+      </Condition>
       <div className={style['container']}>
         <div className={style['container_right']}>
           <FlowPage
