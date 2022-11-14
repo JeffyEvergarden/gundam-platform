@@ -69,6 +69,16 @@ export async function queryWordSlotTableList(params?: { [key: string]: any }) {
   });
 }
 
+/** 获取所有词槽列表 **/
+export async function queryWordSlotInfoList(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/slot/slotInfo`, {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
 //获取所有全局变量配置
 export async function queryGlobalValConfig(params?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/config/listPage`, {

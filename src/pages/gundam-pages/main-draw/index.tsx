@@ -208,6 +208,8 @@ const MainDraw = (props: any) => {
       id: info._id,
       nodeType: processType(info._nodetype),
     });
+    console.log(config, info);
+
     config = {
       node: {
         ...info,

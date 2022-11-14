@@ -148,7 +148,7 @@ export const request: RequestConfig = {
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
-    title: '外呼机器人平台',
+    title: '呼入机器人平台',
     //
     rightContentRender: () => <RightContent />,
     // headerContentRender: () => <ProBreadcrumb />,

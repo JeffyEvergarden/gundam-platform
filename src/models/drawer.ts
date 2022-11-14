@@ -10,7 +10,7 @@ import {
   queryReviewed,
   queryTreeList,
   queryWishList,
-  queryWordSlotTableList,
+  queryWordSlotInfoList,
 } from '@/services/api';
 import { message } from 'antd';
 import { useRef, useState } from 'react';
@@ -138,12 +138,18 @@ export default function useDrawerModel() {
     if (!allowRequest('wordslot', id)) {
       return;
     }
-    let res: any = await queryWordSlotTableList({
+    // let res: any = await queryWordSlotTableList({
+    //   robotId: id,
+    //   current: 1,
+    //   pageSize: 1000,
+    // });
+    let res: any = await queryWordSlotInfoList({
       robotId: id,
       current: 1,
       pageSize: 1000,
     });
-    let data: any[] = res?.data?.list || [];
+    // let data: any[] = res?.data?.list || [];
+    let data: any[] = res?.data || [];
     data = Array.isArray(data) ? data : [];
     data =
       data.map?.((item: any, index: number) => {

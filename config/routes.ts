@@ -3,7 +3,7 @@ export default [
   {
     path: '/',
     component: './home',
-    name: '外呼机器人平台',
+    name: '呼入机器人平台',
     layout: true,
     hideInMenu: true,
   },
