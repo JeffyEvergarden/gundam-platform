@@ -187,7 +187,10 @@ const HightformTemplate: any = (props: any) => {
                           >
                             试听
                           </Button>
-                          <SoundVarModal cref={auditionRef}></SoundVarModal>
+                          <SoundVarModal
+                            cref={auditionRef}
+                            isClear={title == '澄清'}
+                          ></SoundVarModal>
                           <SoundSelectModal
                             cref={soundRef}
                             setform={(list: any, index: any) => {
