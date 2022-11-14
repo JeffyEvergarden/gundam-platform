@@ -1,4 +1,3 @@
-import style from '../style.less';
 // 节点定义
 
 export const startNode: any = {
@@ -50,6 +49,8 @@ const map: any = {
   1: 'business', // 普通的业务流程节点
   2: 'start',
   3: 'sp_business', // 特殊的业务流程节点 (不可删除)
+  4: 'operation', //运算节点
+  5: 'select', //选择节点
 };
 
 const typeMap: any = {
@@ -57,6 +58,8 @@ const typeMap: any = {
   business: 1,
   start: 2,
   sp_business: 3,
+  operation: 4,
+  select: 5,
 };
 
 export const parserType = (val: number) => {

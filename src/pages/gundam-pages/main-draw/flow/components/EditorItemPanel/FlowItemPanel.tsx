@@ -1,4 +1,5 @@
 import Condition from '@/components/Condition';
+import config from '@/config';
 import { Item, ItemPanel } from 'gg-editor';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
@@ -34,6 +35,43 @@ const FlowItemPanel = (props: PanelProps) => {
           src={''}
         >
           <div className={styles['blue-node']}>普通节点</div>
+        </Item>
+      </Condition>
+
+      <Item
+        type="node"
+        size="140*45"
+        shape="flow-rect"
+        model={{
+          color: '#B7EB8F',
+          label: '运算节点',
+          _nodetype: 'operation',
+          style: {
+            stroke: '#B7EB8F', //未选中时边框颜色
+            lineWidth: 1,
+          },
+        }}
+        src={''}
+      >
+        <div className={styles['green-node']}>运算节点</div>
+      </Item>
+      <Condition r-if={config.robotTypeMap[info?.robotType] === '文本'}>
+        <Item
+          type="node"
+          size="140*45"
+          shape="flow-rect"
+          model={{
+            color: '#FFE58F',
+            label: '选择节点',
+            _nodetype: 'select',
+            style: {
+              stroke: '#FFE58F',
+              lineWidth: 1,
+            },
+          }}
+          src={''}
+        >
+          <div className={styles['yellow-node']}>选择节点</div>
         </Item>
       </Condition>
 

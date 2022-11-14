@@ -23,6 +23,7 @@ const ConversationConfig = (props: any) => {
     required,
     formName,
     deep = false,
+    showLabel = true,
   } = props;
   const soundRef = useRef<any>();
   const auditionRef = useRef<any>();
@@ -198,13 +199,15 @@ const ConversationConfig = (props: any) => {
                           </Form.Item>
                         </Condition>
 
-                        <Form.Item
-                          name={[field.name, 'textLabels']}
-                          fieldKey={[field.fieldKey, 'textLabels']}
-                          label="选择标签"
-                        >
-                          <LabelSelect color="magenta"></LabelSelect>
-                        </Form.Item>
+                        <Condition r-if={showLabel}>
+                          <Form.Item
+                            name={[field.name, 'textLabels']}
+                            fieldKey={[field.fieldKey, 'textLabels']}
+                            label="选择标签"
+                          >
+                            <LabelSelect color="magenta"></LabelSelect>
+                          </Form.Item>
+                        </Condition>
                       </div>
                     </div>
                   );
