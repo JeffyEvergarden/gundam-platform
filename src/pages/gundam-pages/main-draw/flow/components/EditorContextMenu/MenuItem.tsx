@@ -19,6 +19,7 @@ const MenuItem: React.FC<MenuItemProps> = (props) => {
       <div
         className={styles.item}
         onClick={() => {
+          console.log(command);
           eventbus.$emit('command', command); // 监听事件
         }}
       >

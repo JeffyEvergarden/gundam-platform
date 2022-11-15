@@ -1,12 +1,14 @@
 import { Col, message, Row } from 'antd';
 import GGEditor, { Flow } from 'gg-editor';
 
-import { useEffect, useImperativeHandle, useRef } from 'react';
+import { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { FlowContextMenu } from './components/EditorContextMenu';
 import { FlowToolbar } from './components/EditorToolbar';
 import styles from './index.less';
 import eventbus from './utils/eventbus';
 import { judgeLineByNode } from './utils/util';
+
+import CustomCommand from './command/CustomCommand';
 
 GGEditor.setTrackable(false);
 
@@ -19,12 +21,24 @@ interface PageViewProps {
   clickItem?: (node: any) => void;
   openSetting?: (node: any) => void;
   openEdgeSetting?: (node: any) => void;
+  onGoinCommand?: (node: any) => void;
 }
 
 const EditorView = (props: PageViewProps) => {
-  const { type = 'main', insertNode, removeNode, save, cref, openSetting, openEdgeSetting } = props;
+  const {
+    type = 'main',
+    insertNode,
+    removeNode,
+    save,
+    cref,
+    openSetting,
+    openEdgeSetting,
+    onGoinCommand,
+  } = props;
 
   const editorRef = useRef<any>(null);
+
+  const [activeNode, setActiveNode] = useState<any>({});
 
   // 可以输出看看有啥方法
   useEffect(() => {
@@ -59,6 +73,7 @@ const EditorView = (props: PageViewProps) => {
       // 初始化
       console.log('初始化画布数据', initData);
       const propsAPI = getPropsAPI();
+      console.log(propsAPI);
       propsAPI?.read?.(initData || {});
       refreshOtherPane();
     },
@@ -335,7 +350,7 @@ const EditorView = (props: PageViewProps) => {
     },
     // 插入前
     onBeforeChange: (event: any) => {
-      console.log('before', event);
+      // console.log('before', event);
       if (event.action === 'add') {
         const [nodes] = getAllNode();
         let node: any = nodes.find((item: any) => {
@@ -377,16 +392,42 @@ const EditorView = (props: PageViewProps) => {
         }
       }
     },
+
+    onAfterItemActived: (e: any) => {
+      if (e?.item?.model) {
+        setActiveNode(e.item.model); //
+      }
+    },
+
+    // --------- 滚轮
+    onMouseWheel: (e: any) => {
+      console.log('滚轮e', e);
+    },
+    mousewheel: (e: any) => {
+      console.log('滚轮e', e);
+    },
+  };
+
+  // 业务流程节点跳转
+  const goToLink = (e: any) => {
+    if (e === 'go') {
+      const propsAPI: any = getPropsAPI();
+      const info: any = propsAPI.getSelected()[0]?.getModel();
+      // console.log(info);
+      onGoinCommand?.(info);
+    }
   };
 
   useEffect(() => {
     eventbus.$on('addNode', addNode); // 监听添加节点
     eventbus.$on('deleteNode', deleteNode); // 监听删除节点
     eventbus.$on('updateNode', updateNode); // 监听修改节点
+    eventbus.$on('command', goToLink);
     return () => {
       eventbus.$off('addNode', addNode);
       eventbus.$off('deleteNode', deleteNode);
       eventbus.$off('updateNode', updateNode);
+      eventbus.$off('command', goToLink);
     };
   }, []);
 
@@ -416,22 +457,15 @@ const EditorView = (props: PageViewProps) => {
               <Col span={24} className={styles.editorContent}>
                 <Flow className={styles.flow} {...editorEvent} />
               </Col>
-
-              {/* <Col span={} className={styles.editorSidebar}>
-                <FlowDetailPanel  // 节点详情
-                  type={type}
-                  openSetting={openSetting}
-                  openEdgeSetting={openEdgeSetting}
-                />
-                <EditorMinimap />  // 预览图
-              </Col> */}
             </Row>
           </div>
         </Col>
       </Row>
 
       {/* 在元素下右键浮动按钮 */}
-      <FlowContextMenu onClick={_openSetting} />
+      <FlowContextMenu onClick={_openSetting} activeNode={activeNode} />
+
+      <CustomCommand />
     </GGEditor>
   );
 };

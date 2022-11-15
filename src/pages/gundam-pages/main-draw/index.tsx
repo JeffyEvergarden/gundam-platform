@@ -11,6 +11,7 @@ import FlowPage from './flow';
 import eventbus from './flow/utils/eventbus';
 import { useNodeOpsModel } from './model';
 import { processType } from './model/const';
+import { history } from 'umi';
 import style from './style.less';
 
 const debounce = (fn: (...arr: any[]) => void, second: number) => {
@@ -36,6 +37,8 @@ const MainDraw = (props: any) => {
 
   // 初始化
   const fake = useRef<any>(null);
+  const dom = useRef<any>(null);
+
   const drawerRef = useRef<any>(null);
   const edgeDrawerRef = useRef<any>(null);
   const spNodeDrawerRef = useRef<any>(null);
@@ -45,9 +48,8 @@ const MainDraw = (props: any) => {
   // 历史遗留问题
   // 话术标签、业务流程列表
 
-  const { info, businessFlowId, getGlobalValConfig, drawType, setDrawType } = useModel(
-    'gundam' as any,
-    (model: any) => {
+  const { info, businessFlowId, setBusinessFlowId, getGlobalValConfig, drawType, setDrawType } =
+    useModel('gundam' as any, (model: any) => {
       // console.log('gundam', model);
       return {
         info: model.info,
@@ -55,9 +57,9 @@ const MainDraw = (props: any) => {
         getGlobalValConfig: model.getGlobalValConfig,
         drawType: model.drawType, // 画布类型
         setDrawType: model.setDrawType,
+        setBusinessFlowId: model.setBusinessFlowId,
       };
-    },
-  );
+    });
 
   // 意图列表、词槽列表
   // 短信模版列表
@@ -291,6 +293,15 @@ const MainDraw = (props: any) => {
     (edgeDrawerRef.current as any)?.open(config, callBack);
   };
 
+  const goLink = (info: any) => {
+    let nodeType = info?._nodetype;
+    if (nodeType === 'business') {
+      // 业务流程节点
+      history.push(`/gundamPages/businessDraw/detail?id=${info?._id}`);
+      setBFlowId(info._id);
+    }
+  };
+
   // 初始化设置
   useEffect(() => {
     setDrawType(type);
@@ -368,7 +379,7 @@ const MainDraw = (props: any) => {
         </Select>
       </Condition>
       <div className={style['container']}>
-        <div className={style['container_right']}>
+        <div className={style['container_right']} ref={dom}>
           <FlowPage
             type={type} // 流程图类型
             key={key}
@@ -376,6 +387,7 @@ const MainDraw = (props: any) => {
             removeNode={removeNode}
             openSetting={openSetting}
             openEdgeSetting={openEdgeSetting}
+            onGoinCommand={goLink}
             save={save}
             clickItem={clickItem}
             cref={fake}

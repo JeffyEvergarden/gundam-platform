@@ -155,7 +155,7 @@ export const useNodeOpsModel = () => {
 
       let label = item.label || item.nodeName || '';
 
-      console.log(item);
+      // console.log(item);
 
       //初始回显
       if (item.nodeType == 1) {
