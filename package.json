@@ -58,7 +58,7 @@
     "@wangeditor/editor": "^5.0.1",
     "@wangeditor/editor-for-react": "^1.0.2",
     "animate.css": "^4.1.1",
-    "antd": "^4.22.8",
+    "antd": "~4.22.8",
     "bizcharts": "^4.1.14",
     "classnames": "^2.2.6",
     "echarts": "^5.3.2",
