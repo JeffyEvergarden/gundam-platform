@@ -134,7 +134,7 @@ const RecyclePage: React.FC<any> = (props: any) => {
       <div className={style['page_content']}>
         <div className={style['main-content']}>
           <div className={style['high-config-select']}>
-            <Collapse expandIconPosition="right">
+            <Collapse expandIconPosition="end">
               <Panel
                 style={{ alignItems: 'center' }}
                 header={<div>问答列表</div>}

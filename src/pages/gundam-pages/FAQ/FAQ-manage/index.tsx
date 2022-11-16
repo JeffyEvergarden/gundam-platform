@@ -234,7 +234,7 @@ const FAQPage: React.FC<any> = (props: any) => {
         </div>
         <div className={style['main-content']}>
           <div className={style['high-config-select']}>
-            <Collapse expandIconPosition="right">
+            <Collapse expandIconPosition="end">
               <Panel
                 header={
                   <div>
