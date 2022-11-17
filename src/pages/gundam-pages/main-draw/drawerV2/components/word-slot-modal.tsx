@@ -20,7 +20,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
     };
   });
   const { flowList } = useModel('drawer' as any, (model: any) => ({
-    flowList: model._flowList || [],
+    flowList: model._originFlowList || [],
   }));
 
   const [visible, setVisible] = useState<boolean>(false);
