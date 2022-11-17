@@ -73,7 +73,7 @@ const MainDraw = (props: any) => {
     getFlowList,
     getGlobalConfig,
   } = useModel('drawer' as any, (model: any) => ({
-    flowList: model._flowList || [],
+    flowList: model._originFlowList || [],
     wishList: model._wishList || [],
     wordSlotList: model._wordSlotList || [],
     getMessageList: model.getMessageList || [],
