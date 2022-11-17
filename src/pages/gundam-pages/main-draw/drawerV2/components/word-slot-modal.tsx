@@ -31,7 +31,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     open: (obj: any) => {
-      console.log(list);
+      console.log(drawType);
 
       if (!obj.slotId) {
         form.resetFields();
@@ -116,7 +116,10 @@ const WordSlotModal: React.FC<any> = (props: any) => {
           >
             <Select placeholder="请选择词槽名称">
               {list?.map((item: any, index: number) => {
-                if (flowList?.find((f: any) => f?.id == businessFlowId)?.flowName == '知识问答') {
+                if (
+                  flowList?.find((f: any) => f?.id == businessFlowId)?.flowName == '知识问答' &&
+                  drawType == 'business'
+                ) {
                   console.log('图谱');
 
                   if (item.slotSource == 9) {
