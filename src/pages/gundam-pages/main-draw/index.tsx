@@ -292,15 +292,27 @@ const MainDraw = (props: any) => {
     (edgeDrawerRef.current as any)?.open(config, callBack);
   };
 
-  const goLink = (info: any) => {
+  const goLink = async (info: any) => {
     let nodeType = info?._nodetype;
+    console.log(info);
+
     if (nodeType === 'business') {
-      localStorage.setItem('businessFlowId', info?._id || '');
-      sessionStorage.setItem('businessFlowId', info?._id || '');
-      setBusinessFlowId(info?._id || '');
-      // 业务流程节点
-      history.push(`/gundamPages/businessDraw/detail?id=${info?._id}`);
-      setBFlowId(info._id);
+      let res = await getNodesConfig({
+        ...preParams,
+        id: info._id,
+        nodeType: processType(info._nodetype),
+      });
+      console.log(res);
+      if (res?.flowId) {
+        localStorage.setItem('businessFlowId', res?.flowId || '');
+        sessionStorage.setItem('businessFlowId', res?.flowId || '');
+        setBusinessFlowId(res?.flowId || '');
+        // 业务流程节点
+        history.push(`/gundamPages/businessDraw/detail?id=${res?.flowId}`);
+        setBFlowId(res?.flowId);
+      } else {
+        message.warning('未配置业务流程');
+      }
     }
   };
 
