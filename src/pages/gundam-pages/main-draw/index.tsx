@@ -295,6 +295,9 @@ const MainDraw = (props: any) => {
   const goLink = (info: any) => {
     let nodeType = info?._nodetype;
     if (nodeType === 'business') {
+      localStorage.setItem('businessFlowId', info?._id || '');
+      sessionStorage.setItem('businessFlowId', info?._id || '');
+      setBusinessFlowId(info?._id || '');
       // 业务流程节点
       history.push(`/gundamPages/businessDraw/detail?id=${info?._id}`);
       setBFlowId(info._id);
