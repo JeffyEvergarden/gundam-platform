@@ -1,4 +1,5 @@
 import Condition from '@/components/Condition';
+import Tip from '@/components/Tip';
 import config from '@/config';
 import ProTable from '@ant-design/pro-table';
 import { Button, message, Popconfirm, Tooltip } from 'antd';
@@ -36,7 +37,15 @@ const TablePage: React.FC<any> = (props: any) => {
       width: 180,
     },
     {
-      title: activeKey == '1' || activeKey == '3' ? '应用节点' : '应用FAQ',
+      title: () => (
+        <>
+          {activeKey == '1' || activeKey == '3' ? '应用节点' : '应用FAQ'}{' '}
+          <Tip title={'展示录音或TTS录音具体应用的位置。'}></Tip>
+        </>
+      ),
+      formItemProps: {
+        label: activeKey == '1' || activeKey == '3' ? '应用节点' : '应用FAQ',
+      },
       dataIndex: 'applyName',
       fieldProps: {
         placeholder: activeKey == '1' || activeKey == '3' ? '请输入应用节点' : '请输入应用FAQ',
@@ -75,8 +84,16 @@ const TablePage: React.FC<any> = (props: any) => {
       },
     },
     {
-      title: '转写文本',
+      title: () => (
+        <>
+          {'转写文本'}
+          <Tip title={'录音经过TTS转写而成的文本，可方便查看录音内容。'}></Tip>
+        </>
+      ),
       dataIndex: 'text',
+      formItemProps: {
+        label: '转写文本',
+      },
       fieldProps: {
         placeholder: '请输入转写文本',
       },
@@ -84,7 +101,17 @@ const TablePage: React.FC<any> = (props: any) => {
       ellipsis: true,
     },
     {
-      title: '同步状态',
+      title: () => (
+        <>
+          {'同步状态'}{' '}
+          <Tip
+            title={'针对呼入语音机器人，录音须上传至ftp服务器，此状态显示这个上传服务是否成功。'}
+          ></Tip>
+        </>
+      ),
+      formItemProps: {
+        label: '同步状态',
+      },
       dataIndex: 'status',
       valueEnum: {
         1: { text: '未同步' },

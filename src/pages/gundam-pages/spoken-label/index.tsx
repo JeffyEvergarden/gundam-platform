@@ -1,3 +1,4 @@
+import Tip from '@/components/Tip';
 import config from '@/config/index';
 import { PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
@@ -177,7 +178,14 @@ const DetailPages: React.FC = (props: any) => {
           pageSize: 10,
         }}
         dateFormatter="string"
-        headerTitle="话术标签列表"
+        headerTitle={
+          <>
+            {'话术标签列表'}
+            <Tip
+              title={'所有话术都可以插入标签，用来给话术定义标签。通话结束后可以根据标签进行统计。'}
+            />
+          </>
+        }
         toolBarRender={() => [
           <Button
             key="button"

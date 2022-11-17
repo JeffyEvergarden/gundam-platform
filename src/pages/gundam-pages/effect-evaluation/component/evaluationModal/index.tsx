@@ -1,6 +1,7 @@
 import Condition from '@/components/Condition';
+import Tip from '@/components/Tip';
 import config from '@/config';
-import { Form, InputNumber, Modal, Select, Tooltip } from 'antd';
+import { Form, InputNumber, Modal, Select, Space, Tooltip } from 'antd';
 import React, { useImperativeHandle, useState } from 'react';
 import { useModel } from 'umi';
 import { useEvaluationModel, useSampleModel } from '../../model';
@@ -116,39 +117,61 @@ const EvaluationModal: React.FC<any> = (props: any) => {
               })}
             </Select>
           </FormItem>
-          <FormItem
-            rules={[{ required: true, message: '请输入阈值' }]}
-            name="threshold"
-            label="阈值"
-            style={{ width: '360px' }}
-            initialValue={0.9}
-          >
-            <InputNumber placeholder={'请输入'} min="0" max="1" step="0.01" precision={2} />
+          <FormItem label="阈值" style={{ width: '360px' }}>
+            <Space align="baseline">
+              <FormItem
+                rules={[{ required: true, message: '请输入阈值' }]}
+                name="threshold"
+                noStyle
+                initialValue={0.9}
+              >
+                <InputNumber placeholder={'请输入'} min="0" max="1" step="0.01" precision={2} />
+              </FormItem>
+              <Tip
+                title={
+                  '控制模型评估时，调用NLU返回的结果类型，低于阈值为“拒识”，高于阈值且只有1个候选为“明确回复”，高于阈值且候选多于1个且差值小于得分差值时触发“澄清”。'
+                }
+              ></Tip>
+            </Space>
           </FormItem>
-          <FormItem
-            rules={[{ required: true, message: '请输入得分差值' }]}
-            name="difference"
-            label="得分差值"
-            style={{ width: '360px' }}
-            initialValue={0.01}
-          >
-            <InputNumber placeholder={'请输入'} min="0" max="1" step="0.01" precision={2} />
+          <FormItem label="得分差值" style={{ width: '360px' }}>
+            <Space align="baseline">
+              <FormItem
+                rules={[{ required: true, message: '请输入得分差值' }]}
+                name="difference"
+                noStyle
+                initialValue={0.01}
+              >
+                <InputNumber placeholder={'请输入'} min="0" max="1" step="0.01" precision={2} />
+              </FormItem>
+              <Tip
+                title={
+                  '模型评估时，调用NLU返回的结果类型，高于阈值且候选多于1个且差值小于得分差值时触发“澄清”。'
+                }
+              ></Tip>
+            </Space>
           </FormItem>
-          <FormItem
-            rules={[{ required: true, message: '请输入澄清数量' }]}
-            name="clarifyNum"
-            label="澄清数量"
-            style={{ width: '360px' }}
-            initialValue={robotType == '语音' ? 2 : 3}
-          >
-            <InputNumber
-              placeholder={'请输入'}
-              min={1}
-              max={99}
-              step="1"
-              precision={0}
-              disabled={robotType == '语音'}
-            />
+          <FormItem label="澄清数量" style={{ width: '360px' }}>
+            <Space align="baseline">
+              <FormItem
+                rules={[{ required: true, message: '请输入澄清数量' }]}
+                name="clarifyNum"
+                noStyle
+                initialValue={robotType == '语音' ? 2 : 3}
+              >
+                <InputNumber
+                  placeholder={'请输入'}
+                  min={1}
+                  max={99}
+                  step="1"
+                  precision={0}
+                  disabled={robotType == '语音'}
+                />
+              </FormItem>
+              <Tip
+                title={'控制模型评估时，调用NLU返回的结果控制触发澄清时，选取多少个候选进行澄清。'}
+              ></Tip>
+            </Space>
           </FormItem>
           <Condition r-if={showTip}>
             <span style={{ color: 'red' }}>

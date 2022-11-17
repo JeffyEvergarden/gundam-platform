@@ -1,3 +1,4 @@
+import Tip from '@/components/Tip';
 import config from '@/config';
 import {
   MinusCircleOutlined,
@@ -217,7 +218,16 @@ const FAQClearList = (props: any) => {
       width: 160,
     },
     {
-      title: '澄清采用率',
+      title: () => (
+        <>
+          {'澄清采用率'}
+          <Tip
+            title={
+              '当客户输入命中了FAQ-澄清，且用户选择了提供的澄清内容，则视为澄清采用。澄清采用率=（澄清采用次数/FAQ-澄清次数）*100%'
+            }
+          />
+        </>
+      ),
       dataIndex: 'clarifyAdoptionRate',
       search: false,
       width: 160,
@@ -391,6 +401,11 @@ const FAQClearList = (props: any) => {
         headerTitle={
           <div>
             澄清样本问题 {total} 条, 标准问 {questionTotal} 条
+            <Tip
+              title={
+                '当客户输入的文本与配置的文本完全匹配时，触发澄清，澄清的内容为配置的标准问/意图。用于对特定文本回复澄清内容。'
+              }
+            />
           </div>
         }
         toolBarRender={() => [

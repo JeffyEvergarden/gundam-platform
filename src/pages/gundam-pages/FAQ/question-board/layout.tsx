@@ -30,6 +30,7 @@ import { useQuestionModel } from './model';
 import { processBody, processRequest } from './model/utils';
 import style from './style.less';
 // 相似度组件
+import Tip from '@/components/Tip';
 import SameModal from '@/pages/gundam-pages/sample/components/sameModal';
 import SimilarCom from '@/pages/gundam-pages/sample/components/similarCom';
 import { useSimilarModel } from '@/pages/gundam-pages/sample/model';
@@ -512,12 +513,21 @@ const Board: React.FC<any> = (props: any) => {
             <div className={'ant-form-vertical'}>
               <Form.Item
                 name="question"
-                label="问题名称"
-                rules={[{ message: '请输入问题名称', required: true }]}
+                label={
+                  <>
+                    {'标准问名称'}
+                    <Tip
+                      title={
+                        '问题名称是关于某一个问题多种说法的和回复答案的集合，例如“邮你贷简介”、“邮你贷介绍”、“介绍一下你们公司产品”都是同一个问题，此时就可以用“邮你贷简介”作为问题名称。'
+                      }
+                    />
+                  </>
+                }
+                rules={[{ message: '请输入标准问名称', required: true }]}
                 style={{ width: '600px' }}
               >
                 <Input
-                  placeholder={'请输入问题名称'}
+                  placeholder={'请输入标准问名称'}
                   autoComplete="off"
                   maxLength={200}
                   onChange={(e: any) => {
@@ -590,7 +600,14 @@ const Board: React.FC<any> = (props: any) => {
                                 </span>
                                 <div className={style['circle-num']}>{index + 1}</div>
                                 <span className={'ant-form-item-label'}>
-                                  <label className={'ant-form-item-required'}>答案内容</label>
+                                  <label className={'ant-form-item-required'}>
+                                    答案内容{' '}
+                                    <Tip
+                                      title={
+                                        '当客户文本命中当前FAQ或者相似问，机器人会回复渠道相对应的答案，答案需要在此处提前编辑。'
+                                      }
+                                    />
+                                  </label>
                                 </span>
                               </div>
                               <Condition r-if={robotType === '语音'}>
@@ -783,16 +800,20 @@ const Board: React.FC<any> = (props: any) => {
               }}
             </FormList>
             <Condition r-if={robotType === '文本'}>
-              <Form.Item
-                name="suggest"
-                label="是否联想"
-                style={{ width: '600px' }}
-                initialValue={1}
-              >
-                <Radio.Group disabled={editSuggest}>
-                  <Radio value={1}>是</Radio>
-                  <Radio value={0}>否</Radio>
-                </Radio.Group>
+              <Form.Item style={{ width: '600px' }} label={'是否联想'}>
+                <Space align="baseline">
+                  <Form.Item name="suggest" noStyle initialValue={1}>
+                    <Radio.Group disabled={editSuggest}>
+                      <Radio value={1}>是</Radio>
+                      <Radio value={0}>否</Radio>
+                    </Radio.Group>
+                  </Form.Item>
+                  <Tip
+                    title={
+                      '文本机器人，当客户在页面输入文本，会触发搜索联想，辅助搜索，例如输入“邮你贷”，可以弹出“邮你贷”、“邮你贷热线”、“邮你贷余额”等联想文本。当此处配置不联想时，该FAQ不会出现在联想的候选集内。'
+                    }
+                  />
+                </Space>
               </Form.Item>
             </Condition>
             <Condition r-if={robotTypeMap[info.robotType] == '文本'}>

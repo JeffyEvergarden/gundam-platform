@@ -45,9 +45,8 @@ const MainDraw = (props: any) => {
   // 历史遗留问题
   // 话术标签、业务流程列表
 
-  const { info, businessFlowId, getGlobalValConfig, drawType, setDrawType } = useModel(
-    'gundam' as any,
-    (model: any) => {
+  const { info, businessFlowId, getGlobalValConfig, drawType, setDrawType, setBusinessFlowId } =
+    useModel('gundam' as any, (model: any) => {
       // console.log('gundam', model);
       return {
         info: model.info,
@@ -55,9 +54,9 @@ const MainDraw = (props: any) => {
         getGlobalValConfig: model.getGlobalValConfig,
         drawType: model.drawType, // 画布类型
         setDrawType: model.setDrawType,
+        setBusinessFlowId: model.setBusinessFlowId,
       };
-    },
-  );
+    });
 
   // 意图列表、词槽列表
   // 短信模版列表
@@ -355,6 +354,9 @@ const MainDraw = (props: any) => {
           style={{ marginBottom: '16px', width: '200px' }}
           value={bFlowId}
           onChange={(val) => {
+            localStorage.setItem('businessFlowId', val || '');
+            sessionStorage.setItem('businessFlowId', val || '');
+            setBusinessFlowId(val || '');
             setBFlowId(val);
           }}
         >

@@ -4,6 +4,7 @@ import React, { useRef } from 'react';
 import { history, useModel } from 'umi';
 import style from './style.less';
 
+import Tip from '@/components/Tip';
 import { useBatchModel } from '../model';
 import TestPlanModal from './component/test-plan';
 
@@ -39,7 +40,12 @@ const TestPages: React.FC = (props: any) => {
       width: 180,
     },
     {
-      title: '相似阈值',
+      title: () => (
+        <>
+          {'相似阈值'}
+          <Tip title="调用NLU模型，对机器人中的意图语料及FAQ标准问、相似问，两两进行相似度检测，返回得分大于”相似度阈值“且不归属于同一意图或FAQ的样本对。" />
+        </>
+      ),
       dataIndex: 'threshold',
       search: false,
       width: 200,
@@ -49,7 +55,12 @@ const TestPages: React.FC = (props: any) => {
       },
     },
     {
-      title: '不相似阈值',
+      title: () => (
+        <>
+          {'不相似阈值'}
+          <Tip title="调用NLU模型，对机器人中的意图语料及FAQ标准问、相似问，两两进行相似度检测，返回得分小于”相似度阈值“且归属于同一意图或FAQ的样本对。" />
+        </>
+      ),
       dataIndex: 'unThreshold',
       search: false,
       width: 200,
@@ -196,7 +207,16 @@ const TestPages: React.FC = (props: any) => {
           pageSize: 10,
         }}
         dateFormatter="string"
-        headerTitle={`下次检测日期：${nextCheckTime}`}
+        headerTitle={
+          <>
+            {`下次检测日期：${nextCheckTime}`}
+            <Tip
+              title={
+                '在指定时间执行批量检测，包括相似检测和不相似检测，用于检测意图语料、FAQ标准问相似问中混淆的情况、并执行处理。'
+              }
+            />
+          </>
+        }
         toolBarRender={() => [
           <Button
             key="button"

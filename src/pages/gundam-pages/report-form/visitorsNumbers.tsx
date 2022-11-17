@@ -1,6 +1,7 @@
+import Tip from '@/components/Tip';
 import config from '@/config/index';
 import { throttle, twoDecimal_f } from '@/utils';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { codeToStr } from '@/utils/index';
 import { Space, Spin, Table, Typography } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
@@ -9,7 +10,6 @@ import HeadSearch from './components/headSearch';
 import LineChart from './components/lineCharts';
 import styles from './index.less';
 import { useReportForm } from './model';
-import { codeToStr } from '@/utils/index';
 
 const { Text } = Typography;
 
@@ -123,7 +123,7 @@ export default () => {
           <Space>
             访问次数
             <span>
-              <QuestionCircleOutlined />
+              <Tip title={'访问的总次数，session_id去重数量'} />
             </span>
           </Space>
         );
@@ -137,7 +137,7 @@ export default () => {
           <Space>
             有效访问次数
             <span>
-              <QuestionCircleOutlined />
+              <Tip title={'访客次数中，客户至少输入过1次内容的次数'} />
             </span>
           </Space>
         );
@@ -151,7 +151,11 @@ export default () => {
           <Space>
             访客人数
             <span>
-              <QuestionCircleOutlined />
+              <Tip
+                title={
+                  '根据客户标识（customer_id）进行去重的访问次数，当渠道多选或全选时根据渠道分组计算再累加'
+                }
+              />
             </span>
           </Space>
         );
@@ -165,7 +169,11 @@ export default () => {
           <Space>
             有效访客人数
             <span>
-              <QuestionCircleOutlined />
+              <Tip
+                title={
+                  '访客人数中，客户至少输入过1次内容的次数，当渠道多选或全选时根据渠道分组计算再累加'
+                }
+              />
             </span>
           </Space>
         );
@@ -179,7 +187,11 @@ export default () => {
           <Space>
             对话轮次
             <span>
-              <QuestionCircleOutlined />
+              <Tip
+                title={
+                  '忽略机器人的开场白，以客户第一次输入开始计算，客户先问、机器人后答为一轮，计算所有会话的对话轮次总和。'
+                }
+              />
             </span>
           </Space>
         );
@@ -193,7 +205,7 @@ export default () => {
           <Space>
             平均对话轮次
             <span>
-              <QuestionCircleOutlined />
+              <Tip title={'对话轮次/访问次数'} />
             </span>
           </Space>
         );

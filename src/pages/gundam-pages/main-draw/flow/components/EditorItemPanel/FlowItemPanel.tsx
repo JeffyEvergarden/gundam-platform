@@ -1,5 +1,4 @@
 import Condition from '@/components/Condition';
-import config from '@/config';
 import { Item, ItemPanel } from 'gg-editor';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
@@ -38,7 +37,7 @@ const FlowItemPanel = (props: PanelProps) => {
         </Item>
       </Condition>
 
-      <Item
+      {/* <Item
         type="node"
         size="140*45"
         shape="flow-rect"
@@ -61,19 +60,19 @@ const FlowItemPanel = (props: PanelProps) => {
           size="140*45"
           shape="flow-rect"
           model={{
-            color: '#FFE58F',
+            color: '#9f94ff',
             label: '选择节点',
             _nodetype: 'select',
             style: {
-              stroke: '#FFE58F',
+              stroke: '#9f94ff',
               lineWidth: 1,
             },
           }}
           src={''}
         >
-          <div className={styles['yellow-node']}>选择节点</div>
+          <div className={styles['purple-node']}>选择节点</div>
         </Item>
-      </Condition>
+      </Condition> */}
 
       <Item
         type="node"

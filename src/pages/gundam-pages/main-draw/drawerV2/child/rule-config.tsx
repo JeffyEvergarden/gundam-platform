@@ -1,20 +1,19 @@
-import { useState, useMemo } from 'react';
-import { Form, Input, Select, Button, Space, DatePicker, InputNumber, TimePicker } from 'antd';
-import { MinusCircleOutlined, AppstoreAddOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import Condition from '@/components/Condition';
+import { AppstoreAddOutlined, MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { Button, DatePicker, Form, Input, InputNumber, Select, Space, TimePicker } from 'antd';
+import { useMemo } from 'react';
 import { useModel } from 'umi';
-import styles from './style.less';
 import {
-  ACTION_LIST,
-  RUlE_LIST,
-  EDGE_VAR_LIST,
-  EDGE_RULE_LIST,
-  selectMap,
-  VALUE_TYPE_MAP,
-  VALUE_TYPE_LIST,
-  RULE_KEY_TYPE_MAP,
   conditionFilter,
+  EDGE_RULE_LIST,
+  EDGE_VAR_LIST,
+  RULE_KEY_TYPE_MAP,
+  RUlE_LIST,
+  selectMap,
+  VALUE_TYPE_LIST,
+  VALUE_TYPE_MAP,
 } from '../const';
+import styles from './style.less';
 
 const { Item: FormItem, List: FormList } = Form;
 const { Option } = Select;
@@ -245,39 +244,64 @@ const RuleConfig = (props: any) => {
                                             {/* 一级筛选 : 规则罗列 */}
                                             <div style={{ flex: 1 }}>
                                               <div>
-                                                <FormItem
-                                                  name={[field.name, 'ruleType']}
-                                                  fieldKey={[field.fieldKey, 'ruleType']}
-                                                  rules={[{ required: true, message: '请选择' }]}
-                                                  style={{ width: '180px' }}
-                                                >
-                                                  <Select
-                                                    placeholder="请选择"
-                                                    size="small"
-                                                    optionFilterProp="children"
-                                                    showSearch
-                                                    onChange={() => {
-                                                      change(i, index, 1);
-                                                    }}
-                                                    getPopupContainer={(trigger) =>
-                                                      trigger.parentElement
-                                                    }
+                                                <Space align="baseline">
+                                                  <FormItem
+                                                    name={[field.name, 'ruleType']}
+                                                    fieldKey={[field.fieldKey, 'ruleType']}
+                                                    rules={[{ required: true, message: '请选择' }]}
+                                                    style={{ width: '180px' }}
                                                   >
-                                                    {CURRENT_RULE_LIST.map(
-                                                      (item: any, index: number) => {
-                                                        return (
-                                                          <Option
-                                                            key={index}
-                                                            value={item.name}
-                                                            opt={item}
-                                                          >
-                                                            {item.label}
-                                                          </Option>
-                                                        );
-                                                      },
-                                                    )}
-                                                  </Select>
-                                                </FormItem>
+                                                    <Select
+                                                      placeholder="请选择"
+                                                      size="small"
+                                                      optionFilterProp="children"
+                                                      showSearch
+                                                      onChange={() => {
+                                                        change(i, index, 1);
+                                                      }}
+                                                      getPopupContainer={(trigger) =>
+                                                        trigger.parentElement
+                                                      }
+                                                    >
+                                                      {CURRENT_RULE_LIST.map(
+                                                        (item: any, index: number) => {
+                                                          return (
+                                                            <Option
+                                                              key={index}
+                                                              value={item.name}
+                                                              opt={item}
+                                                            >
+                                                              {item.label}
+                                                            </Option>
+                                                          );
+                                                        },
+                                                      )}
+                                                    </Select>
+                                                  </FormItem>
+                                                  {/* 一级规则类型为自定义 */}
+                                                  <Condition
+                                                    r-if={ruleType === selectMap['自定义']}
+                                                  >
+                                                    <FormItem
+                                                      name={[field.name, 'ruleKey']}
+                                                      fieldKey={[field.fieldKey, 'ruleKey']}
+                                                      style={{ width: '140px' }}
+                                                      rules={[
+                                                        {
+                                                          required: true,
+                                                          message: '请输入',
+                                                        },
+                                                      ]}
+                                                    >
+                                                      <Input
+                                                        placeholder="请输入"
+                                                        maxLength={200}
+                                                        autoComplete="off"
+                                                        size="small"
+                                                      />
+                                                    </FormItem>
+                                                  </Condition>
+                                                </Space>
                                               </div>
                                             </div>
                                           </div>
@@ -576,7 +600,10 @@ const RuleConfig = (props: any) => {
 
                                               {/* 其他 */}
                                               <Condition
-                                                r-if={[selectMap['输入文本']].includes(ruleType)}
+                                                r-if={[
+                                                  selectMap['输入文本'],
+                                                  selectMap['自定义'],
+                                                ].includes(ruleType)}
                                               >
                                                 <FormItem
                                                   name={[field.name, 'ruleValue']}

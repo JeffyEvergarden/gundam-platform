@@ -1,6 +1,7 @@
 import Condition from '@/components/Condition';
 import { Checkbox, Form, Input, Modal, Radio, Select } from 'antd';
 import { useImperativeHandle, useState } from 'react';
+import { useModel } from 'umi';
 import ActionConfig from '../child/action-config';
 import ConversationConfig from '../child/conversation-config';
 import styles from '../style.less';
@@ -12,6 +13,16 @@ const { Option } = Select;
 const WordSlotModal: React.FC<any> = (props: any) => {
   const { cref, confirm, list } = props;
 
+  const { businessFlowId, drawType } = useModel('gundam' as any, (model: any) => {
+    return {
+      businessFlowId: model.businessFlowId,
+      drawType: model.drawType, // 画布类型
+    };
+  });
+  const { flowList } = useModel('drawer' as any, (model: any) => ({
+    flowList: model._flowList || [],
+  }));
+
   const [visible, setVisible] = useState<boolean>(false);
 
   const [form] = Form.useForm();
@@ -20,6 +31,8 @@ const WordSlotModal: React.FC<any> = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     open: (obj: any) => {
+      console.log(list);
+
       if (!obj.slotId) {
         form.resetFields();
         form.setFieldsValue({
@@ -103,11 +116,25 @@ const WordSlotModal: React.FC<any> = (props: any) => {
           >
             <Select placeholder="请选择词槽名称">
               {list?.map((item: any, index: number) => {
-                return (
-                  <Option key={index} value={item.id} opt={item}>
-                    {item.label}
-                  </Option>
-                );
+                if (flowList?.find((f: any) => f?.id == businessFlowId)?.flowName == '知识问答') {
+                  console.log('图谱');
+
+                  if (item.slotSource == 9) {
+                    return (
+                      <Option key={index} value={item.id} opt={item}>
+                        {item.label}
+                      </Option>
+                    );
+                  }
+                } else {
+                  if (item.slotSource != 9) {
+                    return (
+                      <Option key={index} value={item.id} opt={item}>
+                        {item.label}
+                      </Option>
+                    );
+                  }
+                }
               })}
             </Select>
           </FormItem>

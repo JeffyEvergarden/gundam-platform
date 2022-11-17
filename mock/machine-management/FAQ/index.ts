@@ -166,6 +166,15 @@ const getTreeList = (req: any, res: any) => {
             },
           ],
         },
+        {
+          children: [],
+          faqCount: 0,
+          key: 'other',
+          parentId: '0',
+          robotId: '100',
+          title: '其他',
+          type: 2,
+        },
       ],
     },
   });

@@ -4,6 +4,7 @@ import React, { useRef, useState } from 'react';
 import { useModel } from 'umi';
 import style from './style.less';
 
+import Tip from '@/components/Tip';
 import { useWhiteModel } from '../model';
 
 const WhiteListPages: React.FC = (props: any) => {
@@ -150,7 +151,16 @@ const WhiteListPages: React.FC = (props: any) => {
           pageSize: 10,
         }}
         dateFormatter="string"
-        headerTitle={`白名单${totalPage || 0}条`}
+        headerTitle={
+          <>
+            {`白名单${totalPage || 0}条`}
+            <Tip
+              title={`批量检测明细中，点击“白名单“，样本对将进入本列表。\n
+        作用：每次执行批量检测，返回结果的样本对如果与白名单的样本对完全相同，则认为已存在于白名单中（不认为是异常样本），批量检测明细中不再显示。
+        `}
+            />
+          </>
+        }
         toolBarRender={() => [
           <Space>
             <Input.Search

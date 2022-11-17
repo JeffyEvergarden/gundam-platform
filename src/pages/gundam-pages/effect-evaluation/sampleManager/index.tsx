@@ -1,3 +1,4 @@
+import Tip from '@/components/Tip';
 import config from '@/config';
 import ProTable from '@ant-design/pro-table';
 import { Button, Popconfirm, Tooltip } from 'antd';
@@ -62,7 +63,12 @@ const DetailPages: React.FC = (props: any) => {
       },
     },
     {
-      title: '标注进度',
+      title: () => (
+        <>
+          {'标注进度'}
+          <Tip title={'样本集中，标注状态为“已标注“的样本数及总样本数，如“12/58”'} />
+        </>
+      ),
       dataIndex: 'tagProgress',
       search: false,
       width: 200,
@@ -194,7 +200,16 @@ const DetailPages: React.FC = (props: any) => {
           pageSize: 10,
         }}
         dateFormatter="string"
-        headerTitle="样本管理列表"
+        headerTitle={
+          <>
+            {'样本管理列表'}
+            <Tip
+              title={
+                '样本集用于测试对话模型的识别准确率，先标注样本，再发起模型评估，可得到基于样本集的准确率。'
+              }
+            ></Tip>
+          </>
+        }
         toolBarRender={() => [
           <Button
             key="button"

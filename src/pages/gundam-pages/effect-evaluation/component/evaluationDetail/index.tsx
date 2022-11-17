@@ -1,3 +1,4 @@
+import Tip from '@/components/Tip';
 import ProTable from '@ant-design/pro-table';
 import { Button, Col, Form, Modal, Row, Select, Tooltip } from 'antd';
 import React, { useImperativeHandle, useRef, useState } from 'react';
@@ -55,7 +56,12 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
       width: 200,
     },
     {
-      title: '标注回复类型',
+      title: () => (
+        <>
+          {'标注回复类型'}
+          <Tip title={'在样本管理中，样本被标注的类型。'} />
+        </>
+      ),
       dataIndex: 'tagReplyType',
       search: false,
       width: 150,
@@ -67,7 +73,12 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
       },
     },
     {
-      title: '标注FAQ/意图',
+      title: () => (
+        <>
+          {'标注FAQ/意图'}
+          <Tip title={'在样本管理中，样本被标注的FAQ/意图。'} />
+        </>
+      ),
       dataIndex: 'tagFaqIntent',
       search: false,
       width: 200,
@@ -93,7 +104,12 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
       },
     },
     {
-      title: '识别回复类型',
+      title: () => (
+        <>
+          {'识别回复类型'}
+          <Tip title={''} />
+        </>
+      ),
       dataIndex: 'distinguishReplyType',
       search: false,
       width: 150,
@@ -104,7 +120,12 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
       },
     },
     {
-      title: '识别FAQ/意图',
+      title: () => (
+        <>
+          {'识别FAQ/意图'}
+          <Tip title={''} />
+        </>
+      ),
       dataIndex: 'distinguishFaqIntent',
       search: false,
       width: 200,
@@ -130,13 +151,23 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
       },
     },
     {
-      title: '精准率',
+      title: () => (
+        <>
+          {'精准率'}
+          <Tip title={''} />
+        </>
+      ),
       dataIndex: 'accurateRate',
       search: false,
       width: 150,
     },
     {
-      title: '召回率',
+      title: () => (
+        <>
+          {'召回率'}
+          <Tip title={''} />
+        </>
+      ),
       dataIndex: 'recallRate',
       search: false,
       width: 150,
@@ -188,13 +219,33 @@ const EvaluationDetail: React.FC<any> = (props: any) => {
       <div className={style['info']}>
         <Row>
           <Col span={8}>评估集名称：{resultData?.sampleSetName || '-'}</Col>
-          <Col span={8}>平均精准率：{resultData?.averageAccurateRate || '-'}</Col>
-          <Col span={8}> 样本数量：{resultData?.sampleNum ?? '-'} </Col>
+          <Col span={8}>
+            平均精准率：{resultData?.averageAccurateRate || '-'}{' '}
+            <Tip
+              title={
+                '各条样本精确率的平均值。假设三条样本的精确率分别是70%、80%、90%，则平均精确率=（70%+80%+90%）/ 3'
+              }
+            ></Tip>
+          </Col>
+          <Col span={8}>
+            {' '}
+            样本数量：{resultData?.sampleNum ?? '-'} <Tip title={''}></Tip>
+          </Col>
         </Row>
         <Row>
           <Col span={8}>评估时间：{resultData?.assessTime || '-'}</Col>
-          <Col span={8}>平均召回率：{resultData?.averageRecallRate || '-'}</Col>
-          <Col span={8}>有效样本数量：{resultData?.effectiveSampleNum ?? '-'}</Col>
+          <Col span={8}>
+            平均召回率：{resultData?.averageRecallRate || '-'}
+            <Tip
+              title={
+                '各条样本召回率的平均值。假设三条样本的召回率分别是70%、80%、90%，则平均召回率=（70%+80%+90%）/ 3'
+              }
+            ></Tip>
+          </Col>
+          <Col span={8}>
+            有效样本数量：{resultData?.effectiveSampleNum ?? '-'}
+            <Tip title={''}></Tip>
+          </Col>
         </Row>
       </div>
       <div className={`${style['machine-page']} list-page`}>

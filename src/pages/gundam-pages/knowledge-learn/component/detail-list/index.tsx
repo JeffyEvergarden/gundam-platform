@@ -1,3 +1,4 @@
+import Tip from '@/components/Tip';
 import SelectFaqModal from '@/pages/gundam-pages/FAQ-module/components/select-faq-modal';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
@@ -56,7 +57,16 @@ const DetailList: React.FC = (props: any) => {
       },
     },
     {
-      title: '所属标准问或意图',
+      title: () => (
+        <>
+          {'所属标准问或意图'}
+          <Tip
+            title={
+              '异常样本所属的标准问或意图，点击标头可以根据样本一所属的标准问/意图下，异常样本总量进行排序。默认倒序排列，可以统一处理异常样本较多的标准问/意图。'
+            }
+          />
+        </>
+      ),
       dataIndex: 'textRelationName',
       search: false,
       width: 200,
@@ -75,13 +85,26 @@ const DetailList: React.FC = (props: any) => {
       },
     },
     {
-      title: '相似度',
+      title: () => (
+        <>
+          {'相似度'}
+          <Tip title={'样本一和样本二之间的相似度，越高代表越相似，但也有可能计算错误。'} />
+        </>
+      ),
       dataIndex: 'score',
       search: false,
       width: 100,
     },
     {
-      title: '样本对操作',
+      title: () => (
+        <>
+          {'样本对操作'}
+          <Tip
+            title={`合并到本项：点击将样本对的另一个样本，加入到本样本所属的标准问或意图，从而解决混淆问题。
+            白名单：点击将此样本对加入检测白名单，后续的检测结果如果存在于白名单，则不展示。加入白名单认为，这个样本对所属的意图或FAQ是没问题的。`}
+          />
+        </>
+      ),
       dataIndex: 'creator',
       search: false,
       width: 200,
@@ -159,7 +182,12 @@ const DetailList: React.FC = (props: any) => {
       },
     },
     {
-      title: '单样本操作',
+      title: () => (
+        <>
+          {'单样本操作'}
+          <Tip title={'点击转移样本，将样本转移至指定的意图或FAQ下，以解决样本对混淆的问题。'} />
+        </>
+      ),
       dataIndex: 'creator',
       search: false,
       width: 150,

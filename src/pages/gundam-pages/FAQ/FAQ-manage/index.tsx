@@ -1,3 +1,4 @@
+import Tip from '@/components/Tip';
 import config from '@/config';
 import { SettingOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Collapse, Input, message, Popconfirm, Select, Space } from 'antd';
@@ -178,6 +179,11 @@ const FAQPage: React.FC<any> = (props: any) => {
             >
               问题回收站
             </Button>
+            <Tip
+              title={
+                '通过“添加问题”可以增加一条FAQ，新增的FAQ需要在“待审核”页面审批通过才生效，若FAQ被退回，可在“待处理”页面中修改重新提交。删除的FAQ可以在“问题回收站”查看。'
+              }
+            />
           </Space>
         </div>
 

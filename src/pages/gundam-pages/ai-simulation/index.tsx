@@ -1,4 +1,5 @@
 import Condition from '@/components/Condition';
+import Tip from '@/components/Tip';
 import { Button, Col, Form, Input, message, Row, Select } from 'antd';
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useModel } from 'umi';
@@ -120,7 +121,14 @@ export default (props: any) => {
     <React.Fragment>
       <Row gutter={24}>
         <Col span={10}>
-          <div className={styles['box-title']}>变量配置</div>
+          <div className={styles['box-title']}>
+            变量配置
+            <Tip
+              title={
+                '展现全局变量配置中提前配置的变量，机器人对话中，模拟客户发送的每一次请求，都会带上变量发送给机器人'
+              }
+            ></Tip>
+          </div>
           <div className={styles['variable-box']}>
             <Form form={form} {...layout} onFieldsChange={fieldValueChange}>
               <div className={styles['globalConfig']}>

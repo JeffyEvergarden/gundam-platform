@@ -1,4 +1,5 @@
 import Condition from '@/components/Condition';
+import Tip from '@/components/Tip';
 import {
   CaretDownOutlined,
   DeleteOutlined,
@@ -78,7 +79,26 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
   const query: any = location?.query;
 
   useEffect(() => {
-    setDataSource(data);
+    let datas = data?.map((item) => {
+      item?.children?.map((t: any) => {
+        if (t?.type == 2) {
+          t.title = (
+            <>
+              {t.title}{' '}
+              <Tip
+                title={
+                  '机器人创建时默认创建的分类，此分类及子分类的FAQ不参与澄清和联想。一些不希望在客户联想中出现的FAQ，比如闲聊，可以在此分类下增加。'
+                }
+              />
+            </>
+          );
+        }
+        return t;
+      });
+      return item;
+    });
+
+    setDataSource(datas);
   }, [data]);
 
   // 选择节点

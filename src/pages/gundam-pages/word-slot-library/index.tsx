@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useModel } from 'umi';
-import ProTable from '@ant-design/pro-table';
+import Tip from '@/components/Tip';
+import config from '@/config/index';
 import type { ActionType } from '@ant-design/pro-table';
-import { Button, Space, Popconfirm, message, Table } from 'antd';
-import { wordSlotTableList } from './comps/config';
+import ProTable from '@ant-design/pro-table';
+import { Button, message, Popconfirm, Space } from 'antd';
+import React, { useRef, useState } from 'react';
+import { useModel } from 'umi';
+// import { wordSlotTableList } from './comps/config';
 import OperateSlotModal from './comps/operateSlotModal';
 import { useKeyWordModel } from './model';
-import config from '@/config/index';
 
 // 机器人列表
 const DetailPages: React.FC = (props: any) => {
@@ -19,6 +20,64 @@ const DetailPages: React.FC = (props: any) => {
     info: model.info,
   }));
   const { getWordSlotTable, deleteWordSlot } = useKeyWordModel();
+
+  const wordSlotTableList: any = [
+    {
+      dataIndex: 'slotName',
+      title: '词槽名称',
+      fixed: 'left',
+    },
+    {
+      dataIndex: 'slotDesc',
+      title: '描述',
+      ellipsis: true,
+    },
+    {
+      dataIndex: 'slotSource',
+      title: () => (
+        <>
+          {'词槽来源'}
+          <Tip
+            title={
+              '分别为枚举实体、正则实体、用户文本、接口，决定词槽的填充方式。例如来自“用户文本”，会将客户文本填充至词槽；“接口“则会调用配置的接口，将返回值填充至词槽。'
+            }
+          />
+        </>
+      ),
+      valueEnum: {
+        0: { text: '枚举实体', status: 0 },
+        // 1: { text: '来自意图', status: 1 },
+        2: { text: '用户文本', status: 2 },
+        // 3: { text: '规则模版', status: 3 },
+        4: { text: '正则实体', status: 4 },
+        // 5: { text: '函数返回值', status: 5 },
+        // 6: { text: '全局变量', status: 6 },
+        7: { text: '接口', status: 7 },
+        // 8: { text: '业务参数', status: 8 },
+        9: { text: '图谱', status: 9 },
+      },
+    },
+    // {
+    //   dataIndex: 'nodeName',
+    //   title: '所属节点',
+    // },
+    {
+      dataIndex: 'connectTimes',
+      title: '应用次数',
+    },
+    // {
+    //   dataIndex: 'entity',
+    //   title: '引用实体',
+    // },
+    {
+      dataIndex: 'creator',
+      title: '创建者',
+    },
+    {
+      dataIndex: 'createTime',
+      title: '创建时间',
+    },
+  ];
 
   const getInitTable = async (p?: any) => {
     let newDay = new Date().toLocaleDateString();
@@ -114,6 +173,21 @@ const DetailPages: React.FC = (props: any) => {
             新增词槽
           </Button>,
         ]}
+        headerTitle={
+          <>
+            词槽管理
+            <Tip
+              title={
+                <div>
+                  {' '}
+                  词槽是用于对话中存放关键信息的变量，可以从客户文本中获取（客户文本、枚举实体、正则实体），也可以调用预定义接口进行获取（来自接口）。词槽可以用于连线判断、插入话术文本中、作为接口的入参。
+                  <br />
+                  例如，新建一个来自“城市”实体（实体内容广州、深圳、北京）的词槽“目的地”，并在节点处设置关联。当对话进入该节点，机器人会进行询问“请问您想去哪里？”，当客户回复的文本“我想去广州”中带有枚举实体“城市”的内容，则将具体的城市“广州”填入“目的地”中。
+                </div>
+              }
+            />
+          </>
+        }
         actionRef={actionRef}
         pagination={{
           pageSize: 10,

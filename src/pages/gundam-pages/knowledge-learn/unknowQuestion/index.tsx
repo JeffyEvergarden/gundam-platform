@@ -1,3 +1,4 @@
+import Tip from '@/components/Tip';
 import config from '@/config';
 import { useTableModel } from '@/pages/gundam-pages/FAQ-module/clearlist/model';
 import SelectFaqModal from '@/pages/gundam-pages/FAQ-module/components/select-faq-modal';
@@ -420,7 +421,12 @@ export default () => {
     },
     {
       dataIndex: 'source',
-      title: '问题来源',
+      title: () => (
+        <>
+          {'问题来源'}
+          <Tip title={'来源可以时“拒识”或“澄清”，表明这条未知问题发生时机器人的回复类型。'} />
+        </>
+      ),
       ellipsis: true,
       valueType: 'select',
       initialValue: '',
@@ -448,7 +454,12 @@ export default () => {
     },
     {
       dataIndex: 'recommendName',
-      title: '标准问/意图',
+      title: () => (
+        <>
+          {'标准问/意图'}
+          <Tip title={'由NLU对未知问题进行识别推荐的一条标准问或意图，可供参考'} />
+        </>
+      ),
       width: 200,
       search: false,
       render: (t: any, r: any, i: any) => {
@@ -467,7 +478,11 @@ export default () => {
     },
     {
       dataIndex: 'learnNum',
-      title: '数量',
+      title: () => (
+        <>
+          {'数量'} <Tip title={'标准问/意图”下未知问题的数量'} />
+        </>
+      ),
       width: 100,
       search: false,
     },
@@ -480,7 +495,28 @@ export default () => {
       sorter: true,
     },
     {
-      title: '操作',
+      title: () => (
+        <>
+          {'操作'}
+          <Tip
+            title={
+              <div>
+                1.会话记录：可以查看未知问题发生时的上下文，判断具体问题
+                <br />
+                2.新增标准问：将当前未知问题作为标准问，加入到FAQ，会跳转至新增标准问页面
+                <br />
+                3.添加：将当前未知问题添加到“标准问/意图”下，作为相似问或意图的语料
+                <br />
+                4.澄清：将当前未知问题添加到FAQ-澄清
+                <br />
+                5.黑名单：将当前未知问题添加到FAQ-黑名单
+                <br />
+                6.删除：删除词条未知问题
+              </div>
+            }
+          />
+        </>
+      ),
       key: 'option',
       width: 250,
       fixed: 'right',
@@ -536,6 +572,11 @@ export default () => {
               <span className={styles.topTitle}>
                 未知问题待学习<span className={styles.titleNum}>{learnNum}</span>条, 涉及标准问
                 <span className={styles.titleNum}>{standardNum}</span>条
+                <Tip
+                  title={
+                    '当客户进行询问，机器人回复澄清或者拒识，且这条文本在所有的意图语料、标准问、相似问、FAQ-澄清、FAQ-黑名单页面中均不存在时，这条文本被认定为未知问题，进入此列表。'
+                  }
+                />
               </span>
             </Fragment>
           }

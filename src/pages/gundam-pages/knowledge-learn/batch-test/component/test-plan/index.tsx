@@ -1,4 +1,5 @@
 import Condition from '@/components/Condition';
+import Tip from '@/components/Tip';
 import { Checkbox, DatePicker, Form, InputNumber, Modal, Select } from 'antd';
 import moment from 'moment';
 import React, { useImperativeHandle, useRef, useState } from 'react';
@@ -170,6 +171,7 @@ const TestPlanModal: React.FC<any> = (props: any) => {
             >
               <InputNumber min="0" max="1" step="0.01" precision={2} />
             </FormItem>
+            <Tip title="大于“相似阈值”且不归属于同一意图或FAQ的样本对，认定为异常样本对。" />
           </div>
           <div className={style['icon-box']}>
             <FormItem style={{ marginRight: '6px' }}>不相似阈值：</FormItem>
@@ -195,6 +197,7 @@ const TestPlanModal: React.FC<any> = (props: any) => {
             >
               <InputNumber min="0" max="1" step="0.01" precision={2} />
             </FormItem>
+            <Tip title="小于“不相似阈值”且归属于同一意图或FAQ的样本对，认定为异常样本对。" />
           </div>
           <Condition r-if={pageType == 'temporary'}>
             <div className={style['icon-box']}>

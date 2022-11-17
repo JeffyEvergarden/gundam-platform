@@ -1,4 +1,5 @@
 import Condition from '@/components/Condition';
+import Tip from '@/components/Tip';
 import config from '@/config';
 import SelectFaqModal from '@/pages/gundam-pages/FAQ-module/components/select-faq-modal';
 import { ArrowLeftOutlined, MonitorOutlined, QuestionCircleOutlined } from '@ant-design/icons';
@@ -115,14 +116,28 @@ const DetailPages: React.FC = (props: any) => {
   const columns: any = [
     {
       dataIndex: 'dialogueSample',
-      title: '对话样本',
+      title: () => (
+        <>
+          {'对话样本'}
+          <Tip title={'用于评估的文本'}></Tip>
+        </>
+      ),
       ellipsis: true,
       search: false,
       width: 200,
     },
     {
       dataIndex: 'replyType',
-      title: '回复类型',
+      title: () => (
+        <>
+          {'回复类型'}
+          <Tip
+            title={
+              '可选“明确回复”、“澄清”、“拒识”，即标注人员认为，这条对话样本应该触发机器人那种类型的回复。'
+            }
+          ></Tip>
+        </>
+      ),
       search: false,
       width: 150,
       render: (val: any, row: any, i: any) => {
@@ -150,7 +165,16 @@ const DetailPages: React.FC = (props: any) => {
     },
     {
       dataIndex: 'faqIntentList',
-      title: '意图/FAQ',
+      title: () => (
+        <>
+          {'意图/FAQ'}
+          <Tip
+            title={
+              '标注人员认为，这条样本应该触发机器人回复具体的哪一个或者多个意图/FAQ。回复类型为“明确回复”时只能选1个，回复类型为“澄清”时可选多个，回复类型为“拒识“时不可选择。'
+            }
+          ></Tip>
+        </>
+      ),
       ellipsis: true,
       search: false,
       width: 200,
@@ -215,7 +239,12 @@ const DetailPages: React.FC = (props: any) => {
     },
     {
       dataIndex: 'tagStatus',
-      title: '标注状态',
+      title: () => (
+        <>
+          {'标注状态'}
+          <Tip title={''}></Tip>
+        </>
+      ),
       width: 150,
       search: false,
       filters: [

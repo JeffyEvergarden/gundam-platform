@@ -4,3 +4,14 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+.tabsTop {
+  :global {
+    .ant-tabs-nav-wrap {
+      flex: none !important;
+    }
+    .ant-tabs-extra-content {
+      display: flex;
+    }
+  }
+}

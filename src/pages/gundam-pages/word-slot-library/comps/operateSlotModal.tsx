@@ -1,6 +1,7 @@
+import Tip from '@/components/Tip';
 import config from '@/config/index';
 import { QuestionCircleFilled } from '@ant-design/icons';
-import { Form, Input, message, Modal, Select, Spin, Tooltip } from 'antd';
+import { Form, Input, message, Modal, Select, Space, Spin, Tooltip } from 'antd';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import { useIntentModel } from '../../wish/wishList/model';
@@ -20,6 +21,7 @@ const slotSourceData = [
   { value: 4, intentName: '正则实体' },
   { value: 2, intentName: '用户文本' },
   { value: 7, intentName: '接口' },
+  { value: 9, intentName: '图谱' },
 ];
 const typeData = [
   { value: 0, intentName: '文本' },
@@ -28,6 +30,10 @@ const typeData = [
   {
     value: 3,
     intentName: '时间(时分秒)',
+  },
+  {
+    value: 4,
+    intentName: '数组',
   },
 ];
 
@@ -328,6 +334,8 @@ export default (props: any) => {
     setSource(value);
     if (value === 7) {
       form?.setFieldsValue({ dataType: null });
+    } else if (value === 9) {
+      form?.setFieldsValue({ dataType: 4 });
     } else {
       form?.setFieldsValue({ dataType: 0 });
     }
@@ -387,31 +395,61 @@ export default (props: any) => {
             <Form.Item name={'slotDesc'} label={'描述'}>
               <TextArea placeholder={'请输入描述'} maxLength={200} rows={4} />
             </Form.Item>
-            <Form.Item name={'slotSource'} label={'槽值来源'} rules={[{ required: true }]}>
-              <Select onChange={slotSourceChange} disabled={title == 'edit'}>
-                {slotSourceData?.map((itex: any) => {
-                  return (
-                    <Option key={itex?.value} value={itex?.value}>
-                      {itex?.intentName}
-                    </Option>
-                  );
-                })}
-              </Select>
+            <Form.Item label={'槽值来源'}>
+              <Space align="baseline">
+                <Form.Item name={'slotSource'} noStyle rules={[{ required: true }]}>
+                  <Select
+                    style={{ width: '275.33px' }}
+                    onChange={slotSourceChange}
+                    disabled={title == 'edit'}
+                  >
+                    {slotSourceData?.map((itex: any) => {
+                      return (
+                        <Option key={itex?.value} value={itex?.value}>
+                          {itex?.intentName}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                </Form.Item>
+                <Tip
+                  title={
+                    '分别为枚举实体、正则实体、用户文本、接口，决定词槽的填充方式。例如来自“用户文本”，会将客户文本填充至词槽；“接口“则会调用配置的接口，将返回值填充至词槽。'
+                  }
+                />
+              </Space>
             </Form.Item>
-            <Form.Item
-              name={'dataType'}
-              label={'数据类型'}
-              initialValue={slotSource !== 7 ? 0 : null}
-            >
-              <Select placeholder={''} disabled={slotSource === 7 || title == 'edit'}>
-                {typeData?.map((itex: any) => {
-                  return (
-                    <Option key={itex?.value} value={itex?.value}>
-                      {itex?.intentName}
-                    </Option>
-                  );
-                })}
-              </Select>
+            <Form.Item label={'数据类型'}>
+              <Space align="baseline">
+                <Form.Item
+                  name={'dataType'}
+                  noStyle
+                  initialValue={slotSource == 9 ? 4 : slotSource !== 7 ? 0 : null}
+                >
+                  <Select
+                    style={{ width: '275.33px' }}
+                    placeholder={''}
+                    disabled={slotSource === 7 || title == 'edit' || slotSource === 9}
+                  >
+                    {typeData?.map((itex: any) => {
+                      return (
+                        <Option key={itex?.value} value={itex?.value} disabled={itex?.value == 4}>
+                          {itex?.intentName}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                </Form.Item>
+                <Tip
+                  title={
+                    <>
+                      用于词槽的类型，在连线或对话回应规则中，词槽类型会影响可用的比较逻辑。
+                      <br />
+                      例如，创建一个数值类型的“money”词槽，在连线规则中会相应出现“大于、小于、等于”的比较逻辑；创建一个字符类型的“city”词槽，在连线规则中会相应出现“包含、不包含”的比较逻辑；创建一个时间类型的“time”词槽，在连线规则中可以出现时间选择的组件。
+                    </>
+                  }
+                />
+              </Space>
             </Form.Item>
             {slotSource === 0 && (
               <Form.Item name={'slotSourceId'} label={'枚举实体'} rules={[{ required: true }]}>

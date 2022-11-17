@@ -1,6 +1,7 @@
+import Tip from '@/components/Tip';
 import config from '@/config/index';
 import { throttle, toNumber, twoDecimal_f } from '@/utils';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { codeToStr } from '@/utils/index';
 import { Space, Spin, Table, Typography } from 'antd';
 import moment from 'moment';
 import { Fragment, useEffect, useState } from 'react';
@@ -9,7 +10,6 @@ import HeadSearch from './components/headSearch';
 import LineChart from './components/lineCharts';
 import styles from './index.less';
 import { useReportForm } from './model';
-import { codeToStr } from '@/utils/index';
 
 const { Text } = Typography;
 
@@ -155,7 +155,7 @@ export default () => {
               <Space>
                 回复数
                 <span>
-                  <QuestionCircleOutlined />
+                  <Tip title={'机器人回复澄清话术的次数'} />
                 </span>
               </Space>
             );
@@ -169,7 +169,11 @@ export default () => {
               <Space>
                 确认数
                 <span>
-                  <QuestionCircleOutlined />
+                  <Tip
+                    title={
+                      '机器人回复澄清话术后，客户选择澄清问题的次数。同一次澄清（可通过输入序号或者点击澄清问题触发），客户多次选择确认，只记录1次'
+                    }
+                  />
                 </span>
               </Space>
             );
@@ -183,7 +187,7 @@ export default () => {
               <Space>
                 未确认数
                 <span>
-                  <QuestionCircleOutlined />
+                  <Tip title={'澄清问题回复数-澄清问题确认数'} />
                 </span>
               </Space>
             );
@@ -197,7 +201,7 @@ export default () => {
               <Space>
                 确认率
                 <span>
-                  <QuestionCircleOutlined />
+                  <Tip title={'澄清问题确认数 / 澄清问题回复数 * 100%'} />
                 </span>
               </Space>
             );
@@ -216,7 +220,7 @@ export default () => {
               <Space>
                 回复数
                 <span>
-                  <QuestionCircleOutlined />
+                  <Tip title={'机器人直接回复答案且附有推荐问的次数'} />
                 </span>
               </Space>
             );
@@ -230,7 +234,11 @@ export default () => {
               <Space>
                 确认数
                 <span>
-                  <QuestionCircleOutlined />
+                  <Tip
+                    title={
+                      '机器人直接回复答案且附有推荐问时，客户选择推荐问的次数（可通过输入序号或者点击推荐问题触发）。同一次推荐，客户多次选择不同的选项，只记录1次'
+                    }
+                  />
                 </span>
               </Space>
             );
@@ -244,7 +252,7 @@ export default () => {
               <Space>
                 未确认数
                 <span>
-                  <QuestionCircleOutlined />
+                  <Tip title={'推荐问题回复数 - 推荐问题确认数'} />
                 </span>
               </Space>
             );
@@ -258,7 +266,7 @@ export default () => {
               <Space>
                 确认率
                 <span>
-                  <QuestionCircleOutlined />
+                  <Tip title={'推荐问题确认数 / 推荐问题回复数 * 100%'} />
                 </span>
               </Space>
             );
@@ -281,7 +289,7 @@ export default () => {
               <Space>
                 回复数
                 <span>
-                  <QuestionCircleOutlined />
+                  <Tip title={'机器人回复澄清话术的次数'} />
                 </span>
               </Space>
             );
@@ -295,7 +303,11 @@ export default () => {
               <Space>
                 确认数
                 <span>
-                  <QuestionCircleOutlined />
+                  <Tip
+                    title={
+                      '机器人回复澄清话术后，客户下一次的意图明确且在上一次的澄清列表中，视为澄清问题确认数。'
+                    }
+                  />
                 </span>
               </Space>
             );
@@ -309,7 +321,7 @@ export default () => {
               <Space>
                 未确认数
                 <span>
-                  <QuestionCircleOutlined />
+                  <Tip title={'澄清问题回复数-澄清问题确认数'} />
                 </span>
               </Space>
             );
@@ -323,7 +335,7 @@ export default () => {
               <Space>
                 确认率
                 <span>
-                  <QuestionCircleOutlined />
+                  <Tip title={'澄清问题确认数 / 澄清问题回复数 * 100%'} />
                 </span>
               </Space>
             );

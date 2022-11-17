@@ -1,9 +1,10 @@
+import Tip from '@/components/Tip';
 import config from '@/config/index';
 import ChatRecordModal from '@/pages/gundam-pages/FAQ-module/components/chat-record-modal';
 import { throttle, toNumber } from '@/utils';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { codeToStr } from '@/utils/index';
 import ProTable from '@ant-design/pro-table';
-import { Modal, Space, Button } from 'antd';
+import { Button, Modal, Space } from 'antd';
 import classNames from 'classnames';
 import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
@@ -13,7 +14,6 @@ import LineChart from './components/lineCharts';
 import PieChart from './components/pieCharts';
 import styles from './index.less';
 import { useReportForm } from './model';
-import { codeToStr } from '@/utils/index';
 
 export default () => {
   const actionRef = useRef<any>();
@@ -85,7 +85,11 @@ export default () => {
           <Space>
             对话轮次
             <span>
-              <QuestionCircleOutlined />
+              <Tip
+                title={
+                  '忽略机器人的开场白，以客户第一次输入开始计算，客户先问、机器人后答为一轮，计算所有会话的对话轮次总和。机器人回复总数：除去开场白，机器人回复的次数，等于客户主动询问的次数（机器人的一次回复在客户端里，可能会拆分成多句展示，这种只算一次）'
+                }
+              />
             </span>
           </Space>
         );
@@ -100,7 +104,11 @@ export default () => {
           <Space>
             明确回答率
             <span>
-              <QuestionCircleOutlined />
+              <Tip
+                title={
+                  '机器人直接回复答案的次数（非澄清、非拒识，客户不是通过输入序号或者点击推荐问触发）/机器人回复总数 * 100%'
+                }
+              />
             </span>
           </Space>
         );
@@ -115,7 +123,7 @@ export default () => {
           <Space>
             澄清回复率
             <span>
-              <QuestionCircleOutlined />
+              <Tip title={'机器人回复澄清话术的次数/机器人回复总数。'} />
             </span>
           </Space>
         );
@@ -130,7 +138,13 @@ export default () => {
           <Space>
             澄清确认率
             <span>
-              <QuestionCircleOutlined />
+              <Tip
+                title={
+                  config.robotTypeMap[info?.robotType] === '文本'
+                    ? '机器人回复澄清话术后，客户选择（输入序号或者点击澄清问触发）澄清问题的次数 / 机器人回复总数 * 100%。'
+                    : '机器人回复澄清话术后，客户下一次的意图明确且在上一次的澄清列表内，视为澄清确认。澄清确认的次数 / 机器人回复总数 * 100%。'
+                }
+              />
             </span>
           </Space>
         );
@@ -145,7 +159,11 @@ export default () => {
           <Space>
             推荐确认率
             <span>
-              <QuestionCircleOutlined />
+              <Tip
+                title={
+                  '机器人直接回复答案且附有推荐问时，客户选择（输入序号或者点击推荐问触发）推荐问的次数 / 机器人回复总数 * 100%'
+                }
+              />
             </span>
           </Space>
         );
@@ -161,7 +179,11 @@ export default () => {
           <Space>
             拒识率
             <span>
-              <QuestionCircleOutlined />
+              <Tip
+                title={
+                  '机器人回复拒识的次数 / 机器人回复总数 * 100%。点击可查看该客户问题所在的会话记录。'
+                }
+              />
             </span>
           </Space>
         );
@@ -179,7 +201,11 @@ export default () => {
           <Space>
             匹配率
             <span>
-              <QuestionCircleOutlined />
+              <Tip
+                title={
+                  '机器人明确回答、澄清确认、推荐确认，都认为匹配。即 匹配率=明确回答率+澄清确认率+推荐确认率。'
+                }
+              />
             </span>
           </Space>
         );

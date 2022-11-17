@@ -1,3 +1,4 @@
+import Tip from '@/components/Tip';
 import { PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import { Button, Form, Input, Modal, Popconfirm, Tooltip } from 'antd';
@@ -188,7 +189,16 @@ const FAQBlackList = (props: any) => {
           pageSize: 10,
         }}
         dateFormatter="string"
-        headerTitle={total ? <div>黑名单总量: {total}</div> : <div>FAQ-黑名单</div>}
+        headerTitle={
+          <>
+            {total ? <div>黑名单总量: {total}</div> : <div>FAQ-黑名单</div>}
+            <Tip
+              title={
+                '当客户输入的文本与配置的文本完全匹配时，触发拒识，机器人回复拒识话术（例如，没明白客户说什么）。可以针对特殊文本不予回复，例如一些敏感词、其他企业的知识等。'
+              }
+            />
+          </>
+        }
         toolBarRender={() => [
           <Button
             key="button"

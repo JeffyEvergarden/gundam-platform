@@ -89,8 +89,8 @@ const getWordSlotList = (req: any, res: any) => {
           creator: 'yyb',
           createTime: '2022-02-16',
           slot: 'qwqew1rrw',
-          slotName: '前端mock词槽3',
-          slotSource: 7,
+          slotName: '图谱',
+          slotSource: 9,
           dataType: 3,
           slosourceId: 1,
           slotInfo: {
@@ -306,8 +306,8 @@ const slotInfoList = (req: any, res: any) => {
         dataType: '2',
         datastutus: 3,
       },
-      { id: '2', slotName: '槽值2', paramValue: 2 },
-      { id: '3', slotName: '槽值', paramValue: 3 },
+      { id: '2', slotName: '槽值2', paramValue: 2, slotSource: 1 },
+      { id: '3', slotName: '图谱', paramValue: 3, slotSource: 9 },
     ],
   });
 };

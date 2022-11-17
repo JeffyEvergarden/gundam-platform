@@ -1,13 +1,14 @@
+import AudioPlay from '@/components/AudioPlay';
 import Condition from '@/components/Condition';
+import Tip from '@/components/Tip';
+import config from '@/config';
 import { UserOutlined } from '@ant-design/icons';
-import { Drawer, Input, message, Space } from 'antd';
+import { Drawer, Input, message } from 'antd';
 import { useImperativeHandle, useState } from 'react';
 import { useModel } from 'umi';
-import config from '@/config';
 import { useSessionModel } from '../detail-modal/model';
-import style from './style.less';
-import AudioPlay from '@/components/AudioPlay';
 import robotAvator from './img/robot.png';
+import style from './style.less';
 
 const { Search } = Input;
 
@@ -74,9 +75,18 @@ const RecordModal: React.FC<any> = (props: any) => {
     <Drawer
       className={style['drawer']}
       width={850}
-      title={`会话记录（${heightLihgt?.sessionId || heightLihgt?.id}）${
-        systemCode == 'test' ? '-机器人测试' : systemCode
-      }`}
+      title={
+        <>
+          {`会话记录（${heightLihgt?.sessionId || heightLihgt?.id}）${
+            systemCode == 'test' ? '-机器人测试' : systemCode
+          }`}
+          <Tip
+            title={
+              '括号内表示会话记录id，括号后方为调用方系统id。会话记录中，表示此文本为按键输入，表示此文本为语音输入。'
+            }
+          />
+        </>
+      }
       visible={visible}
       onClose={close}
       destroyOnClose={true}

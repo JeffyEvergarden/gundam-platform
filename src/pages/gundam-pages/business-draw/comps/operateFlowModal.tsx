@@ -1,5 +1,6 @@
+import Tip from '@/components/Tip';
 import config from '@/config/index';
-import { Form, Input, message, Modal, Select, Spin } from 'antd';
+import { Form, Input, message, Modal, Select, Space, Spin } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useModel } from 'umi';
 import { operateFlowFormList } from '../config';
@@ -96,12 +97,7 @@ export default (props: any) => {
                 return (
                   <React.Fragment key={item.name}>
                     {item.type == 'input' && (
-                      <Form.Item
-                        name={item.name}
-                        label={item.label}
-                        rules={item.rules}
-                        style={{ width: '360px' }}
-                      >
+                      <Form.Item name={item.name} label={item.label} rules={item.rules}>
                         <Input
                           maxLength={150}
                           placeholder={item.placeholder}
@@ -110,32 +106,40 @@ export default (props: any) => {
                       </Form.Item>
                     )}
                     {item.type == 'select' && (
-                      <Form.Item
-                        name={item.name}
-                        label={item.label}
-                        rules={item.rules}
-                        style={{ width: '360px' }}
-                      >
-                        <Select placeholder={item.placeholder} allowClear>
-                          {wishListArr?.map((itex: any, index: number) => {
-                            return (
-                              <Option
-                                key={itex.name}
-                                value={itex.name}
-                                opt={itex}
-                                disabled={
-                                  disabledNum == itex.name
-                                    ? false
-                                    : itex.connect == 1
-                                    ? true
-                                    : false
-                                }
-                              >
-                                {itex.label}
-                              </Option>
-                            );
-                          })}
-                        </Select>
+                      <Form.Item label={item.label}>
+                        <Space align={'baseline'}>
+                          <Form.Item name={item.name} noStyle rules={item.rules}>
+                            <Select
+                              style={{ width: '260px' }}
+                              placeholder={item.placeholder}
+                              allowClear
+                            >
+                              {wishListArr?.map((itex: any, index: number) => {
+                                return (
+                                  <Option
+                                    key={itex.name}
+                                    value={itex.name}
+                                    opt={itex}
+                                    disabled={
+                                      disabledNum == itex.name
+                                        ? false
+                                        : itex.connect == 1
+                                        ? true
+                                        : false
+                                    }
+                                  >
+                                    {itex.label}
+                                  </Option>
+                                );
+                              })}
+                            </Select>
+                          </Form.Item>
+                          <Tip
+                            title={
+                              '用户触发进入业务流程的头部意图。例如配置“转人工业务流程“，用于将对话转交给人工，可以在“触发意图”中选用“转人工”头部意图。其中“转人工”意图中配置有“帮我转人工”、“我要人工客服”类似的语料，当客户要求转人工时，命中“转人工”头部意图，则进入对应的业务流程进行处理。'
+                            }
+                          />
+                        </Space>
                       </Form.Item>
                     )}
                   </React.Fragment>

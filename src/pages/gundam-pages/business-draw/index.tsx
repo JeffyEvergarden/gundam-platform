@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
 
+import Tip from '@/components/Tip';
 import config from '@/config/index';
 import type { ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { Button, message, Popconfirm, Space } from 'antd';
 import OperateFlowModal from './comps/operateFlowModal';
-import { businessTableColumnsList } from './config';
+// import { businessTableColumnsList } from './config';
 import { useTableModel } from './model';
 
 // 机器人列表
@@ -27,6 +28,43 @@ const DetailPages: React.FC = (props: any) => {
   const { getFlowList } = useModel('drawer' as any, (model: any) => ({
     getFlowList: model.getFlowList,
   }));
+
+  const businessTableColumnsList: any = [
+    {
+      dataIndex: 'flowName',
+      title: '业务流程名称',
+      fixed: 'left',
+    },
+    {
+      dataIndex: 'flowDesc',
+      title: '描述',
+      search: false,
+    },
+    {
+      dataIndex: 'headIntentName',
+      title: () => (
+        <>
+          {'触发意图名称'}
+          <Tip
+            title={
+              '用户触发进入业务流程的头部意图。例如配置“转人工业务流程“，用于将对话转交给人工，可以在“触发意图”中选用“转人工”头部意图。其中“转人工”意图中配置有“帮我转人工”、“我要人工客服”类似的语料，当客户要求转人工时，命中“转人工”头部意图，则进入对应的业务流程进行处理。'
+            }
+          />
+        </>
+      ),
+      search: false,
+    },
+    {
+      dataIndex: 'creator',
+      title: '创建者',
+      search: false,
+    },
+    {
+      dataIndex: 'createTime',
+      title: '创建时间',
+      search: false,
+    },
+  ];
 
   const getTables = async (p?: any) => {
     console.log(p);
@@ -146,7 +184,16 @@ const DetailPages: React.FC = (props: any) => {
     <div className="list-page">
       <ProTable<any>
         loading={loading}
-        headerTitle={'业务流程管理'}
+        headerTitle={
+          <>
+            {'业务流程管理'}
+            <Tip
+              title={
+                '业务流程是由多个节点组成、与业务相关、在主流程中可复用的节点组合。编辑好的业务流程可以在主流程中多次引用。'
+              }
+            />
+          </>
+        }
         rowKey={(record) => record?.id}
         columns={[...businessTableColumnsList, operateColumn]}
         actionRef={actionRef}

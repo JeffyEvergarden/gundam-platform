@@ -1,4 +1,5 @@
 import Condition from '@/components/Condition';
+import Tip from '@/components/Tip';
 import { Button, Popconfirm, Tabs, Tooltip } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import AuditionModal from './component/auditionModal';
@@ -154,6 +155,10 @@ const SoundRecord: React.FC = (props: any) => {
     }
   };
 
+  const OperationsSlot = () => ({
+    right: <Tip title={'录音管理用于上传录音，及查看录音或TTS合成的录音被应用的状态。'}></Tip>,
+  });
+
   useEffect(() => {
     refresh();
   }, [activeKey]);
@@ -166,6 +171,8 @@ const SoundRecord: React.FC = (props: any) => {
         style={{ width: '100%', backgroundColor: '#fff', paddingLeft: '10px', marginBottom: 0 }}
         onChange={setActiveKey}
         activeKey={activeKey}
+        tabBarExtraContent={OperationsSlot()}
+        className={style['tabsTop']}
       >
         <TabPane tab="流程节点录音" key="1">
           <TablePage cref={tableRef} activeKey={1} />

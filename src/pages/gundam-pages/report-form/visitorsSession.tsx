@@ -1,7 +1,7 @@
+import Tip from '@/components/Tip';
 import config from '@/config/index';
 import ChatRecordModal from '@/pages/gundam-pages/FAQ-module/components/chat-record-modal';
 import { codeToStr } from '@/utils/index';
-import { QuestionCircleOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import { Space } from 'antd';
 import moment from 'moment';
@@ -159,12 +159,24 @@ export default () => {
 
   const columns: any = [
     {
-      title: '会话ID',
+      title: () => (
+        <>
+          {'会话ID'}{' '}
+          <Tip
+            title={
+              '标识一次会话的ID，点击可以查看会话记录，会话记录中显示对话文本、文本发生的时间。'
+            }
+          />
+        </>
+      ),
       dataIndex: 'id',
       ellipsis: true,
       search: true,
       render: (t: any, r: any, i: any) => {
         return <a onClick={() => toRecord(r)}>{r.id}</a>;
+      },
+      formItemProps: {
+        label: '会话ID',
       },
     },
     {
@@ -173,7 +185,7 @@ export default () => {
           <Space>
             客户ID
             <span>
-              <QuestionCircleOutlined />
+              <Tip title={''} />
             </span>
           </Space>
         );
@@ -181,6 +193,9 @@ export default () => {
       search: true,
       dataIndex: 'customerId',
       ellipsis: true,
+      formItemProps: {
+        label: '客户ID',
+      },
     },
     {
       title: () => {
@@ -188,7 +203,7 @@ export default () => {
           <Space>
             渠道
             <span>
-              <QuestionCircleOutlined />
+              <Tip title={'会话发生的渠道，是调用方传入的变量。'} />
             </span>
           </Space>
         );
@@ -208,7 +223,11 @@ export default () => {
           <Space>
             对话轮次
             <span>
-              <QuestionCircleOutlined />
+              <Tip
+                title={
+                  '忽略机器人的开场白，以客户第一次输入开始计算，客户先问、机器人后答为一轮，计算所有会话的对话轮次总和。'
+                }
+              />
             </span>
           </Space>
         );
@@ -224,7 +243,7 @@ export default () => {
           <Space>
             访问时长
             <span>
-              <QuestionCircleOutlined />
+              <Tip title={'从机器人的开场白开始，到会话最后一条数据的时长。'} />
             </span>
           </Space>
         );
@@ -240,7 +259,7 @@ export default () => {
           <Space>
             会话开始时间
             <span>
-              <QuestionCircleOutlined />
+              <Tip title={'会话的开始时间，一般为开场白时间。'} />
             </span>
           </Space>
         );

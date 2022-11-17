@@ -94,6 +94,18 @@ export const RUlE_LIST: any[] = [
         name: 'unfill',
         label: '未填充', // 没有后续输入
       },
+      {
+        name: 'lengthGreater',
+        label: '长度大于',
+      },
+      {
+        name: 'lengthEqual',
+        label: '长度等于',
+      },
+      {
+        name: 'lengthLess',
+        label: '长度小于',
+      },
     ],
   },
   {
@@ -107,6 +119,56 @@ export const RUlE_LIST: any[] = [
       {
         name: 'unfill',
         label: '未填充', // 没有后续输入
+      },
+      {
+        name: 'lengthGreater',
+        label: '长度大于',
+      },
+      {
+        name: 'lengthEqual',
+        label: '长度等于',
+      },
+      {
+        name: 'lengthLess',
+        label: '长度小于',
+      },
+    ],
+  },
+  {
+    name: 6,
+    label: '自定义',
+    list: [
+      {
+        name: '==',
+        label: '等于',
+      },
+      {
+        name: '!=',
+        label: '不等于',
+      },
+      {
+        name: 'like',
+        label: '包含',
+      },
+      {
+        name: 'unlike',
+        label: '不包含',
+      },
+      {
+        name: 'reg',
+        label: '符合正则',
+      },
+      {
+        name: 'lengthGreater',
+        label: '长度大于',
+      },
+      {
+        name: 'lengthEqual',
+        label: '长度等于',
+      },
+      {
+        name: 'lengthLess',
+        label: '长度小于',
       },
     ],
   },
@@ -157,6 +219,7 @@ export const selectMap = {
   输入文本: 2,
   变量: 4,
   高级配置变量: 5,
+  自定义: 6,
 };
 
 // 四级筛选映射

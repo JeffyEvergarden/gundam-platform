@@ -1,6 +1,7 @@
 import customerPhoto from '@/asset/image/customer.png';
 import robotPhoto from '@/asset/image/robot.png';
 import AudioPlay from '@/components/AudioPlay';
+import Tip from '@/components/Tip';
 import config from '@/config';
 import { Button, Dropdown, Input, Menu, message, Modal, Popover, Radio, Space } from 'antd';
 import React, { Fragment, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
@@ -559,7 +560,14 @@ export default (props: any) => {
   return (
     <div>
       <div className={styles['chat-topTitle']}>
-        <span className={styles['box-title']}>对话测试</span>
+        <span className={styles['box-title']}>
+          对话测试
+          <Tip
+            title={
+              '用于模拟用户与机器人对话，测试机器人效果。可以使用生产或测试环境，对应主流程里的生产和发布环境。在生产发生的对话，可以在“报表管理-访客会话明细”中查询。对话前请确认修改的配置已发布成功。'
+            }
+          ></Tip>
+        </span>
         <Space>
           <Radio.Group onChange={radioChange} value={environment}>
             <Radio value={'prod'}>生产</Radio>

@@ -1,3 +1,4 @@
+import Tip from '@/components/Tip';
 import ProTable from '@ant-design/pro-table';
 import { Button, Popconfirm } from 'antd';
 import React, { useRef } from 'react';
@@ -45,31 +46,74 @@ const DetailPages: React.FC = (props: any) => {
       width: 200,
     },
     {
-      title: '平均精确率',
+      title: () => (
+        <>
+          {'平均精确率'}
+          <Tip
+            title={
+              '各条样本精确率的平均值。假设三条样本的精确率分别是70%、80%、90%，则平均精确率=（70%+80%+90%）/ 3'
+            }
+          />
+        </>
+      ),
       dataIndex: 'averageAccurateRate',
       search: false,
       width: 200,
     },
     {
-      title: '平均召回率',
+      title: () => (
+        <>
+          {'平均召回率'}
+          <Tip
+            title={
+              '各条样本召回率的平均值。假设三条样本的召回率分别是70%、80%、90%，则平均召回率=（70%+80%+90%）/ 3'
+            }
+          />
+        </>
+      ),
       dataIndex: 'averageRecallRate',
       search: false,
       width: 200,
     },
     {
-      title: '阈值',
+      title: () => (
+        <>
+          {'阈值'}
+          <Tip
+            title={
+              '控制模型评估时，调用NLU返回的结果类型，低于阈值为“拒识”，高于阈值且只有1个候选为“明确回复”，高于阈值且候选多于1个且差值小于得分差值时触发“澄清”。'
+            }
+          />
+        </>
+      ),
       dataIndex: 'threshold',
       search: false,
       width: 200,
     },
     {
-      title: '差值',
+      title: () => (
+        <>
+          {'差值'}
+          <Tip
+            title={
+              '模型评估时，调用NLU返回的结果类型，高于阈值且候选多于1个且差值小于得分差值时触发“澄清”。'
+            }
+          />
+        </>
+      ),
       dataIndex: 'difference',
       search: false,
       width: 200,
     },
     {
-      title: '澄清数量',
+      title: () => (
+        <>
+          {'澄清数量'}
+          <Tip
+            title={'控制模型评估时，调用NLU返回的结果控制触发澄清时，选取多少个候选进行澄清。'}
+          />
+        </>
+      ),
       dataIndex: 'clarifyNum',
       search: false,
       width: 200,
@@ -158,7 +202,14 @@ const DetailPages: React.FC = (props: any) => {
           pageSize: 10,
         }}
         dateFormatter="string"
-        headerTitle="模型评估列表"
+        headerTitle={
+          <>
+            {'模型评估列表'}
+            <Tip
+              title={'调用机器人对话接口意图识别流程（黑名单、澄清列表、NLU），评估样本集的效果。'}
+            />
+          </>
+        }
         toolBarRender={() => [
           <Button
             key="button"
