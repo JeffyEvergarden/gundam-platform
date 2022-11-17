@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import Condition from '@/components/Condition';
 import { message, Select } from 'antd';
 import { useState } from 'react';
-import { useModel } from 'umi';
+import { history, useModel } from 'umi';
 import DrawerForm from './drawerV2';
 import SpDrawerForm from './drawerV2/sp-index';
 import EdgeDrawerForm from './EdgeDrawer';
@@ -36,6 +36,8 @@ const MainDraw = (props: any) => {
 
   // 初始化
   const fake = useRef<any>(null);
+  const dom = useRef<any>(null);
+
   const drawerRef = useRef<any>(null);
   const edgeDrawerRef = useRef<any>(null);
   const spNodeDrawerRef = useRef<any>(null);
@@ -45,7 +47,7 @@ const MainDraw = (props: any) => {
   // 历史遗留问题
   // 话术标签、业务流程列表
 
-  const { info, businessFlowId, getGlobalValConfig, drawType, setDrawType, setBusinessFlowId } =
+  const { info, businessFlowId, setBusinessFlowId, getGlobalValConfig, drawType, setDrawType } =
     useModel('gundam' as any, (model: any) => {
       // console.log('gundam', model);
       return {
@@ -290,6 +292,15 @@ const MainDraw = (props: any) => {
     (edgeDrawerRef.current as any)?.open(config, callBack);
   };
 
+  const goLink = (info: any) => {
+    let nodeType = info?._nodetype;
+    if (nodeType === 'business') {
+      // 业务流程节点
+      history.push(`/gundamPages/businessDraw/detail?id=${info?._id}`);
+      setBFlowId(info._id);
+    }
+  };
+
   // 初始化设置
   useEffect(() => {
     setDrawType(type);
@@ -370,7 +381,7 @@ const MainDraw = (props: any) => {
         </Select>
       </Condition>
       <div className={style['container']}>
-        <div className={style['container_right']}>
+        <div className={style['container_right']} ref={dom}>
           <FlowPage
             type={type} // 流程图类型
             key={key}
@@ -378,6 +389,7 @@ const MainDraw = (props: any) => {
             removeNode={removeNode}
             openSetting={openSetting}
             openEdgeSetting={openEdgeSetting}
+            onGoinCommand={goLink}
             save={save}
             clickItem={clickItem}
             cref={fake}
