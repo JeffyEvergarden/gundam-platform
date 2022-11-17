@@ -303,13 +303,13 @@ const MainDraw = (props: any) => {
         nodeType: processType(info._nodetype),
       });
       console.log(res);
-      if (res?.flowId) {
-        localStorage.setItem('businessFlowId', res?.flowId || '');
-        sessionStorage.setItem('businessFlowId', res?.flowId || '');
-        setBusinessFlowId(res?.flowId || '');
+      if (res?.nodeFlowId) {
+        localStorage.setItem('businessFlowId', res?.nodeFlowId || '');
+        sessionStorage.setItem('businessFlowId', res?.nodeFlowId || '');
+        setBusinessFlowId(res?.nodeFlowId || '');
         // 业务流程节点
-        history.push(`/gundamPages/businessDraw/detail?id=${res?.flowId}`);
-        setBFlowId(res?.flowId);
+        history.push(`/gundamPages/businessDraw/detail?id=${res?.nodeFlowId}`);
+        setBFlowId(res?.nodeFlowId);
       } else {
         message.warning('未配置业务流程');
       }
