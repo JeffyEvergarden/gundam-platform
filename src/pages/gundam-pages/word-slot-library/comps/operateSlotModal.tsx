@@ -31,8 +31,9 @@ const typeData = [
     value: 3,
     intentName: '时间(时分秒)',
   },
+  //4布尔（后端用）
   {
-    value: 4,
+    value: 5,
     intentName: '数组',
   },
 ];
