@@ -1,4 +1,6 @@
+import clearNum from '@/asset/image/clearnumup.png';
 import Condition from '@/components/Condition';
+import Tip from '@/components/Tip';
 import config from '@/config';
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, message, Radio, Space, Switch } from 'antd';
@@ -275,6 +277,18 @@ const FAQConfig: React.FC<any> = (props: any) => {
     form.setFieldsValue({ ...formData });
   };
 
+  const tipContent = (title: any) => {
+    if (title == '澄清数量上限') {
+      return (
+        <div style={{ width: '500px' }}>
+          当意图识别触发澄清时，此配置控制澄清的数量，当配置3，效果如下图
+          <br />
+          <img src={clearNum} />
+        </div>
+      );
+    }
+  };
+
   return (
     <div className={style['machine-page']}>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -292,22 +306,27 @@ const FAQConfig: React.FC<any> = (props: any) => {
             {Nconfig?.map((item: any) => {
               if (item?.dataType == 1) {
                 return (
-                  <FormItem
-                    // {...col}
-                    label={item.configName}
-                    name={['systemConfigList', item.configKey]}
-                    key={'systemConfigList' + item.configKey}
-                    rules={[{ required: true }]}
-                  >
-                    <InputNumber
-                      style={{ width: 200 }}
-                      min={item?.validateRule?.min ?? 0}
-                      max={item?.validateRule?.max ?? undefined}
-                      step="1"
-                      precision={0}
-                      stringMode
-                      disabled={item?.validateRule?.disabled ? true : false}
-                    />
+                  <FormItem label={item.configName}>
+                    <Space align="baseline">
+                      <FormItem
+                        // {...col}
+                        noStyle
+                        name={['systemConfigList', item.configKey]}
+                        key={'systemConfigList' + item.configKey}
+                        rules={[{ required: true }]}
+                      >
+                        <InputNumber
+                          style={{ width: 200 }}
+                          min={item?.validateRule?.min ?? 0}
+                          max={item?.validateRule?.max ?? undefined}
+                          step="1"
+                          precision={0}
+                          stringMode
+                          disabled={item?.validateRule?.disabled ? true : false}
+                        />
+                      </FormItem>
+                      <Tip title={tipContent(item.configName)} />
+                    </Space>
                   </FormItem>
                 );
               } else if (item?.dataType == 0) {
@@ -333,8 +352,22 @@ const FAQConfig: React.FC<any> = (props: any) => {
                                 initialValue={1}
                               >
                                 <Radio.Group>
-                                  <Radio value={1}>全合成</Radio>
-                                  <Radio value={2}>录音半合成</Radio>
+                                  <Radio value={1}>
+                                    全合成
+                                    <Tip
+                                      title={
+                                        '使用“全局配置-TTS配置”对澄清话术进行录音合成，合成后可以在“录音管理”中查看，或者点击“试听”'
+                                      }
+                                    />
+                                  </Radio>
+                                  <Radio value={2}>
+                                    录音半合成
+                                    <Tip
+                                      title={
+                                        '选择录音进行播报。根据分号拆分文本后，不含变量、词槽的文本段数量要与选择的录音数量一致。例如：“你好；今天是${system_date}”，需要上传一段与“你好”适配的录音，后面一段自动使用TTS合成。'
+                                      }
+                                    />
+                                  </Radio>
                                 </Radio.Group>
                               </Form.Item>
                               <Condition r-if={sType == 2}>
@@ -371,6 +404,11 @@ const FAQConfig: React.FC<any> = (props: any) => {
                                 }}
                               >
                                 试听
+                                <Tip
+                                  title={
+                                    '根据“全局配置-TTS配置”，或者选择的录音，合成语音进行试听。'
+                                  }
+                                />
                               </Button>
                               <SoundVarModal cref={auditionRef}></SoundVarModal>
                               <SoundSelectModal
@@ -407,17 +445,24 @@ const FAQConfig: React.FC<any> = (props: any) => {
                               showCount
                             />
                           </Form.Item>
-                          <Form.Item
-                            name={['systemConfigList', item.configKey, 'allowInterrupt']}
-                            key={item.configKey + 'allowInterrupt'}
-                            initialValue={1}
-                            label={'允许打断'}
-                          >
-                            <Radio.Group>
-                              <Radio value={1}>是</Radio>
-                              <Radio value={0}>否</Radio>
-                            </Radio.Group>
-                          </Form.Item>
+                          <Space align="baseline">
+                            <Form.Item
+                              name={['systemConfigList', item.configKey, 'allowInterrupt']}
+                              key={item.configKey + 'allowInterrupt'}
+                              initialValue={1}
+                              label={'允许打断'}
+                            >
+                              <Radio.Group>
+                                <Radio value={1}>是</Radio>
+                                <Radio value={0}>否</Radio>
+                              </Radio.Group>
+                            </Form.Item>
+                            <Tip
+                              title={
+                                '用于控制语音平台在放音过程中是否允许打断，若是，播音过程检测到客户说话，则停止播报进行收音。'
+                              }
+                            />
+                          </Space>
                         </div>
                       </div>
                     </FormItem>

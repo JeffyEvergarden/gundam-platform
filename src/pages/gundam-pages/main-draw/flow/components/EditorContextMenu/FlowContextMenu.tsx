@@ -20,12 +20,13 @@ const FlowContextMenu = (props: any) => {
 
   return (
     <ContextMenu className={styles.contextMenu}>
-      <MenuItem command="pasteHere" text={'粘贴'} />
       <NodeMenu>
+        {_nodetype === 'business' && <MenuItem command="go" text={'进入'} />}
         <MenuItem command="delete" text={'删除'} />
         <MenuItem command="copy" text={'复制'} />
-        {_nodetype === 'business' && <MenuItem command="go" text={'进入'} />}
       </NodeMenu>
+      <MenuItem command="pasteHere" text={'粘贴'} />
+
       <EdgeMenu>
         <MenuItem command="delete" text={'删除'} />
       </EdgeMenu>

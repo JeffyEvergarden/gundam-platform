@@ -618,8 +618,22 @@ const Board: React.FC<any> = (props: any) => {
                                     initialValue={1}
                                   >
                                     <Radio.Group>
-                                      <Radio value={1}>全合成</Radio>
-                                      <Radio value={2}>录音半合成</Radio>
+                                      <Radio value={1}>
+                                        全合成
+                                        <Tip
+                                          title={
+                                            '使用“全局配置-TTS配置”对澄清话术进行录音合成，合成后可以在“录音管理”中查看，或者点击“试听”'
+                                          }
+                                        />
+                                      </Radio>
+                                      <Radio value={2}>
+                                        录音半合成
+                                        <Tip
+                                          title={
+                                            '选择录音进行播报。根据分号拆分文本后，不含变量、词槽的文本段数量要与选择的录音数量一致。例如：“你好；今天是${system_date}”，需要上传一段与“你好”适配的录音，后面一段自动使用TTS合成。'
+                                          }
+                                        />
+                                      </Radio>
                                     </Radio.Group>
                                   </Form.Item>
                                   <Condition r-if={sType?.[index]?.soundType == 2}>
@@ -657,6 +671,11 @@ const Board: React.FC<any> = (props: any) => {
                                     }}
                                   >
                                     试听
+                                    <Tip
+                                      title={
+                                        '根据“全局配置-TTS配置”，或者选择的录音，合成语音进行试听。'
+                                      }
+                                    />
                                   </Button>
                                   <SoundVarModal cref={auditionRef}></SoundVarModal>
                                   <SoundSelectModal
@@ -716,18 +735,24 @@ const Board: React.FC<any> = (props: any) => {
                                   showCount
                                 />
                               </Form.Item>
-
-                              <Form.Item
-                                name={[field.name, 'allowInterrupt']}
-                                fieldKey={[field.fieldKey, 'allowInterrupt']}
-                                initialValue={1}
-                                label={'允许打断'}
-                              >
-                                <Radio.Group>
-                                  <Radio value={1}>是</Radio>
-                                  <Radio value={0}>否</Radio>
-                                </Radio.Group>
-                              </Form.Item>
+                              <Space align="baseline">
+                                <Form.Item
+                                  name={[field.name, 'allowInterrupt']}
+                                  fieldKey={[field.fieldKey, 'allowInterrupt']}
+                                  initialValue={1}
+                                  label={'允许打断'}
+                                >
+                                  <Radio.Group>
+                                    <Radio value={1}>是</Radio>
+                                    <Radio value={0}>否</Radio>
+                                  </Radio.Group>
+                                </Form.Item>
+                                <Tip
+                                  title={
+                                    '用于控制语音平台在放音过程中是否允许打断，若是，播音过程检测到客户说话，则停止播报进行收音。'
+                                  }
+                                />
+                              </Space>
                             </Condition>
 
                             <Form.Item

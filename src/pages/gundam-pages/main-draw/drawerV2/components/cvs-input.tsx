@@ -1,4 +1,5 @@
 import Condition from '@/components/Condition';
+import Tip from '@/components/Tip';
 import { Button, Input, message, Select } from 'antd';
 import { useRef, useState } from 'react';
 import GlobalVarModal from '../../drawer/components/global-var-modal';
@@ -101,6 +102,11 @@ const CvsInput: React.FC<any> = (props: any) => {
           >
             {'{#}'}添加词槽
           </Button>
+          <Tip
+            title={
+              '添加变量/添加词槽：点击可以在澄清话术中插入变量或词槽的占位符，实际播报时，会将变量或词槽的值进行填充。'
+            }
+          />
         </div>
         <div id={styles['soundType']}>
           {sound && sound()}

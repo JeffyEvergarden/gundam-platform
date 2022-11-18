@@ -1,8 +1,9 @@
-import { useState, useRef, useImperativeHandle, useEffect } from 'react';
-import { Drawer, Form, Input, Select, Button, Tag } from 'antd';
+import Tip from '@/components/Tip';
 import { PlusOutlined } from '@ant-design/icons';
-import styles from './style.less';
+import { Button, Select, Tag } from 'antd';
+import { useRef, useState } from 'react';
 import LabelSelectModal from './label-select-modal';
+import styles from './style.less';
 
 const { Option } = Select;
 
@@ -54,6 +55,7 @@ const LabelSelect: React.FC<any> = (props: any) => {
       </div>
       <div className={styles['right']}>
         <Button type="link" icon={<PlusOutlined />} onClick={openModal} disabled={canEdit}></Button>
+        <Tip title={'提前在“话术标签管理”中定义标签，当机器人返回话术时将连同标签一同返回。'} />
       </div>
       <LabelSelectModal cref={modelRef} confirm={onConfirm} />
     </div>

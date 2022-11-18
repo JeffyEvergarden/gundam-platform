@@ -1,16 +1,11 @@
-import { useEffect, useState } from 'react';
-import { Form, Select, Button, Checkbox, Space, Radio, InputNumber } from 'antd';
-import {
-  PlusCircleOutlined,
-  MinusCircleOutlined,
-  SettingOutlined,
-  CaretUpOutlined,
-} from '@ant-design/icons';
-import HightformTemplate from './high-inner-config';
 import Condition from '@/components/Condition';
+import { CaretUpOutlined, SettingOutlined } from '@ant-design/icons';
+import { Form, Radio, Select, Space } from 'antd';
+import { useEffect, useState } from 'react';
+import HightformTemplate from './high-inner-config';
 import styles from './style.less';
-import { ACTION_LIST } from '../const';
 
+import Tip from '@/components/Tip';
 import { useModel } from 'umi';
 
 const { Item: FormItem, List: FormList } = Form;
@@ -74,6 +69,7 @@ const HighConfig = (props: any) => {
             }}
           >
             高级配置
+            <Tip title={'默认使用全局配置-节点配置的配置项，可切换自定义配置'} />
             <span style={{ color: '#1890ff', marginLeft: '24px', fontSize: '16px' }}>
               {!flag && <SettingOutlined />}
               {flag && <CaretUpOutlined />}
@@ -90,6 +86,11 @@ const HighConfig = (props: any) => {
               style={{ marginRight: '16px', marginBottom: '20px' }}
             >
               流程跳转
+              <Tip
+                title={
+                  '当客户意图为允许跳转的业务流程，则跳转至对应的业务流程，判断优先级比节点后的连线条件高。'
+                }
+              />
             </div>
             <Condition r-if={type == 'flow'}>
               <Form.Item name="configType" initialValue={1}>

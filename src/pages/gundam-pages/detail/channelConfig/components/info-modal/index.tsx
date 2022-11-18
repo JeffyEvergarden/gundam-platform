@@ -1,5 +1,6 @@
 import Condition from '@/components/Condition';
-import { Form, Input, Modal, Radio, Select } from 'antd';
+import Tip from '@/components/Tip';
+import { Form, Input, Modal, Radio, Select, Space } from 'antd';
 import React, { useImperativeHandle, useState } from 'react';
 import style from './style.less';
 
@@ -107,16 +108,29 @@ const InfoModal: React.FC<any> = (props: any) => {
 
             {/* 业务编码 */}
             <Condition r-if={list.length > 0}>
-              <FormItem name="copyChannelCode" label="复制渠道" style={{ width: '460px' }}>
-                <Radio.Group>
-                  {list?.map?.((item: any, index: number) => {
-                    return (
-                      <Radio value={item.channelCode} key={index}>
-                        {item.channelName}
-                      </Radio>
-                    );
-                  })}
-                </Radio.Group>
+              <FormItem label={'复制渠道'} style={{ width: '360px' }}>
+                <Space align="baseline">
+                  <FormItem name="copyChannelCode">
+                    <Radio.Group>
+                      {list?.map?.((item: any, index: number) => {
+                        return (
+                          <Radio value={item.channelCode} key={index}>
+                            {item.channelName}
+                          </Radio>
+                        );
+                      })}
+                    </Radio.Group>
+                  </FormItem>
+                  <Tip
+                    title={
+                      <>
+                        选择一个渠道进行复制新建，可以把选中渠道所拥有的答案，复制一份至新渠道。
+                        <br />
+                        <img src="/logo.png" alt="" />
+                      </>
+                    }
+                  />
+                </Space>
               </FormItem>
             </Condition>
           </Condition>

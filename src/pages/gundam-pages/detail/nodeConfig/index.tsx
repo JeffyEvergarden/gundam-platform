@@ -1,3 +1,4 @@
+import Tip from '@/components/Tip';
 import config from '@/config/index';
 import { Button, Form, InputNumber, message, Select, Space } from 'antd';
 import { useEffect, useState } from 'react';
@@ -99,6 +100,15 @@ const NodeConfig: React.FC = (props: any) => {
     getGlobalValConfig(info.id); // 获取全局变量列表
   }, []);
 
+  const tipWishClearConfig = (title: any) => {
+    if (title == '阈值') {
+      return '当意图识别返回的结果得分低于阈值时，触发拒识，表示机器人没理解客户的问题。阈值的调整需要不断测试，过高可能导致机器人什么都听不懂，过低可能导致客户随便输入什么都有回复内容。';
+    }
+    if (title == '得分差值') {
+      return '当意图识别返回的结果得分大于“阈值”，且大于阈值的候选项有多个，且候选项之间的差值小于“差值”时，触发澄清，即机器人无法确定客户具体的意图。例如，配置“忘记登录密码”和“忘记交易密码”两个意图，当客户询问“忘记密码”，通过配置差值可以实现“请问您想咨询的是忘记登录密码还是忘记交易密码？”的效果。';
+    }
+  };
+
   return (
     <div className={style['machine-page']}>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -124,14 +134,25 @@ const NodeConfig: React.FC = (props: any) => {
 
             {Nconfig?.map((item: any) => {
               return (
-                <FormItem
-                  // {...col}
-                  label={item.configName}
-                  name={['systemConfigList', item.configKey]}
-                  key={'systemConfigList' + item.configKey}
-                  rules={[{ required: true }]}
-                >
-                  <InputNumber style={{ width: 200 }} min={0} max={1} step="0.01" precision={2} />
+                <FormItem label={item.configName}>
+                  <Space align="baseline">
+                    <FormItem
+                      // {...col}
+                      noStyle
+                      name={['systemConfigList', item.configKey]}
+                      key={'systemConfigList' + item.configKey}
+                      rules={[{ required: true }]}
+                    >
+                      <InputNumber
+                        style={{ width: 200 }}
+                        min={0}
+                        max={1}
+                        step="0.01"
+                        precision={2}
+                      />
+                    </FormItem>
+                    <Tip title={tipWishClearConfig(item.configName)} />
+                  </Space>
                 </FormItem>
               );
             })}

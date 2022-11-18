@@ -1,24 +1,9 @@
-import React, { useState, useEffect, useImperativeHandle } from 'react';
-import {
-  Modal,
-  Form,
-  Button,
-  InputNumber,
-  Radio,
-  Select,
-  Input,
-  Upload,
-  message,
-  Divider,
-  Popconfirm,
-  Space,
-  Tooltip,
-} from 'antd';
+import { Form, Input, Modal, Select, Space } from 'antd';
+import React, { useImperativeHandle, useState } from 'react';
 import style from './style.less';
-import Condition from '@/components/Condition';
-import { QuestionCircleOutlined } from '@ant-design/icons';
 
-import { scopeList, dataTypeList } from '../../const';
+import Tip from '@/components/Tip';
+import { dataTypeList } from '../../const';
 
 const { Item: FormItem } = Form;
 const { Option } = Select;
@@ -121,23 +106,36 @@ const InfoModal: React.FC<any> = (props: any) => {
           >
             <Input placeholder="请填写变量名称" {...extra} maxLength={50} />
           </FormItem>
-          <FormItem
-            rules={[{ required: true, message: '请选择数据类型' }]}
-            name="dataType"
-            label="数据类型"
-            style={{ width: '460px' }}
-            initialValue={0}
-          >
-            <Select placeholder={'请输入'}>
-              {dataTypeList.map((item: any) => {
-                return (
-                  <Option key={item.name} value={item.name}>
-                    {item.label}
-                  </Option>
-                );
-              })}
-            </Select>
+          <FormItem label="数据类型" style={{ width: '460px' }}>
+            <Space align="baseline">
+              <FormItem
+                rules={[{ required: true, message: '请选择数据类型' }]}
+                name="dataType"
+                noStyle
+                initialValue={0}
+              >
+                <Select placeholder={'请输入'}>
+                  {dataTypeList.map((item: any) => {
+                    return (
+                      <Option key={item.name} value={item.name}>
+                        {item.label}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              </FormItem>
+              <Tip
+                title={
+                  <>
+                    用于定义变量的类型，在连线或对话回应规则中，变量类型会影响可用的比较逻辑。
+                    <br />
+                    例如，创建一个数值类型的“money”变量，在连线规则中会相应出现“大于、小于、等于”的比较逻辑；创建一个字符类型的“city”变量，在连线规则中会相应出现“包含、不包含”的比较逻辑；创建一个时间类型的“time”变量，在连线规则中可以出现时间选择的组件。
+                  </>
+                }
+              />
+            </Space>
           </FormItem>
+
           <FormItem name="configDesc" label="变量说明" style={{ width: '460px' }}>
             <TextArea placeholder="请填写变量说明" {...extra} maxLength={150} />
           </FormItem>

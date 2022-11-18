@@ -1,4 +1,5 @@
 import Condition from '@/components/Condition';
+import Tip from '@/components/Tip';
 import config from '@/config';
 import { AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Button, Cascader, Form, Input, Radio, Select, Space } from 'antd';
@@ -180,8 +181,22 @@ const ActionConfig = (props: any) => {
               console.log(currentItem);
             }}
           >
-            <Radio value={1}>全合成</Radio>
-            <Radio value={2}>录音半合成</Radio>
+            <Radio value={1}>
+              全合成
+              <Tip
+                title={
+                  '使用“全局配置-TTS配置”对澄清话术进行录音合成，合成后可以在“录音管理”中查看，或者点击“试听”'
+                }
+              />
+            </Radio>
+            <Radio value={2}>
+              录音半合成
+              <Tip
+                title={
+                  '选择录音进行播报。根据分号拆分文本后，不含变量、词槽的文本段数量要与选择的录音数量一致。例如：“你好；今天是${system_date}”，需要上传一段与“你好”适配的录音，后面一段自动使用TTS合成。'
+                }
+              />
+            </Radio>
           </Radio.Group>
         </Form.Item>
         <Condition r-if={deep ? currentItem?.action?.soundType == 2 : currentItem?.soundType == 2}>
@@ -215,6 +230,7 @@ const ActionConfig = (props: any) => {
           }}
         >
           试听
+          <Tip title={'根据“全局配置-TTS配置”，或者选择的录音，合成语音进行试听。'} />
         </Button>
         <SoundVarModal cref={auditionRef}></SoundVarModal>
         <SoundSelectModal
@@ -250,7 +266,16 @@ const ActionConfig = (props: any) => {
   const innerHtml = (
     <div className={styles['action-config']}>
       <div className={styles['zy-row']} style={{ marginBottom: '10px' }}>
-        {titleType === 1 && <div className={styles['title_sp']}>{title || '执行动作'}</div>}
+        {titleType === 1 && (
+          <div className={styles['title_sp']}>
+            {title || '执行动作'}{' '}
+            <Tip
+              title={
+                '配置话术播放完之后执行的动作，如系统挂机、跳转业务流程、转人工、转IVR、配置短信发送。'
+              }
+            />
+          </div>
+        )}
         {titleType === 2 && <div className={styles['title_third']}>{title || '执行动作'}</div>}
       </div>
 
@@ -336,17 +361,24 @@ const ActionConfig = (props: any) => {
             />
           </FormItem>
           <Condition r-if={config.robotTypeMap[info?.robotType] === '语音'}>
-            <Form.Item
-              name={getFormName(['action', 'allowInterrupt'])}
-              fieldKey={getFormName(['action', 'allowInterrupt'])}
-              initialValue={1}
-              label={'允许打断'}
-            >
-              <Radio.Group disabled={canEdit}>
-                <Radio value={1}>是</Radio>
-                <Radio value={0}>否</Radio>
-              </Radio.Group>
-            </Form.Item>
+            <Space align="baseline">
+              <Form.Item
+                name={getFormName(['action', 'allowInterrupt'])}
+                fieldKey={getFormName(['action', 'allowInterrupt'])}
+                initialValue={1}
+                label={'允许打断'}
+              >
+                <Radio.Group disabled={canEdit}>
+                  <Radio value={1}>是</Radio>
+                  <Radio value={0}>否</Radio>
+                </Radio.Group>
+              </Form.Item>
+              <Tip
+                title={
+                  '用于控制语音平台在放音过程中是否允许打断，若是，播音过程检测到客户说话，则停止播报进行收音。'
+                }
+              />
+            </Space>
           </Condition>
           {/* <div className={styles['functionkey']}>
             <Form.Item

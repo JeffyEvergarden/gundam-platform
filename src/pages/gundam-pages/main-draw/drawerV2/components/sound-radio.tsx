@@ -1,5 +1,6 @@
 import Condition from '@/components/Condition';
-import { Checkbox, Form, InputNumber, Radio } from 'antd';
+import Tip from '@/components/Tip';
+import { Checkbox, Form, InputNumber, Radio, Space } from 'antd';
 import { useCallback, useState } from 'react';
 import styles from './style.less';
 
@@ -83,74 +84,82 @@ const SoundRadio: React.FC<any> = (props: any) => {
   };
   return (
     <div className={styles['functionkey']}>
-      <Form.Item
-        name={[field.name, 'userInputType']}
-        fieldKey={[field.fieldKey, 'userInputType']}
-        initialValue={'10'}
-        label={'输入方式'}
-      >
-        <Radio.Group onChange={change} disabled={disabled}>
-          <Radio value={'10'}>语音</Radio>
-          <Radio value={'01'}>按键</Radio>
-        </Radio.Group>
-      </Form.Item>
+      <Space align="baseline">
+        <Form.Item
+          name={[field.name, 'userInputType']}
+          fieldKey={[field.fieldKey, 'userInputType']}
+          initialValue={'10'}
+          label={'输入方式'}
+        >
+          <Radio.Group onChange={change} disabled={disabled}>
+            <Radio value={'10'}>语音</Radio>
+            <Radio value={'01'}>按键</Radio>
+          </Radio.Group>
+        </Form.Item>
 
-      <Condition r-if={getItem()?.userInputType == '01'}>
-        <div className={styles['functionkey']}>
-          <div className={styles['functionkey']} style={{ marginRight: '16px' }}>
-            <Form.Item
-              name={[field.name, 'functionKeyWell']}
-              fieldKey={[field.fieldKey, 'functionKeyWell']}
-              initialValue={1}
-              valuePropName="checked"
-            >
-              <Checkbox
-                disabled={disabled}
-                onChange={(e) => {
-                  checkChange(e, 'functionKeyWell');
-                }}
-              ></Checkbox>
-            </Form.Item>
-            <Form.Item style={{ marginLeft: '8px' }}>#号确认</Form.Item>
-          </div>
-          <div className={styles['functionkey']} style={{ marginRight: '16px' }}>
-            <Form.Item
-              name={[field.name, 'functionKeyStart']}
-              fieldKey={[field.fieldKey, 'functionKeyStart']}
-              initialValue={1}
-              valuePropName="checked"
-            >
-              <Checkbox
-                disabled={disabled}
-                onChange={(e) => {
-                  checkChange(e, 'functionKeyStart');
-                }}
-              ></Checkbox>
-            </Form.Item>
-            <Form.Item style={{ marginLeft: '8px' }}>*号取消</Form.Item>
-          </div>
-
+        <Condition r-if={getItem()?.userInputType == '01'}>
           <div className={styles['functionkey']}>
-            <Form.Item>按键长度：</Form.Item>
-            <Form.Item
-              name={[field.name, 'buttonInputSize']}
-              fieldKey={[field.fieldKey, 'buttonInputSize']}
-              initialValue={10}
-              rules={[{ required: true, message: '请输入按键长度' }]}
-            >
-              <InputNumber
-                max={40}
-                min={1}
-                step="1"
-                precision={0}
-                style={{ width: '161px' }}
-                placeholder="请输入按键长度"
-                disabled={disabled}
-              />
-            </Form.Item>
+            <div className={styles['functionkey']} style={{ marginRight: '16px' }}>
+              <Form.Item
+                name={[field.name, 'functionKeyWell']}
+                fieldKey={[field.fieldKey, 'functionKeyWell']}
+                initialValue={1}
+                valuePropName="checked"
+              >
+                <Checkbox
+                  disabled={disabled}
+                  onChange={(e) => {
+                    checkChange(e, 'functionKeyWell');
+                  }}
+                ></Checkbox>
+              </Form.Item>
+              <Form.Item style={{ marginLeft: '8px' }}>#号确认</Form.Item>
+            </div>
+            <div className={styles['functionkey']} style={{ marginRight: '16px' }}>
+              <Form.Item
+                name={[field.name, 'functionKeyStart']}
+                fieldKey={[field.fieldKey, 'functionKeyStart']}
+                initialValue={1}
+                valuePropName="checked"
+              >
+                <Checkbox
+                  disabled={disabled}
+                  onChange={(e) => {
+                    checkChange(e, 'functionKeyStart');
+                  }}
+                ></Checkbox>
+              </Form.Item>
+              <Form.Item style={{ marginLeft: '8px' }}>*号取消</Form.Item>
+            </div>
+
+            <div className={styles['functionkey']}>
+              <Form.Item>按键长度：</Form.Item>
+              <Form.Item
+                name={[field.name, 'buttonInputSize']}
+                fieldKey={[field.fieldKey, 'buttonInputSize']}
+                initialValue={10}
+                rules={[{ required: true, message: '请输入按键长度' }]}
+              >
+                <InputNumber
+                  max={40}
+                  min={1}
+                  step="1"
+                  precision={0}
+                  style={{ width: '161px' }}
+                  placeholder="请输入按键长度"
+                  disabled={disabled}
+                />
+              </Form.Item>
+            </div>
           </div>
-        </div>
-      </Condition>
+        </Condition>
+
+        <Tip
+          title={
+            '用于控制此话术播放后，语音平台选择何种方式收集客户输入；可配置*和#作为功能键，配置按键输入长度（按键输入达到长度自动发送）。'
+          }
+        />
+      </Space>
     </div>
   );
 };

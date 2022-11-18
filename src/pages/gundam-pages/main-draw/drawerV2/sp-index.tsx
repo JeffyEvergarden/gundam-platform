@@ -4,6 +4,7 @@ import { useModel } from 'umi';
 import styles from './style.less';
 
 import Condition from '@/components/Condition';
+import Tip from '@/components/Tip';
 import { useEffect } from 'react';
 import { useNodeOpsModel } from '../model';
 
@@ -149,7 +150,24 @@ const DrawerForm = (props: any) => {
 
   return (
     <Drawer
-      title="节点配置"
+      title={
+        <>
+          {'节点配置'}
+          <Tip
+            title={
+              <>
+                用于配置节点的处理逻辑，包括关联词槽、对话回应、高级配置模块。首先会执行关联词槽，主动询问客户词槽相关信息，关联词槽可能会有产生多轮对话。然后执行对话回应，根据规则拿到回复话术及动作（包括跳转动作和发送短信）。
+                <br />
+                如果一个节点既没有词槽配置、也没有对话回应，代表这个节点没有意义，发布时会失败。
+                <br />
+                如果经过一个节点仍然没拿到回复话术，例如配置的词槽是来自于接口（这种情况会调接口填槽，没有话术），流程会根据后续的连线继续往后进入下一个节点，直至拿到响应文本，结束一次请求。
+                <br />
+                高级配置用于配置一些特殊情况时的跳转及回复，例如拒识、客户未听清等。
+              </>
+            }
+          />
+        </>
+      }
       width={850}
       onClose={onClose}
       visible={visible}

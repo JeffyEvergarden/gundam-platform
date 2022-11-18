@@ -9,9 +9,10 @@ import { useIntentModel } from './model';
 import type { ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 
+import Tip from '@/components/Tip';
 import config from '@/config/index';
 import { Button, message, Popconfirm, Space } from 'antd';
-import { tableList } from './comps/config';
+// import { tableList } from './comps/config';
 
 export type TableListItem = {
   id: string;
@@ -37,6 +38,159 @@ const DetailPages: React.FC = (props: any) => {
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
+
+  const tableList: any = [
+    {
+      dataIndex: 'intentName',
+      title: '意图名称',
+      search: true,
+      ellipsis: true,
+      fixed: 'left',
+      width: 200,
+    },
+    {
+      dataIndex: 'headIntent',
+      title: () => (
+        <>
+          {'意图类型'}
+          <Tip
+            title={
+              '意图分为头部意图和辅助意图。头部意图指包含业务含义的意图，例如“手动还款”“更换银行卡”，业务流程中可以关联头部意图，使客户表述该意图时进入对应的业务流程进行处理。辅助意图指“肯定回答”“否定回答”这种不带业务含义的意图，可以用于节点间的连线判断。'
+            }
+          />
+        </>
+      ),
+      search: true,
+      ellipsis: true,
+      width: 100,
+      initialValue: '',
+      valueEnum: {
+        0: { text: '头部意图', status: 0 },
+        1: { text: '辅助意图', status: 1 },
+      },
+    },
+    {
+      dataIndex: 'inquiryText',
+      title: () => (
+        <>
+          {'澄清名称'}
+          <Tip
+            title={
+              '当客户文本触发机器人意图澄清，例如语音机器人会反问“您是想咨询{}还是{}”，此时会将需要澄清意图的澄清名称放入花括号中进行播放。澄清名称含义与意图名称一致，但应该更简洁明了，适合于语音播报中。'
+            }
+          />
+        </>
+      ),
+      search: false,
+      ellipsis: true,
+      width: 200,
+    },
+    {
+      dataIndex: 'suggest',
+      title: () => (
+        <>
+          {'是否联想'}
+          <Tip
+            title={
+              '文本机器人，当客户在页面输入文本，会触发搜索联想，辅助搜索，例如输入“邮你贷”，可以弹出“邮你贷”、“邮你贷热线”、“邮你贷余额”等联想文本。当意图不联想时，该意图不会出现在联想的候选集内。'
+            }
+          />
+        </>
+      ),
+      search: false,
+      ellipsis: true,
+      width: 100,
+      initialValue: '',
+      valueEnum: {
+        0: { text: '否', status: 0 },
+        1: { text: '是', status: 1 },
+      },
+    },
+    {
+      dataIndex: 'clarify',
+      title: () => (
+        <>
+          {'是否澄清'}
+          <Tip
+            title={`根据阈值和差值计算回复类型时，触发澄清时把澄清列表中不澄清的意图剔除，剔除后澄清意图列表数量如果大于等于2，则继续澄清逻辑，等于1则明确回复top1意图，等于0则明确回复原来的top1意图。举例，机器人配置阈值0.9，差值0.05，一次NLU的结果如下(字母为意图，小数为意图对应的得分)：
+              {
+                  A:0.98
+                  B:0.97
+                  C:0.96
+                  D:0.95
+                  E:0.94
+                  F:0.91
+              }
+              根据阈值和差值计算，会触发澄清，初始澄清列表为ABCDE：
+              如果BC配置为“不澄清”，则剔除后的澄清列表为ADE，话术为  “请问你是想咨询哪个？A、D、E”
+              如果BCDE均配置为“不澄清”，则剔除后的澄清列表为A，则明确回复A
+              如果ABCDE配置为“不澄清“，则剔除后的澄清列表为空，则明确回复A`}
+          />
+        </>
+      ),
+      search: false,
+      ellipsis: true,
+      width: 100,
+      initialValue: '',
+      valueEnum: {
+        0: { text: '否', status: 0 },
+        1: { text: '是', status: 1 },
+      },
+    },
+    // {
+    //   dataIndex: 'headIntent',
+    //   title: '是否头部意图',
+    //   search: true,
+    //   valueType: 'select',
+    //   width: 160,
+    //   valueEnum: {
+    //     0: { text: '是', status: 0 },
+    //     1: { text: '否', status: 1 },
+    //     '': { text: '全部', status: '' },
+    //   },
+    // },
+    {
+      dataIndex: 'flowInfoName',
+      title: () => (
+        <>
+          {'业务流程'}
+          <Tip title={'展示引用了当前头部意图的业务流程'} />
+        </>
+      ),
+      search: false,
+      ellipsis: true,
+      width: 220,
+    },
+    {
+      dataIndex: 'intentDesc',
+      title: '描述',
+      search: false,
+      ellipsis: true,
+      width: 260,
+    },
+    //   {
+    //     dataIndex: 'status',
+    //     title: '状态',
+    //     valueEnum: {
+    //       '0': { text: '成功', status: '0' },
+    //       '1': { text: '失败', status: '1' },
+    //     },
+    //   },
+    {
+      dataIndex: 'creator',
+      title: '创建者',
+      search: false,
+      ellipsis: true,
+      width: 120,
+    },
+    {
+      dataIndex: 'createTime',
+      title: '创建时间',
+      search: false,
+      ellipsis: true,
+      width: 120,
+    },
+  ];
 
   const [rulesSamleVisible, handleRulesSampleVisible] = useState<boolean>(false);
   const { getIntentTableList, deleteIntentItem } = useIntentModel();
@@ -180,7 +334,16 @@ const DetailPages: React.FC = (props: any) => {
     <div className={`list-page`}>
       <ProTable<TableListItem>
         loading={loading}
-        headerTitle={'意图列表'}
+        headerTitle={
+          <>
+            {'意图列表'}
+            <Tip
+              title={
+                '意图是客户想要做的某件事情，如“手动还款”“更换银行卡”，或者“肯定回答”“否定回答”。'
+              }
+            />
+          </>
+        }
         rowKey={(record) => record?.id}
         scroll={{ x: tableList.length * 200 }}
         columns={[

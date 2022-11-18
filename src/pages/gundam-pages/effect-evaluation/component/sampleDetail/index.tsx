@@ -242,7 +242,11 @@ const DetailPages: React.FC = (props: any) => {
       title: () => (
         <>
           {'标注状态'}
-          <Tip title={''}></Tip>
+          <Tip
+            title={
+              '回复类型和意图/FAQ选择之后，状态会从未标注更新为待确认，审核员确认无误后点击确认，状态会再更新为已标注'
+            }
+          ></Tip>
         </>
       ),
       width: 150,

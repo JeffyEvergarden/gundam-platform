@@ -1,24 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useModel, history } from 'umi';
-import {
-  Form,
-  Row,
-  Col,
-  Space,
-  Input,
-  Select,
-  Divider,
-  InputNumber,
-  Popconfirm,
-  Table,
-  Button,
-} from 'antd';
-import style from './style.less';
-import Condition from '@/components/Condition';
+import Tip from '@/components/Tip';
 import ProTable from '@ant-design/pro-table';
-import { PlusOutlined } from '@ant-design/icons';
-import InfoModal from './components/infoModal';
+import React, { useRef } from 'react';
+import { useModel } from 'umi';
 import { useInterfaceModel } from '../model';
+import InfoModal from './components/infoModal';
+import style from './style.less';
 
 const InterfaceConfig: React.FC = (props: any) => {
   const { getTableList, configLoading } = useInterfaceModel();
@@ -135,7 +121,16 @@ const InterfaceConfig: React.FC = (props: any) => {
           pageSize: 10,
         }}
         dateFormatter="string"
-        headerTitle="接口管理列表"
+        headerTitle={
+          <>
+            {'接口管理列表'}
+            <Tip
+              title={
+                '查看可用的接口，词槽配置来自于接口时，传入特定变量或词槽，可以调用接口获取结果。接口列表不可修改，需要开发同事进行维护。'
+              }
+            />
+          </>
+        }
         // toolBarRender={() => [
         //   <Button
         //     key="button"

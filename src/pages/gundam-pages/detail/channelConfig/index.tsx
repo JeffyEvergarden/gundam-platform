@@ -1,15 +1,13 @@
-import Condition from '@/components/Condition';
-import config from '@/config/index';
-import useUpdateModel from '@/models';
 import { PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Button, message, Popconfirm } from 'antd';
+import { Button, Popconfirm } from 'antd';
 import React, { useEffect, useRef } from 'react';
-import { history, useAccess, useModel } from 'umi';
+import { useAccess, useModel } from 'umi';
 import style from '../style.less';
 
-import InfoModal from './components/info-modal';
+import Tip from '@/components/Tip';
 import { useChannelConfigModel } from '../model';
+import InfoModal from './components/info-modal';
 
 // 机器人列表
 const ChannelConfig: React.FC = (props: any) => {
@@ -177,7 +175,12 @@ const ChannelConfig: React.FC = (props: any) => {
           pageSize: 10,
         }}
         dateFormatter="string"
-        headerTitle=""
+        headerTitle={
+          <>
+            {'渠道配置'}
+            <Tip title={'新建渠道后，用于命中FAQ时选取对应的渠道进行回复。'} />
+          </>
+        }
         toolBarRender={() => [
           <Button
             key="button"

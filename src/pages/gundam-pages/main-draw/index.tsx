@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import Condition from '@/components/Condition';
-import { message, Select } from 'antd';
+import { message } from 'antd';
 import { useState } from 'react';
 import { history, useModel } from 'umi';
 import DrawerForm from './drawerV2';
@@ -42,7 +41,7 @@ const MainDraw = (props: any) => {
   const edgeDrawerRef = useRef<any>(null);
   const spNodeDrawerRef = useRef<any>(null);
   const operationNodeDrawerRef = useRef<any>(null);
-  const [bFlowId, setBFlowId] = useState('');
+  // const [bFlowId, setBFlowId] = useState('');
 
   // 历史遗留问题
   // 话术标签、业务流程列表
@@ -309,7 +308,7 @@ const MainDraw = (props: any) => {
         setBusinessFlowId(res?.nodeFlowId || '');
         // 业务流程节点
         history.push(`/gundamPages/businessDraw/detail?id=${res?.nodeFlowId}`);
-        setBFlowId(res?.nodeFlowId);
+        // setBFlowId(res?.nodeFlowId);
       } else {
         message.warning('未配置业务流程');
       }
@@ -329,7 +328,7 @@ const MainDraw = (props: any) => {
   }, []);
 
   useEffect(() => {
-    setBFlowId(businessFlowId);
+    // setBFlowId(businessFlowId);
     getMachineInfo().then((res) => {
       fake.current?.executeCommand?.('autoZoom');
       fake.current?.executeCommand?.('resetZoom');
@@ -374,7 +373,7 @@ const MainDraw = (props: any) => {
 
   return (
     <div className={style['main-draw']}>
-      <Condition r-if={type == 'business'}>
+      {/* <Condition r-if={type == 'business'}>
         <Select
           size="small"
           style={{ marginBottom: '16px', width: '200px' }}
@@ -394,7 +393,7 @@ const MainDraw = (props: any) => {
             );
           })}
         </Select>
-      </Condition>
+      </Condition> */}
       <div className={style['container']}>
         <div className={style['container_right']} ref={dom}>
           <FlowPage

@@ -1,7 +1,7 @@
-import { useState, useImperativeHandle, useEffect, useMemo } from 'react';
-import { Button, Popover } from 'antd';
-import style from './style.less';
+import Tip from '@/components/Tip';
+import { Popover } from 'antd';
 import { useModel } from 'umi';
+import style from './style.less';
 
 const WordSlotModal: React.FC<any> = (props: any) => {
   const { text } = props;
@@ -70,11 +70,17 @@ const WordSlotModal: React.FC<any> = (props: any) => {
   };
 
   return (
-    <Popover content={fanyi(formatHtml(text))}>
-      <Button type="link" style={{ justifySelf: 'flex-end' }}>
-        预览
-      </Button>
-    </Popover>
+    <span>
+      <Popover content={fanyi(formatHtml(text))}>
+        <a type="link" style={{ justifySelf: 'flex-end' }}>
+          预览
+        </a>
+      </Popover>{' '}
+      <Tip
+        placement={'topRight'}
+        title={'将文本中插入的变量或词槽占位符转换为变量名及词槽名，方便查看。'}
+      />
+    </span>
   );
 };
 

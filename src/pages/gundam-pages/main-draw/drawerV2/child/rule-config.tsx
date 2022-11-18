@@ -1,4 +1,5 @@
 import Condition from '@/components/Condition';
+import Tip from '@/components/Tip';
 import { AppstoreAddOutlined, MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { Button, DatePicker, Form, Input, InputNumber, Select, Space, TimePicker } from 'antd';
 import { useMemo } from 'react';
@@ -134,7 +135,14 @@ const RuleConfig = (props: any) => {
         return (
           <div>
             <div className={styles['zy-row']} style={{ marginBottom: '10px' }}>
-              <div className={styles['title_sp']}>规则配置</div>
+              <div className={styles['title_sp']}>
+                规则配置
+                <Tip
+                  title={
+                    '配置当前回应策略的规则，规则组内条件为“且”关系，规则组间为“或”关系；未配置规则组默认满足规则。'
+                  }
+                />
+              </div>
             </div>
             <div className={styles['rule-box_bg']}>
               <div style={style}>

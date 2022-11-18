@@ -1,3 +1,4 @@
+import Tip from '@/components/Tip';
 import config from '@/config/index';
 import { PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
@@ -189,7 +190,16 @@ const InterfaceConfig: React.FC = (props: any) => {
           pageSize: 10,
         }}
         dateFormatter="string"
-        headerTitle="全局变量列表"
+        headerTitle={
+          <>
+            {'全局变量列表'}
+            <Tip
+              title={
+                '变量是用于接受调用方传递过来的信息，新建的变量可以在“机器人模拟”中测试效果，新建机器人时初始化了渠道code、系统日期、系统时间3个变量可供使用。'
+              }
+            />
+          </>
+        }
         toolBarRender={() => [
           <Button
             key="button"

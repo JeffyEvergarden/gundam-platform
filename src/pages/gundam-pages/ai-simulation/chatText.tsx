@@ -485,6 +485,12 @@ export default (props: any) => {
         message.warning('最多发送200字');
         return;
       }
+      let reg = /^[0-9\*\#]+$/g;
+      if (!reg.test(textMessage)) {
+        message.warning('按键发送仅可输入0-9的数字、*号和#号');
+        return;
+      }
+
       setLoading(true);
       let data = [...dialogList];
       let newDay = new Date().toLocaleDateString();

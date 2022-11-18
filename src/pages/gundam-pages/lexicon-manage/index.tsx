@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useRef, Fragment } from 'react';
-import { useModel } from 'umi';
-import ProTable from '@ant-design/pro-table';
-import { useLexiconModel } from './model';
-import { Space, Button, Tabs, Popconfirm, message } from 'antd';
-import OperateModal from './components/modalCompo';
-import EnumModal from './components/enumModal';
+import Tip from '@/components/Tip';
 import config from '@/config/index';
-const { TabPane } = Tabs;
+import ProTable from '@ant-design/pro-table';
+import { Button, message, Popconfirm, Space, Tabs } from 'antd';
+import React, { useRef, useState } from 'react';
+import { useModel } from 'umi';
+import EnumModal from './components/enumModal';
+import OperateModal from './components/modalCompo';
 import styles from './index.less';
+import { useLexiconModel } from './model';
+const { TabPane } = Tabs;
 
 const LexiconManage: React.FC = (props: any) => {
   const { getLexiconList, deleteLexicon, addLexicon, editLexicon } = useLexiconModel();
@@ -221,7 +222,27 @@ const LexiconManage: React.FC = (props: any) => {
         size={'large'}
         style={{ width: '100%', backgroundColor: '#fff', paddingLeft: '10px', marginBottom: 0 }}
       >
-        <TabPane tab="枚举实体" key="1">
+        <TabPane
+          tab={
+            <>
+              {'枚举实体'}
+              <Tip
+                title={
+                  <>
+                    {' '}
+                    {
+                      '枚举实体指实体值可枚举的实体，一个枚举实体可以具有多个实体值。词槽配置来源于枚举实体时，当客户文本中包含枚举值，则把枚举值填入词槽中。'
+                    }
+                    <br />
+                    {`例如：“城市”实体的实体值可设置为“北京”、“上海”、“广州”、“深圳”等；
+                    客户说“我想订去北京的机票”，设置“目的地”词槽，选择来自"枚举实体",选择城市，则自动将客户文本中的“北京”填充至“目的地”词槽中。`}
+                  </>
+                }
+              />
+            </>
+          }
+          key="1"
+        >
           <ProTable
             toolBarRender={() => [
               <Button key="0" type="primary" onClick={() => addEnum()}>
@@ -242,7 +263,35 @@ const LexiconManage: React.FC = (props: any) => {
             }}
           />
         </TabPane>
-        <TabPane tab="正则实体" key="2">
+        <TabPane
+          tab={
+            <>
+              {'正则实体'}
+              <Tip
+                title={
+                  <>
+                    {' '}
+                    正则实体指利用正则表达式识别出用户消息中的片段，作为实体值。一个正则实体可以配置多个正则表达式，多个表达式之间是“或”关系，满足其一则把表达式匹配中的内容填充到词槽中。
+                    以下为一些常用的正则表达式，可直接复制使用。
+                    <br />
+                    QQ号：{'[1-9][0-9]{4,}'}
+                    <br />
+                    手机号：
+                    {
+                      '(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])[ -]?(d{4})[ -]?(d{4})'
+                    }
+                    <br />
+                    微信号：{'^[a-zA-Z][a-zA-Z0-9_-]{5,19}$'}
+                    <br />
+                    身份证号：{'^(d{6})(d{4})(d{2})(d{2})(d{3})([0-9]|X)$'}
+                    <br />
+                  </>
+                }
+              />
+            </>
+          }
+          key="2"
+        >
           <ProTable
             toolBarRender={() => [
               <Button key="0" type="primary" onClick={() => add()}>

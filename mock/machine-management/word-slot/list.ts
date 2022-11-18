@@ -157,7 +157,7 @@ const configList = (req: any, res: any) => {
         {
           id: '1',
           configType: 0,
-          configName: 'thresholdGap',
+          configName: '澄清数量上限',
           configValue: '1.0',
           configDesc: 'var1',
           configKey: 'THRESHOLD_GAP',

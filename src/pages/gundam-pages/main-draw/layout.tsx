@@ -5,6 +5,7 @@ import { history, useAccess, useModel } from 'umi';
 import { PageContainer, ProBreadcrumb } from '@ant-design/pro-layout';
 
 import Condition from '@/components/Condition';
+import Tip from '@/components/Tip';
 import { usePublishModel } from '../../gundam/management/model';
 import MainDraw from './index';
 import style from './style.less';
@@ -131,6 +132,9 @@ const MainLayout: React.FC = (props: any) => {
               disabled={info.status == 1}
             >
               发布生产
+              <Tip
+                title={`发布生产后，将变更的内容部署至生产环境，包括全局配置、主流程配置、意图管理、录音管理的变化（FAQ新增后自动生效无需发布），可在“机器人模拟-生产”中测试效果。发布失败时，可在左侧查看失败原因。`}
+              />
             </Button>
 
             <Button
@@ -142,6 +146,11 @@ const MainLayout: React.FC = (props: any) => {
               disabled={info.status == 1 ? true : false}
             >
               发布测试
+              <Tip
+                title={
+                  '发布测试后，将变更的内容部署至测试环境，包括全局配置、主流程配置、意图管理、录音管理的变化（FAQ新增后自动生效无需发布），可在“机器人模拟-测试”中测试效果。当测试没问题后可“发布生产”。发布失败时，可在左侧查看失败原因。'
+                }
+              />
             </Button>
           </Space>
         ),

@@ -1,4 +1,5 @@
 import Condition from '@/components/Condition';
+import Tip from '@/components/Tip';
 import config from '@/config';
 import { AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Button, Form, InputNumber, message, Radio, Select, Space, Switch } from 'antd';
@@ -56,21 +57,21 @@ const HightformTemplate: any = (props: any) => {
       setDisabled(true);
       form.setFieldsValue(res);
     } else if (res[name].configType == 2) {
-      res[name] = {
-        action: {
-          actionText: '',
-          actionType: null,
-          textLabels: [],
-          userInputType: '10',
-          allowInterrupt: 1,
-          soundType: 1,
-        },
-        messageList: [],
-        configType: 2,
-        responseList: [],
-        times: null,
-      };
-      form.setFieldsValue(res);
+      // res[name] = {
+      //   action: {
+      //     actionText: '',
+      //     actionType: null,
+      //     textLabels: [],
+      //     userInputType: '10',
+      //     allowInterrupt: 1,
+      //     soundType: 1,
+      //   },
+      //   messageList: [],
+      //   configType: 2,
+      //   responseList: [],
+      //   times: null,
+      // };
+      // form.setFieldsValue(res);
       setDisabled(false);
     }
     console.log(res);
@@ -87,11 +88,64 @@ const HightformTemplate: any = (props: any) => {
     }
   }, []);
 
+  const tipContent = (title: any) => {
+    if (title == '静默') {
+      return '当客户不说话，触发静默处理，反问客户是否在线。';
+    }
+    if (title == '拒识') {
+      return '当意图识别返回的结果得分低于“全局配置-节点配置-意图澄清配置-阈值”时，触发拒识，即机器人无法理解客户的意思。';
+    }
+    if (title == '澄清') {
+      return (
+        <>
+          当意图识别返回的结果得分大于“全局配置-节点配置-意图澄清配置-阈值”，且大于阈值的候选项有多个，且候选项之间的差值小于“全局配置-节点配置-意图澄清配置-差值”，则触发澄清，即机器人无法确定客户具体的意图，需要确认。
+          {config.robotTypeMap[info?.robotType] === '语音'
+            ? '此时将意图或FAQ替换澄清文本中的{}进行返回。'
+            : '此时将需要澄清的意图或FAQ批量返回，供客户选择。'}
+        </>
+      );
+    }
+    if (title == '客户未听清') {
+      return '配置当客户明确表示没听清，信号不好时响应的动作，默认重复播报上一句有意义的话术（排除静默话术）';
+    }
+  };
+
+  const tipTimes = (title: any) => {
+    if (title == '静默') {
+      return '客户静默时，机器人连续反问的最大次数。顺序、循环使用响应话术进行播报。';
+    }
+    if (title == '拒识') {
+      return '机器人连续拒识的次数上限。';
+    }
+    if (title == '澄清') {
+      return '机器人连续澄清的次数上限。';
+    }
+    if (title == '客户未听清') {
+      return '客户连续表述“未听清”意图的次数上限。';
+    }
+  };
+
+  const tipAction = (title: any) => {
+    if (title == '静默') {
+      return '客户静默时，机器人连续反问的最大次数。顺序、循环使用响应话术进行播报。';
+    }
+    if (title == '拒识') {
+      return '机器人连续拒识的次数上限。';
+    }
+    if (title == '澄清') {
+      return '机器人连续澄清的次数上限。';
+    }
+    if (title == '客户未听清') {
+      return '客户连续表述“未听清”意图的次数上限。';
+    }
+  };
+
   return (
     <div className={styles['high-config']}>
       <Space align="baseline">
         <div className={styles['title_sp']} style={{ marginRight: '16px', marginBottom: '20px' }}>
           {title}处理
+          <Tip title={tipContent(title)} />
         </div>
         <Condition r-if={type == 'flow'}>
           <Form.Item name={[name, 'configType']} initialValue={1}>
@@ -122,7 +176,18 @@ const HightformTemplate: any = (props: any) => {
             return (
               <div className={styles['conversation-list']}>
                 <div className={styles['zy-row']} style={{ marginBottom: '10px' }}>
-                  <div className={styles['title_third']}>响应话术</div>
+                  <div className={styles['title_third']}>
+                    响应话术
+                    <Tip
+                      title={
+                        title == '澄清'
+                          ? config.robotTypeMap[info?.robotType] === '语音'
+                            ? '默认值“请问你是项咨询{}还是{}？”，澄清意图或faq会替换{}'
+                            : '默认值“你是否想要咨询以下问题”，引导客户从澄清列表中选择内容'
+                          : '返回给客户的话术。'
+                      }
+                    />{' '}
+                  </div>
                 </div>
 
                 <div className={styles['cvs-box']}>
@@ -142,8 +207,22 @@ const HightformTemplate: any = (props: any) => {
                                 console.log(sType);
                               }}
                             >
-                              <Radio value={1}>全合成</Radio>
-                              <Radio value={2}>录音半合成</Radio>
+                              <Radio value={1}>
+                                全合成
+                                <Tip
+                                  title={
+                                    '使用“全局配置-TTS配置”对澄清话术进行录音合成，合成后可以在“录音管理”中查看，或者点击“试听”'
+                                  }
+                                />
+                              </Radio>
+                              <Radio value={2}>
+                                录音半合成
+                                <Tip
+                                  title={
+                                    '选择录音进行播报。根据分号拆分文本后，不含变量、词槽的文本段数量要与选择的录音数量一致。例如：“你好；今天是${system_date}”，需要上传一段与“你好”适配的录音，后面一段自动使用TTS合成。'
+                                  }
+                                />
+                              </Radio>
                             </Radio.Group>
                           </Form.Item>
                           <Condition r-if={sType?.responseList?.[index]?.soundType == 2}>
@@ -186,6 +265,9 @@ const HightformTemplate: any = (props: any) => {
                             }}
                           >
                             试听
+                            <Tip
+                              title={'根据“全局配置-TTS配置”，或者选择的录音，合成语音进行试听。'}
+                            />
                           </Button>
                           <SoundVarModal
                             cref={auditionRef}
@@ -258,18 +340,24 @@ const HightformTemplate: any = (props: any) => {
                               field={field}
                               formName={[name, 'responseList', index]}
                             /> */}
-
-                            <Form.Item
-                              name={[field.name, 'allowInterrupt']}
-                              fieldKey={[field.fieldKey, 'allowInterrupt']}
-                              initialValue={1}
-                              label={'允许打断'}
-                            >
-                              <Radio.Group disabled={disabled}>
-                                <Radio value={1}>是</Radio>
-                                <Radio value={0}>否</Radio>
-                              </Radio.Group>
-                            </Form.Item>
+                            <Space align="baseline">
+                              <Form.Item
+                                name={[field.name, 'allowInterrupt']}
+                                fieldKey={[field.fieldKey, 'allowInterrupt']}
+                                initialValue={1}
+                                label={'允许打断'}
+                              >
+                                <Radio.Group disabled={disabled}>
+                                  <Radio value={1}>是</Radio>
+                                  <Radio value={0}>否</Radio>
+                                </Radio.Group>
+                              </Form.Item>
+                              <Tip
+                                title={
+                                  '用于控制语音平台在放音过程中是否允许打断，若是，播音过程检测到客户说话，则停止播报进行收音。'
+                                }
+                              />
+                            </Space>
                           </Condition>
 
                           <Form.Item
@@ -334,54 +422,73 @@ const HightformTemplate: any = (props: any) => {
 
       {/* 未听清意图名称 */}
       <Condition r-if={name == 'unclearAction'}>
-        <FormItem name={[name, 'wishId']} label={'未听清意图名称'} style={{ marginTop: '8px' }}>
-          <Select
-            disabled={true}
-            style={{ width: '300px' }}
-            getPopupContainer={(trigger) => trigger.parentElement}
-          >
-            {wishList?.map((item: any, index: number) => {
-              return (
-                <Option key={index} value={item.name} opt={item}>
-                  {item.label}
-                </Option>
-              );
-            })}
-          </Select>
+        <FormItem label={'未听清意图名称'} style={{ marginTop: '8px' }}>
+          <Space align="baseline">
+            <FormItem name={[name, 'wishId']} noStyle>
+              <Select
+                disabled={true}
+                style={{ width: '300px' }}
+                getPopupContainer={(trigger) => trigger.parentElement}
+              >
+                {wishList?.map((item: any, index: number) => {
+                  return (
+                    <Option key={index} value={item.name} opt={item}>
+                      {item.label}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </FormItem>
+            <Tip
+              title={
+                '默认关联“意图管理”的用户未听清意图，需要在该意图下配置语料以提高该意图的识别准确率。'
+              }
+            />
+          </Space>
         </FormItem>
       </Condition>
 
       {/*文本不需要这个  0文本 1语音 */}
       <Condition r-if={!(info?.robotType == 0)}>
         {/* 次数 */}
-        <FormItem name={[name, 'times']} label={title + '次数'} style={{ marginTop: '8px' }}>
-          <InputNumber
-            max={100000}
-            min={1}
-            step="1"
-            precision={0}
-            style={{ width: '200px' }}
-            placeholder={'请输入' + title + '次数'}
-            disabled={disabled}
-          />
+        <FormItem label={title + '次数'} style={{ marginTop: '8px' }}>
+          <Space align="baseline">
+            <FormItem noStyle name={[name, 'times']}>
+              <InputNumber
+                max={100000}
+                min={1}
+                step="1"
+                precision={0}
+                style={{ width: '200px' }}
+                placeholder={'请输入' + title + '次数'}
+                disabled={disabled}
+              />
+            </FormItem>
+            <Tip title={tipTimes(title)} />
+          </Space>
         </FormItem>
+
         {/* 静默超时时间 */}
         <Condition r-if={title == '静默'}>
-          <FormItem
-            name={[name, 'timeout']}
-            label={title + '超时时间'}
-            style={{ marginTop: '8px' }}
-            rules={[{ required: true, message: '请输入静默超时时间' }]}
-            initialValue={5}
-          >
-            <InputNumber
-              min={1}
-              step="1"
-              precision={0}
-              style={{ width: '161px' }}
-              placeholder={'请输入' + title + '超时时间'}
-              disabled={disabled}
-            />
+          <FormItem label={title + '超时时间'} style={{ marginTop: '8px' }}>
+            <Space align="baseline">
+              <FormItem
+                name={[name, 'timeout']}
+                noStyle
+                rules={[{ required: true, message: '请输入静默超时时间' }]}
+                initialValue={5}
+              >
+                <InputNumber
+                  min={1}
+                  step="1"
+                  precision={0}
+                  style={{ width: '161px' }}
+                  placeholder={'请输入' + title + '超时时间'}
+                  disabled={disabled}
+                />
+              </FormItem>
+              <Tip title={'单位秒，客户多少秒没说话则定义为静默。'} />
+            </Space>
           </FormItem>
         </Condition>
 
@@ -389,7 +496,12 @@ const HightformTemplate: any = (props: any) => {
         <div className={'label_sp'} style={{ marginTop: '8px' }}>
           <ActionConfig
             form={form}
-            title={title + '执行动作'}
+            title={
+              <>
+                {title + '执行动作'}
+                <Tip title={tipAction(title)} />
+              </>
+            }
             formName={[name]}
             name={[name]}
             titleType={2}
