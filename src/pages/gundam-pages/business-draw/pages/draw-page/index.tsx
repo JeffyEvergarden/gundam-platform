@@ -182,6 +182,7 @@ const SubDrawPages: React.FC<any> = (props: any) => {
                   title={
                     '发布测试后，将变更的内容部署至测试环境，包括全局配置、主流程配置、意图管理、录音管理的变化（FAQ新增后自动生效无需发布），可在“机器人模拟-测试”中测试效果。当测试没问题后可“发布生产”。发布失败时，可在左侧查看失败原因。'
                   }
+                  placement={'topRight'}
                 />
               </Button>
             </Space>
