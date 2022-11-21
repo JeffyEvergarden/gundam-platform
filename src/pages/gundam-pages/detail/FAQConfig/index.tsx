@@ -1,4 +1,10 @@
 import clearNum from '@/asset/image/clearnumup.png';
+import guessQuestion from '@/asset/image/guessyouwant.png';
+import intel from '@/asset/image/intelrecommend.png';
+import intel2 from '@/asset/image/intelrecommend2.png';
+import recommendNum from '@/asset/image/recommendnumup.png';
+import recommendQuestion from '@/asset/image/recommendquestion.png';
+import searchSuggest from '@/asset/image/searchsuggestnumup.png';
 import Condition from '@/components/Condition';
 import Tip from '@/components/Tip';
 import config from '@/config';
@@ -277,14 +283,59 @@ const FAQConfig: React.FC<any> = (props: any) => {
     form.setFieldsValue({ ...formData });
   };
 
+  const titleHtml = (title: any, url: any, url2?: any) => {
+    return (
+      <div style={url2 ? { width: '900px' } : { width: '500px' }}>
+        {title}
+        <br />
+        <img decoding="async" src={url} style={!url2 ? { width: '100%' } : { width: '50%' }} />
+        {url2 && <img decoding="async" src={url2} style={{ width: '50%' }} />}
+      </div>
+    );
+  };
+
   const tipContent = (title: any) => {
     if (title == '澄清数量上限') {
-      return (
-        <div style={{ width: '500px' }}>
-          当意图识别触发澄清时，此配置控制澄清的数量，当配置3，效果如下图
-          <br />
-          <img src={clearNum} />
-        </div>
+      return titleHtml('当意图识别触发澄清时，此配置控制澄清的数量，当配置3，效果如下图', clearNum);
+    }
+    if (title == '推荐问题数量上限') {
+      return titleHtml(
+        '当机器人回复FAQ答案时，若该FAQ配置了推荐问，答案会连同推荐问一并返回。该配置用于限制FAQ推荐问设置的数量上限，若配置3，效果如下图',
+        recommendNum,
+      );
+    }
+    if (title == '搜索联想数量上限') {
+      return titleHtml(
+        '当客户在页面输入文本，会触发搜索联想，辅助搜索，点击联想文本可获取对应答案。例如输入“邮你贷”，可以弹出“邮你贷”、“邮你贷热线”、“邮你贷余额”等联想文本。该配置用于限制搜索联想的数量上限。当配置5，效果如下图',
+        searchSuggest,
+      );
+    }
+    if (title == '答案失效话术') {
+      return '当机器人命中FAQ，但由于没有对应渠道的答案、或者答案已失效而找不到答案，回复该话术。';
+    }
+    if (title == '推荐问题话术') {
+      return titleHtml(
+        '当机器人回复FAQ答案时，若该FAQ配置了推荐问，答案会连同推荐问一并返回。此话术用于衔接答案与推荐问，如下图',
+        recommendQuestion,
+      );
+    }
+    if (title == '是否开启猜你想问') {
+      return '开启后，当客户文本触发拒识，会返回手动配置或智能识别的FAQ供客户选择。';
+    }
+    if (title == '猜你想问话术') {
+      return titleHtml(
+        '触发拒识时，此话术用于衔接“拒识话术”和“猜你想问配置”的问题，例如配置“猜你想问：”，效果如下图',
+        guessQuestion,
+      );
+    }
+    if (title == '猜你想问配置') {
+      return '触发拒识时，与拒识话术一并返回给客户，尝试解决客户问题。可以手动配置或智能推荐。';
+    }
+    if (title == '智能推荐') {
+      return titleHtml(
+        '开启后，自动根据意图识别得分，将得分最高的候选放入推荐问题中，因此，不同文本触发的拒识可以有不同的猜你想问；关闭时，需要手动选择推荐问。建议开启，下图开启了智能推荐，得分低于全局配置阈值0.7触发拒识，根据得分将前三条作为推荐，推荐的FAQ与客户询问的内容相关',
+        intel,
+        intel2,
       );
     }
   };
@@ -307,7 +358,7 @@ const FAQConfig: React.FC<any> = (props: any) => {
               if (item?.dataType == 1) {
                 return (
                   <FormItem label={item.configName}>
-                    <Space align="baseline">
+                    <Space>
                       <FormItem
                         // {...col}
                         noStyle
@@ -325,7 +376,7 @@ const FAQConfig: React.FC<any> = (props: any) => {
                           disabled={item?.validateRule?.disabled ? true : false}
                         />
                       </FormItem>
-                      <Tip title={tipContent(item.configName)} />
+                      <Tip img={true} title={tipContent(item.configName)} />
                     </Space>
                   </FormItem>
                 );
@@ -335,189 +386,210 @@ const FAQConfig: React.FC<any> = (props: any) => {
                   config.robotTypeMap[info?.robotType] === '语音'
                 ) {
                   return (
-                    <FormItem
-                      label={item.configName}
-                      key={item.configName}
-                      rules={[{ required: true }]}
-                    >
-                      <div className={style['diy-box']}>
-                        <div className={style['diy-row']}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <div className={style['zy-row']} style={{ paddingBottom: '6px' }}></div>
+                    <FormItem label={item.configName}>
+                      <Space className={style['faqInvalidAnswer']}>
+                        <FormItem noStyle key={item.configName} rules={[{ required: true }]}>
+                          <div className={style['diy-box']}>
+                            <div className={style['diy-row']}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <div
+                                  className={style['zy-row']}
+                                  style={{ paddingBottom: '6px' }}
+                                ></div>
 
-                            <div id={style['soundType']}>
-                              <Form.Item
-                                name={['systemConfigList', item.configKey, 'soundType']}
-                                key={item.configKey + 'soundType'}
-                                initialValue={1}
-                              >
-                                <Radio.Group>
-                                  <Radio value={1}>
-                                    全合成
-                                    <Tip
-                                      title={
-                                        '使用“全局配置-TTS配置”对澄清话术进行录音合成，合成后可以在“录音管理”中查看，或者点击“试听”'
-                                      }
-                                    />
-                                  </Radio>
-                                  <Radio value={2}>
-                                    录音半合成
-                                    <Tip
-                                      title={
-                                        '选择录音进行播报。根据分号拆分文本后，不含变量、词槽的文本段数量要与选择的录音数量一致。例如：“你好；今天是${system_date}”，需要上传一段与“你好”适配的录音，后面一段自动使用TTS合成。'
-                                      }
-                                    />
-                                  </Radio>
-                                </Radio.Group>
-                              </Form.Item>
-                              <Condition r-if={sType == 2}>
-                                <Form.Item
-                                  name={['systemConfigList', item.configKey, 'soundRecordList']}
-                                  key={item.configKey + 'soundRecordList'}
-                                  rules={[{ required: true, message: '请选择' }]}
-                                >
+                                <div id={style['soundType']}>
+                                  <Form.Item
+                                    name={['systemConfigList', item.configKey, 'soundType']}
+                                    key={item.configKey + 'soundType'}
+                                    initialValue={1}
+                                  >
+                                    <Radio.Group>
+                                      <Radio value={1}>
+                                        全合成
+                                        <Tip
+                                          title={
+                                            '使用“全局配置-TTS配置”对澄清话术进行录音合成，合成后可以在“录音管理”中查看，或者点击“试听”'
+                                          }
+                                        />
+                                      </Radio>
+                                      <Radio value={2}>
+                                        录音半合成
+                                        <Tip
+                                          title={
+                                            '选择录音进行播报。根据分号拆分文本后，不含变量、词槽的文本段数量要与选择的录音数量一致。例如：“你好；今天是${system_date}”，需要上传一段与“你好”适配的录音，后面一段自动使用TTS合成。'
+                                          }
+                                        />
+                                      </Radio>
+                                    </Radio.Group>
+                                  </Form.Item>
+                                  <Condition r-if={sType == 2}>
+                                    <Form.Item
+                                      name={['systemConfigList', item.configKey, 'soundRecordList']}
+                                      key={item.configKey + 'soundRecordList'}
+                                      rules={[{ required: true, message: '请选择' }]}
+                                    >
+                                      <Button
+                                        type="link"
+                                        onClick={() => {
+                                          console.log(form.getFieldsValue());
+                                          console.log(sType);
+
+                                          if (sType == 2) {
+                                            soundRef?.current?.open(
+                                              form.getFieldsValue()['systemConfigList'][
+                                                item.configKey
+                                              ]?.soundRecordList || [],
+                                            );
+                                          }
+                                        }}
+                                      >
+                                        选择
+                                      </Button>
+                                    </Form.Item>
+                                  </Condition>
                                   <Button
                                     type="link"
                                     onClick={() => {
                                       console.log(form.getFieldsValue());
-                                      console.log(sType);
-
-                                      if (sType == 2) {
-                                        soundRef?.current?.open(
-                                          form.getFieldsValue()['systemConfigList'][item.configKey]
-                                            ?.soundRecordList || [],
-                                        );
-                                      }
+                                      auditionRef?.current?.open(
+                                        form.getFieldsValue()['systemConfigList'][item.configKey],
+                                      );
                                     }}
                                   >
-                                    选择
+                                    试听
+                                    <Tip
+                                      title={
+                                        '根据“全局配置-TTS配置”，或者选择的录音，合成语音进行试听。'
+                                      }
+                                    />
                                   </Button>
-                                </Form.Item>
-                              </Condition>
-                              <Button
-                                type="link"
-                                onClick={() => {
-                                  console.log(form.getFieldsValue());
-                                  auditionRef?.current?.open(
-                                    form.getFieldsValue()['systemConfigList'][item.configKey],
-                                  );
-                                }}
+                                  <SoundVarModal cref={auditionRef}></SoundVarModal>
+                                  <SoundSelectModal
+                                    cref={soundRef}
+                                    setform={(list: any, index: any) => {
+                                      let formData = form.getFieldsValue();
+                                      formData['systemConfigList'][item.configKey].soundRecordList =
+                                        list;
+                                      formData['systemConfigList'][item.configKey].answer =
+                                        list?.[0]?.text;
+                                      form.setFieldsValue(formData);
+                                      console.log(formData);
+                                    }}
+                                    type={'radio'}
+                                  ></SoundSelectModal>
+                                </div>
+                              </div>
+
+                              <Form.Item
+                                name={['systemConfigList', item.configKey, 'answer']}
+                                key={item.configKey + 'answer'}
+                                rules={[
+                                  {
+                                    message: '请输入',
+                                    required: true,
+                                    validateTrigger: 'onBlur',
+                                  },
+                                ]}
                               >
-                                试听
+                                <Input.TextArea
+                                  maxLength={item?.validateRule?.max ?? 200}
+                                  rows={5}
+                                  placeholder={'请输入'}
+                                  showCount
+                                />
+                              </Form.Item>
+                              <Space align="baseline">
+                                <Form.Item
+                                  name={['systemConfigList', item.configKey, 'allowInterrupt']}
+                                  key={item.configKey + 'allowInterrupt'}
+                                  initialValue={1}
+                                  label={'允许打断'}
+                                >
+                                  <Radio.Group>
+                                    <Radio value={1}>是</Radio>
+                                    <Radio value={0}>否</Radio>
+                                  </Radio.Group>
+                                </Form.Item>
                                 <Tip
                                   title={
-                                    '根据“全局配置-TTS配置”，或者选择的录音，合成语音进行试听。'
+                                    '用于控制语音平台在放音过程中是否允许打断，若是，播音过程检测到客户说话，则停止播报进行收音。'
                                   }
                                 />
-                              </Button>
-                              <SoundVarModal cref={auditionRef}></SoundVarModal>
-                              <SoundSelectModal
-                                cref={soundRef}
-                                setform={(list: any, index: any) => {
-                                  let formData = form.getFieldsValue();
-                                  formData['systemConfigList'][item.configKey].soundRecordList =
-                                    list;
-                                  formData['systemConfigList'][item.configKey].answer =
-                                    list?.[0]?.text;
-                                  form.setFieldsValue(formData);
-                                  console.log(formData);
-                                }}
-                                type={'radio'}
-                              ></SoundSelectModal>
+                              </Space>
                             </div>
                           </div>
+                        </FormItem>
 
-                          <Form.Item
-                            name={['systemConfigList', item.configKey, 'answer']}
-                            key={item.configKey + 'answer'}
-                            rules={[
-                              {
-                                message: '请输入',
-                                required: true,
-                                validateTrigger: 'onBlur',
-                              },
-                            ]}
-                          >
-                            <Input.TextArea
-                              maxLength={item?.validateRule?.max ?? 200}
-                              rows={5}
-                              placeholder={'请输入'}
-                              showCount
-                            />
-                          </Form.Item>
-                          <Space align="baseline">
-                            <Form.Item
-                              name={['systemConfigList', item.configKey, 'allowInterrupt']}
-                              key={item.configKey + 'allowInterrupt'}
-                              initialValue={1}
-                              label={'允许打断'}
-                            >
-                              <Radio.Group>
-                                <Radio value={1}>是</Radio>
-                                <Radio value={0}>否</Radio>
-                              </Radio.Group>
-                            </Form.Item>
-                            <Tip
-                              title={
-                                '用于控制语音平台在放音过程中是否允许打断，若是，播音过程检测到客户说话，则停止播报进行收音。'
-                              }
-                            />
-                          </Space>
-                        </div>
-                      </div>
+                        <Tip title={tipContent(item.configName)}></Tip>
+                      </Space>
                     </FormItem>
                   );
                 }
                 if (item.configKey == 'FAQ_REJECT_RECOMMEND_TEXT' && switchType) {
                   return (
-                    <FormItem
-                      // {...col}
-                      label={item.configName}
-                      name={['systemConfigList', item.configKey]}
-                      key={'systemConfigList' + item.configKey}
-                      rules={[{ required: true }]}
-                    >
-                      <Input.TextArea
-                        style={{ width: 300 }}
-                        maxLength={item?.validateRule?.max ?? 200}
-                      />
+                    <FormItem label={item.configName}>
+                      <Space>
+                        <FormItem
+                          // {...col}
+                          noStyle
+                          name={['systemConfigList', item.configKey]}
+                          key={'systemConfigList' + item.configKey}
+                          rules={[{ required: true }]}
+                        >
+                          <Input.TextArea
+                            style={{ width: 300 }}
+                            maxLength={item?.validateRule?.max ?? 200}
+                          />
+                        </FormItem>
+                        <Tip img={true} title={tipContent(item.configName)} />
+                      </Space>
                     </FormItem>
                   );
                 } else if (item.configKey != 'FAQ_REJECT_RECOMMEND_TEXT') {
                   return (
-                    <FormItem
-                      // {...col}
-                      label={item.configName}
-                      name={['systemConfigList', item.configKey]}
-                      key={'systemConfigList' + item.configKey}
-                      rules={[{ required: true }]}
-                    >
-                      <Input.TextArea
-                        style={{ width: 300 }}
-                        maxLength={item?.validateRule?.max ?? 200}
-                      />
+                    <FormItem label={item.configName}>
+                      <Space>
+                        <FormItem
+                          // {...col}
+                          noStyle
+                          name={['systemConfigList', item.configKey]}
+                          key={'systemConfigList' + item.configKey}
+                          rules={[{ required: true }]}
+                        >
+                          <Input.TextArea
+                            style={{ width: 300 }}
+                            maxLength={item?.validateRule?.max ?? 200}
+                          />
+                        </FormItem>
+                        <Tip img={true} title={tipContent(item.configName)} />
+                      </Space>
                     </FormItem>
                   );
                 }
               } else if (item?.dataType == 4) {
                 return (
-                  <FormItem
-                    // {...col}
-                    label={item.configName}
-                    name={['systemConfigList', item.configKey]}
-                    key={'systemConfigList' + item.configKey}
-                    valuePropName="checked"
-                    initialValue={false}
-                    shouldUpdate={(prevValues, curValues) => {
-                      setSwitchType(curValues?.systemConfigList?.[item.configKey]);
-                      return true;
-                    }}
-                  >
-                    <Switch
-                      checkedChildren="开启"
-                      unCheckedChildren="关闭"
-                      onChange={setSwitchType}
-                    />
+                  <FormItem label={item.configName}>
+                    <Space align="baseline">
+                      <FormItem
+                        // {...col}
+                        noStyle
+                        name={['systemConfigList', item.configKey]}
+                        key={'systemConfigList' + item.configKey}
+                        valuePropName="checked"
+                        initialValue={false}
+                        shouldUpdate={(prevValues, curValues) => {
+                          setSwitchType(curValues?.systemConfigList?.[item.configKey]);
+                          return true;
+                        }}
+                      >
+                        <Switch
+                          checkedChildren="开启"
+                          unCheckedChildren="关闭"
+                          onChange={setSwitchType}
+                        />
+                      </FormItem>
+                      <Tip img={true} title={tipContent(item.configName)} />
+                    </Space>
                   </FormItem>
                 );
               }
@@ -556,8 +628,9 @@ const FAQConfig: React.FC<any> = (props: any) => {
                             {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
                             label={
                               index === 0 ? (
-                                <span>
+                                <span key={index}>
                                   <span style={{ color: 'red' }}>*</span> 猜你想问配置
+                                  <Tip title={tipContent('猜你想问配置')} />
                                 </span>
                               ) : (
                                 ''
@@ -621,6 +694,9 @@ const FAQConfig: React.FC<any> = (props: any) => {
                                   ></Switch>
                                 </Form.Item>
                               </Condition>
+                              {index == 0 ? (
+                                <Tip img={true} title={tipContent('智能推荐')} />
+                              ) : null}
                             </Space>
                           </Form.Item>
                         );
