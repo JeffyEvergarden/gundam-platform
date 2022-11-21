@@ -111,7 +111,7 @@ const MainDraw = (props: any) => {
     let params: any = {
       ...preParams,
       frontId: node.id, // 前端id
-      nodeName: node.label, // 节点名称
+      nodeName: node._label || node.label, // 节点名称  （接口）
       nodeType: processType(node._nodetype),
       x: node.x, // 节点位置 横坐标
       y: node.y, // 节点位置 纵坐标

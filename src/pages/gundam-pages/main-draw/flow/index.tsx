@@ -359,9 +359,9 @@ const EditorView = (props: PageViewProps) => {
           return item._id === event.model._id;
         });
         if (node) {
-          let label = event?.model?.label + '_副本';
+          let label: any = event?.model?.label + '_副本';
           let reg = new RegExp(`^${label}[0-9]+$`);
-          let maxCopy = nodes
+          let maxCopy = nodes //找到当前复制节点最高
             ?.filter((item: any) => reg?.test(item?.label))
             ?.map((item: any) => item?.label?.slice?.(label?.length))
             ?.sort((a: any, b: any) => b - a)?.[0];
@@ -370,14 +370,23 @@ const EditorView = (props: PageViewProps) => {
           event.model._type = 'copy';
           event.model.copy_id = node._id;
 
-          event.model.label = label + (maxCopy ? Number?.(maxCopy) + 1 : 1);
+          event.model.label =
+            (label + (maxCopy ? Number?.(maxCopy) + 1 : 1))?.length > 10
+              ? (label + (maxCopy ? Number?.(maxCopy) + 1 : 1)).slice(0, 10) + '...'
+              : label + (maxCopy ? Number?.(maxCopy) + 1 : 1); //用于展示
+
+          event.model._label = label + (maxCopy ? Number?.(maxCopy) + 1 : 1); //用于接口新增
         } else {
           let reg = /^新节点[0-9]+$/;
-          let maxNew = nodes
+          let maxNew = nodes //找到当前新增节点最高
             ?.filter((item: any) => reg?.test(item?.label))
             ?.map((item: any) => item?.label?.slice?.(3))
             ?.sort((a: any, b: any) => b - a)?.[0];
-          event.model.label = `新节点${maxNew ? Number?.(maxNew) + 1 : 1}`;
+          event.model.label =
+            `新节点${maxNew ? Number?.(maxNew) + 1 : 1}`?.length > 10
+              ? `新节点${maxNew ? Number?.(maxNew) + 1 : 1}`.slice(0, 10) + '...'
+              : `新节点${maxNew ? Number?.(maxNew) + 1 : 1}`;
+          event.model._label = `新节点${maxNew ? Number?.(maxNew) + 1 : 1}`;
         }
       }
       return false;
