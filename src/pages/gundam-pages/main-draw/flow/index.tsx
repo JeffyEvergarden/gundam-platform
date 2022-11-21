@@ -130,7 +130,6 @@ const EditorView = (props: PageViewProps) => {
       if (event?.item.type === 'node') {
         // 节点是 node （节点随便插入）
         console.log(event.model);
-
         insertNode?.(event.model);
         refreshOtherPane();
       } else if (event?.item.type === 'edge') {
@@ -352,14 +351,33 @@ const EditorView = (props: PageViewProps) => {
     onBeforeChange: (event: any) => {
       // console.log('before', event);
       if (event.action === 'add') {
-        const [nodes] = getAllNode();
+        let [nodes] = getAllNode();
+        console.log(nodes);
+
         let node: any = nodes.find((item: any) => {
           // 存在同样的隐藏_id
           return item._id === event.model._id;
         });
         if (node) {
+          let label = event?.model?.label + '_副本';
+          let reg = new RegExp(`^${label}[0-9]+$`);
+          let maxCopy = nodes
+            ?.filter((item: any) => reg?.test(item?.label))
+            ?.map((item: any) => item?.label?.slice?.(label?.length))
+            ?.sort((a: any, b: any) => b - a)?.[0];
+          console.log(maxCopy);
+
           event.model._type = 'copy';
           event.model.copy_id = node._id;
+
+          event.model.label = label + (maxCopy ? Number?.(maxCopy) + 1 : 1);
+        } else {
+          let reg = /^新节点[0-9]+$/;
+          let maxNew = nodes
+            ?.filter((item: any) => reg?.test(item?.label))
+            ?.map((item: any) => item?.label?.slice?.(3))
+            ?.sort((a: any, b: any) => b - a)?.[0];
+          event.model.label = `新节点${maxNew ? Number?.(maxNew) + 1 : 1}`;
         }
       }
       return false;

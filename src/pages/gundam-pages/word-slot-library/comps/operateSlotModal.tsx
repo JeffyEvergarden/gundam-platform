@@ -21,7 +21,7 @@ const slotSourceData = [
   { value: 4, intentName: '正则实体' },
   { value: 2, intentName: '用户文本' },
   { value: 7, intentName: '接口' },
-  { value: 9, intentName: '图谱' },
+  // { value: 9, intentName: '图谱' },
 ];
 const typeData = [
   { value: 0, intentName: '文本' },
@@ -336,7 +336,7 @@ export default (props: any) => {
     if (value === 7) {
       form?.setFieldsValue({ dataType: null });
     } else if (value === 9) {
-      form?.setFieldsValue({ dataType: 4 });
+      form?.setFieldsValue({ dataType: 5 });
     } else {
       form?.setFieldsValue({ dataType: 0 });
     }
@@ -411,6 +411,11 @@ export default (props: any) => {
                         </Option>
                       );
                     })}
+                    {title == 'edit' && (
+                      <Option key={9} value={9}>
+                        {'图谱'}
+                      </Option>
+                    )}
                   </Select>
                 </Form.Item>
                 <Tip
@@ -425,7 +430,7 @@ export default (props: any) => {
                 <Form.Item
                   name={'dataType'}
                   noStyle
-                  initialValue={slotSource == 9 ? 4 : slotSource !== 7 ? 0 : null}
+                  initialValue={slotSource == 9 ? 5 : slotSource !== 7 ? 0 : null}
                 >
                   <Select
                     style={{ width: '275.33px' }}
@@ -434,7 +439,7 @@ export default (props: any) => {
                   >
                     {typeData?.map((itex: any) => {
                       return (
-                        <Option key={itex?.value} value={itex?.value} disabled={itex?.value == 4}>
+                        <Option key={itex?.value} value={itex?.value} disabled={itex?.value == 5}>
                           {itex?.intentName}
                         </Option>
                       );
@@ -465,7 +470,7 @@ export default (props: any) => {
                 </Select>
               </Form.Item>
             )}
-            {slotSource === 4 && (
+            {slotSource === 5 && (
               <Form.Item name={'slotSourceId'} label={'正则实体'} rules={[{ required: true }]}>
                 <Select placeholder={'请选择正则实体'} disabled={title == 'edit'}>
                   {realList?.map((itex: any) => {

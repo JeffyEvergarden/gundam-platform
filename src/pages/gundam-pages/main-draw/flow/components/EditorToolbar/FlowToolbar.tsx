@@ -1,8 +1,8 @@
-import { Divider, Button } from 'antd';
+import { Button } from 'antd';
 import { Toolbar } from 'gg-editor';
-import ToolbarButton from './ToolbarButton';
 import { FlowItemPanel } from '../EditorItemPanel';
 import styles from './index.less';
+import ToolbarButton from './ToolbarButton';
 
 const FlowToolbar = (props: any) => {
   const { save, type } = props;

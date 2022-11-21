@@ -104,6 +104,8 @@ const MainDraw = (props: any) => {
   // 插入节点
   const insertNode = async (node: any) => {
     // console.log('外层监测到插入Node');
+    console.log(fake.current.getInfo());
+
     console.log(node);
     // color: #1890FF 普通节点、 #fffbe6 业务节点
     let params: any = {

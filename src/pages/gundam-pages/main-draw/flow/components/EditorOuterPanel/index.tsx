@@ -1,14 +1,12 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import AddModal from '../Modal/addModal';
-import { Item, withPropsAPI } from 'gg-editor';
 
 // 通用组件相关
-import { Input, Space, message } from 'antd';
-import { PlusSquareOutlined, EditOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import Condition from '../../common/Condition';
-import style from './index.less';
+import { EditOutlined, MinusCircleOutlined, PlusSquareOutlined } from '@ant-design/icons';
+import { Input, Space } from 'antd';
 import eventbus from '../../utils/eventbus';
+import style from './index.less';
 
 const defaultPos: any = {
   w: 140,

@@ -29,7 +29,7 @@ const FlowItemPanel = (props: PanelProps) => {
           shape="flow-rect"
           model={{
             color: '#2890F3',
-            label: '新节点',
+            label: '新节点1',
             _nodetype: 'normal',
           }}
           src={''}
