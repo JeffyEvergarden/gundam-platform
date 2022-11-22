@@ -12,7 +12,8 @@ const WordSlotModal: React.FC<any> = (props: any) => {
     globalVarList: model.globalVarList, // 业务流程列表
   }));
 
-  const reg = /(\$|#)\{\w+\}/g;
+  // const reg = /(\$|#)\{\w+\}/g;
+  const reg = /(\$|#)\{([^}]*)\}/g;
 
   const formatHtml = (str: any) => {
     if (!str) {
@@ -49,19 +50,38 @@ const WordSlotModal: React.FC<any> = (props: any) => {
             return item;
           } else {
             if (item.type == '变量') {
-              return (
-                <span key={index} className={style['varView-block']}>
-                  {globalVarList?.find((val: any) => item.value == val.name)?.label ||
-                    `\${${item.value}}`}
-                </span>
-              );
+              console.log(item);
+              if (item.value?.indexOf('[') == '-1') {
+                return (
+                  <span key={index} className={style['varView-block']}>
+                    {globalVarList?.find((val: any) => item.value == val.name)?.label ||
+                      `\${${item.value}}`}
+                  </span>
+                );
+              } else {
+                return (
+                  <span key={index} className={style['varView-block']}>
+                    {globalVarList?.find(
+                      (val: any) => item.value?.slice(0, item.value?.indexOf('[')) == val.name,
+                    )?.label + item.value?.slice(item.value?.indexOf('[')) || `\${${item.value}}`}
+                  </span>
+                );
+              }
             } else if (item.type == '词槽') {
-              return (
+              if (item.value?.indexOf('[') == '-1') {
+                return (
+                  <span key={index} className={style['wordSoltView-block']}>
+                    {wordSlotList?.find((val: any) => item.value == val.name)?.label ||
+                      `#{${item.value}}`}
+                  </span>
+                );
+              } else {
                 <span key={index} className={style['wordSoltView-block']}>
-                  {wordSlotList?.find((val: any) => item.value == val.name)?.label ||
-                    `#{${item.value}}`}
-                </span>
-              );
+                  {wordSlotList?.find(
+                    (val: any) => item.value?.slice(0, item.value?.indexOf('[')) == val.name,
+                  )?.label + item.value?.slice(item.value?.indexOf('[')) || `#{${item.value}}`}
+                </span>;
+              }
             }
           }
         })}

@@ -143,8 +143,11 @@ const EditorView = (props: PageViewProps) => {
   // 插入线
   // 这跟线没有其他源指向它
   const _insertLine = (event: any) => {
+    console.log(event);
+
     const target = event.item.model;
     const [nodes, lines] = getAllNode();
+
     // console.log(lines);
     // 过滤掉自己本身
     const arr = lines.filter((item: any) => {
@@ -154,6 +157,12 @@ const EditorView = (props: PageViewProps) => {
       return item.id !== target.id;
     });
 
+    let maxLevel: any = arr
+      ?.filter((item: any) => item?.source == target?.source)
+      ?.sort((a: any, b: any) => b?.level - a?.level)?.[0]?.level;
+
+    console.log(maxLevel);
+
     let max = 1;
     arr.forEach((item: any) => {
       if (item.level >= max) {
@@ -162,9 +171,9 @@ const EditorView = (props: PageViewProps) => {
     });
 
     updateNode(target.id, {
-      label: `${1}.连线`,
+      label: `${maxLevel ? Number(maxLevel) + 1 : 1}.连线`,
       _name: '连线',
-      level: 1,
+      level: maxLevel ? Number(maxLevel) + 1 : 1,
     });
 
     // 规则有以下
@@ -349,11 +358,25 @@ const EditorView = (props: PageViewProps) => {
     },
     // 插入前
     onBeforeChange: (event: any) => {
-      // console.log('before', event);
+      const type = event?.item?.type;
       if (event.action === 'add') {
-        let [nodes] = getAllNode();
-        console.log(nodes);
+        console.log('before', event);
+        let [nodes, lines] = getAllNode();
 
+        if (type == 'edge') return;
+        // console.log(nodes, lines);
+        // if (event.model.level) {
+        //   console.log('xian');
+
+        //   let maxLevel: any = lines
+        //     ?.filter((item: any) => item?.source == event?.model?.source)
+        //     ?.sort((a: any, b: any) => b?.level - a?.level)?.[0]?.level;
+
+        //   console.log(maxLevel);
+
+        //   event.model.label = maxLevel ? `${Number(maxLevel) + 1}.连线` : '1.连线';
+        //   event.model.level = maxLevel ? Number(maxLevel) + 1 : 1;
+        // } else {
         let node: any = nodes.find((item: any) => {
           // 存在同样的隐藏_id
           return item._id === event.model._id;
@@ -388,6 +411,7 @@ const EditorView = (props: PageViewProps) => {
               : `新节点${maxNew ? Number?.(maxNew) + 1 : 1}`;
           event.model._label = `新节点${maxNew ? Number?.(maxNew) + 1 : 1}`;
         }
+        // }
       }
       return false;
     },
