@@ -2,11 +2,12 @@ import AudioPlay from '@/components/AudioPlay';
 import Condition from '@/components/Condition';
 import Tip from '@/components/Tip';
 import config from '@/config';
-import { UserOutlined } from '@ant-design/icons';
+import { AudioFilled, UserOutlined } from '@ant-design/icons';
 import { Drawer, Input, message } from 'antd';
 import { useImperativeHandle, useState } from 'react';
 import { useModel } from 'umi';
 import { useSessionModel } from '../detail-modal/model';
+import clickIcon from './img/click.svg';
 import robotAvator from './img/robot.png';
 import style from './style.less';
 
@@ -113,9 +114,23 @@ const RecordModal: React.FC<any> = (props: any) => {
           if (item.role === '客户') {
             content = (
               <div className={style['my-row_start']}>
-                <div className={style['avator_customer']}>
-                  <UserOutlined className={style['avator-icon']} />
+                <div className={style['avator_column']}>
+                  <div className={style['avator_customer']}>
+                    <UserOutlined className={style['avator-icon']} />
+                  </div>
+                  {item.buttonText ? (
+                    // <div className={style['content_type']}>1</div>
+                    <img
+                      src={clickIcon}
+                      alt="按键"
+                      className={style['content_type']}
+                      style={{ padding: '9px' }}
+                    />
+                  ) : (
+                    <AudioFilled className={style['content_type']} style={{ paddingTop: '9px' }} />
+                  )}
                 </div>
+
                 <div className={style['content-box']}>
                   <div className={style['user-info']}>
                     <Condition r-if={item.userName}>

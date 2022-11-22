@@ -70,6 +70,7 @@ export const useSessionModel = () => {
         recommendText: item?.recommendText || '',
         labels,
         index,
+        buttonText: item?.buttomText,
       };
     });
     setRecordList(list || []);
