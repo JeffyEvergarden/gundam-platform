@@ -42,18 +42,18 @@ const FAQClearList = (props: any) => {
 
   const formItemLayout = {
     labelCol: {
-      xs: { span: 6 },
-      sm: { span: 6 },
+      xs: { span: 7 },
+      sm: { span: 7 },
     },
     wrapperCol: {
-      xs: { span: 16 },
-      sm: { span: 16 },
+      xs: { span: 15 },
+      sm: { span: 15 },
     },
   };
   const formItemLayoutWithOutLabel = {
     wrapperCol: {
-      xs: { span: 16, offset: 6 },
-      sm: { span: 16, offset: 6 },
+      xs: { span: 15, offset: 7 },
+      sm: { span: 15, offset: 7 },
     },
   };
 
@@ -441,7 +441,7 @@ const FAQClearList = (props: any) => {
       >
         <div className={style['modal-page']}>
           <div className={style['modal-form']}>
-            <Form form={form} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }} autoComplete="off">
+            <Form form={form} labelCol={{ span: 7 }} wrapperCol={{ span: 15 }} autoComplete="off">
               <FormList name={'questionList'}>
                 {(fields, { add, remove }) => {
                   const addNew = () => {
@@ -464,6 +464,16 @@ const FAQClearList = (props: any) => {
                               index === 0 ? (
                                 <span>
                                   <span style={{ color: 'red' }}>*</span> 客户问题/标准问
+                                  <Tip
+                                    title={
+                                      <>
+                                        输入的文本与 <b>FAQ-黑名单</b>{' '}
+                                        一样，位于最高优先级，直接触发问题澄清。假设配置的标准问/意图为A和B，文本机器人会询问客户：{' '}
+                                        <b>您是想咨询以下哪个问题？A B</b> 语音机器人则会说：{' '}
+                                        <b>您是想咨询A还是B</b>
+                                      </>
+                                    }
+                                  />
                                 </span>
                               ) : (
                                 ''
@@ -505,7 +515,7 @@ const FAQClearList = (props: any) => {
                           type="link"
                           icon={<PlusCircleOutlined />}
                           onClick={addNew}
-                          style={{ paddingLeft: '138px' }}
+                          style={{ paddingLeft: '161px' }}
                         >
                           新增客户问题/标准问
                         </Button>

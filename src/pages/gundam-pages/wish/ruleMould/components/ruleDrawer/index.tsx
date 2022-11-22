@@ -1,8 +1,9 @@
-import React, { useState, Fragment, useEffect } from 'react';
-import { Drawer, Button, Space, Form, Input, InputNumber, Select, message, Tooltip } from 'antd';
-import { MinusCircleOutlined, PlusCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import styles from './../index.less';
+import Tip from '@/components/Tip';
+import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { Button, Drawer, Form, Input, InputNumber, message, Select, Space } from 'antd';
+import { Fragment, useEffect, useState } from 'react';
 import { useRuleModule } from './../../model';
+import styles from './../index.less';
 
 const { Option } = Select;
 
@@ -140,21 +141,36 @@ export default (props: any) => {
         <span className={styles.ruleSome}>
           <Form.Item name={'ruleSome'} label={'规则片段'}>
             <div className={styles.formItem_box}>
-              <span className={styles.isNeedText}>必须匹配</span>
+              <span className={styles.isNeedText}>
+                必须匹配 <Tip title={<>表示当前片段是否必须包含于客户文本中。</>} />
+              </span>
               <span className={styles.ruleText}>
                 <Space>
                   规则片段
-                  <Tooltip title="可插入词槽、特征词、普通文本或者三者的任意组合，每行模板片段不能超过200字">
-                    <QuestionCircleOutlined />
-                  </Tooltip>
+                  <Tip
+                    title={
+                      <>
+                        用户文本需要匹配的规则，多条规则片段根据排序号，组装成正则表达式进行匹配，组装时片段中间可以匹配任意字符。例如，意图“协商还款”规则片段一{' '}
+                        “<span style={{ color: 'red' }}>我现在没钱</span>”、规则片段二“
+                        <span style={{ color: 'red' }}>要晚几天</span>
+                        ”，当客户说“
+                        <span style={{ color: 'red' }}>我现在没钱，都说了，要晚几天</span>
+                        ”，也可以匹配规则模板，识别为“协商还款”意图。匹配通过才可识别为当前意图。
+                      </>
+                    }
+                  />
                 </Space>
               </span>
               <span className={styles.sortText}>
                 <Space>
                   排序
-                  <Tooltip title="序号表示规则片段在用户query中必须遵守从左到右的匹配顺序，同序号模板片段之间无视匹配顺序；0 代表任意位、对应的模板片段可以出现在query中任意位置">
-                    <QuestionCircleOutlined />
-                  </Tooltip>
+                  <Tip
+                    title={
+                      <>
+                        序号表示规则模板片段在用户文本中必须遵守从左到右的匹配顺序，同序号规则片段之间无视匹配顺序：0代表任意位，对应的规则片段可以出现在用户文本中任意位置
+                      </>
+                    }
+                  />
                 </Space>
               </span>
             </div>
@@ -245,7 +261,20 @@ export default (props: any) => {
           )}
         </Form.List>
         <div className={styles.slotBox}>
-          <div className={styles.slotTxt}>插入词槽</div>
+          <div className={styles.slotTxt}>
+            插入词槽
+            <Tip
+              title={
+                <>
+                  规则片段中可以插入枚举词槽、正则实体，当客户文本匹配规则模板，会自动将对应的词槽进行填充。例如意图“想旅游”的规则模板插入了城市实体即“{' '}
+                  <span style={{ color: 'red' }}>我想去%{'{城市}'}旅游</span>
+                  ”，当客户说“ <span style={{ color: 'red' }}>我想去广州旅游</span>
+                  ”，则这句话的意图为“想旅游”，同时%{'{城市}'}
+                  词槽的值填充为“广州”。
+                </>
+              }
+            />
+          </div>
           <div className={styles.slotList}>
             {slotList?.map((item: any) => {
               return (
@@ -257,7 +286,16 @@ export default (props: any) => {
           </div>
         </div>
         <div className={styles.slotBox}>
-          <div className={styles.slotTxt}>插入特征词</div>
+          <div className={styles.slotTxt}>
+            插入特征词
+            <Tip
+              title={
+                <>
+                  于插入词槽类似，特征词是一类描述的集合，例如“请问”、“问一下”、“请问一下”这种，可以新建为一个特征词，在此处插入规则中。
+                </>
+              }
+            />
+          </div>
           <div className={styles.slotList}>
             {featureList?.map((item: any) => {
               return (
@@ -268,8 +306,19 @@ export default (props: any) => {
             })}
           </div>
         </div>
-        <Form.Item name={'threshold'} label={'阈值'} initialValue={0.7}>
-          <InputNumber min={0.0} max={1} step={0.01} />
+        <Form.Item label={'阈值'}>
+          <Space align="baseline">
+            <Form.Item name={'threshold'} noStyle initialValue={0.7}>
+              <InputNumber min={0.0} max={1} step={0.01} />
+            </Form.Item>
+          </Space>
+          <Tip
+            title={
+              <>
+                阈值表示，客户文本中可识别部分占文本总长度的比例，当比例大于阈值时，可被识别为所标注的意图。
+              </>
+            }
+          />
         </Form.Item>
       </Form>
     </Drawer>

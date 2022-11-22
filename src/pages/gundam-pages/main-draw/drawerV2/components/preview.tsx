@@ -91,7 +91,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
 
   return (
     <span>
-      <Popover content={fanyi(formatHtml(text))}>
+      <Popover content={fanyi(formatHtml(text))} placement={'topRight'}>
         <a type="link" style={{ justifySelf: 'flex-end' }}>
           预览
         </a>

@@ -1,5 +1,6 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import { Modal, Form, Input, Button, Space } from 'antd';
+import Tip from '@/components/Tip';
+import { Form, Input, Modal, Space } from 'antd';
+import { useEffect } from 'react';
 
 const { TextArea } = Input;
 
@@ -61,12 +62,24 @@ export default (props: any) => {
         >
           <Input placeholder={'请输入特征名称'} maxLength={150} />
         </Form.Item>
-        <Form.Item
-          name={'wordSet'}
-          label={'特征词集'}
-          rules={[{ required: true, message: '请输入特征词集' }]}
-        >
-          <TextArea placeholder={'请输入特征词集'} maxLength={200} rows={4} />
+        <Form.Item label={'特征词集'}>
+          <Space align="baseline">
+            <Form.Item
+              name={'wordSet'}
+              noStyle
+              rules={[{ required: true, message: '请输入特征词集' }]}
+            >
+              <TextArea
+                placeholder={'请输入特征词集'}
+                maxLength={200}
+                rows={4}
+                style={{ width: '354px' }}
+              />
+            </Form.Item>
+            <Tip
+              title={<>多个特征词换行输入，是一类描述的集合。例如“请问”、“问一下”、“请问一下”。</>}
+            />
+          </Space>
         </Form.Item>
       </Form>
     </Modal>

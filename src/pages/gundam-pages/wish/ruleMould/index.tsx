@@ -1,7 +1,8 @@
+import Tip from '@/components/Tip';
 import config from '@/config';
-import { ArrowLeftOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Button, Card, Divider, message, Popconfirm, Space, Tooltip } from 'antd';
+import { Button, Card, Divider, message, Popconfirm, Space } from 'antd';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
 import FeatureModal from './components/featureModal';
@@ -232,21 +233,42 @@ export default (props: any) => {
     },
     {
       dataIndex: 'fragment',
-      title: '规则内容',
+      title: () => (
+        <>
+          {'规则内容'}
+          <Tip title={<>规则名称对应的模板片段</>} />
+        </>
+      ),
       ellipsis: true,
       // fixed: 'left',
       width: 400,
     },
     {
       dataIndex: 'orderNumber',
-      title: '片段排序',
+      title: () => (
+        <>
+          {'片段排序'}
+          <Tip
+            title={
+              <>
+                序号表示规则模板片段在用户文本中必须遵守从左到右的匹配顺序，同序号规则片段之间无视匹配顺序：0代表任意位，对应的规则片段可以出现在用户文本中任意位置
+              </>
+            }
+          />
+        </>
+      ),
       ellipsis: true,
       // fixed: 'left',
       width: 100,
     },
     {
       dataIndex: 'required',
-      title: '必须匹配',
+      title: () => (
+        <>
+          {'必须匹配'}
+          <Tip title={<>表示当前片段是否必须包含于客户文本中。</>} />
+        </>
+      ),
       ellipsis: true,
       // fixed: 'left',
       width: 100,
@@ -306,7 +328,14 @@ export default (props: any) => {
     },
     {
       dataIndex: 'wordSet',
-      title: '特征词集',
+      title: () => (
+        <>
+          {'特征词集'}
+          <Tip
+            title={<>多个特征词换行输入，是一类描述的集合。例如“请问”、“问一下”、“请问一下”。</>}
+          />
+        </>
+      ),
       ellipsis: true,
       // fixed: 'left',
       width: 400,
@@ -375,12 +404,19 @@ export default (props: any) => {
               style={{ width: '4px', height: '16px', backgroundColor: 'rgba(24,144,255,1)' }}
             />
             <span className={styles.table_title}>规则列表</span>
-            <Tooltip title="通过配置一个或多个规则片段，组成用户表达意图的不同话术规则。可以插入词槽和特征词，当命中规则时，可以进行相应的填槽处理。序号表示规则片段在用户query中必须遵守从左到右的匹配顺序，同序号规则片段之间无视匹配顺序；0 代表任意位，对应的规则片段可以出现在query中任意位置。阈值表示，query中可识别部分占总query长度的比例达到多少时，该query可被识别为所标注的意图">
+            {/* <Tooltip title="通过配置一个或多个规则片段，组成用户表达意图的不同话术规则。可以插入词槽和特征词，当命中规则时，可以进行相应的填槽处理。序号表示规则片段在用户query中必须遵守从左到右的匹配顺序，同序号规则片段之间无视匹配顺序；0 代表任意位，对应的规则片段可以出现在query中任意位置。阈值表示，query中可识别部分占总query长度的比例达到多少时，该query可被识别为所标注的意图">
               <span className={styles.iconSty}>
                 <QuestionCircleOutlined />
               </span>
               <span className={styles.explain}>配置说明</span>
-            </Tooltip>
+            </Tooltip> */}
+            <Tip
+              title={
+                <>
+                  通过配置一个或多个规则片段，组成用户表达意图的不同话术规则。可以插入词槽和特征词，当命中规则时，可以进行相应的填槽处理。序号表示规则模板片段可以在用户文本中必须遵守从左到右的匹配顺序，同序号规则片段之间无视匹配顺序：0代表任意位，对应的规则片段可以出现在query中任意位置。阈值表示，客户文本中可识别部分占文本总长度的比例，当比例大于阈值时，可被识别为所标注的意图
+                </>
+              }
+            />
           </Fragment>
         }
         toolBarRender={() => [
@@ -409,6 +445,13 @@ export default (props: any) => {
               style={{ width: '4px', height: '16px', backgroundColor: 'rgba(24,144,255,1)' }}
             />
             <span className={styles.table_title}>关联特征</span>
+            <Tip
+              title={
+                <>
+                  特征词是一类描述的集合，例如“请问”、“问一下”、“请问一下”这种，可以新建为一个特征词，用于插入规则中。
+                </>
+              }
+            />
           </Fragment>
         }
         toolBarRender={() => [
