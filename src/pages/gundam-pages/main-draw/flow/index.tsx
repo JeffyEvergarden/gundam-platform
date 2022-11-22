@@ -146,9 +146,10 @@ const EditorView = (props: PageViewProps) => {
     console.log(event);
 
     const target = event.item.model;
+    const originName = event?.originModel?._name || '';
     const [nodes, lines] = getAllNode();
 
-    // console.log(lines);
+    console.log(lines);
     // 过滤掉自己本身
     const arr = lines.filter((item: any) => {
       // if (item.id === target.id) {
@@ -171,8 +172,8 @@ const EditorView = (props: PageViewProps) => {
     });
 
     updateNode(target.id, {
-      label: `${maxLevel ? Number(maxLevel) + 1 : 1}.连线`,
-      _name: '连线',
+      label: `${maxLevel ? Number(maxLevel) + 1 : 1}.${originName || '连线'}`,
+      _name: originName || '连线',
       level: maxLevel ? Number(maxLevel) + 1 : 1,
     });
 
