@@ -216,6 +216,56 @@ export default () => {
         return row.averageDialogueTurnStr;
       },
     },
+    {
+      title: () => {
+        return (
+          <Space>
+            主动转人工次数
+            <span>
+              <Tip
+                title={
+                  '对话中，客户文本命中“转人工”意图的访问次数，代表客户主动要求转人工。一通对话中命中多次“转人工”，只算一次。'
+                }
+              />
+            </span>
+          </Space>
+        );
+      },
+      dataIndex: 'dialogueTurn',
+      ellipsis: true,
+    },
+    {
+      title: () => {
+        return (
+          <Space>
+            转人工次数
+            <span>
+              <Tip
+                title={
+                  '从机器人转到客服坐席的次数（不一定成功接入，可能排队时客户挂断了），包括客户主动要求转人工、机器人主动转入人工（比如多次拒识、多次词槽获取失败）的次数。也是流程走到业务流程“转人工服务流程”中“转人工排队”节点的次数。'
+                }
+              />
+            </span>
+          </Space>
+        );
+      },
+      dataIndex: 'dialogueTurn',
+      ellipsis: true,
+    },
+    {
+      title: () => {
+        return (
+          <Space>
+            转人工率
+            <span>
+              <Tip title={'转人工次数/访问次数 ，四舍五入保留4位小数，百分比格式展示。'} />
+            </span>
+          </Space>
+        );
+      },
+      dataIndex: 'dialogueTurn',
+      ellipsis: true,
+    },
   ];
 
   return (
