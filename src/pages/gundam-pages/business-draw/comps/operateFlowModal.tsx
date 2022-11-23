@@ -27,9 +27,15 @@ export default (props: any) => {
   const flowNameWatch = Form.useWatch('flowName', form);
 
   const { editFlowData, addFlowData } = useTableModel();
-  const { _wishList, getWishList } = useModel('drawer' as any, (model: any) => ({
+
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
+
+  const { _wishList, getWishList, getFlowList } = useModel('drawer' as any, (model: any) => ({
     _wishList: model._wishList || [],
     getWishList: model.getWishList, // 业务流程列表
+    getFlowList: model.getFlowList,
   }));
 
   const wishListArr = useMemo(() => {
@@ -73,6 +79,7 @@ export default (props: any) => {
     }
     if (res?.resultCode == config.successCode) {
       message.info(res?.resultDesc);
+      getFlowList(info.id);
       operateFunc();
       form.resetFields();
       getWishList(modalData?.robotId, true);

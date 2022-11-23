@@ -126,7 +126,6 @@ const DetailPages: React.FC = (props: any) => {
         <Button
           type={'link'}
           onClick={() => {
-            getFlowList(info.id);
             goToConfig(record);
           }}
           style={{ padding: 0 }}
@@ -174,6 +173,7 @@ const DetailPages: React.FC = (props: any) => {
     const res: any = await deleteFlowData(params);
     message.info(res?.resultDesc || '失败');
     if (res?.resultCode == config.successCode) {
+      getFlowList(info.id);
       refreshTable();
     }
   };
