@@ -470,7 +470,7 @@ export default (props: any) => {
                 </Select>
               </Form.Item>
             )}
-            {slotSource === 5 && (
+            {slotSource === 4 && (
               <Form.Item name={'slotSourceId'} label={'正则实体'} rules={[{ required: true }]}>
                 <Select placeholder={'请选择正则实体'} disabled={title == 'edit'}>
                   {realList?.map((itex: any) => {
