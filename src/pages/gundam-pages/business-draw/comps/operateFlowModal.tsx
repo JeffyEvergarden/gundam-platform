@@ -24,6 +24,7 @@ export default (props: any) => {
   const [form] = Form.useForm();
   const [spinning, handleSpinning] = useState<boolean>(false);
   const [disabledNum, setDisableNum] = useState<any>(null);
+  const flowNameWatch = Form.useWatch('flowName', form);
 
   const { editFlowData, addFlowData } = useTableModel();
   const { _wishList, getWishList } = useModel('drawer' as any, (model: any) => ({
@@ -81,6 +82,13 @@ export default (props: any) => {
     handleSpinning(false);
   };
 
+  useEffect(() => {
+    console.log(flowNameWatch);
+    if (flowNameWatch == '知识问答') {
+      form.setFieldsValue({ headIntent: undefined });
+    }
+  }, [flowNameWatch]);
+
   return (
     <React.Fragment>
       <Modal
@@ -113,6 +121,7 @@ export default (props: any) => {
                               style={{ width: '260px' }}
                               placeholder={item.placeholder}
                               allowClear
+                              disabled={flowNameWatch == '知识问答'}
                             >
                               {wishListArr?.map((itex: any, index: number) => {
                                 return (
