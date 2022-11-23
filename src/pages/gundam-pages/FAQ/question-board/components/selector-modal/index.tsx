@@ -31,6 +31,13 @@ const columns2: any[] = [
   },
 ];
 
+const columns3: any[] = [
+  {
+    title: '自助服务名称',
+    dataIndex: 'question',
+  },
+];
+
 const { Search } = Input;
 
 const SelectorModal: React.FC<any> = (props: any) => {
@@ -324,6 +331,38 @@ const SelectorModal: React.FC<any> = (props: any) => {
             <div className={style['zy-row_end']}>
               <Search
                 placeholder="输入业务流程进行搜索"
+                value={searchText2}
+                onSearch={onSearch2}
+                onPressEnter={onSearch2}
+                onChange={onSearchChange2}
+                allowClear
+                style={{ width: 300 }}
+              />
+            </div>
+
+            <div className={style['table-box']}>
+              <Table
+                rowSelection={{
+                  type: type === 'radio' ? 'radio' : 'checkbox',
+                  ...rowFlowSelection,
+                  selectedRowKeys: selectedFlowKeys,
+                }}
+                size="small"
+                pagination={{ current: current2, onChange: onChange2 }}
+                dataSource={searchFlowList}
+                columns={columns2}
+                rowKey="id"
+                // loading={tableLoading}
+              />
+            </div>
+          </div>
+        </TabPane>
+
+        <TabPane tab="自助服务" key="3">
+          <div className={style['page_content']}>
+            <div className={style['zy-row_end']}>
+              <Search
+                placeholder="请输入"
                 value={searchText2}
                 onSearch={onSearch2}
                 onPressEnter={onSearch2}

@@ -75,6 +75,9 @@ export default () => {
     let visitorNum: any = { name: '访客人数', val: [] };
     let validVisitorNum: any = { name: '有效访客人数', val: [] };
     let dialogueTurn: any = { name: '对话轮次', val: [] };
+    let activeTransferNum: any = { name: '主动转人工次数', val: [] };
+    let transferNum: any = { name: '转人工次数', val: [] };
+    let transferRate: any = { name: '转人工率', val: [], isRate: true };
     let day: any = [];
     setDataSource(res?.data);
     res?.data?.map((item: any) => {
@@ -83,9 +86,21 @@ export default () => {
       visitorNum.val.push(item.visitorNum);
       validVisitorNum.val.push(item.validVisitorNum);
       dialogueTurn.val.push(item.dialogueTurn);
+      activeTransferNum.val.push(item.activeTransferNum);
+      transferNum.val.push(item.transferNum);
+      transferRate.val.push(Number(parseFloat(item.transferRate)) / 100);
       day.push(item.dayId);
     });
-    temp.push(visitNum, validVisitNum, visitorNum, validVisitorNum, dialogueTurn);
+    temp.push(
+      visitNum,
+      validVisitNum,
+      visitorNum,
+      validVisitorNum,
+      dialogueTurn,
+      activeTransferNum,
+      transferNum,
+      transferRate,
+    );
     setDayId(day);
     setList(temp);
   };
@@ -231,7 +246,7 @@ export default () => {
           </Space>
         );
       },
-      dataIndex: 'dialogueTurn',
+      dataIndex: 'activeTransferNum',
       ellipsis: true,
     },
     {
@@ -249,7 +264,7 @@ export default () => {
           </Space>
         );
       },
-      dataIndex: 'dialogueTurn',
+      dataIndex: 'transferNum',
       ellipsis: true,
     },
     {
@@ -263,7 +278,7 @@ export default () => {
           </Space>
         );
       },
-      dataIndex: 'dialogueTurn',
+      dataIndex: 'transferRate',
       ellipsis: true,
     },
   ];
@@ -286,8 +301,25 @@ export default () => {
             base={base}
             columns={dayId}
             data={visitorList}
-            color={['#6395F9', '#62DAAB', '#657798', '#F6C022', '#7666F9']}
-            legendData={['访问次数', '有效访问次数', '访客人数', '有效访客人数', '对话轮次']}
+            color={[
+              '#6395F9',
+              '#62DAAB',
+              '#657798',
+              '#F6C022',
+              '#7666F9',
+              '#78D3F8',
+              '#9661BC',
+              '#F6903D',
+            ]}
+            legendData={[
+              '访问次数',
+              '有效访问次数',
+              '访客人数',
+              '有效访客人数',
+              '对话轮次',
+              '主动转人工次数',
+              '转人工次数',
+            ]}
             className={styles.visitorBox}
           />
         </div>
@@ -309,6 +341,9 @@ export default () => {
                 let totalvalidVisitorNum = 0;
                 let totaldialogueTurn = 0;
                 let totalaverageDialogueTurn: any;
+                let totalactiveTransferNum = 0;
+                let totaltransferNum = 0;
+                let totaltransferRate: any = 0;
 
                 pageData.forEach(
                   ({
@@ -318,6 +353,9 @@ export default () => {
                     validVisitorNum,
                     dialogueTurn,
                     averageDialogueTurn,
+                    activeTransferNum,
+                    transferNum,
+                    transferRate,
                   }) => {
                     totalvisitNum += visitNum;
                     totalvalidVisitNum += validVisitNum;
@@ -328,6 +366,12 @@ export default () => {
                       totaldialogueTurn == 0 || totalvisitNum == 0
                         ? 0
                         : twoDecimal_f(Math.floor((totaldialogueTurn / totalvisitNum) * 100) / 100);
+                    totalactiveTransferNum += activeTransferNum;
+                    totaltransferNum += transferNum;
+                    totaltransferRate =
+                      totalvisitNum == 0 || totaltransferNum == 0
+                        ? 0
+                        : twoDecimal_f(Math.floor((totaltransferNum / totalvisitNum) * 100));
                   },
                 );
                 if (dataSource?.length)
@@ -352,6 +396,15 @@ export default () => {
                         </Table.Summary.Cell>
                         <Table.Summary.Cell index={6}>
                           <Text>{totalaverageDialogueTurn}</Text>
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell index={7}>
+                          <Text>{totalactiveTransferNum}</Text>
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell index={8}>
+                          <Text>{totaltransferNum}</Text>
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell index={9}>
+                          <Text>{totaltransferRate + '%'}</Text>
                         </Table.Summary.Cell>
                       </Table.Summary.Row>
                     </Table.Summary>

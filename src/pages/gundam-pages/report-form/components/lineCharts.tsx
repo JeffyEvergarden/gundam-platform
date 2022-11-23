@@ -89,6 +89,8 @@ const LineChartPage: React.FC<any> = (props: any) => {
         });
       }
     });
+    console.log(columns, temp);
+
     const options: any = initOptions(columns, temp);
     lineChart?.current?.setOption(options);
   };
@@ -211,11 +213,11 @@ const LineChartPage: React.FC<any> = (props: any) => {
             },
             axisLabel: {
               formatter: (val: any) => {
-                if (id === 'visitorNumber') {
-                  return null;
-                } else {
-                  return val * 100 + '%';
-                }
+                // if (id === 'visitorNumber') {
+                //   return null;
+                // } else {
+                return val * 100 + '%';
+                // }
               },
             },
           },
@@ -242,6 +244,7 @@ const LineChartPage: React.FC<any> = (props: any) => {
         '联想有结果率',
         '联想点击率',
         '联想Top3点击率',
+        '转人工率',
       ];
       if (percentName.includes(item.seriesName)) {
         if (item.value == 0) {

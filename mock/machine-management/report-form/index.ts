@@ -13,6 +13,9 @@ const visitor = (req: any, res: any) => {
         validVisitorNum: 26,
         dialogueTurn: 66,
         averageDialogueTurn: 55,
+        activeTransferNum: 10,
+        transferNum: 11,
+        transferRate: '12.22%',
       },
       {
         dayId: '2022-04-12',
@@ -22,6 +25,9 @@ const visitor = (req: any, res: any) => {
         validVisitorNum: 66,
         dialogueTurn: 76,
         averageDialogueTurn: 65,
+        activeTransferNum: 13,
+        transferNum: 14,
+        transferRate: '15.77%',
       },
       {
         dayId: '2022-05-12',
@@ -31,6 +37,9 @@ const visitor = (req: any, res: any) => {
         validVisitorNum: 86,
         dialogueTurn: 96,
         averageDialogueTurn: 85,
+        activeTransferNum: 16,
+        transferNum: 17,
+        transferRate: '18.77%',
       },
       {
         dayId: '2022-06-12',
@@ -40,6 +49,9 @@ const visitor = (req: any, res: any) => {
         validVisitorNum: 86,
         dialogueTurn: 96,
         averageDialogueTurn: 85,
+        activeTransferNum: 19,
+        transferNum: 10,
+        transferRate: '11.77%',
       },
       {
         dayId: '2022-07-12',
@@ -49,6 +61,9 @@ const visitor = (req: any, res: any) => {
         validVisitorNum: 86,
         dialogueTurn: 96,
         averageDialogueTurn: 85,
+        activeTransferNum: 12,
+        transferNum: 13,
+        transferRate: '14.77%',
       },
       {
         dayId: '2022-08-12',
@@ -58,6 +73,9 @@ const visitor = (req: any, res: any) => {
         validVisitorNum: 86,
         dialogueTurn: 96,
         averageDialogueTurn: 85,
+        activeTransferNum: 15,
+        transferNum: 16,
+        transferRate: '17.77%',
       },
       {
         dayId: '2022-09-12',
@@ -67,6 +85,9 @@ const visitor = (req: any, res: any) => {
         validVisitorNum: 86,
         dialogueTurn: 96,
         averageDialogueTurn: 85,
+        activeTransferNum: 10,
+        transferNum: 10,
+        transferRate: '10.77%',
       },
       {
         dayId: '2022-10-12',
@@ -76,6 +97,9 @@ const visitor = (req: any, res: any) => {
         validVisitorNum: 86,
         dialogueTurn: 96,
         averageDialogueTurn: 85,
+        activeTransferNum: 10,
+        transferNum: 10,
+        transferRate: '10.77%',
       },
     ],
   });
