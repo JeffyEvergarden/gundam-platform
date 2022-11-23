@@ -126,6 +126,7 @@ const DetailPages: React.FC = (props: any) => {
         <Button
           type={'link'}
           onClick={() => {
+            getFlowList(info.id);
             goToConfig(record);
           }}
           style={{ padding: 0 }}
