@@ -61,9 +61,12 @@ const WordSlotModal: React.FC<any> = (props: any) => {
               } else {
                 return (
                   <span key={index} className={style['varView-block']}>
-                    {globalVarList?.find(
-                      (val: any) => item.value?.slice(0, item.value?.indexOf('[')) == val.name,
-                    )?.label + item.value?.slice(item.value?.indexOf('[')) || `\${${item.value}}`}
+                    {'${' +
+                      `${
+                        globalVarList?.find(
+                          (val: any) => item.value?.slice(0, item.value?.indexOf('[')) == val.name,
+                        )?.label + item.value?.slice(item.value?.indexOf('['))
+                      }}` || `\${${item.value}}`}
                   </span>
                 );
               }
@@ -77,9 +80,12 @@ const WordSlotModal: React.FC<any> = (props: any) => {
                 );
               } else {
                 <span key={index} className={style['wordSoltView-block']}>
-                  {wordSlotList?.find(
-                    (val: any) => item.value?.slice(0, item.value?.indexOf('[')) == val.name,
-                  )?.label + item.value?.slice(item.value?.indexOf('[')) || `#{${item.value}}`}
+                  {'#{' +
+                    `${
+                      wordSlotList?.find(
+                        (val: any) => item.value?.slice(0, item.value?.indexOf('[')) == val.name,
+                      )?.label + item.value?.slice(item.value?.indexOf('['))
+                    }}` || `#{${item.value}}`}
                 </span>;
               }
             }

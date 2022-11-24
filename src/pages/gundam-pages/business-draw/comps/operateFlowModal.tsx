@@ -24,11 +24,18 @@ export default (props: any) => {
   const [form] = Form.useForm();
   const [spinning, handleSpinning] = useState<boolean>(false);
   const [disabledNum, setDisableNum] = useState<any>(null);
+  const flowNameWatch = Form.useWatch('flowName', form);
 
   const { editFlowData, addFlowData } = useTableModel();
-  const { _wishList, getWishList } = useModel('drawer' as any, (model: any) => ({
+
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
+
+  const { _wishList, getWishList, getFlowList } = useModel('drawer' as any, (model: any) => ({
     _wishList: model._wishList || [],
     getWishList: model.getWishList, // 业务流程列表
+    getFlowList: model.getFlowList,
   }));
 
   const wishListArr = useMemo(() => {
@@ -72,6 +79,7 @@ export default (props: any) => {
     }
     if (res?.resultCode == config.successCode) {
       message.info(res?.resultDesc);
+      getFlowList(info.id);
       operateFunc();
       form.resetFields();
       getWishList(modalData?.robotId, true);
@@ -80,6 +88,13 @@ export default (props: any) => {
     }
     handleSpinning(false);
   };
+
+  useEffect(() => {
+    console.log(flowNameWatch);
+    if (flowNameWatch == '知识问答') {
+      form.setFieldsValue({ headIntent: undefined });
+    }
+  }, [flowNameWatch]);
 
   return (
     <React.Fragment>
@@ -113,6 +128,7 @@ export default (props: any) => {
                               style={{ width: '260px' }}
                               placeholder={item.placeholder}
                               allowClear
+                              disabled={flowNameWatch == '知识问答'}
                             >
                               {wishListArr?.map((itex: any, index: number) => {
                                 return (

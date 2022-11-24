@@ -356,8 +356,8 @@ const slotInfoList = (req: any, res: any) => {
         dataType: '2',
         datastutus: 3,
       },
-      { id: '2', slotName: '槽值2', paramValue: 2, slotSource: 1 },
-      { id: '3', slotName: '图谱', paramValue: 3, slotSource: 9 },
+      { id: '2', slotName: '槽值2', paramValue: 2, slotSource: 1, dataType: '1' },
+      { id: '3', slotName: '图谱', paramValue: 3, slotSource: 9, dataType: 5 },
     ],
   });
 };

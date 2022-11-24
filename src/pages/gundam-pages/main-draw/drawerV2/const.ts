@@ -251,6 +251,7 @@ export const RULE_KEY_TYPE_MAP = {
   number: 1,
   date: 2,
   time: 3,
+  array: 5,
 };
 
 // 条件过滤

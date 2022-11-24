@@ -9,7 +9,9 @@ const Tip: React.FC<any> = (props) => {
       content={title}
       arrowPointAtCenter={true}
       placement={placement}
-      overlayStyle={img ? { maxWidth: 'none' } : { maxWidth: '250px' }}
+      overlayStyle={
+        img ? { maxWidth: 'none', zIndex: '1070' } : { maxWidth: '250px', zIndex: '1070' }
+      }
     >
       <QuestionCircleOutlined style={{ marginLeft: '8px', color: '#000' }} />
     </Popover>

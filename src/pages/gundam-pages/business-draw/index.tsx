@@ -173,6 +173,7 @@ const DetailPages: React.FC = (props: any) => {
     const res: any = await deleteFlowData(params);
     message.info(res?.resultDesc || '失败');
     if (res?.resultCode == config.successCode) {
+      getFlowList(info.id);
       refreshTable();
     }
   };
