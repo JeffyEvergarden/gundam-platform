@@ -50,8 +50,25 @@ const WordSlotModal: React.FC<any> = (props: any) => {
             return item;
           } else {
             if (item.type == '变量') {
-              // if (item.value?.indexOf('[') == '-1') {///^[\S]+\[\w+\]\.+/g
-              if (!/^[\S]+\[[0-9]+\]\.+/g?.test(item?.value)) {
+              if (item.value?.indexOf('[') == '-1') {
+                // if (!/^[\S]+\[[0-9]+\]\.+/g?.test(item?.value)) {
+                if (item.value?.indexOf('.') != '-1') {
+                  return (
+                    <span key={index} className={style['varView-block']}>
+                      {globalVarList?.find(
+                        (val: any) => item.value?.slice(0, item.value?.indexOf('.')) == val.name,
+                      )?.label
+                        ? '${' +
+                          `${
+                            globalVarList?.find(
+                              (val: any) =>
+                                item.value?.slice(0, item.value?.indexOf('.')) == val.name,
+                            )?.label + item.value?.slice(item.value?.indexOf('.'))
+                          }}`
+                        : `\${${item.value}}`}
+                    </span>
+                  );
+                }
                 return (
                   <span key={index} className={style['varView-block']}>
                     {globalVarList?.find((val: any) => item.value == val.name)?.label ||
@@ -77,7 +94,25 @@ const WordSlotModal: React.FC<any> = (props: any) => {
               }
             } else if (item.type == '词槽') {
               console.log(item);
-              if (!/^[\S]+\[[0-9]+\]\.+/g?.test(item?.value)) {
+              // if (!/^[\S]+\[[0-9]+\]\.+/g?.test(item?.value)) {
+              if (item.value?.indexOf('[') == '-1') {
+                if (item.value?.indexOf('.') != '-1') {
+                  return (
+                    <span key={index} className={style['wordSoltView-block']}>
+                      {wordSlotList?.find(
+                        (val: any) => item.value?.slice(0, item.value?.indexOf('.')) == val.name,
+                      )?.label
+                        ? '#{' +
+                          `${
+                            wordSlotList?.find(
+                              (val: any) =>
+                                item.value?.slice(0, item.value?.indexOf('.')) == val.name,
+                            )?.label + item.value?.slice(item.value?.indexOf('.'))
+                          }}`
+                        : `#{${item.value}}`}
+                    </span>
+                  );
+                }
                 return (
                   <span key={index} className={style['wordSoltView-block']}>
                     {wordSlotList?.find((val: any) => item.value == val.name)?.label ||
