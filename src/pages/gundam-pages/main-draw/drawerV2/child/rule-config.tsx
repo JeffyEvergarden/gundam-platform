@@ -786,7 +786,8 @@ const RuleConfig = (props: any) => {
                                                 <Condition
                                                   r-if={
                                                     valueType === VALUE_TYPE_MAP['自定义'] &&
-                                                    ruleKeyType === RULE_KEY_TYPE_MAP['text']
+                                                    (ruleKeyType === RULE_KEY_TYPE_MAP['text'] ||
+                                                      ruleKeyType === RULE_KEY_TYPE_MAP['array'])
                                                   }
                                                 >
                                                   <FormItem
