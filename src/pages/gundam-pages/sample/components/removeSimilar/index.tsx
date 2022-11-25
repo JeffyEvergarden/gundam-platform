@@ -117,6 +117,21 @@ const SelectorModal: React.FC<any> = (props: any) => {
     // setVisible(false);
   };
 
+  const onSearchChange1 = (e: any) => {
+    setSearchText1(e.target.value);
+  };
+
+  const onSearch1 = () => {
+    getFaqList({
+      page: 1,
+      pageSize: 10,
+      robotId: info.id,
+      faqTypeId: classType == '0' ? null : classType,
+      searchText: searchText1,
+      faqType: 1,
+    });
+  };
+
   useEffect(() => {
     getFaqList({
       page: 1,
@@ -183,17 +198,17 @@ const SelectorModal: React.FC<any> = (props: any) => {
             />
           </div>
           <div className={style['page_content']}>
-            {/* <div className={style['zy-row_end']}>
-            <Search
-              placeholder="输入标准问进行搜索"
-              value={searchText1}
-              onSearch={onSearch1}
-              onPressEnter={onSearch1}
-              onChange={onSearchChange1}
-              allowClear
-              style={{ width: 200 }}
-            />
-          </div> */}
+            <div className={style['zy-row_end']}>
+              <Search
+                placeholder="输入标准问进行搜索"
+                value={searchText1}
+                onSearch={onSearch1}
+                onPressEnter={onSearch1}
+                onChange={onSearchChange1}
+                allowClear
+                style={{ width: 200 }}
+              />
+            </div>
 
             <div className={style['table-box']}>
               <Table

@@ -294,6 +294,11 @@ const Board: React.FC<any> = (props: any) => {
         return item.recommendBizType === '2' && item.recommendId && i !== index;
       })
       .map((item: any) => item.recommendId);
+    const disabledSelfKeys = _list
+      .filter((item: any, i: number) => {
+        return item.recommendBizType == '3' && item.recommendId && i !== index;
+      })
+      .map((item: any) => item.recommendId);
 
     // console.log(disabledQuestionKeys, disabledFlowKeys);
     // 编辑模式、要排除自己也不能被选
@@ -305,14 +310,18 @@ const Board: React.FC<any> = (props: any) => {
       info: _list[index],
       disabledQuestionKeys,
       disabledFlowKeys,
+      disabledSelfKeys,
       selectedQuestionKeys: [],
       selectedFlowKeys: [],
+      selectedSelfKeys: [],
     };
     // 找到已选的
     if (_list[index]?.questionType === '2') {
       openInfo.selectedFlowKeys = [_list[index].recommendId];
     } else if (_list[index]?.questionType === '1') {
       openInfo.selectedQuestionKeys = [_list[index].recommendId];
+    } else if (_list[index]?.questionType == '3') {
+      openInfo.selectedSelfKeys = [_list[index].recommendId];
     }
     (selectModalRef.current as any).open(openInfo);
     // 回调函数，不能重复添加、以及更改后刷新

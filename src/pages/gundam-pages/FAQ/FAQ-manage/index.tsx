@@ -197,7 +197,8 @@ const FAQPage: React.FC<any> = (props: any) => {
                 style={{ backgroundColor: '#fff' }}
                 bordered={false}
               >
-                <Option value={0}>问题</Option>
+                <Option value={0}>标准问</Option>
+                <Option value={2}>相似问</Option>
                 <Option value={1}>答案</Option>
                 {/* <Option value={2}>标签</Option> */}
               </Select>

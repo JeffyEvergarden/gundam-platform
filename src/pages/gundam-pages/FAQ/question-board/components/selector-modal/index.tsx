@@ -3,6 +3,7 @@ import { useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import { useModel } from 'umi';
 import MyTree from '../../../FAQ-manage/components/my-tree';
 import { useFaqModal } from '../../../FAQ-manage/model';
+import { useSelfModel } from '../../model';
 import style from './style.less';
 
 const { TabPane } = Tabs;
@@ -34,7 +35,7 @@ const columns2: any[] = [
 const columns3: any[] = [
   {
     title: '自助服务名称',
-    dataIndex: 'question',
+    dataIndex: 'selfName',
   },
 ];
 
@@ -49,11 +50,14 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   const [disabledQuestionKeys, setDisabledQuestionKeys] = useState<any[]>([]);
   const [disabledFlowKeys, setDisabledFlowKeys] = useState<any[]>([]);
+  const [disabledSelfKeys, setDisabledSelfKeys] = useState<any[]>([]);
 
   const changeActiveKey = (val: any) => {
     setActivekey(val);
-    if (activeKey === '1') {
+    if (val === '1') {
       onChange1(1);
+    } else if (val === '3') {
+      onChange3(1);
     }
   };
 
@@ -74,11 +78,13 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   const [classType, setClassType] = useState<string>('');
   const { loading, faqList, getFaqList, totalSize, setFaqList } = useFaqModal();
+  const { getSelfList, loading: selfLoading, selfList, totalSize: selfTotalSize } = useSelfModel();
 
   const [visible, setVisible] = useState<boolean>(false);
   // 页码, 分页相关
   const [current1, setCurrent1] = useState<number>(1);
   const [current2, setCurrent2] = useState<number>(1);
+  const [current3, setCurrent3] = useState<number>(1);
 
   const onChange1 = (val: any) => {
     if (loading) {
@@ -103,8 +109,17 @@ const SelectorModal: React.FC<any> = (props: any) => {
     setCurrent2(val);
   };
 
+  const onChange3 = (val: any) => {
+    if (selfLoading) {
+      return;
+    }
+    setCurrent3(val);
+    getSelfList({ page: val, pageSize: 10, searchText: searchText3 });
+  };
+
   const [searchText1, setSearchText1] = useState<any>('');
   const [searchText2, setSearchText2] = useState<any>('');
+  const [searchText3, setSearchText3] = useState<any>('');
 
   const [searchFlowList, setSearchFlowList] = useState<any>([]);
 
@@ -114,6 +129,10 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   const onSearchChange2 = (e: any) => {
     setSearchText2(e.target.value);
+  };
+
+  const onSearchChange3 = (e: any) => {
+    setSearchText3(e.target.value);
   };
 
   const onSearch1 = () => {
@@ -151,9 +170,14 @@ const SelectorModal: React.FC<any> = (props: any) => {
     setSearchFlowList([...list]);
   };
 
+  const onSearch3 = () => {
+    getSelfList({ page: 1, pageSize: 10, searchText: searchText3 });
+  };
+
   // 选中key值
   const [selectedQuestionKeys, setSelectedQuestionKeys] = useState<any[]>([]);
   const [selectedFlowKeys, setSelectedFlowKeys] = useState<any[]>([]);
+  const [selectedSelfKeys, setSelectedSelfKeys] = useState<any[]>([]);
 
   // 选中
   const onSelect = (val: any) => {
@@ -198,14 +222,31 @@ const SelectorModal: React.FC<any> = (props: any) => {
     },
   };
 
+  const rowSelfSelection = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
+      // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      setSelectedSelfKeys(selectedRowKeys);
+    },
+    getCheckboxProps: (record: any) => {
+      console.log(record);
+
+      return {
+        disabled: disabledSelfKeys?.includes(record.selfId),
+        name: record.selfName,
+      };
+    },
+  };
+
   useImperativeHandle(cref, () => ({
     open: (obj: any) => {
       console.log(obj);
       setDisabledFlowKeys(obj?.disabledFlowKeys || []);
       setDisabledQuestionKeys(obj?.disabledQuestionKeys || []);
+      setDisabledSelfKeys(obj?.disabledSelfKeys);
       // 设置默认选中
       setSelectedQuestionKeys(obj?.selectedQuestionKeys || []);
       setSelectedFlowKeys(obj?.selectedFlowKeys || []);
+      setSelectedSelfKeys(obj?.selectedSelfKeys);
 
       if (obj?.showFlow === false) {
         setShowFlowKey(false);
@@ -239,6 +280,8 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   const submit = () => {
     let list: any = [];
+    console.log(activeKey);
+
     if (activeKey === '2') {
       list = tableFlowList
         .filter((item: any) => {
@@ -263,6 +306,22 @@ const SelectorModal: React.FC<any> = (props: any) => {
         confirm?.({
           recommendBizType: activeKey,
           recommendId: selectedQuestionKeys[0],
+          recommend: list[0],
+          recommendType: 0,
+        });
+      }
+    } else if (activeKey === '3') {
+      list = selfList
+        .filter((item: any) => {
+          return selectedSelfKeys.includes(item.selfId);
+        })
+        .map((item: any) => item.selfName);
+      console.log(list);
+
+      if (list.length > 0) {
+        confirm?.({
+          recommendBizType: activeKey,
+          recommendId: selectedSelfKeys[0],
           recommend: list[0],
           recommendType: 0,
         });
@@ -363,10 +422,10 @@ const SelectorModal: React.FC<any> = (props: any) => {
             <div className={style['zy-row_end']}>
               <Search
                 placeholder="请输入"
-                value={searchText2}
-                onSearch={onSearch2}
-                onPressEnter={onSearch2}
-                onChange={onSearchChange2}
+                value={searchText3}
+                onSearch={onSearch3}
+                onPressEnter={onSearch3}
+                onChange={onSearchChange3}
                 allowClear
                 style={{ width: 300 }}
               />
@@ -376,14 +435,14 @@ const SelectorModal: React.FC<any> = (props: any) => {
               <Table
                 rowSelection={{
                   type: type === 'radio' ? 'radio' : 'checkbox',
-                  ...rowFlowSelection,
-                  selectedRowKeys: selectedFlowKeys,
+                  ...rowSelfSelection,
+                  selectedRowKeys: selectedSelfKeys,
                 }}
                 size="small"
-                pagination={{ current: current2, onChange: onChange2 }}
-                dataSource={searchFlowList}
-                columns={columns2}
-                rowKey="id"
+                pagination={{ current: current3, onChange: onChange3, total: selfTotalSize }}
+                dataSource={selfList}
+                columns={columns3}
+                rowKey="selfId"
                 // loading={tableLoading}
               />
             </div>

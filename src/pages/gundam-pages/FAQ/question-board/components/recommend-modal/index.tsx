@@ -52,8 +52,13 @@ const Recommend: React.FC<any> = (props: any) => {
         return item.recommendBizType == '2' && item.recommendId && i !== index;
       })
       .map((item: any) => item.recommendId);
+    const disabledSelfKeys = _list
+      .filter((item: any, i: number) => {
+        return item.recommendBizType == '3' && item.recommendId && i !== index;
+      })
+      .map((item: any) => item.recommendId);
 
-    console.log(disabledQuestionKeys, disabledFlowKeys);
+    console.log(disabledQuestionKeys, disabledFlowKeys, disabledSelfKeys);
     if (faqTypeId) {
       disabledQuestionKeys.push(faqTypeId);
     }
@@ -62,14 +67,20 @@ const Recommend: React.FC<any> = (props: any) => {
       info: _list[index],
       disabledQuestionKeys,
       disabledFlowKeys,
+      disabledSelfKeys,
       selectedQuestionKeys: [],
       selectedFlowKeys: [],
+      selectedSelfKeys: [],
     };
+
     if (_list[index]?.questionType == '2') {
       openInfo.selectedFlowKeys = [_list[index].recommendId];
     } else if (_list[index]?.questionType == '1') {
       openInfo.selectedQuestionKeys = [_list[index].recommendId];
+    } else if (_list[index]?.questionType == '3') {
+      openInfo.selectedSelfKeys = [_list[index].recommendId];
     }
+
     (selectModalRef.current as any).open(openInfo);
     opRecordRef.current.callback = (obj: any) => {
       const _list = getRecommendItem();

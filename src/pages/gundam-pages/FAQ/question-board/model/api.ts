@@ -88,3 +88,10 @@ export async function getFaqConfig(params?: Record<string, any>) {
     params,
   });
 }
+
+export async function getFaqSelfList(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/faq/faqSelfList`, {
+    method: 'GET',
+    params,
+  });
+}

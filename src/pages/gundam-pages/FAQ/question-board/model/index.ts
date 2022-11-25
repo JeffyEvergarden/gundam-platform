@@ -10,6 +10,7 @@ import {
   getAnswerInfo,
   getApprovalInfo,
   getFaqConfig,
+  getFaqSelfList,
   getQuestionInfo,
 } from './api';
 const successCode = config.successCode;
@@ -132,5 +133,34 @@ export const useAnswerModel = () => {
     getAnswerInfo: _getAnswerInfo,
     _getApprovalInfo,
     updateApproval,
+  };
+};
+
+//自助服务列表
+export const useSelfModel = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [selfList, setSelfList] = useState<any[]>([]);
+  const [totalSize, setTotalSize] = useState<number>(0);
+
+  const getSelfList = async (params: any) => {
+    setLoading(true);
+    let res: any = await getFaqSelfList({ ...params });
+    setLoading(false);
+    if (res.resultCode === successCode) {
+      let data = res?.data?.list || [];
+      setSelfList(data);
+      setTotalSize(res?.data?.totalPage || data?.length);
+    } else {
+      setSelfList([]);
+      message.warning(res?.resultDesc);
+      return false;
+    }
+  };
+
+  return {
+    getSelfList,
+    loading,
+    selfList,
+    totalSize,
   };
 };

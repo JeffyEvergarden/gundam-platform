@@ -207,6 +207,26 @@ const getRecommend = (req: any, res: any) => {
   });
 };
 
+const getSelfList = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    resultDesc: '成功',
+    success: true,
+    data: {
+      list: [
+        {
+          selfName: 'fiwu1',
+          selfId: 'fiwu1',
+        },
+        {
+          selfName: 'fiwu2',
+          selfId: 'fiwu2',
+        },
+      ],
+    },
+  });
+};
+
 export default {
   'GET /aichat/robot/faq/list': getFaqList, // 获取问答列表
 
@@ -223,4 +243,6 @@ export default {
 
   'GET /aichat/robot/faq/listCreateUser': getCreateUser, //获取用户
   'GET /aichat/robot/faq/listFaqRecommend': getRecommend, //获取推荐
+
+  'GET /aichat/robot/faq/faqSelfList': getSelfList, //获取自助服务列表
 };
