@@ -55,7 +55,7 @@ const CvsInput: React.FC<any> = (props: any) => {
         target += item?.name ? `#\{${item.name}\}` : '';
       }
     });
-    if (startPos >= -1) {
+    if (startPos > -1) {
       let pre = tmp.slice(0, startPos);
       let last = tmp.slice(startPos);
       tmp = pre + target + last;
