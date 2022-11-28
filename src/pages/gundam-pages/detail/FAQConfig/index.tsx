@@ -357,7 +357,14 @@ const FAQConfig: React.FC<any> = (props: any) => {
             {Nconfig?.map((item: any) => {
               if (item?.dataType == 1) {
                 return (
-                  <FormItem label={item.configName}>
+                  <FormItem
+                    label={
+                      <>
+                        {item.configName}
+                        <Tip img={true} title={tipContent(item.configName)} />
+                      </>
+                    }
+                  >
                     <Space>
                       <FormItem
                         // {...col}
@@ -376,7 +383,6 @@ const FAQConfig: React.FC<any> = (props: any) => {
                           disabled={item?.validateRule?.disabled ? true : false}
                         />
                       </FormItem>
-                      <Tip img={true} title={tipContent(item.configName)} />
                     </Space>
                   </FormItem>
                 );
@@ -386,7 +392,14 @@ const FAQConfig: React.FC<any> = (props: any) => {
                   config.robotTypeMap[info?.robotType] === '语音'
                 ) {
                   return (
-                    <FormItem label={item.configName}>
+                    <FormItem
+                      label={
+                        <>
+                          {item.configName}
+                          <Tip title={tipContent(item.configName)}></Tip>
+                        </>
+                      }
+                    >
                       <Space className={style['faqInvalidAnswer']}>
                         <FormItem noStyle key={item.configName} rules={[{ required: true }]}>
                           <div className={style['diy-box']}>
@@ -519,15 +532,19 @@ const FAQConfig: React.FC<any> = (props: any) => {
                             </div>
                           </div>
                         </FormItem>
-
-                        <Tip title={tipContent(item.configName)}></Tip>
                       </Space>
                     </FormItem>
                   );
                 }
                 if (item.configKey == 'FAQ_REJECT_RECOMMEND_TEXT' && switchType) {
                   return (
-                    <FormItem label={item.configName}>
+                    <FormItem
+                      label={
+                        <>
+                          {item.configName} <Tip img={true} title={tipContent(item.configName)} />
+                        </>
+                      }
+                    >
                       <Space>
                         <FormItem
                           // {...col}
@@ -541,13 +558,19 @@ const FAQConfig: React.FC<any> = (props: any) => {
                             maxLength={item?.validateRule?.max ?? 200}
                           />
                         </FormItem>
-                        <Tip img={true} title={tipContent(item.configName)} />
                       </Space>
                     </FormItem>
                   );
                 } else if (item.configKey != 'FAQ_REJECT_RECOMMEND_TEXT') {
                   return (
-                    <FormItem label={item.configName}>
+                    <FormItem
+                      label={
+                        <>
+                          {item.configName}
+                          <Tip img={true} title={tipContent(item.configName)} />
+                        </>
+                      }
+                    >
                       <Space>
                         <FormItem
                           // {...col}
@@ -561,14 +584,20 @@ const FAQConfig: React.FC<any> = (props: any) => {
                             maxLength={item?.validateRule?.max ?? 200}
                           />
                         </FormItem>
-                        <Tip img={true} title={tipContent(item.configName)} />
                       </Space>
                     </FormItem>
                   );
                 }
               } else if (item?.dataType == 4) {
                 return (
-                  <FormItem label={item.configName}>
+                  <FormItem
+                    label={
+                      <>
+                        {item.configName}
+                        <Tip img={true} title={tipContent(item.configName)} />
+                      </>
+                    }
+                  >
                     <Space align="baseline">
                       <FormItem
                         // {...col}
@@ -588,7 +617,6 @@ const FAQConfig: React.FC<any> = (props: any) => {
                           onChange={setSwitchType}
                         />
                       </FormItem>
-                      <Tip img={true} title={tipContent(item.configName)} />
                     </Space>
                   </FormItem>
                 );
