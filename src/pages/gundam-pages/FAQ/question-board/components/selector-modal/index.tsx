@@ -143,6 +143,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       page: 1,
       pageSize: 10,
       robotId: info.id,
+      queryType: 0,
       faqTypeId: classType == '0' ? null : classType,
       searchText: searchText1,
       faqType: 1,
@@ -190,6 +191,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     getFaqList({
       page: 1,
       pageSize: 10,
+      queryType: 0,
       robotId: info.id,
       faqTypeId: val[0] == '0' ? null : val[0],
       faqType: 1,
@@ -262,6 +264,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       getFaqList({
         page: 1,
         pageSize: 10,
+        queryType: 0,
         robotId: info.id,
         faqType: 1,
       });
