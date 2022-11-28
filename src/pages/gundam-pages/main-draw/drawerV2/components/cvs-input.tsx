@@ -66,6 +66,9 @@ const CvsInput: React.FC<any> = (props: any) => {
     } else {
       tmp = tmp + target;
     }
+    if (startPos != -1) {
+      setStartPos(startPos + target?.length);
+    }
     onChange(tmp);
   };
 
