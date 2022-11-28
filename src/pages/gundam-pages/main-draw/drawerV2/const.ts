@@ -327,4 +327,5 @@ export const wordSlotSourceMap = {
   6: '全局变量',
   7: '接口',
   8: '业务参数',
+  9: '图谱',
 };

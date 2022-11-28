@@ -73,11 +73,11 @@ const Recommend: React.FC<any> = (props: any) => {
       selectedSelfKeys: [],
     };
 
-    if (_list[index]?.questionType == '2') {
+    if (_list[index]?.recommendBizType == '2') {
       openInfo.selectedFlowKeys = [_list[index].recommendId];
-    } else if (_list[index]?.questionType == '1') {
+    } else if (_list[index]?.recommendBizType == '1') {
       openInfo.selectedQuestionKeys = [_list[index].recommendId];
-    } else if (_list[index]?.questionType == '3') {
+    } else if (_list[index]?.recommendBizType == '3') {
       openInfo.selectedSelfKeys = [_list[index].recommendId];
     }
 
