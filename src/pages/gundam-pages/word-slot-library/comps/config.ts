@@ -22,6 +22,7 @@ export const wordSlotTableList: any = [
       // 6: { text: '全局变量', status: 6 },
       7: { text: '接口', status: 7 },
       // 8: { text: '业务参数', status: 8 },
+      9: { text: '图谱', status: 9 },
     },
   },
   // {
