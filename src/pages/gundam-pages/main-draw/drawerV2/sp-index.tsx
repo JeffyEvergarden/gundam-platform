@@ -69,7 +69,7 @@ const DrawerForm = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     open: (info: any, callback: any) => {
-      // console.log(info);
+      console.log(info);
       setAutoCloseTipsFlag(false);
       recordInfo.current.info = info;
       recordInfo.current.callback = callback;
@@ -122,7 +122,7 @@ const DrawerForm = (props: any) => {
             ? '\n' + '意图:' + (wishName.length > 10 ? wishName.slice(0, 10) + '...' : wishName)
             : '');
       } else {
-        name = '转人工排队';
+        name = recordInfo.current.info?.name || '转人工排队';
       }
 
       let result: any = await _saveNode({
