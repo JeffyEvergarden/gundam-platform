@@ -69,7 +69,7 @@ const DrawerForm = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     open: (info: any, callback: any) => {
-      // console.log(info);
+      console.log(info);
       setAutoCloseTipsFlag(false);
       recordInfo.current.info = info;
       recordInfo.current.callback = callback;
@@ -108,18 +108,22 @@ const DrawerForm = (props: any) => {
         wishList.find((item: any) => {
           return res.headIntent === item.name;
         })?.label || res.headIntent;
-
-      let name =
-        (businessName ? '流程:' + businessName : '业务流程节点') +
-        (wishName ? '\n' + '意图:' + wishName : '');
-
-      let label =
-        (businessName
-          ? '流程:' + (businessName.length > 10 ? businessName.slice(0, 10) + '...' : businessName)
-          : '业务流程节点') +
-        (wishName
-          ? '\n' + '意图:' + (wishName.length > 10 ? wishName.slice(0, 10) + '...' : wishName)
-          : '');
+      let name, label;
+      if (nodetype == 'business') {
+        name =
+          (businessName ? '流程:' + businessName : '业务流程节点') +
+          (wishName ? '\n' + '意图:' + wishName : '');
+        label =
+          (businessName
+            ? '流程:' +
+              (businessName.length > 10 ? businessName.slice(0, 10) + '...' : businessName)
+            : '业务流程节点') +
+          (wishName
+            ? '\n' + '意图:' + (wishName.length > 10 ? wishName.slice(0, 10) + '...' : wishName)
+            : '');
+      } else {
+        name = recordInfo.current.info?.name || '转人工排队';
+      }
 
       let result: any = await _saveNode({
         ...res,
@@ -131,7 +135,7 @@ const DrawerForm = (props: any) => {
       });
       if (result === true) {
         setAutoCloseTipsFlag(false);
-        recordInfo.current?.callback?.({ label, _name: name }); // 成功回调修改名称
+        recordInfo.current?.callback?.({ label: label || name, _name: name }); // 成功回调修改名称
         setVisible(false);
       }
     }
