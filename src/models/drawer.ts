@@ -77,8 +77,8 @@ export default function useDrawerModel() {
 
     const s = _time && now - _time;
     console.log(str + ':' + (s / 1000).toFixed(0));
-    // 15秒内不允许重新调
-    if (_time && s > (t ? t : 15) * 1000) {
+    // 7秒内不允许重新调
+    if (_time && s > (t ? t : 7) * 1000) {
       timeObj[str] = now;
       return true;
     }
@@ -168,12 +168,12 @@ export default function useDrawerModel() {
 
   // 获取流程列表
   const getFlowList = async (id?: any) => {
-    if (!allowRequest('flow', id)) {
-      console.log('短时间重复调用__进行中断');
-      return;
-    } else {
-      console.log('可以调用获取flow');
-    }
+    // if (!allowRequest('flow', id)) {
+    //   console.log('短时间重复调用__进行中断');
+    //   return;
+    // } else {
+    //   console.log('可以调用获取flow');
+    // }
     let res: any = await queryFlowList({
       robotId: id,
       current: 1,
