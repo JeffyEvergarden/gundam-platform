@@ -77,8 +77,8 @@ export default function useDrawerModel() {
 
     const s = _time && now - _time;
     console.log(str + ':' + (s / 1000).toFixed(0));
-    // 15秒内不允许重新调
-    if (_time && s > (t ? t : 15) * 1000) {
+    // 7秒内不允许重新调
+    if (_time && s > (t ? t : 7) * 1000) {
       timeObj[str] = now;
       return true;
     }
