@@ -188,24 +188,26 @@ const EditBoard: React.FC<any> = (prop: any) => {
   };
   // 选择标准问弹窗
   const confirm = (obj: any) => {
+    let choose = test();
     console.log(obj);
-    insertLink(editor, obj.recommend, '##' + obj.recommendId, {
+    insertLink(editor, choose || obj.recommend, '##' + obj.recommendId, {
       questionId: obj.recommendId,
       target: '_self',
     });
   };
 
   const test = () => {
-    console.log(editor?.selection);
-    let selectText = window.getSelection();
-    console.log(selectText);
-
-    selectText?.anchorNode?.nodeValue?.slice(selectText?.anchorOffset, selectText?.focusOffset);
+    let selectText: any = window.getSelection();
+    let text = selectText?.anchorNode?.nodeValue;
+    if (selectText.anchorOffset < selectText.focusOffset) {
+      return text?.slice(selectText.anchorOffset, selectText.focusOffset);
+    } else {
+      return text?.slice(selectText.focusOffset, selectText.anchorOffset);
+    }
   };
 
   (editorConfig.MENU_CONF as any)['openRelationModal'] = {
     onClick: () => {
-      test();
       openModal?.();
     },
   };

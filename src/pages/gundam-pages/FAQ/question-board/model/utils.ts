@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { Transforms } from 'slate';
+import { SlateTransforms } from '@wangeditor/editor';
 
 export function replaceSymbols(str: string) {
   return str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -26,8 +27,10 @@ export async function insertLink(editor: any, text: string, url: string, info?: 
   editor.insertText(' ');
 
   const linkNode = genLinkNode(parsedUrl, text, info);
-  Transforms.setNodes(linkNode, info);
-  Transforms.insertNodes(editor, linkNode);
+  console.log(linkNode, info);
+
+  SlateTransforms.setNodes(linkNode, info);
+  SlateTransforms.insertNodes(editor, linkNode);
   // https://github.com/wangeditor-team/wangEditor/issues/332
   // 不能直接使用 insertText, 会造成添加的空格被添加到链接文本中，参考上面 issue，替换为 insertFragment 方式添加空格
   editor.insertFragment([{ text: ' ' }]);
