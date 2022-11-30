@@ -22,7 +22,6 @@ export default () => {
 
   const [similar, setSimmilar] = useState<boolean>(false);
   const [similarVisible, setSimilarVisible] = useState<boolean>(false);
-  const [columns, setcolumns] = useState<any>([]);
   const [getViewNum, setGetViewNum] = useState<any>();
   const [visible, setVisible] = useState<boolean>(false);
   const [modalData, setModalData] = useState<any>({});
@@ -58,37 +57,6 @@ export default () => {
     addLoading,
   } = useSimilarModel();
 
-  useEffect(() => {
-    let historyData = history?.location || {};
-    let pageType = historyData?.state?.pageType || '';
-    let searchText = historyData?.state?.searchText || '';
-    let tableInfo = historyData?.state?.info;
-    let pageUrl = historyData?.state?.pageUrl;
-    setPageUrl(pageUrl);
-    setInputValue(searchText);
-    console.log(history);
-    setPageType(pageType);
-    setTableInfo(tableInfo);
-
-    if (pageType === 'wish') {
-      setcolumns(tableListWish);
-    }
-    if (pageType === 'FAQ') {
-      setcolumns(tableListFAQ);
-    }
-  }, [history]);
-
-  useEffect(() => {
-    if (pageType === 'wish') {
-      setcolumns(tableListWish);
-    }
-    if (pageType === 'FAQ') {
-      setcolumns(tableListFAQ);
-    }
-    actionRef?.current?.reload();
-    console.log(tableInfo, pageType);
-  }, [tableInfo, pageType]);
-
   const handleMenuClick = async (item: any) => {
     if (selectRow.length > 0) {
       if (item.key == '1') {
@@ -105,9 +73,7 @@ export default () => {
       faqId: pageUrl === 'unknownQustion' ? tableInfo.recommendId : tableInfo.id,
     }).then((res) => {
       if (res) {
-        setSelectedRowKeys([]);
-        setSelectRow([]);
-        actionRef.current.reload();
+        actionRef.current.reloadAndRest();
       }
     });
   };
@@ -304,6 +270,8 @@ export default () => {
 
   const deleteRow = async (record: any) => {
     console.log('pageType', pageType);
+    console.log(selectedRowKeys);
+
     if (pageType === 'FAQ' || history?.location?.state?.pageType === 'FAQ') {
       let reqData: any = {
         id: record.id,
@@ -311,7 +279,8 @@ export default () => {
       await deleteSimilar(reqData).then((res) => {
         if (res.resultCode == config.successCode) {
           message.success(res.resultDesc);
-          actionRef.current.reloadAndRest();
+          filtersSelection(record.id);
+          actionRef.current.reload();
         } else {
           message.error(res.resultDesc);
         }
@@ -395,6 +364,7 @@ export default () => {
       if (res.resultCode == config.successCode) {
         message.success(res.resultDesc);
         RemoveSRef?.current?.close();
+        filtersSelection(id);
         actionRef?.current?.reload();
       } else {
         message.error(res.resultDesc);
@@ -410,10 +380,8 @@ export default () => {
     await batchTransferSimilar({ similarIds: id, faqId, oldFaqId, robotId: info.id }).then(
       (res) => {
         if (res) {
-          setSelectedRowKeys([]);
-          setSelectRow([]);
           RemoveSRef?.current?.close();
-          actionRef?.current?.reload();
+          actionRef?.current?.reloadAndRest();
         }
       },
     );
@@ -526,16 +494,14 @@ export default () => {
             </a>
             <Popconfirm
               title="确认删除该语料文本吗?"
-              okText="是"
-              cancelText="否"
+              // okText="是"
+              // cancelText="否"
               onCancel={() => {}}
               onConfirm={() => {
                 deleteRow(record);
               }}
             >
-              <Button type="link" style={{ color: 'red' }}>
-                删除
-              </Button>
+              <a style={{ color: 'red' }}>删除</a>
             </Popconfirm>
           </Space>
         );
@@ -578,8 +544,6 @@ export default () => {
       fixed: 'right',
       valueType: 'option',
       render: (text: any, record: any, _: any, action: any) => {
-        console.log(tableInfo);
-
         if (history?.location?.state?.info?.recycle == 1) {
           return (
             <Space>
@@ -605,12 +569,19 @@ export default () => {
               </a>
               <Popconfirm
                 title="确认删除该条相似问吗?"
-                okText="是"
-                cancelText="否"
+                // okText="是"
+                // cancelText="否"
                 onCancel={() => {}}
                 onConfirm={() => deleteRow(record)}
               >
-                <a style={{ color: 'red' }}>删除</a>
+                <a
+                  onClick={() => {
+                    console.log(selectedRowKeys);
+                  }}
+                  style={{ color: 'red' }}
+                >
+                  删除
+                </a>
               </Popconfirm>
             </Space>
           );
@@ -621,7 +592,9 @@ export default () => {
 
   const rowSelection = {
     selectedRowKeys,
+    preserveSelectedRowKeys: true,
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
+      console.log(selectedRowKeys, selectedRows);
       setSelectedRowKeys(selectedRowKeys);
       setSelectRow(selectedRows);
     },
@@ -631,6 +604,33 @@ export default () => {
       };
     },
   };
+
+  const filtersSelection = (id: any) => {
+    console.log(selectedRowKeys, id);
+
+    let arr: any = selectedRowKeys.filter((item: any) => item != id);
+    console.log(arr);
+
+    setSelectedRowKeys([...arr]);
+  };
+
+  useEffect(() => {
+    let historyData = history?.location || {};
+    let pageType = historyData?.state?.pageType || '';
+    let searchText = historyData?.state?.searchText || '';
+    let tableInfo = historyData?.state?.info;
+    let pageUrl = historyData?.state?.pageUrl;
+    setPageUrl(pageUrl);
+    setInputValue(searchText);
+    console.log(history);
+    setPageType(pageType);
+    setTableInfo(tableInfo);
+  }, [history]);
+
+  useEffect(() => {
+    actionRef?.current?.reload();
+    console.log(tableInfo, pageType);
+  }, [tableInfo, pageType]);
 
   return (
     <Fragment>
@@ -743,14 +743,14 @@ export default () => {
             </div>
           </div>
           <ProTable
-            rowKey={'id'}
+            rowKey={(record) => record.id}
             key={'id'}
-            scroll={{ x: columns.length * 200 }}
+            scroll={{
+              x: pageType == 'FAQ' ? tableListFAQ?.length * 200 : tableListWish?.length * 200,
+            }}
             actionRef={actionRef}
             rowSelection={pageType == 'FAQ' ? rowSelection : false}
-            tableAlertOptionRender={false}
-            tableAlertRender={false}
-            columns={columns}
+            columns={pageType == 'FAQ' ? tableListFAQ : tableListWish}
             pagination={{
               pageSize: 10,
             }}

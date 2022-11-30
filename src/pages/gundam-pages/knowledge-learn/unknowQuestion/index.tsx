@@ -61,6 +61,8 @@ export default () => {
   };
 
   const rowSelection = {
+    selectedRowKeys,
+    preserveSelectedRowKeys: true,
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
       setSelectedRowKeys(selectedRowKeys);
       setSelectRow(selectedRows);
@@ -81,6 +83,11 @@ export default () => {
         // disabled: disaAbledData && record.recommendType !== disaAbledData,
       };
     },
+  };
+
+  const filtersSelection = (id: any) => {
+    let arr: any = selectedRowKeys.filter((item: any) => item != id);
+    setSelectedRowKeys([...arr]);
   };
 
   const getInitTable = async (payload: any) => {
@@ -224,7 +231,8 @@ export default () => {
     let res = await addBlack(params);
     if (res.resultCode === config.successCode) {
       message.success(res?.resultDesc || '成功');
-      actionRef?.current?.reloadAndRest();
+      filtersSelection(r.id);
+      actionRef?.current?.reload();
     } else {
       message.error(res?.resultDesc || '失败');
     }
@@ -269,7 +277,8 @@ export default () => {
       };
       resAdd = await addClearItem(addParams);
       if (resAdd) {
-        actionRef.current.reloadAndRest();
+        filtersSelection(modalData?.id);
+        actionRef.current.reload();
         return true;
       } else {
         return false;
@@ -335,7 +344,15 @@ export default () => {
       }
       if (resAdd?.resultCode === config.successCode) {
         message.success(resAdd?.resultDesc || '添加成功');
-        actionRef.current.reloadAndRest();
+        if (!operation) {
+          filtersSelection(modalData.id);
+        }
+        if (operation) {
+          actionRef?.current?.reloadAndRest();
+        } else {
+          actionRef.current.reload();
+        }
+
         return true;
       } else {
         message.error(resAdd?.resultDesc || '添加失败');
@@ -391,8 +408,9 @@ export default () => {
   const delQustiopn = async (r: any) => {
     let res = await delUnknownquestion({ id: r.id });
     if (res.resultCode === config.successCode) {
+      filtersSelection(r.id);
       message.success(res?.resultDesc || '成功');
-      actionRef?.current?.reloadAndRest();
+      actionRef?.current?.reload();
     } else {
       message.error(res?.resultDesc || '失败');
     }
@@ -590,8 +608,8 @@ export default () => {
           params={paramsObj}
           onChange={tableChange}
           rowSelection={rowSelection}
-          tableAlertOptionRender={false}
-          tableAlertRender={false}
+          // tableAlertOptionRender={false}
+          // tableAlertRender={false}
           toolBarRender={() => [
             <Dropdown overlay={menu} key="Dropdown" disabled={selectRow?.length < 1}>
               <Button type="primary">

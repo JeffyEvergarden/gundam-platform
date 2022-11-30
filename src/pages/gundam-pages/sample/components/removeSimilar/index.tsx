@@ -78,7 +78,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     },
     getCheckboxProps: (record: any) => {
       return {
-        disabled: disabledQuestionKeys.includes(record.id),
+        disabled: disabledQuestionKeys?.includes?.(record?.id),
         name: record.name,
       };
     },
@@ -100,6 +100,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     },
     close: () => {
       setVisible(false);
+      setSelectedQuestionKeys([]);
     },
   }));
 

@@ -50,10 +50,17 @@ export default () => {
   const [operation, setOperation] = useState<string>('');
 
   const rowSelection = {
+    selectedRowKeys,
+    preserveSelectedRowKeys: true,
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
       setSelectedRowKeys(selectedRowKeys);
       setSelectRow(selectedRows);
     },
+  };
+
+  const filtersSelection = (id: any) => {
+    let arr: any = selectedRowKeys.filter((item: any) => item != id);
+    setSelectedRowKeys([...arr]);
   };
 
   useEffect(() => {
@@ -260,7 +267,8 @@ export default () => {
     if (res.resultCode === config.successCode) {
       message.success(res?.resultDesc || '成功');
       setVisibleEdit(false);
-      actionRef?.current?.reloadAndRest();
+      filtersSelection(modalData.id);
+      actionRef?.current?.reload();
     } else {
       message.error(res?.resultDesc || '失败');
     }
@@ -329,7 +337,8 @@ export default () => {
       }
       if (resAdd?.resultCode === config.successCode) {
         message.success(resAdd?.resultDesc || '成功');
-        actionRef.current.reloadAndRest();
+        filtersSelection(modalData.id);
+        actionRef.current.reload();
         return true;
       } else {
         message.error(resAdd?.resultDesc || '失败');
@@ -380,7 +389,8 @@ export default () => {
       };
       resAdd = await addClearItem(addParams);
       if (resAdd) {
-        actionRef.current.reloadAndRest();
+        filtersSelection(modalData.id);
+        actionRef.current.reload();
         return true;
       }
     }
@@ -405,7 +415,8 @@ export default () => {
     let res = await addBlack(params);
     if (res.resultCode === config.successCode) {
       message.success(res?.resultDesc || '成功');
-      actionRef?.current?.reloadAndRest();
+      filtersSelection(r.id);
+      actionRef?.current?.reload();
     } else {
       message.error(res?.resultDesc || '失败');
     }
@@ -415,7 +426,8 @@ export default () => {
     let res = await delStardQuestion({ id: r.id });
     if (res.resultCode === config.successCode) {
       message.success(res?.resultDesc || '成功');
-      actionRef?.current?.reloadAndRest();
+      filtersSelection(r.id);
+      actionRef?.current?.reload();
     } else {
       message.error(res?.resultDesc || '失败');
     }
@@ -572,8 +584,8 @@ export default () => {
           pagination={{
             pageSize: 10,
           }}
-          tableAlertRender={false}
-          tableAlertOptionRender={false}
+          // tableAlertRender={false}
+          // tableAlertOptionRender={false}
           toolBarRender={() => [
             <Dropdown overlay={menu} key="Dropdown" disabled={selectRow?.length < 1}>
               <Button type="primary">

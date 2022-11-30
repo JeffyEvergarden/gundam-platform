@@ -197,10 +197,15 @@ const EditBoard: React.FC<any> = (prop: any) => {
 
   const test = () => {
     console.log(editor?.selection);
+    let selectText = window.getSelection();
+    console.log(selectText);
+
+    selectText?.anchorNode?.nodeValue?.slice(selectText?.anchorOffset, selectText?.focusOffset);
   };
 
   (editorConfig.MENU_CONF as any)['openRelationModal'] = {
     onClick: () => {
+      test();
       openModal?.();
     },
   };
