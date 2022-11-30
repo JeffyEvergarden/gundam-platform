@@ -168,12 +168,12 @@ export default function useDrawerModel() {
 
   // 获取流程列表
   const getFlowList = async (id?: any) => {
-    if (!allowRequest('flow', id)) {
-      console.log('短时间重复调用__进行中断');
-      return;
-    } else {
-      console.log('可以调用获取flow');
-    }
+    // if (!allowRequest('flow', id)) {
+    //   console.log('短时间重复调用__进行中断');
+    //   return;
+    // } else {
+    //   console.log('可以调用获取flow');
+    // }
     let res: any = await queryFlowList({
       robotId: id,
       current: 1,
