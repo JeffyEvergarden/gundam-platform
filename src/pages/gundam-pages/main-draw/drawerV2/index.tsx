@@ -218,7 +218,7 @@ const DrawerForm = (props: any) => {
 
           {/* 运算节点 */}
           <Condition r-if={nodetype == 'operation'}>
-            <WordslotOperationModal name="operationList" form={form} title="词槽变量运算" />
+            <WordslotOperationModal name="operations" form={form} title="词槽变量运算" />
           </Condition>
 
           <Condition r-if={nodetype != 'operation' && nodetype != 'select'}>

@@ -20,7 +20,13 @@ const InnerForm: React.FC<any> = (props: any) => {
             console.log(length);
             add(
               {
-                soundType: '',
+                typeOne: '',
+                oneValue: '',
+                operator: '',
+                typeTwo: '',
+                twoValue: '',
+                acceptType: '',
+                acceptValue: '',
               },
               length,
             );
@@ -47,37 +53,37 @@ const InnerForm: React.FC<any> = (props: any) => {
                 return (
                   <Row key={index} align="middle" style={{ marginBottom: '8px' }} gutter={[8, 4]}>
                     <Col span={2}>
-                      <FormItem name={[field.name, 'soundType']} noStyle>
+                      <FormItem name={[field.name, 'typeOne']} noStyle>
                         <Input></Input>
                       </FormItem>
                     </Col>
                     <Col span={4}>
-                      <FormItem name={[field.name, 'soundType']} noStyle>
+                      <FormItem name={[field.name, 'oneValue']} noStyle>
                         <Input></Input>
                       </FormItem>
                     </Col>
                     <Col span={4}>
-                      <FormItem name={[field.name, 'soundType']} noStyle>
+                      <FormItem name={[field.name, 'operator']} noStyle>
                         <Input></Input>
                       </FormItem>
                     </Col>
                     <Col span={2}>
-                      <FormItem name={[field.name, 'soundType']} noStyle>
+                      <FormItem name={[field.name, 'typeTwo']} noStyle>
                         <Input></Input>
                       </FormItem>
                     </Col>
                     <Col span={4}>
-                      <FormItem name={[field.name, 'soundType']} noStyle>
+                      <FormItem name={[field.name, 'twoValue']} noStyle>
                         <Input></Input>
                       </FormItem>
                     </Col>
                     <Col span={2}>
-                      <FormItem name={[field.name, 'soundType']} noStyle>
+                      <FormItem name={[field.name, 'acceptType']} noStyle>
                         <Input></Input>
                       </FormItem>
                     </Col>
                     <Col span={4}>
-                      <FormItem name={[field.name, 'soundType']} noStyle>
+                      <FormItem name={[field.name, 'acceptValue']} noStyle>
                         <Input></Input>
                       </FormItem>
                     </Col>

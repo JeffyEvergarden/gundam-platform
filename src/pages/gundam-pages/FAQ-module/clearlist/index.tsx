@@ -66,6 +66,7 @@ const FAQClearList = (props: any) => {
 
   //排序
   const [paramsObj, setParamsObj] = useState<any>({ orderCode: '', orderType: '' });
+  const [openList, setOpenList] = useState<any>([]);
 
   // 删除
   const deleteRow = async (row: any) => {
@@ -159,20 +160,47 @@ const FAQClearList = (props: any) => {
   const columns: any[] = [
     {
       title: (...args: any[]) => {
-        if (args[1] === 'table') {
-          return '客户问题';
-        }
+        // if (args[1] === 'table') {
+        //   return '客户问题';
+        // }
         // console.log(args);
-        return '客户问题/标准问';
+        return '客户问题';
       },
       dataIndex: 'searchText',
       fixed: 'left',
       width: 300,
       fieldProps: {
-        placeholder: '请输入客户问题/标准问',
+        placeholder: '请输入客户问题',
       },
       ellipsis: true,
-      render: (val: any, row: any) => {
+      render: (val: any, row: any, index: any) => {
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div>
+              {openList[index] ? (
+                row?.questionList?.map((item: any, idx: any) => (
+                  <div>
+                    {idx + 1}、{item.question}
+                  </div>
+                ))
+              ) : (
+                <div>1、{row?.questionList?.[0]?.question}</div>
+              )}
+            </div>
+
+            <Button
+              type="link"
+              onClick={() => {
+                let arr = JSON.parse(JSON.stringify(openList));
+                arr[index] = !arr[index];
+                setOpenList(arr);
+              }}
+            >
+              {openList[index] ? '收起' : '展开'}
+            </Button>
+          </div>
+        );
+
         return row.question;
       },
     },
@@ -216,6 +244,21 @@ const FAQClearList = (props: any) => {
       dataIndex: 'consultNum',
       search: false,
       width: 160,
+      render: (val: any, row: any, index: any) => {
+        return (
+          <>
+            {openList[index] ? (
+              row?.questionList?.map((item: any, idx: any) => (
+                <div>
+                  {idx + 1}、{item.consultNum}
+                </div>
+              ))
+            ) : (
+              <div>1、{row?.questionList?.[0]?.consultNum}</div>
+            )}
+          </>
+        );
+      },
     },
     {
       title: () => (
@@ -256,33 +299,120 @@ const FAQClearList = (props: any) => {
       dataIndex: 'op',
       search: false,
       fixed: 'right',
-      width: 180,
-      render: (val: any, row: any, index: number) => {
+      width: 230,
+      // render: (val: any, row: any, index: number) => {
+      //   return (
+      //     <>
+      //       <div style={{ display: 'flex' }}>
+      //         <Button
+      //           type="link"
+      //           onClick={() => {
+      //             openDetailModal(row);
+      //           }}
+      //         >
+      //           查看聊天记录
+      //         </Button>
+
+      //         <Popconfirm
+      //           title="删除将不可恢复，确认删除？"
+      //           okText="确定"
+      //           cancelText="取消"
+      //           onConfirm={() => {
+      //             deleteRow(row);
+      //           }}
+      //         >
+      //           <Button type="link" danger>
+      //             删除
+      //           </Button>
+      //         </Popconfirm>
+      //       </div>
+      //     </>
+      //   );
+      // },
+      render: (val: any, row: any, index: any) => {
         return (
           <>
-            <div style={{ display: 'flex' }}>
-              <Button
-                type="link"
-                onClick={() => {
-                  openDetailModal(row);
-                }}
-              >
-                查看聊天记录
-              </Button>
+            {openList[index] ? (
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div>
+                  {row?.questionList?.map((item: any, idx: any) => (
+                    <div style={{ display: 'flex' }}>
+                      <Button
+                        type="link"
+                        onClick={() => {
+                          openDetailModal(row?.questionList?.[idx]);
+                        }}
+                      >
+                        查看聊天记录
+                      </Button>
 
-              <Popconfirm
-                title="删除将不可恢复，确认删除？"
-                okText="确定"
-                cancelText="取消"
-                onConfirm={() => {
-                  deleteRow(row);
-                }}
-              >
-                <Button type="link" danger>
-                  删除
-                </Button>
-              </Popconfirm>
-            </div>
+                      <Popconfirm
+                        title="删除将不可恢复，确认删除？"
+                        okText="确定"
+                        cancelText="取消"
+                        onConfirm={() => {
+                          deleteRow(row);
+                        }}
+                      >
+                        <Button type="link" danger>
+                          删除
+                        </Button>
+                      </Popconfirm>
+                    </div>
+                  ))}
+                </div>
+                <Popconfirm
+                  title="删除将不可恢复，确认删除？"
+                  okText="确定"
+                  cancelText="取消"
+                  onConfirm={() => {
+                    deleteRow(row?.questionList?.[0]);
+                  }}
+                >
+                  <Button type="link" danger>
+                    删除组
+                  </Button>
+                </Popconfirm>
+              </div>
+            ) : (
+              <div>
+                <div style={{ display: 'flex' }}>
+                  <Button
+                    type="link"
+                    onClick={() => {
+                      openDetailModal(row?.questionList?.[0]);
+                    }}
+                  >
+                    查看聊天记录
+                  </Button>
+
+                  <Popconfirm
+                    title="删除将不可恢复，确认删除？"
+                    okText="确定"
+                    cancelText="取消"
+                    onConfirm={() => {
+                      deleteRow(row?.questionList?.[0]);
+                    }}
+                  >
+                    <Button type="link" danger>
+                      删除
+                    </Button>
+                  </Popconfirm>
+                  <Popconfirm
+                    title="删除将不可恢复，确认删除？"
+                    okText="确定"
+                    cancelText="取消"
+                    onConfirm={() => {
+                      deleteRow(row?.questionList?.[0]);
+                    }}
+                  >
+                    <Button type="link" danger>
+                      删除组
+                    </Button>
+                  </Popconfirm>
+                </div>
+              </div>
+            )}
           </>
         );
       },
@@ -463,7 +593,7 @@ const FAQClearList = (props: any) => {
                             label={
                               index === 0 ? (
                                 <span>
-                                  <span style={{ color: 'red' }}>*</span> 客户问题/标准问
+                                  <span style={{ color: 'red' }}>*</span> 客户问题
                                   <Tip
                                     title={
                                       <>
@@ -495,13 +625,13 @@ const FAQClearList = (props: any) => {
                               name={[field.name]}
                               fieldKey={[field.fieldKey]}
                               rules={[
-                                { required: true, message: '请输入客户问题/标准问' },
+                                { required: true, message: '请输入客户问题' },
                                 { max: 200, message: '不能超过200个文字' },
                               ]}
                             >
                               <TextArea
                                 style={{ width: '100%' }}
-                                placeholder={'请输入客户问题/标准问'}
+                                placeholder={'请输入客户问题'}
                                 maxLength={200}
                                 rows={1}
                               />
@@ -517,7 +647,7 @@ const FAQClearList = (props: any) => {
                           onClick={addNew}
                           style={{ paddingLeft: '161px' }}
                         >
-                          新增客户问题/标准问
+                          新增客户问题
                         </Button>
                       </div>
                     </div>

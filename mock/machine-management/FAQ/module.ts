@@ -41,7 +41,16 @@ const getBlackList = (req: any, res: any) => {
 
 const getClearList = (req: any, res: any) => {
   let arr = new Array(10).fill(1);
+  let arr2 = new Array(3).fill(1);
   let _date = Date.now();
+
+  arr2 = arr2.map((item, index) => {
+    return {
+      question: '问题' + Math.ceil(Math.random() * 100) + '我想问什么来着',
+      clarifyAdoptionRate: Number(Math.random().toFixed(2)),
+      consultNum: index * 10,
+    };
+  });
 
   arr = arr.map((item: any, index: number) => {
     let obj = {
@@ -68,6 +77,7 @@ const getClearList = (req: any, res: any) => {
       consultNum: index * 10,
       clarifyAdoptionRate: Number(Math.random().toFixed(2)),
       createTime: moment(new Date(_date + 60 * 60 * 1000 * index)).format('YYYY-MM—DD hh:mm'),
+      questionList: arr2,
     };
     return obj;
   });

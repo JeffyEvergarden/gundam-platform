@@ -295,7 +295,7 @@ const DetailPages: React.FC = (props: any) => {
         return (
           <Space>
             <a onClick={() => ruleTemplate(record)}>规则模版</a>
-            <a onClick={() => samples(record)}>样本</a>
+            <a onClick={() => samples(record)}>语料</a>
           </Space>
         );
       },

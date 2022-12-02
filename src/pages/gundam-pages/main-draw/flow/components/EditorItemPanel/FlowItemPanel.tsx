@@ -43,7 +43,7 @@ const FlowItemPanel = (props: PanelProps) => {
         </Item>
       </Condition>
 
-      {/* <Item
+      <Item
         type="node"
         size="140*45"
         shape="flow-rect"
@@ -58,11 +58,12 @@ const FlowItemPanel = (props: PanelProps) => {
         }}
         src={''}
       >
-        <div className={styles['green-node']}>运算节点<Tip
-            title={`用于对词槽或变量进行运算，包括清空、赋值、加减乘除操作。`}
-          /></div>
+        <div className={styles['green-node']}>
+          运算节点
+          <Tip title={`用于对词槽或变量进行运算，包括清空、赋值、加减乘除操作。`} />
+        </div>
       </Item>
-      <Condition r-if={config.robotTypeMap[info?.robotType] === '文本'}>
+      {/* <Condition r-if={config.robotTypeMap[info?.robotType] === '文本'}>
         <Item
           type="node"
           size="140*45"

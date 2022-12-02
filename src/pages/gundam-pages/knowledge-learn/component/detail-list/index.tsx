@@ -23,6 +23,7 @@ const DetailList: React.FC = (props: any) => {
   const [selectInfo, setSelectInfo] = useState<any>();
   const [selectNum, setSelectNum] = useState<any>();
   const [tabkey, setTabKey] = useState<any>('1');
+  const [paramsObj, setParamsObj] = useState<any>({});
 
   const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -71,6 +72,7 @@ const DetailList: React.FC = (props: any) => {
       search: false,
       width: 200,
       ellipsis: true,
+      sorter: true,
       render: (val: any, row: any) => {
         return (
           <div>
@@ -91,6 +93,7 @@ const DetailList: React.FC = (props: any) => {
           <Tip title={'样本一和样本二之间的相似度，越高代表越相似，但也有可能计算错误。'} />
         </>
       ),
+      sorter: true,
       dataIndex: 'score',
       search: false,
       width: 100,
@@ -364,6 +367,31 @@ const DetailList: React.FC = (props: any) => {
     setTabKey(activeKey);
   };
 
+  // orderCode  '1'-所属标准问或意图  '2'-相似度得分
+  //  orderType   '1'-升序 '2'-降序
+  const tableChange = (pagination: any, filters: any, sorter: any) => {
+    let temp: any = { orderCode: undefined, orderType: undefined };
+    if (sorter.columnKey === 'textRelationName' && sorter.order === 'ascend') {
+      temp.orderCode = 1;
+      temp.orderType = 1;
+    }
+    if (sorter.columnKey === 'textRelationName' && sorter.order === 'descend') {
+      temp.orderCode = 1;
+      temp.orderType = 2;
+    }
+    if (sorter.columnKey === 'score' && sorter.order === 'ascend') {
+      temp.orderCode = 2;
+      temp.orderType = 1;
+    }
+    if (sorter.columnKey === 'score' && sorter.order === 'descend') {
+      temp.orderCode = 2;
+      temp.orderType = 2;
+    }
+    let tempParamsObj = JSON.parse(JSON.stringify(paramsObj));
+    let tempObj = Object.assign(tempParamsObj, temp);
+    setParamsObj(tempObj);
+  };
+
   return (
     <div className={`${style['machine-page']} list-page`}>
       <div className={style['page_top']}>
@@ -411,6 +439,8 @@ const DetailList: React.FC = (props: any) => {
               });
               // return {};
             }}
+            params={paramsObj}
+            onChange={tableChange}
             editable={{
               type: 'multiple',
             }}
@@ -457,6 +487,8 @@ const DetailList: React.FC = (props: any) => {
               });
               // return {};
             }}
+            params={paramsObj}
+            onChange={tableChange}
             editable={{
               type: 'multiple',
             }}
