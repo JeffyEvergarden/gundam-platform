@@ -309,7 +309,7 @@ const MainDraw = (props: any) => {
         sessionStorage.setItem('businessFlowId', res?.nodeFlowId || '');
         setBusinessFlowId(res?.nodeFlowId || '');
         // 业务流程节点
-        history.push(`/gundamPages/businessDraw/detail?id=${res?.nodeFlowId}`);
+        history.push(`/gundamPages/businessDraw/detail`);
         // setBFlowId(res?.nodeFlowId);
       } else {
         message.warning('未配置业务流程');

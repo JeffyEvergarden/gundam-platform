@@ -171,7 +171,7 @@ const DrawerForm = (props: any) => {
           />
         </>
       }
-      width={850}
+      width={950}
       onClose={onClose}
       visible={visible}
       bodyStyle={{ paddingBottom: 80 }}
@@ -218,7 +218,12 @@ const DrawerForm = (props: any) => {
 
           {/* 运算节点 */}
           <Condition r-if={nodetype == 'operation'}>
-            <WordslotOperationModal name="operations" form={form} title="词槽变量运算" />
+            <WordslotOperationModal
+              name="operations"
+              form={form}
+              title="词槽变量运算"
+              wordSlotList={wordSlotList}
+            />
           </Condition>
 
           <Condition r-if={nodetype != 'operation' && nodetype != 'select'}>
