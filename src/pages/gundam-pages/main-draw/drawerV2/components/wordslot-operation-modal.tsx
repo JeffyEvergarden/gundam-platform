@@ -3,7 +3,7 @@ import { AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, Row, Select } from 'antd';
 import React, { useMemo } from 'react';
 import { useModel } from 'umi';
-import { VALUE_TYPE_LIST } from '../const';
+import { OPERATOR_LIST, VALUE_TYPE_LIST } from '../const';
 import styles from './style.less';
 
 const { Item: FormItem } = Form;
@@ -26,16 +26,15 @@ const InnerForm: React.FC<any> = (props: any) => {
   }, [globalVarList]);
 
   const typeChange = (val: any, index: any, type: any) => {
-    console.log(val);
-
-    let formData = form.getFieldsValue()[name][index];
+    let formData = form.getFieldsValue();
+    let dataRow = formData[name][index];
     if (type == 'typeOne') {
-      formData.oneValue = undefined;
+      dataRow.oneValue = undefined;
     }
     if (type == 'typeTwo') {
-      formData.twoValue = undefined;
+      dataRow.twoValue = undefined;
     }
-    formData[type] = val;
+    dataRow[type] = val;
     form.setFieldsValue({ ...formData });
   };
 
@@ -107,7 +106,7 @@ const InnerForm: React.FC<any> = (props: any) => {
         onChange={(val) => {
           typeChange(val, index, type);
         }}
-        placeholder={'请选择类型'}
+        placeholder="请选择"
       >
         {VALUE_TYPE_LIST?.map((item: any, index) => {
           return (
@@ -130,13 +129,13 @@ const InnerForm: React.FC<any> = (props: any) => {
             console.log(length);
             add(
               {
-                typeOne: '',
-                oneValue: '',
-                operator: '',
-                typeTwo: '',
-                twoValue: '',
-                acceptType: '',
-                acceptValue: '',
+                typeOne: undefined,
+                oneValue: undefined,
+                operator: undefined,
+                typeTwo: undefined,
+                twoValue: undefined,
+                acceptType: undefined,
+                acceptValue: undefined,
               },
               length,
             );
@@ -166,6 +165,7 @@ const InnerForm: React.FC<any> = (props: any) => {
                     <Col span={3}>
                       <FormItem
                         name={[field.name, 'typeOne']}
+                        fieldKey={[field.name, 'typeOne']}
                         noStyle
                         rules={[{ required: true, message: '请选择' }]}
                       >
@@ -175,6 +175,7 @@ const InnerForm: React.FC<any> = (props: any) => {
                     <Col span={4}>
                       <FormItem
                         name={[field.name, 'oneValue']}
+                        fieldKey={[field.name, 'oneValue']}
                         noStyle
                         rules={[{ required: true, message: '请选择' }]}
                       >
@@ -184,15 +185,25 @@ const InnerForm: React.FC<any> = (props: any) => {
                     <Col span={3}>
                       <FormItem
                         name={[field.name, 'operator']}
+                        fieldKey={[field.name, 'operator']}
                         noStyle
                         rules={[{ required: true, message: '请选择' }]}
                       >
-                        <Input></Input>
+                        <Select style={{ width: '100%' }} placeholder="请选择">
+                          {OPERATOR_LIST.map((item) => {
+                            return (
+                              <Option key={item.value} value={item.value}>
+                                {item.label}
+                              </Option>
+                            );
+                          })}
+                        </Select>
                       </FormItem>
                     </Col>
                     <Col span={3}>
                       <FormItem
                         name={[field.name, 'typeTwo']}
+                        fieldKey={[field.name, 'typeTwo']}
                         noStyle
                         rules={[{ required: true, message: '请选择' }]}
                       >
@@ -202,6 +213,7 @@ const InnerForm: React.FC<any> = (props: any) => {
                     <Col span={4}>
                       <FormItem
                         name={[field.name, 'twoValue']}
+                        fieldKey={[field.name, 'twoValue']}
                         noStyle
                         rules={[{ required: true, message: '请选择' }]}
                       >
@@ -211,19 +223,37 @@ const InnerForm: React.FC<any> = (props: any) => {
                     <Col span={2}>
                       <FormItem
                         name={[field.name, 'acceptType']}
+                        fieldKey={[field.name, 'acceptType']}
                         noStyle
                         rules={[{ required: true, message: '请选择' }]}
                       >
-                        <Input></Input>
+                        <Select
+                          style={{ width: '100%' }}
+                          onChange={(val) => {
+                            typeChange(val, index, 'acceptType');
+                          }}
+                          placeholder="请选择"
+                        >
+                          {VALUE_TYPE_LIST.filter((item) => item.name == 2)?.map(
+                            (item: any, index) => {
+                              return (
+                                <Option key={item.name} value={item.name}>
+                                  {item.label}
+                                </Option>
+                              );
+                            },
+                          )}
+                        </Select>
                       </FormItem>
                     </Col>
                     <Col span={4}>
                       <FormItem
                         name={[field.name, 'acceptValue']}
+                        fieldKey={[field.name, 'acceptValue']}
                         noStyle
                         rules={[{ required: true, message: '请选择' }]}
                       >
-                        <Input></Input>
+                        {formatOption(formData?.acceptType)}
                       </FormItem>
                     </Col>
                     <Col span={1}>

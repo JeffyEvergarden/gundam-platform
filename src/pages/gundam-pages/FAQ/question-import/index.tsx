@@ -217,15 +217,9 @@ const ImportPages: React.FC = (props: any) => {
                 icon={<DownloadOutlined />}
                 type="primary"
                 onClick={() => {
-                  if (config.robotTypeMap[info?.robotType] === '文本') {
-                    window.open(
-                      `${config.basePath}/robot/file/getLocalFile?fileName=模板_问题导入.xlsx`,
-                    );
-                  } else {
-                    window.open(
-                      `${config.basePath}/robot/file/getLocalFile?fileName=模板_语音问题导入.xlsx`,
-                    );
-                  }
+                  window.open(
+                    `${config.basePath}/robot/faq/robotFaqExportTemplate?robotId=${info.id}`,
+                  );
                 }}
               >
                 下载模板

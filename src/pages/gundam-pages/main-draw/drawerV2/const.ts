@@ -329,3 +329,30 @@ export const wordSlotSourceMap = {
   8: '业务参数',
   9: '图谱',
 };
+
+export const OPERATOR_LIST = [
+  {
+    value: 'empty',
+    label: '清空',
+  },
+  {
+    value: '=',
+    label: '赋值',
+  },
+  {
+    value: '+',
+    label: '计算-加',
+  },
+  {
+    value: '-',
+    label: '计算-减',
+  },
+  {
+    value: '*',
+    label: '计算-乘',
+  },
+  {
+    value: '/',
+    label: '计算-除',
+  },
+];
