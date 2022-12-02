@@ -156,6 +156,18 @@ const FAQClearList = (props: any) => {
     return false;
   };
 
+  const formatRate = (text: any) => {
+    if (isNaN(text)) {
+      return text;
+    } else {
+      text = text * 100;
+      let str1 = Number(text.toFixed(0));
+      let str2 = Number(text.toFixed(2));
+      let str = Number(str1) === Number(str2) ? str1 : str2;
+      return str + '%';
+    }
+  };
+
   // 列名
   const columns: any[] = [
     {
@@ -179,7 +191,7 @@ const FAQClearList = (props: any) => {
             <div>
               {openList[index] ? (
                 row?.questionList?.map((item: any, idx: any) => (
-                  <div>
+                  <div key={idx}>
                     {idx + 1}、{item.question}
                   </div>
                 ))
@@ -249,7 +261,7 @@ const FAQClearList = (props: any) => {
           <>
             {openList[index] ? (
               row?.questionList?.map((item: any, idx: any) => (
-                <div>
+                <div key={idx}>
                   {idx + 1}、{item.consultNum}
                 </div>
               ))
@@ -275,16 +287,23 @@ const FAQClearList = (props: any) => {
       search: false,
       width: 160,
       sorter: true,
-      render: (text: any) => {
-        if (isNaN(text)) {
-          return text;
-        } else {
-          text = text * 100;
-          let str1 = Number(text.toFixed(0));
-          let str2 = Number(text.toFixed(2));
-          let str = Number(str1) === Number(str2) ? str1 : str2;
-          return str + '%';
-        }
+      render: (val: any, row: any, index: any) => {
+        return (
+          <div>
+            {openList[index] ? (
+              row?.questionList?.map((item: any, idx: any) => (
+                <div key={idx}>
+                  {idx + 1}、{formatRate(item?.clarifyAdoptionRate)}
+                </div>
+              ))
+            ) : (
+              <div>
+                1、
+                {formatRate(row?.questionList?.[0]?.clarifyAdoptionRate)}
+              </div>
+            )}
+          </div>
+        );
       },
     },
     {
@@ -300,35 +319,6 @@ const FAQClearList = (props: any) => {
       search: false,
       fixed: 'right',
       width: 230,
-      // render: (val: any, row: any, index: number) => {
-      //   return (
-      //     <>
-      //       <div style={{ display: 'flex' }}>
-      //         <Button
-      //           type="link"
-      //           onClick={() => {
-      //             openDetailModal(row);
-      //           }}
-      //         >
-      //           查看聊天记录
-      //         </Button>
-
-      //         <Popconfirm
-      //           title="删除将不可恢复，确认删除？"
-      //           okText="确定"
-      //           cancelText="取消"
-      //           onConfirm={() => {
-      //             deleteRow(row);
-      //           }}
-      //         >
-      //           <Button type="link" danger>
-      //             删除
-      //           </Button>
-      //         </Popconfirm>
-      //       </div>
-      //     </>
-      //   );
-      // },
       render: (val: any, row: any, index: any) => {
         return (
           <>
@@ -336,7 +326,7 @@ const FAQClearList = (props: any) => {
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <div>
                   {row?.questionList?.map((item: any, idx: any) => (
-                    <div style={{ display: 'flex' }}>
+                    <div style={{ display: 'flex' }} key={idx}>
                       <Button
                         type="link"
                         onClick={() => {
@@ -526,6 +516,9 @@ const FAQClearList = (props: any) => {
         }}
         pagination={{
           pageSize: 10,
+          onChange: () => {
+            setOpenList([]);
+          },
         }}
         dateFormatter="string"
         headerTitle={

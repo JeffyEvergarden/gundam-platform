@@ -3,7 +3,7 @@ import config from '@/config/index';
 import ChatRecordModal from '@/pages/gundam-pages/FAQ-module/components/chat-record-modal';
 import { codeToStr } from '@/utils/index';
 import ProTable from '@ant-design/pro-table';
-import { Space } from 'antd';
+import { Input, InputNumber, message, Space } from 'antd';
 import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
 import { useModel } from 'umi';
@@ -28,6 +28,8 @@ export default () => {
   const { getDialogue } = useReportForm();
 
   const [paramsObj, setParamsObj] = useState<any>({ orderCode: '1', orderType: '2' });
+  const [dialogueTurnStart, setDialogueTurnStart] = useState<any>('');
+  const [dialogueTurnEnd, setDialogueTurnEnd] = useState<any>('');
 
   const choseTime = (begin: string, end: string, code: string) => {
     let temp = Object.assign({ ...paramsObj }, { begin: begin, end: end, code: code });
@@ -35,6 +37,12 @@ export default () => {
   };
 
   const initialTable = async (payload: any) => {
+    console.log('payload', payload);
+    if (dialogueTurnStart && dialogueTurnEnd && dialogueTurnStart > dialogueTurnEnd) {
+      message.warning('请输入正确的对话轮次范围');
+      return;
+    }
+
     let startTime = '';
     let endTime = '';
     if (payload.begin && payload.end) {
@@ -57,6 +65,9 @@ export default () => {
       page: payload.current,
       pageSize: payload.pageSize,
       sessionId: payload.id,
+      transferType: payload.transferType,
+      dialogueTurnStart,
+      dialogueTurnEnd,
     };
     let res = await getDialogue(params);
     return {
@@ -232,10 +243,39 @@ export default () => {
           </Space>
         );
       },
-      search: false,
+      // valueType: 'digit',
+      search: true,
       sorter: true,
       dataIndex: 'dialogueTurn',
       ellipsis: true,
+      formItemProps: {
+        label: '对话轮次',
+      },
+      renderFormItem: (item: any, row: any, form: any) => {
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <InputNumber
+              placeholder="请输入"
+              onChange={(val) => {
+                setDialogueTurnStart(val);
+              }}
+              min={0}
+              step={1}
+              precision={0}
+            />
+            <span style={{ padding: '0 5px' }}>-</span>
+            <InputNumber
+              placeholder="请输入"
+              onChange={(val) => {
+                setDialogueTurnEnd(val);
+              }}
+              min={0}
+              step={1}
+              precision={0}
+            />
+          </div>
+        );
+      },
     },
     {
       title: () => {
@@ -268,6 +308,22 @@ export default () => {
       sorter: true,
       dataIndex: 'createTime',
       ellipsis: true,
+    },
+    {
+      title: () => {
+        return <Space>是否转人工</Space>;
+      },
+      dataIndex: 'transferType',
+      ellipsis: true,
+      fieldProps: {
+        placeholder: '请选择服务分类',
+      },
+      valueType: 'select',
+      valueEnum: {
+        '': { text: '全部' },
+        0: { text: '否' },
+        1: { text: '是' },
+      },
     },
   ];
 
@@ -305,6 +361,10 @@ export default () => {
               params={paramsObj}
               request={async (params = {}) => {
                 return initialTable(params);
+              }}
+              onReset={() => {
+                setDialogueTurnStart('');
+                setDialogueTurnEnd('');
               }}
             />
           </div>

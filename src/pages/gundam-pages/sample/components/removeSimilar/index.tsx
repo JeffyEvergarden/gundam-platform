@@ -122,13 +122,16 @@ const SelectorModal: React.FC<any> = (props: any) => {
     setSearchText1(e.target.value);
   };
 
-  const onSearch1 = () => {
+  const onSearch1 = (val: any) => {
+    console.log(val);
+
     getFaqList({
       page: 1,
       pageSize: 10,
       robotId: info.id,
       faqTypeId: classType == '0' ? null : classType,
-      searchText: searchText1,
+      searchText: val?.type ? searchText1 : val,
+      queryType: 0,
       faqType: 1,
     });
   };

@@ -193,7 +193,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
   };
 
   // faq列表触发查询
-  const onSearch1 = () => {
+  const onSearch1 = (val: any) => {
     if (!classType) {
       return;
     }
@@ -204,7 +204,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       robotId: info.id,
       queryType: 0,
       faqTypeId: classType == '0' ? null : classType,
-      searchText: searchText1,
+      searchText: val?.type ? searchText1 : val,
       faqType: showOther ? undefined : 1,
     });
   };

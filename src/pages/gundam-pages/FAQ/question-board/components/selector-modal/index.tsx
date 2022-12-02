@@ -135,7 +135,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     setSearchText3(e.target.value);
   };
 
-  const onSearch1 = () => {
+  const onSearch1 = (val: any) => {
     // if (!classType) {
     //   return;
     // }
@@ -145,7 +145,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       robotId: info.id,
       queryType: 0,
       faqTypeId: classType == '0' ? null : classType,
-      searchText: searchText1,
+      searchText: val?.type ? searchText1 : val,
       faqType: 1,
     });
   };
@@ -171,8 +171,8 @@ const SelectorModal: React.FC<any> = (props: any) => {
     setSearchFlowList([...list]);
   };
 
-  const onSearch3 = () => {
-    getSelfList({ page: 1, pageSize: 10, searchText: searchText3 });
+  const onSearch3 = (val: any) => {
+    getSelfList({ page: 1, pageSize: 10, searchText: val?.type ? searchText3 : val });
   };
 
   // 选中key值
@@ -230,8 +230,6 @@ const SelectorModal: React.FC<any> = (props: any) => {
       setSelectedSelfKeys(selectedRowKeys);
     },
     getCheckboxProps: (record: any) => {
-      console.log(record);
-
       return {
         disabled: disabledSelfKeys?.includes(record.selfId),
         name: record.selfName,
