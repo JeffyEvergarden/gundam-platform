@@ -206,7 +206,7 @@ const DrawerForm = (props: any) => {
           />
         </>
       }
-      width={950}
+      width={1000}
       onClose={onClose}
       visible={visible}
       bodyStyle={{ paddingBottom: 80 }}

@@ -1,3 +1,4 @@
+import Condition from '@/components/Condition';
 import Tip from '@/components/Tip';
 import config from '@/config';
 import {
@@ -212,17 +213,18 @@ const FAQClearList = (props: any) => {
                 <div>1、{row?.robotClarifyListDTOS?.[0]?.question}</div>
               )}
             </div>
-
-            <Button
-              type="link"
-              onClick={() => {
-                let arr = JSON.parse(JSON.stringify(openList));
-                arr[index] = !arr[index];
-                setOpenList(arr);
-              }}
-            >
-              {openList[index] ? '收起' : '展开'}
-            </Button>
+            <Condition r-if={row?.robotClarifyListDTOS?.length > 1}>
+              <Button
+                type="link"
+                onClick={() => {
+                  let arr = JSON.parse(JSON.stringify(openList));
+                  arr[index] = !arr[index];
+                  setOpenList(arr);
+                }}
+              >
+                {openList[index] ? '收起' : '展开'}
+              </Button>
+            </Condition>
           </div>
         );
 
