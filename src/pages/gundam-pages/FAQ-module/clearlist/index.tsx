@@ -26,6 +26,7 @@ const FAQClearList = (props: any) => {
     tableLoading,
     opLoading,
     deleteClearItem,
+    deleteGroup,
     addClearItem,
     updateClearItem,
     total,
@@ -72,9 +73,21 @@ const FAQClearList = (props: any) => {
   const deleteRow = async (row: any) => {
     let params: any = {
       robotId: info.id,
-      id: row.id,
+      id: row?.id,
     };
     let res: any = await deleteClearItem(params);
+    if (res) {
+      // 删除成功就刷新
+      tableRef.current.reload();
+    }
+  };
+
+  const batchDelete = async (row: any) => {
+    let params: any = {
+      robotId: info.id,
+      id: row?.clarifyGroupId,
+    };
+    let res: any = await deleteGroup(params);
     if (res) {
       // 删除成功就刷新
       tableRef.current.reload();
@@ -190,13 +203,13 @@ const FAQClearList = (props: any) => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <div>
               {openList[index] ? (
-                row?.questionList?.map((item: any, idx: any) => (
+                row?.robotClarifyListDTOS?.map((item: any, idx: any) => (
                   <div key={idx}>
                     {idx + 1}、{item.question}
                   </div>
                 ))
               ) : (
-                <div>1、{row?.questionList?.[0]?.question}</div>
+                <div>1、{row?.robotClarifyListDTOS?.[0]?.question}</div>
               )}
             </div>
 
@@ -227,7 +240,7 @@ const FAQClearList = (props: any) => {
             <div
               className={style['question-box']}
               onClick={() => {
-                openSelectFaqModal(row);
+                openSelectFaqModal(row?.robotClarifyListDTOS);
               }}
             >
               {arr.map((item: any, i: number) => {
@@ -260,13 +273,13 @@ const FAQClearList = (props: any) => {
         return (
           <>
             {openList[index] ? (
-              row?.questionList?.map((item: any, idx: any) => (
+              row?.robotClarifyListDTOS?.map((item: any, idx: any) => (
                 <div key={idx}>
                   {idx + 1}、{item.consultNum}
                 </div>
               ))
             ) : (
-              <div>1、{row?.questionList?.[0]?.consultNum}</div>
+              <div>1、{row?.robotClarifyListDTOS?.[0]?.consultNum}</div>
             )}
           </>
         );
@@ -291,7 +304,7 @@ const FAQClearList = (props: any) => {
         return (
           <div>
             {openList[index] ? (
-              row?.questionList?.map((item: any, idx: any) => (
+              row?.robotClarifyListDTOS?.map((item: any, idx: any) => (
                 <div key={idx}>
                   {idx + 1}、{formatRate(item?.clarifyAdoptionRate)}
                 </div>
@@ -299,7 +312,7 @@ const FAQClearList = (props: any) => {
             ) : (
               <div>
                 1、
-                {formatRate(row?.questionList?.[0]?.clarifyAdoptionRate)}
+                {formatRate(row?.robotClarifyListDTOS?.[0]?.clarifyAdoptionRate)}
               </div>
             )}
           </div>
@@ -325,12 +338,12 @@ const FAQClearList = (props: any) => {
             {openList[index] ? (
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <div>
-                  {row?.questionList?.map((item: any, idx: any) => (
+                  {row?.robotClarifyListDTOS?.map((item: any, idx: any) => (
                     <div style={{ display: 'flex' }} key={idx}>
                       <Button
                         type="link"
                         onClick={() => {
-                          openDetailModal(row?.questionList?.[idx]);
+                          openDetailModal(row?.robotClarifyListDTOS?.[idx]);
                         }}
                       >
                         查看聊天记录
@@ -341,7 +354,7 @@ const FAQClearList = (props: any) => {
                         okText="确定"
                         cancelText="取消"
                         onConfirm={() => {
-                          deleteRow(row);
+                          deleteRow(row?.robotClarifyListDTOS?.[idx]);
                         }}
                       >
                         <Button type="link" danger>
@@ -356,7 +369,7 @@ const FAQClearList = (props: any) => {
                   okText="确定"
                   cancelText="取消"
                   onConfirm={() => {
-                    deleteRow(row?.questionList?.[0]);
+                    batchDelete(row);
                   }}
                 >
                   <Button type="link" danger>
@@ -370,7 +383,7 @@ const FAQClearList = (props: any) => {
                   <Button
                     type="link"
                     onClick={() => {
-                      openDetailModal(row?.questionList?.[0]);
+                      openDetailModal(row?.robotClarifyListDTOS?.[0]);
                     }}
                   >
                     查看聊天记录
@@ -381,7 +394,7 @@ const FAQClearList = (props: any) => {
                     okText="确定"
                     cancelText="取消"
                     onConfirm={() => {
-                      deleteRow(row?.questionList?.[0]);
+                      deleteRow(row?.robotClarifyListDTOS?.[0]);
                     }}
                   >
                     <Button type="link" danger>
@@ -393,7 +406,7 @@ const FAQClearList = (props: any) => {
                     okText="确定"
                     cancelText="取消"
                     onConfirm={() => {
-                      deleteRow(row?.questionList?.[0]);
+                      batchDelete(row);
                     }}
                   >
                     <Button type="link" danger>

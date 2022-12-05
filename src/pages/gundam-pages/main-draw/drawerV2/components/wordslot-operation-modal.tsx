@@ -1,7 +1,7 @@
 import Condition from '@/components/Condition';
 import { AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, Row, Select } from 'antd';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useModel } from 'umi';
 import { OPERATOR_LIST, VALUE_TYPE_LIST } from '../const';
 import styles from './style.less';
@@ -119,6 +119,27 @@ const InnerForm: React.FC<any> = (props: any) => {
     );
   };
 
+  useEffect(() => {
+    let formData = form.getFieldsValue();
+    let dataList = formData[name];
+    console.log(dataList);
+
+    if (!dataList?.length) {
+      dataList = [
+        {
+          typeOne: undefined,
+          oneValue: undefined,
+          operator: undefined,
+          typeTwo: undefined,
+          twoValue: undefined,
+          acceptType: undefined,
+          acceptValue: undefined,
+        },
+      ];
+    }
+    form.setFieldsValue({ ...formData });
+  }, []);
+
   return (
     <div>
       <FormItem label={title} className={styles['require']}></FormItem>
@@ -140,6 +161,9 @@ const InnerForm: React.FC<any> = (props: any) => {
               length,
             );
           };
+          if (fields.length == 0) {
+            addNew();
+          }
           return (
             <div>
               <div>

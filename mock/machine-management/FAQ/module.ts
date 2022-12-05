@@ -77,7 +77,7 @@ const getClearList = (req: any, res: any) => {
       consultNum: index * 10,
       clarifyAdoptionRate: Number(Math.random().toFixed(2)),
       createTime: moment(new Date(_date + 60 * 60 * 1000 * index)).format('YYYY-MM—DD hh:mm'),
-      questionList: arr2,
+      robotClarifyListDTOS: arr2,
     };
     return obj;
   });

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import {
   addClearCorpus,
   deleteClearCorpus,
+  deleteGroupInfo,
   getClearList,
   updateClearCorpus,
 } from '../../model/api';
@@ -53,6 +54,18 @@ export const useTableModel = () => {
     }
   };
 
+  // 删除组
+  const deleteGroup = async (data: any) => {
+    let res: any = await deleteGroupInfo(data);
+    if (res.resultCode === successCode) {
+      message.success('删除成功');
+      return true;
+    } else {
+      message.error(res.resultDesc || '未知异常');
+      return false;
+    }
+  };
+
   const addClearItem = async (data: any) => {
     setOpLoading(true);
     let res: any = await addClearCorpus(data);
@@ -86,6 +99,7 @@ export const useTableModel = () => {
     tableLoading,
     opLoading,
     deleteClearItem,
+    deleteGroup,
     addClearItem,
     updateClearItem,
     total,

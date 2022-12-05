@@ -89,7 +89,6 @@ const DrawerForm = (props: any) => {
       form.setFieldsValue({
         ..._info,
         name: _info.nodeName || info.name,
-        operationList: [{}], //
       });
       form2.setFieldsValue(_info?.highConfig);
 
@@ -331,7 +330,7 @@ const DrawerForm = (props: any) => {
           </Condition>
 
           <Condition r-if={nodetype == 'select'}>
-            <SelectConfig form={form} type={'select'} />
+            <SelectConfig form={form} type={'select'} wordSlotList={wordSlotList} />
           </Condition>
         </Form>
 
