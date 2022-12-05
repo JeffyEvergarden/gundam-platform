@@ -11,6 +11,7 @@ const { Option } = Select;
 
 const InnerForm: React.FC<any> = (props: any) => {
   const { name, form, title, wordSlotList } = props;
+  const dataType = Form.useWatch(['operations'], form);
 
   const { globalVarList } = useModel('gundam' as any, (model: any) => ({
     globalVarList: model.globalVarList || [],
@@ -119,27 +120,6 @@ const InnerForm: React.FC<any> = (props: any) => {
     );
   };
 
-  useEffect(() => {
-    let formData = form.getFieldsValue();
-    let dataList = formData[name];
-    console.log(dataList);
-
-    if (!dataList?.length) {
-      dataList = [
-        {
-          typeOne: undefined,
-          oneValue: undefined,
-          operator: undefined,
-          typeTwo: undefined,
-          twoValue: undefined,
-          acceptType: undefined,
-          acceptValue: undefined,
-        },
-      ];
-    }
-    form.setFieldsValue({ ...formData });
-  }, []);
-
   return (
     <div>
       <FormItem label={title} className={styles['require']}></FormItem>
@@ -161,9 +141,9 @@ const InnerForm: React.FC<any> = (props: any) => {
               length,
             );
           };
-          if (fields.length == 0) {
-            addNew();
-          }
+          // if (fields.length == 0) {
+          //   addNew();
+          // }
           return (
             <div>
               <div>
@@ -183,7 +163,10 @@ const InnerForm: React.FC<any> = (props: any) => {
                 </Row>
               </div>
               {fields.map((field, index) => {
-                let formData = form.getFieldsValue()[name][index];
+                let formData = form?.getFieldsValue?.()?.[name]?.[index];
+                console.log(dataType);
+                console.log(formData);
+
                 return (
                   <Row key={index} align="middle" style={{ marginBottom: '8px' }} gutter={[8, 4]}>
                     <Col span={3}>
@@ -202,8 +185,9 @@ const InnerForm: React.FC<any> = (props: any) => {
                         fieldKey={[field.name, 'oneValue']}
                         noStyle
                         rules={[{ required: true, message: '请选择' }]}
+                        shouldUpdate={true}
                       >
-                        {formatOption(formData?.typeOne)}
+                        {formatOption(dataType?.[index]?.typeOne)}
                       </FormItem>
                     </Col>
                     <Col span={3}>
@@ -241,7 +225,7 @@ const InnerForm: React.FC<any> = (props: any) => {
                         noStyle
                         rules={[{ required: true, message: '请选择' }]}
                       >
-                        {formatOption(formData?.typeTwo)}
+                        {formatOption(dataType?.[index]?.typeTwo)}
                       </FormItem>
                     </Col>
                     <Col span={2}>
@@ -258,7 +242,7 @@ const InnerForm: React.FC<any> = (props: any) => {
                           }}
                           placeholder="请选择"
                         >
-                          {VALUE_TYPE_LIST.filter((item) => item.name == 2)?.map(
+                          {VALUE_TYPE_LIST.filter((item) => item.name != 3)?.map(
                             (item: any, index) => {
                               return (
                                 <Option key={item.name} value={item.name}>
@@ -277,7 +261,7 @@ const InnerForm: React.FC<any> = (props: any) => {
                         noStyle
                         rules={[{ required: true, message: '请选择' }]}
                       >
-                        {formatOption(formData?.acceptType)}
+                        {formatOption(dataType?.[index]?.acceptType)}
                       </FormItem>
                     </Col>
                     <Col span={1}>

@@ -209,7 +209,7 @@ const MainDraw = (props: any) => {
       return;
     }
     let config: any = null;
-    // console.log(info); // 获取节点id
+    console.log(info); // 获取节点id
     config = await getNodesConfig({
       ...preParams,
       id: info._id,

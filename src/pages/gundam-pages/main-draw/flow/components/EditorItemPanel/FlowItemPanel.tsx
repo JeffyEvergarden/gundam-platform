@@ -64,7 +64,7 @@ const FlowItemPanel = (props: PanelProps) => {
           <Tip title={`用于对词槽或变量进行运算，包括清空、赋值、加减乘除操作。`} />
         </div>
       </Item>
-      <Condition r-if={config.robotTypeMap[info?.robotType] === '文本'}>
+      {/* <Condition r-if={config.robotTypeMap[info?.robotType] === '文本'}>
         <Item
           type="node"
           size="140*45"
@@ -82,7 +82,7 @@ const FlowItemPanel = (props: PanelProps) => {
         >
           <div className={styles['purple-node']}>选择节点</div>
         </Item>
-      </Condition>
+      </Condition> */}
 
       <Item
         type="node"

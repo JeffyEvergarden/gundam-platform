@@ -58,6 +58,14 @@ export async function saveBizNode(data?: { [key: string]: any }) {
   });
 }
 
+// 保存运算节点
+export async function saveOperationNode(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/node/operationNodeSave`, {
+    method: 'POST',
+    data,
+  });
+}
+
 // 获取连线信息
 export async function saveLine(data?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/mainDraw/lineSave`, {
@@ -76,6 +84,13 @@ export async function getNodesConfig(data?: { [key: string]: any }) {
 
 export async function getBizNodesConfig(data?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/node/getBizNodeInfo`, {
+    method: 'GET',
+    params: data,
+  });
+}
+
+export async function getOperationNodesConfig(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/node/operationNodeInfo`, {
     method: 'GET',
     params: data,
   });

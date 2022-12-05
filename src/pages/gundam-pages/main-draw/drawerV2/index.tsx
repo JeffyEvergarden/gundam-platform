@@ -77,20 +77,29 @@ const DrawerForm = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     open: (info: any, callback: any) => {
-      // console.log(info);
+      console.log(info);
       setAutoCloseTipsFlag(false);
       recordInfo.current.info = info;
       recordInfo.current.callback = callback;
       setNodetype(info._nodetype || 'normal');
-      const _info: any = parserBody(info.config);
-      console.log(_info);
+      if (info._nodetype == 'operation') {
+        console.log(info);
+        form.setFieldsValue({
+          ...info?.config,
+          name: info.nodeName || info.name,
+          operations: info?.config?.operations?.length ? info?.config?.operations : [{}],
+        });
+      } else {
+        const _info: any = parserBody(info.config);
+        console.log(_info);
 
-      form.resetFields();
-      form.setFieldsValue({
-        ..._info,
-        name: _info.nodeName || info.name,
-      });
-      form2.setFieldsValue(_info?.highConfig);
+        form.resetFields();
+        form.setFieldsValue({
+          ..._info,
+          name: _info.nodeName || info.name,
+        });
+        form2.setFieldsValue(_info?.highConfig);
+      }
 
       setVisible(true);
     },
@@ -105,36 +114,63 @@ const DrawerForm = (props: any) => {
       return false;
     });
 
-    let res2: any = await form2.validateFields().catch(() => {
+    let res2: any = await form2?.validateFields?.()?.catch(() => {
       message.warning('存在未填写完全的配置');
       return false;
     });
 
     console.log(res);
 
-    if (res === false || res2 === false) {
-      return;
-    } else {
-      let body: any = processRequest(res, res2);
-      let result: any = await _saveNode({
-        ...body,
-        nodeName: res.name,
-        ...preParams,
-        id: recordInfo.current.info?.id,
-        nodeType: recordInfo.current.info?.nodeType,
-      });
-
-      let label;
-      if (res?.name?.length > 10) {
-        label = res?.name.slice(0, 10) + '...';
+    if (nodetype == 'operation') {
+      if (res === false) {
+        return;
       } else {
-        label = res?.name;
-      }
+        let result: any = await _saveNode({
+          ...res,
+          nodeName: res.name,
+          ...preParams,
+          id: recordInfo.current.info?.id,
+          nodeType: recordInfo.current.info?.nodeType,
+        });
 
-      if (result === true) {
-        setAutoCloseTipsFlag(false);
-        recordInfo.current?.callback?.({ label, _name: res?.name }); // 成功回调修改名称
-        setVisible(false);
+        let label;
+        if (res?.name?.length > 10) {
+          label = res?.name.slice(0, 10) + '...';
+        } else {
+          label = res?.name;
+        }
+
+        if (result === true) {
+          setAutoCloseTipsFlag(false);
+          recordInfo.current?.callback?.({ label, _name: res?.name }); // 成功回调修改名称
+          setVisible(false);
+        }
+      }
+    } else {
+      if (res === false || res2 === false) {
+        return;
+      } else {
+        let body: any = processRequest(res, res2);
+        let result: any = await _saveNode({
+          ...body,
+          nodeName: res.name,
+          ...preParams,
+          id: recordInfo.current.info?.id,
+          nodeType: recordInfo.current.info?.nodeType,
+        });
+
+        let label;
+        if (res?.name?.length > 10) {
+          label = res?.name.slice(0, 10) + '...';
+        } else {
+          label = res?.name;
+        }
+
+        if (result === true) {
+          setAutoCloseTipsFlag(false);
+          recordInfo.current?.callback?.({ label, _name: res?.name }); // 成功回调修改名称
+          setVisible(false);
+        }
       }
     }
   };

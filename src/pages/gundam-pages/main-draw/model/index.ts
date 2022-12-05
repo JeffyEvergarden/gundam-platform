@@ -10,11 +10,13 @@ import {
   getLineConfig,
   getMachineMainDraw,
   getNodesConfig,
+  getOperationNodesConfig,
   getWordSlotTableList,
   saveBizNode,
   saveLine,
   saveMachineMainDraw,
   saveNode,
+  saveOperationNode,
   updateNode,
 } from './api';
 import {
@@ -23,6 +25,7 @@ import {
   parserType,
   processType,
   spBusinessNode,
+  operationNode,
   startNode,
 } from './const';
 
@@ -34,6 +37,8 @@ const getDefaultNode = (type: string) => {
     return businessNode;
   } else if (type === 'sp_business') {
     return spBusinessNode;
+  } else if (type === 'operation') {
+    return operationNode;
   }
   return normalNode;
 };
@@ -85,6 +90,8 @@ export const useNodeOpsModel = () => {
     let getNodeWay: any = null;
     if (parserType(data.nodeType) === 'business') {
       getNodeWay = getBizNodesConfig;
+    } else if (parserType(data.nodeType) === 'operation') {
+      getNodeWay = getOperationNodesConfig;
     } else {
       getNodeWay = getNodesConfig;
     }
@@ -103,6 +110,8 @@ export const useNodeOpsModel = () => {
     let saveNodeWay: any = null;
     if (parserType(data.nodeType) === 'business') {
       saveNodeWay = saveBizNode;
+    } else if (parserType(data.nodeType) === 'operation') {
+      saveNodeWay = saveOperationNode;
     } else {
       saveNodeWay = saveNode;
     }

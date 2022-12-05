@@ -43,6 +43,7 @@ const getConfig = (req: any, res: any) => {
           y: 200,
         },
         { frontId: '04', id: '04', nodeType: 3, label: '特殊业务节点', x: 100, y: 300 },
+        { frontId: '05', id: '054', nodeType: 4, label: '运算节点', x: 300, y: 300 },
       ],
       edges: [
         {
@@ -140,6 +141,37 @@ const getNodesConfig = (req: any, res: any) => {
       robotId: '100',
       flowId: '100',
       nodeType: 0,
+    },
+  });
+};
+
+const getOperationNodesConfig = (req: any, res: any) => {
+  console.log('-------getOperationNodesConfig');
+  res.json({
+    resultCode: successCode,
+    data: {
+      id: '100',
+      nodeDesc: '高中生侦探',
+      nodeFlowId: 'front_mock_id_1',
+      nodeName: '名侦探柯南运算',
+      robotId: '100',
+      flowId: '100',
+      nodeType: 4,
+      operations: [
+        {
+          nodeId: '111',
+          robotId: '100',
+          flowId: '101',
+          typeOne: 1,
+          oneValue: '123',
+          operator: '+',
+          nodeType: 4,
+          typeTwo: 2,
+          twoValue: '432',
+          acceptType: 2,
+          acceptValue: '011',
+        },
+      ],
     },
   });
 };
@@ -254,9 +286,11 @@ export default {
   'POST /aichat/robot/mainDraw/nodeLineInfo': getConfig, // 获取画布
   'POST /aichat/robot/mainDraw/nodeLineSave': nodeOps, // 保存画布
   'POST /aichat/robot/node/nodeInfo': getNodesConfig, // 获取节点信息
-  'GET /aichat/robot/node/getBizNodeInfo': getNodesConfig,
+  'GET /aichat/robot/node/getBizNodeInfo': getNodesConfig, //获取流程节点信息
+  'GET /aichat/robot/node/operationNodeInfo': getOperationNodesConfig, //获取运算节点信息
   'POST /aichat/robot/node/nodeSave': nodeOps, // 保存节点配置
   'POST /aichat/robot/node/bizNodeConfigSave': nodeOps, // 保存节点配置
+  'POST /aichat/robot/node/operationNodeSave': nodeOps, // 保存节点配置
   'POST /aichat/robot/mainDraw/lineSave': nodeOps, // 保存线配置
   'POST /aichat/robot/mainDraw/lineRuleInfo': getLineConfig, // 获取线配置
   'GET /aichat/notification/templateListPage': getMessageList,

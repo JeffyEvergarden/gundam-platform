@@ -44,6 +44,19 @@ export const spBusinessNode: any = {
   },
 };
 
+export const operationNode: any = {
+  color: '#B7EB8F',
+  shape: 'flow-rect',
+  size: '140*45',
+  _nodetype: 'operation',
+  type: 'node',
+  style: {
+    lineWidth: 1,
+    stroke: '#B7EB8F',
+    strokeOpacity: 1,
+  },
+};
+
 const map: any = {
   0: 'normal', // 普通节点
   1: 'business', // 普通的业务流程节点
