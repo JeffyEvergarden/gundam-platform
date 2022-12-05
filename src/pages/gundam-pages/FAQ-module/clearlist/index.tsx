@@ -172,17 +172,17 @@ const FAQClearList = (props: any) => {
   const columns: any[] = [
     {
       title: (...args: any[]) => {
-        // if (args[1] === 'table') {
-        //   return '客户问题';
-        // }
+        if (args[1] === 'table') {
+          return '客户问题';
+        }
         // console.log(args);
-        return '客户问题';
+        return '客户问题/标准问';
       },
       dataIndex: 'searchText',
       fixed: 'left',
       width: 300,
       fieldProps: {
-        placeholder: '请输入客户问题',
+        placeholder: '请输入客户问题/标准问',
       },
       ellipsis: true,
       render: (val: any, row: any, index: any) => {
@@ -561,6 +561,7 @@ const FAQClearList = (props: any) => {
         confirmLoading={opLoading}
         maskClosable={false}
         width={600}
+        destroyOnClose={true}
       >
         <div className={style['modal-page']}>
           <div className={style['modal-form']}>
