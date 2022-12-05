@@ -52,7 +52,7 @@ export const useNodeOpsModel = () => {
     let res: any = await addNode(data);
     setLoading(false);
     if (res.resultCode !== config.successCode) {
-      message.warning(res.resultDesc || '未知系统异常');
+      message.error(res.resultDesc || '未知系统异常');
       return false;
     } else {
       return res;
@@ -77,7 +77,7 @@ export const useNodeOpsModel = () => {
     let res: any = await deleteNode(data);
     setLoading(false);
     if (res.resultCode !== config.successCode) {
-      message.warning(res.resultDesc || '未知系统异常');
+      message.error(res.resultDesc || '未知系统异常');
       return false;
     } else {
       return true;
@@ -120,7 +120,7 @@ export const useNodeOpsModel = () => {
       message.success('保存成功');
       return true;
     } else {
-      message.warning(res.resultDesc || '保存失败');
+      message.error(res.resultDesc || '保存失败');
       return false;
     }
   };
@@ -131,7 +131,7 @@ export const useNodeOpsModel = () => {
       let config: any = res.data || {};
       return config;
     } else {
-      message.warning('获取节点信息失败');
+      message.error('获取节点信息失败');
       return {};
     }
   };
