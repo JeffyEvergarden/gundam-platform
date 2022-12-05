@@ -49,13 +49,8 @@ const getClearList = (req: any, res: any) => {
       question: '问题' + Math.ceil(Math.random() * 100) + '我想问什么来着',
       clarifyAdoptionRate: Number(Math.random().toFixed(2)),
       consultNum: index * 10,
-    };
-  });
-
-  arr = arr.map((item: any, index: number) => {
-    let obj = {
       id: index,
-      question: '问题' + (index + 1) + '我想问什么来着',
+      // question: '问题' + (index + 1) + '我想问什么来着',
       channel: Math.random() > 0.5 ? 'media_zfb' : 'media_wx',
       clarifyDetail: [
         {
@@ -74,9 +69,15 @@ const getClearList = (req: any, res: any) => {
           recommendName: '中邮钱包还款',
         },
       ],
-      consultNum: index * 10,
-      clarifyAdoptionRate: Number(Math.random().toFixed(2)),
+      // consultNum: index * 10,
+      // clarifyAdoptionRate: Number(Math.random().toFixed(2)),
       createTime: moment(new Date(_date + 60 * 60 * 1000 * index)).format('YYYY-MM—DD hh:mm'),
+    };
+  });
+
+  arr = arr.map((item: any, index: number) => {
+    let obj = {
+      clarifyGroupId: index + 1,
       robotClarifyListDTOS: arr2,
     };
     return obj;

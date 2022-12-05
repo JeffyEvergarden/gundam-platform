@@ -235,15 +235,15 @@ const FAQClearList = (props: any) => {
       search: false,
       width: 300,
       render: (arr: any, row: any) => {
-        if (Array.isArray(arr)) {
+        if (Array.isArray(row?.robotClarifyListDTOS?.[0]?.clarifyDetail)) {
           return (
             <div
               className={style['question-box']}
               onClick={() => {
-                openSelectFaqModal(row?.robotClarifyListDTOS);
+                openSelectFaqModal(row?.robotClarifyListDTOS?.[0]);
               }}
             >
-              {arr.map((item: any, i: number) => {
+              {row?.robotClarifyListDTOS?.[0]?.clarifyDetail?.map((item: any, i: number) => {
                 return (
                   <Tooltip title={item.recommendName} placement={'topLeft'} key={i}>
                     <div className={style['qustion-label']} key={i}>
@@ -325,6 +325,9 @@ const FAQClearList = (props: any) => {
       search: false,
       sorter: true,
       width: 200,
+      render: (val: any, row: any) => {
+        return row?.robotClarifyListDTOS?.[0]?.createTime;
+      },
     },
     {
       title: '操作',

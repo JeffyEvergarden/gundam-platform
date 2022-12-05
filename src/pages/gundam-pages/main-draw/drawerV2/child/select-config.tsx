@@ -147,43 +147,47 @@ const SelectConfig = (props: any) => {
 
       <div style={{ paddingTop: '8px' }}>
         <div className={styles['title_sp']}> 获取选择结果</div>
-        <FormItem name={'selectResult'} label={'赋值给'} style={{ marginLeft: '16px' }}>
+        <FormItem label={'赋值给'} style={{ marginLeft: '16px' }}>
           <Space align="baseline">
-            <FormItem
-              name={['selectResult', 'typeOne']}
-              fieldKey={['selectResult', 'typeOne']}
-              noStyle
-              rules={[{ required: true, message: '请选择' }]}
-            >
-              <Select
-                style={{ width: '200px' }}
-                onChange={(val) => {
-                  // typeChange(val, index, 'acceptType');
-                  let formData = form.getFieldsValue();
-                  let dataRow = formData['selectResult'];
-                  dataRow.oneValue = undefined;
-                  dataRow['typeOne'] = val;
-                  form.setFieldsValue({ ...formData });
-                }}
-                placeholder="请选择"
+            <div>
+              <FormItem
+                name={['selectResult', 'typeOne']}
+                fieldKey={['selectResult', 'typeOne']}
+                noStyle
+                rules={[{ required: true, message: '请选择' }]}
               >
-                {VALUE_TYPE_LIST.filter((item) => item.name != 3)?.map((item: any, index) => {
-                  return (
-                    <Option key={item.name} value={item.name}>
-                      {item.label}
-                    </Option>
-                  );
-                })}
-              </Select>
-            </FormItem>
-            <FormItem
-              name={['selectResult', 'oneValue']}
-              fieldKey={['selectResult', 'oneValue']}
-              noStyle
-              rules={[{ required: true, message: '请选择' }]}
-            >
-              {formatOption(dataType)}
-            </FormItem>
+                <Select
+                  style={{ width: '200px' }}
+                  onChange={(val) => {
+                    // typeChange(val, index, 'acceptType');
+                    let formData = form.getFieldsValue();
+                    let dataRow = formData['selectResult'];
+                    dataRow.oneValue = undefined;
+                    dataRow['typeOne'] = val;
+                    form.setFieldsValue({ ...formData });
+                  }}
+                  placeholder="请选择"
+                >
+                  {VALUE_TYPE_LIST.filter((item) => item.name != 3)?.map((item: any, index) => {
+                    return (
+                      <Option key={item.name} value={item.name}>
+                        {item.label}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              </FormItem>
+            </div>
+            <div>
+              <FormItem
+                name={['selectResult', 'oneValue']}
+                fieldKey={['selectResult', 'oneValue']}
+                noStyle
+                rules={[{ required: true, message: '请选择' }]}
+              >
+                {formatOption(dataType)}
+              </FormItem>
+            </div>
           </Space>{' '}
         </FormItem>
       </div>
