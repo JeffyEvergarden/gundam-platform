@@ -213,6 +213,7 @@ const MainDraw = (props: any) => {
     config = await getNodesConfig({
       ...preParams,
       id: info._id,
+      nodeId: info._id,
       nodeType: processType(info._nodetype),
     });
     console.log(config, info);
