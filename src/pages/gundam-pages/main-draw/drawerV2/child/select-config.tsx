@@ -147,13 +147,14 @@ const SelectConfig = (props: any) => {
 
       <div style={{ paddingTop: '8px' }}>
         <div className={styles['title_sp']}> 获取选择结果</div>
-        <FormItem label={'赋值给'} style={{ marginLeft: '16px' }}>
+        <FormItem label={'赋值给'} style={{ margin: '8px 16px 0px' }}>
           <Space align="baseline">
             <div>
               <FormItem
                 name={['selectResult', 'typeOne']}
                 fieldKey={['selectResult', 'typeOne']}
-                noStyle
+                // noStyle
+                style={{ marginBottom: '0' }}
                 rules={[{ required: true, message: '请选择' }]}
               >
                 <Select
@@ -182,7 +183,8 @@ const SelectConfig = (props: any) => {
               <FormItem
                 name={['selectResult', 'oneValue']}
                 fieldKey={['selectResult', 'oneValue']}
-                noStyle
+                // noStyle
+                style={{ marginBottom: '0' }}
                 rules={[{ required: true, message: '请选择' }]}
               >
                 {formatOption(dataType)}
