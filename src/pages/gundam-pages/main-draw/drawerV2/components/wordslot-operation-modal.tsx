@@ -120,6 +120,10 @@ const InnerForm: React.FC<any> = (props: any) => {
     );
   };
 
+  useEffect(() => {
+    console.log(dataType);
+  }, [dataType]);
+
   return (
     <div>
       <FormItem label={title} className={styles['require']}></FormItem>
@@ -170,25 +174,29 @@ const InnerForm: React.FC<any> = (props: any) => {
                 return (
                   <Row key={index} align="middle" style={{ marginBottom: '8px' }} gutter={[8, 4]}>
                     <Col span={3}>
-                      <FormItem
-                        name={[field.name, 'typeOne']}
-                        fieldKey={[field.name, 'typeOne']}
-                        noStyle
-                        rules={[{ required: true, message: '请选择' }]}
-                      >
-                        {formatType('typeOne', index)}
-                      </FormItem>
+                      <Condition r-if={dataType?.[index]?.operator != 'empty'}>
+                        <FormItem
+                          name={[field.name, 'typeOne']}
+                          fieldKey={[field.name, 'typeOne']}
+                          noStyle
+                          rules={[{ required: true, message: '请选择' }]}
+                        >
+                          {formatType('typeOne', index)}
+                        </FormItem>
+                      </Condition>
                     </Col>
                     <Col span={4}>
-                      <FormItem
-                        name={[field.name, 'oneValue']}
-                        fieldKey={[field.name, 'oneValue']}
-                        noStyle
-                        rules={[{ required: true, message: '请选择' }]}
-                        shouldUpdate={true}
-                      >
-                        {formatOption(dataType?.[index]?.typeOne)}
-                      </FormItem>
+                      <Condition r-if={dataType?.[index]?.operator != 'empty'}>
+                        <FormItem
+                          name={[field.name, 'oneValue']}
+                          fieldKey={[field.name, 'oneValue']}
+                          noStyle
+                          rules={[{ required: true, message: '请选择' }]}
+                          shouldUpdate={true}
+                        >
+                          {formatOption(dataType?.[index]?.typeOne)}
+                        </FormItem>
+                      </Condition>
                     </Col>
                     <Col span={3}>
                       <FormItem
@@ -209,24 +217,38 @@ const InnerForm: React.FC<any> = (props: any) => {
                       </FormItem>
                     </Col>
                     <Col span={3}>
-                      <FormItem
-                        name={[field.name, 'typeTwo']}
-                        fieldKey={[field.name, 'typeTwo']}
-                        noStyle
-                        rules={[{ required: true, message: '请选择' }]}
+                      <Condition
+                        r-if={
+                          dataType?.[index]?.operator != 'empty' &&
+                          dataType?.[index]?.operator != '='
+                        }
                       >
-                        {formatType('typeTwo', index)}
-                      </FormItem>
+                        <FormItem
+                          name={[field.name, 'typeTwo']}
+                          fieldKey={[field.name, 'typeTwo']}
+                          noStyle
+                          rules={[{ required: true, message: '请选择' }]}
+                        >
+                          {formatType('typeTwo', index)}
+                        </FormItem>
+                      </Condition>
                     </Col>
                     <Col span={4}>
-                      <FormItem
-                        name={[field.name, 'twoValue']}
-                        fieldKey={[field.name, 'twoValue']}
-                        noStyle
-                        rules={[{ required: true, message: '请选择' }]}
+                      <Condition
+                        r-if={
+                          dataType?.[index]?.operator != 'empty' &&
+                          dataType?.[index]?.operator != '='
+                        }
                       >
-                        {formatOption(dataType?.[index]?.typeTwo)}
-                      </FormItem>
+                        <FormItem
+                          name={[field.name, 'twoValue']}
+                          fieldKey={[field.name, 'twoValue']}
+                          noStyle
+                          rules={[{ required: true, message: '请选择' }]}
+                        >
+                          {formatOption(dataType?.[index]?.typeTwo)}
+                        </FormItem>
+                      </Condition>
                     </Col>
                     <Col span={2}>
                       <FormItem
