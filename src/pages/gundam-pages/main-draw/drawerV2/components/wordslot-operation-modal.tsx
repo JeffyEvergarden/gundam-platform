@@ -264,7 +264,8 @@ const InnerForm: React.FC<any> = (props: any) => {
                           }}
                           placeholder="请选择"
                         >
-                          {VALUE_TYPE_LIST.filter((item) => item.name != 3)?.map(
+                          {VALUE_TYPE_LIST.filter((item) => item.name == 2)?.map(
+                            //只要词槽
                             (item: any, index) => {
                               return (
                                 <Option key={item.name} value={item.name}>
