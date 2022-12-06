@@ -1,5 +1,6 @@
 import Condition from '@/components/Condition';
 import Tip from '@/components/Tip';
+import config from '@/config';
 import { Checkbox, Form, Input, Modal, Radio, Select, Space } from 'antd';
 import { useImperativeHandle, useState } from 'react';
 import { useModel } from 'umi';
@@ -22,6 +23,10 @@ const WordSlotModal: React.FC<any> = (props: any) => {
   });
   const { flowList } = useModel('drawer' as any, (model: any) => ({
     flowList: model._originFlowList || [],
+  }));
+
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
   }));
 
   const [visible, setVisible] = useState<boolean>(false);
@@ -243,17 +248,19 @@ const WordSlotModal: React.FC<any> = (props: any) => {
               />
             </div>
 
-            <div style={{ paddingTop: '8px' }}>
-              <ConversationConfig
-                form={form}
-                name={'selectButtonList'}
-                title="按钮选项"
-                placeholder="内容"
-                required={true}
-                formName={'selectButtonList'}
-                showLabel={false}
-              />
-            </div>
+            <Condition r-if={config.robotTypeMap[info?.robotType] === '文本'}>
+              <div style={{ paddingTop: '8px' }}>
+                <ConversationConfig
+                  form={form}
+                  name={'selectButtonList'}
+                  title="按钮选项"
+                  placeholder="内容"
+                  required={true}
+                  formName={'selectButtonList'}
+                  showLabel={false}
+                />
+              </div>
+            </Condition>
           </Condition>
         </Form>
       </div>
