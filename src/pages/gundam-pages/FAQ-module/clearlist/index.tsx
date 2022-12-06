@@ -90,7 +90,7 @@ const FAQClearList = (props: any) => {
   const batchDelete = async (row: any) => {
     let params: any = {
       robotId: info.id,
-      id: row?.clarifyGroupId,
+      clarifyGroupId: row?.clarifyGroupId,
     };
     let res: any = await deleteGroup(params);
     if (res) {
