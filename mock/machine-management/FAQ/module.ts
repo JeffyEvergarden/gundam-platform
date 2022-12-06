@@ -51,6 +51,7 @@ const getClearList = (req: any, res: any) => {
       consultNum: index * 10,
       id: index,
       // question: '问题' + (index + 1) + '我想问什么来着',
+      clarifyGroupId: index + 1,
       channel: Math.random() > 0.5 ? 'media_zfb' : 'media_wx',
       clarifyDetail: [
         {

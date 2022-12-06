@@ -98,6 +98,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     showQuestion = true,
     pageType,
     showOther = false,
+    deleteQuestion = true,
   } = props;
 
   const [showWishKey, setShowWishKey] = useState<boolean>(true);
@@ -546,12 +547,15 @@ const SelectorModal: React.FC<any> = (props: any) => {
                       }}
                       readOnly={readOnly}
                     />
-                    <div style={{ padding: '10px' }}>
-                      <DeleteOutlined
-                        style={{ color: '#00000060', fontSize: '20px', cursor: 'pointer' }}
-                        onClick={() => delFaqOrSample(item, index)}
-                      />
-                    </div>
+
+                    <Condition r-if={deleteQuestion}>
+                      <div style={{ padding: '10px' }}>
+                        <DeleteOutlined
+                          style={{ color: '#00000060', fontSize: '20px', cursor: 'pointer' }}
+                          onClick={() => delFaqOrSample(item, index)}
+                        />
+                      </div>
+                    </Condition>
                   </div>
                 );
               })}

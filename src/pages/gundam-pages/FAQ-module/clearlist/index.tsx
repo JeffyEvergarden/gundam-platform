@@ -126,7 +126,8 @@ const FAQClearList = (props: any) => {
         return item.recommendId;
       });
     (selectFaqModalRef.current as any)?.open({
-      question: row.question || '',
+      questionList: row || [],
+      operation: 'batch',
       selectList: questionTypeList, //被选中列表
       selectedQuestionKeys, // 已选问题
       selectedWishKeys, // 已选意图
@@ -138,6 +139,8 @@ const FAQClearList = (props: any) => {
 
     // 输出列表
     let row: any = tmpRef.current.row;
+    console.log(row);
+
     let questionTypeList: any[] = row?.clarifyDetail || [];
     let needUpdate = false;
     const keys: any[] = list?.map((item: any) => item.recommendId) || [];
@@ -159,7 +162,7 @@ const FAQClearList = (props: any) => {
     }
 
     let data: any = {
-      clarifyId: row?.id,
+      clarifyGroupId: row?.[0]?.clarifyGroupId,
       clarifyDetailList: list,
     };
     let res: any = await updateClearItem(data);
@@ -242,7 +245,7 @@ const FAQClearList = (props: any) => {
             <div
               className={style['question-box']}
               onClick={() => {
-                openSelectFaqModal(row?.robotClarifyListDTOS?.[0]);
+                openSelectFaqModal(row?.robotClarifyListDTOS);
               }}
             >
               {row?.robotClarifyListDTOS?.[0]?.clarifyDetail?.map((item: any, i: number) => {
@@ -569,6 +572,7 @@ const FAQClearList = (props: any) => {
         cref={selectFaqModalRef}
         confirm={confirmUpdateSelect}
         max={robotType == '语音' ? 2 : 5}
+        deleteQuestion={false}
       />
 
       <Modal
