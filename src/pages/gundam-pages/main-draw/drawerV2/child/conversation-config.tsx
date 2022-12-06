@@ -41,6 +41,9 @@ const ConversationConfig = (props: any) => {
     if (title == '答复配置') {
       return '可配置多个答复内容，当流程在当前节点循环时（例如，客户表示未听清），可以顺序播放不同的答复内容。';
     }
+    if (title == '按钮选项') {
+      return '';
+    }
   };
 
   return (

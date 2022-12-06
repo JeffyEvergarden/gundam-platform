@@ -242,6 +242,18 @@ const WordSlotModal: React.FC<any> = (props: any) => {
                 titleType={2}
               />
             </div>
+
+            <div style={{ paddingTop: '8px' }}>
+              <ConversationConfig
+                form={form}
+                name={'selectButtonList'}
+                title="按钮选项"
+                placeholder="内容"
+                required={true}
+                formName={'selectButtonList'}
+                showLabel={false}
+              />
+            </div>
           </Condition>
         </Form>
       </div>
