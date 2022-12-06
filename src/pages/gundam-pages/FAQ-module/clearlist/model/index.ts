@@ -3,6 +3,7 @@ import { message } from 'antd';
 import { useState } from 'react';
 import {
   addClearCorpus,
+  addGroupInfo,
   deleteClearCorpus,
   deleteGroupInfo,
   getClearList,
@@ -66,6 +67,17 @@ export const useTableModel = () => {
     }
   };
 
+  const addGroup = async (data: any) => {
+    let res: any = await addGroupInfo(data);
+    if (res.resultCode === successCode) {
+      message.success(res?.resultDesc || '添加成功');
+      return true;
+    } else {
+      message.error(res.resultDesc || '未知异常');
+      return false;
+    }
+  };
+
   const addClearItem = async (data: any) => {
     setOpLoading(true);
     let res: any = await addClearCorpus(data);
@@ -101,6 +113,7 @@ export const useTableModel = () => {
     deleteClearItem,
     deleteGroup,
     addClearItem,
+    addGroup,
     updateClearItem,
     total,
     questionTotal,

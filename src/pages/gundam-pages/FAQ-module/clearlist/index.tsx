@@ -3,13 +3,15 @@ import Tip from '@/components/Tip';
 import config from '@/config';
 import {
   MinusCircleOutlined,
+  MinusSquareOutlined,
   MonitorOutlined,
   PlusCircleOutlined,
   PlusOutlined,
+  PlusSquareOutlined,
   QuestionCircleOutlined,
 } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Button, Form, Input, message, Modal, Popconfirm, Tooltip } from 'antd';
+import { Button, Divider, Form, Input, message, Modal, Popconfirm, Tooltip } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import DetailModal from '../components/detail-modal';
@@ -29,6 +31,7 @@ const FAQClearList = (props: any) => {
     deleteClearItem,
     deleteGroup,
     addClearItem,
+    addGroup,
     updateClearItem,
     total,
     questionTotal,
@@ -69,6 +72,7 @@ const FAQClearList = (props: any) => {
   //排序
   const [paramsObj, setParamsObj] = useState<any>({ orderCode: '', orderType: '' });
   const [openList, setOpenList] = useState<any>([]);
+  const [selectRow, setSelectRow] = useState<any>({});
 
   // 删除
   const deleteRow = async (row: any) => {
@@ -205,17 +209,6 @@ const FAQClearList = (props: any) => {
       render: (val: any, row: any, index: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div>
-              {openList[index] ? (
-                row?.robotClarifyListDTOS?.map((item: any, idx: any) => (
-                  <div key={idx}>
-                    {idx + 1}、{item.question}
-                  </div>
-                ))
-              ) : (
-                <div>1、{row?.robotClarifyListDTOS?.[0]?.question}</div>
-              )}
-            </div>
             <Condition r-if={row?.robotClarifyListDTOS?.length > 1}>
               <Button
                 type="link"
@@ -225,13 +218,96 @@ const FAQClearList = (props: any) => {
                   setOpenList(arr);
                 }}
               >
-                {openList[index] ? '收起' : '展开'}
+                {openList[index] ? <MinusSquareOutlined /> : <PlusSquareOutlined />}
               </Button>
             </Condition>
+            <div style={{ flex: 1, overflow: 'hidden' }}>
+              {/* <div> */}
+              {openList[index] ? (
+                row?.robotClarifyListDTOS?.map((item: any, idx: any) => (
+                  <div key={idx}>
+                    <Tooltip title={item.question}>
+                      <div className={style['qustion-label']}>{item.question}</div>
+                    </Tooltip>
+
+                    {idx != row?.robotClarifyListDTOS?.length - 1 && (
+                      <Divider style={{ margin: '2px 0' }}></Divider>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <Tooltip title={row?.robotClarifyListDTOS?.[0]?.question}>
+                  <div className={style['qustion-label']}>
+                    {row?.robotClarifyListDTOS?.[0]?.question}
+                  </div>
+                </Tooltip>
+              )}
+            </div>
           </div>
         );
 
         return row.question;
+      },
+    },
+
+    {
+      title: '咨询次数',
+      dataIndex: 'consultNum',
+      search: false,
+      width: 120,
+      render: (val: any, row: any, index: any) => {
+        return (
+          <>
+            {openList[index] ? (
+              row?.robotClarifyListDTOS?.map((item: any, idx: any) => (
+                <div key={idx}>
+                  <div>{item.consultNum}</div>
+                  {idx != row?.robotClarifyListDTOS?.length - 1 && (
+                    <Divider style={{ margin: '2px 0' }}></Divider>
+                  )}
+                </div>
+              ))
+            ) : (
+              <div>{row?.robotClarifyListDTOS?.[0]?.consultNum}</div>
+            )}
+          </>
+        );
+      },
+    },
+    {
+      title: () => (
+        <>
+          {'澄清采用率'}
+          <Tip
+            title={
+              '当客户输入命中了FAQ-澄清，且用户选择了提供的澄清内容，则视为澄清采用。澄清采用率=（澄清采用次数/FAQ-澄清次数）*100%'
+            }
+          />
+        </>
+      ),
+      dataIndex: 'clarifyAdoptionRate',
+      search: false,
+      width: 120,
+      sorter: true,
+      render: (val: any, row: any, index: any) => {
+        return (
+          // <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ flex: 1 }}>
+            {openList[index] ? (
+              row?.robotClarifyListDTOS?.map((item: any, idx: any) => (
+                <div key={idx}>
+                  <div>{formatRate(item?.clarifyAdoptionRate)}</div>
+                  {idx != row?.robotClarifyListDTOS?.length - 1 && (
+                    <Divider style={{ margin: '2px 0' }}></Divider>
+                  )}
+                </div>
+              ))
+            ) : (
+              <div>{formatRate(row?.robotClarifyListDTOS?.[0]?.clarifyAdoptionRate)}</div>
+            )}
+          </div>
+          // </div>
+        );
       },
     },
     {
@@ -270,66 +346,11 @@ const FAQClearList = (props: any) => {
       },
     },
     {
-      title: '咨询次数',
-      dataIndex: 'consultNum',
-      search: false,
-      width: 160,
-      render: (val: any, row: any, index: any) => {
-        return (
-          <>
-            {openList[index] ? (
-              row?.robotClarifyListDTOS?.map((item: any, idx: any) => (
-                <div key={idx}>
-                  {idx + 1}、{item.consultNum}
-                </div>
-              ))
-            ) : (
-              <div>1、{row?.robotClarifyListDTOS?.[0]?.consultNum}</div>
-            )}
-          </>
-        );
-      },
-    },
-    {
-      title: () => (
-        <>
-          {'澄清采用率'}
-          <Tip
-            title={
-              '当客户输入命中了FAQ-澄清，且用户选择了提供的澄清内容，则视为澄清采用。澄清采用率=（澄清采用次数/FAQ-澄清次数）*100%'
-            }
-          />
-        </>
-      ),
-      dataIndex: 'clarifyAdoptionRate',
-      search: false,
-      width: 160,
-      sorter: true,
-      render: (val: any, row: any, index: any) => {
-        return (
-          <div>
-            {openList[index] ? (
-              row?.robotClarifyListDTOS?.map((item: any, idx: any) => (
-                <div key={idx}>
-                  {idx + 1}、{formatRate(item?.clarifyAdoptionRate)}
-                </div>
-              ))
-            ) : (
-              <div>
-                1、
-                {formatRate(row?.robotClarifyListDTOS?.[0]?.clarifyAdoptionRate)}
-              </div>
-            )}
-          </div>
-        );
-      },
-    },
-    {
       title: '时间',
       dataIndex: 'createTime',
       search: false,
       sorter: true,
-      width: 200,
+      width: 180,
       render: (val: any, row: any) => {
         return row?.robotClarifyListDTOS?.[0]?.createTime;
       },
@@ -343,50 +364,41 @@ const FAQClearList = (props: any) => {
       render: (val: any, row: any, index: any) => {
         return (
           <>
-            {openList[index] ? (
-              <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+              {openList[index] ? (
                 <div>
                   {row?.robotClarifyListDTOS?.map((item: any, idx: any) => (
-                    <div style={{ display: 'flex' }} key={idx}>
-                      <Button
-                        type="link"
-                        onClick={() => {
-                          openDetailModal(row?.robotClarifyListDTOS?.[idx]);
-                        }}
-                      >
-                        查看聊天记录
-                      </Button>
-
-                      <Popconfirm
-                        title="删除将不可恢复，确认删除？"
-                        okText="确定"
-                        cancelText="取消"
-                        onConfirm={() => {
-                          deleteRow(row?.robotClarifyListDTOS?.[idx]);
-                        }}
-                      >
-                        <Button type="link" danger>
-                          删除
+                    <div key={idx}>
+                      <div style={{ display: 'flex' }}>
+                        <Button
+                          type="link"
+                          onClick={() => {
+                            openDetailModal(row?.robotClarifyListDTOS?.[idx]);
+                          }}
+                        >
+                          查看聊天记录
                         </Button>
-                      </Popconfirm>
+
+                        <Popconfirm
+                          title="删除将不可恢复，确认删除？"
+                          okText="确定"
+                          cancelText="取消"
+                          onConfirm={() => {
+                            deleteRow(row?.robotClarifyListDTOS?.[idx]);
+                          }}
+                        >
+                          <Button type="link" danger>
+                            删除
+                          </Button>
+                        </Popconfirm>
+                      </div>
+                      {idx != row?.robotClarifyListDTOS?.length - 1 && (
+                        <Divider style={{ margin: '0' }}></Divider>
+                      )}
                     </div>
                   ))}
                 </div>
-                <Popconfirm
-                  title="删除将不可恢复，确认删除？"
-                  okText="确定"
-                  cancelText="取消"
-                  onConfirm={() => {
-                    batchDelete(row);
-                  }}
-                >
-                  <Button type="link" danger>
-                    删除组
-                  </Button>
-                </Popconfirm>
-              </div>
-            ) : (
-              <div>
+              ) : (
                 <div style={{ display: 'flex' }}>
                   <Button
                     type="link"
@@ -409,21 +421,31 @@ const FAQClearList = (props: any) => {
                       删除
                     </Button>
                   </Popconfirm>
-                  <Popconfirm
-                    title="删除将不可恢复，确认删除？"
-                    okText="确定"
-                    cancelText="取消"
-                    onConfirm={() => {
-                      batchDelete(row);
-                    }}
-                  >
-                    <Button type="link" danger>
-                      删除组
-                    </Button>
-                  </Popconfirm>
                 </div>
-              </div>
-            )}
+              )}
+              <Popconfirm
+                title="删除将不可恢复，确认删除？"
+                okText="确定"
+                cancelText="取消"
+                onConfirm={() => {
+                  batchDelete(row);
+                }}
+              >
+                <Button type="link" danger>
+                  删除组
+                </Button>
+              </Popconfirm>
+              <Button
+                type="link"
+                onClick={() => {
+                  setSelectRow(row);
+                  openModal();
+                }}
+                style={{ color: '#19be6b' }}
+              >
+                加入组
+              </Button>
+            </div>
           </>
         );
       },
@@ -457,11 +479,23 @@ const FAQClearList = (props: any) => {
       return;
     }
     // ------------
-    let data: any = {
-      robotId: info.id,
-      ...res,
-    };
-    res = await addClearItem(data);
+
+    if (selectRow?.clarifyGroupId) {
+      let data: any = {
+        ...res,
+        robotId: info.id,
+        clarifyGroupId: selectRow?.clarifyGroupId,
+        clarifyDetailList: selectRow?.robotClarifyListDTOS?.[0]?.clarifyDetail,
+      };
+      res = await addGroup(data);
+    } else {
+      let data: any = {
+        robotId: info.id,
+        ...res,
+      };
+      res = await addClearItem(data);
+    }
+
     if (res) {
       // 成功刷新当前页面
       handleCancel();
@@ -558,6 +592,7 @@ const FAQClearList = (props: any) => {
             icon={<PlusOutlined />}
             type="primary"
             onClick={() => {
+              setSelectRow({});
               openModal();
             }}
           >
@@ -670,14 +705,15 @@ const FAQClearList = (props: any) => {
                   );
                 }}
               </FormList>
-
-              <Form.Item
-                label="标准问/意图"
-                name="clarifyDetailList"
-                rules={[{ required: true, message: '请选择标准问/意图' }]}
-              >
-                <FaqSelect />
-              </Form.Item>
+              <Condition r-if={!selectRow?.clarifyGroupId}>
+                <Form.Item
+                  label="标准问/意图"
+                  name="clarifyDetailList"
+                  rules={[{ required: true, message: '请选择标准问/意图' }]}
+                >
+                  <FaqSelect />
+                </Form.Item>
+              </Condition>
             </Form>
           </div>
         </div>

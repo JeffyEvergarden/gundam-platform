@@ -50,6 +50,13 @@ export async function deleteGroupInfo(data?: { [key: string]: any }) {
   });
 }
 
+export async function addGroupInfo(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/robot/clarify/clarifyGroupAdd`, {
+    method: 'POST',
+    data,
+  });
+}
+
 export async function addClearCorpus(data?: { [key: string]: any }) {
   return request(`${baseUrl}/robot/clarify/clarifyAdd`, {
     method: 'POST',

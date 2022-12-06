@@ -19,7 +19,7 @@ const getBlackList = (req: any, res: any) => {
   arr = arr.map((item: any, index: number) => {
     let obj = {
       id: index,
-      question: '问题' + (index + 1) + '我想问什么来着',
+      question: '问题' + (index + 1) + '我想问什么来着我想问什么来着我想问什么来着',
       channelCode: Math.random() > 0.5 ? 'media_zfb' : 'media_wx',
       createTime: moment(new Date(_date + 60 * 60 * 1000 * index)).format('YYYY-MM—DD hh:mm'),
     };
@@ -46,7 +46,8 @@ const getClearList = (req: any, res: any) => {
 
   arr2 = arr2.map((item, index) => {
     return {
-      question: '问题' + Math.ceil(Math.random() * 100) + '我想问什么来着',
+      question:
+        '问题' + Math.ceil(Math.random() * 100) + '我想问什么来着我想问什么来着我想问什么来着',
       clarifyAdoptionRate: Number(Math.random().toFixed(2)),
       consultNum: index * 10,
       id: index,
@@ -351,6 +352,7 @@ export default {
   'GET /aichat/robot/clarify/clarifyPageList': getClearList, // 获取FAQ-澄清语料列表
   'POST /aichat/robot/clarify/clarifyDelete': normalDeal, // 删除澄清语料
   'POST /aichat/robot/clarify/clarifyAdd': normalDeal, // 新增澄清语料
+  'POST /aichat/robot/clarify/clarifyGroupAdd': normalDeal, // 新增澄清组语料
   'POST /aichat/robot/clarify/clarifyDetailAdd': normalDeal, // 修改标准问/意图
   // 查看会话记录
   'GET /aichat/robot/clarify/clarifySessionPageList': getSessionList, // 查看明细
