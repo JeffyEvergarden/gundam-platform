@@ -340,6 +340,10 @@ export const OPERATOR_LIST = [
     label: '赋值',
   },
   {
+    value: 'length',
+    label: '长度赋值',
+  },
+  {
     value: '+',
     label: '计算-加',
   },

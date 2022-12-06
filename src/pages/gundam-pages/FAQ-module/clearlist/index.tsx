@@ -113,7 +113,7 @@ const FAQClearList = (props: any) => {
     // selectedQuestionKeys  已选择的问题
     // selectedWishKeys 已选择的意图
     tmpRef.current.row = row;
-    let questionTypeList: any[] = row.clarifyDetail || [];
+    let questionTypeList: any[] = row?.[0].clarifyDetail || [];
     questionTypeList = Array.isArray(questionTypeList) ? [...questionTypeList] : [];
     let selectedQuestionKeys: any[] = questionTypeList
       .filter((item: any) => {

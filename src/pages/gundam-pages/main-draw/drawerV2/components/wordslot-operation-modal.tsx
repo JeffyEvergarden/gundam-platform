@@ -220,7 +220,8 @@ const InnerForm: React.FC<any> = (props: any) => {
                       <Condition
                         r-if={
                           dataType?.[index]?.operator != 'empty' &&
-                          dataType?.[index]?.operator != '='
+                          dataType?.[index]?.operator != '=' &&
+                          dataType?.[index]?.operator != 'length'
                         }
                       >
                         <FormItem
@@ -237,7 +238,8 @@ const InnerForm: React.FC<any> = (props: any) => {
                       <Condition
                         r-if={
                           dataType?.[index]?.operator != 'empty' &&
-                          dataType?.[index]?.operator != '='
+                          dataType?.[index]?.operator != '=' &&
+                          dataType?.[index]?.operator != 'length'
                         }
                       >
                         <FormItem
