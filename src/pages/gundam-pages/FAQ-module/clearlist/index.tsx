@@ -237,7 +237,7 @@ const FAQClearList = (props: any) => {
                 ))
               ) : (
                 <Tooltip title={row?.robotClarifyListDTOS?.[0]?.question}>
-                  <div className={style['qustion-label']}>
+                  <div className={style['qustion-label']} style={{ paddingLeft: '32px' }}>
                     {row?.robotClarifyListDTOS?.[0]?.question}
                   </div>
                 </Tooltip>
