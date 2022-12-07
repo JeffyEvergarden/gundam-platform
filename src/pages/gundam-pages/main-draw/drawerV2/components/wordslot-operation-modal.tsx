@@ -35,6 +35,16 @@ const InnerForm: React.FC<any> = (props: any) => {
     if (type == 'typeTwo') {
       dataRow.twoValue = undefined;
     }
+    if (type == 'operator') {
+      if (val == '=' || val == 'length' || val == 'empty') {
+        dataRow.twoValue = undefined;
+        dataRow.typeTwo = undefined;
+      }
+      if (val == 'empty') {
+        dataRow.oneValue = undefined;
+        dataRow.typeOne = undefined;
+      }
+    }
     dataRow[type] = val;
     form.setFieldsValue({ ...formData });
   };
@@ -205,7 +215,13 @@ const InnerForm: React.FC<any> = (props: any) => {
                         noStyle
                         rules={[{ required: true, message: '请选择' }]}
                       >
-                        <Select style={{ width: '100%' }} placeholder="请选择">
+                        <Select
+                          style={{ width: '100%' }}
+                          placeholder="请选择"
+                          onChange={(val) => {
+                            typeChange(val, index, 'operator');
+                          }}
+                        >
                           {OPERATOR_LIST.map((item) => {
                             return (
                               <Option key={item.value} value={item.value}>
