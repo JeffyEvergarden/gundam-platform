@@ -208,7 +208,7 @@ const FAQClearList = (props: any) => {
       ellipsis: true,
       render: (val: any, row: any, index: any) => {
         return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
             <Condition r-if={row?.robotClarifyListDTOS?.length > 1}>
               <Button
                 type="link"
@@ -217,6 +217,7 @@ const FAQClearList = (props: any) => {
                   arr[index] = !arr[index];
                   setOpenList(arr);
                 }}
+                className={style['btn']}
               >
                 {openList[index] ? <MinusSquareOutlined /> : <PlusSquareOutlined />}
               </Button>
