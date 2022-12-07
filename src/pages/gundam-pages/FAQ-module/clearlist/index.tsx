@@ -239,7 +239,7 @@ const FAQClearList = (props: any) => {
                 <Tooltip title={row?.robotClarifyListDTOS?.[0]?.question}>
                   <div
                     className={style['qustion-label']}
-                    style={row?.robotClarifyListDTOS?.length > 1 ? { paddingLeft: '32px' } : {}}
+                    style={row?.robotClarifyListDTOS?.length > 1 ? {} : { paddingLeft: '32px' }}
                   >
                     {row?.robotClarifyListDTOS?.[0]?.question}
                   </div>
