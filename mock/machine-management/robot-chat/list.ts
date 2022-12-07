@@ -12,6 +12,17 @@ const getChatInitData = (req: any, res: any) => {
 };
 
 const textRobotDialogueText = (req: any, res: any) => {
+  let arr = new Array(11).fill(1);
+
+  arr = arr.map((item: any, index: number) => {
+    return {
+      number: (index + 1) * 10,
+      askType: 'select',
+      askKey: 123 + index,
+      askText: Math.ceil(Math.random() * 10) > 5 ? '广洲' + index : '深川' + index,
+    };
+  });
+
   res.json({
     resultCode: successCode,
     resultDesc: '成功',
@@ -37,9 +48,16 @@ const textRobotDialogueText = (req: any, res: any) => {
         {
           number: 2,
           askType: 'faq',
-          askKey: '111111',
+          askKey: '222222',
           askText: '循环产品利率？',
         },
+        {
+          number: 3,
+          askType: 'select',
+          askKey: '123',
+          askText: '广洲广洲广洲广洲广洲广洲广洲广洲广广洲广洲广洲洲广洲',
+        },
+        ...arr,
       ],
       recommendText: '您是否还想咨询以下问题：',
     },

@@ -674,35 +674,77 @@ export default (props: any) => {
                                   <div style={{ fontWeight: 'bold' }}>{item?.message}</div>
                                 )}
                                 {/* )} */}
-                                {item.recommendQuestion.map((el: any) => {
-                                  return (
-                                    <Fragment key={el.number}>
-                                      <div
-                                        style={{ color: '#1890ff', cursor: 'pointer' }}
-                                        onClick={() => {
-                                          setTextMessage(el.askText);
-                                          timeFn.current.inputVal = el.askText;
-                                          setAssociationList([]);
-                                          let newDay = new Date().toLocaleDateString();
-                                          let occurDay = newDay.replace(/\//g, '-');
-                                          let newTime = new Date().toLocaleTimeString('en-GB');
-                                          let params = {
-                                            requestId: modalData?.requestId,
-                                            occurTime: occurDay + ' ' + newTime,
-                                            systemCode: 'test',
-                                            sessionId: modalData?.sessionId,
-                                            number: el.number,
-                                            question: el.askText,
-                                          };
-
-                                          sendMessage(el.askText, true, params);
-                                        }}
-                                      >
-                                        {el.number + ':' + el.askText}
-                                      </div>
-                                    </Fragment>
-                                  );
-                                })}
+                                <div>
+                                  {(item?.recommendQuestion?.findIndex(
+                                    (item: any) => item.askType == 'select',
+                                  ) == -1
+                                    ? item.recommendQuestion.filter(
+                                        (item: any) => item.askType != 'select',
+                                      )
+                                    : item.recommendQuestion.filter(
+                                        (item: any) => item.askType == 'select',
+                                      )
+                                  ).map((el: any) => {
+                                    return (
+                                      <Fragment key={el.number}>
+                                        {el.askType != 'select' ? (
+                                          <div
+                                            style={{ color: '#1890ff', cursor: 'pointer' }}
+                                            onClick={() => {
+                                              setTextMessage(el.askText);
+                                              timeFn.current.inputVal = el.askText;
+                                              setAssociationList([]);
+                                              let newDay = new Date().toLocaleDateString();
+                                              let occurDay = newDay.replace(/\//g, '-');
+                                              let newTime = new Date().toLocaleTimeString('en-GB');
+                                              let params = {
+                                                requestId: modalData?.requestId,
+                                                occurTime: occurDay + ' ' + newTime,
+                                                systemCode: 'test',
+                                                sessionId: modalData?.sessionId,
+                                                number: el.number,
+                                                question: el.askText,
+                                              };
+                                              sendMessage(el.askText, true, params);
+                                            }}
+                                          >
+                                            {el.number + ':' + el.askText}
+                                          </div>
+                                        ) : (
+                                          <Button
+                                            type="primary"
+                                            shape="round"
+                                            ghost
+                                            style={{
+                                              margin: '5px 5px 5px 0',
+                                              whiteSpace: 'break-spaces',
+                                              height: 'auto',
+                                            }}
+                                            onClick={() => {
+                                              setTextMessage(el.askText);
+                                              timeFn.current.inputVal = el.askText;
+                                              setAssociationList([]);
+                                              let newDay = new Date().toLocaleDateString();
+                                              let occurDay = newDay.replace(/\//g, '-');
+                                              let newTime = new Date().toLocaleTimeString('en-GB');
+                                              let params = {
+                                                requestId: modalData?.requestId,
+                                                occurTime: occurDay + ' ' + newTime,
+                                                systemCode: 'test',
+                                                sessionId: modalData?.sessionId,
+                                                number: el.number,
+                                                question: el.askText,
+                                              };
+                                              sendMessage(el.askText, true, params);
+                                            }}
+                                          >
+                                            {el.askText}
+                                          </Button>
+                                        )}
+                                      </Fragment>
+                                    );
+                                  })}
+                                </div>
                               </div>
                               {/* {info?.robotType == 0 && (
                               <div className={styles['words-type-audio']}>
