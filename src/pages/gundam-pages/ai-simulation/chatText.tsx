@@ -715,11 +715,7 @@ export default (props: any) => {
                                             type="primary"
                                             shape="round"
                                             ghost
-                                            style={{
-                                              margin: '5px 5px 5px 0',
-                                              whiteSpace: 'break-spaces',
-                                              height: 'auto',
-                                            }}
+                                            className={styles['slotButton']}
                                             onClick={() => {
                                               setTextMessage(el.askText);
                                               timeFn.current.inputVal = el.askText;
