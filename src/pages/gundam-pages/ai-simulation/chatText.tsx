@@ -688,7 +688,7 @@ export default (props: any) => {
                                     return (
                                       <Fragment key={el.number}>
                                         {el.askType != 'select' ? (
-                                          <div
+                                          <div //澄清、推荐问题
                                             style={{ color: '#1890ff', cursor: 'pointer' }}
                                             onClick={() => {
                                               setTextMessage(el.askText);
@@ -711,7 +711,7 @@ export default (props: any) => {
                                             {el.number + ':' + el.askText}
                                           </div>
                                         ) : (
-                                          <Button
+                                          <Button // 词槽按钮
                                             type="primary"
                                             shape="round"
                                             ghost

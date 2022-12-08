@@ -1,10 +1,12 @@
 import Condition from '@/components/Condition';
+import Tip from '@/components/Tip';
 import { AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, Row, Select } from 'antd';
 import React, { useEffect, useMemo } from 'react';
 import { useModel } from 'umi';
 import { OPERATOR_LIST, VALUE_TYPE_LIST } from '../const';
 import styles from './style.less';
+import operatorImg from '@/asset/image/operator.png';
 
 const { Item: FormItem } = Form;
 const { Option } = Select;
@@ -134,6 +136,17 @@ const InnerForm: React.FC<any> = (props: any) => {
     console.log(dataType);
   }, [dataType]);
 
+  const titleHtml = (title: any, url: any, url2?: any) => {
+    return (
+      <div style={url2 ? { width: '900px' } : { width: '500px' }}>
+        {title}
+        <br />
+        <img decoding="async" src={url} style={!url2 ? { width: '100%' } : { width: '50%' }} />
+        {url2 && <img decoding="async" src={url2} style={{ width: '50%' }} />}
+      </div>
+    );
+  };
+
   return (
     <div>
       <FormItem label={title} className={styles['require']}></FormItem>
@@ -166,13 +179,99 @@ const InnerForm: React.FC<any> = (props: any) => {
                   style={{ marginBottom: '8px', textAlign: 'center' }}
                   gutter={[8, 4]}
                 >
-                  <Col span={3}>类型1</Col>
-                  <Col span={4}>运算值1</Col>
-                  <Col span={3}>运算符</Col>
-                  <Col span={3}>类型2</Col>
-                  <Col span={4}>运算值2</Col>
-                  <Col span={2}>接受类型</Col>
-                  <Col span={4}>接受值</Col>
+                  <Col span={3}>
+                    类型1
+                    <Tip
+                      title={
+                        '运算值1的类型，枚举值“变量”、“词槽”、“自定义”，输入框支持 词槽/变量的内嵌属性获取。'
+                      }
+                    />
+                  </Col>
+                  <Col span={4}>
+                    运算值1
+                    <Tip title={'根据“类型1”联动展示，是运算的其中一个值。'} />
+                  </Col>
+                  <Col span={3}>
+                    运算符
+                    <Tip
+                      img={true}
+                      title={titleHtml(
+                        <span>
+                          {' 将“运算值1”和“运算值2”执行运算，结果赋值于“接受值”字段。'}
+                          <span style={{ color: 'red' }}>
+                            {
+                              ' 计算结果若是浮点数，则四舍五入保留两位小数。加减乘除要求“运算值1”和“运算值2”都必须能转化为数值（如字符串“10086”可以转化为数值10086），否则运算失败。'
+                            }
+                          </span>
+                          <ul className={styles['operatorUl']}>
+                            <li>
+                              <b>{'清空：将“接受值”的值置空。'}</b>
+                            </li>
+                            <li>
+                              <b>{'赋值：将“运算值1”的值赋值给“接受值”的值，'}</b>
+                              {
+                                '如下图，将词槽“来电号码”的值赋值给“短信号码”；将“10086”赋值给“运营号码”。'
+                              }
+                            </li>
+
+                            <li>
+                              <b>{'长度赋值：'}</b>
+                              {'将“运算值1”的值的'}
+                              <span style={{ color: 'red' }}>{'长度'}</span>
+                              {
+                                '赋值给“接受值”，如下图，将词槽“人员列表”的长度赋值给”人员数量“；假设词槽“人员列表”值为["张三","李四","王五"]，则最后赋值到人员数量的值为"3"。'
+                              }
+                            </li>
+
+                            <li>
+                              <b>{'计算-加：将“运算值1”的值，加上“运算值2”，再赋值到“接受值”。'}</b>
+                              {'如下图，将“年龄”加上自定义值“5”，再赋值到“今年年龄”。'}
+                            </li>
+
+                            <li>
+                              <b>{'计算-减：将“运算值1”的值，减去“运算值2”，再赋值到“接受值”。'}</b>
+                              {'如下图，将“收入”减去词槽“支出”的值，再赋值到“收入”。'}
+                            </li>
+
+                            <li>
+                              <b>{'计算-乘：将“运算值1”的值，乘以“运算值2”，再赋值到“接受值”。'}</b>
+                              {'如下图，将“单价”乘以变量“数量”，再赋值到“总费用”。'}
+                            </li>
+
+                            <li>
+                              <b>{'计算-除：将“运算值1”的值，除以“运算值2”，再赋值到“接受值”。'}</b>
+                              {'如下图，将“总费用”除以词槽“数量”，再赋值到“单价”。'}
+                            </li>
+                          </ul>
+                        </span>,
+                        operatorImg,
+                      )}
+                    />
+                  </Col>
+                  <Col span={3}>
+                    类型2
+                    <Tip
+                      title={
+                        '运算值2的类型，枚举值“变量”、“词槽”、“自定义”，输入框支持 词槽/变量的内嵌属性获取。'
+                      }
+                    />
+                  </Col>
+                  <Col span={4}>
+                    运算值2
+                    <Tip title={'根据“类型2”联动展示，是运算的另一个值。'} />
+                  </Col>
+                  <Col span={2} style={{ whiteSpace: 'nowrap' }}>
+                    接受类型
+                    <Tip title={'枚举为“词槽”，决定接受值的类型。'} />
+                  </Col>
+                  <Col span={4}>
+                    接受值
+                    <Tip
+                      title={
+                        '运算值1和运算值2经过运算后，将结果存入此字段，接受值词槽的生命周期默认全局有效。'
+                      }
+                    />
+                  </Col>
                   <Col span={1}></Col>
                 </Row>
               </div>

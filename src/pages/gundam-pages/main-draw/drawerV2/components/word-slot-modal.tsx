@@ -179,6 +179,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
                 <Radio.Group>
                   <Radio value={'dialogue'}>整轮对话有效</Radio>
                   <Radio value={'node'}>节点跳转后清空</Radio>
+                  <Radio value={'flow'}>业务流程跳转后清空</Radio>
                 </Radio.Group>
               </FormItem>
 
