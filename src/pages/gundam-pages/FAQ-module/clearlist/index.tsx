@@ -291,7 +291,7 @@ const FAQClearList = (props: any) => {
       ),
       dataIndex: 'clarifyAdoptionRate',
       search: false,
-      width: 120,
+      width: 130,
       sorter: true,
       render: (val: any, row: any, index: any) => {
         return (

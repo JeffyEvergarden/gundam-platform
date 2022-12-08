@@ -382,14 +382,19 @@ const EditorView = (props: PageViewProps) => {
           // 存在同样的隐藏_id
           return item._id === event.model._id;
         });
+        // console.log(event);
+
         if (node) {
-          let label: any = event?.model?.label + '_副本';
+          let label: any = (event?.model?._label || event?.model?.label) + '_副本';
           let reg = new RegExp(`^${label}[0-9]+$`);
           let maxCopy = nodes //找到当前复制节点最高
-            ?.filter((item: any) => reg?.test(item?.label))
-            ?.map((item: any) => item?.label?.slice?.(label?.length))
+            ?.filter((item: any) => reg?.test(item?._label || item?.label))
+            ?.map(
+              (item: any) =>
+                item?._label?.slice?.(label?.length) || item?.label?.slice?.(label?.length),
+            )
             ?.sort((a: any, b: any) => b - a)?.[0];
-          console.log(maxCopy);
+          // console.log(maxCopy);
 
           event.model._type = 'copy';
           event.model.copy_id = node._id;
