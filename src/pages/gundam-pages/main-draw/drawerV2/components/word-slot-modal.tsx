@@ -179,13 +179,13 @@ const WordSlotModal: React.FC<any> = (props: any) => {
                 <Radio.Group>
                   <Radio value={'dialogue'}>整轮对话有效</Radio>
                   <Radio value={'node'}>节点跳转后清空</Radio>
-                  <Radio value={'flow'}>业务流程跳转后清空</Radio>
+                  <Radio value={'flow'}>流程跳转后清空</Radio>
                 </Radio.Group>
               </FormItem>
 
               <Tip
                 title={
-                  '整轮对话有效”表示词槽的值在整通对话中均可使用；“节点跳转后清空”表示流程进入下一节点时当前词槽清空'
+                  '“整轮对话有效”表示词槽的值在整通对话中均可使用；“节点跳转后清空”表示流程进入下一节点时当前词槽清空；“流程跳转后情况”表示流程跳出当前流程时当前词槽清空。'
                 }
               />
             </Space>
