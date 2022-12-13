@@ -1,3 +1,4 @@
+import Condition from '@/components/Condition';
 import { Input, Modal, Table, Tabs, Tooltip } from 'antd';
 import { useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import { useModel } from 'umi';
@@ -418,37 +419,39 @@ const SelectorModal: React.FC<any> = (props: any) => {
           </div>
         </TabPane>
 
-        <TabPane tab="自助服务" key="3">
-          <div className={style['page_content']}>
-            <div className={style['zy-row_end']}>
-              <Search
-                placeholder="请输入"
-                value={searchText3}
-                onSearch={onSearch3}
-                onPressEnter={onSearch3}
-                onChange={onSearchChange3}
-                allowClear
-                style={{ width: 300 }}
-              />
-            </div>
+        <Condition v-if={false}>
+          <TabPane tab="自助服务" key="3">
+            <div className={style['page_content']}>
+              <div className={style['zy-row_end']}>
+                <Search
+                  placeholder="请输入"
+                  value={searchText3}
+                  onSearch={onSearch3}
+                  onPressEnter={onSearch3}
+                  onChange={onSearchChange3}
+                  allowClear
+                  style={{ width: 300 }}
+                />
+              </div>
 
-            <div className={style['table-box']}>
-              <Table
-                rowSelection={{
-                  type: type === 'radio' ? 'radio' : 'checkbox',
-                  ...rowSelfSelection,
-                  selectedRowKeys: selectedSelfKeys,
-                }}
-                size="small"
-                pagination={{ current: current3, onChange: onChange3, total: selfTotalSize }}
-                dataSource={selfList}
-                columns={columns3}
-                rowKey="selfId"
-                // loading={tableLoading}
-              />
+              <div className={style['table-box']}>
+                <Table
+                  rowSelection={{
+                    type: type === 'radio' ? 'radio' : 'checkbox',
+                    ...rowSelfSelection,
+                    selectedRowKeys: selectedSelfKeys,
+                  }}
+                  size="small"
+                  pagination={{ current: current3, onChange: onChange3, total: selfTotalSize }}
+                  dataSource={selfList}
+                  columns={columns3}
+                  rowKey="selfId"
+                  // loading={tableLoading}
+                />
+              </div>
             </div>
-          </div>
-        </TabPane>
+          </TabPane>
+        </Condition>
       </Tabs>
     </Modal>
   );
