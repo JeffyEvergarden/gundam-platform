@@ -359,7 +359,8 @@ export default () => {
                 pageSize: 10,
               }}
               search={{
-                span: 4,
+                span: 4.5,
+                labelWidth: 'auto',
               }}
               onChange={tableChange}
               columns={columns}

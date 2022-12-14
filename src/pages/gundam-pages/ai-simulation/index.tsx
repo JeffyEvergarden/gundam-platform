@@ -151,6 +151,7 @@ export default (props: any) => {
                           name={item?.configName || item?.name}
                           label={item?.configValue || item?.label}
                           rules={[{ required: true, message: '请选择' }]}
+                          initialValue={'test'}
                         >
                           <Select placeholder={item?.placeholder}>
                             {channelList?.map((item: any, index: any) => (
