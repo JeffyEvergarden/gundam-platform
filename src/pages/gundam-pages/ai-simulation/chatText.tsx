@@ -184,7 +184,7 @@ export default (props: any) => {
       occurTime: occurDay + ' ' + newTime,
       systemCode: modalData.systemCode,
       sessionId: modalData.sessionId,
-      message: textMessage,
+      message: undefined,
       event: chatEvent, // 事件类型
       actionType: '',
     };
