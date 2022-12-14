@@ -137,7 +137,7 @@ export default () => {
   // orderCode  1-时长  2-轮次 3-会话开始时间
   //  orderType   1-正序 2-倒序
   const tableChange = (pagination: any, filters: any, sorter: any) => {
-    let temp = { orderCode: '1', orderType: '2' };
+    let temp = { orderCode: '3', orderType: '2' };
     if (sorter.columnKey === 'dialogueTurn' && sorter.order === 'ascend') {
       temp.orderCode = '2';
       temp.orderType = '1';
