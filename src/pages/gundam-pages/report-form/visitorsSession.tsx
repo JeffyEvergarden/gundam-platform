@@ -27,7 +27,7 @@ export default () => {
 
   const { getDialogue } = useReportForm();
 
-  const [paramsObj, setParamsObj] = useState<any>({ orderCode: '1', orderType: '2' });
+  const [paramsObj, setParamsObj] = useState<any>({ orderCode: '3', orderType: '2' });
   const [dialogueTurnStart, setDialogueTurnStart] = useState<any>('');
   const [dialogueTurnEnd, setDialogueTurnEnd] = useState<any>('');
 
@@ -186,6 +186,7 @@ export default () => {
       render: (t: any, r: any, i: any) => {
         return <a onClick={() => toRecord(r)}>{r.id}</a>;
       },
+
       formItemProps: {
         label: '会话ID',
       },
@@ -201,6 +202,7 @@ export default () => {
           </Space>
         );
       },
+
       search: true,
       dataIndex: 'customerId',
       ellipsis: true,
@@ -251,6 +253,7 @@ export default () => {
       formItemProps: {
         label: '对话轮次',
       },
+
       renderFormItem: (item: any, row: any, form: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -316,8 +319,9 @@ export default () => {
       dataIndex: 'transferType',
       ellipsis: true,
       fieldProps: {
-        placeholder: '请选择服务分类',
+        placeholder: '请选择是否转人工',
       },
+
       valueType: 'select',
       valueEnum: {
         '': { text: '全部' },
@@ -353,6 +357,9 @@ export default () => {
               actionRef={actionRef}
               pagination={{
                 pageSize: 10,
+              }}
+              search={{
+                span: 4,
               }}
               onChange={tableChange}
               columns={columns}

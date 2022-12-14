@@ -132,7 +132,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       faqTypeId: classType == '0' ? null : classType,
       searchText: val?.type ? searchText1 : val,
       queryType: 0,
-      faqType: 1,
+      // faqType: 1,
     });
   };
 
