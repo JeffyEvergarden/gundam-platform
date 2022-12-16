@@ -371,7 +371,9 @@ export default () => {
                     totaltransferRate =
                       totalvisitNum == 0 || totaltransferNum == 0
                         ? 0
-                        : twoDecimal_f(Math.floor((totaltransferNum / totalvisitNum) * 100));
+                        : twoDecimal_f(
+                            Math.floor((totaltransferNum / totalvisitNum) * 10000) / 100,
+                          );
                   },
                 );
                 if (dataSource?.length)
