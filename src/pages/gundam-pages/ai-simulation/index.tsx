@@ -117,6 +117,14 @@ export default (props: any) => {
     getGlobalValConfig(info.id);
   }, [chatVisible]);
 
+  useEffect(() => {
+    if (!beginTalking) {
+      form.setFieldsValue({
+        CHANNEL_CODE: channelList?.find((item: any) => item?.label == '测试')?.value || undefined,
+      });
+    }
+  }, [channelList]);
+
   return (
     <React.Fragment>
       <Row gutter={24}>
@@ -151,7 +159,6 @@ export default (props: any) => {
                           name={item?.configName || item?.name}
                           label={item?.configValue || item?.label}
                           rules={[{ required: true, message: '请选择' }]}
-                          initialValue={'test'}
                         >
                           <Select placeholder={item?.placeholder}>
                             {channelList?.map((item: any, index: any) => (
