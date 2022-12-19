@@ -133,7 +133,7 @@ export default () => {
         let params = {
           robotId: info.id,
           faqId: rowInfo?.recommendId,
-          corpusTextList: temp,
+          similarList: temp,
         };
         res = await faqAddBatch(params);
       }
