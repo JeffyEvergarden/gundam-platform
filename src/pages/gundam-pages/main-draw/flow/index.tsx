@@ -172,11 +172,13 @@ const EditorView = (props: PageViewProps) => {
       }
     });
 
-    updateNode(target.id, {
-      label: `${maxLevel ? Number(maxLevel) + 1 : 1}.${originName || '连线'}`,
-      _name: originName || '连线',
-      level: maxLevel ? Number(maxLevel) + 1 : 1,
-    });
+    if (typeof originModel?.source != 'object' && typeof originModel?.target != 'object') {
+      updateNode(target.id, {
+        label: `${maxLevel ? Number(maxLevel) + 1 : 1}.${originName || '连线'}`,
+        _name: originName || '连线',
+        level: maxLevel ? Number(maxLevel) + 1 : 1,
+      });
+    }
 
     // 规则有以下
     // 1、线必须有前后节点
@@ -189,6 +191,8 @@ const EditorView = (props: PageViewProps) => {
     if (typeof target.source === 'object' || typeof target.target === 'object') {
       console.log('头尾需有明确指向');
       if (event?.action == 'update') {
+        console.log('连空时恢复原来连线');
+
         updateNode(target.id, {
           source: event?.originModel?.source,
           target: event?.originModel?.target,
