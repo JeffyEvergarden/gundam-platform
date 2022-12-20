@@ -147,6 +147,7 @@ const EditorView = (props: PageViewProps) => {
 
     const target = event.item.model;
     const originName = event?.originModel?._name || '';
+    const originModel = event?.originModel;
     const [nodes, lines] = getAllNode();
 
     console.log(lines);
@@ -187,6 +188,17 @@ const EditorView = (props: PageViewProps) => {
     // 连的是节点是 那source和 target字段就是字符串id、 不然是 对象 {x,y} 的坐标
     if (typeof target.source === 'object' || typeof target.target === 'object') {
       console.log('头尾需有明确指向');
+      if (event?.action == 'update') {
+        updateNode(target.id, {
+          source: event?.originModel?.source,
+          target: event?.originModel?.target,
+          label:
+            originModel?.label || `${maxLevel ? Number(maxLevel) + 1 : 1}.${originName || '连线'}`,
+          _name: originName || '连线',
+          level: originModel?.level || 1,
+        });
+        return;
+      }
       deleteNode(target);
       return;
     }
@@ -223,6 +235,8 @@ const EditorView = (props: PageViewProps) => {
 
   // 更改线
   const _updateLine = (event: any) => {
+    console.log(event);
+
     // let keys = Object.keys(event.updateModel);
     const next = event.updateModel;
     const last = event.originModel;
