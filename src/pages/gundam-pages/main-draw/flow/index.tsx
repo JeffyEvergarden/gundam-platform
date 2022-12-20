@@ -450,7 +450,17 @@ const EditorView = (props: PageViewProps) => {
       }
     },
 
-    onAfterItemActived: (e: any) => {
+    // onAfterItemActived: (e: any) => {
+    //   console.log(e);
+
+    //   if (e?.item?.model) {
+    //     setActiveNode(e.item.model); //
+    //   }
+    // },
+
+    onAfterItemSelected: (e: any) => {
+      console.log('选中', e);
+
       if (e?.item?.model) {
         setActiveNode(e.item.model); //
       }
