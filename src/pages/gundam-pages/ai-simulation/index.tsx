@@ -121,7 +121,7 @@ export default (props: any) => {
     if (!beginTalking) {
       form.setFieldsValue({
         CHANNEL_CODE:
-          channelList?.find((item: any) => item?.label == '测试')?.value ||
+          channelList?.find((item: any) => item?.value == 'test')?.value ||
           channelList?.[0]?.value ||
           undefined,
       });
