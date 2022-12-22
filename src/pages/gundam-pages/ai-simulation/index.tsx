@@ -120,7 +120,10 @@ export default (props: any) => {
   useEffect(() => {
     if (!beginTalking) {
       form.setFieldsValue({
-        CHANNEL_CODE: channelList?.find((item: any) => item?.label == '测试')?.value || undefined,
+        CHANNEL_CODE:
+          channelList?.find((item: any) => item?.label == '测试')?.value ||
+          channelList?.[0]?.value ||
+          undefined,
       });
     }
   }, [channelList]);
