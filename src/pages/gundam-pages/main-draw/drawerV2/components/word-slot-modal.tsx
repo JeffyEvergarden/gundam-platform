@@ -229,26 +229,6 @@ const WordSlotModal: React.FC<any> = (props: any) => {
                 formName={'clearList'}
               />
             </div>
-
-            <div style={{ paddingTop: '8px' }}>
-              <ActionConfig
-                form={form}
-                title={
-                  <>
-                    {'执行动作'}
-                    <Tip
-                      title={
-                        '当必填词槽澄清次数达到配置的次数，仍未填充成功时，触发执行动作，可跳转特定业务流程、转人工、转IVR及发短信。'
-                      }
-                    />
-                  </>
-                }
-                formName={'config'}
-                name={'config'}
-                titleType={2}
-              />
-            </div>
-
             <Condition r-if={config.robotTypeMap[info?.robotType] === '文本'}>
               <div style={{ paddingTop: '8px' }}>
                 <ConversationConfig
@@ -263,6 +243,24 @@ const WordSlotModal: React.FC<any> = (props: any) => {
               </div>
             </Condition>
           </Condition>
+          <div style={{ paddingTop: '8px' }}>
+            <ActionConfig
+              form={form}
+              title={
+                <>
+                  {'执行动作'}
+                  <Tip
+                    title={
+                      '当必填词槽澄清次数达到配置的次数，仍未填充成功时，触发执行动作，可跳转特定业务流程、转人工、转IVR及发短信。'
+                    }
+                  />
+                </>
+              }
+              formName={'config'}
+              name={'config'}
+              titleType={2}
+            />
+          </div>
         </Form>
       </div>
     </Modal>
