@@ -414,7 +414,15 @@ const MainDraw = (props: any) => {
         </div>
       </div>
 
-      <DrawerForm cref={drawerRef} type={type} wishList={wishList} wordSlotList={wordSlotList} />
+      <DrawerForm
+        cref={drawerRef}
+        type={type}
+        wishList={wishList}
+        wordSlotList={wordSlotList}
+        getWordSlotList={() => {
+          getWordSlotList(info.id);
+        }}
+      />
 
       <SpDrawerForm cref={spNodeDrawerRef} type={type} />
 

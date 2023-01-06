@@ -194,7 +194,7 @@ export default function useDrawerModel() {
         return item.headIntent;
       }) || [];
     let data1: any[] =
-      data.filter?.((item: any) => {
+      originData.filter?.((item: any) => {
         return item.flowType != 3;
       }) || [];
     _setFlowListWithHand(data);

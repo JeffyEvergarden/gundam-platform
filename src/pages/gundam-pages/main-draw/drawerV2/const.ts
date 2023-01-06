@@ -11,21 +11,26 @@ export const ACTION_LIST_TEXT: any = [
     name: 3,
     label: '转人工服务流程',
   },
+  {
+    name: 5,
+    label: '转主流程',
+  },
 ];
 
 export const ACTION_LIST: any = [
-  {
-    name: 1,
-    label: '系统挂机',
-  },
-  {
-    name: 2,
-    label: '转业务流程',
-  },
-  {
-    name: 3,
-    label: '转人工服务流程',
-  },
+  // {
+  //   name: 1,
+  //   label: '系统挂机',
+  // },
+  // {
+  //   name: 2,
+  //   label: '转业务流程',
+  // },
+  // {
+  //   name: 3,
+  //   label: '转人工服务流程',
+  // },
+  ...ACTION_LIST_TEXT,
   {
     name: 4,
     label: '转按键IVR服务',

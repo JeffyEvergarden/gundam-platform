@@ -1,7 +1,9 @@
 import Condition from '@/components/Condition';
 import Tip from '@/components/Tip';
 import config from '@/config';
-import { Checkbox, Form, Input, Modal, Radio, Select, Space } from 'antd';
+import OperateSlotModal from '@/pages/gundam-pages/word-slot-library/comps/operateSlotModal';
+import { PlusOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Divider, Form, Input, Modal, Radio, Select, Space } from 'antd';
 import { useImperativeHandle, useState } from 'react';
 import { useModel } from 'umi';
 import ActionConfig from '../child/action-config';
@@ -13,7 +15,7 @@ const { TextArea } = Input;
 const { Option } = Select;
 
 const WordSlotModal: React.FC<any> = (props: any) => {
-  const { cref, confirm, list } = props;
+  const { cref, confirm, list, getList } = props;
 
   const { businessFlowId, drawType } = useModel('gundam' as any, (model: any) => {
     return {
@@ -30,6 +32,9 @@ const WordSlotModal: React.FC<any> = (props: any) => {
   }));
 
   const [visible, setVisible] = useState<boolean>(false);
+  const [operModalVisible, handleOperModalVisible] = useState<boolean>(false);
+  const [operModalData, handleOperModalData] = useState<any>({});
+  const [operModalTitle, handleOperModalTitle] = useState<string>('');
 
   const [form] = Form.useForm();
 
@@ -103,6 +108,26 @@ const WordSlotModal: React.FC<any> = (props: any) => {
     setShow(val.target.checked);
   };
 
+  const operate = (data: any, type: string) => {
+    console.log(data);
+
+    handleOperModalVisible(true);
+    handleOperModalData(data);
+    handleOperModalTitle(type);
+  };
+
+  const operateSlotSuccess = (res: any) => {
+    getList();
+    let formData = form.getFieldsValue();
+    formData.slotId = '';
+    form.setFieldsValue({ ...formData });
+    handleOperModalVisible(false);
+  };
+
+  const operateSlotCancel = () => {
+    handleOperModalVisible(false);
+  };
+
   return (
     <Modal
       width={800}
@@ -117,7 +142,23 @@ const WordSlotModal: React.FC<any> = (props: any) => {
           <FormItem label="词槽名称">
             <Space align={'baseline'}>
               <FormItem rules={[{ required: true, message: '请选择词槽' }]} name="slotId" noStyle>
-                <Select placeholder="请选择词槽名称" style={{ width: '220px' }}>
+                <Select
+                  placeholder="请选择词槽名称"
+                  style={{ width: '220px' }}
+                  dropdownStyle={{ padding: 0 }}
+                  dropdownRender={(menu) => (
+                    <div>
+                      {menu}
+                      <Button
+                        icon={<PlusOutlined />}
+                        style={{ width: '100%', height: '100%' }}
+                        onClick={() => operate({}, 'add')}
+                      >
+                        新增词槽
+                      </Button>
+                    </div>
+                  )}
+                >
                   {list?.map((item: any, index: number) => {
                     if (
                       flowList?.find((f: any) => f?.id == businessFlowId)?.flowName == '知识问答' &&
@@ -262,6 +303,14 @@ const WordSlotModal: React.FC<any> = (props: any) => {
             />
           </div>
         </Form>
+
+        <OperateSlotModal
+          visible={operModalVisible}
+          title={operModalTitle}
+          modalData={{ ...operModalData, robotId: info.id }}
+          onSubmit={operateSlotSuccess}
+          onCancel={operateSlotCancel}
+        />
       </div>
     </Modal>
   );

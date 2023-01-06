@@ -22,7 +22,7 @@ import WordslotOperationModal from './components/wordslot-operation-modal';
 import WordSlotTable from './components/wordslot-table-select';
 
 const DrawerForm = (props: any) => {
-  const { cref, type, wishList, wordSlotList } = props;
+  const { cref, type, wishList, wordSlotList, getWordSlotList } = props;
 
   const [autoCloseTipsFlag, setAutoCloseTipsFlag] = useState<boolean>(false);
 
@@ -265,7 +265,7 @@ const DrawerForm = (props: any) => {
             <div className={styles['antd-form']}>
               {/* 词槽 */}
               <FormItem name="nodeSlots">
-                <WordSlotTable list={wordSlotList} />
+                <WordSlotTable list={wordSlotList} getList={getWordSlotList} />
               </FormItem>
 
               {/* 回应策略 */}

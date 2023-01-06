@@ -13,7 +13,7 @@ import { wordSlotSourceMap } from '../const';
 const { Option } = Select;
 
 const WordSlotTable: React.FC<any> = (props: any) => {
-  const { value, onChange, list } = props;
+  const { value, onChange, list, getList } = props;
 
   const modalRef = useRef<any>(null);
 
@@ -203,7 +203,7 @@ const WordSlotTable: React.FC<any> = (props: any) => {
         // loading={tableLoading}
       />
 
-      <WordSlotModal cref={modalRef} list={list} confirm={confirm} />
+      <WordSlotModal cref={modalRef} list={list} confirm={confirm} getList={getList} />
     </div>
   );
 };

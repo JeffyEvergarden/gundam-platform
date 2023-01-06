@@ -3,6 +3,7 @@ import Tip from '@/components/Tip';
 import { Button, Input, message, Select } from 'antd';
 import { useRef, useState } from 'react';
 import GlobalVarModal from '../../drawer/components/global-var-modal';
+import BreakModal from './breakModal';
 import Preview from './preview';
 import styles from './style.less';
 import WordSlotModal from './wordslot-select-modal';
@@ -28,6 +29,7 @@ const CvsInput: React.FC<any> = (props: any) => {
   const modalRef = useRef<any>(null);
 
   const modalRef2 = useRef<any>(null);
+  const modalRef3 = useRef<any>(null);
 
   const [startPos, setStartPos] = useState<number>(-1);
 
@@ -48,13 +50,18 @@ const CvsInput: React.FC<any> = (props: any) => {
     let target = '';
     let tmp: any = value || '';
 
-    val.forEach((item: any) => {
-      if (type === '变量') {
-        target += item?.name ? `\$\{${item.name}\}` : '';
-      } else if (type === '词槽') {
-        target += item?.name ? `#\{${item.name}\}` : '';
-      }
-    });
+    if (type == '间隔') {
+      target = `<break time="${val}ms"/>`;
+    } else {
+      val.forEach((item: any) => {
+        if (type === '变量') {
+          target += item?.name ? `\$\{${item.name}\}` : '';
+        } else if (type === '词槽') {
+          target += item?.name ? `#\{${item.name}\}` : '';
+        }
+      });
+    }
+
     if (startPos > -1) {
       let pre = tmp.slice(0, startPos);
       let last = tmp.slice(startPos);
@@ -104,6 +111,15 @@ const CvsInput: React.FC<any> = (props: any) => {
             }}
           >
             {'{#}'}添加词槽
+          </Button>
+          <Button
+            type="link"
+            disabled={canEdit}
+            onClick={() => {
+              (modalRef3.current as any).open();
+            }}
+          >
+            插入停顿
           </Button>
           <Tip
             title={
@@ -157,6 +173,13 @@ const CvsInput: React.FC<any> = (props: any) => {
           confirm(val, '词槽');
         }}
       ></WordSlotModal>
+
+      <BreakModal
+        cref={modalRef3}
+        onConfirm={(val: any) => {
+          confirm(val, '间隔');
+        }}
+      ></BreakModal>
     </div>
   );
 };

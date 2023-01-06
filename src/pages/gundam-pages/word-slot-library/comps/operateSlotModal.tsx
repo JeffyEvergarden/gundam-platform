@@ -273,7 +273,7 @@ export default (props: any) => {
     console.log('res', res);
     if (res?.resultCode == config.successCode) {
       message.success(res?.resultDesc);
-      onSubmit();
+      onSubmit(res);
     } else {
       message.error(res?.resultDesc || '失败');
     }
