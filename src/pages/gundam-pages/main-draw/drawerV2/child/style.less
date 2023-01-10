@@ -32,6 +32,12 @@
 .zy-row {
   display: flex;
   align-items: center;
+  :global {
+    .ant-form-item {
+      margin-bottom: 0;
+      margin-left: 12px;
+    }
+  }
 }
 
 .zy-row_end {
@@ -114,7 +120,7 @@
   }
 
   &_bg {
-    margin-top: 10px;
+    margin: 10px 0;
     padding: 10px 0;
     background: rgba(0, 0, 0, 0.04);
   }

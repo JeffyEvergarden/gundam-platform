@@ -1,5 +1,5 @@
 import { useState, useImperativeHandle, useRef, useEffect } from 'react';
-import { Drawer, Form, Input, Select, Button, Checkbox, Space, InputNumber } from 'antd';
+import { Drawer, Form, Input, Select, Button, Checkbox, Space, InputNumber, message } from 'antd';
 import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import styles from '../drawer/style.less';
 import { useModel } from 'umi';
@@ -11,6 +11,7 @@ const { Item: FormItem } = Form;
 const { TextArea } = Input;
 import config from '@/config/index';
 import { processRequest, parserBody } from './formate';
+import ShuntConfig from '../drawerV2/child/shunt-config';
 
 const EdgeDrawerForm = (props: any) => {
   const { cref, confirm, type, wishList, wordSlotList } = props;
@@ -42,6 +43,9 @@ const EdgeDrawerForm = (props: any) => {
       console.log('info:-----');
       info = parserBody(info);
       console.log(info);
+      if (!info?.ruleSwitch && !info?.shuntSwitch) {
+        info.ruleSwitch = 1;
+      }
       form.setFieldsValue({
         ...info,
         priority: info.level || 1,
@@ -62,6 +66,16 @@ const EdgeDrawerForm = (props: any) => {
     } else {
       res = processRequest(res);
       console.log(res);
+
+      if (res?.shuntSwitch) {
+        let num = res?.lineShuntInfoList?.reduce((pre: any, val: any) => {
+          return pre + (val?.shuntProportion || 0);
+        }, 0);
+        if (num > 100) {
+          message.warning('分流配置-分流配比总和不能大于100');
+          return;
+        }
+      }
 
       let result: any = await _saveLine({
         ...preParams,
@@ -161,6 +175,8 @@ const EdgeDrawerForm = (props: any) => {
           wishList={wishList || []}
           wordSlotList={wordSlotList || []}
         />
+
+        <ShuntConfig form={form} />
       </Form>
     </Drawer>
   );

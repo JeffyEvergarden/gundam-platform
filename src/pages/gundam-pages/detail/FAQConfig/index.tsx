@@ -525,6 +525,7 @@ const FAQConfig: React.FC<any> = (props: any) => {
                                   name={['systemConfigList', item.configKey, 'allowInterrupt']}
                                   key={item.configKey + 'allowInterrupt'}
                                   initialValue={1}
+                                  style={{ marginLeft: '16px' }}
                                   label={'允许打断'}
                                 >
                                   <Radio.Group>
@@ -537,6 +538,18 @@ const FAQConfig: React.FC<any> = (props: any) => {
                                     '用于控制语音平台在放音过程中是否允许打断，若是，播音过程检测到客户说话，则停止播报进行收音。'
                                   }
                                 />
+                                <Form.Item
+                                  name={['systemConfigList', item.configKey, 'repeatHear']}
+                                  key={item.configKey + 'repeatHear'}
+                                  initialValue={1}
+                                  label={'按9重听'}
+                                >
+                                  <Radio.Group>
+                                    <Radio value={1}>是</Radio>
+                                    <Radio value={0}>否</Radio>
+                                  </Radio.Group>
+                                </Form.Item>
+                                <Tip title={''} />
                               </Space>
                             </div>
                           </div>

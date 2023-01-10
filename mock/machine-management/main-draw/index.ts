@@ -244,6 +244,18 @@ const getLineConfig = (req: any, res: any) => {
       targetAnchor: 3,
       targetType: 1,
       sourceType: 2,
+      lineShuntInfoList: [
+        {
+          lineName: '连线1',
+          shuntProportion: 30,
+          shuntThreshold: 80,
+        },
+        {
+          lineName: '连线2',
+          shuntProportion: 30,
+          shuntThreshold: 70,
+        },
+      ],
     },
   });
 };

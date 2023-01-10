@@ -425,6 +425,19 @@ const Board: React.FC<any> = (props: any) => {
                           '用于控制语音平台在放音过程中是否允许打断，若是，播音过程检测到客户说话，则停止播报进行收音。'
                         }
                       />
+                      <Form.Item
+                        name={'repeatHear'}
+                        key={'repeatHear'}
+                        initialValue={1}
+                        style={{ marginLeft: '16px' }}
+                        label={'按9重听'}
+                      >
+                        <Radio.Group>
+                          <Radio value={1}>是</Radio>
+                          <Radio value={0}>否</Radio>
+                        </Radio.Group>
+                      </Form.Item>
+                      <Tip title={''} />
                     </Space>
                   </Condition>
 
