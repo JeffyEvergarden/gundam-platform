@@ -16,6 +16,7 @@ import {
 } from 'antd';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
+import CvsForm from '../../main-draw/drawerV2/components/cvs-form';
 import SoundSelectModal from '../../main-draw/drawerV2/components/sound-select-modal';
 import SoundVarModal from '../../main-draw/drawerV2/components/sound-var-modal';
 import RemarkModal from './components/remark-modal';
@@ -408,37 +409,7 @@ const Board: React.FC<any> = (props: any) => {
                     >
                       <TextArea maxLength={200} rows={5} placeholder={'请输入答案'} showCount />
                     </Form.Item>
-                    <Space align="baseline">
-                      <Form.Item
-                        name={'allowInterrupt'}
-                        fieldKey={'allowInterrupt'}
-                        initialValue={1}
-                        label={'允许打断'}
-                      >
-                        <Radio.Group>
-                          <Radio value={1}>是</Radio>
-                          <Radio value={0}>否</Radio>
-                        </Radio.Group>
-                      </Form.Item>
-                      <Tip
-                        title={
-                          '用于控制语音平台在放音过程中是否允许打断，若是，播音过程检测到客户说话，则停止播报进行收音。'
-                        }
-                      />
-                      <Form.Item
-                        name={'repeatHear'}
-                        key={'repeatHear'}
-                        initialValue={1}
-                        style={{ marginLeft: '16px' }}
-                        label={'按9重听'}
-                      >
-                        <Radio.Group>
-                          <Radio value={1}>是</Radio>
-                          <Radio value={0}>否</Radio>
-                        </Radio.Group>
-                      </Form.Item>
-                      <Tip title={''} />
-                    </Space>
+                    <CvsForm></CvsForm>
                   </Condition>
 
                   <Form.Item

@@ -1,3 +1,4 @@
+import Condition from '@/components/Condition';
 import { Button, Checkbox, Form, InputNumber, Space, Switch } from 'antd';
 import styles from './style.less';
 
@@ -31,9 +32,11 @@ const ShuntConfig = (props: any) => {
           item.shuntProportion = undefined;
           item.shuntThreshold = undefined;
         } else {
-          item.pocketBottom = undefined;
+          item.pocketBottom = 0;
         }
       });
+    } else {
+      shuntData[index].pocketBottom = 0;
     }
     form.setFieldsValue({ ...formData });
   };
@@ -42,7 +45,7 @@ const ShuntConfig = (props: any) => {
     <div>
       <div className={styles['zy-row']} style={{ marginBottom: '10px' }}>
         <div className={styles['title_sp']}>分流配置</div>
-        <FormItem name={'shuntSwitch'} noStyle>
+        <FormItem name={'shuntSwitch'} noStyle initialValue={0}>
           <Switch
             style={{ marginLeft: '8px' }}
             onChange={switchChange}
@@ -50,59 +53,64 @@ const ShuntConfig = (props: any) => {
           ></Switch>
         </FormItem>
       </div>
-      <FormList name={'lineShuntInfoList'}>
-        {(outFields, { add: _add, remove: _remove }) => {
-          return (
-            <div>
-              {outFields.map((field: any, index: number) => {
-                return (
-                  <Space align="baseline" key={index}>
-                    <div>连线名称：{shunt?.[index]?.lineName || '-'}</div>
-                    <FormItem label="分流配比" style={{ marginLeft: '24px' }}>
+      <Condition r-show={shuntSwitch}>
+        <FormList name={'lineShuntInfoList'}>
+          {(outFields, { add: _add, remove: _remove }) => {
+            return (
+              <div>
+                {outFields.map((field: any, index: number) => {
+                  return (
+                    <Space align="baseline" key={index}>
+                      <div>连线名称：{shunt?.[index]?.lineName || '-'}</div>
+                      <FormItem label="分流配比" style={{ marginLeft: '24px' }}>
+                        <FormItem
+                          noStyle
+                          name={[field.name, 'shuntProportion']}
+                          rules={[
+                            {
+                              required: !shunt?.[index]?.['pocketBottom'],
+                              message: '分流配比必填',
+                            },
+                          ]}
+                        >
+                          <InputNumber
+                            min={1}
+                            max={100}
+                            precision={0}
+                            disabled={shunt?.[index]?.['pocketBottom']}
+                          />
+                        </FormItem>
+                        <span>&nbsp;%</span>
+                      </FormItem>
+
                       <FormItem
-                        noStyle
-                        name={[field.name, 'shuntProportion']}
-                        rules={[
-                          { required: !shunt?.[index]?.['pocketBottom'], message: '分流配比必填' },
-                        ]}
+                        label="阈值"
+                        name={[field.name, 'shuntThreshold']}
+                        style={{ marginLeft: '24px' }}
                       >
                         <InputNumber
-                          min={0}
-                          max={100}
+                          min={1}
                           precision={0}
                           disabled={shunt?.[index]?.['pocketBottom']}
                         />
                       </FormItem>
-                      <span>&nbsp;%</span>
-                    </FormItem>
 
-                    <FormItem
-                      label="阈值"
-                      name={[field.name, 'shuntThreshold']}
-                      style={{ marginLeft: '24px' }}
-                    >
-                      <InputNumber
-                        min={1}
-                        precision={0}
-                        disabled={shunt?.[index]?.['pocketBottom']}
-                      />
-                    </FormItem>
-
-                    <FormItem name={[field.name, 'pocketBottom']}>
-                      <Checkbox
-                        onChange={(e: any) => {
-                          checkboxChange(e, index);
-                        }}
-                        checked={shunt?.[index]?.['pocketBottom'] || false}
-                      />
-                    </FormItem>
-                  </Space>
-                );
-              })}
-            </div>
-          );
-        }}
-      </FormList>
+                      <FormItem name={[field.name, 'pocketBottom']}>
+                        <Checkbox
+                          onChange={(e: any) => {
+                            checkboxChange(e, index);
+                          }}
+                          checked={shunt?.[index]?.['pocketBottom'] || false}
+                        />
+                      </FormItem>
+                    </Space>
+                  );
+                })}
+              </div>
+            );
+          }}
+        </FormList>
+      </Condition>
     </div>
   );
 };

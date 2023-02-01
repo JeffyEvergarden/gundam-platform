@@ -46,6 +46,7 @@ const getDefaultNode = (type: string) => {
 export const useNodeOpsModel = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [infoLoading, setInfoLoading] = useState<boolean>(false);
+  const [refresh, setRefresh] = useState<boolean>(false); //大保存时获取线id
 
   const _addNode = async (data: any) => {
     setLoading(true);
@@ -208,6 +209,8 @@ export const useNodeOpsModel = () => {
       return item;
     });
     const edgeMap: any = {};
+    console.log(edges);
+
     edges = edges
       .map((item: any, index: number) => {
         item.frontSource = item.frontSource || _map[item.id] || '';
@@ -246,6 +249,8 @@ export const useNodeOpsModel = () => {
           _target: item.target, // 后端的尾id
         };
       });
+    console.log(edges);
+
     return {
       nodes,
       edges,
@@ -304,6 +309,7 @@ export const useNodeOpsModel = () => {
     let data: any = process(obj); // 加工参数
     let res: any = await saveMachineMainDraw(data);
     if (res.resultCode === config.successCode) {
+      setRefresh(true);
       message.success('保存成功');
       return true;
     } else {
@@ -315,6 +321,8 @@ export const useNodeOpsModel = () => {
   return {
     loading,
     infoLoading,
+    refresh,
+    setRefresh,
     addNode: _addNode, // 添加节点
     updateNode: _updateNode, // 修改节点
     deleteNode: _deleteNode, // 删除节点

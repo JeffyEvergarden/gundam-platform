@@ -36,6 +36,7 @@ import SimilarCom from '@/pages/gundam-pages/sample/components/similarCom';
 import { useSimilarModel } from '@/pages/gundam-pages/sample/model';
 import SoundSelectModal from '../../main-draw/drawerV2/components/sound-select-modal';
 import SoundVarModal from '../../main-draw/drawerV2/components/sound-var-modal';
+import CvsForm from '../../main-draw/drawerV2/components/cvs-form';
 
 const { Option } = Select;
 
@@ -744,37 +745,7 @@ const Board: React.FC<any> = (props: any) => {
                                   showCount
                                 />
                               </Form.Item>
-                              <Space align="baseline">
-                                <Form.Item
-                                  name={[field.name, 'allowInterrupt']}
-                                  fieldKey={[field.fieldKey, 'allowInterrupt']}
-                                  initialValue={1}
-                                  label={'允许打断'}
-                                >
-                                  <Radio.Group>
-                                    <Radio value={1}>是</Radio>
-                                    <Radio value={0}>否</Radio>
-                                  </Radio.Group>
-                                </Form.Item>
-                                <Tip
-                                  title={
-                                    '用于控制语音平台在放音过程中是否允许打断，若是，播音过程检测到客户说话，则停止播报进行收音。'
-                                  }
-                                />
-                                <Form.Item
-                                  name={[field.name, 'repeatHear']}
-                                  key={field.name + 'repeatHear'}
-                                  initialValue={1}
-                                  style={{ marginLeft: '16px' }}
-                                  label={'按9重听'}
-                                >
-                                  <Radio.Group>
-                                    <Radio value={1}>是</Radio>
-                                    <Radio value={0}>否</Radio>
-                                  </Radio.Group>
-                                </Form.Item>
-                                <Tip title={''} />
-                              </Space>
+                              <CvsForm name={[field.name]} key={field.name}></CvsForm>
                             </Condition>
 
                             <Form.Item

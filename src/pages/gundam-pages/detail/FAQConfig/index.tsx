@@ -9,11 +9,12 @@ import Condition from '@/components/Condition';
 import Tip from '@/components/Tip';
 import config from '@/config';
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { Button, Form, Input, InputNumber, message, Radio, Space, Switch } from 'antd';
+import { Button, Form, Input, InputNumber, message, Radio, Select, Space, Switch } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import Selector from '../../FAQ/question-board/components/selector';
 import SelectorModal from '../../FAQ/question-board/components/selector-modal';
+import CvsForm from '../../main-draw/drawerV2/components/cvs-form';
 import SoundSelectModal from '../../main-draw/drawerV2/components/sound-select-modal';
 import SoundVarModal from '../../main-draw/drawerV2/components/sound-var-modal';
 import { useFAQModel } from '../model';
@@ -22,6 +23,7 @@ import style from './style.less';
 const FAQConfig: React.FC<any> = (props: any) => {
   const [form] = Form.useForm();
   const { Item: FormItem, List: FormList } = Form;
+  const { Option } = Select;
 
   const soundRef = useRef<any>({});
   const auditionRef = useRef<any>({});
@@ -520,37 +522,10 @@ const FAQConfig: React.FC<any> = (props: any) => {
                                   showCount
                                 />
                               </Form.Item>
-                              <Space align="baseline">
-                                <Form.Item
-                                  name={['systemConfigList', item.configKey, 'allowInterrupt']}
-                                  key={item.configKey + 'allowInterrupt'}
-                                  initialValue={1}
-                                  style={{ marginLeft: '16px' }}
-                                  label={'允许打断'}
-                                >
-                                  <Radio.Group>
-                                    <Radio value={1}>是</Radio>
-                                    <Radio value={0}>否</Radio>
-                                  </Radio.Group>
-                                </Form.Item>
-                                <Tip
-                                  title={
-                                    '用于控制语音平台在放音过程中是否允许打断，若是，播音过程检测到客户说话，则停止播报进行收音。'
-                                  }
-                                />
-                                <Form.Item
-                                  name={['systemConfigList', item.configKey, 'repeatHear']}
-                                  key={item.configKey + 'repeatHear'}
-                                  initialValue={1}
-                                  label={'按9重听'}
-                                >
-                                  <Radio.Group>
-                                    <Radio value={1}>是</Radio>
-                                    <Radio value={0}>否</Radio>
-                                  </Radio.Group>
-                                </Form.Item>
-                                <Tip title={''} />
-                              </Space>
+                              <CvsForm
+                                name={['systemConfigList', item.configKey]}
+                                key={item.configKey}
+                              ></CvsForm>
                             </div>
                           </div>
                         </FormItem>

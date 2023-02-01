@@ -119,7 +119,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
   const operateSlotSuccess = (res: any) => {
     getList();
     let formData = form.getFieldsValue();
-    formData.slotId = '';
+    formData.slotId = res?.data?.id || undefined;
     form.setFieldsValue({ ...formData });
     handleOperModalVisible(false);
   };
@@ -143,6 +143,12 @@ const WordSlotModal: React.FC<any> = (props: any) => {
             <Space align={'baseline'}>
               <FormItem rules={[{ required: true, message: '请选择词槽' }]} name="slotId" noStyle>
                 <Select
+                  showSearch
+                  filterOption={(input, option) =>
+                    (option?.opt?.label as unknown as string)
+                      ?.toLowerCase()
+                      .includes(input.toLowerCase())
+                  }
                   placeholder="请选择词槽名称"
                   style={{ width: '220px' }}
                   dropdownStyle={{ padding: 0 }}

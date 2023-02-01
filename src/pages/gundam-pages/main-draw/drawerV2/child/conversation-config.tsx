@@ -6,6 +6,7 @@ import { Button, Form, Radio, Select, Space } from 'antd';
 import { useRef } from 'react';
 import { useModel } from 'umi';
 import LabelSelect from '../../drawer/components/label-select';
+import CvsForm from '../components/cvs-form';
 import CvsInput from '../components/cvs-input';
 import SoundRadio from '../components/sound-radio';
 import SoundSelectModal from '../components/sound-select-modal';
@@ -218,7 +219,7 @@ const ConversationConfig = (props: any) => {
                               formName={[formName, index]}
                             />
                           </Condition>
-                          <Space align="baseline">
+                          {/* <Space align="baseline">
                             <Form.Item
                               name={[field.name, 'allowInterrupt']}
                               fieldKey={[field.fieldKey, 'allowInterrupt']}
@@ -236,19 +237,30 @@ const ConversationConfig = (props: any) => {
                               }
                             />
                             <Form.Item
-                              name={[field.name, 'repeatHear']}
-                              key={field.name + 'repeatHear'}
+                              name={[field.name, 'repeatHearKey']}
+                              key={field.name + 'repeatHearKey'}
                               initialValue={1}
                               style={{ marginLeft: '16px' }}
-                              label={'按9重听'}
+                              label={'是否重听'}
                             >
-                              <Radio.Group>
-                                <Radio value={1}>是</Radio>
-                                <Radio value={0}>否</Radio>
-                              </Radio.Group>
+                              <Select>
+                                <Option value={-1}>无重听按键</Option>
+                                <Option value={1}>按键1</Option>
+                                <Option value={2}>按键2</Option>
+                                <Option value={3}>按键3</Option>
+                                <Option value={4}>按键4</Option>
+                                <Option value={5}>按键5</Option>
+                                <Option value={6}>按键6</Option>
+                                <Option value={7}>按键7</Option>
+                                <Option value={8}>按键8</Option>
+                                <Option value={9}>按键9</Option>
+                                <Option value={0}>按键0</Option>
+                              </Select>
                             </Form.Item>
                             <Tip title={''} />
-                          </Space>
+                          </Space> */}
+
+                          <CvsForm name={[field.name]} key={field.name}></CvsForm>
                         </Condition>
 
                         <Condition r-if={showLabel}>

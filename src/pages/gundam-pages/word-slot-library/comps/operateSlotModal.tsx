@@ -26,10 +26,10 @@ const slotSourceData = [
 const typeData = [
   { value: 0, intentName: '文本' },
   { value: 1, intentName: '数值' },
-  { value: 2, intentName: '时间' },
+  { value: 2, intentName: '时间(yyyy-MM-dd HH:mm:ss)' },
   {
     value: 3,
-    intentName: '时间(时分秒)',
+    intentName: '时间(HH:mm:ss)',
   },
   //4布尔（后端用）
   {

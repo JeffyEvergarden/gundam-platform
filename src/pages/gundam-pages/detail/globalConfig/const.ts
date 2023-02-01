@@ -23,10 +23,10 @@ export const dataTypeList: any = [
   },
   {
     name: 2,
-    label: '时间',
+    label: '时间(yyyy-MM-dd HH:mm:ss)',
   },
   {
     name: 3,
-    label: '时间(时分秒)',
+    label: '时间(HH:mm:ss)',
   },
 ];

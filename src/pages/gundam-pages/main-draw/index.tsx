@@ -91,6 +91,8 @@ const MainDraw = (props: any) => {
 
   const {
     infoLoading,
+    refresh,
+    setRefresh,
     addNode,
     deleteNode,
     getMachineMainDraw,
@@ -98,6 +100,13 @@ const MainDraw = (props: any) => {
     getNodesConfig,
     getLineConfig,
   } = useNodeOpsModel();
+
+  useEffect(() => {
+    if (refresh) {
+      getMachineInfo();
+      setRefresh(false);
+    }
+  }, [refresh]);
 
   // 流程图相关 -----------------------
   // -- start-----

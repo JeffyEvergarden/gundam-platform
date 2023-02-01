@@ -112,7 +112,7 @@ const CvsInput: React.FC<any> = (props: any) => {
           >
             {'{#}'}添加词槽
           </Button>
-          <Button
+          {/* <Button
             type="link"
             disabled={canEdit}
             onClick={() => {
@@ -120,7 +120,7 @@ const CvsInput: React.FC<any> = (props: any) => {
             }}
           >
             插入停顿
-          </Button>
+          </Button> */}
           <Tip
             title={
               '添加变量/添加词槽：点击可以在澄清话术中插入变量或词槽的占位符，实际播报时，会将变量或词槽的值进行填充。'

@@ -140,7 +140,7 @@ const NodeConfig: React.FC = (props: any) => {
 
             {Nconfig?.map((item: any) => {
               return (
-                <FormItem label={item.configName}>
+                <FormItem label={item.configName} key={item.configName}>
                   <Space align="baseline">
                     <FormItem
                       // {...col}

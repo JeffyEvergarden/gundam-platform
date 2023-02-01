@@ -235,6 +235,8 @@ const EditorView = (props: PageViewProps) => {
       message.warning('不允许存在环形结构');
       deleteNode(target);
     }
+
+    // saveFn();
   };
 
   // 更改线

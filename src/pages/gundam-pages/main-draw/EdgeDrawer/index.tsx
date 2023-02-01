@@ -12,6 +12,7 @@ const { TextArea } = Input;
 import config from '@/config/index';
 import { processRequest, parserBody } from './formate';
 import ShuntConfig from '../drawerV2/child/shunt-config';
+import Condition from '@/components/Condition';
 
 const EdgeDrawerForm = (props: any) => {
   const { cref, confirm, type, wishList, wordSlotList } = props;
@@ -71,8 +72,8 @@ const EdgeDrawerForm = (props: any) => {
         let num = res?.lineShuntInfoList?.reduce((pre: any, val: any) => {
           return pre + (val?.shuntProportion || 0);
         }, 0);
-        if (num > 100) {
-          message.warning('分流配置-分流配比总和不能大于100');
+        if (num != 100) {
+          message.warning('分流配置-分流配比总和必须等于100%');
           return;
         }
       }
@@ -176,7 +177,9 @@ const EdgeDrawerForm = (props: any) => {
           wordSlotList={wordSlotList || []}
         />
 
-        <ShuntConfig form={form} />
+        <Condition r-if={config.robotTypeMap[info.robotType] == '语音'}>
+          <ShuntConfig form={form} />
+        </Condition>
       </Form>
     </Drawer>
   );
