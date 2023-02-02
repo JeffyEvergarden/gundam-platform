@@ -41,6 +41,7 @@ const RuleConfig = (props: any) => {
     formName: _formName,
     name,
     style,
+    lineShuntNum,
   } = props;
 
   const { info } = useModel('gundam' as any, (model: any) => ({
@@ -125,7 +126,7 @@ const RuleConfig = (props: any) => {
 
   const switchChange = (val: any) => {
     let formData = form.getFieldsValue();
-    if (formData?.lineShuntInfoList?.length <= 1) {
+    if (lineShuntNum <= 1) {
       message.warning('当前父节点下只有一条线无法进行分流配置，请保存重试');
       formData.ruleSwitch = 1;
       formData.shuntSwitch = 0;

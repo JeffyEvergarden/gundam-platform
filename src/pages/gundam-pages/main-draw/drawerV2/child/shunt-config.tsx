@@ -3,14 +3,14 @@ import { Button, Checkbox, Form, InputNumber, message, Space, Switch } from 'ant
 import styles from './style.less';
 
 const ShuntConfig = (props: any) => {
-  const { form } = props;
+  const { form, lineShuntNum } = props;
   const { Item: FormItem, List: FormList } = Form;
   const shunt: any = Form.useWatch('lineShuntInfoList', form);
   const shuntSwitch: any = Form.useWatch('shuntSwitch', form);
 
   const switchChange = (val: any) => {
     let formData = form.getFieldsValue();
-    if (formData?.lineShuntInfoList?.length <= 1) {
+    if (lineShuntNum <= 1) {
       message.warning('当前父节点下只有一条线无法进行分流配置，请保存重试');
       formData.ruleSwitch = 1;
       formData.shuntSwitch = 0;

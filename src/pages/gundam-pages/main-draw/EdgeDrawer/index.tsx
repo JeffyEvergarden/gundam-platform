@@ -183,10 +183,14 @@ const EdgeDrawerForm = (props: any) => {
           type="edge"
           wishList={wishList || []}
           wordSlotList={wordSlotList || []}
+          lineShuntNum={recordInfo?.current?.info?.lineShuntInfoList?.length}
         />
 
         <Condition r-if={config.robotTypeMap[info.robotType] == '语音'}>
-          <ShuntConfig form={form} />
+          <ShuntConfig
+            form={form}
+            lineShuntNum={recordInfo?.current?.info?.lineShuntInfoList?.length}
+          />
         </Condition>
       </Form>
     </Drawer>
