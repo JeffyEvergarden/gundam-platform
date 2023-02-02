@@ -95,12 +95,6 @@ const ShuntConfig = (props: any) => {
                           noStyle
                           name={[field.name, 'shuntThreshold']}
                           // style={{ marginLeft: '24px' }}
-                          rules={[
-                            {
-                              required: !shunt?.[index]?.['pocketBottom'],
-                              message: '阈值必填',
-                            },
-                          ]}
                         >
                           <InputNumber
                             min={1}
