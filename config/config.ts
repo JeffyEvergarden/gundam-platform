@@ -17,7 +17,7 @@ const isProd = process.env.NODE_ENV === 'production';
 const needConsole = REACT_APP_ENV !== 'production';
 
 export default defineConfig({
-  mock: false,
+  // mock: false,
   hash: true,
   antd: {},
   dva: {

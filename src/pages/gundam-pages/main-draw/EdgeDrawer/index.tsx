@@ -69,6 +69,14 @@ const EdgeDrawerForm = (props: any) => {
       console.log(res);
 
       if (res?.shuntSwitch) {
+        //必须勾选一个做兜底
+        let flag = res?.lineShuntInfoList?.some((item: any) => {
+          return item.pocketBottom == 1;
+        });
+        if (!flag) {
+          message.warning('请在分流配置-分流配比勾选一条线做兜底');
+          return;
+        }
         let num = res?.lineShuntInfoList?.reduce((pre: any, val: any) => {
           return pre + (val?.shuntProportion || 0);
         }, 0);

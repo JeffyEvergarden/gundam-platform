@@ -1,5 +1,5 @@
 import Condition from '@/components/Condition';
-import { Button, Checkbox, Form, InputNumber, Space, Switch } from 'antd';
+import { Button, Checkbox, Form, InputNumber, message, Space, Switch } from 'antd';
 import styles from './style.less';
 
 const ShuntConfig = (props: any) => {
@@ -10,6 +10,13 @@ const ShuntConfig = (props: any) => {
 
   const switchChange = (val: any) => {
     let formData = form.getFieldsValue();
+    if (formData?.lineShuntInfoList?.length <= 1) {
+      message.warning('当前父节点下只有一条线无法进行分流配置，请保存重试');
+      formData.ruleSwitch = 1;
+      formData.shuntSwitch = 0;
+      form.setFieldsValue({ ...formData });
+      return;
+    }
     if (val) {
       formData.ruleSwitch = 0;
       formData.shuntSwitch = 1;
@@ -53,7 +60,7 @@ const ShuntConfig = (props: any) => {
           ></Switch>
         </FormItem>
       </div>
-      <Condition r-show={shuntSwitch}>
+      <Condition r-if={shuntSwitch}>
         <FormList name={'lineShuntInfoList'}>
           {(outFields, { add: _add, remove: _remove }) => {
             return (
@@ -82,17 +89,25 @@ const ShuntConfig = (props: any) => {
                         </FormItem>
                         <span>&nbsp;%</span>
                       </FormItem>
-
-                      <FormItem
-                        label="阈值"
-                        name={[field.name, 'shuntThreshold']}
-                        style={{ marginLeft: '24px' }}
-                      >
-                        <InputNumber
-                          min={1}
-                          precision={0}
-                          disabled={shunt?.[index]?.['pocketBottom']}
-                        />
+                      <FormItem label="阈值" style={{ marginLeft: '24px' }}>
+                        <FormItem
+                          // label="阈值"
+                          noStyle
+                          name={[field.name, 'shuntThreshold']}
+                          // style={{ marginLeft: '24px' }}
+                          rules={[
+                            {
+                              required: !shunt?.[index]?.['pocketBottom'],
+                              message: '阈值必填',
+                            },
+                          ]}
+                        >
+                          <InputNumber
+                            min={1}
+                            precision={0}
+                            disabled={shunt?.[index]?.['pocketBottom']}
+                          />
+                        </FormItem>
                       </FormItem>
 
                       <FormItem name={[field.name, 'pocketBottom']}>
