@@ -186,12 +186,12 @@ const EdgeDrawerForm = (props: any) => {
           lineShuntNum={recordInfo?.current?.info?.lineShuntInfoList?.length}
         />
 
-        <Condition r-if={config.robotTypeMap[info.robotType] == '语音'}>
-          <ShuntConfig
-            form={form}
-            lineShuntNum={recordInfo?.current?.info?.lineShuntInfoList?.length}
-          />
-        </Condition>
+        {/* <Condition r-if={config.robotTypeMap[info.robotType] == '语音'}> */}
+        <ShuntConfig
+          form={form}
+          lineShuntNum={recordInfo?.current?.info?.lineShuntInfoList?.length}
+        />
+        {/* </Condition> */}
       </Form>
     </Drawer>
   );

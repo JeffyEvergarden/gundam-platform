@@ -163,7 +163,7 @@ const DetailPages: React.FC = (props: any) => {
 
   const refreshTable = () => {
     // @ts-ignore
-    actionRef?.current?.reloadAndRest();
+    actionRef?.current?.reload();
   };
 
   return (

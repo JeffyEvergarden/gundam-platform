@@ -148,7 +148,7 @@ const RuleConfig = (props: any) => {
     <div>
       <div className={styles['zy-row']} style={{ marginBottom: '10px' }}>
         <div className={styles['title_sp']}>规则配置</div>
-        <Condition r-if={config.robotTypeMap[info.robotType] == '语音' && type != 'node'}>
+        <Condition r-if={type != 'node'}>
           <FormItem name={'ruleSwitch'} noStyle initialValue={1}>
             <Switch
               style={{ marginLeft: '8px' }}
@@ -164,11 +164,7 @@ const RuleConfig = (props: any) => {
           }
         />
       </div>
-      <Condition
-        r-if={
-          config.robotTypeMap[info.robotType] == '文本' ? true : type == 'node' ? true : ruleSwitch
-        }
-      >
+      <Condition r-if={type == 'node' ? true : ruleSwitch}>
         <FormList name={isArray ? name : key}>
           {(outFields, { add: _add, remove: _remove }) => {
             const length = outFields.length;
