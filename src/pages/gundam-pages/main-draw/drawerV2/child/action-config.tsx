@@ -379,7 +379,7 @@ const ActionConfig = (props: any) => {
                   '用于控制语音平台在放音过程中是否允许打断，若是，播音过程检测到客户说话，则停止播报进行收音。'
                 }
               />
-              <Form.Item
+              {/* <Form.Item
                 name={getFormName(['action', 'repeatHearKey'])}
                 key={getFormName(['action' + 'repeatHearKey'])}
                 initialValue={-1}
@@ -422,7 +422,7 @@ const ActionConfig = (props: any) => {
                   </Option>
                 </Select>
               </Form.Item>
-              <Tip title={''} />
+              <Tip title={''} /> */}
             </Space>
           </Condition>
           {/* <div className={styles['functionkey']}>
