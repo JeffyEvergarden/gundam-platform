@@ -260,7 +260,11 @@ const ConversationConfig = (props: any) => {
                             <Tip title={''} />
                           </Space> */}
 
-                          <CvsForm name={[field.name]} key={field.name}></CvsForm>
+                          <CvsForm
+                            name={[field.name]}
+                            key={field.name}
+                            reSound={formName == 'strategyList' ? true : false}
+                          ></CvsForm>
                         </Condition>
 
                         <Condition r-if={showLabel}>
