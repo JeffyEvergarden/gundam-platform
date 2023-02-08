@@ -376,7 +376,16 @@ const ActionConfig = (props: any) => {
               <Form.Item
                 name={getFormName(['action', 'allowInterrupt'])}
                 fieldKey={getFormName(['action', 'allowInterrupt'])}
-                initialValue={1}
+                initialValue={
+                  // deep
+                  //   ? [1, 3, 4].includes(sType?.action?.actionType)
+                  //     ? 0
+                  //     : 1
+                  //   : [1, 3, 4].includes(sType?.[_formName[1]]?.actionType)
+                  //   ? 0
+                  //   : 1
+                  [1, 3, 4].includes(_actionType) ? 0 : 1
+                }
                 label={'允许打断'}
               >
                 <Radio.Group
