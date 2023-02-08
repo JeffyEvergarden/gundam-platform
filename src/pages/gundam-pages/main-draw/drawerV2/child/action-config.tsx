@@ -384,7 +384,7 @@ const ActionConfig = (props: any) => {
                     canEdit ||
                     (deep
                       ? [1, 3, 4].includes(sType?.action?.actionType)
-                      : [1, 3, 4].includes(sType?.[0]?.actionType))
+                      : [1, 3, 4].includes(sType?.[_formName[1]]?.actionType))
                   }
                 >
                   <Radio value={1}>是</Radio>
