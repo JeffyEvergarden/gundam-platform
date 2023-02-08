@@ -2,6 +2,7 @@ export const ACTION_LIST_TEXT: any = [
   {
     name: 1,
     label: '系统挂机',
+    allowInterrupt: true,
   },
   {
     name: 2,
@@ -10,6 +11,7 @@ export const ACTION_LIST_TEXT: any = [
   {
     name: 3,
     label: '转人工服务流程',
+    allowInterrupt: true,
   },
   {
     name: 5,
@@ -34,6 +36,7 @@ export const ACTION_LIST: any = [
   {
     name: 4,
     label: '转按键IVR服务',
+    allowInterrupt: true,
   },
 ];
 

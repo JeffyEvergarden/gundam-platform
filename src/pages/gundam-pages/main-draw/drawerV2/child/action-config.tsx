@@ -62,6 +62,10 @@ const ActionConfig = (props: any) => {
     }
   };
 
+  useEffect(() => {
+    console.log(sType);
+  }, [sType]);
+
   const { globalVarList } = useModel('gundam' as any, (model: any) => ({
     globalVarList: model.globalVarList,
   }));
@@ -124,16 +128,22 @@ const ActionConfig = (props: any) => {
   const _actionType = deep ? currentItem?.action?.actionType : currentItem?.actionType;
   // console.log('--------', currentItem, _actionType);
 
-  const change = (val: any) => {
+  const change = (val: any, opt: any) => {
     const item = getItem();
     if (deep) {
       item.action.toFlowId = undefined;
       item.action.actionText = undefined;
       item.action.textLabels = [];
+      if (opt?.opt?.allowInterrupt && config.robotTypeMap[info?.robotType] === '语音') {
+        item.action.allowInterrupt = 0;
+      }
     } else {
       item.toFlowId = undefined;
       item.actionText = undefined;
       item.textLabels = [];
+      if (opt?.opt?.allowInterrupt && config.robotTypeMap[info?.robotType] === '语音') {
+        item.allowInterrupt = 0;
+      }
     }
 
     const list = form.getFieldValue(key);
@@ -369,7 +379,14 @@ const ActionConfig = (props: any) => {
                 initialValue={1}
                 label={'允许打断'}
               >
-                <Radio.Group disabled={canEdit}>
+                <Radio.Group
+                  disabled={
+                    canEdit ||
+                    (deep
+                      ? [1, 3, 4].includes(sType?.action?.actionType)
+                      : [1, 3, 4].includes(sType?.[0]?.actionType))
+                  }
+                >
                   <Radio value={1}>是</Radio>
                   <Radio value={0}>否</Radio>
                 </Radio.Group>
