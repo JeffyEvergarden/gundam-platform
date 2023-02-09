@@ -102,7 +102,7 @@ export default () => {
         paramsObj.orderType
       }&customerId=${customerId ?? ''}&sessionId=${sessionId ?? ''}&dialogueTurnStart=${
         dialogueTurnStart ?? ''
-      }&dialogueTurnEnd=${dialogueTurnEnd ?? ''}&transferType=${transferType}`,
+      }&dialogueTurnEnd=${dialogueTurnEnd ?? ''}&transferType=${transferType ?? ''}`,
       '_self',
     );
   };
@@ -121,7 +121,7 @@ export default () => {
     }
     let customerId = formRef?.current?.getFieldValue('customerId');
     let sessionId = formRef?.current?.getFieldValue('id');
-    let transferType = formRef?.current?.getFieldValue('transferType');
+    let transferType = formRef?.current?.getFieldValue('transferType') || '';
     window.open(
       `${
         config.basePath
@@ -131,7 +131,7 @@ export default () => {
         paramsObj.orderType
       }&customerId=${customerId ?? ''}&sessionId=${sessionId ?? ''} &dialogueTurnStart=${
         dialogueTurnStart ?? ''
-      }&dialogueTurnEnd=${dialogueTurnEnd ?? ''}&transferType=${transferType}`,
+      }&dialogueTurnEnd=${dialogueTurnEnd ?? ''}&transferType=${transferType ?? ''}`,
       '_self',
     );
   };
