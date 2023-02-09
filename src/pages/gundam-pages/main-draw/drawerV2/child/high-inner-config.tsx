@@ -486,7 +486,7 @@ const HightformTemplate: any = (props: any) => {
             <FormItem noStyle name={[name, 'times']}>
               <InputNumber
                 max={100000}
-                min={1}
+                min={title == '澄清' ? 1 : 0}
                 step="1"
                 precision={0}
                 style={{ width: '200px' }}
