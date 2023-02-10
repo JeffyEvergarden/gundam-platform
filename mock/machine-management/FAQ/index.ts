@@ -213,7 +213,7 @@ const getSelfList = (req: any, res: any) => {
     resultDesc: '成功',
     success: true,
     data: {
-      list: [
+      data: [
         {
           selfName: 'fiwu1',
           selfId: 'fiwu1',

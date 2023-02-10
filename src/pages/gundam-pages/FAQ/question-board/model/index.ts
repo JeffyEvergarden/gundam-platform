@@ -147,7 +147,7 @@ export const useSelfModel = () => {
     let res: any = await getFaqSelfList({ ...params });
     setLoading(false);
     if (res.resultCode === successCode) {
-      let data = res?.data?.list || [];
+      let data = res?.data?.data || [];
       setSelfList(data);
       setTotalSize(res?.data?.totalPage || data?.length);
     } else {
