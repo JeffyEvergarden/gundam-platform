@@ -93,6 +93,9 @@ export default () => {
     let customerId = formRef?.current?.getFieldValue('customerId');
     let sessionId = formRef?.current?.getFieldValue('id');
     let transferType = formRef?.current?.getFieldValue('transferType');
+
+    console.log(sessionId);
+
     window.open(
       `${
         config.basePath
@@ -122,6 +125,9 @@ export default () => {
     let customerId = formRef?.current?.getFieldValue('customerId');
     let sessionId = formRef?.current?.getFieldValue('id');
     let transferType = formRef?.current?.getFieldValue('transferType') || '';
+
+    console.log(sessionId);
+
     window.open(
       `${
         config.basePath
@@ -129,7 +135,7 @@ export default () => {
         code,
       )}&robotId=${info.id}&orderCode=${paramsObj.orderCode}&orderType=${
         paramsObj.orderType
-      }&customerId=${customerId ?? ''}&sessionId=${sessionId ?? ''} &dialogueTurnStart=${
+      }&customerId=${customerId ?? ''}&sessionId=${sessionId ?? ''}&dialogueTurnStart=${
         dialogueTurnStart ?? ''
       }&dialogueTurnEnd=${dialogueTurnEnd ?? ''}&transferType=${transferType ?? ''}`,
       '_self',
@@ -178,7 +184,7 @@ export default () => {
     {
       title: () => (
         <>
-          {'会话ID'}{' '}
+          {'会话ID'}
           <Tip
             title={
               '标识一次会话的ID，点击可以查看会话记录，会话记录中显示对话文本、文本发生的时间。'

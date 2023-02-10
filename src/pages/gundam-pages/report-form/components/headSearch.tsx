@@ -101,10 +101,14 @@ export default (props: any) => {
   };
 
   const exportForm = () => {
+    console.log(code);
+
     exportReportForm(startTime, endTime, code);
   };
 
   const exportSession = () => {
+    console.log(code);
+
     exportSessionList(startTime, endTime, code);
   };
 
