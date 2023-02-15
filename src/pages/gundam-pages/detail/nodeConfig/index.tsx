@@ -19,11 +19,15 @@ const NodeConfig: React.FC = (props: any) => {
 
   const { getNodeConfig, saveNode, configLoading } = useNodeModel();
 
-  const { info, businessFlowId, getGlobalValConfig } = useModel('gundam' as any, (model: any) => ({
-    info: model.info,
-    businessFlowId: model.businessFlowId,
-    getGlobalValConfig: model.getGlobalValConfig,
-  }));
+  const { info, businessFlowId, getGlobalValConfig, setDrawType } = useModel(
+    'gundam' as any,
+    (model: any) => ({
+      info: model.info,
+      businessFlowId: model.businessFlowId,
+      getGlobalValConfig: model.getGlobalValConfig,
+      setDrawType: model.setDrawType,
+    }),
+  );
 
   const { flowList, getMessageList, getWishList, getWordSlotList, getLabelList, getFlowList } =
     useModel('drawer' as any, (model: any) => ({
@@ -91,6 +95,7 @@ const NodeConfig: React.FC = (props: any) => {
   };
 
   useEffect(() => {
+    setDrawType('');
     _getNodesConfig();
     getLabelList(info.id); // 获取话术标签
     getFlowList(info.id); // 获取业务流程列表
