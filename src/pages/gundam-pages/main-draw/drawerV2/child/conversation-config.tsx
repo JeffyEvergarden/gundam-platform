@@ -261,9 +261,13 @@ const ConversationConfig = (props: any) => {
                           </Space> */}
 
                           <CvsForm
+                            form={form}
                             name={[field.name]}
                             key={field.name}
-                            reSound={formName == 'strategyList' ? true : false}
+                            formName={[formName, index]}
+                            reSound={
+                              formName == 'strategyList' || formName == 'clearList' ? true : false
+                            }
                           ></CvsForm>
                         </Condition>
 

@@ -18,10 +18,13 @@ const SoundRadio: React.FC<any> = (props: any) => {
 
   const change = (val: any) => {
     const item = getItem();
+    console.log(item);
+
     if (item.userInputType == '10') {
       item.functionKeyStart = undefined;
       item.functionKeyWell = undefined;
       item.buttonInputSize = undefined;
+      item.repeatHearKey = -1; //语音不给选重听
     }
 
     if (item.userInputType == '01') {
@@ -45,10 +48,13 @@ const SoundRadio: React.FC<any> = (props: any) => {
     }
   };
 
-  const checkChange = (e: any, fi: any) => {
+  const checkChange = (e: any, fi?: any) => {
     const item = getItem();
-    item[fi] = e.target.checked ? 1 : 0;
+    if (fi) {
+      item[fi] = e.target.checked ? 1 : 0;
+    }
 
+    item['repeatHearKey'] = -1;
     const list = form.getFieldValue(key);
     if (isArray && list instanceof Array) {
       form.setFieldsValue({
@@ -148,6 +154,9 @@ const SoundRadio: React.FC<any> = (props: any) => {
                   style={{ width: '161px' }}
                   placeholder="请输入按键长度"
                   disabled={disabled}
+                  onChange={(e) => {
+                    checkChange(e);
+                  }}
                 />
               </Form.Item>
             </div>

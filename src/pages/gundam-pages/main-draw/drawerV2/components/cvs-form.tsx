@@ -4,12 +4,36 @@ import { Form, Radio, Select, Space } from 'antd';
 import { useEffect } from 'react';
 
 const CvsForm: React.FC<any> = (props: any) => {
-  const { name = '', filedkey = '', fn = false, canEdit = false, reSound = false } = props;
+  const {
+    name = '',
+    filedkey = '',
+    fn = false,
+    canEdit = false,
+    reSound = false,
+    form,
+    formName,
+  } = props;
   const { Option } = Select;
 
   useEffect(() => {
     console.log(name);
+    console.log(form?.getFieldsValue()?.[formName?.[0]]?.[formName?.[1]]);
   }, []);
+
+  const onChange = (val: any) => {
+    console.log(val);
+
+    if (val != -1) {
+      let formData = form?.getFieldsValue();
+      let item = formData?.[formName?.[0]]?.[formName?.[1]];
+      console.log(formData, item);
+
+      item.functionKeyStart = 0;
+      item.functionKeyWell = 0;
+      item.buttonInputSize = 1;
+      form.setFieldsValue({ ...formData });
+    }
+  };
 
   return (
     <div>
@@ -42,7 +66,15 @@ const CvsForm: React.FC<any> = (props: any) => {
             initialValue={-1}
             label={'是否重听'}
           >
-            <Select size="small" style={{ width: '120px' }} disabled={canEdit}>
+            <Select
+              size="small"
+              style={{ width: '120px' }}
+              disabled={
+                canEdit ||
+                form?.getFieldsValue()?.[formName?.[0]]?.[formName?.[1]]?.userInputType == '10'
+              }
+              onChange={onChange}
+            >
               <Option value={-1} key={'-1'}>
                 无重听按键
               </Option>
