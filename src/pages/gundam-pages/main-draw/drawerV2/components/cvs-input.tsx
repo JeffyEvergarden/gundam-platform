@@ -1,7 +1,9 @@
 import Condition from '@/components/Condition';
 import Tip from '@/components/Tip';
+import config from '@/config';
 import { Button, Input, message, Select } from 'antd';
 import { useRef, useState } from 'react';
+import { useModel } from 'umi';
 import GlobalVarModal from '../../drawer/components/global-var-modal';
 import BreakModal from './breakModal';
 import Preview from './preview';
@@ -23,8 +25,15 @@ const CvsInput: React.FC<any> = (props: any) => {
     canEdit,
     required = false,
     sound,
+    showBreak,
     ...res
   } = props;
+
+  const { info } = useModel('gundam' as any, (model: any) => {
+    return {
+      info: model.info,
+    };
+  });
 
   const modalRef = useRef<any>(null);
 
@@ -51,7 +60,7 @@ const CvsInput: React.FC<any> = (props: any) => {
     let tmp: any = value || '';
 
     if (type == '间隔') {
-      target = `<break time="${val}ms"/>`;
+      target = `<break time="${val}ms" />`;
     } else {
       val.forEach((item: any) => {
         if (type === '变量') {
@@ -112,15 +121,18 @@ const CvsInput: React.FC<any> = (props: any) => {
           >
             {'{#}'}添加词槽
           </Button>
-          {/* <Button
-            type="link"
-            disabled={canEdit}
-            onClick={() => {
-              (modalRef3.current as any).open();
-            }}
-          >
-            插入停顿
-          </Button> */}
+          <Condition r-if={config.robotTypeMap[info?.robotType] === '语音' && showBreak}>
+            <Button
+              type="link"
+              disabled={canEdit}
+              onClick={() => {
+                (modalRef3.current as any).open();
+              }}
+            >
+              插入停顿
+            </Button>
+          </Condition>
+
           <Tip
             title={
               '添加变量/添加词槽：点击可以在澄清话术中插入变量或词槽的占位符，实际播报时，会将变量或词槽的值进行填充。'

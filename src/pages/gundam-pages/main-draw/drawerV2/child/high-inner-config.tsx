@@ -326,6 +326,7 @@ const HightformTemplate: any = (props: any) => {
                             canEdit={disabled}
                             required={true}
                             sound={sound}
+                            showBreak={sType?.responseList?.[index]?.soundType == 1}
                           />
                         </Form.Item>
 

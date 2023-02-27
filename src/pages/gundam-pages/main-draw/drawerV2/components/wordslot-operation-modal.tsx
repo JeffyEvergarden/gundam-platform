@@ -2,11 +2,12 @@ import Condition from '@/components/Condition';
 import Tip from '@/components/Tip';
 import { AppstoreAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, Row, Select } from 'antd';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useModel } from 'umi';
 import { OPERATOR_LIST, VALUE_TYPE_LIST } from '../const';
 import styles from './style.less';
 import operatorImg from '@/asset/image/operator.png';
+import ScriptOperator from './script-operator';
 
 const { Item: FormItem } = Form;
 const { Option } = Select;
@@ -14,6 +15,7 @@ const { Option } = Select;
 const InnerForm: React.FC<any> = (props: any) => {
   const { name, form, title, wordSlotList } = props;
   const dataType = Form.useWatch(['operations'], form);
+  const scriptRef = useRef<any>(null);
 
   const { globalVarList } = useModel('gundam' as any, (model: any) => ({
     globalVarList: model.globalVarList || [],
@@ -45,6 +47,11 @@ const InnerForm: React.FC<any> = (props: any) => {
       if (val == 'empty') {
         dataRow.oneValue = undefined;
         dataRow.typeOne = undefined;
+      }
+      if (val == 'pyScript') {
+        dataRow.oneValue = undefined;
+        dataRow.typeOne = undefined;
+        dataRow.typeTwo = 3;
       }
     }
     dataRow[type] = val;
@@ -120,6 +127,7 @@ const InnerForm: React.FC<any> = (props: any) => {
           typeChange(val, index, type);
         }}
         placeholder="请选择"
+        disabled={type == 'typeTwo' ? dataType?.[index]?.operator == 'pyScript' : false}
       >
         {VALUE_TYPE_LIST?.map((item: any, index) => {
           return (
@@ -135,6 +143,14 @@ const InnerForm: React.FC<any> = (props: any) => {
   useEffect(() => {
     console.log(dataType);
   }, [dataType]);
+
+  //脚本修改
+  const setScript = (val: any, index: any) => {
+    let formData = form.getFieldsValue();
+    let dataRow = formData[name][index];
+    dataRow.twoValue = val;
+    form.setFieldsValue({ ...formData });
+  };
 
   const titleHtml = (title: any, url: any, url2?: any) => {
     return (
@@ -283,7 +299,12 @@ const InnerForm: React.FC<any> = (props: any) => {
                 return (
                   <Row key={index} align="middle" style={{ marginBottom: '8px' }} gutter={[8, 4]}>
                     <Col span={3}>
-                      <Condition r-if={dataType?.[index]?.operator != 'empty'}>
+                      <Condition
+                        r-if={
+                          dataType?.[index]?.operator != 'empty' &&
+                          dataType?.[index]?.operator != 'pyScript'
+                        }
+                      >
                         <FormItem
                           name={[field.name, 'typeOne']}
                           fieldKey={[field.name, 'typeOne']}
@@ -295,7 +316,12 @@ const InnerForm: React.FC<any> = (props: any) => {
                       </Condition>
                     </Col>
                     <Col span={4}>
-                      <Condition r-if={dataType?.[index]?.operator != 'empty'}>
+                      <Condition
+                        r-if={
+                          dataType?.[index]?.operator != 'empty' &&
+                          dataType?.[index]?.operator != 'pyScript'
+                        }
+                      >
                         <FormItem
                           name={[field.name, 'oneValue']}
                           fieldKey={[field.name, 'oneValue']}
@@ -354,7 +380,8 @@ const InnerForm: React.FC<any> = (props: any) => {
                         r-if={
                           dataType?.[index]?.operator != 'empty' &&
                           dataType?.[index]?.operator != '=' &&
-                          dataType?.[index]?.operator != 'length'
+                          dataType?.[index]?.operator != 'length' &&
+                          dataType?.[index]?.operator != 'pyScript'
                         }
                       >
                         <FormItem
@@ -365,6 +392,23 @@ const InnerForm: React.FC<any> = (props: any) => {
                         >
                           {formatOption(dataType?.[index]?.typeTwo)}
                         </FormItem>
+                      </Condition>
+                      <Condition
+                        r-if={
+                          dataType?.[index]?.operator != 'empty' &&
+                          dataType?.[index]?.operator != '=' &&
+                          dataType?.[index]?.operator != 'length' &&
+                          dataType?.[index]?.operator == 'pyScript'
+                        }
+                      >
+                        <a
+                          style={{ display: 'block', width: '100%', textAlign: 'center' }}
+                          onClick={() => {
+                            scriptRef?.current?.open(dataType?.[index]?.twoValue, index);
+                          }}
+                        >
+                          》
+                        </a>
                       </Condition>
                     </Col>
                     <Col span={2}>
@@ -432,6 +476,7 @@ const InnerForm: React.FC<any> = (props: any) => {
           );
         }}
       </Form.List>
+      <ScriptOperator cref={scriptRef} setScript={setScript} />
     </div>
   );
 };

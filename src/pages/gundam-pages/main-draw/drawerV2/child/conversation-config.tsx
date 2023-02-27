@@ -207,6 +207,11 @@ const ConversationConfig = (props: any) => {
                             autoComplete="off"
                             required
                             sound={sound}
+                            showBreak={
+                              deep
+                                ? sType?.[0]?.['conversationList']?.[index]?.soundType == 1
+                                : sType?.[index]?.soundType == 1
+                            }
                           />
                         </Form.Item>
                         <Condition r-if={config.robotTypeMap[info?.robotType] === '语音'}>

@@ -1,9 +1,5 @@
 import { useState, useImperativeHandle, useEffect, useMemo } from 'react';
 import { Modal, Button, Table, Input, InputNumber, message } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
-import style from './style.less';
-import { useModel } from 'umi';
-import GlobalVarButton from './global-var-button';
 
 const GlobalVarModal: React.FC<any> = (props: any) => {
   const { cref, onConfirm } = props;

@@ -1,13 +1,13 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import MonacoEditor, { useMonaco, loader } from '@monaco-editor/react';
-import { useRef, useState } from 'react';
+import { useImperativeHandle, useRef, useState } from 'react';
 
 // import { loader } from "@monaco-editor/react";
 
 loader.config({ monaco });
 
 const MonacoEditor1 = (props: any) => {
-  const {} = props;
+  const { cref } = props;
   const editorRef: any = useRef(null);
 
   function handleEditorDidMount(editor: any, monaco: any) {
@@ -16,16 +16,20 @@ const MonacoEditor1 = (props: any) => {
 
   const [text, setText] = useState<any>('');
 
+  useImperativeHandle(cref, () => ({
+    setText,
+    text,
+  }));
+
   return (
     <MonacoEditor
-      height="300px"
-      width="500px"
+      height="600px"
+      width="95%"
       value={text}
       language="python"
-      // theme="vs-dark"
+      theme="vs-dark"
       onMount={handleEditorDidMount}
       onChange={(value: any, event: any) => {
-        console.log(value, event);
         setText(value);
       }}
     />

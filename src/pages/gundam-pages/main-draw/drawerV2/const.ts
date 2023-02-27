@@ -367,4 +367,8 @@ export const OPERATOR_LIST = [
     value: '/',
     label: '计算-除',
   },
+  {
+    value: 'pyScript',
+    label: '脚本运算',
+  },
 ];

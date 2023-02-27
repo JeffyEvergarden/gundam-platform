@@ -369,6 +369,7 @@ const ActionConfig = (props: any) => {
               maxlength={maxlength}
               canEdit={canEdit}
               sound={sound}
+              showBreak={deep ? currentItem?.action?.soundType == 1 : currentItem?.soundType == 1}
             />
           </FormItem>
           <Condition r-if={config.robotTypeMap[info?.robotType] === '语音'}>
