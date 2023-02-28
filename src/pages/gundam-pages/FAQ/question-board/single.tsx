@@ -16,6 +16,7 @@ import {
 } from 'antd';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
+import BreakModal from '../../main-draw/drawerV2/components/breakModal';
 import CvsForm from '../../main-draw/drawerV2/components/cvs-form';
 import SoundSelectModal from '../../main-draw/drawerV2/components/sound-select-modal';
 import SoundVarModal from '../../main-draw/drawerV2/components/sound-var-modal';
@@ -68,8 +69,11 @@ const Board: React.FC<any> = (props: any) => {
 
   const [form] = Form.useForm();
   const soundRef = useRef<any>({});
+  const breakRef = useRef<any>(null);
   const auditionRef = useRef<any>({});
   const sType: any = Form.useWatch('soundType', form);
+
+  const [startPos, setStartPos] = useState<number>(-1);
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -233,6 +237,59 @@ const Board: React.FC<any> = (props: any) => {
     await save(tmpObj);
   };
 
+  const breakConfirm = (val: any, type: any = '变量', index: any) => {
+    console.log(form.getFieldsValue());
+    console.log(startPos);
+
+    let target = '';
+    let tmp: any = form.getFieldsValue()?.answer || '';
+
+    console.log(tmp);
+
+    if (type == '间隔') {
+      target = `<break time="${val}ms" />`;
+    } else {
+      val.forEach((item: any) => {
+        if (type === '变量') {
+          target += item?.name ? `\$\{${item.name}\}` : '';
+        } else if (type === '词槽') {
+          target += item?.name ? `#\{${item.name}\}` : '';
+        }
+      });
+    }
+
+    if (startPos > -1) {
+      let pre = tmp.slice(0, startPos);
+      let last = tmp.slice(startPos);
+      tmp = pre + target + last;
+      if (tmp.length > 200) {
+        message.warning(`字符不能超过${200}个字`);
+        tmp = form.getFieldsValue()?.answer;
+      }
+    } else {
+      tmp = tmp + target;
+    }
+    if (startPos != -1) {
+      setStartPos(startPos + target?.length);
+    }
+    console.log(tmp);
+
+    changeForm(tmp, index);
+  };
+
+  const blurEvent = (e: any) => {
+    console.log(e);
+    let num = e.target.selectionStart;
+    setStartPos(isNaN(num) ? -1 : num);
+  };
+
+  const changeForm = (val: any, index: any) => {
+    let formData: any = form.getFieldsValue();
+    formData.answer = val;
+
+    form.setFieldsValue({ ...formData });
+  };
+
   return (
     <div className={style['board-page']}>
       <div style={{ width: '100%' }}>
@@ -290,6 +347,18 @@ const Board: React.FC<any> = (props: any) => {
                       <span className={'ant-form-item-label'}>
                         <label className={'ant-form-item-required'}>答案内容</label>
                       </span>
+                      <Condition
+                        r-if={config.robotTypeMap[info?.robotType] === '语音' && sType == 1}
+                      >
+                        <Button
+                          type="link"
+                          onClick={() => {
+                            (breakRef?.current as any)?.open();
+                          }}
+                        >
+                          插入停顿
+                        </Button>
+                      </Condition>
                     </div>
                     <Condition r-if={robotType === '语音'}>
                       <div id={style['soundType']}>
@@ -407,7 +476,13 @@ const Board: React.FC<any> = (props: any) => {
                         },
                       ]}
                     >
-                      <TextArea maxLength={200} rows={5} placeholder={'请输入答案'} showCount />
+                      <TextArea
+                        maxLength={200}
+                        rows={5}
+                        placeholder={'请输入答案'}
+                        showCount
+                        onBlur={blurEvent}
+                      />
                     </Form.Item>
                     <CvsForm></CvsForm>
                   </Condition>
@@ -457,6 +532,12 @@ const Board: React.FC<any> = (props: any) => {
       </div>
 
       <RemarkModal cref={remarkModalRef} confirm={confirmRemarkModal} />
+      <BreakModal
+        cref={breakRef}
+        onConfirm={(val: any, index: any) => {
+          breakConfirm(val, '间隔', index);
+        }}
+      ></BreakModal>
     </div>
   );
 };

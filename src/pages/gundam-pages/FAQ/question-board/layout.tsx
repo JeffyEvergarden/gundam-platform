@@ -37,6 +37,7 @@ import { useSimilarModel } from '@/pages/gundam-pages/sample/model';
 import SoundSelectModal from '../../main-draw/drawerV2/components/sound-select-modal';
 import SoundVarModal from '../../main-draw/drawerV2/components/sound-var-modal';
 import CvsForm from '../../main-draw/drawerV2/components/cvs-form';
+import BreakModal from '../../main-draw/drawerV2/components/breakModal';
 
 const { Option } = Select;
 
@@ -82,14 +83,16 @@ const processTreeData = (data: any[], parent?: any) => {
 
 const Board: React.FC<any> = (props: any) => {
   const query: any = history.location.query;
-
   const questionId = query.faqId || '';
   const pageType = questionId ? 'edit' : 'create';
 
   const [form] = Form.useForm();
   const soundRef = useRef<any>({});
+  const breakRef = useRef<any>(null);
   const auditionRef = useRef<any>({});
   const sType: any = Form.useWatch('answerList', form);
+
+  const [startPos, setStartPos] = useState<number>(-1);
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -351,6 +354,63 @@ const Board: React.FC<any> = (props: any) => {
   const confirm = (obj: any) => {
     console.log(obj);
     opRecordRef.current?.callback?.(obj);
+  };
+
+  const breakConfirm = (val: any, type: any = '变量', index: any) => {
+    console.log(sType);
+    console.log(startPos);
+
+    let target = '';
+    let tmp: any = sType?.[index]?.answer || '';
+
+    console.log(tmp);
+
+    if (type == '间隔') {
+      target = `<break time="${val}ms" />`;
+    } else {
+      val.forEach((item: any) => {
+        if (type === '变量') {
+          target += item?.name ? `\$\{${item.name}\}` : '';
+        } else if (type === '词槽') {
+          target += item?.name ? `#\{${item.name}\}` : '';
+        }
+      });
+    }
+
+    if (startPos > -1) {
+      let pre = tmp.slice(0, startPos);
+      let last = tmp.slice(startPos);
+      tmp = pre + target + last;
+      console.log(tmp, pre, last);
+
+      if (tmp.length > 200) {
+        message.warning(`字符不能超过${200}个字`);
+        tmp = sType?.[index]?.answer;
+      }
+    } else {
+      tmp = tmp + target;
+    }
+    if (startPos != -1) {
+      setStartPos(startPos + target?.length);
+    }
+    console.log(tmp);
+
+    changeForm(tmp, index);
+  };
+
+  const blurEvent = (e: any) => {
+    console.log(e);
+    let num = e.target.selectionStart;
+    setStartPos(isNaN(num) ? -1 : num);
+  };
+
+  const changeForm = (val: any, index: any) => {
+    let formData: any = form.getFieldsValue();
+    let list: any = formData?.answerList;
+    console.log(formData);
+    list[index].answer = val;
+
+    form.setFieldsValue({ answerList: [...list] });
   };
 
   const save = async (otherObj: any) => {
@@ -618,6 +678,22 @@ const Board: React.FC<any> = (props: any) => {
                                       }
                                     />
                                   </label>
+                                  <Condition
+                                    r-if={
+                                      config.robotTypeMap[info?.robotType] === '语音' &&
+                                      sType?.[index]?.soundType == 1
+                                    }
+                                  >
+                                    <Button
+                                      type="link"
+                                      onClick={() => {
+                                        (breakRef?.current as any)?.open(field, index);
+                                        console.log(startPos);
+                                      }}
+                                    >
+                                      插入停顿
+                                    </Button>
+                                  </Condition>
                                 </span>
                               </div>
                               <Condition r-if={robotType === '语音'}>
@@ -743,6 +819,7 @@ const Board: React.FC<any> = (props: any) => {
                                   rows={5}
                                   placeholder={'请输入答案'}
                                   showCount
+                                  onBlur={blurEvent}
                                 />
                               </Form.Item>
                               <CvsForm name={[field.name]} key={field.name}></CvsForm>
@@ -996,6 +1073,12 @@ const Board: React.FC<any> = (props: any) => {
       />
       <RemarkModal cref={remarkModalRef} confirm={confirmRemarkModal} pageUrl={pageUrl} />
       <SelectorModal cref={selectModalRef} confirm={confirm} />
+      <BreakModal
+        cref={breakRef}
+        onConfirm={(val: any, index: any) => {
+          breakConfirm(val, '间隔', index);
+        }}
+      ></BreakModal>
     </div>
   );
 };

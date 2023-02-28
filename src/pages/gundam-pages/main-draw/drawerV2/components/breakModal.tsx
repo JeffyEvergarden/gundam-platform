@@ -6,14 +6,20 @@ const GlobalVarModal: React.FC<any> = (props: any) => {
 
   const [visible, setVisible] = useState<boolean>(false);
 
+  const [insertFormList, setInsertFormList] = useState<any>('');
+
   const [millisecond, setMillisecond] = useState<any>('');
 
   useImperativeHandle(cref, () => ({
-    open: (val: any[]) => {
+    open: (val: any[], index: any) => {
+      console.log(index);
+
       setMillisecond('');
+      setInsertFormList(index);
       setVisible(true);
     },
     close: () => {
+      setInsertFormList(null);
       setVisible(false);
     },
   }));
@@ -23,7 +29,14 @@ const GlobalVarModal: React.FC<any> = (props: any) => {
       message.warning('请输入停顿时长');
       return;
     }
-    onConfirm?.(millisecond);
+    if (insertFormList == 0 || insertFormList) {
+      console.log(insertFormList);
+
+      onConfirm?.(millisecond, insertFormList);
+    } else {
+      onConfirm?.(millisecond);
+    }
+
     setVisible(false);
   };
 
@@ -42,6 +55,8 @@ const GlobalVarModal: React.FC<any> = (props: any) => {
           style={{ width: '100%' }}
           step={1}
           precision={0}
+          min={1}
+          max={10000}
           value={millisecond}
           onChange={(e: any) => {
             setMillisecond(e);
