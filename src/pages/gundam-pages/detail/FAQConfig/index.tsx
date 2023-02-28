@@ -14,6 +14,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import Selector from '../../FAQ/question-board/components/selector';
 import SelectorModal from '../../FAQ/question-board/components/selector-modal';
+import BreakModal from '../../main-draw/drawerV2/components/breakModal';
 import CvsForm from '../../main-draw/drawerV2/components/cvs-form';
 import SoundSelectModal from '../../main-draw/drawerV2/components/sound-select-modal';
 import SoundVarModal from '../../main-draw/drawerV2/components/sound-var-modal';
@@ -26,6 +27,7 @@ const FAQConfig: React.FC<any> = (props: any) => {
   const { Option } = Select;
 
   const soundRef = useRef<any>({});
+  const breakRef = useRef<any>({});
   const auditionRef = useRef<any>({});
   const sType: any = Form.useWatch(['systemConfigList', 'FAQ_INVALID_ANSWER', 'soundType'], form);
 
@@ -68,6 +70,9 @@ const FAQConfig: React.FC<any> = (props: any) => {
   const robotType: any = robotTypeMap[info.robotType] || '语音';
 
   const [Nconfig, setNConfig] = useState<any>();
+
+  const [startPos, setStartPos] = useState<number>(-1);
+
   const [switchType, setSwitchType] = useState<boolean>(false);
   const selectModalRef = useRef<any>();
   const opRecordRef = useRef<any>({});
@@ -351,6 +356,59 @@ const FAQConfig: React.FC<any> = (props: any) => {
     }
   };
 
+  const breakConfirm = (val: any, type: any = '变量', index: any) => {
+    console.log(form.getFieldsValue());
+    console.log(startPos);
+
+    let target = '';
+    let tmp: any = form.getFieldsValue()?.systemConfigList?.FAQ_INVALID_ANSWER?.answer || '';
+
+    console.log(tmp);
+
+    if (type == '间隔') {
+      target = `<break time="${val}ms" />`;
+    } else {
+      val.forEach((item: any) => {
+        if (type === '变量') {
+          target += item?.name ? `\$\{${item.name}\}` : '';
+        } else if (type === '词槽') {
+          target += item?.name ? `#\{${item.name}\}` : '';
+        }
+      });
+    }
+
+    if (startPos > -1) {
+      let pre = tmp.slice(0, startPos);
+      let last = tmp.slice(startPos);
+      tmp = pre + target + last;
+      if (tmp.length > 200) {
+        message.warning(`字符不能超过${200}个字`);
+        tmp = form.getFieldsValue()?.systemConfigList?.FAQ_INVALID_ANSWER?.answer;
+      }
+    } else {
+      tmp = tmp + target;
+    }
+    if (startPos != -1) {
+      setStartPos(startPos + target?.length);
+    }
+    console.log(tmp);
+
+    changeForm(tmp, index);
+  };
+
+  const blurEvent = (e: any) => {
+    console.log(e);
+    let num = e.target.selectionStart;
+    setStartPos(isNaN(num) ? -1 : num);
+  };
+
+  const changeForm = (val: any, index: any) => {
+    let formData: any = form.getFieldsValue();
+    formData.systemConfigList.FAQ_INVALID_ANSWER.answer = val;
+
+    form.setFieldsValue({ ...formData });
+  };
+
   return (
     <div className={style['machine-page']}>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -416,10 +474,22 @@ const FAQConfig: React.FC<any> = (props: any) => {
                           <div className={style['diy-box']}>
                             <div className={style['diy-row']}>
                               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <div
-                                  className={style['zy-row']}
-                                  style={{ paddingBottom: '6px' }}
-                                ></div>
+                                <div className={style['zy-row']} style={{ paddingBottom: '6px' }}>
+                                  <Condition
+                                    r-if={
+                                      config.robotTypeMap[info?.robotType] === '语音' && sType == 1
+                                    }
+                                  >
+                                    <Button
+                                      type="link"
+                                      onClick={() => {
+                                        (breakRef.current as any).open();
+                                      }}
+                                    >
+                                      插入停顿
+                                    </Button>
+                                  </Condition>
+                                </div>
 
                                 <div id={style['soundType']}>
                                   <Form.Item
@@ -520,6 +590,7 @@ const FAQConfig: React.FC<any> = (props: any) => {
                                   rows={5}
                                   placeholder={'请输入'}
                                   showCount
+                                  onBlur={blurEvent}
                                 />
                               </Form.Item>
                               <CvsForm
@@ -753,6 +824,12 @@ const FAQConfig: React.FC<any> = (props: any) => {
           保存
         </Button>
         <SelectorModal cref={selectModalRef} confirm={confirm} />
+        <BreakModal
+          cref={breakRef}
+          onConfirm={(val: any, index: any) => {
+            breakConfirm(val, '间隔', index);
+          }}
+        ></BreakModal>
       </div>
     </div>
   );
