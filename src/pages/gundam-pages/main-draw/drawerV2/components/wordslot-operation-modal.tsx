@@ -401,14 +401,21 @@ const InnerForm: React.FC<any> = (props: any) => {
                           dataType?.[index]?.operator == 'pyScript'
                         }
                       >
-                        <a
-                          style={{ display: 'block', width: '100%', textAlign: 'center' }}
-                          onClick={() => {
-                            scriptRef?.current?.open(dataType?.[index]?.twoValue, index);
-                          }}
+                        <FormItem
+                          name={[field.name, 'twoValue']}
+                          fieldKey={[field.name, 'twoValue']}
+                          noStyle
+                          rules={[{ required: true, message: '请选择' }]}
                         >
-                          》
-                        </a>
+                          <a
+                            style={{ display: 'block', width: '100%', textAlign: 'center' }}
+                            onClick={() => {
+                              scriptRef?.current?.open(dataType?.[index]?.twoValue, index);
+                            }}
+                          >
+                            编辑脚本
+                          </a>
+                        </FormItem>
                       </Condition>
                     </Col>
                     <Col span={2}>
