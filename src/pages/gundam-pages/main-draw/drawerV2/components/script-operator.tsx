@@ -46,16 +46,17 @@ const ScriptOperator: React.FC<any> = (props: any) => {
 import sys
 import json
     
-# 获取所有变量和词槽
-var_slot_str = sys.argv[-1]
-var_slot_json = json.loads(var_slot_str)
+# 获取所有变量
+variable_str = sys.argv[-1]
     
-# 根据词槽名称获取槽值
-age = variable_slot_json['#age']
-age +=5
+# 获取所有词槽
+slot_str = sys.argv[-2]
     
-# 使用打印返回结果，多次打印会拼接成一个字符串返回给JAVA。
-print(age, end='')`);
+# 根据变量名称获取变量值
+channel_code= json.loads(variable_str)['CHANNEL_CODE']['value']
+    
+# 使用打印返回结果，一次或多次打印会组装成数组，返回给JAVA端填充词槽。
+print(channel_code, end='')`);
   };
 
   const onOK = () => {
