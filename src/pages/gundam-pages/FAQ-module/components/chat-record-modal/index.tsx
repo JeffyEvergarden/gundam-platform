@@ -96,13 +96,16 @@ const RecordModal: React.FC<any> = (props: any) => {
         pageType == 'visitorsSession' && info?.robotType == 1 && systemCode !== 'test' ? (
           <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
             <div style={{ width: '100px' }}>全程会话录音</div>
-            <AudioPlay
-              musicSrc={
-                process.env.mock
-                  ? '/aichat/mp3/bluebird.mp3'
-                  : `${config.basePath}/robot/sound/getRecord?callId=${callId}`
-              }
-            />
+            <Condition r-if={callId}>
+              <AudioPlay
+                musicSrc={
+                  process.env.mock
+                    ? '/aichat/mp3/bluebird.mp3'
+                    : `${config.basePath}/robot/sound/getRecord?callId=${callId}`
+                }
+              />
+            </Condition>
+
             {/* <AudioPlay musicSrc={soundInfo} /> */}
           </div>
         ) : null
