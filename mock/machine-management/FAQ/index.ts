@@ -34,7 +34,7 @@ const getFaqList = (req: any, res: any, next: any) => {
     answerList: [
       {
         answerViewNum: 2, //浏览
-        answer: 'dadada', //回复
+        answer: 'dadada <break time=200ms /> ', //回复
         enable: 0, //是否启用 0否 1是
         enableStartTime: '2022-05-10 15:55:55',
         enableEndTime: '2022-05-10 15:55:55',

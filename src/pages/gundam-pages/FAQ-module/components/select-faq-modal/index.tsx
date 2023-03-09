@@ -1,4 +1,5 @@
 import Condition from '@/components/Condition';
+import config from '@/config';
 import { DeleteOutlined, MonitorOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Button, Input, message, Modal, Table, Tabs, Tooltip } from 'antd';
 import { useEffect, useImperativeHandle, useMemo, useState } from 'react';
@@ -59,26 +60,6 @@ const columns2: any[] = [
 ];
 
 const { Search } = Input;
-
-const expendRender = (row: any) => {
-  const answerList: any[] = row.answerList || [];
-
-  return (
-    <>
-      {answerList.map((item: any, index: number) => {
-        return (
-          <div className={style['answer-box']} key={index}>
-            <div className={style['circle-num']}>{index + 1}</div>
-            <div
-              className={style['answer-content']}
-              dangerouslySetInnerHTML={{ __html: item.answer || null }}
-            />
-          </div>
-        );
-      })}
-    </>
-  );
-};
 
 // selectlist  (recommendType、recommendId、recommend)
 // disabledWishKeys    禁止选择的意图
@@ -152,6 +133,32 @@ const SelectorModal: React.FC<any> = (props: any) => {
   // 页码, 分页相关
   const [current1, setCurrent1] = useState<number>(1);
   const [current2, setCurrent2] = useState<number>(1);
+
+  const expendRender = (row: any) => {
+    const answerList: any[] = row.answerList || [];
+
+    return (
+      <>
+        {answerList.map((item: any, index: number) => {
+          return (
+            <div className={style['answer-box']} key={index}>
+              <div className={style['circle-num']}>{index + 1}</div>
+
+              <Condition r-if={config.robotTypeMap[info?.robotType] === '文本'}>
+                <div
+                  className={style['answer-content']}
+                  dangerouslySetInnerHTML={{ __html: item.answer }}
+                ></div>
+              </Condition>
+              <Condition r-if={config.robotTypeMap[info?.robotType] === '语音'}>
+                <div className={style['answer-content']}>{item.answer}</div>
+              </Condition>
+            </div>
+          );
+        })}
+      </>
+    );
+  };
 
   // 切换分页
   const onChange1 = (val: any) => {

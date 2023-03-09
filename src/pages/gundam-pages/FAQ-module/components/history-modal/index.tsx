@@ -1,4 +1,5 @@
 import Condition from '@/components/Condition';
+import config from '@/config';
 import { Divider, Drawer, Input, Pagination, Timeline } from 'antd';
 import { useImperativeHandle, useRef, useState, useEffect } from 'react';
 import { useModel } from 'umi';
@@ -119,10 +120,15 @@ const SelectorModal: React.FC<any> = (props: any) => {
                                 }}
                               >
                                 <div className={style['box-answer']}>
-                                  <div
-                                    className={style['box-content']}
-                                    dangerouslySetInnerHTML={{ __html: v.answer }}
-                                  ></div>
+                                  <Condition r-if={config.robotTypeMap[info?.robotType] === '文本'}>
+                                    <div
+                                      className={style['box-content']}
+                                      dangerouslySetInnerHTML={{ __html: v.answer }}
+                                    ></div>
+                                  </Condition>
+                                  <Condition r-if={config.robotTypeMap[info?.robotType] === '语音'}>
+                                    <div className={style['box-content']}>{v.answer}</div>
+                                  </Condition>
                                   <div className={style['box-footer']}>
                                     <div>
                                       <span style={{ display: 'flex' }}>

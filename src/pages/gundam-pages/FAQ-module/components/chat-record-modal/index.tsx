@@ -141,11 +141,18 @@ const RecordModal: React.FC<any> = (props: any) => {
                     </Condition>
                     <div className={style['record-time']}>{item.recordTime}</div>
                   </div>
-                  <div
-                    className={style['content']}
-                    style={{ color: hLihgt(item) }}
-                    dangerouslySetInnerHTML={{ __html: item.message }}
-                  />
+                  <Condition r-if={config.robotTypeMap[info?.robotType] === '文本'}>
+                    <div
+                      className={style['box-content']}
+                      style={{ color: hLihgt(item) }}
+                      dangerouslySetInnerHTML={{ __html: item.answer }}
+                    ></div>
+                  </Condition>
+                  <Condition r-if={config.robotTypeMap[info?.robotType] === '语音'}>
+                    <div className={style['box-content']} style={{ color: hLihgt(item) }}>
+                      {item.answer}
+                    </div>
+                  </Condition>
                 </div>
               </div>
             );
@@ -157,7 +164,12 @@ const RecordModal: React.FC<any> = (props: any) => {
                     <div className={style['record-time']}>{item.recordTime}</div>
                   </div>
                   <div className={style['content']}>
-                    <div dangerouslySetInnerHTML={{ __html: item.message }} />
+                    <Condition r-if={config.robotTypeMap[info?.robotType] === '文本'}>
+                      <div dangerouslySetInnerHTML={{ __html: item.message }}></div>
+                    </Condition>
+                    <Condition r-if={config.robotTypeMap[info?.robotType] === '语音'}>
+                      <div>{item.message}</div>
+                    </Condition>
                     <div>
                       {item?.recommendQuestion ? item?.recommendQuestion : item?.recommendText}
                     </div>

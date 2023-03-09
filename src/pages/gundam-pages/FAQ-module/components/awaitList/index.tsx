@@ -1,3 +1,4 @@
+import config from '@/config';
 import Condition from '@/pages/gundam-pages/main-draw/flow/common/Condition';
 import ProList from '@ant-design/pro-list';
 import { Button, Checkbox, Divider, Input, message, Pagination, Select, Space } from 'antd';
@@ -275,10 +276,15 @@ const AwaitList: React.FC<any> = (props: any) => {
 
                           <div className={style['box-answer']}>
                             {/* 内容 */}
-                            <div
-                              className={style['box-content']}
-                              dangerouslySetInnerHTML={{ __html: item.answer }}
-                            ></div>
+                            <Condition r-if={config.robotTypeMap[info?.robotType] === '文本'}>
+                              <div
+                                className={style['box-content']}
+                                dangerouslySetInnerHTML={{ __html: item.answer }}
+                              ></div>
+                            </Condition>
+                            <Condition r-if={config.robotTypeMap[info?.robotType] === '语音'}>
+                              <div className={style['box-content']}>{item.answer}</div>
+                            </Condition>
                             {/* 生效渠道 */}
                             <div className={style['box-footer']}>
                               <div>

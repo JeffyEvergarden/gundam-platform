@@ -623,10 +623,15 @@ const QuestionList: React.FC<any> = (props: any) => {
                                     )}
                                   </div>
                                 </div>
-                                <div
-                                  className={style['box-content']}
-                                  dangerouslySetInnerHTML={{ __html: v.answer }}
-                                ></div>
+                                <Condition r-if={config.robotTypeMap[info?.robotType] === '文本'}>
+                                  <div
+                                    className={style['box-content']}
+                                    dangerouslySetInnerHTML={{ __html: v.answer }}
+                                  ></div>
+                                </Condition>
+                                <Condition r-if={config.robotTypeMap[info?.robotType] === '语音'}>
+                                  <div className={style['box-content']}>{v.answer}</div>
+                                </Condition>
                                 <div className={style['box-footer']}>
                                   <div>
                                     <span>作者：{v.updateBy || v.creator}</span>

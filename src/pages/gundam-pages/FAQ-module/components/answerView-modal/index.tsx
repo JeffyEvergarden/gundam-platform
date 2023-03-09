@@ -1,3 +1,5 @@
+import Condition from '@/components/Condition';
+import config from '@/config';
 import ProList from '@ant-design/pro-list';
 import { Divider, Drawer, Input } from 'antd';
 import { Fragment, useImperativeHandle, useRef, useState, useEffect } from 'react';
@@ -89,10 +91,15 @@ const SelectorModal: React.FC<any> = (props: any) => {
               render: (title: any, item: any, index: number) => {
                 return (
                   <div className={style['box']} key={index}>
-                    <div
-                      className={style['box-content']}
-                      dangerouslySetInnerHTML={{ __html: item.answer }}
-                    />
+                    <Condition r-if={config.robotTypeMap[info?.robotType] === '文本'}>
+                      <div
+                        className={style['box-content']}
+                        dangerouslySetInnerHTML={{ __html: item.answer }}
+                      ></div>
+                    </Condition>
+                    <Condition r-if={config.robotTypeMap[info?.robotType] === '语音'}>
+                      <div className={style['box-content']}>{item.answer}</div>
+                    </Condition>
                     <div className={style['box-footer']}>
                       {pageType === 'standardQuestionLearn' && (
                         <Fragment>
