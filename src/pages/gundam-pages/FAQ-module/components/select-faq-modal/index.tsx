@@ -147,7 +147,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
               <Condition r-if={config.robotTypeMap[info?.robotType] === '文本'}>
                 <div
                   className={style['answer-content']}
-                  dangerouslySetInnerHTML={{ __html: item.answer }}
+                  dangerouslySetInnerHTML={{ __html: item.answer || null }}
                 ></div>
               </Condition>
               <Condition r-if={config.robotTypeMap[info?.robotType] === '语音'}>

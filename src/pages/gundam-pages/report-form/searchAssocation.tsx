@@ -11,6 +11,7 @@ import LineChart from './components/lineCharts';
 import styles from './index.less';
 import { useReportForm } from './model';
 import { codeToStr } from '@/utils/index';
+import Tip from '@/components/Tip';
 
 export default () => {
   const { info } = useModel('gundam' as any, (model: any) => ({
@@ -144,9 +145,7 @@ export default () => {
         return (
           <Space>
             日期
-            <span>
-              <QuestionCircleOutlined />
-            </span>
+            <span></span>
           </Space>
         );
       },
@@ -159,7 +158,7 @@ export default () => {
           <Space>
             搜索次数
             <span>
-              <QuestionCircleOutlined />
+              <Tip title={'客户搜索的次数（通过文本框输入，点击发送的次数）'} />
             </span>
           </Space>
         );
@@ -173,7 +172,11 @@ export default () => {
           <Space>
             联想次数
             <span>
-              <QuestionCircleOutlined />
+              <Tip
+                title={
+                  '联想总次数（suggest接口的调用次数，客户的一次发送，只要输入文本过程有停顿，有会触发多次联想调用）'
+                }
+              />
             </span>
           </Space>
         );
@@ -187,7 +190,7 @@ export default () => {
           <Space>
             联想点击次数
             <span>
-              <QuestionCircleOutlined />
+              <Tip title={'客户点击联想进行搜索的次数，此次数 ≤ 搜索次数'} />
             </span>
           </Space>
         );
@@ -201,7 +204,7 @@ export default () => {
           <Space>
             联想使用率
             <span>
-              <QuestionCircleOutlined />
+              <Tip title={'联想点击次数/搜索次数'} />
             </span>
           </Space>
         );
@@ -215,7 +218,7 @@ export default () => {
           <Space>
             联想有结果次数
             <span>
-              <QuestionCircleOutlined />
+              <Tip title={'联想次数中有结果的次数'} />
             </span>
           </Space>
         );
@@ -229,7 +232,7 @@ export default () => {
           <Space>
             联想有结果率
             <span>
-              <QuestionCircleOutlined />
+              <Tip title={'联想有结果次数/联想次数'} />
             </span>
           </Space>
         );
@@ -243,7 +246,7 @@ export default () => {
           <Space>
             联想点击率
             <span>
-              <QuestionCircleOutlined />
+              <Tip title={'联想点击次数/联想中有结果的次数'} />
             </span>
           </Space>
         );
@@ -257,7 +260,7 @@ export default () => {
           <Space>
             联想平均点击位置
             <span>
-              <QuestionCircleOutlined />
+              <Tip title={'联想点击中，点击的位置序号的总和 / 联想点击总次数'} />
             </span>
           </Space>
         );
@@ -271,7 +274,7 @@ export default () => {
           <Space>
             联想Top3点击率
             <span>
-              <QuestionCircleOutlined />
+              <Tip title={'联想Top3点击次数/联想有结果次数，此使用率 ≤ 联想点击率'} />
             </span>
           </Space>
         );
