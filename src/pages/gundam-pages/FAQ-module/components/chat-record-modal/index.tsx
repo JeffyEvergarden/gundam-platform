@@ -145,12 +145,12 @@ const RecordModal: React.FC<any> = (props: any) => {
                     <div
                       className={style['box-content']}
                       style={{ color: hLihgt(item) }}
-                      dangerouslySetInnerHTML={{ __html: item.answer }}
+                      dangerouslySetInnerHTML={{ __html: item.message }}
                     ></div>
                   </Condition>
                   <Condition r-if={config.robotTypeMap[info?.robotType] === '语音'}>
                     <div className={style['box-content']} style={{ color: hLihgt(item) }}>
-                      {item.answer}
+                      {item.message}
                     </div>
                   </Condition>
                 </div>
