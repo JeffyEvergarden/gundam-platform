@@ -329,6 +329,7 @@ const searchCustomerTrackList = (req: any, res: any) => {
       customerTrack: '轨迹' + index,
       operation: Math.ceil(Math.random() * 8),
       id: index,
+      sesstionId: index < 5 ? 0 : 1,
     };
   });
   res.json({
