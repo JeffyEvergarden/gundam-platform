@@ -319,6 +319,28 @@ const searchAssociationList = (req: any, res: any) => {
   });
 };
 
+const searchCustomerTrackList = (req: any, res: any) => {
+  let list = new Array(10).fill(1).map((item: any, index: number) => {
+    return {
+      callTime: '2023-01-01',
+      mobile: 12345678901,
+      operationTime: '2023-01-01',
+      nodeName: '节点' + index,
+      customerTrack: '轨迹' + index,
+      operation: Math.ceil(Math.random() * 8),
+      id: index,
+    };
+  });
+  res.json({
+    resultCode: successCode,
+    resultId: '2244',
+    data: {
+      list: [...list],
+      totalPage: 11,
+    },
+  });
+};
+
 export default {
   'GET /aichat/robot/statistics/visitor': visitor,
   'GET /aichat/robot/statistics/session': session,
@@ -326,4 +348,5 @@ export default {
   'GET /aichat/robot/statistics/questionMatch/rejectRateDetail': reject,
   'GET /aichat/robot/statistics/faqAndClarify': faqAndClarify,
   'GET /aichat/robot/statistics/suggest': searchAssociationList,
+  'GET /aichat/robot/statistics/customerTrack': searchCustomerTrackList,
 };

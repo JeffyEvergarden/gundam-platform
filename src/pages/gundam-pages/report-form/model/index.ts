@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { successCode } from '../../ai-simulation/model';
 import {
   visitorList,
   session,
@@ -6,6 +7,7 @@ import {
   reject,
   faqAndClareList,
   searchAssociationList,
+  searchCustomerTrackList,
 } from './api';
 
 export const useReportForm = () => {
@@ -53,6 +55,36 @@ export const useReportForm = () => {
     return res;
   };
 
+  const searchCustomerTrack = async (params: any) => {
+    setTableLoading(true);
+    let res: any = await searchCustomerTrackList(params);
+    setTableLoading(false);
+    if (res.resultCode == successCode) {
+      let arr = mergeTable(res?.data?.list);
+      console.log(arr);
+
+      return { data: arr, total: res?.data?.totalPage };
+    } else {
+      return { data: [], total: 0 };
+    }
+  };
+
+  const mergeTable = (list: any) => {
+    let obj = {};
+    let arr = list.map((item: any) => {
+      if (obj[item.mobile]) {
+        obj[item.mobile] += 1;
+        return item;
+      } else {
+        obj[item.mobile] = 1;
+        return { ...item, first: true };
+      }
+    });
+    return arr.map((item: any) => {
+      return { ...item, span: item.first ? obj[item.mobile] : 0 };
+    });
+  };
+
   return {
     getVisitorList,
     getDialogue,
@@ -60,6 +92,7 @@ export const useReportForm = () => {
     rejectList,
     getFaqAndClareList,
     searchAssociation,
+    searchCustomerTrack,
     tableLoading,
   };
 };

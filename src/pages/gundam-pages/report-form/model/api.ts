@@ -48,3 +48,11 @@ export async function searchAssociationList(params?: Record<string, any>) {
     params,
   });
 }
+
+/** 客户轨迹**/
+export async function searchCustomerTrackList(params?: Record<string, any>) {
+  return request(`${baseUrl}/robot/statistics/customerTrack`, {
+    method: 'GET',
+    params,
+  });
+}

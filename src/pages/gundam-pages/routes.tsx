@@ -221,6 +221,15 @@ export default [
           return !(info?.robotType === 0); // 呼入 文本
         },
       },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/reportForm/customerTrack',
+        name: '客户轨迹报表',
+        code: 'robot_mg-report-search-customerTrack-view',
+        hideFn: (info: any) => {
+          return !(info?.robotType === 0); // 呼入 文本
+        },
+      },
     ],
   },
   {

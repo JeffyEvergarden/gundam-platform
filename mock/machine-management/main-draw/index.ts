@@ -184,7 +184,7 @@ const getInfo = (req: any, res: any) => {
       id: '100',
       flowId: '100',
       robotName: '命运官位指定阿尔托莉亚潘多拉',
-      robotType: 1,
+      robotType: 0,
       // robotType
       // 0: { text: '文本' },
       // 1: { text: '语音' },

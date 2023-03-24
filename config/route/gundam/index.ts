@@ -271,6 +271,13 @@ export default [
             // code: 'robot_mg-report_recommend_and_clarify-view',
             // access: 'routerAuth',
           },
+          {
+            path: '/gundamPages/reportForm/customerTrack',
+            component: './gundam-pages/report-form/customerTrack',
+            name: '客户轨迹报表',
+            code: 'robot_mg-report-search-customerTrack-view',
+            access: 'routerAuth',
+          },
         ],
       },
       {

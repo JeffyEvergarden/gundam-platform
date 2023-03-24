@@ -56,6 +56,16 @@ export default [
         value: 'robot_mg-report-search-association-export_bt',
         code: '001-009-005-001',
       },
+      {
+        label: '客户轨迹报表',
+        value: 'robot_mg-report-search-customerTrack-view',
+        code: '001-009-006',
+      },
+      {
+        label: '客户轨迹报表-导出',
+        value: 'robot_mg-report-search-customerTrack-export_bt',
+        code: '001-009-006-001',
+      },
     ],
   },
 ];
