@@ -72,16 +72,16 @@ export const useReportForm = () => {
   const mergeTable = (list: any) => {
     let obj = {};
     let arr = list.map((item: any) => {
-      if (obj[item.sesstionId]) {
-        obj[item.sesstionId] += 1;
+      if (obj[item.sessionId]) {
+        obj[item.sessionId] += 1;
         return item;
       } else {
-        obj[item.sesstionId] = 1;
+        obj[item.sessionId] = 1;
         return { ...item, first: true };
       }
     });
     return arr.map((item: any) => {
-      return { ...item, span: item.first ? obj[item.sesstionId] : 0 };
+      return { ...item, span: item.first ? obj[item.sessionId] : 0 };
     });
   };
 
