@@ -109,7 +109,7 @@ const CvsForm: React.FC<any> = (props: any) => {
                 按键0
               </Option>
               <Option value={'*'} key={'*'}>
-                按键0
+                按键*
               </Option>
             </Select>
           </Form.Item>{' '}
