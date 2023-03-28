@@ -227,7 +227,7 @@ export default [
         name: '客户轨迹报表',
         code: 'robot_mg-report-search-customerTrack-view',
         hideFn: (info: any) => {
-          return !(info?.robotType === 0); // 呼入 文本
+          return !(info?.robotType === 1); // 呼入 语音显示
         },
       },
     ],
