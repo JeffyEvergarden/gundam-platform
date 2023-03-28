@@ -127,7 +127,7 @@ const CustomerTrack: React.FC<any> = (props: any) => {
         request={async (params = {}, sort, filter) => {
           params.startTime = params?.callTime?.[0] || undefined;
           params.endTime = params?.callTime?.[1] || undefined;
-          return searchCustomerTrack({ page: params?.current, ...params });
+          return searchCustomerTrack({ page: params?.current, ...params, robotId: info.id });
         }}
       />
     </div>
