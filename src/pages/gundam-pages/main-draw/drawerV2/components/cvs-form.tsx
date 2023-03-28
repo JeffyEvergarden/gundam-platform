@@ -63,7 +63,7 @@ const CvsForm: React.FC<any> = (props: any) => {
           <Form.Item
             name={fn ? name : name ? [...name, 'repeatHearKey'] : 'repeatHearKey'}
             key={fn ? filedkey : filedkey ? [...filedkey, 'repeatHearKey'] : 'repeatHearKey'}
-            initialValue={-1}
+            initialValue={'-1'}
             label={'是否重听'}
           >
             <Select
@@ -75,37 +75,37 @@ const CvsForm: React.FC<any> = (props: any) => {
               }
               onChange={onChange}
             >
-              <Option value={-1} key={'-1'}>
+              <Option value={'-1'} key={'-1'}>
                 无重听按键
               </Option>
-              <Option value={1} key={'1'}>
+              <Option value={'1'} key={'1'}>
                 按键1
               </Option>
-              <Option value={2} key={'2'}>
+              <Option value={'2'} key={'2'}>
                 按键2
               </Option>
-              <Option value={3} key={'3'}>
+              <Option value={'3'} key={'3'}>
                 按键3
               </Option>
-              <Option value={4} key={'4'}>
+              <Option value={'4'} key={'4'}>
                 按键4
               </Option>
-              <Option value={5} key={'5'}>
+              <Option value={'5'} key={'5'}>
                 按键5
               </Option>
-              <Option value={6} key={'6'}>
+              <Option value={'6'} key={'6'}>
                 按键6
               </Option>
-              <Option value={7} key={'7'}>
+              <Option value={'7'} key={'7'}>
                 按键7
               </Option>
-              <Option value={8} key={'8'}>
+              <Option value={'8'} key={'8'}>
                 按键8
               </Option>
-              <Option value={9} key={'9'}>
+              <Option value={'9'} key={'9'}>
                 按键9
               </Option>
-              <Option value={0} key={'0'}>
+              <Option value={'0'} key={'0'}>
                 按键0
               </Option>
               <Option value={'*'} key={'*'}>

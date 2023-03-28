@@ -54,7 +54,7 @@ const SoundRadio: React.FC<any> = (props: any) => {
       item[fi] = e.target.checked ? 1 : 0;
     }
 
-    item['repeatHearKey'] = -1;
+    item['repeatHearKey'] = '-1';
     const list = form.getFieldValue(key);
     if (isArray && list instanceof Array) {
       form.setFieldsValue({
