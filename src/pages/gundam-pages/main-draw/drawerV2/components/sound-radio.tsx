@@ -21,14 +21,14 @@ const SoundRadio: React.FC<any> = (props: any) => {
     console.log(item);
 
     if (item.userInputType == '10') {
-      item.functionKeyStart = undefined;
+      // item.functionKeyStart = undefined;
       item.functionKeyWell = undefined;
       item.buttonInputSize = undefined;
       item.repeatHearKey = -1; //语音不给选重听
     }
 
     if (item.userInputType == '01') {
-      item.functionKeyStart = 1;
+      // item.functionKeyStart = 1;
       item.functionKeyWell = 1;
       item.buttonInputSize = 10;
     }
@@ -121,7 +121,7 @@ const SoundRadio: React.FC<any> = (props: any) => {
               </Form.Item>
               <Form.Item style={{ marginLeft: '8px' }}>#号确认</Form.Item>
             </div>
-            <div className={styles['functionkey']} style={{ marginRight: '16px' }}>
+            {/* <div className={styles['functionkey']} style={{ marginRight: '16px' }}>
               <Form.Item
                 name={[field.name, 'functionKeyStart']}
                 fieldKey={[field.fieldKey, 'functionKeyStart']}
@@ -136,7 +136,7 @@ const SoundRadio: React.FC<any> = (props: any) => {
                 ></Checkbox>
               </Form.Item>
               <Form.Item style={{ marginLeft: '8px' }}>*号取消</Form.Item>
-            </div>
+            </div> */}
 
             <div className={styles['functionkey']}>
               <Form.Item>按键长度：</Form.Item>
