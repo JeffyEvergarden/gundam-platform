@@ -95,8 +95,8 @@ export default () => {
     let sessionId = formRef?.current?.getFieldValue('id');
     let transferType = formRef?.current?.getFieldValue('transferType');
 
-    let userInputContent = formRef?.current?.getFieldValue('userInputContent');
-    let aiOutputContent = formRef?.current?.getFieldValue('aiOutputContent');
+    let userInputContent = formRef?.current?.getFieldValue('userInputContent') || '';
+    let aiOutputContent = formRef?.current?.getFieldValue('aiOutputContent') || '';
 
     console.log(sessionId);
 
@@ -132,8 +132,8 @@ export default () => {
     let sessionId = formRef?.current?.getFieldValue('id');
     let transferType = formRef?.current?.getFieldValue('transferType') || '';
 
-    let userInputContent = formRef?.current?.getFieldValue('userInputContent');
-    let aiOutputContent = formRef?.current?.getFieldValue('aiOutputContent');
+    let userInputContent = formRef?.current?.getFieldValue('userInputContent') || '';
+    let aiOutputContent = formRef?.current?.getFieldValue('aiOutputContent') || '';
 
     console.log(sessionId);
 
