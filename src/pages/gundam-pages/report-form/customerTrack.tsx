@@ -78,7 +78,7 @@ const CustomerTrack: React.FC<any> = (props: any) => {
   return (
     <div className={`${style['machine-page']} list-page`}>
       <ProTable
-        headerTitle={'课程管理'}
+        headerTitle={'客户轨迹报表'}
         pagination={{
           showSizeChanger: true,
           defaultPageSize: 10,
