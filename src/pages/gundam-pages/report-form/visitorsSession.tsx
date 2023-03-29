@@ -95,6 +95,9 @@ export default () => {
     let sessionId = formRef?.current?.getFieldValue('id');
     let transferType = formRef?.current?.getFieldValue('transferType');
 
+    let userInputContent = formRef?.current?.getFieldValue('userInputContent');
+    let aiOutputContent = formRef?.current?.getFieldValue('aiOutputContent');
+
     console.log(sessionId);
 
     window.open(
@@ -106,7 +109,9 @@ export default () => {
         paramsObj.orderType
       }&customerId=${customerId ?? ''}&sessionId=${sessionId ?? ''}&dialogueTurnStart=${
         dialogueTurnStart ?? ''
-      }&dialogueTurnEnd=${dialogueTurnEnd ?? ''}&transferType=${transferType ?? ''}`,
+      }&dialogueTurnEnd=${dialogueTurnEnd ?? ''}&transferType=${
+        transferType ?? ''
+      }&userInputContent=${userInputContent}&aiOutputContent=${aiOutputContent}`,
       '_self',
     );
   };
@@ -127,6 +132,9 @@ export default () => {
     let sessionId = formRef?.current?.getFieldValue('id');
     let transferType = formRef?.current?.getFieldValue('transferType') || '';
 
+    let userInputContent = formRef?.current?.getFieldValue('userInputContent');
+    let aiOutputContent = formRef?.current?.getFieldValue('aiOutputContent');
+
     console.log(sessionId);
 
     window.open(
@@ -138,7 +146,9 @@ export default () => {
         paramsObj.orderType
       }&customerId=${customerId ?? ''}&sessionId=${sessionId ?? ''}&dialogueTurnStart=${
         dialogueTurnStart ?? ''
-      }&dialogueTurnEnd=${dialogueTurnEnd ?? ''}&transferType=${transferType ?? ''}`,
+      }&dialogueTurnEnd=${dialogueTurnEnd ?? ''}&transferType=${
+        transferType ?? ''
+      }&userInputContent=${userInputContent}&aiOutputContent=${aiOutputContent}`,
       '_self',
     );
   };
