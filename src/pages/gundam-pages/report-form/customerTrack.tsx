@@ -40,7 +40,7 @@ const CustomerTrack: React.FC<any> = (props: any) => {
     },
     {
       title: '来电号码',
-      dataIndex: 'mobile',
+      dataIndex: 'mobileNo',
       onCell: (_: any) => ({
         rowSpan: _.span,
       }),
@@ -104,7 +104,7 @@ const CustomerTrack: React.FC<any> = (props: any) => {
                     `${
                       config.basePath
                     }/robot/statistics/customerTrackExport?startTime=${startTime}&endTime=${endTime}&mobileNo=${
-                      formData?.mobile || ''
+                      formData?.mobileNo || ''
                     }&robotId=${info.id || ''}&customerTrack=${formData?.customerTrack || ''}`,
                   );
                 }}
