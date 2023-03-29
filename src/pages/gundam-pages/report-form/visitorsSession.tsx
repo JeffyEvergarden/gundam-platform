@@ -55,6 +55,7 @@ export default () => {
       endTime = yestody.format('YYYY-MM-DD');
     }
     let params = {
+      ...payload,
       robotId: info.id,
       startTime: startTime,
       endTime: endTime,
@@ -341,6 +342,18 @@ export default () => {
         1: { text: '是' },
       },
     },
+    {
+      title: '用户输入内容',
+      dataIndex: 'userInputContent',
+      hideInTable: true,
+      search: true,
+    },
+    {
+      title: '机器人回复内容',
+      dataIndex: 'aiOutputContent',
+      hideInTable: true,
+      search: true,
+    },
   ];
 
   useEffect(() => {
@@ -371,8 +384,10 @@ export default () => {
                 pageSize: 10,
               }}
               search={{
-                span: 4.5,
+                span: 6,
                 labelWidth: 'auto',
+                defaultCollapsed: false,
+                collapseRender: () => null,
               }}
               onChange={tableChange}
               columns={columns}
