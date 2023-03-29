@@ -115,8 +115,8 @@ const CustomerTrack: React.FC<any> = (props: any) => {
           ];
         }}
         search={{
-          labelWidth: 100,
-          span: 8,
+          labelWidth: 'auto',
+          span: 6,
           defaultCollapsed: false,
           collapseRender: () => null,
         }}
