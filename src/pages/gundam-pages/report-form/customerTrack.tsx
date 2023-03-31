@@ -58,16 +58,6 @@ const CustomerTrack: React.FC<any> = (props: any) => {
       title: '操作',
       dataIndex: 'operation',
       search: false,
-      valueEnum: {
-        1: { text: '意图' },
-        2: { text: 'FAQ' },
-        3: { text: '流程' },
-        4: { text: '澄清名单' },
-        5: { text: '黑名单' },
-        6: { text: '模型拒识' },
-        7: { text: '模型澄清' },
-        8: { text: '静默' },
-      },
     },
     {
       title: '操作时间',
