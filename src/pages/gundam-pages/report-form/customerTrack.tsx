@@ -25,7 +25,7 @@ const CustomerTrack: React.FC<any> = (props: any) => {
         return (
           <RangePicker
             ranges={{
-              昨天: [moment().subtract(1, 'day'), moment()],
+              昨天: [moment().subtract(1, 'day'), moment().subtract(1, 'day')],
               今天: [moment(), moment()],
               最近7天: [moment().subtract(6, 'day'), moment()],
               最近一个月: [moment().subtract(1, 'month'), moment()],
