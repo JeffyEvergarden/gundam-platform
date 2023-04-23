@@ -22,7 +22,7 @@ const ActionConfig = (props: any) => {
     title,
     formName: _formName,
     form,
-    maxlength = 150,
+    maxlength = 1000,
     titleType = 1,
     canEdit,
     deep = true,

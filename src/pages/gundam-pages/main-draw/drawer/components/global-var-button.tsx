@@ -8,7 +8,7 @@ import { useModel } from '@/.umi/plugin-model/useModel';
 const { Option } = Select;
 
 const GlobalVarButton: React.FC<any> = (props: any) => {
-  const { value, onChange, style, maxlength = 200, ...res } = props;
+  const { value, onChange, style, maxlength = 1000, ...res } = props;
 
   const modalRef = useRef<any>(null);
 

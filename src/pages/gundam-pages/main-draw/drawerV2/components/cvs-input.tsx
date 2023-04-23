@@ -19,7 +19,7 @@ const CvsInput: React.FC<any> = (props: any) => {
     type = 'input',
     onChange,
     style,
-    maxlength = 200,
+    maxlength = 1000,
     title,
     rows,
     canEdit,
