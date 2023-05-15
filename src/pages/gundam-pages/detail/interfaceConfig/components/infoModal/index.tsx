@@ -1,8 +1,11 @@
 import ProTable from '@ant-design/pro-table';
-import { Button, Divider, Form, Input, Modal, Radio, Select } from 'antd';
-import React, { useImperativeHandle, useState } from 'react';
-import { getInterfaceDetail } from '../../../model/api';
+import { Button, Divider, Form, Input, Modal, Radio, Select, InputNumber } from 'antd';
+import React, { useImperativeHandle, useState, useRef } from 'react';
+import { useModel } from 'umi';
+import FormList from '../formList';
 import style from './style.less';
+import { useInterfaceModel } from '../../model';
+import SubTestModal from './sub-modal';
 
 const { Item: FormItem } = Form;
 const { Option } = Select;
@@ -13,7 +16,13 @@ const extra = {
 };
 
 const InfoModal: React.FC<any> = (props: any) => {
-  const { cref, confirm, loading } = props;
+  const { cref, confirm } = props;
+
+  const { info } = useModel('gundam' as any, (model: any) => ({
+    info: model.info,
+  }));
+
+  const testModalRef = useRef<any>({});
 
   const [form] = Form.useForm();
 
@@ -25,56 +34,44 @@ const InfoModal: React.FC<any> = (props: any) => {
 
   const [originInfo, setOriginInfo] = useState<any>({});
 
-  const [reqList, setReqList] = useState<any>([]);
-  const [resList, setResList] = useState<any>([]);
-
-  const columns: any = [
-    {
-      title: '参数名称',
-      dataIndex: 'paramName',
-      search: false,
-    },
-    {
-      title: '参数ID',
-      dataIndex: 'paramKey',
-      search: false,
-    },
-  ];
+  const { postAddInterface, postSaveInterface, btLoading, getInterfaceDetail } =
+    useInterfaceModel();
 
   const submit = async () => {
     const values = await form.validateFields();
     console.log(values);
     let obj: any = {
-      _originInfo: originInfo,
-      _openType: openType,
-      form: {
-        ...values,
-      },
+      ...values,
     };
-    // setVisible(false);
-    confirm?.(obj);
+    let res: any = null;
+    if (openType === 'new') {
+      res = await postAddInterface(obj);
+    } else {
+      res = await postSaveInterface(obj);
+    }
+    if (res) {
+      setVisible(false);
+    }
     return obj;
   };
 
-  const getDetail = async (row: any) => {
+  const getInfoDetail = async (row: any) => {
     let params = {
+      robotId: info.id,
+      id: row.id,
       interfaceId: row.id,
-      paramType: null,
     };
-    await getInterfaceDetail(params).then((res) => {
-      console.log(res);
-      setReqList(
-        res?.data?.filter((item: any) => {
-          return item?.paramType == 0;
-        }),
-      );
-      setResList(
-        res?.data?.filter((item: any) => {
-          return item?.paramType == 1;
-        }),
-      );
-      form.setFieldsValue({ ...res?.data?.[0], ...row });
-    });
+    let res = await getInterfaceDetail(params);
+    // console.log(res);
+    if (res) {
+      form.setFieldsValue({ ...res });
+    }
+    return res;
+  };
+
+  const test = async () => {
+    const values = await form.validateFields();
+    testModalRef.current.open?.(values);
   };
 
   useImperativeHandle(cref, () => ({
@@ -85,8 +82,7 @@ const InfoModal: React.FC<any> = (props: any) => {
         setOriginInfo(row);
         form.resetFields();
       } else {
-        console.log(row);
-        getDetail(row);
+        getInfoDetail(row);
         setOpenType('edit');
         setOriginInfo(row);
       }
@@ -99,83 +95,177 @@ const InfoModal: React.FC<any> = (props: any) => {
   }));
 
   return (
-    <Modal
-      width={650}
-      title={(openType === 'new' ? '添加新' : '查看') + '接口配置'}
-      visible={visible}
-      onCancel={() => setVisible(false)}
-      // okText={null}
-      // onOk={submit}
-      confirmLoading={loading}
-      footer={[
-        <Button key="back" onClick={() => setVisible(false)}>
-          取消
-        </Button>,
-      ]}
-    >
-      <div className={style['modal_bg']} style={{ paddingLeft: '55px' }}>
-        <Form form={form} style={{ width: '480px' }}>
-          {/* 接口名称 */}
-          <FormItem
-            rules={[
-              { required: true, message: '请填写接口名称' },
-              {
-                pattern: /^[A-Za-z0-9_\-\u4e00-\u9fa5]+$/g,
-                message: '请输入汉字、字母、下划线、数字、横杠',
-              },
-            ]}
-            name="interfaceName"
-            label="接口名称"
-            style={{ width: '480px' }}
-          >
-            <Input placeholder="请填写接口名称" {...extra} maxLength={150} readOnly />
-          </FormItem>
+    <>
+      <Modal
+        width={1000}
+        title={(openType === 'new' ? '添加新' : '查看') + '接口配置'}
+        visible={visible}
+        onCancel={() => setVisible(false)}
+        // okText={null}
+        // onOk={submit}
+        // confirmLoading={loading}
+        footer={
+          <div className={style['zy-row']}>
+            <Button onClick={test}>接口测试</Button>
 
-          <FormItem
-            rules={[{ required: true, message: '请填写URL' }]}
-            name="interfaceUrl"
-            label="URL"
-            style={{ width: '480px' }}
-          >
-            <Input placeholder="请填写URL" {...extra} maxLength={200} readOnly />
-          </FormItem>
-          <FormItem
-            rules={[{ required: true, message: '请选择接口类型' }]}
-            name="interfaceType"
-            label="接口类型"
-            style={{ width: '480px' }}
-          >
-            <Radio.Group defaultValue={0}>
-              <Radio value={'post'}>post</Radio>
-              <Radio value={'get'}>get</Radio>
-            </Radio.Group>
-          </FormItem>
+            <span style={{ flex: 1 }}></span>
 
-          <Divider plain style={{ margin: '5px 0' }}>
-            入参管理
-          </Divider>
+            <Button key="back" onClick={() => setVisible(false)}>
+              取消
+            </Button>
 
-          <ProTable
-            dataSource={reqList}
-            columns={columns}
-            search={false}
-            toolBarRender={false}
-            pagination={false}
-            rowKey={(record: any) => record.id}
-          ></ProTable>
+            <Button
+              type="primary"
+              loading={btLoading}
+              onClick={() => {
+                submit();
+              }}
+            >
+              确定
+            </Button>
+          </div>
+        }
+      >
+        <div className={style['modal_bg']} style={{ paddingLeft: '12px' }}>
+          <Form form={form} style={{ width: '640px' }}>
+            {/* 接口名称 */}
+            <FormItem
+              rules={[
+                { required: true, message: '请填写接口名称' },
+                {
+                  pattern: /^[A-Za-z0-9_\-\u4e00-\u9fa5]+$/g,
+                  message: '请输入汉字、字母、下划线、数字、横杠',
+                },
+              ]}
+              name="interfaceName"
+              label="接口名称"
+              style={{ width: '580px' }}
+            >
+              <Input placeholder="请填写接口名称" {...extra} maxLength={50} />
+            </FormItem>
 
-          <Divider plain>出参管理</Divider>
-          <ProTable
-            dataSource={resList}
-            columns={columns}
-            search={false}
-            toolBarRender={false}
-            pagination={false}
-            rowKey={(record: any) => record.id}
-          ></ProTable>
-        </Form>
-      </div>
-    </Modal>
+            <FormItem
+              rules={[{ required: true, message: '请填写接口描述' }]}
+              name="interfaceDesc"
+              label="接口名称"
+              style={{ width: '580px' }}
+            >
+              <Input.TextArea placeholder="请填写接口名称" {...extra} rows={4} maxLength={200} />
+            </FormItem>
+
+            <FormItem
+              rules={[{ required: true, message: '请填写URL' }]}
+              name="interfaceUrl"
+              label="URL"
+              style={{ width: '580px' }}
+            >
+              <Input placeholder="请填写URL" {...extra} maxLength={200} />
+            </FormItem>
+
+            <FormItem
+              rules={[{ required: true, message: '请选择接口类型' }]}
+              name="interfaceType"
+              label="接口类型"
+              style={{ width: '580px' }}
+            >
+              <Radio.Group>
+                <Radio value={'post'}>post</Radio>
+                <Radio value={'get'}>get</Radio>
+              </Radio.Group>
+            </FormItem>
+
+            <FormItem
+              rules={[{ required: true, message: '请输入超时时间' }]}
+              name="readTimeOut"
+              label="超时时间"
+            >
+              <InputNumber
+                placeholder="请输入超时时间"
+                {...extra}
+                min={1}
+                max={99}
+                // defaultValue={3}
+                style={{ width: '180px' }}
+              />
+            </FormItem>
+
+            <FormItem rules={[]} name="requestHeader" label="请求头" style={{ width: '580px' }}>
+              <Input.TextArea
+                placeholder="请填写请求头(json格式)"
+                {...extra}
+                rows={4}
+                maxLength={200}
+                showCount
+              />
+            </FormItem>
+
+            <FormList form={form} />
+
+            {/* 请求参数 */}
+
+            <FormItem rules={[]} name="requestBody" label="请求体" style={{ width: '580px' }}>
+              <Input.TextArea
+                placeholder="请填写请求体(json格式)"
+                {...extra}
+                rows={4}
+                maxLength={1000}
+                showCount
+              />
+            </FormItem>
+
+            <div className={style['zy-row']} style={{ lineHeight: '32px' }}>
+              <div
+                className="ant-col ant-form-item-label"
+                style={{ width: '90px', marginRight: '10px', flexShrink: 0 }}
+              >
+                <label className="ant-form-item-required" title="响应参数">
+                  响应参数
+                </label>
+              </div>
+              <span className={style['mr8']} style={{ width: '180px' }}>
+                参数名称
+              </span>
+              <span className={style['mr8']} style={{ width: '180px' }}>
+                参数ID
+              </span>
+              <span className={style['mr8']} style={{ width: '220px' }}>
+                响应参数报文
+              </span>
+            </div>
+
+            <div className={style['zy-row']} style={{ paddingLeft: '96px' }}>
+              <FormItem
+                className={style['mr8']}
+                rules={[{ required: true, message: '请输入参数名称' }]}
+                name={['responseParam', 'paramName']}
+              >
+                <Input placeholder="请填写参数名称" maxLength={50} style={{ width: '180px' }} />
+              </FormItem>
+              <FormItem
+                className={style['mr8']}
+                rules={[{ required: true, message: '请输入参数ID' }]}
+                name={['responseParam', 'paramKey']}
+              >
+                <Input placeholder="请填写参数ID" maxLength={50} style={{ width: '180px' }} />
+              </FormItem>
+              <FormItem
+                className={style['mr8']}
+                rules={[{ required: true, message: '请输入响应参数报文' }]}
+                name={['responseParam', 'paramMapKey']}
+              >
+                <Input
+                  placeholder="请填写响应参数报文"
+                  maxLength={200}
+                  style={{ width: '220px' }}
+                />
+              </FormItem>
+            </div>
+          </Form>
+        </div>
+      </Modal>
+
+      <SubTestModal cref={testModalRef}></SubTestModal>
+    </>
   );
 };
 

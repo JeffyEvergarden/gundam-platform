@@ -49,7 +49,7 @@ export const useConfigModel = () => {
     if (res.resultCode == successCode) {
       message.success(res.resultDesc || '成功');
     } else {
-      message.info(res.resultDesc || '未知错误');
+      message.warning(res.resultDesc || '未知错误');
     }
     return res;
   };
