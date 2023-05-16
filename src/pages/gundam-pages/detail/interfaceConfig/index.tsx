@@ -87,6 +87,7 @@ const InterfaceConfig: React.FC = (props: any) => {
       title: '操作',
       dataIndex: 'op',
       search: false,
+      fixed: 'right',
       width: 200,
       render: (val: any, row: any, index: number) => {
         return (
