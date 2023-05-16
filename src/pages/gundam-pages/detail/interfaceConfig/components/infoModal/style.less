@@ -5,6 +5,8 @@
       margin-right: 10px;
     }
   }
+
+  .scrollbar(2px, #1890ff);
 }
 
 .icon-box {
@@ -25,4 +27,48 @@
   max-width: 178px;
   height: 120px;
   text-align: center;
+}
+
+.zy-row {
+  display: flex;
+}
+
+.mr8 {
+  flex-shrink: 0;
+  margin-right: 8px;
+}
+
+.scrollbar(@width, @color: #f5f5f5) {
+  ::-webkit-scrollbar {
+    width: @width * 4;
+    background: transparent;
+    visibility: hidden;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    width: @width * 4;
+    background: @color;
+    border-radius: 30px;
+    // visibility: hidden;
+  }
+
+  :hover {
+    ::-webkit-scrollbar {
+      visibility: visible;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      visibility: visible;
+    }
+  }
+}
+
+.result {
+  height: 270px;
+  padding: 8px;
+  overflow: auto;
+  line-height: 24px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  background-color: #f3f3f3;
 }

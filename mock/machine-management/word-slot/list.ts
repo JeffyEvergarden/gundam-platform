@@ -379,7 +379,6 @@ export default {
   'POST /aichat/robot/slot/slotDelete': deleteWordSlot, // 删除词槽
   'GET /aichat/robot/entity/list': getzzReal, // 获取实体列表
   'GET /aichat/robot/interface/list': interFace, // 获取接口列表
-  'GET /aichat/robot/interface/param': paramList, // 获取入参值列表
   'GET /aichat/robot/config/list': configList, // 获取变量列表  detail里有
   'POST /aichat/robot/slot/slotInfo': slotInfoList, // 获取入参值-下级列表
 };

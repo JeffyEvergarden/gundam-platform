@@ -375,7 +375,6 @@ const getRejectConfig = (req: any, res: any) => {
 
 export default {
   'GET /aichat/robot/interface/listPage': getInterface, // 接口配置分页列表
-  'GET /aichat/robot/interface/param': getInterfaceDetail, // 接口配置详情
 
   'GET /aichat/robot/config/listPage': getConfig, // 全局变量分页
   'GET /aichat/robot/config/list': getConfig, // 全局变量所有

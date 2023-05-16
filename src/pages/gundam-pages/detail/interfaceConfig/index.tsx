@@ -2,19 +2,24 @@ import Tip from '@/components/Tip';
 import ProTable from '@ant-design/pro-table';
 import React, { useRef } from 'react';
 import { useModel } from 'umi';
+import { Button, Popconfirm } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import { useInterfaceModel } from '../model';
+
+import { useInterfaceModel as useSubInterfaceModel } from './model';
 import InfoModal from './components/infoModal';
 import style from './style.less';
 
 const InterfaceConfig: React.FC = (props: any) => {
   const { getTableList, configLoading } = useInterfaceModel();
 
+  const { btLoading, deleteInterface } = useSubInterfaceModel();
+
   const interfaceTableRef = useRef<any>({});
   const interfaceModalRef = useRef<any>({});
 
-  const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
+  const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
-    setInfo: model.setInfo,
   }));
 
   const columns: any[] = [
@@ -78,6 +83,45 @@ const InterfaceConfig: React.FC = (props: any) => {
       search: false,
       width: 200,
     },
+    {
+      title: '操作',
+      dataIndex: 'op',
+      search: false,
+      width: 200,
+      render: (val: any, row: any, index: number) => {
+        return (
+          <>
+            <div style={{ display: 'flex' }}>
+              <Button
+                type="link"
+                onClick={() => {
+                  interfaceModalRef.current?.open?.(row);
+                }}
+              >
+                编辑
+              </Button>
+
+              <Popconfirm
+                title="删除将不可恢复，确认删除？"
+                okText="确定"
+                cancelText="取消"
+                onConfirm={async () => {
+                  if (btLoading) {
+                    return;
+                  }
+                  let res = await deleteInterface({ id: row.id, robotId: info.id });
+                  res && interfaceTableRef.current.reload();
+                }}
+              >
+                <Button type="link" danger>
+                  删除
+                </Button>
+              </Popconfirm>
+            </div>
+          </>
+        );
+      },
+    },
   ];
 
   return (
@@ -131,18 +175,18 @@ const InterfaceConfig: React.FC = (props: any) => {
             />
           </>
         }
-        // toolBarRender={() => [
-        //   <Button
-        //     key="button"
-        //     icon={<PlusOutlined />}
-        //     type="primary"
-        //     onClick={() => {
-        //       interfaceModalRef.current?.open?.();
-        //     }}
-        //   >
-        //     新建
-        //   </Button>,
-        // ]}
+        toolBarRender={() => [
+          <Button
+            key="button"
+            icon={<PlusOutlined />}
+            type="primary"
+            onClick={() => {
+              interfaceModalRef.current?.open?.();
+            }}
+          >
+            新建
+          </Button>,
+        ]}
       />
 
       <InfoModal
