@@ -56,3 +56,31 @@ export async function searchCustomerTrackList(params?: Record<string, any>) {
     params,
   });
 }
+
+/** 访客问题统计**/
+export async function searchvisitorsQuestionList(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/statistics/access`, {
+    method: 'POST',
+    data,
+  });
+}
+
+/** 访客问题统计 导出样本**/
+export async function _visitorsQuestionSampleExport(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/statistics/accessSessionExport`, {
+    method: 'POST',
+    data,
+    responseType: 'blob',
+    parseResponse: false,
+  });
+}
+
+/** 访客问题统计 导出报表**/
+export async function _visitorsQuestionExport(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/statistics/accessExport`, {
+    method: 'POST',
+    data,
+    responseType: 'blob',
+    parseResponse: false,
+  });
+}

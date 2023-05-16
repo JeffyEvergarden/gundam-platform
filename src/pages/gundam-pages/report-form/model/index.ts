@@ -8,10 +8,14 @@ import {
   faqAndClareList,
   searchAssociationList,
   searchCustomerTrackList,
+  searchvisitorsQuestionList,
+  _visitorsQuestionSampleExport,
+  _visitorsQuestionExport,
 } from './api';
 
 export const useReportForm = () => {
   const [tableLoading, setTableLoading] = useState<boolean>(false);
+  const [exportLoading, setExportLoading] = useState<boolean>(false);
 
   const getVisitorList = async (params?: any) => {
     setTableLoading(true);
@@ -85,6 +89,32 @@ export const useReportForm = () => {
     });
   };
 
+  const searchvisitorsQuestion = async (params: any) => {
+    setTableLoading(true);
+    let res: any = await searchvisitorsQuestionList(params);
+    setTableLoading(false);
+    if (res.resultCode == successCode) {
+      let arr = res?.data?.list;
+      return { data: arr, total: res?.data?.totalPage };
+    } else {
+      return { data: [], total: 0 };
+    }
+  };
+
+  const visitorsQuestionSampleExport = async (params: any) => {
+    setExportLoading(true);
+    let res: any = await _visitorsQuestionSampleExport(params);
+    setExportLoading(false);
+    return res;
+  };
+
+  const visitorsQuestionExport = async (params: any) => {
+    setExportLoading(true);
+    let res = await _visitorsQuestionExport(params);
+    setExportLoading(false);
+    return res;
+  };
+
   return {
     getVisitorList,
     getDialogue,
@@ -93,6 +123,10 @@ export const useReportForm = () => {
     getFaqAndClareList,
     searchAssociation,
     searchCustomerTrack,
+    searchvisitorsQuestion,
+    visitorsQuestionSampleExport,
+    visitorsQuestionExport,
     tableLoading,
+    exportLoading,
   };
 };

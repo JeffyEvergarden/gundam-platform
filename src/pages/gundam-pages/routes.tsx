@@ -230,6 +230,12 @@ export default [
           return !(info?.robotType === 1); // 呼入 语音显示
         },
       },
+      {
+        icon: <CrownOutlined />,
+        path: '/gundamPages/reportForm/visitorsQuestion',
+        name: '访问问题统计',
+        code: 'robot_mg-report-visitors_question-view',
+      },
     ],
   },
   {

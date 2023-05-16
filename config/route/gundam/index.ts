@@ -278,6 +278,13 @@ export default [
             code: 'robot_mg-report-search-customerTrack-view',
             access: 'routerAuth',
           },
+          {
+            path: '/gundamPages/reportForm/visitorsQuestion',
+            component: './gundam-pages/report-form/visitorsQuestion',
+            name: '访问问题统计',
+            code: 'robot_mg-report-visitors_question-view',
+            access: 'routerAuth',
+          },
         ],
       },
       {

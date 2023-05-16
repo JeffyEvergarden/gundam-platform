@@ -66,6 +66,16 @@ export default [
         value: 'robot_mg-report-search-customerTrack-export_bt',
         code: '001-009-006-001',
       },
+      {
+        label: '访问问题统计',
+        value: 'robot_mg-report-visitors_question-view',
+        code: '001-009-007',
+      },
+      {
+        label: '访问问题统计-导出',
+        value: 'robot_mg-report-visitors_question-view-export_bt',
+        code: '001-009-007-001',
+      },
     ],
   },
 ];
