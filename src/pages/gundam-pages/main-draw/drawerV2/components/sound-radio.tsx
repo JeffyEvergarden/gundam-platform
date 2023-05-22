@@ -24,7 +24,7 @@ const SoundRadio: React.FC<any> = (props: any) => {
       // item.functionKeyStart = undefined;
       item.functionKeyWell = undefined;
       item.buttonInputSize = undefined;
-      item.repeatHearKey = -1; //语音不给选重听
+      item.repeatHearKey = '-1'; //语音不给选重听
     }
 
     if (item.userInputType == '01') {

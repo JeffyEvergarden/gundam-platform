@@ -22,6 +22,7 @@ const CustomerTrack: React.FC<any> = (props: any) => {
     info: model.info,
   }));
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
+  const [paramsObj, setParamsObj] = useState<any>({ orderCode: '', orderType: '' });
 
   let columns: any = [
     {
@@ -65,6 +66,7 @@ const CustomerTrack: React.FC<any> = (props: any) => {
       title: '被问总次数',
       dataIndex: 'accessNum',
       search: false,
+      sorter: true,
     },
     {
       title: '微信占比',
@@ -146,6 +148,21 @@ const CustomerTrack: React.FC<any> = (props: any) => {
     URL.revokeObjectURL(url);
   };
 
+  const tableChange = (pagination: any, filters: any, sorter: any) => {
+    let temp = { orderCode: '', orderType: '' };
+    if (sorter.columnKey === 'accessNum' && sorter.order === 'ascend') {
+      temp.orderCode = '1';
+      temp.orderType = '1';
+    }
+    if (sorter.columnKey === 'accessNum' && sorter.order === 'descend') {
+      temp.orderCode = '1';
+      temp.orderType = '2';
+    }
+    let tempParamsObj = JSON.parse(JSON.stringify(paramsObj));
+    let tempObj = Object.assign(tempParamsObj, temp);
+    setParamsObj(tempObj);
+  };
+
   return (
     <div className={`${style['machine-page']} list-page`}>
       <ProTable
@@ -154,6 +171,8 @@ const CustomerTrack: React.FC<any> = (props: any) => {
           showSizeChanger: true,
           defaultPageSize: 10,
         }}
+        params={paramsObj}
+        onChange={tableChange}
         rowSelection={rowSelection}
         bordered
         formRef={formRef}
@@ -234,8 +253,11 @@ const CustomerTrack: React.FC<any> = (props: any) => {
         rowKey="textId"
         loading={tableLoading}
         request={async (params = {}, sort, filter) => {
-          params.startTime = moment(params?.callTime?.[0]).format('YYYY-MM-DD') || undefined;
-          params.endTime = moment(params?.callTime?.[1]).format('YYYY-MM-DD') || undefined;
+          if (params?.callTime?.length) {
+            params.startTime = moment(params?.callTime?.[0]).format('YYYY-MM-DD') || undefined;
+            params.endTime = moment(params?.callTime?.[1]).format('YYYY-MM-DD') || undefined;
+          }
+
           return searchvisitorsQuestion({ page: params?.current, ...params, robotId: info.id });
         }}
       />
