@@ -1,4 +1,5 @@
 import config from '@/config';
+import SoundVarModal from '@/pages/gundam-pages/main-draw/drawerV2/components/sound-var-modal';
 import Condition from '@/pages/gundam-pages/main-draw/flow/common/Condition';
 import ProList from '@ant-design/pro-list';
 import { Button, Checkbox, Divider, Input, message, Pagination, Select, Space } from 'antd';
@@ -43,6 +44,7 @@ const AwaitList: React.FC<any> = (props: any) => {
   const historyRef = useRef<any>(null);
   const answerViewRef = useRef<any>(null);
   const ReasonModalRef = useRef<any>(null);
+  const auditionRef = useRef<any>(null);
 
   //获取列表
   const CurrentPage = async (obj?: any) => {
@@ -316,7 +318,19 @@ const AwaitList: React.FC<any> = (props: any) => {
                         <div className={style['reason']}>备注：{item.reason}</div>
                         <Condition r-if={pageType == 'reviewed'}>
                           <div className={style['btnGroup']}>
+                            <Condition r-if={config.robotTypeMap[info?.robotType] === '语音'}>
+                              <Button
+                                style={{ marginLeft: '16px' }}
+                                type="primary"
+                                onClick={() => {
+                                  auditionRef?.current?.open(item);
+                                }}
+                              >
+                                试听
+                              </Button>
+                            </Condition>
                             <Button
+                              style={{ marginLeft: '16px' }}
                               onClick={() => {
                                 historyRef?.current?.open(item);
                               }}
@@ -425,6 +439,7 @@ const AwaitList: React.FC<any> = (props: any) => {
       <History cref={historyRef} />
       <AnswerView cref={answerViewRef} />
       <ReasonModal cref={ReasonModalRef} refresh={refreshList} />
+      <SoundVarModal cref={auditionRef}></SoundVarModal>
     </div>
   );
 };

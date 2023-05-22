@@ -336,7 +336,7 @@ const AudioPlay: React.FC<dataProp> = (props) => {
     const click = (e: any) => {
       const p = progressRef.current;
       // 处于拖动状态
-      if (e.path.includes(p) || voiceDragFlag) {
+      if (e?.path?.includes(p) || voiceDragFlag) {
         //点击事件包含该元素
         return;
       } else {
