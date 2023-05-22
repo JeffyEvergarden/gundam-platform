@@ -227,7 +227,7 @@ const RequestConfig = (props: any) => {
                       {/* 系统参数 */}
                       <FormItem
                         name={[field.name, 'systemParams']}
-                        rules={[{ required: true, message: '请选择系统参数' }]}
+                        rules={[{ required: !isSysParamsDisabled, message: '请选择系统参数' }]}
                         style={{ width: _width + 'px' }}
                       >
                         <Select
