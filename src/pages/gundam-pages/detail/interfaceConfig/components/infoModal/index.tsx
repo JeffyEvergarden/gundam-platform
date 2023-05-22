@@ -1,5 +1,5 @@
 import ProTable from '@ant-design/pro-table';
-import { Button, Divider, Form, Input, Modal, Radio, Select, InputNumber } from 'antd';
+import { Button, Divider, Form, Input, Modal, Radio, Select, InputNumber, Space } from 'antd';
 import React, { useImperativeHandle, useState, useRef } from 'react';
 import { useModel } from 'umi';
 import FormList from '../formList';
@@ -42,6 +42,7 @@ const InfoModal: React.FC<any> = (props: any) => {
     console.log(values);
     let obj: any = {
       ...values,
+      id: originInfo?.id,
     };
     let res: any = null;
     if (openType === 'new') {
@@ -88,11 +89,15 @@ const InfoModal: React.FC<any> = (props: any) => {
       }
       setVisible(true);
     },
-    close: () => {
-      setVisible(false);
-    },
+    close: onclose,
     submit,
   }));
+
+  const onclose = () => {
+    setVisible(false);
+
+    form.resetFields();
+  };
 
   return (
     <>
@@ -100,7 +105,7 @@ const InfoModal: React.FC<any> = (props: any) => {
         width={1000}
         title={(openType === 'new' ? '添加新' : '查看') + '接口配置'}
         visible={visible}
-        onCancel={() => setVisible(false)}
+        onCancel={onclose}
         // okText={null}
         // onOk={submit}
         // confirmLoading={loading}
@@ -110,7 +115,7 @@ const InfoModal: React.FC<any> = (props: any) => {
 
             <span style={{ flex: 1 }}></span>
 
-            <Button key="back" onClick={() => setVisible(false)}>
+            <Button key="back" onClick={onclose}>
               取消
             </Button>
 
@@ -174,20 +179,23 @@ const InfoModal: React.FC<any> = (props: any) => {
               </Radio.Group>
             </FormItem>
 
-            <FormItem
-              rules={[{ required: true, message: '请输入超时时间' }]}
-              name="readTimeOut"
-              label="超时时间"
-            >
-              <InputNumber
-                placeholder="请输入超时时间"
-                {...extra}
-                min={1}
-                max={99}
-                // defaultValue={3}
-                style={{ width: '180px' }}
-              />
-            </FormItem>
+            <Space align="baseline">
+              <FormItem
+                rules={[{ required: true, message: '请输入超时时间' }]}
+                name="readTimeOut"
+                label="超时时间"
+              >
+                <InputNumber
+                  placeholder="请输入超时时间"
+                  {...extra}
+                  min={1}
+                  max={99}
+                  // defaultValue={3}
+                  style={{ width: '180px' }}
+                />
+              </FormItem>
+              <span style={{ marginLeft: '8px' }}>秒</span>
+            </Space>
 
             <FormItem rules={[]} name="requestHeader" label="请求头" style={{ width: '580px' }}>
               <Input.TextArea
