@@ -135,13 +135,7 @@ const InfoModal: React.FC<any> = (props: any) => {
           <Form form={form} style={{ width: '640px' }}>
             {/* 接口名称 */}
             <FormItem
-              rules={[
-                { required: true, message: '请填写接口名称' },
-                {
-                  pattern: /^[A-Za-z0-9_\-\u4e00-\u9fa5]+$/g,
-                  message: '请输入汉字、字母、下划线、数字、横杠',
-                },
-              ]}
+              rules={[{ required: true, message: '请填写接口名称' }]}
               name="interfaceName"
               label="接口名称"
               style={{ width: '580px' }}
