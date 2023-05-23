@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useImperativeHandle } from 'react';
 import { message, Button, Tooltip } from 'antd';
 import { Editor, Toolbar } from '@wangeditor/editor-for-react';
 import { IDomEditor, IEditorConfig, SlateTransforms } from '@wangeditor/editor';
@@ -41,7 +41,7 @@ const reg = /^(\<p\>\<br\>\<\/p\>)+/;
 const regEnd = /^(\<p\>\<br\>\<\/p\>)+$/;
 
 const EditBoard: React.FC<any> = (prop: any) => {
-  const { value, onChange, onBlur } = prop;
+  const { cref, value, onChange, onBlur } = prop;
 
   const [editor, setEditor] = useState<IDomEditor | null>(null); // 存储 editor 实例
 
@@ -49,7 +49,7 @@ const EditBoard: React.FC<any> = (prop: any) => {
   // onchange事件 内容变动
   const onChangeContent = (editor: any) => {
     let content = editor.getHtml();
-    // console.log('content:', content);
+    console.log('content:', content);
     // if (regEnd.test(content)) {
     //   onChange(undefined);
     //   return;
@@ -60,7 +60,7 @@ const EditBoard: React.FC<any> = (prop: any) => {
       }
     }
     time.current++;
-    onChange(content);
+    onChange?.(content);
   };
 
   const bt = useRef<any>({});
@@ -231,6 +231,13 @@ const EditBoard: React.FC<any> = (prop: any) => {
       setEditor(null);
     };
   }, [editor]);
+
+  useImperativeHandle(cref, () => ({
+    insertInEditor: (text: any) => {
+      editor?.restoreSelection();
+      editor?.insertText(text);
+    },
+  }));
 
   return (
     <div style={{ border: '1px solid #D9D9D9' }}>

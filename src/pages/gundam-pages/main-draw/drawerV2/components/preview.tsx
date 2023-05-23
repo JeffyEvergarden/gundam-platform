@@ -47,7 +47,7 @@ const WordSlotModal: React.FC<any> = (props: any) => {
       <div className={style['div-content']}>
         {textArr?.map((item: any, index: any) => {
           if (typeof item == 'string') {
-            return item;
+            return <div dangerouslySetInnerHTML={{ __html: item }} />;
           } else {
             if (item.type == '变量') {
               if (item.value?.indexOf('[') == '-1') {

@@ -31,6 +31,8 @@ const ConversationConfig = (props: any) => {
   const auditionRef = useRef<any>();
   const sType: any = Form.useWatch(formName, form);
 
+  const regEnd = /^(\<p\>\<br\>\<\/p\>)+$/;
+
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
@@ -194,26 +196,70 @@ const ConversationConfig = (props: any) => {
                       </div>
                       <div style={{ flex: '1 1 auto' }}>
                         {/* 类型 */}
-                        <Form.Item
-                          name={[field.name, 'actionText']}
-                          fieldKey={[field.fieldKey, 'actionText']}
-                          rules={[{ required: true, message: `请输入${placeholder}` }]}
-                        >
-                          <CvsInput
-                            placeholder={`请输入${placeholder}`}
-                            title={`${placeholder}：`}
-                            type="textarea"
-                            style={{ width: '100%' }}
-                            autoComplete="off"
-                            required
-                            sound={sound}
-                            showBreak={
-                              deep
-                                ? sType?.[0]?.['conversationList']?.[index]?.soundType == 1
-                                : sType?.[index]?.soundType == 1
-                            }
-                          />
-                        </Form.Item>
+
+                        <Condition r-if={config.robotTypeMap[info?.robotType] === '语音'}>
+                          <Form.Item
+                            name={[field.name, 'actionText']}
+                            fieldKey={[field.fieldKey, 'actionText']}
+                            rules={[{ required: true, message: `请输入${placeholder}` }]}
+                          >
+                            <CvsInput
+                              placeholder={`请输入${placeholder}`}
+                              title={`${placeholder}：`}
+                              type="textarea"
+                              style={{ width: '100%' }}
+                              autoComplete="off"
+                              required
+                              sound={sound}
+                              showBreak={
+                                deep
+                                  ? sType?.[0]?.['conversationList']?.[index]?.soundType == 1
+                                  : sType?.[index]?.soundType == 1
+                              }
+                            />
+                          </Form.Item>
+                        </Condition>
+                        <Condition r-if={config.robotTypeMap[info?.robotType] === '文本'}>
+                          <Form.Item
+                            validateTrigger="onBlur"
+                            name={[field.name, 'actionText']}
+                            fieldKey={[field.fieldKey, 'actionText']}
+                            rules={[
+                              {
+                                required: true,
+                                message: `请输入${placeholder}`,
+                                validateTrigger: 'onBlur',
+                              },
+                              () => ({
+                                async validator(_, value) {
+                                  if (value === undefined) {
+                                    return;
+                                  }
+                                  if (regEnd.test(value)) {
+                                    return Promise.reject(new Error('请填写答案'));
+                                  }
+                                  return Promise.resolve();
+                                },
+                              }),
+                            ]}
+                          >
+                            <CvsInput
+                              placeholder={`请输入${placeholder}`}
+                              title={`${placeholder}：`}
+                              type="EditBoard"
+                              style={{ width: '100%' }}
+                              autoComplete="off"
+                              required
+                              sound={sound}
+                              maxlength={2000}
+                              showBreak={
+                                deep
+                                  ? sType?.[0]?.['conversationList']?.[index]?.soundType == 1
+                                  : sType?.[index]?.soundType == 1
+                              }
+                            />
+                          </Form.Item>
+                        </Condition>
                         <Condition r-if={config.robotTypeMap[info?.robotType] === '语音'}>
                           <Condition r-if={formName == 'clearList'}>
                             <SoundRadio

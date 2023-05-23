@@ -1,6 +1,7 @@
 import Condition from '@/components/Condition';
 import Tip from '@/components/Tip';
 import config from '@/config';
+import EditBoard from '@/pages/gundam-pages/FAQ/question-board';
 import { Button, Input, message, Select } from 'antd';
 import { useRef, useState } from 'react';
 import { useModel } from 'umi';
@@ -16,6 +17,7 @@ const { TextArea } = Input;
 const CvsInput: React.FC<any> = (props: any) => {
   const {
     value,
+    onBlur,
     type = 'input',
     onChange,
     style,
@@ -39,6 +41,7 @@ const CvsInput: React.FC<any> = (props: any) => {
 
   const modalRef2 = useRef<any>(null);
   const modalRef3 = useRef<any>(null);
+  const editorRef = useRef<any>(null);
 
   const [startPos, setStartPos] = useState<number>(-1);
 
@@ -55,23 +58,23 @@ const CvsInput: React.FC<any> = (props: any) => {
     onChange(e.target.value);
   };
 
-  const confirm = (val: any, type: any = '变量') => {
+  const confirm = (val: any, intype: any = '变量') => {
     let target = '';
     let tmp: any = value || '';
 
-    if (type == '间隔') {
+    if (intype == '间隔') {
       target = `<break time="${val}ms" />`;
     } else {
       val.forEach((item: any) => {
-        if (type === '变量') {
+        if (intype === '变量') {
           target += item?.name ? `\$\{${item.name}\}` : '';
-        } else if (type === '词槽') {
+        } else if (intype === '词槽') {
           target += item?.name ? `#\{${item.name}\}` : '';
         }
       });
     }
 
-    if (startPos > -1) {
+    if (startPos > -1 || type === 'EditBoard') {
       let pre = tmp.slice(0, startPos);
       let last = tmp.slice(startPos);
       tmp = pre + target + last;
@@ -85,7 +88,14 @@ const CvsInput: React.FC<any> = (props: any) => {
     if (startPos != -1) {
       setStartPos(startPos + target?.length);
     }
-    onChange(tmp);
+    if (type === 'EditBoard') {
+      console.log(target);
+      if (tmp.length <= maxlength) {
+        editorRef?.current?.insertInEditor(target);
+      }
+    } else {
+      onChange(tmp);
+    }
   };
 
   const blurEvent = (e: any) => {
@@ -170,6 +180,12 @@ const CvsInput: React.FC<any> = (props: any) => {
           disabled={canEdit}
           {...res}
         />
+      </Condition>
+
+      <Condition r-if={type === 'EditBoard'}>
+        <div>
+          <EditBoard cref={editorRef} value={value} onBlur={onBlur} onChange={onChange} />
+        </div>
       </Condition>
 
       <GlobalVarModal

@@ -81,7 +81,7 @@ const HightformTemplate: any = (props: any) => {
 
   useEffect(() => {
     let res = form.getFieldsValue();
-    console.log(Form);
+    console.log(res);
 
     if (res[name].configType == 1) {
       res[name] = nodeConfig?.highConfig[name];
