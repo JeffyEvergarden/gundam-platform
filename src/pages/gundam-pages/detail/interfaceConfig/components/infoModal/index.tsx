@@ -146,10 +146,10 @@ const InfoModal: React.FC<any> = (props: any) => {
             <FormItem
               rules={[{ required: true, message: '请填写接口描述' }]}
               name="interfaceDesc"
-              label="接口名称"
+              label="接口描述"
               style={{ width: '580px' }}
             >
-              <Input.TextArea placeholder="请填写接口名称" {...extra} rows={4} maxLength={200} />
+              <Input.TextArea placeholder="请填写接口描述" {...extra} rows={4} maxLength={200} />
             </FormItem>
 
             <FormItem
