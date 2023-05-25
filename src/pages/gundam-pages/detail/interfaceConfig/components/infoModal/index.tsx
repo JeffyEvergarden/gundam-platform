@@ -16,7 +16,7 @@ const extra = {
 };
 
 const InfoModal: React.FC<any> = (props: any) => {
-  const { cref, confirm } = props;
+  const { cref, refresh } = props;
 
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
@@ -51,6 +51,7 @@ const InfoModal: React.FC<any> = (props: any) => {
       res = await postSaveInterface(obj);
     }
     if (res) {
+      refresh();
       setVisible(false);
     }
     return obj;

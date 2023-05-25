@@ -194,6 +194,9 @@ const InterfaceConfig: React.FC = (props: any) => {
         cref={interfaceModalRef}
         // confirm={confirmInfo}
         loading={configLoading}
+        refresh={() => {
+          interfaceTableRef?.current?.reload();
+        }}
       />
     </div>
   );
