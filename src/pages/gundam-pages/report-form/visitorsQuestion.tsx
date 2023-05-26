@@ -37,17 +37,30 @@ const CustomerTrack: React.FC<any> = (props: any) => {
         title: item?.label + '占比',
         dataIndex: item?.value,
         search: false,
+        render: (val: any, row: any) => {
+          return row[item?.value?.toUpperCase()] || '0.00%';
+        },
       }));
 
     return [
       {
         title: '分类',
-        dataIndex: 'typeName',
+        dataIndex: 'TYPE_NAME',
         search: false,
+        ellipsis: true,
+        width: 300,
+      },
+      {
+        title: '标准问/意图',
+        dataIndex: 'TEXT_NAME',
+        search: false,
+        width: 400,
+        ellipsis: true,
       },
       {
         title: '标准问/意图',
         dataIndex: 'textName',
+        hideInTable: true,
       },
       {
         title: '选择类型',
@@ -79,7 +92,7 @@ const CustomerTrack: React.FC<any> = (props: any) => {
       },
       {
         title: '被问总次数',
-        dataIndex: 'accessNum',
+        dataIndex: 'ACCESS_NUM',
         search: false,
         sorter: true,
       },
@@ -88,6 +101,9 @@ const CustomerTrack: React.FC<any> = (props: any) => {
         title: '总占比',
         dataIndex: 'totalProportion',
         search: false,
+        render: (val: any, row: any) => {
+          return row['total_Proportion'?.toUpperCase()] || '0.00%';
+        },
       },
     ];
   };
@@ -139,11 +155,11 @@ const CustomerTrack: React.FC<any> = (props: any) => {
 
   const tableChange = (pagination: any, filters: any, sorter: any) => {
     let temp = { orderCode: '', orderType: '' };
-    if (sorter.columnKey === 'accessNum' && sorter.order === 'ascend') {
+    if (sorter.columnKey === 'ACCESS_NUM' && sorter.order === 'ascend') {
       temp.orderCode = '1';
       temp.orderType = '1';
     }
-    if (sorter.columnKey === 'accessNum' && sorter.order === 'descend') {
+    if (sorter.columnKey === 'ACCESS_NUM' && sorter.order === 'descend') {
       temp.orderCode = '1';
       temp.orderType = '2';
     }
@@ -242,8 +258,8 @@ const CustomerTrack: React.FC<any> = (props: any) => {
           collapseRender: () => null,
         }}
         columns={columns}
-        scroll={{ x: columns.length * 200 }}
-        rowKey="textId"
+        scroll={{ x: columns.length * 150 }}
+        rowKey="TEXT_ID"
         loading={tableLoading}
         request={async (params = {}, sort, filter) => {
           if (params?.callTime?.length) {
