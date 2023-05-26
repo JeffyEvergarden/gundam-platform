@@ -29,11 +29,15 @@ const CustomerTrack: React.FC<any> = (props: any) => {
   const [paramsObj, setParamsObj] = useState<any>({ orderCode: '', orderType: '' });
 
   const channelColumns = (list: any) => {
-    let arr = list?.map((item: any) => ({
-      title: item?.label + '占比',
-      dataIndex: item?.value,
-      search: false,
-    }));
+    let arr = list
+      ?.filter((item: any) => {
+        return item?.value != 'test' && item?.value != 'media_test';
+      })
+      ?.map((item: any) => ({
+        title: item?.label + '占比',
+        dataIndex: item?.value,
+        search: false,
+      }));
 
     return [
       {
