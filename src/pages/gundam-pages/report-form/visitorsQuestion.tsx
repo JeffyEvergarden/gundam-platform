@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Button, DatePicker, message, Popconfirm, Select } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import style from './index.less';
@@ -21,89 +21,74 @@ const CustomerTrack: React.FC<any> = (props: any) => {
   const { info } = useModel('gundam' as any, (model: any) => ({
     info: model.info,
   }));
+  const { channelList, getChannelList } = useModel('drawer' as any, (model: any) => ({
+    channelList: model.channelList,
+    getChannelList: model.getChannelList,
+  }));
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [paramsObj, setParamsObj] = useState<any>({ orderCode: '', orderType: '' });
 
-  let columns: any = [
-    {
-      title: '分类',
-      dataIndex: 'typeName',
+  const channelColumns = (list: any) => {
+    let arr = list?.map((item: any) => ({
+      title: item?.label + '占比',
+      dataIndex: item?.value,
       search: false,
-    },
-    {
-      title: '标准问/意图',
-      dataIndex: 'textName',
-    },
-    {
-      title: '选择类型',
-      dataIndex: 'textType',
-      hideInTable: true,
-      valueEnum: {
-        1: '意图',
-        2: '标准问',
+    }));
+
+    return [
+      {
+        title: '分类',
+        dataIndex: 'typeName',
+        search: false,
       },
-    },
-    {
-      title: '日期',
-      dataIndex: 'callTime',
-      // initialValue: [moment().subtract(6, 'day'), moment()],
-      renderFormItem: (t: any, r: any, i: any) => {
-        return (
-          <RangePicker
-            ranges={{
-              昨天: [moment().subtract(1, 'day'), moment().subtract(1, 'day')],
-              今天: [moment(), moment()],
-              最近7天: [moment().subtract(6, 'day'), moment()],
-              最近一个月: [moment().subtract(1, 'month'), moment()],
-            }}
-            placeholder={['开始时间', '结束时间']}
-          />
-        );
+      {
+        title: '标准问/意图',
+        dataIndex: 'textName',
       },
-      hideInTable: true,
-    },
-    {
-      title: '被问总次数',
-      dataIndex: 'accessNum',
-      search: false,
-      sorter: true,
-    },
-    {
-      title: '微信占比',
-      dataIndex: 'mediaWxProportion',
-      search: false,
-    },
-    {
-      title: '支付宝占比',
-      dataIndex: 'mediaZfbProportion',
-      search: false,
-    },
-    {
-      title: '中邮钱包占比',
-      dataIndex: 'mediaZyqbProportion',
-      search: false,
-    },
-    {
-      title: '邮储手机银行占比',
-      dataIndex: 'mediaYcsjyhProportion',
-      search: false,
-    },
-    {
-      title: '集团邮务占比',
-      dataIndex: 'mediaJtywProportion',
-      search: false,
-    },
-    {
-      title: '官网占比',
-      dataIndex: 'mediaGwProportion',
-      search: false,
-    },
-    {
-      title: '总占比',
-      dataIndex: 'totalProportion',
-      search: false,
-    },
-  ];
+      {
+        title: '选择类型',
+        dataIndex: 'textType',
+        hideInTable: true,
+        valueEnum: {
+          1: '意图',
+          2: '标准问',
+        },
+      },
+      {
+        title: '日期',
+        dataIndex: 'callTime',
+        // initialValue: [moment().subtract(6, 'day'), moment()],
+        renderFormItem: (t: any, r: any, i: any) => {
+          return (
+            <RangePicker
+              ranges={{
+                昨天: [moment().subtract(1, 'day'), moment().subtract(1, 'day')],
+                今天: [moment(), moment()],
+                最近7天: [moment().subtract(6, 'day'), moment()],
+                最近一个月: [moment().subtract(1, 'month'), moment()],
+              }}
+              placeholder={['开始时间', '结束时间']}
+            />
+          );
+        },
+        hideInTable: true,
+      },
+      {
+        title: '被问总次数',
+        dataIndex: 'accessNum',
+        search: false,
+        sorter: true,
+      },
+      ...arr,
+      {
+        title: '总占比',
+        dataIndex: 'totalProportion',
+        search: false,
+      },
+    ];
+  };
+
+  let columns: any = useMemo(() => channelColumns(channelList), [channelList]);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys);
@@ -162,6 +147,10 @@ const CustomerTrack: React.FC<any> = (props: any) => {
     let tempObj = Object.assign(tempParamsObj, temp);
     setParamsObj(tempObj);
   };
+
+  useEffect(() => {
+    getChannelList(info.id);
+  }, []);
 
   return (
     <div className={`${style['machine-page']} list-page`}>
