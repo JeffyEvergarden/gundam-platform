@@ -84,21 +84,25 @@ const DrawerForm = (props: any) => {
       setNodetype(info._nodetype || 'normal');
       if (info._nodetype == 'operation') {
         console.log(info);
-        form.setFieldsValue({
-          ...info?.config,
-          name: info.nodeName || info.name,
-          operations: info?.config?.operations?.length ? info?.config?.operations : [{}],
-        });
+        setTimeout(() => {
+          form.setFieldsValue({
+            ...info?.config,
+            name: info.nodeName || info.name,
+            operations: info?.config?.operations?.length ? info?.config?.operations : [{}],
+          });
+        }, 300);
       } else {
         const _info: any = parserBody(info.config);
         console.log(_info);
 
         form.resetFields();
-        form.setFieldsValue({
-          ..._info,
-          name: _info.nodeName || info.name,
-        });
-        form2.setFieldsValue(_info?.highConfig);
+        setTimeout(() => {
+          form.setFieldsValue({
+            ..._info,
+            name: _info.nodeName || info.name,
+          });
+          form2.setFieldsValue(_info?.highConfig);
+        }, 300);
       }
 
       setVisible(true);

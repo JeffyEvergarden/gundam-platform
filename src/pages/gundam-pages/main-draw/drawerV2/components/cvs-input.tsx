@@ -89,7 +89,6 @@ const CvsInput: React.FC<any> = (props: any) => {
       setStartPos(startPos + target?.length);
     }
     if (type === 'EditBoard') {
-      console.log(target);
       if (tmp.length <= maxlength) {
         editorRef?.current?.insertInEditor(target);
       }
