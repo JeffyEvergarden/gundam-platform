@@ -246,7 +246,7 @@ const ConversationConfig = (props: any) => {
                             <CvsInput
                               placeholder={`请输入${placeholder}`}
                               title={`${placeholder}：`}
-                              type="EditBoard"
+                              type={title == '答复配置' ? 'EditBoard' : 'textarea'}
                               style={{ width: '100%' }}
                               autoComplete="off"
                               required

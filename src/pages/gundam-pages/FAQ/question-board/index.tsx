@@ -221,7 +221,7 @@ const EditBoard: React.FC<any> = (prop: any) => {
 
   useEffect(() => {
     console.log('value:', value);
-    onChange?.(`<p>${value}</p>`);
+    onChange?.(value + '');
   }, []);
 
   useEffect(() => {
