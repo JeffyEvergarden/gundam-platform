@@ -635,7 +635,15 @@ export default (props: any) => {
                         <div className={styles['robot-part']}>
                           <img className={styles['head-robot']} alt="robot" src={robotPhoto} />
                           <div className={styles['wordsbox-robot']}>
-                            <div className={styles['words']}>{item?.message}</div>
+                            {info?.robotType == 0 && (
+                              <div
+                                className={styles['askText']}
+                                dangerouslySetInnerHTML={{ __html: item?.message }}
+                              />
+                            )}
+                            {info?.robotType == 1 && (
+                              <div className={styles['words']}>{item?.message}</div>
+                            )}
                             {info?.robotType == 1 && (
                               <div className={styles['words-type-audio']}>
                                 <AudioPlay
