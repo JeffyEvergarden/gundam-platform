@@ -167,6 +167,7 @@ const InfoModal: React.FC<any> = (props: any) => {
               name="interfaceType"
               label="接口类型"
               style={{ width: '580px' }}
+              initialValue={'post'}
             >
               <Radio.Group>
                 <Radio value={'post'}>post</Radio>
@@ -179,6 +180,7 @@ const InfoModal: React.FC<any> = (props: any) => {
                 rules={[{ required: true, message: '请输入超时时间' }]}
                 name="readTimeOut"
                 label="超时时间"
+                initialValue={3}
               >
                 <InputNumber
                   placeholder="请输入超时时间"
