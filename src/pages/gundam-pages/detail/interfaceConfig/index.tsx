@@ -73,7 +73,7 @@ const InterfaceConfig: React.FC = (props: any) => {
     },
     {
       title: '更新人',
-      dataIndex: 'creator',
+      dataIndex: 'updateBy',
       search: false,
       width: 200,
     },
