@@ -83,26 +83,21 @@ const DrawerForm = (props: any) => {
       recordInfo.current.callback = callback;
       setNodetype(info._nodetype || 'normal');
       if (info._nodetype == 'operation') {
-        console.log(info);
-        setTimeout(() => {
-          form.setFieldsValue({
-            ...info?.config,
-            name: info.nodeName || info.name,
-            operations: info?.config?.operations?.length ? info?.config?.operations : [{}],
-          });
-        }, 300);
+        form.setFieldsValue({
+          ...info?.config,
+          name: info.nodeName || info.name,
+          operations: info?.config?.operations?.length ? info?.config?.operations : [{}],
+        });
       } else {
         const _info: any = parserBody(info.config);
         console.log(_info);
 
         form.resetFields();
-        setTimeout(() => {
-          form.setFieldsValue({
-            ..._info,
-            name: _info.nodeName || info.name,
-          });
-          form2.setFieldsValue(_info?.highConfig);
-        }, 300);
+        form.setFieldsValue({
+          ..._info,
+          name: _info.nodeName || info.name,
+        });
+        form2.setFieldsValue(_info?.highConfig);
       }
 
       setVisible(true);
