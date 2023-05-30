@@ -259,6 +259,7 @@ const EditBoard: React.FC<any> = (prop: any) => {
         <SelectorModal cref={selectModalRef} confirm={confirm} />
       </div>
       <Editor
+        defaultContent={value || '<p><br></p>'}
         defaultConfig={editorConfig}
         value={value}
         onCreated={setEditor}
