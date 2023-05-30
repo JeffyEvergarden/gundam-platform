@@ -221,7 +221,8 @@ const EditBoard: React.FC<any> = (prop: any) => {
 
   useEffect(() => {
     console.log('value:', value);
-  }, [value]);
+    onChange(value);
+  }, []);
 
   useEffect(() => {
     // console.log(editor);
@@ -259,7 +260,6 @@ const EditBoard: React.FC<any> = (prop: any) => {
         <SelectorModal cref={selectModalRef} confirm={confirm} />
       </div>
       <Editor
-        defaultHtml={value || '<p><br></p>'}
         defaultConfig={editorConfig}
         value={value}
         onCreated={setEditor}
