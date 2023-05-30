@@ -72,7 +72,7 @@ export const ParamsWayList = [
 ];
 
 // 系统参数值可选
-export const SystemParamsList = [
+export const paramValueList = [
   {
     name: '$systemDate',
     label: '系统时间',

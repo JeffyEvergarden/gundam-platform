@@ -4,13 +4,7 @@ import { MinusCircleOutlined, AppstoreAddOutlined } from '@ant-design/icons';
 import Condition from '@/components/Condition';
 import { useModel } from 'umi';
 import styles from './style.less';
-import {
-  ParamsTypeList,
-  BooleanList,
-  ParamsWayList,
-  SystemParamsList,
-  RequiredList,
-} from './config';
+import { ParamsTypeList, BooleanList, ParamsWayList, paramValueList, RequiredList } from './config';
 
 const { Item: FormItem, List: FormList } = Form;
 const { Option } = Select;
@@ -25,9 +19,9 @@ const RequestConfig = (props: any) => {
     // console.log(form.getFieldsValue(), formData);
     if (val === 1) {
       formData[index].require = 1;
-      formData[index].systemParams = '$UUID36';
+      formData[index].paramValue = '$UUID36';
     } else {
-      formData[index].systemParams = '-';
+      formData[index].paramValue = '-';
     }
     form.setFieldsValue({ [name]: [...formData] });
   };
@@ -37,11 +31,11 @@ const RequestConfig = (props: any) => {
     const _paramValueType = formData[index].paramValueType;
     if (_paramValueType === 0) {
       // 用户输入
-      formData[index].systemParams = '-'; // 不准天
+      formData[index].paramValue = '-'; // 不准天
     } else if (val === 0) {
-      formData[index].systemParams = '-';
+      formData[index].paramValue = '-';
     } else {
-      formData[index].systemParams = undefined;
+      formData[index].paramValue = undefined;
     }
     form.setFieldsValue({ [name]: [...formData] });
   };
@@ -58,10 +52,10 @@ const RequestConfig = (props: any) => {
             {
               paramName: undefined,
               paramKey: undefined,
-              dataType: undefined,
-              paramValueType: undefined,
-              require: undefined,
-              systemParams: undefined,
+              dataType: 0,
+              paramValueType: 0,
+              require: 1,
+              paramValue: undefined,
             },
             length,
           );
@@ -226,7 +220,7 @@ const RequestConfig = (props: any) => {
 
                       {/* 系统参数 */}
                       <FormItem
-                        name={[field.name, 'systemParams']}
+                        name={[field.name, 'paramValue']}
                         rules={[{ required: !isSysParamsDisabled, message: '请选择系统参数' }]}
                         style={{ width: _width + 'px' }}
                       >
@@ -237,7 +231,7 @@ const RequestConfig = (props: any) => {
                           showSearch
                           disabled={isSysParamsDisabled}
                         >
-                          {SystemParamsList?.map((item: any, index: number) => {
+                          {paramValueList?.map((item: any, index: number) => {
                             return (
                               <Option key={index} value={item.name} opt={item}>
                                 {item.label}
