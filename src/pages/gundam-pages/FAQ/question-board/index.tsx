@@ -220,7 +220,7 @@ const EditBoard: React.FC<any> = (prop: any) => {
   };
 
   useEffect(() => {
-    // console.log(value);
+    console.log('value:', value);
   }, [value]);
 
   useEffect(() => {
