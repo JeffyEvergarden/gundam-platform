@@ -93,7 +93,6 @@ const WordSlotModal: React.FC<any> = (props: any) => {
                 );
               }
             } else if (item.type == '词槽') {
-              console.log(item);
               // if (!/^[\S]+\[[0-9]+\]\.+/g?.test(item?.value)) {
               if (item.value?.indexOf('[') == '-1') {
                 if (item.value?.indexOf('.') != '-1') {

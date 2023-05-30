@@ -221,10 +221,8 @@ const EditBoard: React.FC<any> = (prop: any) => {
 
   useEffect(() => {
     console.log('value:', value);
-    setTimeout(() => {
-      onChange(value);
-    }, 500);
-  }, []);
+    onChange?.(value);
+  }, [value]);
 
   useEffect(() => {
     // console.log(editor);
