@@ -21,7 +21,7 @@ const RequestConfig = (props: any) => {
       formData[index].require = 1;
       formData[index].paramValue = '$UUID36';
     } else {
-      formData[index].paramValue = '-';
+      formData[index].paramValue = undefined;
     }
     form.setFieldsValue({ [name]: [...formData] });
   };
@@ -31,9 +31,9 @@ const RequestConfig = (props: any) => {
     const _paramValueType = formData[index].paramValueType;
     if (_paramValueType === 0) {
       // 用户输入
-      formData[index].paramValue = '-'; // 不准天
+      formData[index].paramValue = undefined; // 不准天
     } else if (val === 0) {
-      formData[index].paramValue = '-';
+      formData[index].paramValue = undefined;
     } else {
       formData[index].paramValue = undefined;
     }

@@ -258,10 +258,11 @@ const InfoModal: React.FC<any> = (props: any) => {
                 rules={[{ required: true, message: '请输入响应参数报文' }]}
                 name={['responseParam', 'paramMapKey']}
               >
-                <Input
+                <Input.TextArea
                   placeholder="请填写响应参数报文"
                   maxLength={200}
                   style={{ width: '220px' }}
+                  rows={1}
                 />
               </FormItem>
             </div>
