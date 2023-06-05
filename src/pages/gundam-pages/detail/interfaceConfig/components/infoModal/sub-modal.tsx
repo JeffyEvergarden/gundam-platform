@@ -76,6 +76,7 @@ const SubTestModal: React.FC<any> = (props: any) => {
       setVisible(true);
     },
     close: () => {
+      setResult(undefined);
       setVisible(false);
     },
     submit,
