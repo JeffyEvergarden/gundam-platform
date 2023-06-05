@@ -75,11 +75,14 @@ const SubTestModal: React.FC<any> = (props: any) => {
       });
       setVisible(true);
     },
-    close: () => {
-      setVisible(false);
-    },
+    close,
     submit,
   }));
+
+  const close = () => {
+    setResult(undefined);
+    setVisible(false);
+  };
 
   return (
     <>
@@ -87,7 +90,7 @@ const SubTestModal: React.FC<any> = (props: any) => {
         width={680}
         title={'接口测试'}
         visible={visible}
-        onCancel={() => setVisible(false)}
+        onCancel={close}
         // okText={null}
         // onOk={submit}
         // confirmLoading={loading}
@@ -95,7 +98,7 @@ const SubTestModal: React.FC<any> = (props: any) => {
           <div className={style['zy-row']}>
             <span style={{ flex: 1 }}></span>
 
-            <Button key="back" onClick={() => setVisible(false)}>
+            <Button key="back" onClick={close}>
               取消
             </Button>
 
