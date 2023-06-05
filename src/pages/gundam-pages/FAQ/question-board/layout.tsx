@@ -605,6 +605,22 @@ const Board: React.FC<any> = (props: any) => {
                   }}
                 />
               </Form.Item>
+              <Form.Item
+                name="faqAlias"
+                label={
+                  <>
+                    {'标准问简称'}
+                    <Tip
+                      title={
+                        '相当于标准问的简短描述，与意图名称的作用类似，目前专用于“外呼机器人”下标任务中。例如标准问“你们公司地址在哪里”，别名可以设为“客户询问公司地址”'
+                      }
+                    />
+                  </>
+                }
+                style={{ width: '600px' }}
+              >
+                <Input placeholder={'请输入标准问简称'} autoComplete="off" maxLength={20} />
+              </Form.Item>
 
               <Form.Item
                 name="faqTypeId"

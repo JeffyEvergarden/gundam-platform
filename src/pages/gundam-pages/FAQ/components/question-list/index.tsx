@@ -486,6 +486,8 @@ const QuestionList: React.FC<any> = (props: any) => {
                           </Popconfirm>
                         </div>
                       </div>
+
+                      <div>标准问简称：{item?.faqAlias || '-'}</div>
                       {/* 作者... */}
                       <div className={style['box-desc']}>
                         <div style={{ marginRight: '12px' }}>
