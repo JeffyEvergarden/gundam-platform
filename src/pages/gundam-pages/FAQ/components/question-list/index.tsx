@@ -31,6 +31,7 @@ import { history, useModel } from 'umi';
 import { useFaqModal } from '../../FAQ-manage/model';
 import { deleteQuestion } from '../../FAQ-manage/model/api';
 import { deleteAnswer, editQuestion, isAdd } from '../../question-board/model/api';
+import FaqAliasModal from './components/faqAliasForm';
 import style from './style.less';
 
 const { Option } = Select;
@@ -80,6 +81,7 @@ const QuestionList: React.FC<any> = (props: any) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
 
   const listRef = useRef<any>({});
+  const faqAliasRef = useRef<any>({});
 
   useImperativeHandle(cref, () => ({
     selectAll(flag: any) {
@@ -487,7 +489,18 @@ const QuestionList: React.FC<any> = (props: any) => {
                         </div>
                       </div>
 
-                      <div>标准问简称：{item?.faqAlias || '-'}</div>
+                      <div>
+                        标准问简称：
+                        <Button
+                          type="link"
+                          onClick={() => {
+                            // openClassify?.(item);
+                            faqAliasRef?.current?.open(item);
+                          }}
+                        >
+                          {item?.faqAlias || '-'}
+                        </Button>
+                      </div>
                       {/* 作者... */}
                       <div className={style['box-desc']}>
                         <div style={{ marginRight: '12px' }}>
@@ -729,6 +742,7 @@ const QuestionList: React.FC<any> = (props: any) => {
           onChange={pageChange}
         />
       </div>
+      <FaqAliasModal cref={faqAliasRef} />
     </div>
   );
 };
